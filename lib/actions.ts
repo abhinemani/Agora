@@ -76,6 +76,14 @@ export function getResults(requestId: string) {
     onSponsoredImpression(db, s.name, request.id);
   }
 
+  // Count each supplier's appearances in buyer results for their profile page.
+  for (const sup of new Set(results.groups.flatMap((g) => g.options.map((o) => o.supplier.id)))) {
+    const key = `appear:${request.id}:${sup}`;
+    if (impressionsBilled.has(key)) continue;
+    impressionsBilled.add(key);
+    db.counters[`appear_${sup}`] = (db.counters[`appear_${sup}`] ?? 0) + 1;
+  }
+
   // Requests nothing covers become unmet demand that suppliers can see.
   if (results.no_match && !db.unmet.some((u) => u.id === `um_${request.id}`)) {
     db.unmet.unshift({
@@ -163,6 +171,25 @@ export function draftSolicitation(requestId: string) {
     based_on_id: base?.id ?? null,
   };
   return { draft, basedOn: base };
+}
+
+/** Proactive buying: an expiring contract becomes a request that goes straight
+ * to an early solicitation draft, before anyone has to notice the lapse. */
+export function startRenewal(contractId: string) {
+  const db = getDb();
+  const c = db.contracts.find((c) => c.id === contractId) ?? fail("Contract not found");
+  const category = (db.listings.find((l) => l.contract_id === c.id)?.category ?? "Other") as Category;
+  const request: Request = {
+    id: nextId(db, "request", "req"),
+    raw_text: `Renew ${c.title.toLowerCase()} contract ${c.contract_number} before it expires`,
+    parsed: { item: c.title.toLowerCase(), quantity: 1, deadline: `by ${c.end}`, department: "City Hall Administration", category, est_total: 0 },
+    parse_mode: "offline",
+    preference_answer: db.session.preference_answer,
+    created_at: now(),
+    outcome: null,
+  };
+  db.requests.unshift(request);
+  return request;
 }
 
 export function publishSolicitation(draft: Solicitation) {

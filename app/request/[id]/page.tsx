@@ -4,8 +4,34 @@ import Link from "next/link";
 import { useParams, useSearchParams } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
 import { useStore } from "@/components/store";
-import { Badge, Button, Card, ErrorNote, IconCircle, LinkButton, Loading, SourcePill, Stars, SupplierBadges, money } from "@/components/ui";
+import { People, Plus, Sparkle } from "@/components/icons";
+import { Badge, Button, Card, ErrorNote, Eyebrow, IconCircle, LinkButton, Loading, RevenueTags, SourcePill, Stars, SupplierBadges, money } from "@/components/ui";
 import type { Results, ResultOption } from "@/lib/assistant";
+import { PURCHASE_KINDS, TRANSACTION_FEE_SOURCES } from "@/lib/revenue_rules";
+
+function KindBanner({ kind }: { kind: (typeof PURCHASE_KINDS)[keyof typeof PURCHASE_KINDS] }) {
+  return (
+    <div className={`flex flex-wrap items-center gap-4 rounded-xl px-5 py-3 ${kind.n === 3 ? "border border-dashed border-rose bg-white" : "bg-white shadow-card"}`}>
+      <span className={`text-3xl font-light ${kind.n === 3 ? "text-rose" : "text-maroon"}`}>{kind.n}</span>
+      <div className="min-w-0 flex-1">
+        <div className="text-sm font-semibold text-navy">{kind.title}</div>
+        <div className="text-xs text-slate">
+          <span className="font-semibold">Earns:</span> {kind.earns}.
+        </div>
+      </div>
+      <RevenueTags options={kind.options} size="md" />
+    </div>
+  );
+}
+
+function earnsFor(o: ResultOption) {
+  const tags: number[] = [];
+  if (o.listing.source !== "no_approval") tags.push(2);
+  if (TRANSACTION_FEE_SOURCES.includes(o.listing.source)) tags.push(3);
+  if (o.sponsored) tags.push(5);
+  if (o.rule.payment === "pcard") tags.push(9);
+  return tags;
+}
 
 export default function RequestResults() {
   const { id } = useParams<{ id: string }>();
@@ -42,7 +68,10 @@ export default function RequestResults() {
         <Link href="/" className="text-xs font-semibold text-slate hover:text-navy">
           ← New request
         </Link>
-        <h1 className="mt-2 text-xl font-bold text-navy">“{request.raw_text}”</h1>
+        <div className="mt-5">
+          <Eyebrow>Your request</Eyebrow>
+        </div>
+        <h1 className="mt-2 text-2xl font-light tracking-tight text-navy sm:text-3xl">“{request.raw_text}”</h1>
         <div className="mt-3 flex flex-wrap gap-2 text-xs">
           <Parsed label="Item" value={p.item} />
           <Parsed label="Quantity" value={String(p.quantity)} />
@@ -57,8 +86,10 @@ export default function RequestResults() {
       </div>
 
       {needsAnswer && (
-        <Card className="flex flex-wrap items-center gap-4 border-l-4 border-l-maroon p-5">
-          <IconCircle>?</IconCircle>
+        <Card accent="maroon" className="flex flex-wrap items-center gap-4 p-5">
+          <IconCircle>
+            <Sparkle />
+          </IconCircle>
           <div className="min-w-0 flex-1">
             <div className="font-semibold text-navy">Riverbend has a local-vendor preference. Should I favor local and MBE-certified suppliers?</div>
             <div className="text-xs text-slate">I'll remember your answer for the rest of this session.</div>
@@ -91,6 +122,7 @@ export default function RequestResults() {
 
       {results && !results.no_match && (
         <>
+          <KindBanner kind={results.groups.every((g) => g.source === "no_approval") ? PURCHASE_KINDS.no_approval : PURCHASE_KINDS.contract} />
           <div className="flex flex-wrap items-center justify-between gap-2">
             <div className="text-sm text-slate">
               {results.groups.reduce((n, g) => n + g.options.length, 0)} options from {results.groups.length} source{results.groups.length > 1 ? "s" : ""}
@@ -140,13 +172,16 @@ export default function RequestResults() {
         </>
       )}
 
+      {results && results.no_match && <KindBanner kind={PURCHASE_KINDS.new_need} />}
       {results && results.no_match && (
         <div className="grid gap-6 lg:grid-cols-3">
           <Card className="p-6 lg:col-span-2">
             <div className="flex gap-4">
-              <IconCircle>+</IconCircle>
+              <IconCircle size="lg">
+                <Plus />
+              </IconCircle>
               <div>
-                <h2 className="text-lg font-bold text-navy">No contract covers this yet. You may be the first agency to buy it.</h2>
+                <h2 className="text-2xl font-light tracking-tight text-navy">No contract covers this yet. You may be the first agency to buy it.</h2>
                 <p className="mt-2 text-sm text-slate">
                   This is rare: most requests resolve to something already on contract or under the quick-buy limit. Riverbend can run a solicitation, and when it's
                   awarded the contract lands in this storefront, ready for the next department and for neighboring agencies.
@@ -186,7 +221,7 @@ function Parsed({ label, value }: { label: string; value: string }) {
 function OptionCard({ o, qty, requestId }: { o: ResultOption; qty: number; requestId: string }) {
   const l = o.listing;
   return (
-    <Card className={`p-4 ${o.sponsored ? "ring-1 ring-rose/40" : ""}`}>
+    <Card className={`p-5 transition hover:shadow-md ${o.sponsored ? "ring-1 ring-rose/40" : ""}`}>
       <div className="flex flex-wrap items-start justify-between gap-4">
         <div className="min-w-0 flex-1">
           <div className="flex flex-wrap items-center gap-2">
@@ -204,8 +239,11 @@ function OptionCard({ o, qty, requestId }: { o: ResultOption; qty: number; reque
             {o.contract_number && <span>{o.contract_number}</span>}
             <span className={o.meets_deadline === false ? "text-maroon" : ""}>{o.delivery}</span>
           </div>
-          <div className={`mt-2 inline-flex items-center gap-1.5 rounded px-2 py-1 text-xs font-semibold ${o.rule.payment === "po" ? "bg-amber-50 text-amber-800" : "bg-emerald-50 text-emerald-800"}`}>
-            {o.rule.text}
+          <div className="mt-2 flex flex-wrap items-center gap-3">
+            <span className={`inline-flex items-center gap-1.5 rounded px-2 py-1 text-xs font-semibold ${o.rule.payment === "po" ? "bg-amber-50 text-amber-800" : "bg-emerald-50 text-emerald-800"}`}>
+              {o.rule.text}
+            </span>
+            <RevenueTags options={earnsFor(o)} />
           </div>
         </div>
         <div className="text-right">
@@ -227,8 +265,14 @@ function OptionCard({ o, qty, requestId }: { o: ResultOption; qty: number; reque
 
 function PeerCard({ peer, qty }: { peer: NonNullable<Results["peer"]>; qty: number }) {
   return (
-    <Card className="border-t-4 border-t-steel p-4">
-      <div className="text-xs font-semibold uppercase tracking-wider text-slate">Peer pick</div>
+    <Card accent="steel" className="p-4">
+      <div className="flex items-center justify-between">
+        <span className="flex items-center gap-1.5">
+          <People className="h-3.5 w-3.5 text-slate" />
+          <Eyebrow tone="slate">Peer pick</Eyebrow>
+        </span>
+        <RevenueTags options={[4, 7, 6]} />
+      </div>
       <div className="mt-1 text-sm font-semibold text-navy">
         {peer.agency_name} bought this {new Date(peer.date).toLocaleDateString("en-US", { month: "long", year: "numeric" })}
       </div>

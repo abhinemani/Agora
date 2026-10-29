@@ -15,6 +15,7 @@ const handlers: Record<string, Handler> = {
   approveOrder: (b) => A.approveOrder(b.orderId),
   draftSolicitation: (b) => A.draftSolicitation(b.requestId),
   publishSolicitation: (b) => A.publishSolicitation(b.draft),
+  startRenewal: (b) => A.startRenewal(b.contractId),
   listAward: (b) => A.listAward(b.solicitationId),
   publishContract: (b) => A.publishContract(b),
   resolveAttention: (b) => A.resolveAttention(b.id, Number(b.price)),

@@ -1,7 +1,9 @@
 "use client";
 
 import Link from "next/link";
+import { EDGE_TIER, REVENUE_OPTIONS } from "@/lib/revenue_rules";
 import type { Source, Supplier } from "@/lib/types";
+import { useStore } from "./store";
 
 export const money = (n: number, cents = true) =>
   n.toLocaleString("en-US", { style: "currency", currency: "USD", minimumFractionDigits: cents ? 2 : 0, maximumFractionDigits: cents ? 2 : 0 });
@@ -63,8 +65,34 @@ export function SupplierBadges({ supplier }: { supplier: Supplier }) {
   );
 }
 
-export function Card({ children, className = "" }: { children: React.ReactNode; className?: string }) {
-  return <div className={`rounded-lg border border-navy/10 bg-white shadow-card ${className}`}>{children}</div>;
+export function Card({ children, className = "", accent }: { children: React.ReactNode; className?: string; accent?: "rose" | "steel" | "navy" | "maroon" }) {
+  const top = accent ? { rose: "border-t-[3px] border-t-rose", steel: "border-t-[3px] border-t-steel", navy: "border-t-[3px] border-t-navy", maroon: "border-t-[3px] border-t-maroon" }[accent] : "";
+  return <div className={`rounded-xl border border-navy/10 bg-white shadow-card ${top} ${className}`}>{children}</div>;
+}
+
+/** Numbered maroon badges naming the revenue options an action triggers, as in the deck. */
+export function RevenueTags({ options, size = "sm", force }: { options: readonly number[]; size?: "sm" | "md"; force?: boolean }) {
+  const { showEarn } = useStore();
+  if ((!showEarn && !force) || !options.length) return null;
+  const dim = size === "md" ? "h-7 min-w-7 text-xs" : "h-5 min-w-5 text-[10px]";
+  return (
+    <span className="inline-flex items-center gap-0.5 align-middle">
+      {options.map((o) => (
+        <span
+          key={o}
+          title={`Revenue option ${o}: ${REVENUE_OPTIONS[o].name}${EDGE_TIER[o] ? ` (Edge ${EDGE_TIER[o]})` : ""}`}
+          className={`inline-flex items-center justify-center rounded-full bg-maroon px-1 font-bold text-white ring-2 ring-white ${dim}`}
+        >
+          {o}
+        </span>
+      ))}
+    </span>
+  );
+}
+
+export function Eyebrow({ children, tone = "maroon" }: { children: React.ReactNode; tone?: "maroon" | "rose" | "slate" | "steel" }) {
+  const c = { maroon: "text-maroon", rose: "text-rose", slate: "text-slate", steel: "text-steel" }[tone];
+  return <div className={`text-[11px] font-semibold uppercase tracking-[0.18em] ${c}`}>{children}</div>;
 }
 
 export function Button({
@@ -104,16 +132,26 @@ export function LinkButton({ href, children, variant = "primary", className = ""
 
 export function PageTitle({ eyebrow, title, children }: { eyebrow?: string; title: string; children?: React.ReactNode }) {
   return (
-    <div className="mb-6">
-      {eyebrow && <div className="text-xs font-semibold uppercase tracking-wider text-maroon">{eyebrow}</div>}
-      <h1 className="mt-1 text-2xl font-bold text-navy">{title}</h1>
-      {children && <div className="mt-1 max-w-3xl text-sm text-slate">{children}</div>}
+    <div className="mb-8">
+      {eyebrow && <Eyebrow>{eyebrow}</Eyebrow>}
+      <h1 className="mt-2 text-3xl font-light tracking-tight text-navy sm:text-[2.1rem]">{title}</h1>
+      {children && <div className="mt-2 max-w-3xl text-[15px] leading-relaxed text-slate">{children}</div>}
     </div>
   );
 }
 
-export function IconCircle({ children }: { children: React.ReactNode }) {
-  return <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-maroon text-sm font-bold text-white">{children}</span>;
+export function IconCircle({ children, size = "md" }: { children: React.ReactNode; size?: "md" | "lg" }) {
+  const d = size === "lg" ? "h-12 w-12 [&>svg]:h-5 [&>svg]:w-5" : "h-9 w-9 [&>svg]:h-4 [&>svg]:w-4";
+  return <span className={`flex shrink-0 items-center justify-center rounded-full bg-maroon text-sm font-bold text-white ${d}`}>{children}</span>;
+}
+
+export function SectionLabel({ children, right }: { children: React.ReactNode; right?: React.ReactNode }) {
+  return (
+    <div className="mb-3 flex items-center justify-between gap-3">
+      <h2 className="text-[11px] font-semibold uppercase tracking-[0.16em] text-slate">{children}</h2>
+      {right}
+    </div>
+  );
 }
 
 export function Loading({ label = "Loading" }: { label?: string }) {

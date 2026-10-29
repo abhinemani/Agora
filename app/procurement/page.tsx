@@ -1,9 +1,10 @@
 "use client";
 
 import Link from "next/link";
+import { Upload } from "@/components/icons";
 import { useEffect } from "react";
 import { useStore } from "@/components/store";
-import { Badge, Button, Card, IconCircle, LinkButton, Loading, PageTitle, SourcePill, money } from "@/components/ui";
+import { Badge, Button, Card, IconCircle, LinkButton, Loading, PageTitle, RevenueTags, SourcePill, money } from "@/components/ui";
 
 export default function ProcurementHome() {
   const { db, act, role, setRole } = useStore();
@@ -24,10 +25,14 @@ export default function ProcurementHome() {
       </PageTitle>
 
       <div className="grid gap-4 md:grid-cols-3">
-        <Card className="flex gap-4 p-5 md:col-span-2">
-          <IconCircle>⇪</IconCircle>
+        <Card accent="maroon" className="flex gap-4 p-6 md:col-span-2">
+          <IconCircle size="lg">
+            <Upload />
+          </IconCircle>
           <div className="flex-1">
-            <div className="font-semibold text-navy">Add a contract to the storefront</div>
+            <div className="text-lg font-semibold text-navy">
+              Add a contract to the storefront <RevenueTags options={[2]} />
+            </div>
             <p className="mt-1 text-sm text-slate">
               Upload a contract and its price list. Items, prices and terms are extracted into listings in minutes, so departments can buy from it today.
             </p>
@@ -38,7 +43,7 @@ export default function ProcurementHome() {
         </Card>
         <Card className="p-5">
           <div className="text-xs font-semibold uppercase tracking-wider text-slate">Storefront today</div>
-          <div className="mt-2 text-3xl font-bold text-navy">{db.listings.filter((l) => l.storefront_ids.includes("sf_riverbend")).length}</div>
+          <div className="mt-2 text-4xl font-light text-navy">{db.listings.filter((l) => l.storefront_ids.includes("sf_riverbend")).length}</div>
           <div className="text-sm text-slate">listings from {db.contracts.filter((c) => c.storefront_ids.includes("sf_riverbend")).length} contracts</div>
           <Link href="/procurement/spend" className="mt-3 inline-block text-sm font-semibold text-maroon hover:underline">
             Spend intelligence →

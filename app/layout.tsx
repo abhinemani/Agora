@@ -14,9 +14,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="en">
       <head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap" />
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600;700&display=swap" />
       </head>
-      <body className="min-h-screen antialiased">
+      <body className="min-h-screen overflow-x-clip antialiased">
         <StoreProvider>
           <Header />
           <main className="mx-auto max-w-6xl px-4 py-8">{children}</main>

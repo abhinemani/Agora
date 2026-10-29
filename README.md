@@ -13,6 +13,12 @@ Everything works offline. To have Claude (`claude-sonnet-5-5`) parse requests an
 
 State lives in memory on the server. **Reset demo** (in the revenue ledger) reseeds everything with stable IDs, so the demo script below is repeatable.
 
+## How it earns
+
+The **How it earns** page (in the header for every role) turns the Marketplace 2.0 deck into live diagrams: the three kinds of purchase, the buyer value chain, the supplier loop, the flywheel, the five-way revenue equation and the ten-option table. Revenue badges fill in as options fire during the demo, and every option links to the place in the app that triggers it. The numbered maroon badges also appear on result cards, checkout and the supplier journey; switch them off with **Show how Sovra earns** under the header for a buyer-only view.
+
+Proactive buying is live too: the expiring custodial contract on the buyer home starts an early renewal solicitation drafted from the past custodial bid.
+
 ## Putting it online
 
 The easiest host is **Render**, using the `render.yaml` blueprint in this repo. Go to [dashboard.render.com](https://dashboard.render.com), choose **New → Blueprint**, connect this GitHub repo, and accept the defaults. Render will ask for `ANTHROPIC_API_KEY`; leave it blank to run offline. You'll get a public `https://riverbend-storefront.onrender.com`-style URL in a few minutes, and every push to `main` redeploys.

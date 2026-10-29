@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { Check } from "@/components/icons";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Suspense, useEffect, useMemo, useRef, useState } from "react";
 import { post, useStore } from "@/components/store";
@@ -176,9 +177,11 @@ function Upload() {
       <div className="mx-auto max-w-2xl space-y-6 pt-4">
         <Card className="p-6">
           <div className="flex gap-4">
-            <IconCircle>✓</IconCircle>
+            <IconCircle size="lg">
+              <Check />
+            </IconCircle>
             <div>
-              <h1 className="text-xl font-bold text-navy">
+              <h1 className="text-2xl font-light tracking-tight text-navy">
                 {published.listed} items listed in {published.storefronts.join(", ")}
                 {published.storefronts.length > 1 ? " storefronts" : "'s storefront"}.
               </h1>

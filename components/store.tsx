@@ -14,6 +14,9 @@ interface Store {
   setLedgerOpen: (open: boolean) => void;
   /** Revenue event ids added since the ledger was last opened, for a pulse. */
   fresh: number;
+  /** Show the numbered revenue badges throughout the app. */
+  showEarn: boolean;
+  setShowEarn: (on: boolean) => void;
 }
 
 const Ctx = createContext<Store | null>(null);
@@ -31,6 +34,7 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
   const [role, setRoleState] = useState<Role>("buyer");
   const [ledgerOpen, setLedgerOpenState] = useState(false);
   const [seen, setSeen] = useState<number | null>(null);
+  const [showEarn, setShowEarnState] = useState(true);
 
   const refresh = useCallback(async () => {
     const res = await fetch("/api/state", { cache: "no-store" });
@@ -45,6 +49,7 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
     try {
       const r = localStorage.getItem("role") as Role | null;
       if (r) setRoleState(r);
+      if (localStorage.getItem("showEarn") === "0") setShowEarnState(false);
     } catch {}
   }, [refresh]);
 
@@ -64,6 +69,13 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
     [refresh],
   );
 
+  const setShowEarn = (on: boolean) => {
+    setShowEarnState(on);
+    try {
+      localStorage.setItem("showEarn", on ? "1" : "0");
+    } catch {}
+  };
+
   const setLedgerOpen = (open: boolean) => {
     setLedgerOpenState(open);
     if (open && db) setSeen(db.revenue.length);
@@ -72,7 +84,7 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
   const fresh = db && seen !== null ? Math.max(0, db.revenue.length - seen) : 0;
 
   return (
-    <Ctx.Provider value={{ db, llm, role, setRole, refresh, act, ledgerOpen, setLedgerOpen, fresh }}>{children}</Ctx.Provider>
+    <Ctx.Provider value={{ db, llm, role, setRole, refresh, act, ledgerOpen, setLedgerOpen, fresh, showEarn, setShowEarn }}>{children}</Ctx.Provider>
   );
 }
 

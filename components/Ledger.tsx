@@ -1,7 +1,8 @@
 "use client";
 
+import Link from "next/link";
 import { useState } from "react";
-import { REVENUE_OPTIONS } from "@/lib/revenue_rules";
+import { EDGE_TIER, FIVE_WAYS, REVENUE_OPTIONS } from "@/lib/revenue_rules";
 import type { Payer } from "@/lib/types";
 import { useStore } from "./store";
 import { Button, money } from "./ui";
@@ -28,6 +29,8 @@ export function Ledger() {
   });
   const byPayer = (Object.keys(PAYER_LABEL) as Payer[]).map((p) => ({ p, amount: events.filter((e) => e.payer === p).reduce((n, e) => n + e.amount, 0) }));
   const fired = byOption.filter((o) => o.count > 0).length;
+  const credits = -events.filter((e) => e.option === 1 && e.amount < 0).reduce((n, e) => n + e.amount, 0);
+  const sumOf = (opts: number[]) => events.filter((e) => opts.includes(e.option)).reduce((n, e) => n + e.amount, 0);
 
   return (
     <div className="fixed inset-0 z-50 flex justify-end">
@@ -37,7 +40,7 @@ export function Ledger() {
           <div className="flex items-start justify-between">
             <div>
               <div className="text-xs font-semibold uppercase tracking-wider text-rose">Sovra revenue (demo)</div>
-              <div className="mt-1 text-3xl font-bold">{money(total)}</div>
+              <div className="mt-1 text-4xl font-light tabular-nums">{money(total)}</div>
               <div className="mt-1 text-xs text-steel">
                 {events.length} events · {fired} of 10 revenue options fired · <span className="italic">Placeholder pricing</span>
               </div>
@@ -77,6 +80,24 @@ export function Ledger() {
           ) : (
             <div className="space-y-6 px-5 py-4">
               <section>
+                <h3 className="mb-2 text-xs font-semibold uppercase tracking-wider text-slate">Revenue per storefront adds up five ways</h3>
+                <div className="divide-y divide-navy/5 rounded-lg bg-tint px-3">
+                  {FIVE_WAYS.map((w, i) => (
+                    <div key={w.label} className="flex items-center gap-3 py-2 text-sm">
+                      <span className="w-3 text-rose">{i ? "+" : ""}</span>
+                      <span className="flex-1">
+                        <span className="text-navy">{w.label}</span>
+                        <span className="block text-[11px] text-slate">options {w.options.join(", ")}</span>
+                      </span>
+                      <span className="font-semibold tabular-nums">{money(sumOf(w.options))}</span>
+                    </div>
+                  ))}
+                </div>
+                <p className="mt-2 text-xs text-slate">
+                  Riverbend's net subscription this month: <span className="font-semibold text-navy">{money(2000 - credits)}</span> ($2,000 less {money(credits)} in credits).
+                </p>
+              </section>
+              <section>
                 <h3 className="mb-2 text-xs font-semibold uppercase tracking-wider text-slate">By option</h3>
                 <table className="w-full text-sm">
                   <tbody>
@@ -84,7 +105,10 @@ export function Ledger() {
                       <tr key={o.opt} className={`border-b border-navy/5 ${o.count ? "" : "text-steel"}`}>
                         <td className="w-8 py-2 font-semibold">{o.opt}</td>
                         <td className="py-2">
-                          <div className="font-semibold">{o.def.name}</div>
+                          <div className="font-semibold">
+                            {o.def.name}
+                            {EDGE_TIER[o.opt] && <span className="ml-1.5 rounded bg-navy-50 px-1 py-px text-[10px] font-semibold text-navy">Edge {EDGE_TIER[o.opt]}</span>}
+                          </div>
                           <div className="text-[11px] text-slate">{o.def.rule}</div>
                         </td>
                         <td className="py-2 text-right text-xs">{o.count}×</td>
@@ -110,6 +134,9 @@ export function Ledger() {
                   ))}
                 </div>
               </section>
+              <Link href="/model" onClick={() => setLedgerOpen(false)} className="block rounded-lg border border-maroon/30 bg-maroon-50 p-3 text-sm font-semibold text-maroon hover:bg-maroon-50/70">
+                See the value chain and flywheel, live →
+              </Link>
               <p className="text-xs text-slate">
                 Co-op and reseller orders carry listing fees only, no transaction fee (open question 12.1, default). Subscription credits are shown as negative option 1 lines.
               </p>

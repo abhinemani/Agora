@@ -4,7 +4,8 @@ import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Suspense, useEffect, useState } from "react";
 import { useStore } from "@/components/store";
-import { Badge, Button, Card, ErrorNote, IconCircle, LinkButton, Loading, SourcePill, Stars, money } from "@/components/ui";
+import { Arrow, BadgeCheck, Globe, Lock, Search, Star } from "@/components/icons";
+import { Badge, Button, Card, ErrorNote, Eyebrow, IconCircle, LinkButton, Loading, RevenueTags, SourcePill, Stars, money } from "@/components/ui";
 import type { EdgeTier } from "@/lib/types";
 
 const TABS = [
@@ -55,7 +56,7 @@ function Supplier() {
           <div className="flex gap-4">
             <span className="flex h-14 w-14 items-center justify-center rounded-full bg-maroon text-xl font-bold text-white">RO</span>
             <div>
-              <h1 className="text-2xl font-bold text-navy">{s.name}</h1>
+              <h1 className="text-3xl font-light tracking-tight text-navy">{s.name}</h1>
               <div className="text-sm text-slate">
                 {s.city}, {s.state} · {s.categories.join(", ")}
               </div>
@@ -107,6 +108,9 @@ function Supplier() {
 
       <ErrorNote message={error} />
 
+      <Journey tier={s.edge_tier} />
+      <Payoff />
+
       <div className="flex gap-1 border-b border-navy/10">
         {TABS.map((t) => (
           <button
@@ -115,7 +119,7 @@ function Supplier() {
             className={`-mb-px border-b-2 px-4 py-2 text-sm font-semibold ${tab === t.id ? "border-maroon text-navy" : "border-transparent text-slate hover:text-navy"}`}
           >
             {t.label}
-            {t.id === "insights" && s.edge_tier !== "position" && " 🔒"}
+            {t.id === "insights" && s.edge_tier !== "position" && <Lock className="ml-1 inline h-3.5 w-3.5 align-[-2px]" />}
           </button>
         ))}
       </div>
@@ -250,7 +254,9 @@ function InsightsTab({ run }: { run: Run }) {
     return (
       <Card className="mx-auto max-w-xl p-8 text-center">
         <div className="mx-auto w-fit">
-          <IconCircle>🔒</IconCircle>
+          <IconCircle size="lg">
+            <Lock />
+          </IconCircle>
         </div>
         <h2 className="mt-3 text-lg font-bold text-navy">Insights are part of Edge Position</h2>
         <p className="mt-2 text-sm text-slate">
@@ -364,6 +370,90 @@ function ReviewsTab({ run }: { run: Run }) {
       <p className="text-xs text-slate">
         Reviews come from agencies that bought from you, Procurated-style. <Link href="/supplier?tab=insights" className="text-maroon">See insights →</Link>
       </p>
+    </div>
+  );
+}
+
+const STEPS: { tier: string; title: string; sub: string; opts: number[]; need: EdgeTier | null }[] = [
+  { tier: "Discover", title: "Find bids", sub: "on the network", opts: [], need: null },
+  { tier: "Win", title: "Write the bid", sub: "and submit it", opts: [], need: "win" },
+  { tier: "Contract", title: "Win the award", sub: "becomes a contract", opts: [], need: null },
+  { tier: "Position", title: "Get listed", sub: "in every storefront", opts: [2], need: "position" },
+  { tier: "Buy · Pay", title: "Take orders", sub: "and get paid", opts: [9, 5, 3], need: null },
+  { tier: "Position", title: "Reach more", sub: "storefronts", opts: [4], need: "position" },
+  { tier: "Position", title: "See unmet demand", sub: "and upcoming bids", opts: [6], need: "position" },
+];
+
+const RANK: Record<EdgeTier, number> = { discover: 0, win: 1, position: 2 };
+
+/** The deck's "a supplier's win becomes a listing" loop, lit up by tier. */
+function Journey({ tier }: { tier: EdgeTier }) {
+  return (
+    <Card className="p-5">
+      <div className="mb-4 flex flex-wrap items-center justify-between gap-2">
+        <Eyebrow tone="slate">A supplier's win becomes a listing</Eyebrow>
+        <span className="text-xs text-slate">Steps your Edge tier unlocks are highlighted</span>
+      </div>
+      <div className="flex flex-wrap items-stretch gap-2">
+        {STEPS.map((st, i) => {
+          const on = !st.need || RANK[tier] >= RANK[st.need];
+          return (
+            <div key={i} className="flex items-center gap-2">
+              {i > 0 && <Arrow className={`h-3.5 w-3.5 ${i === 5 ? "text-rose" : "text-slate"}`} />}
+              <div
+                className={`relative min-w-[118px] rounded-lg px-3 pb-2 pt-3.5 text-center ${
+                  i >= 5 ? "border border-dashed border-rose" : "border border-steel/50"
+                } ${on ? (st.need ? "bg-maroon-50" : "bg-tint") : "bg-white opacity-50"}`}
+              >
+                {st.opts.length > 0 && (
+                  <span className="absolute -right-2 -top-3">
+                    <RevenueTags options={st.opts} />
+                  </span>
+                )}
+                <div className="text-[9px] font-semibold uppercase tracking-[0.16em] text-slate">{st.tier}</div>
+                <div className="text-sm font-semibold text-navy">{st.title}</div>
+                <div className="text-[11px] text-slate">{on ? st.sub : `Needs Edge ${st.need === "win" ? "Win" : "Position"}`}</div>
+              </div>
+            </div>
+          );
+        })}
+      </div>
+    </Card>
+  );
+}
+
+/** "A supplier profile pays off beyond RFPs", with this session's numbers. */
+function Payoff() {
+  const { db } = useStore();
+  const s = db!.suppliers.find((x) => x.id === db!.session.acting_supplier_id)!;
+  const appearances = db!.counters[`appear_${s.id}`] ?? 0;
+  const storefronts = new Set(db!.contracts.filter((c) => c.supplier_id === s.id).flatMap((c) => c.storefront_ids)).size;
+  const reviewers = new Set(db!.reviews.filter((r) => r.supplier_id === s.id).map((r) => r.agency_name)).size;
+  const cards = [
+    { icon: <Search />, title: "Found in everyday buying", stat: `${appearances}`, unit: `buyer result page${appearances === 1 ? "" : "s"} this session`, body: "AI search matches your profile to small buys and co-op purchases that never become an RFP." },
+    { icon: <BadgeCheck />, title: "Meets agency preferences", stat: [s.is_local ? "Local" : null, ...s.certifications].filter(Boolean).join(" + ") || "None", unit: "verified", body: "Certifications put you at the top when an agency asks for local or MBE vendors." },
+    { icon: <Star />, title: "Reviews replace references", stat: s.rating.toFixed(1), unit: `from ${reviewers} agencies`, body: "Peer reviews give a buyer confidence without calling two or three references." },
+    { icon: <Globe />, title: "One profile, every storefront", stat: `${storefronts}`, unit: `storefront${storefronts === 1 ? "" : "s"} active`, body: "Contracts listed once show up wherever an agency is allowed to buy from you." },
+  ];
+  return (
+    <div>
+      <div className="mb-3 flex items-center justify-between">
+        <Eyebrow tone="slate">Your profile pays off beyond RFPs</Eyebrow>
+        <RevenueTags options={[6]} />
+      </div>
+      <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+        {cards.map((c) => (
+          <div key={c.title} className="rounded-xl bg-navy p-4 text-white">
+            <div className="flex items-center gap-3">
+              <IconCircle>{c.icon}</IconCircle>
+              <div className="text-sm font-semibold leading-tight">{c.title}</div>
+            </div>
+            <div className="mt-3 text-2xl font-light">{c.stat}</div>
+            <div className="text-[11px] text-steel">{c.unit}</div>
+            <p className="mt-2 text-xs leading-relaxed text-steel">{c.body}</p>
+          </div>
+        ))}
+      </div>
     </div>
   );
 }

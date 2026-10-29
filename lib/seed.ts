@@ -446,6 +446,19 @@ export function seed(): Db {
         awarded_supplier_id: null,
         awarded_listing_id: null,
       },
+      {
+        id: "sol_007",
+        title: "Custodial supplies, three-year term",
+        scope: "Can liners, paper products, hand soap, floor care chemicals and mops for 14 City facilities, with monthly delivery and on-site product training.",
+        quantity: "14 facilities",
+        est_budget: 165_000,
+        criteria: ["Price on a market basket (45%)", "Delivery and fill rate (25%)", "Sustainable products (15%)", "Local preference (15%)"],
+        piggybackable: true,
+        status: "closed",
+        category: "Janitorial",
+        awarded_supplier_id: "sup_cleanline",
+        awarded_listing_id: null,
+      },
     ],
     peers: [
       { id: "peer_01", agency_name: "Harper County", distance_miles: 12, listing_title: "Folding table, 6 ft, commercial heavy-duty (heavier model, 1,200 lb rated)", category: "Furniture", unit_price: 279, supplier_id: "sup_national", rating: 4.6, piggybackable: true, date: "2026-05-14", note: "Used at the fairgrounds; 120 tables" },
@@ -495,7 +508,7 @@ export function seed(): Db {
       { title: "First aid kit, 50-person", supplier: "Patriot Safety & Uniform", date: "2026-09-22", qty: 6, listing_id: "lst_034" },
     ],
     session: { preference_answer: null, spend_dashboard_enabled: true, acting_supplier_id: "sup_riverside" },
-    counters: { revenue: 0, request: 0, order: 1040, solicitation: 6, contract: 0, listing: 40, doc: 0, item: 0, attention: 0 },
+    counters: { revenue: 0, request: 0, order: 1040, solicitation: 7, contract: 0, listing: 40, doc: 0, item: 0, attention: 0 },
   };
 
   fireMonthlyLines(db);

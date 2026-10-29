@@ -1,6 +1,7 @@
 "use client";
 
 import { useParams } from "next/navigation";
+import { Check } from "@/components/icons";
 import { useStore } from "@/components/store";
 import { Badge, Button, Card, ErrorNote, IconCircle, LinkButton, Loading, money, sourceLabel } from "@/components/ui";
 
@@ -17,12 +18,14 @@ export default function OrderConfirmation() {
 
   return (
     <div className="mx-auto max-w-2xl space-y-6">
-      <Card className="p-6">
+      <Card accent="maroon" className="p-6">
         <div className="flex gap-4">
-          <IconCircle>✓</IconCircle>
+          <IconCircle size="lg">
+            <Check />
+          </IconCircle>
           <div>
-            <div className="text-xs font-semibold uppercase tracking-wider text-maroon">{order.status === "placed" ? "Order placed" : order.status === "approved" ? "PO approved" : "Sent for approval"}</div>
-            <h1 className="mt-1 text-2xl font-bold text-navy">Order {order.id}</h1>
+            <div className="text-[11px] font-semibold uppercase tracking-[0.18em] text-maroon">{order.status === "placed" ? "Order placed" : order.status === "approved" ? "PO approved" : "Sent for approval"}</div>
+            <h1 className="mt-1 text-3xl font-light tracking-tight text-navy">Order {order.id}</h1>
             <p className="mt-1 text-sm text-slate">
               {order.quantity} × {listing.title} from {supplier.name}, {money(order.total)}.
             </p>

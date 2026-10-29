@@ -149,3 +149,25 @@ export function onAppStarted(db: Db, appName: string, partner: string, id: strin
     id,
   );
 }
+
+// ---------------------------------------------------------------- model views
+// How the deck groups the ten options. Used by the ledger and "How it earns".
+
+/** Options that fit inside an Edge supplier tier (deck: "four fit inside Edge"). */
+export const EDGE_TIER: Partial<Record<number, "Win" | "Position">> = { 2: "Position", 4: "Position", 5: "Win", 6: "Position" };
+
+/** Revenue per storefront adds up five ways. */
+export const FIVE_WAYS: { label: string; who: string; options: number[] }[] = [
+  { label: "Subscription minus credits", who: "Local government", options: [1] },
+  { label: "Suppliers listed × listing fee", who: "Suppliers", options: [2, 4, 6] },
+  { label: "Spend through the storefront × take rate", who: "Suppliers, card networks", options: [3, 5, 9] },
+  { label: "Partner apps sold × revenue share", who: "Suppliers via partners", options: [10] },
+  { label: "Data and services", who: "Both sides", options: [7, 8] },
+];
+
+/** Three kinds of purchase, each earning differently. */
+export const PURCHASE_KINDS = {
+  contract: { n: 1, title: "Already on a contract", earns: "supplier listing fees, and the TRX fee on state contracts", options: [2, 3] },
+  no_approval: { n: 2, title: "No approval needed", earns: "card and order fees, and sponsored placement", options: [9, 5] },
+  new_need: { n: 3, title: "The rare new need", earns: "managed sourcing; the award becomes a listing others can use", options: [8, 2] },
+} as const;

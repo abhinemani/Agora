@@ -1,0 +1,16 @@
+# One-click deploy on Render: New > Blueprint, then pick this repo.
+# A single long-running Node process keeps the demo's in-memory state
+# consistent across requests, which serverless hosts can't guarantee.
+services:
+  - type: web
+    name: riverbend-storefront
+    runtime: node
+    plan: free
+    buildCommand: npm ci && npm run build
+    startCommand: npm start
+    healthCheckPath: /api/state
+    envVars:
+      - key: NODE_VERSION
+        value: "22"
+      - key: ANTHROPIC_API_KEY
+        sync: false

@@ -13,6 +13,12 @@ Everything works offline. To have Claude (`claude-sonnet-5-5`) parse requests an
 
 State lives in memory on the server. **Reset demo** (in the revenue ledger) reseeds everything with stable IDs, so the demo script below is repeatable.
 
+## Putting it online
+
+The easiest host is **Render**, using the `render.yaml` blueprint in this repo. Go to [dashboard.render.com](https://dashboard.render.com), choose **New → Blueprint**, connect this GitHub repo, and accept the defaults. Render will ask for `ANTHROPIC_API_KEY`; leave it blank to run offline. You'll get a public `https://riverbend-storefront.onrender.com`-style URL in a few minutes, and every push to `main` redeploys.
+
+Pick a host that runs one long-lived Node server (Render, Railway, Fly.io). The demo keeps its state in memory, so serverless hosts like Vercel or Netlify can split a single click-through across instances that don't share state. On Render's free plan the service sleeps after about 15 minutes idle. The first visit afterward takes roughly a minute to wake, and the demo comes back freshly reset. Open the URL a minute before you present, or use a paid instance to keep it warm.
+
 ## The demo path
 
 The prototype supports section 8 of the spec end to end. Switch roles with the Buyer / Procurement / Supplier control in the header, and open **Sovra revenue (demo)** at any point to watch the ledger fill up.

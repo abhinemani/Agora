@@ -1,0 +1,17 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: light;
+}
+body {
+  background: #eef1f6;
+  color: #14213d;
+  font-family: "Open Sans", system-ui, sans-serif;
+}
+input,
+textarea,
+select {
+  @apply rounded-md border border-navy/20 bg-white px-3 py-2 text-sm text-navy outline-none focus:border-navy focus:ring-2 focus:ring-steel/40;
+}

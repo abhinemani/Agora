@@ -52,6 +52,17 @@ The prototype supports section 8 of the spec end to end. Switch roles with the B
 
 ## Contract parsing
 
+There are two sets of contract files. The **samples** in `seed/contracts/` are the one-click cards on the upload screen; nothing is imported until someone picks one, so the demo always shows a live parse. The **test files** in `public/test-contracts/` are for trying a real upload: download one from the upload screen (or grab it from the repo) and drag it into the drop zone.
+
+| Test file | What it exercises |
+| --- | --- |
+| `techsource-it-peripherals.docx` | A Word table, a reseller source, and a SKU already in the storefront at a new price |
+| `evergreen-public-works-materials.pdf` | No piggyback clause, so other storefronts stay locked; a price range lands in Unresolved |
+| `fleet-parts-price-list.csv` | A bare price list with no contract terms; type a supplier name before publishing |
+| `scanned-custodial-contract.pdf` | An image-only scan, which shows the no-OCR message |
+
+`npm run seed:contracts` regenerates both sets.
+
 Uploads are stored under `uploads/` keyed by file hash, and parse results are cached per hash, so re-opening is instant. The parser never invents a price. Ranges, "contact for quote", TBD and "per attached schedule" all land in **Unresolved** with the source text quoted. When Claude does the structuring, every price it returns is checked against the document text, and any price that can't be found there is moved to Unresolved. Scanned PDFs and contracts over 60 pages get a clear message rather than a silent failure.
 
 ## Deliberate deviations from the spec

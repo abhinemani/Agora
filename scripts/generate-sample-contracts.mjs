@@ -1,15 +1,20 @@
 // Generates the three sample contracts in seed/contracts/ as real PDF and XLSX
-// files, so the upload flow parses genuine documents rather than fixtures.
+// files, so the upload flow parses genuine documents rather than fixtures, and
+// a downloadable test set in public/test-contracts/ for trying real uploads.
 //   node scripts/generate-sample-contracts.mjs
 
 import { PDFDocument, StandardFonts, rgb } from "pdf-lib";
 import * as XLSX from "xlsx";
+import { AlignmentType, Document, Packer, Paragraph, Table, TableCell, TableRow, TextRun, WidthType } from "docx";
 import { mkdirSync, writeFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 
-const OUT = join(dirname(fileURLToPath(import.meta.url)), "..", "seed", "contracts");
+const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
+const OUT = join(ROOT, "seed", "contracts");
+const TEST = join(ROOT, "public", "test-contracts");
 mkdirSync(OUT, { recursive: true });
+mkdirSync(TEST, { recursive: true });
 
 const NAVY = rgb(0.078, 0.129, 0.239);
 
@@ -266,7 +271,132 @@ async function coopJanitorial() {
   writeFileSync(join(OUT, "coop-janitorial-contract.pdf"), await d.pdf.save());
 }
 
+// ============================================================= test set
+// Files people download and upload themselves. Each covers a format or edge
+// case the one-click samples don't.
+
+// DOCX with a real Word table; one SKU already in the storefront at a new price.
+async function techsourceDocx() {
+  const p = (text, opts = {}) => new Paragraph({ children: [new TextRun({ text, ...opts })], spacing: { after: 120 } });
+  const rows = [
+    ["SKU", "Description", "UOM", "Contract Price"],
+    ["TS-DOCK", "Docking station, USB-C, dual 4K", "EA", "$179.00"],
+    ["TS-MN27", "Monitor, 27 in, QHD, height-adjustable", "EA", "$249.00"],
+    ["TS-KB01", "Keyboard, wired, full size", "EA", "$24.50"],
+    ["TS-MS01", "Mouse, wireless, optical", "EA", "$18.75"],
+    ["TS-HS10", "Headset, USB, noise-cancelling", "EA", "$64.00"],
+    ["TS-WC10", "Webcam, 1080p, privacy shutter", "EA", "$52.00"],
+    ["TS-UPS6", "Battery backup, 600VA", "EA", "$89.00"],
+    ["TS-CBL6", "HDMI cable, 6 ft", "EA", "$7.40"],
+    ["TS-PRT1", "Laser printer, mono, networked", "EA", "$329.00"],
+    ["TS-TNR1", "Toner, black, for TS-PRT1", "EA", "$78.00"],
+    ["TS-LCK1", "Laptop cable lock, keyed", "EA", "$21.00"],
+    ["TS-ELP1", "Extended warranty, 3 years", "EA", "Call for pricing"],
+  ];
+  const cell = (t, bold) => new TableCell({ children: [new Paragraph({ children: [new TextRun({ text: t, bold })] })] });
+  const doc = new Document({
+    sections: [
+      {
+        children: [
+          p("TECHSOURCE GOVERNMENT SOLUTIONS", { bold: true, size: 28 }),
+          p("PARTICIPATING ADDENDUM: IT PERIPHERALS AND ACCESSORIES", { bold: true }),
+          p("Agreement No.: TS-PA-2026-RB"),
+          p("Contractor: TechSource Government Solutions, Austin, TX"),
+          p("Owner: NASPO ValuePoint master agreement, authorized reseller"),
+          p("Effective Date: December 1, 2026"),
+          p("Expiration Date: November 30, 2028"),
+          p("Payment Terms: Net 30"),
+          p("Delivery Terms: FOB Destination, ground shipping included"),
+          p("1. Eligible Purchasers", { bold: true }),
+          p("Any participating entity in a member state, including cities, counties and school districts, may purchase under this addendum at the prices below."),
+          p("2. Price Schedule", { bold: true }),
+          new Table({
+            width: { size: 100, type: WidthType.PERCENTAGE },
+            rows: rows.map((r, i) => new TableRow({ children: r.map((c) => cell(c, i === 0)) })),
+          }),
+          new Paragraph({ text: "", spacing: { after: 120 } }),
+          p("3. Returns", { bold: true }),
+          p("Unopened items may be returned within 30 days."),
+        ],
+      },
+    ],
+  });
+  writeFileSync(join(TEST, "techsource-it-peripherals.docx"), await Packer.toBuffer(doc));
+}
+
+// Riverbend-only contract: no piggyback clause, so other storefronts stay off.
+// Also has a price range inside a table row.
+async function evergreenPublicWorks() {
+  const d = await makeDoc();
+  d.title("CITY OF RIVERBEND");
+  d.line("CONTRACT FOR PUBLIC WORKS MATERIALS", { font: d.bold, size: 11, gap: 10 });
+  d.line("Contract No.: RB-2026-077");
+  d.line("Contractor: Evergreen Site Works, 40 Quarry Rd, Riverbend, OR 97390");
+  d.line("Owner: City of Riverbend, Oregon");
+  d.line("Effective Date: January 1, 2027");
+  d.line("Expiration Date: December 31, 2028");
+  d.line("Payment Terms: Net 30");
+  d.line("Delivery Terms: Delivered to the Public Works yard, 2200 Industrial Way", { gap: 12 });
+  d.heading("1. Exclusive Use");
+  d.para("This contract is for the exclusive use of the City of Riverbend. It may not be assigned to or used by any other public entity.");
+  d.heading("2. Price Schedule");
+  d.row(`${pad("ITEM NO.", 10)}${pad("DESCRIPTION", 44)}${pad("UOM", 5)}${lpad("UNIT PRICE", 14)}`);
+  d.row("-".repeat(73));
+  const rows = [
+    ["ESW-CP50", "Cold patch asphalt, 50 lb bag", "BAG", "$14.25"],
+    ["ESW-TC28", "Traffic cone, 28 in, reflective collar", "EA", "$22.80"],
+    ["ESW-BAR8", "Barricade, Type II, plastic", "EA", "$118.00"],
+    ["ESW-SB24", "Sign blank, aluminum, 24 x 24 in", "EA", "$31.50"],
+    ["ESW-SP10", "Sign post, U-channel, 10 ft", "EA", "$27.90"],
+    ["ESW-RB4", "Rebar, #4, 20 ft", "EA", "$11.60"],
+    ["ESW-CM80", "Concrete mix, 80 lb bag", "BAG", "$7.85"],
+    ["ESW-GR1", "Crushed gravel, 3/4 in", "TON", "$42.00 - $48.00"],
+    ["ESW-PIPE", "Culvert pipe, HDPE, 12 in x 20 ft", "EA", "$212.00"],
+    ["ESW-PNT", "Traffic paint, white, 5 gal", "EA", "$96.00"],
+  ];
+  for (const [sku, desc, uom, price] of rows) d.row(`${pad(sku, 10)}${pad(desc, 44)}${pad(uom, 5)}${lpad(price, 14)}`);
+  d.line("");
+  d.para("Gravel pricing varies with the quarry index and will be confirmed at order.");
+  writeFileSync(join(TEST, "evergreen-public-works-materials.pdf"), await d.pdf.save());
+}
+
+// A bare price list with no contract terms: the reviewer has to fill the header.
+function fleetCsv() {
+  const rows = [
+    ["Item #", "Description", "UOM", "Unit Price"],
+    ["FLT-BP01", "Brake pads, front, police interceptor", "SET", "64.20"],
+    ["FLT-BR01", "Brake rotor, front", "EA", "88.50"],
+    ["FLT-OF10", "Oil filter, light duty", "EA", "6.15"],
+    ["FLT-AF20", "Air filter, heavy duty", "EA", "38.90"],
+    ["FLT-WB24", "Wiper blades, 24 in, pair", "PR", "17.40"],
+    ["FLT-BT65", "Battery, group 65", "EA", "$164.00"],
+    ["FLT-TR17", "Tire, 245/55R18, all-season", "EA", "$1,240.00 per set of 4"],
+    ["FLT-PB11", "Plow blade cutting edge, 11 ft", "EA", "N/A"],
+    ["FLT-DEF", "Diesel exhaust fluid, 2.5 gal", "EA", "12.80"],
+    ["FLT-LB01", "Light bar, amber, 48 in", "EA", ""],
+  ];
+  writeFileSync(join(TEST, "fleet-parts-price-list.csv"), rows.map((r) => r.map((c) => (/[,"]/.test(c) ? `"${c}"` : c)).join(",")).join("\n") + "\n");
+}
+
+// Image-only PDF, like a scan: no text layer at all.
+async function scanned() {
+  const pdf = await PDFDocument.create();
+  const page = pdf.addPage([612, 792]);
+  page.drawRectangle({ x: 0, y: 0, width: 612, height: 792, color: rgb(0.96, 0.95, 0.92) });
+  page.drawRectangle({ x: 70, y: 690, width: 300, height: 14, color: rgb(0.35, 0.35, 0.35) });
+  for (let i = 0; i < 30; i++) {
+    const w = 380 + ((i * 53) % 90);
+    page.drawRectangle({ x: 70, y: 640 - i * 18, width: w, height: 6, color: rgb(0.55, 0.55, 0.55), opacity: 0.8 });
+  }
+  page.drawRectangle({ x: 70, y: 70, width: 160, height: 1, color: rgb(0.2, 0.2, 0.2) });
+  writeFileSync(join(TEST, "scanned-custodial-contract.pdf"), await pdf.save());
+}
+
 await cityFurniture();
 await stateOfficeSupplies();
 await coopJanitorial();
-console.log("Wrote sample contracts to", OUT);
+await techsourceDocx();
+await evergreenPublicWorks();
+fleetCsv();
+await scanned();
+console.log("Wrote sample contracts to", OUT, "and test files to", TEST);

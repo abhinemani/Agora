@@ -6,7 +6,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { Suspense, useEffect, useMemo, useRef, useState } from "react";
 import { post, useStore } from "@/components/store";
 import { Badge, Button, Card, ErrorNote, IconCircle, Loading, PageTitle, SourcePill, money } from "@/components/ui";
-import { SAMPLE_CONTRACTS } from "@/lib/samples";
+import { SAMPLE_CONTRACTS, TEST_FILES } from "@/lib/samples";
 import { CATEGORIES } from "@/lib/types";
 import type { ContractDocument, ContractHeader, ContractSource, ExtractedItem, Role, Supplier } from "@/lib/types";
 
@@ -150,6 +150,22 @@ function Upload() {
             </button>
           ))}
         </div>
+        <h2 className="mb-1 mt-10 text-sm font-semibold uppercase tracking-wider text-slate">Or download a test file and upload it yourself</h2>
+        <p className="mb-3 text-sm text-slate">Save one of these, then drag it into the drop zone above. Each one exercises a different part of the parser.</p>
+        <Card className="divide-y divide-navy/5">
+          {TEST_FILES.map((t) => (
+            <div key={t.file} className="flex flex-wrap items-center gap-4 p-4">
+              <span className="w-12 shrink-0 rounded bg-tint py-1 text-center font-mono text-[11px] font-semibold text-navy">{t.format}</span>
+              <div className="min-w-0 flex-1">
+                <div className="text-sm font-semibold text-navy">{t.title}</div>
+                <div className="text-xs text-slate">{t.tests}</div>
+              </div>
+              <a href={`/test-contracts/${t.file}`} download className="rounded-md border border-navy/20 bg-white px-3 py-1.5 text-xs font-semibold text-navy hover:bg-tint">
+                Download
+              </a>
+            </div>
+          ))}
+        </Card>
       </div>
     );
 

@@ -64,9 +64,24 @@ export async function extractFile(file: InputFile): Promise<ExtractedFile> {
     }
   }
   if (ext === "docx") {
+    // Go through HTML so table rows stay on one line, the way PDF rows read.
     const mammoth = await import("mammoth");
-    const { value } = await mammoth.extractRawText({ buffer: file.buffer });
-    return { ...base, kind: "docx", pages: [{ num: 1, text: value }], page_count: 1 };
+    const { value: html } = await mammoth.convertToHtml({ buffer: file.buffer });
+    const text = html
+      .replace(/<t([dh])[^>]*>([\s\S]*?)<\/t\1>/g, (_m, _t, inner: string) => inner.replace(/<[^>]+>/g, " ").replace(/\s+/g, " ").trim() + "  ")
+      .replace(/<\/(tr|p|h\d|li)>/g, "\n")
+      .replace(/<br\s*\/?>/g, "\n")
+      .replace(/<[^>]+>/g, "")
+      .replace(/&amp;/g, "&")
+      .replace(/&lt;/g, "<")
+      .replace(/&gt;/g, ">")
+      .replace(/&quot;/g, '"')
+      .replace(/&#39;/g, "'")
+      .split("\n")
+      .map((l) => l.trim())
+      .filter(Boolean)
+      .join("\n");
+    return { ...base, kind: "docx", pages: [{ num: 1, text }], page_count: 1 };
   }
   if (ext === "xlsx" || ext === "xls" || ext === "csv") {
     const XLSX = await import("xlsx");
@@ -155,7 +170,7 @@ function heuristicHeader(files: ExtractedFile[]): ContractHeader {
     .join(" ");
   const sentences = blob.split(/\s*\n\s*|(?<=\.)\s+(?=[A-Z])/);
   const clause =
-    sentences.find((s) => /(other public agencies|any public agency|orcpp member|cooperative purchasing program|participating (entities|agencies))/i.test(s) && /(may|available)/i.test(s)) ?? "";
+    sentences.find((s) => /(other public agencies|any public agency|orcpp member|cooperative purchasing program|participating (entit|agenc))/i.test(s) && /(may|available)/i.test(s)) ?? "";
 
   return {
     supplier_name: grab(/^(?:Contractor|Supplier|Vendor)\s*:\s*([^,\n]+)/im).replace(/,?\s*Inc\.?$/, ""),
@@ -173,7 +188,7 @@ function heuristicHeader(files: ExtractedFile[]): ContractHeader {
 }
 
 const SKU_ROW = /^([A-Z]{2,5}-[A-Z0-9]{2,8})\s+(.+)$/;
-const UNIT_TOKEN = /\s+((?:\d+\s*(?:rl\/)?\/?[a-z]{2,3})|(?:\d+\s+rl\/cs)|EA|CS|BX|DZ|PK|RM|GAL|ea|cs|pk|bx)\s*$/;
+const UNIT_TOKEN = /\s+((?:\d+\s*(?:rl\/)?\/?[a-z]{2,3})|(?:\d+\s+rl\/cs)|EA|CS|BX|DZ|PK|RM|GAL|BAG|TON|SET|PR|LB|FT|RL|ROLL|PAIL|KIT|LOT|HR|ea|cs|pk|bx)\s*$/;
 const LABEL_LINE = /^(Payment|Delivery|Contract|Agreement|Price Agreement|Effective|Expiration|Term|Owner|Contractor|Supplier|For the)\b[^:]*:/i;
 const HEADING = /^((Article\s+\d+\.)|(\d+\.\s+[A-Z][^.]{0,60}$)|Page \d+$)/;
 const SKIP_PROSE = /insurance|liability|per occurrence|discount|orders over|annually|restocking|minimum order|cpi/i;
@@ -223,6 +238,14 @@ function textItems(f: ExtractedFile, fallbackCat: Category): DraftItem[] {
           body = rest.slice(0, tier.index).trim();
           conf = Math.min(conf, 0.88);
           flags.push("Tiered pricing: listed at the lowest-quantity tier");
+        } else if (/\$?[\d,]+\.\d{2}\s*(?:-|–|to)\s*\$?[\d,]+\.\d{2}/i.test(rest)) {
+          // A range in a table row is not a contract price; never pick one end.
+          const at = rest.search(/\$?[\d,]+\.\d{2}\s*(?:-|–|to)/i);
+          let desc = rest.slice(0, at).trim();
+          const u = desc.match(UNIT_TOKEN);
+          if (u) desc = desc.slice(0, u.index).trim();
+          out.push(draft({ sku: sku[1], description: desc, unit: u ? u[1].toLowerCase() : "ea", unit_price: null, tier_pricing: null, category: categorize(desc, fallbackCat), confidence: 0.4, source_excerpt: excerpt, source_page: page.num, source_file: f.filename, status: "unresolved", flags: ["Unresolved: price is a range, not a contract price"] }));
+          continue;
         } else {
           const m = rest.match(/\$?((?:\d{1,3}(?:,\d{3})+|\d+)\.\d{2})\s*$/);
           if (m) {
@@ -327,7 +350,11 @@ function sheetItems(f: ExtractedFile, fallbackCat: Category): DraftItem[] {
       continue;
     }
     const found = amounts(String(raw)).concat(String(raw).match(/^\s*\d+(\.\d+)?\s*$/) ? [parseFloat(String(raw))] : []);
-    if (found.length === 1) {
+    const extra = String(raw).replace(/\$?\s?[\d,]+(\.\d+)?/, "").trim();
+    if (found.length === 1 && extra) {
+      // "$1,240.00 per set of 4": the number is fine but the unit may not be.
+      out.push(draft({ ...base, unit_price: found[0], tier_pricing: null, confidence: 0.6, status: "pending", flags: [`Price cell has extra text: "${raw}". Check the unit before accepting.`] }));
+    } else if (found.length === 1) {
       out.push(draft({ ...base, unit_price: found[0], tier_pricing: null, confidence: 0.82, status: "pending", flags: [`Price was stored as text: "${raw}"`] }));
     } else if (found.length > 1) {
       out.push(draft({ ...base, unit_price: found[0], tier_pricing: null, confidence: 0.55, status: "pending", flags: [`Two prices in one cell: "${raw}". Using the first; confirm which applies.`] }));

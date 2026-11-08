@@ -4,7 +4,9 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { BuyerPicker } from "@/components/BuyerPicker";
-import { CategoryIcon } from "@/components/CategoryIcon";
+import { CATEGORY_TONE, CategoryIcon } from "@/components/CategoryIcon";
+import { HeroPreview } from "@/components/HeroPreview";
+import { Calendar, Chair, Repeat } from "@/components/icons";
 import { Search } from "@/components/icons";
 import { useStore } from "@/components/store";
 import { Button, ErrorNote, Loading, SourcePill, money } from "@/components/ui";
@@ -40,6 +42,9 @@ export default function BuyerHome() {
   const supplierOf = (l: Listing) => db.suppliers.find((s) => s.id === l.supplier_id)?.name ?? "";
   const shelf = SHELF.map(byId).filter((l): l is Listing => !!l && open(l)).slice(0, 4);
   const preview = PREVIEW.map(byId).filter((l): l is Listing => !!l);
+  const suppliers = new Set(available.map((l) => l.supplier_id)).size;
+  const peerAgencies = new Set(db.peers.map((p) => p.agency_name)).size;
+  const mosaic = CATEGORIES.filter((c) => c !== "Other").slice(0, 9);
   const vehicles = [...new Set(db.contracts.map((c) => c.vehicle).filter((v): v is string => !!v && v !== "Reseller"))];
 
   const submit = async (q: string) => {
@@ -132,30 +137,43 @@ export default function BuyerHome() {
             <div className="mt-3">
               <ErrorNote message={error} />
             </div>
+            <dl className="mt-8 grid grid-cols-2 gap-4 border-t border-line pt-6 sm:grid-cols-4">
+              {(
+                [
+                  [available.length.toLocaleString(), "items ready to buy", "#1D7A69"],
+                  [contracts.size, "contracts", "#4A44B5"],
+                  [suppliers, "suppliers", "#C0501A"],
+                  [peerAgencies, "peer agencies sharing prices", "#B3243F"],
+                ] as const
+              ).map(([n, label, color]) => (
+                <div key={label}>
+                  <dd className="text-2xl font-semibold tabular-nums" style={{ color }}>
+                    {n}
+                  </dd>
+                  <dt className="text-xs text-slate">{label}</dt>
+                </div>
+              ))}
+            </dl>
           </div>
 
-          <aside className="self-center rounded-xl border border-line bg-white p-5 shadow-[0_20px_40px_-24px_rgba(20,33,61,0.35)]">
-            <div className="text-sm font-semibold text-navy">One request, every contract</div>
-            <div className="mt-0.5 text-sm text-slate">“40 folding tables” checks three at once</div>
-            <ul className="mt-4 divide-y divide-line">
-              {preview.map((l) => (
-                <li key={l.id} className="flex items-center gap-3 py-3">
-                  <CategoryIcon category={l.category} size="sm" />
-                  <div className="min-w-0 flex-1">
-                    <div className="truncate text-sm text-navy">{supplierOf(l)}</div>
-                    <SourcePill source={l.source} />
-                  </div>
-                  <div className="text-right">
-                    <div className="text-sm font-semibold tabular-nums text-navy">{money(l.unit_price, false)}</div>
-                    <div className="text-xs text-slate">each</div>
-                  </div>
-                </li>
+          <div className="relative self-center">
+            <div className="pointer-events-none absolute -inset-x-8 -inset-y-10 hidden grid-cols-3 grid-rows-3 gap-3 md:grid" aria-hidden>
+              {mosaic.map((c, i) => (
+                <div key={c} className={`flex items-center justify-center rounded-2xl ${i % 2 ? "rotate-2" : "-rotate-2"}`} style={{ background: CATEGORY_TONE[c].bg }}>
+                  <span className="opacity-60">
+                    <CategoryIcon category={c} size="sm" />
+                  </span>
+                </div>
               ))}
-            </ul>
-            <button onClick={() => submit(EXAMPLES[0])} className="mt-2 w-full rounded-lg bg-[#EDF1F7] py-2 text-sm font-semibold text-navy hover:bg-[#E3E9F2]">
-              Run this search
-            </button>
-          </aside>
+            </div>
+            <div className="relative">
+              <HeroPreview
+                rows={preview.map((l) => ({ listing: l, supplier: db.suppliers.find((x) => x.id === l.supplier_id)! }))}
+                contractCount={contracts.size}
+                onRun={() => submit(EXAMPLES[0])}
+              />
+            </div>
+          </div>
         </div>
       </section>
 
@@ -168,15 +186,24 @@ export default function BuyerHome() {
             See everything
           </Link>
         </div>
-        <div className="mt-4 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-5">
+        <div className="mt-4 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-6">
           {CATEGORIES.filter((c) => available.some((l) => l.category === c)).map((c) => {
             const n = available.filter((l) => l.category === c).length;
             return (
-              <Link key={c} href={`/browse?cat=${encodeURIComponent(c)}`} className="group flex items-center gap-3 rounded-xl border border-line bg-white p-3 transition-colors hover:border-navy/30">
-                <CategoryIcon category={c} size="sm" />
+              <Link
+                key={c}
+                href={`/browse?cat=${encodeURIComponent(c)}`}
+                className="group flex flex-col justify-between gap-6 rounded-2xl p-4 transition-transform hover:-translate-y-0.5"
+                style={{ background: CATEGORY_TONE[c].bg }}
+              >
+                <span className="w-fit rounded-xl bg-white/70 p-1">
+                  <CategoryIcon category={c} size="md" />
+                </span>
                 <span className="min-w-0">
                   <span className="block truncate text-sm font-semibold text-navy">{c}</span>
-                  <span className="block text-xs text-slate">{n.toLocaleString()} items</span>
+                  <span className="block text-xs" style={{ color: CATEGORY_TONE[c].fg }}>
+                    {n.toLocaleString()} items
+                  </span>
                 </span>
               </Link>
             );
@@ -189,9 +216,16 @@ export default function BuyerHome() {
           <h2 className="text-lg font-semibold text-navy">On contract for {buyer?.name ?? "you"}</h2>
           <div className="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
             {shelf.map((l) => (
-              <Link key={l.id} href={l.contract_id ? `/product/${l.id}` : `/checkout?listing=${l.id}&qty=1`} className="flex flex-col rounded-xl border border-line bg-white p-4 transition-colors hover:border-navy/30">
-                <CategoryIcon category={l.category} size="lg" />
-                <div className="mt-4 line-clamp-2 text-sm font-semibold text-navy">{l.title}</div>
+              <Link
+                key={l.id}
+                href={`/product/${l.id}`}
+                className="group flex flex-col overflow-hidden rounded-2xl border border-line bg-white transition-shadow hover:shadow-[0_16px_32px_-20px_rgba(20,33,61,0.4)]"
+              >
+                <div className="h-32 transition-transform duration-300 group-hover:scale-[1.03]">
+                  <CategoryIcon category={l.category} size="xl" />
+                </div>
+                <div className="flex flex-1 flex-col p-4">
+                <div className="line-clamp-2 text-sm font-semibold text-navy">{l.title}</div>
                 <div className="mt-1 text-xs text-slate">{supplierOf(l)}</div>
                 <div className="mt-auto flex items-end justify-between pt-4">
                   <SourcePill source={l.source} />
@@ -199,6 +233,7 @@ export default function BuyerHome() {
                     {money(l.unit_price)}
                     <span className="text-xs font-normal text-slate"> / {l.unit}</span>
                   </span>
+                </div>
                 </div>
               </Link>
             ))}
@@ -210,7 +245,11 @@ export default function BuyerHome() {
         <section className="min-w-0 rounded-xl border border-line bg-white p-6">
           <h2 className="text-lg font-semibold text-navy">Coming up</h2>
           <ul className="mt-2 divide-y divide-line">
-            <li className="py-3">
+            <li className="flex gap-3 py-3">
+              <span className="mt-0.5 grid h-8 w-8 shrink-0 place-items-center rounded-lg [&>svg]:h-4 [&>svg]:w-4" style={{ background: "#FBE4E8", color: "#B3243F" }}>
+                <Calendar />
+              </span>
+              <div>
               <div className="text-sm font-semibold text-navy">Custodial contract expires in {daysLeft} days</div>
               <div className="mt-0.5 text-sm text-slate">CleanLine Janitorial Supply, RB-2023-042</div>
               {renewalStarted ? (
@@ -220,20 +259,31 @@ export default function BuyerHome() {
                   Start an early renewal
                 </button>
               )}
+              </div>
             </li>
-            <li className="py-3">
+            <li className="flex gap-3 py-3">
+              <span className="mt-0.5 grid h-8 w-8 shrink-0 place-items-center rounded-lg [&>svg]:h-4 [&>svg]:w-4" style={{ background: "#DDF3EE", color: "#1D7A69" }}>
+                <Chair />
+              </span>
+              <div>
               <div className="text-sm font-semibold text-navy">Eastside rec center opens in March</div>
               <div className="mt-0.5 text-sm text-slate">The capital plan calls for tables, stacking chairs and storage carts.</div>
               <button onClick={() => submit(EXAMPLES[0])} className="mt-1 text-sm font-semibold text-maroon hover:underline">
                 Find folding tables
               </button>
+              </div>
             </li>
-            <li className="py-3">
+            <li className="flex gap-3 py-3">
+              <span className="mt-0.5 grid h-8 w-8 shrink-0 place-items-center rounded-lg [&>svg]:h-4 [&>svg]:w-4" style={{ background: "#E0F0FB", color: "#1E6FA8" }}>
+                <Repeat />
+              </span>
+              <div>
               <div className="text-sm font-semibold text-navy">Trash liners are due for a reorder</div>
               <div className="mt-0.5 text-sm text-slate">You order about every 30 days; the last order was Oct 9.</div>
               <Link href="/checkout?listing=lst_009&qty=12" className="mt-1 inline-block text-sm font-semibold text-maroon hover:underline">
                 Reorder 12 cases
               </Link>
+              </div>
             </li>
           </ul>
         </section>

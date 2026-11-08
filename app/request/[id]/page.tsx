@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useParams, useSearchParams } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
 import { BuyerPicker } from "@/components/BuyerPicker";
+import { CategoryIcon } from "@/components/CategoryIcon";
 import { useStore } from "@/components/store";
 import { Lock, People, Plus, Sparkle } from "@/components/icons";
 import { Badge, Button, Card, ErrorNote, Eyebrow, IconCircle, LinkButton, Loading, RevenueTags, SourcePill, Stars, SupplierBadges, money } from "@/components/ui";
@@ -146,7 +147,10 @@ export default function RequestResults() {
           {showEarn && <KindBanner kind={results.groups.every((g) => g.source === "no_approval") ? PURCHASE_KINDS.no_approval : PURCHASE_KINDS.contract} />}
           <div className="flex flex-wrap items-center justify-between gap-2">
             <div className="text-sm text-slate">
-              {results.groups.reduce((n, g) => n + g.options.length, 0)} options from {results.groups.length} source{results.groups.length > 1 ? "s" : ""}
+              {(() => {
+                const n = results.groups.reduce((m, g) => m + g.options.length, 0);
+                return `${n} option${n === 1 ? "" : "s"} from ${results.groups.length} source${results.groups.length > 1 ? "s" : ""}`;
+              })()}
               {request.preference_answer === "yes" && " · favoring local and MBE suppliers"}
             </div>
             <button onClick={() => setWhy(!why)} className="text-sm font-semibold text-maroon hover:underline">
@@ -273,6 +277,7 @@ function OptionCard({ o, qty, requestId }: { o: ResultOption; qty: number; reque
   return (
     <Card className="p-5">
       <div className="flex flex-wrap items-start justify-between gap-4">
+        <CategoryIcon category={l.category} />
         <div className="min-w-0 flex-1">
           <div className="flex flex-wrap items-center gap-2">
             <span className="font-semibold text-navy">{title}</span>

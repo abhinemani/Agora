@@ -2,36 +2,35 @@
 
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import type { Role } from "@/lib/types";
-import { BuyerPicker } from "./BuyerPicker";
+import { Menu } from "./icons";
 import { useStore } from "./store";
 import { compact } from "./ui";
 
-const ROLES: { id: Role; label: string; who: string; home: string }[] = [
-  { id: "buyer", label: "Buyer", who: "Dana Whitfield, Parks and Recreation", home: "/" },
-  { id: "procurement", label: "Procurement", who: "Marcus Reyes, Purchasing Manager", home: "/procurement" },
-  { id: "supplier", label: "Supplier", who: "Ana Ruiz, Riverside Office Supply", home: "/supplier" },
+const ROLES: { id: Role; label: string; person: string; initials: string; home: string }[] = [
+  { id: "buyer", label: "Buyer", person: "Dana Whitfield, Parks and Recreation", initials: "DW", home: "/" },
+  { id: "procurement", label: "Procurement", person: "Marcus Reyes, Purchasing", initials: "MR", home: "/procurement" },
+  { id: "supplier", label: "Supplier", person: "Ana Ruiz, Riverside Office Supply", initials: "AR", home: "/supplier" },
 ];
 
 const NAV: Record<Role, { href: string; label: string }[]> = {
   buyer: [
-    { href: "/", label: "Storefront" },
+    { href: "/", label: "Shop" },
     { href: "/browse", label: "Browse" },
-    { href: "/requests", label: "My requests" },
+    { href: "/requests", label: "Requests" },
     { href: "/vehicles", label: "Contracts" },
   ],
   procurement: [
-    { href: "/procurement", label: "Home" },
+    { href: "/procurement", label: "Approvals" },
     { href: "/procurement/spend", label: "Spend" },
     { href: "/solicitations", label: "Solicitations" },
     { href: "/vehicles", label: "Contracts" },
-    { href: "/contracts/upload?as=procurement", label: "Add contract" },
   ],
   supplier: [
     { href: "/supplier", label: "Profile" },
     { href: "/supplier?tab=contracts", label: "Contracts" },
-    { href: "/contracts/upload?as=supplier", label: "Upload a contract" },
+    { href: "/contracts/upload?as=supplier", label: "Upload" },
   ],
 };
 
@@ -39,74 +38,106 @@ export function Header() {
   const { db, role, setRole, setLedgerOpen, fresh } = useStore();
   const router = useRouter();
   const path = usePathname();
-  const [picking, setPicking] = useState(false);
+  const [open, setOpen] = useState(false);
+  const menu = useRef<HTMLDivElement>(null);
   const total = db?.revenue.reduce((n, e) => n + e.amount, 0) ?? 0;
   const current = ROLES.find((r) => r.id === role)!;
-  const buyer = db?.session.buyer;
   const isActive = (href: string) => {
     const base = href.split("?")[0];
     return base === "/" ? path === "/" : path === base && !href.includes("?");
   };
 
+  useEffect(() => {
+    if (!open) return;
+    const close = (e: MouseEvent) => menu.current && !menu.current.contains(e.target as Node) && setOpen(false);
+    const esc = (e: KeyboardEvent) => e.key === "Escape" && setOpen(false);
+    document.addEventListener("mousedown", close);
+    document.addEventListener("keydown", esc);
+    return () => {
+      document.removeEventListener("mousedown", close);
+      document.removeEventListener("keydown", esc);
+    };
+  }, [open]);
+
   return (
-    <header className="sticky top-0 z-30 border-b border-line bg-white/95 backdrop-blur">
-      <div className="mx-auto flex max-w-6xl flex-wrap items-center gap-x-6 gap-y-2 px-4 py-3">
-        <Link href={current.home} className="flex items-center gap-2.5">
-          <span className="flex h-7 w-7 items-center justify-center rounded-md bg-navy text-xs font-bold text-white">R</span>
-          <span className="text-[15px] font-semibold text-navy">Riverbend Storefront</span>
+    <header className="sticky top-0 z-30 border-b border-line bg-white/90 backdrop-blur">
+      <div className="mx-auto flex h-16 max-w-6xl items-center gap-3 px-4 sm:gap-8">
+        <Link href={current.home} className="flex items-center gap-2.5" aria-label="Riverbend Storefront home">
+          <span className="grid h-8 w-8 place-items-center rounded-lg bg-navy text-[13px] font-bold tracking-tight text-white">Rb</span>
+          <span className="hidden text-[15px] font-semibold tracking-tight text-navy sm:block">Riverbend Storefront</span>
         </Link>
 
-        <nav className="flex flex-wrap items-center gap-4 text-sm">
-          {[...NAV[role], { href: "/model", label: "How it earns" }].map((n) => (
+        <nav className="flex min-w-0 items-center gap-0.5 overflow-x-auto text-sm sm:gap-1">
+          {NAV[role].map((n) => (
             <Link
               key={n.href}
               href={n.href}
-              className={`border-b-2 py-1 transition-colors ${isActive(n.href) ? "border-maroon font-semibold text-navy" : "border-transparent text-slate hover:text-navy"}`}
+              className={`shrink-0 rounded-md px-2 py-1.5 transition-colors sm:px-3 ${isActive(n.href) ? "bg-[#EDF1F7] font-semibold text-navy" : "text-slate hover:text-navy"}`}
             >
               {n.label}
             </Link>
           ))}
         </nav>
 
-        <div className="flex w-full flex-wrap items-center gap-3 whitespace-nowrap text-sm sm:ml-auto sm:w-auto">
-          {role !== "supplier" && (
-            <button onClick={() => setPicking(!picking)} className="text-slate hover:text-navy" title="Who's buying decides which contracts you can use">
-              {buyer ? (
-                <span className="inline-block max-w-[10rem] truncate align-bottom font-semibold text-navy">{buyer.name}</span>
-              ) : (
-                "Choose who's buying"
-              )}
-              <span className="ml-1 text-xs">▾</span>
-            </button>
-          )}
-          <div className="flex rounded-md bg-tint p-0.5" role="group" aria-label="Switch role">
-            {ROLES.map((r) => (
-              <button
-                key={r.id}
-                onClick={() => {
-                  setRole(r.id);
-                  router.push(r.home);
-                }}
-                title={`Signed in as ${r.who}`}
-                className={`rounded px-2 py-1 text-xs font-semibold transition-colors ${role === r.id ? "bg-white text-navy shadow-sm" : "text-slate hover:text-navy"}`}
-              >
-                {r.label}
-              </button>
-            ))}
-          </div>
-          <button onClick={() => setLedgerOpen(true)} className="relative text-xs text-slate hover:text-navy" title="Sovra revenue (demo)">
-            Revenue <span className="font-semibold tabular-nums text-navy">{compact(total)}</span>
-            {fresh > 0 && <span className="absolute -right-3 -top-1.5 h-2 w-2 rounded-full bg-rose" aria-label={`${fresh} new revenue events`} />}
+        <div ref={menu} className="relative ml-auto shrink-0">
+          <button
+            onClick={() => setOpen(!open)}
+            aria-expanded={open}
+            aria-haspopup="menu"
+            className="flex items-center gap-2 rounded-full border border-line py-1 pl-1 pr-2.5 text-sm text-navy hover:border-navy/30"
+          >
+            <span className="relative grid h-7 w-7 place-items-center rounded-full bg-maroon text-[11px] font-semibold text-white">
+              {current.initials}
+              {fresh > 0 && <span className="absolute -right-0.5 -top-0.5 h-2.5 w-2.5 rounded-full border-2 border-white bg-rose" aria-label={`${fresh} new revenue events`} />}
+            </span>
+            <span className="hidden sm:inline">{current.label}</span>
+            <Menu className="h-4 w-4 text-slate" />
           </button>
+
+          {open && (
+            <div role="menu" className="absolute right-0 mt-2 w-72 overflow-hidden rounded-xl border border-line bg-white shadow-[0_12px_32px_-12px_rgba(20,33,61,0.25)]">
+              <div className="px-4 pb-2 pt-3 text-xs text-slate">View the demo as</div>
+              {ROLES.map((r) => (
+                <button
+                  key={r.id}
+                  role="menuitemradio"
+                  aria-checked={role === r.id}
+                  onClick={() => {
+                    setRole(r.id);
+                    setOpen(false);
+                    router.push(r.home);
+                  }}
+                  className={`flex w-full items-center gap-3 px-4 py-2 text-left hover:bg-page ${role === r.id ? "bg-page" : ""}`}
+                >
+                  <span className={`grid h-7 w-7 place-items-center rounded-full text-[11px] font-semibold ${role === r.id ? "bg-maroon text-white" : "bg-[#EDF1F7] text-navy"}`}>
+                    {r.initials}
+                  </span>
+                  <span className="min-w-0">
+                    <span className="block text-sm font-semibold text-navy">{r.label}</span>
+                    <span className="block truncate text-xs text-slate">{r.person}</span>
+                  </span>
+                </button>
+              ))}
+              <div className="mt-2 border-t border-line py-1">
+                <button
+                  role="menuitem"
+                  onClick={() => {
+                    setOpen(false);
+                    setLedgerOpen(true);
+                  }}
+                  className="flex w-full items-center justify-between px-4 py-2 text-sm text-navy hover:bg-page"
+                >
+                  Sovra revenue
+                  <span className="font-semibold tabular-nums">{compact(total)}</span>
+                </button>
+                <Link role="menuitem" href="/model" onClick={() => setOpen(false)} className="block px-4 py-2 text-sm text-navy hover:bg-page">
+                  How the storefront earns
+                </Link>
+              </div>
+            </div>
+          )}
         </div>
       </div>
-      {picking && (
-        <div className="border-t border-line bg-page py-4">
-          <div className="mx-auto max-w-6xl px-4">
-            <BuyerPicker onDone={() => setPicking(false)} />
-          </div>
-        </div>
-      )}
     </header>
   );
 }

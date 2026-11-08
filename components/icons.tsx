@@ -134,3 +134,72 @@ export const Cart = (p: P) => (
     <path d="M2.5 3.5h3l2.3 11.2a1.5 1.5 0 0 0 1.5 1.3h8.6a1.5 1.5 0 0 0 1.5-1.2L21 8H6.3" />
   </Svg>
 );
+export const Chair = (p: P) => (
+  <Svg {...p}>
+    <path d="M7 3h10v8H7z" />
+    <path d="M5 11h14v3H5zM7 14v7M17 14v7" />
+  </Svg>
+);
+export const Paper = (p: P) => (
+  <Svg {...p}>
+    <path d="M6 3h9l3 3v15H6z" />
+    <path d="M9 9h6M9 13h6M9 17h4" />
+  </Svg>
+);
+export const Spray = (p: P) => (
+  <Svg {...p}>
+    <path d="M9 8h5v13H8V11z" />
+    <path d="M9 8V5h4l3 2M17 4h2M17 7h3M17 10h2" />
+  </Svg>
+);
+export const Laptop = (p: P) => (
+  <Svg {...p}>
+    <rect x="4" y="5" width="16" height="11" rx="1.5" />
+    <path d="M2 19h20" />
+  </Svg>
+);
+export const Cloud = (p: P) => (
+  <Svg {...p}>
+    <path d="M7 18h10a4 4 0 0 0 .5-7.97A5.5 5.5 0 0 0 6.6 10.4 3.8 3.8 0 0 0 7 18z" />
+  </Svg>
+);
+export const Wrench = (p: P) => (
+  <Svg {...p}>
+    <path d="M14.5 5.5a4 4 0 0 0 4.9 4.9l-9.3 9.3a2.1 2.1 0 0 1-3-3l9.3-9.3a4 4 0 0 0-1.9-1.9z" />
+  </Svg>
+);
+export const Truck = (p: P) => (
+  <Svg {...p}>
+    <path d="M3 6h11v10H3zM14 10h4l3 3v3h-7z" />
+    <circle cx="7" cy="18" r="1.6" />
+    <circle cx="17" cy="18" r="1.6" />
+  </Svg>
+);
+export const Cone = (p: P) => (
+  <Svg {...p}>
+    <path d="M10 4h4l4 15H6z" />
+    <path d="M8.3 11h7.4M4 19h16" />
+  </Svg>
+);
+export const Shield = (p: P) => (
+  <Svg {...p}>
+    <path d="M12 3 5 6v6c0 4 3 7 7 9 4-2 7-5 7-9V6z" />
+  </Svg>
+);
+export const Briefcase = (p: P) => (
+  <Svg {...p}>
+    <rect x="3" y="7" width="18" height="13" rx="2" />
+    <path d="M9 7V5h6v2M3 13h18" />
+  </Svg>
+);
+export const Box = (p: P) => (
+  <Svg {...p}>
+    <path d="m12 3 8 4.5v9L12 21l-8-4.5v-9z" />
+    <path d="m4 7.5 8 4.5 8-4.5M12 12v9" />
+  </Svg>
+);
+export const Menu = (p: P) => (
+  <Svg {...p}>
+    <path d="m6 9 6 6 6-6" />
+  </Svg>
+);

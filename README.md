@@ -21,7 +21,7 @@ Proactive buying is live too: the expiring custodial contract on the buyer home 
 
 ## Buyers, eligibility and ways to buy
 
-Intake asks who is buying (agency, state, type and optional population) before showing results, because contracts are open to different buyers. Every contract carries eligibility rules, a pricing basis and a verification level, and results show only the routes that buyer can use. Matches on closed contracts are summarized instead of hidden, and each product page lists every way to buy it side by side.
+The buyer defaults to the City of Riverbend and can be changed at any time (agency, state, type and optional population), because contracts are open to different buyers. Every contract carries eligibility rules, a pricing basis and a verification level, and results show only the routes that buyer can use. Matches on closed contracts are summarized instead of hidden, and each product page lists every way to buy it side by side.
 
 | Vehicle | Number | Open to | Pricing | Verification |
 | --- | --- | --- | --- | --- |

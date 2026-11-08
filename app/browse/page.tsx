@@ -1,17 +1,28 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
+import { useSearchParams } from "next/navigation";
+import { Suspense, useState } from "react";
+import { CategoryIcon } from "@/components/CategoryIcon";
 import { Search } from "@/components/icons";
 import { useStore } from "@/components/store";
 import { Card, Loading, PageTitle, SourcePill, money } from "@/components/ui";
 import { CATEGORIES } from "@/lib/types";
+import type { Category } from "@/lib/types";
 
 const PAGE = 50;
 
-export default function Browse() {
+export default function BrowsePage() {
+  return (
+    <Suspense fallback={<Loading />}>
+      <Browse />
+    </Suspense>
+  );
+}
+
+function Browse() {
   const { db } = useStore();
-  const [cat, setCat] = useState<string>("Furniture");
+  const [cat, setCat] = useState<string>(useSearchParams().get("cat") ?? "Furniture");
   const [filter, setFilter] = useState("");
   const [limit, setLimit] = useState(PAGE);
   if (!db) return <Loading />;
@@ -67,6 +78,7 @@ export default function Browse() {
               const s = db.suppliers.find((x) => x.id === l.supplier_id)!;
               return (
                 <div key={l.id} className="flex flex-wrap items-center justify-between gap-3 p-4">
+                  <CategoryIcon category={l.category as Category} size="sm" />
                   <div className="min-w-0 flex-1">
                     <Link href={`/product/${l.id}`} className="text-sm font-semibold text-navy hover:text-maroon hover:underline">
                       {l.title}

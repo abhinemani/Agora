@@ -3,6 +3,8 @@
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import type { Role } from "@/lib/types";
+import { useState } from "react";
+import { BuyerPicker } from "./BuyerPicker";
 import { useStore } from "./store";
 import { compact } from "./ui";
 
@@ -17,12 +19,13 @@ const NAV: Record<Role, { href: string; label: string }[]> = {
     { href: "/", label: "Storefront" },
     { href: "/browse", label: "Browse" },
     { href: "/requests", label: "My requests" },
-    { href: "/solicitations", label: "Solicitations" },
+    { href: "/vehicles", label: "Contracts" },
   ],
   procurement: [
     { href: "/procurement", label: "Home" },
     { href: "/procurement/spend", label: "Spend" },
     { href: "/solicitations", label: "Solicitations" },
+    { href: "/vehicles", label: "Contracts" },
     { href: "/contracts/upload?as=procurement", label: "Add contract" },
   ],
   supplier: [
@@ -38,6 +41,8 @@ export function Header() {
   const path = usePathname();
   const total = db?.revenue.reduce((n, e) => n + e.amount, 0) ?? 0;
   const current = ROLES.find((r) => r.id === role)!;
+  const [picking, setPicking] = useState(false);
+  const buyer = db?.session.buyer;
   const isActive = (href: string) => {
     const base = href.split("?")[0];
     return base === "/" ? path === "/" : path === base && !href.includes("?");
@@ -99,6 +104,11 @@ export function Header() {
             <span className="flex h-5 w-5 items-center justify-center rounded-full bg-steel/25 text-[9px] font-bold text-white">{current.initials}</span>
             Signed in as {current.who}
           </span>
+          {role !== "supplier" && (
+            <button onClick={() => setPicking(!picking)} className="rounded border border-white/15 px-2 py-0.5 text-[11px] text-white hover:border-white/40">
+              {buyer ? `Buying for ${buyer.name}, ${buyer.state}` : "Choose who's buying"} <span className="text-rose">· {picking ? "close" : "change"}</span>
+            </button>
+          )}
           <span className="ml-auto flex items-center gap-4">
             {!llm && (
               <span title="No ANTHROPIC_API_KEY set: request and contract parsing use offline heuristics" className="uppercase tracking-wider">
@@ -120,6 +130,13 @@ export function Header() {
           </span>
         </div>
       </div>
+      {picking && (
+        <div className="border-t border-white/[0.06] bg-tint py-4 text-navy">
+          <div className="mx-auto max-w-6xl px-4">
+            <BuyerPicker onDone={() => setPicking(false)} />
+          </div>
+        </div>
+      )}
     </header>
   );
 }

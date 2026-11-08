@@ -19,13 +19,27 @@ The **How it earns** page (in the header for every role) turns the Marketplace 2
 
 Proactive buying is live too: the expiring custodial contract on the buyer home starts an early renewal solicitation drafted from the past custodial bid.
 
+## Buyers, eligibility and ways to buy
+
+Intake asks who is buying (agency, state, type and optional population) before showing results, because contracts are open to different buyers. Every contract carries eligibility rules, a pricing basis and a verification level, and results show only the routes that buyer can use. Matches on closed contracts are summarized instead of hidden, and each product page lists every way to buy it side by side.
+
+| Vehicle | Number | Open to | Pricing | Verification |
+| --- | --- | --- | --- | --- |
+| NJSTART, Tyler Technologies | 26-TELE-114629 | New Jersey public entities | Published prices (1,350) | Source document |
+| NJSTART, Maximus US Services | 26-TELE-115813, adopted from NASPO ValuePoint AR3758 | New Jersey public entities | 14 published rates | Source document, checked line by line against the scanned Attachment C |
+| Sourcewell, Tyler Technologies | 060624-TTI | Members nationwide | Discount off list; quote required | Research lead |
+| Carahsoft (Iowa / NASPO AR2472, CoreTrust) | 2024-BUS-0226, 24COR-018GR | Adopting states, CoreTrust members | Quote only; no price files loaded | Research lead |
+| Riverbend, ORCPP, WSPC, GSA, reseller | various | as stated | Published prices | Demo data |
+
+When a product sits on a contract the buyer can't use but the same supplier has an open co-op award, it is offered by quote through that award, with the closed contract's price shown only as a reference. Sourcewell discount percentages from the research seed appear only as labeled, unverified notes, never as prices. The three buyer presets are the City of Riverbend (Oregon), Harmon Lake Township (a fictional New Jersey municipality) and a New Jersey state department.
+
 ## Vendor price catalog
 
 Riverbend's storefront also carries Tyler Technologies' March 2025 price catalog (`seed/catalogs/tyler-technologies-price-catalog-2025-03.xlsx`), so buyers can ask for software and services such as "jury management", "open data portal" or "an implementation consultant". `npm run import:catalog` turns the spreadsheet into `seed/catalogs/tyler-technologies-2025-03.json`, which the seed loads on every reset.
 
-The catalog keeps each price inside the product description, so the importer reads only the price line and lists a row only when it holds one clear price. Of 1,672 rows, 1,350 import cleanly; the other 322 are skipped with a reason recorded in the JSON (no price, a price range or "up to" ceiling, tiers or a minimum spread over several lines, or a price with a percentage or second component). Products priced by population band are listed only in the band that fits Riverbend's 85,000 residents, which leaves 1,211 listings.
+The catalog keeps each price inside the product description, so the importer reads only the price line and lists a row only when it holds one clear price. Of 1,672 rows, 1,350 import cleanly; the other 322 are skipped with a reason recorded in the JSON (no price, a price range or "up to" ceiling, tiers or a minimum spread over several lines, or a price with a percentage or second component). Products priced in tiers (by population or volume) show as one product with a tier picker, preset to the tier that fits the buyer's population.
 
-The file doesn't name its contract vehicle, so it appears as a state contract with the reference `TYL-CAT-2025-03`; change `addTylerCatalog` in `lib/seed.ts` once the real vehicle is known. Tyler has no seeded reviews or ratings.
+It is New Jersey's state contract on NJSTART, 26-TELE-114629, so it is open to New Jersey public entities only. Tyler has no seeded reviews or ratings.
 
 ## Putting it online
 

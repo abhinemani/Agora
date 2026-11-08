@@ -14,6 +14,30 @@ export type EdgeTier = "discover" | "win" | "position";
 
 export type Role = "buyer" | "procurement" | "supplier";
 
+export type EntityType = "municipality" | "county" | "school_district" | "special_district" | "state_agency";
+
+/** Who is buying, asked at intake. Decides which contracts they may use. */
+export interface Buyer {
+  name: string;
+  /** Two-letter state code. */
+  state: string;
+  entity_type: EntityType;
+  population: number | null;
+}
+
+/** Who may buy from a contract vehicle. */
+export interface Eligibility {
+  /** Two-letter state codes, or "any" for national co-ops. */
+  states: string[] | "any";
+  entity_types?: EntityType[];
+  /** Only these named agencies (an agency's own, non-piggybackable contract). */
+  agencies?: string[];
+  /** Plain-language rule shown to buyers, e.g. "New Jersey public entities". */
+  note: string;
+  /** Anything the buyer must have first, e.g. a free co-op membership. */
+  requires?: string;
+}
+
 export type Payer = "local_government" | "supplier" | "card_network" | "partner";
 
 export const CATEGORIES = [
@@ -89,6 +113,18 @@ export interface Contract {
   source_document_id: string | null;
   /** Whether option 2 (onboarding) has been billed for this contract. */
   onboarding_billed: boolean;
+  /** Short purchasing-program name shown on routes, e.g. "NJSTART", "Sourcewell". */
+  vehicle?: string;
+  eligibility?: Eligibility;
+  /** How a buyer gets a price: a published schedule, a discount off list, or a quote. */
+  pricing_basis?: "published_price" | "discount_from_list" | "quote";
+  /** Where the terms come from: a source document we hold, research to verify, or demo data. */
+  verification?: "source_document" | "research_lead" | "demo";
+  source_url?: string;
+  /** Master agreement other states can adopt, e.g. "NASPO ValuePoint AR3758". */
+  master_agreement?: string;
+  /** Route covers every product the supplier sells (e.g. a discount-off-list co-op award). */
+  covers_supplier_catalog?: boolean;
 }
 
 export interface ContractDocument {
@@ -164,6 +200,22 @@ export interface Listing {
   detail?: string;
   /** Extra words search should match, e.g. a catalog's category path. */
   keywords?: string;
+  /** Listings sharing a family are tiers of one product, shown as one card. */
+  family?: string;
+  /** This tier's label within its family, e.g. "50k - 150k" or "Developer". */
+  variant?: string;
+  /** Population band the price applies to, if any. */
+  band?: { min: number; max: number | null; label: string } | null;
+}
+
+export interface QuoteRequest {
+  id: string;
+  listing_id: string;
+  contract_id: string;
+  buyer: Buyer;
+  quantity: number;
+  note: string;
+  created_at: string;
 }
 
 export interface ParsedRequest {
@@ -306,12 +358,15 @@ export interface Db {
   upcoming: UpcomingSolicitation[];
   expiring: ExpiringContract[];
   attention: AttentionItem[];
+  quotes: QuoteRequest[];
   apps: PartnerApp[];
   recent: { title: string; supplier: string; date: string; qty: number; listing_id: string }[];
   session: {
     preference_answer: "yes" | "no" | "always_ask" | null;
     spend_dashboard_enabled: boolean;
     acting_supplier_id: string;
+    /** Who is buying this session; null until asked at intake. */
+    buyer: Buyer | null;
   };
   counters: Record<string, number>;
 }

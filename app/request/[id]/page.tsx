@@ -3,10 +3,11 @@
 import Link from "next/link";
 import { useParams, useSearchParams } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
+import { BuyerPicker } from "@/components/BuyerPicker";
 import { useStore } from "@/components/store";
-import { People, Plus, Sparkle } from "@/components/icons";
+import { Lock, People, Plus, Sparkle } from "@/components/icons";
 import { Badge, Button, Card, ErrorNote, Eyebrow, IconCircle, LinkButton, Loading, RevenueTags, SourcePill, Stars, SupplierBadges, money } from "@/components/ui";
-import type { Results, ResultOption } from "@/lib/assistant";
+import type { Results, ResultOption, Unavailable } from "@/lib/assistant";
 import { PURCHASE_KINDS, TRANSACTION_FEE_SOURCES } from "@/lib/revenue_rules";
 
 function KindBanner({ kind }: { kind: (typeof PURCHASE_KINDS)[keyof typeof PURCHASE_KINDS] }) {
@@ -45,9 +46,21 @@ export default function RequestResults() {
   const [expanded, setExpanded] = useState<string[]>([]);
   const [answered, setAnswered] = useState(false);
   const [why, setWhy] = useState(false);
+  const [changing, setChanging] = useState(false);
 
   const request = db?.requests.find((r) => r.id === id);
-  const needsAnswer = ask && !answered && request && (request.preference_answer === null || request.preference_answer === "always_ask");
+  const buyer = db?.session.buyer ?? null;
+  const needsBuyer = Boolean(db) && !buyer;
+  // Riverbend's preference policy is the only one on file, so only its buyers are asked.
+  const isHome = buyer?.name === db?.agency.name;
+  const needsAnswer = !needsBuyer && isHome && ask && !answered && request && (request.preference_answer === null || request.preference_answer === "always_ask");
+  const buyerKey = buyer ? `${buyer.name}|${buyer.state}|${buyer.entity_type}|${buyer.population}` : "";
+
+  // A different buyer can use different contracts: fetch fresh results.
+  useEffect(() => {
+    setResults(null);
+    setError(null);
+  }, [buyerKey]);
 
   const load = useCallback(async () => {
     try {
@@ -58,8 +71,8 @@ export default function RequestResults() {
   }, [act, id]);
 
   useEffect(() => {
-    if (db && request && !needsAnswer && !results && !error) load();
-  }, [db, request, needsAnswer, results, error, load]);
+    if (db && request && !needsBuyer && !needsAnswer && !results && !error) load();
+  }, [db, request, needsBuyer, needsAnswer, results, error, load]);
 
   if (!db) return <Loading />;
   if (!request) return <ErrorNote message="That request isn't in this demo session. It may have been cleared by a reset." />;
@@ -83,13 +96,26 @@ export default function RequestResults() {
           <Parsed label="Department" value={p.department} />
           {p.category && <Parsed label="Category" value={p.category} />}
           <Parsed label="Estimated total" value={p.est_total ? money(p.est_total, false) : "Unknown"} />
+          {buyer && (
+            <span className="rounded-md border border-maroon/30 bg-maroon-50 px-2.5 py-1">
+              <span className="text-slate">For: </span>
+              <span className="font-semibold text-navy">
+                {buyer.name}, {buyer.state}
+              </span>
+              <button onClick={() => setChanging(!changing)} className="ml-2 font-semibold text-maroon hover:underline">
+                {changing ? "Cancel" : "Change"}
+              </button>
+            </span>
+          )}
           <span className="self-center rounded border border-steel/50 px-1.5 py-0.5 text-[10px] uppercase tracking-wide text-slate">
             {request.parse_mode === "llm" ? "Parsed by Claude" : "Offline parsing"}
           </span>
         </div>
       </div>
 
-      {needsAnswer && (
+      {(needsBuyer || changing) && <BuyerPicker onDone={() => setChanging(false)} />}
+
+      {needsAnswer && !changing && (
         <Card accent="maroon" className="flex flex-wrap items-center gap-4 p-5">
           <IconCircle>
             <Sparkle />
@@ -122,7 +148,7 @@ export default function RequestResults() {
       )}
 
       <ErrorNote message={error} />
-      {!needsAnswer && !results && !error && <Loading label="Checking every source Riverbend can buy from" />}
+      {!needsBuyer && !needsAnswer && !results && !error && <Loading label={`Checking every contract ${buyer?.name ?? "you"} can use`} />}
 
       {results && !results.no_match && (
         <>
@@ -169,6 +195,7 @@ export default function RequestResults() {
             </div>
             <aside className="space-y-4">
               {results.peer && <PeerCard peer={results.peer} qty={p.quantity} />}
+              <UnavailableCard items={results.unavailable} buyerName={results.buyer?.name ?? "this agency"} />
               <Card className="p-4 text-xs text-slate">
                 <div className="mb-1 font-semibold text-navy">Not what you need?</div>
                 If nothing here fits, Marcus in Purchasing can start a solicitation.{" "}
@@ -190,10 +217,14 @@ export default function RequestResults() {
                 <Plus />
               </IconCircle>
               <div>
-                <h2 className="text-2xl font-light tracking-tight text-navy">No contract covers this yet. You may be the first agency to buy it.</h2>
+                <h2 className="text-2xl font-light tracking-tight text-navy">
+                  {results.unavailable.length
+                    ? `No contract open to ${results.buyer?.name ?? "you"} covers this yet.`
+                    : "No contract covers this yet. You may be the first agency to buy it."}
+                </h2>
                 <p className="mt-2 text-sm text-slate">
-                  This is rare: most requests resolve to something already on contract or under the quick-buy limit. Riverbend can run a solicitation, and when it's
-                  awarded the contract lands in this storefront, ready for the next department and for neighboring agencies.
+                  This is rare: most requests resolve to something already on contract or under the quick-buy limit. {results.buyer?.name ?? "Your agency"} can run a
+                  solicitation, and when it's awarded the contract lands in this storefront, ready for the next department and for neighboring agencies.
                 </p>
                 {results.similar_solicitation && (
                   <p className="mt-3 text-sm text-navy">
@@ -211,7 +242,10 @@ export default function RequestResults() {
               </div>
             </div>
           </Card>
-          {results.peer && <PeerCard peer={results.peer} qty={p.quantity} />}
+          <div className="space-y-4">
+            {results.peer && <PeerCard peer={results.peer} qty={p.quantity} />}
+            <UnavailableCard items={results.unavailable} buyerName={results.buyer?.name ?? "this agency"} />
+          </div>
         </div>
       )}
     </div>
@@ -228,46 +262,150 @@ function Parsed({ label, value }: { label: string; value: string }) {
 }
 
 function OptionCard({ o, qty, requestId }: { o: ResultOption; qty: number; requestId: string }) {
-  const l = o.listing;
+  const { db, act } = useStore();
+  const [chosen, setChosen] = useState(o.listing.id);
+  const [quoted, setQuoted] = useState<string | null>(null);
+  const [quoteError, setQuoteError] = useState<string | null>(null);
+  const qr = o.quote_route;
+  const l = o.variants.find((v) => v.id === chosen) ?? o.listing;
+  const tiered = o.variants.length > 1;
+  const total = Math.round(l.unit_price * qty * 100) / 100;
+  const limit = db?.agency.quick_buy_threshold ?? 10_000;
+  const via = o.rule.text.includes(" · Piggyback") ? o.rule.text.slice(o.rule.text.indexOf(" · Piggyback")) : "";
+  const rule =
+    l.id === o.listing.id || qr
+      ? o.rule
+      : total < limit
+        ? { text: `Under your $${Math.round(limit / 1000)}K quick-buy limit · P-card OK${via}`, payment: "pcard" as const }
+        : { text: `Needs PO · over $${Math.round(limit / 1000)}K${via}`, payment: "po" as const };
+  const title = tiered ? l.title.replace(/\s*\([^)]*\)\s*$/, "") : l.title;
   return (
     <Card className={`p-5 transition hover:shadow-md ${o.sponsored ? "ring-1 ring-rose/40" : ""}`}>
       <div className="flex flex-wrap items-start justify-between gap-4">
         <div className="min-w-0 flex-1">
           <div className="flex flex-wrap items-center gap-2">
-            <span className="font-semibold text-navy">{l.title}</span>
+            <span className="font-semibold text-navy">{title}</span>
             {o.sponsored && <span className="rounded border border-rose/60 px-1.5 py-px text-[10px] font-semibold uppercase tracking-wide text-rose">Sponsored</span>}
           </div>
           {l.detail && <div className="text-xs text-slate">{l.detail}</div>}
+          {qr && (
+            <div className="mt-2 rounded-md bg-amber-50 px-2.5 py-1.5 text-xs text-amber-900">
+              {qr.reference} isn't open to your agency. Buy through {qr.vehicle} {qr.contract_number} instead: the supplier quotes a discount off its list price.
+              {qr.research_note ? ` ${qr.research_note}.` : ""}
+            </div>
+          )}
+          {tiered && (
+            <label className="mt-2 flex flex-wrap items-center gap-2 text-xs text-slate">
+              {o.variants.length} pricing tiers
+              <select value={chosen} onChange={(e) => setChosen(e.target.value)} className="max-w-full !py-1 text-xs">
+                {o.variants.map((v) => (
+                  <option key={v.id} value={v.id}>
+                    {v.variant ?? v.sku} · {money(v.unit_price)} / {v.unit}
+                  </option>
+                ))}
+              </select>
+            </label>
+          )}
           <div className="mt-2 flex flex-wrap items-center gap-2 text-sm">
             <span className="text-navy">{o.supplier.name}</span>
             <SupplierBadges supplier={o.supplier} />
             <Stars rating={o.supplier.rating} count={o.supplier.review_count} />
           </div>
           <div className="mt-2 flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-slate">
-            <SourcePill source={l.source} />
-            {o.contract_number && <span>{o.contract_number}</span>}
+            <SourcePill source={o.group} />
+            {o.contract_number && (
+              <span>
+                {o.vehicle && <span className="font-semibold text-navy">{o.vehicle} </span>}
+                {o.contract_number}
+              </span>
+            )}
             <span className={o.meets_deadline === false ? "text-maroon" : ""}>{o.delivery}</span>
           </div>
           <div className="mt-2 flex flex-wrap items-center gap-3">
-            <span className={`inline-flex items-center gap-1.5 rounded px-2 py-1 text-xs font-semibold ${o.rule.payment === "po" ? "bg-amber-50 text-amber-800" : "bg-emerald-50 text-emerald-800"}`}>
-              {o.rule.text}
+            <span className={`inline-flex items-center gap-1.5 rounded px-2 py-1 text-xs font-semibold ${rule.payment === "po" ? "bg-amber-50 text-amber-800" : "bg-emerald-50 text-emerald-800"}`}>
+              {rule.text}
             </span>
-            <RevenueTags options={earnsFor(o)} />
+            {!qr && <RevenueTags options={earnsFor({ ...o, rule })} />}
+            {l.contract_id && (
+              <Link href={`/product/${l.id}?qty=${qty}&request=${requestId}`} className="text-xs font-semibold text-maroon hover:underline">
+                Compare ways to buy →
+              </Link>
+            )}
           </div>
         </div>
-        <div className="text-right">
-          <div className="text-lg font-bold text-navy">
-            {money(l.unit_price)}
-            <span className="text-xs font-normal text-slate"> / {l.unit}</span>
+        {qr ? (
+          <div className="text-right">
+            <div className="text-[11px] uppercase tracking-wide text-slate">Reference price</div>
+            <div className="text-lg font-semibold text-slate">
+              {money(l.unit_price)}
+              <span className="text-xs font-normal"> / {l.unit}</span>
+            </div>
+            <div className="text-[11px] text-slate">on {qr.reference}</div>
+            {quoted ? (
+              <div className="mt-3 max-w-[11rem] text-xs font-semibold text-emerald-800">Quote request {quoted} sent through {qr.vehicle}.</div>
+            ) : (
+              <Button
+                variant="secondary"
+                className="mt-3"
+                onClick={async () => {
+                  setQuoteError(null);
+                  try {
+                    const q = await act<{ id: string }>("requestQuote", { listingId: l.id, contractId: qr.contract_id, quantity: qty });
+                    setQuoted(q.id);
+                  } catch (e) {
+                    setQuoteError((e as Error).message);
+                  }
+                }}
+              >
+                Request a quote
+              </Button>
+            )}
+            <ErrorNote message={quoteError} />
           </div>
-          <div className="text-xs text-slate">
-            {qty} × = <span className="font-semibold text-navy">{money(o.total)}</span>
+        ) : (
+          <div className="text-right">
+            <div className="text-lg font-bold text-navy">
+              {money(l.unit_price)}
+              <span className="text-xs font-normal text-slate"> / {l.unit}</span>
+            </div>
+            <div className="text-xs text-slate">
+              {qty} × = <span className="font-semibold text-navy">{money(total)}</span>
+            </div>
+            <LinkButton href={`/checkout?listing=${l.id}&qty=${qty}&request=${requestId}`} className="mt-3">
+              Buy
+            </LinkButton>
           </div>
-          <LinkButton href={`/checkout?listing=${l.id}&qty=${qty}&request=${requestId}`} className="mt-3">
-            Buy
-          </LinkButton>
-        </div>
+        )}
       </div>
+    </Card>
+  );
+}
+
+/** Matches on contracts this buyer can't use: said plainly, never hidden. */
+function UnavailableCard({ items, buyerName }: { items: Unavailable[]; buyerName: string }) {
+  if (!items.length) return null;
+  return (
+    <Card className="p-4">
+      <div className="flex items-center gap-2 text-sm font-semibold text-navy">
+        <Lock className="h-4 w-4 text-slate" /> On contracts {buyerName} can't use
+      </div>
+      <ul className="mt-2 space-y-3">
+        {items.map((u) => (
+          <li key={u.contract_number} className="text-xs text-slate">
+            <div>
+              <span className="font-semibold text-navy">{u.vehicle}</span> {u.contract_number}: {u.products} matching product{u.products === 1 ? "" : "s"}
+            </div>
+            <div className="truncate">e.g. {u.examples.join(", ")}</div>
+            <div className="text-maroon">{u.reason}</div>
+            {u.master_agreement && (
+              <div className="mt-1 text-navy">
+                Adopted from {u.master_agreement}. Ask your purchasing office whether your state has signed a participating addendum to it.
+              </div>
+            )}
+          </li>
+        ))}
+      </ul>
+      <p className="mt-3 text-[11px] text-slate">Change the buyer above to see how the options change.</p>
     </Card>
   );
 }

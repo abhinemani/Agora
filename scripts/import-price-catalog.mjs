@@ -99,7 +99,10 @@ for (const sheet of wb.SheetNames) {
     const path = [r[cParent], cChild1 >= 0 ? r[cChild1] : "", cChild2 >= 0 ? r[cChild2] : ""].map(clean).filter(Boolean);
     if (p.reason) return skipped.push({ sku, name, reason: p.reason });
     const firstSentence = clean(String(r[cDesc]).split(/\r?\n/)[0]).split(/(?<=\.)\s/)[0];
-    const band = bandOf(name);
+    const band = bandOf(name) ?? bandOf(sku);
+    // Tiers of one product share a family: the name without its tier qualifier.
+    const base = clean(name.replace(/\s*\((?=[^)]*(\d|tier|population|up to|under|over))[^)]*\)/gi, " ").replace(/\s*-\s*$/, ""));
+    const qualifier = name.match(/\(([^)]*(?:\d|tier|population|up to|under|over)[^)]*)\)/i)?.[1];
     items.push({
       sku: sku || `TYL-${sheet.slice(0, 10)}-${i + 2}`,
       title: name,
@@ -109,6 +112,8 @@ for (const sheet of wb.SheetNames) {
       unit_price: p.price,
       category: p.unit === "hr" ? "Professional services" : "Software and services",
       band: band ? { min: band.min, max: band.max === Infinity ? null : band.max, label: band.label } : null,
+      family: `tyler:${base.toLowerCase()}|${path.join(" › ").toLowerCase()}`,
+      variant: band ? band.label : qualifier ? clean(qualifier) : sku,
       source_row: `${sheet}, row ${i + 2}`,
       price_line: p.line,
     });

@@ -4,7 +4,8 @@
 import * as z from "zod/v4";
 import { structured } from "./llm";
 import { CATEGORIES } from "./types";
-import type { Category, Db, Listing, ParsedRequest, PeerPurchase, Request, Solicitation, Source, Supplier } from "./types";
+import type { Buyer, Category, Db, Listing, ParsedRequest, PeerPurchase, Request, Solicitation, Source, Supplier } from "./types";
+import { checkEligibility, defaultVariant, familyOf, SOURCEWELL_TYLER_NOTES } from "./vehicles";
 
 export const SOURCE_ORDER: Source[] = ["own_contract", "state_contract", "coop_contract", "reseller", "gsa", "no_approval"];
 
@@ -20,7 +21,7 @@ export const SOURCE_LABEL: Record<Source, string> = {
 // ---------------------------------------------------------------- tokenizing
 
 const STOP = new Set(
-  "a an the of for and or with to in on at by from some new need needs we our my i us please get buy order want ft in x unit units each dozen box boxes case cases pack packs pk set sets ea about around approx roughly".split(" "),
+  "a an the of for and or with to in on at by from some new need needs we our my i us please get buy order want ft in x unit units each dozen box boxes case cases pack packs pk set sets ea about around approx roughly online".split(" "),
 );
 
 function singular(w: string) {
@@ -84,6 +85,14 @@ function bestMatches<T>(itemTokens: string[], rows: T[], titleOf: (r: T) => stri
   const best = Math.max(0, ...scored.map((x) => x.s));
   if (best === 0) return { rows: [] as T[], best };
   const floor = weights ? best * 0.67 : Math.max(1, Math.ceil(best * 0.67));
+  if (weights) {
+    // A match must cover a fair share of what was asked: one common word
+    // ("tracking") out of "snowplow GPS route tracking" is not a match. Words
+    // the catalog never uses count as the rarest.
+    const rarest = Math.max(1, ...weights.values());
+    const asked = itemTokens.reduce((n, w) => n + (weights.get(w) ?? rarest), 0);
+    if (asked > 0 && best / asked < 0.35) return { rows: [] as T[], best: 0 };
+  }
   return { rows: scored.filter((x) => x.s >= floor).map((x) => x.r), best };
 }
 
@@ -225,6 +234,26 @@ export interface ResultOption {
   meets_deadline: boolean | null;
   sponsored: boolean;
   pref_fit: number;
+  /** Other tiers of the same product the buyer may choose between. */
+  variants: Listing[];
+  /** Purchasing program, e.g. "NJSTART". */
+  vehicle: string | null;
+  /** Source group the card is shown under (a quote route's, when it has one). */
+  group: Source;
+  /** Set when the listing's own contract is closed to this buyer but the same
+   * supplier's co-op award is open: buy there by quote, price shown for reference. */
+  quote_route: { contract_id: string; vehicle: string; contract_number: string; reference: string; research_note: string | null } | null;
+}
+
+export interface Unavailable {
+  /** Master agreement the contract was adopted from, which other states may also have adopted. */
+  master_agreement: string | null;
+  vehicle: string;
+  contract_number: string;
+  owner: string;
+  reason: string;
+  products: number;
+  examples: string[];
 }
 
 export interface ResultGroup {
@@ -240,6 +269,9 @@ export interface Results {
   no_match: boolean;
   similar_solicitation: Solicitation | null;
   explanation: string[];
+  buyer: Buyer | null;
+  /** Matches on contracts this buyer can't use, grouped by contract. */
+  unavailable: Unavailable[];
 }
 
 function fmtDate(d: Date) {
@@ -276,12 +308,27 @@ export function buildResults(db: Db, request: Request): Results {
   // When the request implies a category and some matches are in it, keep those:
   // "24 inch monitors" means hardware, not monitoring software.
   const inCategory = parsed.category ? found.filter((l) => l.category === parsed.category) : [];
-  const matched = inCategory.length ? inCategory : found;
+  const relevant = inCategory.length ? inCategory : found;
+  // Only routes this buyer may use; the rest are summarized, not hidden silently.
+  const buyer = db.session.buyer;
+  const contractOf = (l: Listing) => db.contracts.find((c) => c.id === l.contract_id);
+  const matched = relevant.filter((l) => checkEligibility(contractOf(l), buyer).eligible);
+  // A closed contract's product may still be buyable through the supplier's
+  // open co-op award (priced off list, so by quote).
+  const quoteRouteFor = (l: Listing) =>
+    db.contracts.find((c) => c.supplier_id === l.supplier_id && c.covers_supplier_catalog && c.id !== l.contract_id && checkEligibility(c, buyer).eligible);
+  const viaQuote = relevant.filter((l) => !checkEligibility(contractOf(l), buyer).eligible && quoteRouteFor(l));
+  const blockedByContract = new Map<string, Listing[]>();
+  for (const l of relevant)
+    if (!checkEligibility(contractOf(l), buyer).eligible && !quoteRouteFor(l)) blockedByContract.set(l.contract_id!, [...(blockedByContract.get(l.contract_id!) ?? []), l]);
+  const unavailable: Unavailable[] = [...blockedByContract].map(([cid, ls]) => {
+    const c = db.contracts.find((x) => x.id === cid)!;
+    const families = [...new Map(ls.map((l) => [l.family ?? l.id, l.title])).values()];
+    return { master_agreement: c.master_agreement ?? null, vehicle: c.vehicle ?? c.owner, contract_number: c.contract_number, owner: c.owner, reason: checkEligibility(c, buyer).reason, products: families.length, examples: families.slice(0, 2) };
+  });
 
   const due = deadlineDate(parsed.deadline);
-  const options: ResultOption[] = matched
-    .filter((l) => l.source !== "no_approval" || l.unit_price * parsed.quantity < limit)
-    .map((l) => {
+  const optionFor = (l: Listing): ResultOption => {
       const supplier = db.suppliers.find((s) => s.id === l.supplier_id)!;
       const arrives = new Date(Date.now() + l.lead_time_days * 86_400_000);
       const meets = due ? arrives <= due : null;
@@ -296,8 +343,36 @@ export function buildResults(db: Db, request: Request): Results {
         meets_deadline: meets,
         sponsored: supplier.sponsored && supplier.edge_tier !== "discover" && l.source !== "no_approval",
         pref_fit,
+        variants: [l],
+        vehicle: contractOf(l)?.vehicle ?? null,
+        group: l.source,
+        quote_route: null,
       };
-    });
+    };
+  const quoteOptionFor = (l: Listing): ResultOption => {
+    const route = quoteRouteFor(l)!;
+    const own = contractOf(l);
+    const text = `${l.title} ${l.keywords ?? ""}`;
+    const note = route.vehicle === "Sourcewell" ? SOURCEWELL_TYLER_NOTES.find((n) => n.match.test(text)) : undefined;
+    return {
+      ...optionFor(l),
+      group: route.source,
+      vehicle: route.vehicle ?? null,
+      contract_number: route.contract_number,
+      rule: { text: `Quote via ${route.vehicle} ${route.contract_number} · discount off list`, payment: "po" },
+      quote_route: {
+        contract_id: route.id,
+        vehicle: route.vehicle ?? route.owner,
+        contract_number: route.contract_number,
+        reference: `${own?.vehicle ?? own?.owner} ${own?.contract_number}`,
+        research_note: note ? `Research lead (unverified): ${note.percent}% off list for ${note.product}` : null,
+      },
+    };
+  };
+  const options: ResultOption[] = [
+    ...matched.filter((l) => l.source !== "no_approval" || l.unit_price * parsed.quantity < limit).map(optionFor),
+    ...viaQuote.map(quoteOptionFor),
+  ];
 
   const rank = (a: ResultOption, b: ResultOption) => {
     // Sponsored listings get a half-point nudge, inside their own source group only.
@@ -321,13 +396,31 @@ export function buildResults(db: Db, request: Request): Results {
     return b.supplier.rating - a.supplier.rating;
   };
 
+  // One card per product: the best-ranked tier stands for its family, then shows
+  // the tier that fits the buyer's population, with the others selectable.
+  const collapse = (ranked: ResultOption[]) => {
+    const seen = new Set<string>();
+    const out: ResultOption[] = [];
+    for (const o of ranked) {
+      const key = o.listing.family ?? o.listing.id;
+      if (seen.has(key)) continue;
+      seen.add(key);
+      const variants = familyOf(db, o.listing);
+      const pick = defaultVariant(variants, buyer);
+      const base = pick.id === o.listing.id ? o : o.quote_route ? quoteOptionFor(pick) : optionFor(pick);
+      out.push({ ...base, variants });
+    }
+    return out;
+  };
   const groups: ResultGroup[] = SOURCE_ORDER.map((source) => ({
     source,
     label: SOURCE_LABEL[source],
-    options: options.filter((o) => o.listing.source === source).sort(rank),
+    options: collapse(options.filter((o) => o.group === source).sort(rank)),
   })).filter((g) => g.options.length);
 
-  const peerMatch = bestMatches(itemTokens, db.peers, (p) => p.listing_title).rows.sort((a, b) => b.rating - a.rating)[0];
+  // Seeded peers are Riverbend's Oregon neighbors; only show them to Oregon buyers.
+  const nearPeers = !buyer || buyer.state === "OR" ? db.peers : [];
+  const peerMatch = bestMatches(itemTokens, nearPeers, (p) => p.listing_title).rows.sort((a, b) => b.rating - a.rating)[0];
   const peer = peerMatch
     ? { ...peerMatch, supplier_name: db.suppliers.find((s) => s.id === peerMatch.supplier_id)?.name ?? "" }
     : null;
@@ -338,8 +431,22 @@ export function buildResults(db: Db, request: Request): Results {
   const explanation: string[] = [];
   if (!no_match) {
     explanation.push(
-      `Options are grouped by where you can buy them, starting with Riverbend's own contracts, then state, co-op, reseller and GSA contracts.`,
+      `Options are grouped by where you can buy them, starting with your own agency's contracts, then state, co-op, reseller and GSA contracts.`,
     );
+    if (buyer)
+      explanation.push(
+        `Only contracts open to ${buyer.name} (${buyer.state}) are shown.${unavailable.length ? ` ${unavailable.reduce((n, u) => n + u.products, 0)} more matching products sit on contracts it can't use.` : ""}`,
+      );
+    if (viaQuote.length)
+      explanation.push(
+        `Some products are on a state contract ${buyer?.name ?? "you"} can't use, but the supplier's national co-op award is open to you. Those are listed for a quote, with the state price shown only as a reference.`,
+      );
+    if (groups.some((g) => g.options.some((o) => o.variants.length > 1)))
+      explanation.push(
+        buyer?.population
+          ? `Products priced in tiers show as one card, preset to the tier for a population of ${buyer.population.toLocaleString()}.`
+          : `Products priced in tiers show as one card; pick the tier that fits.`,
+      );
     explanation.push(
       favor
         ? `You asked to favor local and MBE-certified suppliers, so they rank first within each group. Then the closest match to what you asked for, then cheaper unit price, then delivery against your deadline, then peer rating.`
@@ -356,7 +463,7 @@ export function buildResults(db: Db, request: Request): Results {
     if (peer) explanation.push(`${peer.agency_name} bought something comparable recently, so it's shown as a peer pick.`);
   }
 
-  return { request, groups, peer, no_match, similar_solicitation, explanation };
+  return { request, groups, peer, no_match, similar_solicitation, explanation, buyer, unavailable };
 }
 
 export function findSimilarSolicitation(db: Db, request: Request): Solicitation | null {
@@ -370,5 +477,6 @@ export function findSimilarSolicitation(db: Db, request: Request): Solicitation 
       score: score(t, `${s.title} ${s.scope}`) * 2 + (cat && s.category === cat ? 1 : 0) + (/light|led|retrofit/i.test(text) && /light|fixture/i.test(s.title + s.scope) ? 3 : 0),
     }))
     .sort((a, b) => b.score - a.score);
-  return scored[0]?.score > 0 ? scored[0].s : db.solicitations[0];
+  // No real match means no template; a lighting bid is no model for social listening.
+  return scored[0]?.score > 0 ? scored[0].s : null;
 }

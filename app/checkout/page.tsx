@@ -107,9 +107,19 @@ function Checkout() {
       <div className="grid gap-4 md:grid-cols-2">
         <Card className="p-5">
           <div className="text-xs font-semibold uppercase tracking-wider text-slate">Deliver to</div>
-          <div className="mt-2 text-sm font-semibold text-navy">{dept.name}</div>
-          <div className="text-sm text-slate">{dept.address}</div>
-          <div className="mt-1 text-xs text-steel">Prefilled from your department</div>
+          {db.session.buyer && db.session.buyer.name !== db.agency.name ? (
+            <>
+              <div className="mt-2 text-sm font-semibold text-navy">{db.session.buyer.name}</div>
+              <div className="text-sm text-slate">Address on file, {db.session.buyer.state}</div>
+              <div className="mt-1 text-xs text-steel">Prefilled from your agency profile</div>
+            </>
+          ) : (
+            <>
+              <div className="mt-2 text-sm font-semibold text-navy">{dept.name}</div>
+              <div className="text-sm text-slate">{dept.address}</div>
+              <div className="mt-1 text-xs text-steel">Prefilled from your department</div>
+            </>
+          )}
         </Card>
         <Card className="p-5">
           <div className="text-xs font-semibold uppercase tracking-wider text-slate">Payment</div>

@@ -13,7 +13,8 @@ import {
   onSponsoredImpression,
   onStorefrontAdded,
 } from "./revenue_rules";
-import type { Category, Contract, ContractDocument, ContractHeader, Db, EdgeTier, ExtractedItem, Listing, Request, Role, Solicitation } from "./types";
+import type { Buyer, Category, Contract, ContractDocument, ContractHeader, Db, EdgeTier, ExtractedItem, Listing, Request, Role, Solicitation } from "./types";
+import { checkEligibility, STATES } from "./vehicles";
 
 const now = () => new Date().toISOString();
 
@@ -39,8 +40,10 @@ export async function createRequest(text: string) {
     outcome: null,
   };
 
+  // Preference policies are on file only for the home agency.
   const prefs = db.agency.preferences;
-  const hasPolicy = prefs.local || prefs.mbe || prefs.sustainable;
+  const isHome = !db.session.buyer || db.session.buyer.name === db.agency.name;
+  const hasPolicy = isHome && (prefs.local || prefs.mbe || prefs.sustainable);
   const remembered = db.session.preference_answer;
   let needsPreference = false;
   if (mentionsPreference(raw)) request.preference_answer = /\b(no|not|don't)\b.*\b(local|mbe)\b/i.test(raw) ? "no" : "yes";
@@ -48,7 +51,37 @@ export async function createRequest(text: string) {
   else needsPreference = hasPolicy;
 
   db.requests.unshift(request);
-  return { request, needsPreference };
+  return { request, needsPreference, needsBuyer: !db.session.buyer };
+}
+
+export function setBuyer(buyer: Buyer) {
+  const db = getDb();
+  if (!buyer?.name?.trim()) fail("Name the agency that's buying.");
+  if (!STATES.some(([c]) => c === buyer.state)) fail("Pick the agency's state.");
+  const pop = buyer.population == null || String(buyer.population) === "" ? null : Math.max(0, Math.round(Number(buyer.population)));
+  db.session.buyer = { name: buyer.name.trim(), state: buyer.state, entity_type: buyer.entity_type, population: Number.isFinite(pop as number) ? pop : null };
+  return db.session.buyer;
+}
+
+/** A co-op route priced off list: record the request for a supplier quote. */
+export function requestQuote(args: { listingId: string; contractId: string; quantity: number; note?: string }) {
+  const db = getDb();
+  const listing = db.listings.find((l) => l.id === args.listingId) ?? fail("Listing not found");
+  const contract = db.contracts.find((c) => c.id === args.contractId) ?? fail("Contract not found");
+  const buyer = db.session.buyer ?? fail("Tell us who's buying first.");
+  const check = checkEligibility(contract, buyer);
+  if (!check.eligible) fail(`${contract.vehicle ?? contract.owner} ${contract.contract_number} isn't open to ${buyer.name}: ${check.reason}.`);
+  const quote = {
+    id: nextId(db, "quote", "QR", 4).replace("_", "-"),
+    listing_id: listing.id,
+    contract_id: contract.id,
+    buyer,
+    quantity: Math.max(1, Math.floor(args.quantity || 1)),
+    note: args.note?.trim() ?? "",
+    created_at: now(),
+  };
+  db.quotes.unshift(quote);
+  return quote;
 }
 
 export function setPreference(requestId: string, answer: "yes" | "no" | "always_ask") {
@@ -100,6 +133,9 @@ export function getResults(requestId: string) {
 export function placeOrder(args: { listingId: string; quantity: number; requestId?: string | null; department: string }) {
   const db = getDb();
   const listing = db.listings.find((l) => l.id === args.listingId) ?? fail("Listing not found");
+  const contractFor = db.contracts.find((c) => c.id === listing.contract_id);
+  const access = checkEligibility(contractFor, db.session.buyer);
+  if (!access.eligible) fail(`This contract isn't open to ${db.session.buyer?.name}: ${access.reason}.`);
   const qty = Math.max(1, Math.floor(args.quantity));
   const tier = [...(db.extracted.find((e) => e.id === listing.extracted_item_id)?.tier_pricing ?? [])]
     .sort((a, b) => b.min_qty - a.min_qty)

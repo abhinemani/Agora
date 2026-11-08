@@ -208,6 +208,7 @@ export function seed(): Db {
         storefront_ids: ["sf_riverbend"],
         source_document_id: null,
         onboarding_billed: false,
+        vehicle: "Riverbend", verification: "demo", eligibility: { states: ["OR"], note: "Oregon public agencies (other agencies piggyback with the supplier's consent)" },
       },
       {
         id: "ctr_riv_state",
@@ -225,6 +226,7 @@ export function seed(): Db {
         storefront_ids: ["sf_riverbend"],
         source_document_id: null,
         onboarding_billed: true,
+        vehicle: "ORCPP", verification: "demo", eligibility: { states: ["OR"], note: "Oregon public agencies in the ORCPP program" },
       },
       {
         id: "ctr_cleanline_own",
@@ -242,6 +244,7 @@ export function seed(): Db {
         storefront_ids: ["sf_riverbend"],
         source_document_id: null,
         onboarding_billed: true,
+        vehicle: "Riverbend", verification: "demo", eligibility: { states: ["OR"], agencies: ["City of Riverbend"], note: "City of Riverbend only" },
       },
       {
         id: "ctr_cascade_state",
@@ -259,6 +262,7 @@ export function seed(): Db {
         storefront_ids: ["sf_riverbend"],
         source_document_id: null,
         onboarding_billed: true,
+        vehicle: "ORCPP", verification: "demo", eligibility: { states: ["OR"], note: "Oregon public agencies in the ORCPP program" },
       },
       {
         id: "ctr_natl_coop",
@@ -276,6 +280,7 @@ export function seed(): Db {
         storefront_ids: ["sf_riverbend"],
         source_document_id: null,
         onboarding_billed: true,
+        vehicle: "WSPC", verification: "demo", eligibility: { states: "any", note: "any public agency registered with the Cooperative" },
       },
       {
         id: "ctr_tech_reseller",
@@ -293,6 +298,7 @@ export function seed(): Db {
         storefront_ids: ["sf_riverbend"],
         source_document_id: null,
         onboarding_billed: true,
+        vehicle: "Reseller", verification: "demo", eligibility: { states: "any", note: "participating public entities" },
       },
       {
         id: "ctr_patriot_gsa",
@@ -310,6 +316,7 @@ export function seed(): Db {
         storefront_ids: ["sf_riverbend"],
         source_document_id: null,
         onboarding_billed: true,
+        vehicle: "GSA", verification: "demo", eligibility: { states: "any", note: "state and local governments through GSA Cooperative Purchasing" },
       },
     ],
     documents: [],
@@ -508,11 +515,14 @@ export function seed(): Db {
       { title: "Safety vest, hi-vis, Class 2", supplier: "Patriot Safety & Uniform", date: "2026-09-30", qty: 40, listing_id: "lst_031" },
       { title: "First aid kit, 50-person", supplier: "Patriot Safety & Uniform", date: "2026-09-22", qty: 6, listing_id: "lst_034" },
     ],
-    session: { preference_answer: null, spend_dashboard_enabled: true, acting_supplier_id: "sup_riverside" },
+    quotes: [],
+    session: { preference_answer: null, spend_dashboard_enabled: true, acting_supplier_id: "sup_riverside", buyer: null },
     counters: { revenue: 0, request: 0, order: 1040, solicitation: 7, contract: 0, listing: 40, doc: 0, item: 0, attention: 0 },
   };
 
   addTylerCatalog(db);
+  addMaximus(db);
+  addCarahsoftLeads(db);
   fireMonthlyLines(db);
   return db;
 }
@@ -538,11 +548,10 @@ function addTylerCatalog(db: Db) {
   db.contracts.push({
     id: "ctr_tyler_catalog",
     supplier_id: "sup_tyler",
-    // The catalog file names no contract vehicle; shown as a state IT contract.
     source: "state_contract",
-    owner: "Statewide IT contract",
-    title: "Government software and services price catalog",
-    contract_number: "TYL-CAT-2025-03",
+    owner: "State of New Jersey (NJSTART)",
+    title: "Tyler Technologies price catalog, March 2025",
+    contract_number: "26-TELE-114629",
     start: "2025-03-01",
     end: "",
     piggybackable: false,
@@ -552,12 +561,38 @@ function addTylerCatalog(db: Db) {
     storefront_ids: ["sf_riverbend"],
     source_document_id: null,
     onboarding_billed: true,
+    vehicle: "NJSTART",
+    verification: "source_document",
+    pricing_basis: "published_price",
+    eligibility: { states: ["NJ"], note: "New Jersey state agencies and local public entities" },
   });
-  const pop = db.agency.population;
+  // Tyler's national co-op award: a discount off list, so it carries no prices.
+  db.contracts.push({
+    id: "ctr_tyler_sourcewell",
+    supplier_id: "sup_tyler",
+    source: "coop_contract",
+    owner: "Sourcewell",
+    title: "Tyler Technologies software and services",
+    contract_number: "060624-TTI",
+    start: "",
+    end: "",
+    piggybackable: true,
+    piggyback_clause_text: "",
+    payment_terms: "Per quote",
+    delivery_terms: "Per quote",
+    storefront_ids: ["sf_riverbend"],
+    source_document_id: null,
+    onboarding_billed: true,
+    vehicle: "Sourcewell",
+    verification: "research_lead",
+    pricing_basis: "discount_from_list",
+    covers_supplier_catalog: true,
+    source_url: "https://www.sourcewell-mn.gov/cooperative-purchasing/060624-TTI",
+    eligibility: { states: "any", note: "government, education and nonprofit agencies nationwide", requires: "Free Sourcewell membership" },
+  });
   let n = 0;
   for (const item of tylerCatalog.items) {
     const band = item.band;
-    if (band && (pop < band.min || (band.max !== null && pop > band.max))) continue;
     n++;
     db.listings.push({
       id: `lst_t${String(n).padStart(4, "0")}`,
@@ -572,8 +607,139 @@ function addTylerCatalog(db: Db) {
       lead_time_days: item.unit === "hr" ? 10 : 14,
       extracted_item_id: null,
       storefront_ids: ["sf_riverbend"],
-      detail: band ? `${item.detail} Priced for population ${band.label}.` : item.detail,
+      detail: item.detail,
       keywords: item.path,
+      family: item.family,
+      variant: item.variant,
+      band: band ? { min: band.min, max: band.max ?? null, label: band.label } : null,
     });
   }
+}
+
+/** Maximus US Services on NJSTART 26-TELE-115813, adopted from NASPO ValuePoint
+ * master agreement AR3758. Rates checked against the scanned Attachment C price
+ * schedule (2 pages). */
+function addMaximus(db: Db) {
+  db.suppliers.push({
+    id: "sup_maximus",
+    name: "Maximus US Services",
+    city: "Tysons",
+    state: "VA",
+    is_local: false,
+    certifications: [],
+    verified: { insurance: false, bond: false },
+    edge_tier: "discover",
+    rating: 0,
+    review_count: 0,
+    sponsored: false,
+    categories: ["Professional services", "Software and services"],
+  });
+  db.contracts.push({
+    id: "ctr_maximus_njstart",
+    supplier_id: "sup_maximus",
+    source: "state_contract",
+    owner: "State of New Jersey (NJSTART)",
+    title: "Platform management and social listening",
+    contract_number: "26-TELE-115813",
+    start: "",
+    end: "",
+    piggybackable: false,
+    piggyback_clause_text: "",
+    payment_terms: "Per contract",
+    delivery_terms: "Services scheduled with the vendor",
+    storefront_ids: ["sf_riverbend"],
+    source_document_id: null,
+    onboarding_billed: true,
+    vehicle: "NJSTART",
+    verification: "source_document",
+    pricing_basis: "published_price",
+    master_agreement: "NASPO ValuePoint AR3758",
+    eligibility: { states: ["NJ"], note: "New Jersey state agencies and local public entities" },
+  });
+  const rows: [string, string, string, string, number, string, Category][] = [
+    ["max:platform", "Platform management services", "AR3758 / PM-0", "Project Manager", 210.39, "hr", "Professional services"],
+    ["max:platform", "Platform management services", "AR3758 / PM-1", "Developer", 184.4, "hr", "Professional services"],
+    ["max:platform", "Platform management services", "AR3758 / PM-2", "Development Manager", 204.51, "hr", "Professional services"],
+    ["max:platform", "Platform management services", "AR3758 / PM-3", "Software Engineer", 169.46, "hr", "Professional services"],
+    ["max:platform", "Platform management services", "AR3758 / PM-4", "Process Architect", 163.0, "hr", "Professional services"],
+    ["max:platform", "Platform management services", "AR3758 / PM-5", "Tester", 199.81, "hr", "Professional services"],
+    ["max:platform", "Platform management services", "AR3758 / PM-6", "Analyst", 143.8, "hr", "Professional services"],
+    ["max:platform", "Platform management services", "AR3758 / PM-7", "Subject Matter Expert", 127.23, "hr", "Professional services"],
+    ["max:platform", "Platform management services", "AR3758 / PM-8", "Project Lead", 180.18, "hr", "Professional services"],
+    ["max:hosting", "Platform licenses and hosting", "AR3758 / PM-LH", "Licenses & Hosting", 6680.08, "mo", "Software and services"],
+    ["max:social", "Social listening", "AR3758 / SL-0", "Operations Analysis", 127.49, "hr", "Software and services"],
+    ["max:social", "Social listening", "AR3758 / SL-1", "Data Science", 165.86, "hr", "Software and services"],
+    ["max:social", "Social listening", "AR3758 / SL-2", "Project Lead", 180.18, "hr", "Software and services"],
+    ["max:social", "Social listening", "AR3758 / SL-3", "Social Listening Interactions", 1.64, "interaction", "Software and services"],
+  ];
+  rows.forEach(([family, title, sku, variant, price, unit, category], i) => {
+    db.listings.push({
+      id: `lst_m${String(i + 1).padStart(3, "0")}`,
+      contract_id: "ctr_maximus_njstart",
+      supplier_id: "sup_maximus",
+      source: "state_contract",
+      sku,
+      title,
+      category,
+      unit_price: price,
+      unit,
+      lead_time_days: 14,
+      extracted_item_id: null,
+      storefront_ids: ["sf_riverbend"],
+      detail:
+        family === "max:social"
+          ? "Social listening analysis using ML/NLP models, with staffing and AWS hosting included in the per-interaction rate."
+          : family === "max:hosting"
+            ? "Monthly fixed fee for platform licenses and hosting."
+            : "Hourly labor categories for platform delivery, development, architecture, testing and project support.",
+      keywords: "Maximus platform management digital government social listening resident engagement",
+      family,
+      variant,
+      band: null,
+    });
+  });
+}
+
+/** Carahsoft vehicles located in research but with no price files loaded yet.
+ * Listed so the contract directory shows them as leads, never as prices. */
+function addCarahsoftLeads(db: Db) {
+  db.suppliers.push({
+    id: "sup_carahsoft",
+    name: "Carahsoft Technology Corp.",
+    city: "Reston",
+    state: "VA",
+    is_local: false,
+    certifications: [],
+    verified: { insurance: false, bond: false },
+    edge_tier: "discover",
+    rating: 0,
+    review_count: 0,
+    sponsored: false,
+    categories: ["Software and services"],
+  });
+  const lead = (id: string, owner: string, number: string, url: string, note: string) =>
+    db.contracts.push({
+      id,
+      supplier_id: "sup_carahsoft",
+      source: "reseller",
+      owner,
+      title: "Government software reseller catalog",
+      contract_number: number,
+      start: "",
+      end: "",
+      piggybackable: true,
+      piggyback_clause_text: "",
+      payment_terms: "Per quote",
+      delivery_terms: "Per quote",
+      storefront_ids: ["sf_riverbend"],
+      source_document_id: null,
+      onboarding_billed: true,
+      vehicle: owner.split(" ")[0],
+      verification: "research_lead",
+      pricing_basis: "quote",
+      source_url: url,
+      eligibility: { states: "any", note },
+    });
+  lead("ctr_carahsoft_iowa", "Iowa / NASPO ValuePoint AR2472", "2024-BUS-0226", "https://bidopportunities.iowa.gov/Home/ContractInfo?contractId=39e5d203-5faa-4e4a-a031-eca76be5ae6f", "states that have adopted NASPO ValuePoint AR2472");
+  lead("ctr_carahsoft_coretrust", "CoreTrust", "24COR-018GR", "https://www.carahsoft.com/buy/slg-contracts/coretrust-24cor-018gr", "CoreTrust members");
 }

@@ -4,9 +4,10 @@ import Link from "next/link";
 import { useParams, useSearchParams } from "next/navigation";
 import { Suspense, useState } from "react";
 import { BuyerPicker } from "@/components/BuyerPicker";
+import { CategoryIcon } from "@/components/CategoryIcon";
 import { Alert, Check, File, Lock } from "@/components/icons";
 import { useStore } from "@/components/store";
-import { Badge, Button, Card, ErrorNote, Eyebrow, LinkButton, Loading, SourcePill, money } from "@/components/ui";
+import { Badge, Button, Card, ErrorNote, LinkButton, Loading, SourcePill, Stars, SupplierBadges, money } from "@/components/ui";
 import type { Contract, QuoteRequest } from "@/lib/types";
 import { familyOf, routesFor, stateName, type Route } from "@/lib/vehicles";
 
@@ -46,6 +47,7 @@ function Product() {
   const tiered = variants.length > 1;
   const title = tiered ? l.title.replace(/\s*\([^)]*\)\s*$/, "") : l.title;
   const usage = USAGE_UNITS.test(l.unit);
+  const contract = db.contracts.find((c) => c.id === l.contract_id);
 
   return (
     <div className="mx-auto max-w-4xl space-y-6">
@@ -54,10 +56,37 @@ function Product() {
       </Link>
 
       <Card className="p-6">
-        <Eyebrow>{supplier.name}</Eyebrow>
-        <h1 className="mt-2 text-3xl font-semibold tracking-tight text-navy">{title}</h1>
-        {l.keywords && <div className="mt-1 text-xs text-slate">{l.keywords}</div>}
-        {l.detail && <p className="mt-3 text-sm leading-relaxed text-slate">{l.detail}</p>}
+        <div className="flex gap-5">
+          <CategoryIcon category={l.category} size="lg" />
+          <div className="min-w-0 flex-1">
+            <h1 className="text-2xl font-semibold tracking-tight text-navy">{title}</h1>
+            <div className="mt-1.5 flex flex-wrap items-center gap-x-3 gap-y-1 text-sm">
+              <span className="text-navy">{supplier.name}</span>
+              <SupplierBadges supplier={supplier} />
+              <Stars rating={supplier.rating} count={supplier.review_count || undefined} />
+            </div>
+            {l.keywords && <div className="mt-1 text-xs text-slate">{l.keywords}</div>}
+          </div>
+        </div>
+        {l.detail && <p className="mt-4 text-[15px] leading-relaxed text-slate">{l.detail}</p>}
+        <dl className="mt-5 grid gap-x-6 gap-y-3 border-t border-line pt-5 text-sm sm:grid-cols-4">
+          <div>
+            <dt className="text-xs text-slate">Category</dt>
+            <dd className="text-navy">{l.category}</dd>
+          </div>
+          <div>
+            <dt className="text-xs text-slate">Supplier location</dt>
+            <dd className="text-navy">{supplier.city ? `${supplier.city}, ${supplier.state}` : "Not on file"}</dd>
+          </div>
+          <div>
+            <dt className="text-xs text-slate">{l.category === "Software and services" || l.category === "Professional services" ? "Typical start" : "Typical delivery"}</dt>
+            <dd className="text-navy">{l.lead_time_days} days</dd>
+          </div>
+          <div>
+            <dt className="text-xs text-slate">Terms</dt>
+            <dd className="text-navy">{contract ? contract.payment_terms : "Card at purchase"}</dd>
+          </div>
+        </dl>
 
         <div className="mt-5 grid gap-4 sm:grid-cols-[1fr_10rem]">
           <label className="block text-xs font-semibold text-slate">
@@ -125,6 +154,15 @@ function Product() {
           </div>
         )}
         <div className="space-y-3">
+          {!contract && (
+            <Card className="flex flex-wrap items-center justify-between gap-4 p-5">
+              <div>
+                <div className="text-base font-semibold text-navy">Small purchase</div>
+                <div className="mt-1 text-sm text-slate">No contract needed while the total stays under your quick-buy limit. Pay by P-card.</div>
+              </div>
+              <LinkButton href={`/checkout?listing=${l.id}&qty=${qty}${requestId ? `&request=${requestId}` : ""}`}>Buy at {money(l.unit_price * qty)}</LinkButton>
+            </Card>
+          )}
           {routes.map((r) => (
             <RouteCard key={r.contract.id} r={r} productId={l.id} qty={qty} requestId={requestId} />
           ))}

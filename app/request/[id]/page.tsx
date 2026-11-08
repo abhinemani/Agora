@@ -280,7 +280,9 @@ function OptionCard({ o, qty, requestId }: { o: ResultOption; qty: number; reque
         <CategoryIcon category={l.category} />
         <div className="min-w-0 flex-1">
           <div className="flex flex-wrap items-center gap-2">
-            <span className="font-semibold text-navy">{title}</span>
+            <Link href={`/product/${l.id}?qty=${qty}&request=${requestId}`} className="font-semibold text-navy hover:text-maroon hover:underline">
+              {title}
+            </Link>
             {o.sponsored && <span className="text-xs text-slate">Sponsored</span>}
           </div>
           {l.detail && <div className="text-xs text-slate">{l.detail}</div>}
@@ -321,11 +323,9 @@ function OptionCard({ o, qty, requestId }: { o: ResultOption; qty: number; reque
               {rule.text}
             </span>
             {!qr && <RevenueTags options={earnsFor({ ...o, rule })} />}
-            {l.contract_id && (
-              <Link href={`/product/${l.id}?qty=${qty}&request=${requestId}`} className="text-xs font-semibold text-maroon hover:underline">
-                Ways to buy
-              </Link>
-            )}
+            <Link href={`/product/${l.id}?qty=${qty}&request=${requestId}`} className="text-xs font-semibold text-maroon hover:underline">
+              {l.contract_id ? "Ways to buy" : "Details"}
+            </Link>
           </div>
         </div>
         {qr ? (

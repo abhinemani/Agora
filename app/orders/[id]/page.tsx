@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useParams } from "next/navigation";
 import { Check } from "@/components/icons";
 import { useStore } from "@/components/store";
@@ -27,7 +28,11 @@ export default function OrderConfirmation() {
             <div className="text-[11px] font-semibold text-maroon">{order.status === "placed" ? "Order placed" : order.status === "approved" ? "PO approved" : "Sent for approval"}</div>
             <h1 className="mt-1 text-3xl font-semibold tracking-tight text-navy">Order {order.id}</h1>
             <p className="mt-1 text-sm text-slate">
-              {order.quantity} × {listing.title} from {supplier.name}, {money(order.total)}.
+              {order.quantity} ×{" "}
+              <Link href={`/product/${listing.id}`} className="text-navy hover:text-maroon hover:underline">
+                {listing.title}
+              </Link>{" "}
+              from {supplier.name}, {money(order.total)}.
             </p>
           </div>
         </div>

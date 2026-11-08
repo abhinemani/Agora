@@ -65,7 +65,9 @@ function Checkout() {
       <Card className="p-5">
         <div className="flex flex-wrap items-start justify-between gap-4">
           <div>
-            <div className="font-semibold text-navy">{listing.title}</div>
+            <Link href={`/product/${listing.id}?qty=${qty}`} className="font-semibold text-navy hover:text-maroon hover:underline">
+              {listing.title}
+            </Link>
             <div className="mt-1 flex flex-wrap items-center gap-2 text-sm text-slate">
               {supplier.name} <SupplierBadges supplier={supplier} />
             </div>

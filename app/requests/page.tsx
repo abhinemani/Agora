@@ -20,7 +20,7 @@ export default function MyRequests() {
       </PageTitle>
       <div className="grid gap-6 md:grid-cols-2">
         <section>
-          <h2 className="mb-2 text-sm font-semibold uppercase tracking-wider text-slate">Orders</h2>
+          <h2 className="mb-2 text-sm font-semibold text-slate">Orders</h2>
           <Card className="divide-y divide-navy/5">
             {db.orders.map((o) => {
               const l = db.listings.find((x) => x.id === o.listing_id);
@@ -41,7 +41,7 @@ export default function MyRequests() {
         </section>
         {db.quotes.length > 0 && (
           <section className="md:col-span-2">
-            <h2 className="mb-2 text-sm font-semibold uppercase tracking-wider text-slate">Quote requests</h2>
+            <h2 className="mb-2 text-sm font-semibold text-slate">Quote requests</h2>
             <Card className="divide-y divide-navy/5">
               {db.quotes.map((q) => {
                 const l = db.listings.find((x) => x.id === q.listing_id);
@@ -64,7 +64,7 @@ export default function MyRequests() {
           </section>
         )}
         <section>
-          <h2 className="mb-2 text-sm font-semibold uppercase tracking-wider text-slate">Requests</h2>
+          <h2 className="mb-2 text-sm font-semibold text-slate">Requests</h2>
           <Card className="divide-y divide-navy/5">
             {db.requests.map((r) => (
               <Link key={r.id} href={`/request/${r.id}`} className="flex items-center justify-between gap-3 p-4 hover:bg-tint/50">

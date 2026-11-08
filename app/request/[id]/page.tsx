@@ -40,7 +40,7 @@ const GROUP_LIMIT = 6;
 export default function RequestResults() {
   const { id } = useParams<{ id: string }>();
   const ask = useSearchParams().get("ask") === "1";
-  const { db, act } = useStore();
+  const { db, act, showEarn } = useStore();
   const [results, setResults] = useState<Results | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [expanded, setExpanded] = useState<string[]>([]);
@@ -82,35 +82,26 @@ export default function RequestResults() {
   return (
     <div className="space-y-6">
       <div>
-        <Link href="/" className="text-xs font-semibold text-slate hover:text-navy">
-          ← New request
+        <Link href="/" className="text-sm text-slate hover:text-navy">
+          New request
         </Link>
-        <div className="mt-5">
-          <Eyebrow>Your request</Eyebrow>
-        </div>
-        <h1 className="mt-2 text-2xl font-light tracking-tight text-navy sm:text-3xl">“{request.raw_text}”</h1>
-        <div className="mt-3 flex flex-wrap gap-2 text-xs">
-          <Parsed label="Item" value={p.item} />
-          <Parsed label="Quantity" value={String(p.quantity)} />
-          <Parsed label="Needed" value={p.deadline ?? "No deadline"} />
-          <Parsed label="Department" value={p.department} />
-          {p.category && <Parsed label="Category" value={p.category} />}
-          <Parsed label="Estimated total" value={p.est_total ? money(p.est_total, false) : "Unknown"} />
+        <h1 className="mt-3 text-2xl font-semibold tracking-tight text-navy">{request.raw_text}</h1>
+        <p className="mt-1.5 text-sm text-slate" title={request.parse_mode === "llm" ? "Read by Claude" : "Read with offline rules"}>
+          {p.quantity > 1 ? `${p.quantity} needed` : "One needed"} for {p.department}
+          {p.deadline ? `, ${p.deadline}` : ""}
+          {p.est_total ? `, about ${money(p.est_total, false)}` : ""}.
           {buyer && (
-            <span className="rounded-md border border-maroon/30 bg-maroon-50 px-2.5 py-1">
-              <span className="text-slate">For: </span>
-              <span className="font-semibold text-navy">
-                {buyer.name}, {buyer.state}
-              </span>
-              <button onClick={() => setChanging(!changing)} className="ml-2 font-semibold text-maroon hover:underline">
+            <>
+              {" "}
+              Buying for <span className="text-navy">{buyer.name}</span>
+              {", "}
+              {buyer.state}.{" "}
+              <button onClick={() => setChanging(!changing)} className="text-maroon hover:underline">
                 {changing ? "Cancel" : "Change"}
               </button>
-            </span>
+            </>
           )}
-          <span className="self-center rounded border border-steel/50 px-1.5 py-0.5 text-[10px] uppercase tracking-wide text-slate">
-            {request.parse_mode === "llm" ? "Parsed by Claude" : "Offline parsing"}
-          </span>
-        </div>
+        </p>
       </div>
 
       {(needsBuyer || changing) && <BuyerPicker onDone={() => setChanging(false)} />}
@@ -152,7 +143,7 @@ export default function RequestResults() {
 
       {results && !results.no_match && (
         <>
-          <KindBanner kind={results.groups.every((g) => g.source === "no_approval") ? PURCHASE_KINDS.no_approval : PURCHASE_KINDS.contract} />
+          {showEarn && <KindBanner kind={results.groups.every((g) => g.source === "no_approval") ? PURCHASE_KINDS.no_approval : PURCHASE_KINDS.contract} />}
           <div className="flex flex-wrap items-center justify-between gap-2">
             <div className="text-sm text-slate">
               {results.groups.reduce((n, g) => n + g.options.length, 0)} options from {results.groups.length} source{results.groups.length > 1 ? "s" : ""}
@@ -208,7 +199,7 @@ export default function RequestResults() {
         </>
       )}
 
-      {results && results.no_match && <KindBanner kind={PURCHASE_KINDS.new_need} />}
+      {results && results.no_match && showEarn && <KindBanner kind={PURCHASE_KINDS.new_need} />}
       {results && results.no_match && (
         <div className="grid gap-6 lg:grid-cols-3">
           <Card className="p-6 lg:col-span-2">
@@ -217,7 +208,7 @@ export default function RequestResults() {
                 <Plus />
               </IconCircle>
               <div>
-                <h2 className="text-2xl font-light tracking-tight text-navy">
+                <h2 className="text-2xl font-semibold tracking-tight text-navy">
                   {results.unavailable.length
                     ? `No contract open to ${results.buyer?.name ?? "you"} covers this yet.`
                     : "No contract covers this yet. You may be the first agency to buy it."}
@@ -280,16 +271,16 @@ function OptionCard({ o, qty, requestId }: { o: ResultOption; qty: number; reque
         : { text: `Needs PO · over $${Math.round(limit / 1000)}K${via}`, payment: "po" as const };
   const title = tiered ? l.title.replace(/\s*\([^)]*\)\s*$/, "") : l.title;
   return (
-    <Card className={`p-5 transition hover:shadow-md ${o.sponsored ? "ring-1 ring-rose/40" : ""}`}>
+    <Card className="p-5">
       <div className="flex flex-wrap items-start justify-between gap-4">
         <div className="min-w-0 flex-1">
           <div className="flex flex-wrap items-center gap-2">
             <span className="font-semibold text-navy">{title}</span>
-            {o.sponsored && <span className="rounded border border-rose/60 px-1.5 py-px text-[10px] font-semibold uppercase tracking-wide text-rose">Sponsored</span>}
+            {o.sponsored && <span className="text-xs text-slate">Sponsored</span>}
           </div>
           {l.detail && <div className="text-xs text-slate">{l.detail}</div>}
           {qr && (
-            <div className="mt-2 rounded-md bg-amber-50 px-2.5 py-1.5 text-xs text-amber-900">
+            <div className="mt-2 text-sm text-amber-800">
               {qr.reference} isn't open to your agency. Buy through {qr.vehicle} {qr.contract_number} instead: the supplier quotes a discount off its list price.
               {qr.research_note ? ` ${qr.research_note}.` : ""}
             </div>
@@ -312,7 +303,6 @@ function OptionCard({ o, qty, requestId }: { o: ResultOption; qty: number; reque
             <Stars rating={o.supplier.rating} count={o.supplier.review_count} />
           </div>
           <div className="mt-2 flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-slate">
-            <SourcePill source={o.group} />
             {o.contract_number && (
               <span>
                 {o.vehicle && <span className="font-semibold text-navy">{o.vehicle} </span>}
@@ -322,20 +312,20 @@ function OptionCard({ o, qty, requestId }: { o: ResultOption; qty: number; reque
             <span className={o.meets_deadline === false ? "text-maroon" : ""}>{o.delivery}</span>
           </div>
           <div className="mt-2 flex flex-wrap items-center gap-3">
-            <span className={`inline-flex items-center gap-1.5 rounded px-2 py-1 text-xs font-semibold ${rule.payment === "po" ? "bg-amber-50 text-amber-800" : "bg-emerald-50 text-emerald-800"}`}>
+            <span className={`text-sm ${rule.payment === "po" ? "text-amber-700" : "text-emerald-700"}`}>
               {rule.text}
             </span>
             {!qr && <RevenueTags options={earnsFor({ ...o, rule })} />}
             {l.contract_id && (
               <Link href={`/product/${l.id}?qty=${qty}&request=${requestId}`} className="text-xs font-semibold text-maroon hover:underline">
-                Compare ways to buy →
+                Ways to buy
               </Link>
             )}
           </div>
         </div>
         {qr ? (
           <div className="text-right">
-            <div className="text-[11px] uppercase tracking-wide text-slate">Reference price</div>
+            <div className="text-[11px] text-slate">Reference price</div>
             <div className="text-lg font-semibold text-slate">
               {money(l.unit_price)}
               <span className="text-xs font-normal"> / {l.unit}</span>
@@ -364,7 +354,7 @@ function OptionCard({ o, qty, requestId }: { o: ResultOption; qty: number; reque
           </div>
         ) : (
           <div className="text-right">
-            <div className="text-lg font-bold text-navy">
+            <div className="text-lg font-semibold text-navy">
               {money(l.unit_price)}
               <span className="text-xs font-normal text-slate"> / {l.unit}</span>
             </div>

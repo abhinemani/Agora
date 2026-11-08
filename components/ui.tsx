@@ -12,30 +12,35 @@ export const compact = (n: number) =>
   n >= 1_000_000 ? `$${(n / 1_000_000).toFixed(2)}M` : n >= 1000 ? `$${Math.round(n / 1000)}K` : money(n, false);
 
 const SOURCE_STYLE: Record<Source, { label: string; cls: string }> = {
-  own_contract: { label: "Riverbend contract", cls: "bg-navy text-white" },
-  state_contract: { label: "State contract", cls: "bg-steel/25 text-navy" },
-  coop_contract: { label: "Co-op contract", cls: "bg-maroon-50 text-maroon" },
-  reseller: { label: "Reseller", cls: "bg-tint text-navy border border-steel/40" },
-  gsa: { label: "GSA schedule", cls: "bg-navy-50 text-navy-600" },
-  no_approval: { label: "No approval needed", cls: "bg-emerald-50 text-emerald-800" },
+  own_contract: { label: "Riverbend contract", cls: "bg-navy" },
+  state_contract: { label: "State contract", cls: "bg-steel" },
+  coop_contract: { label: "Co-op contract", cls: "bg-maroon" },
+  reseller: { label: "Reseller", cls: "bg-slate" },
+  gsa: { label: "GSA schedule", cls: "bg-navy-600" },
+  no_approval: { label: "No approval needed", cls: "bg-emerald-600" },
 };
 
 export function SourcePill({ source }: { source: Source }) {
   const s = SOURCE_STYLE[source];
-  return <span className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-[11px] font-semibold uppercase tracking-wide ${s.cls}`}>{s.label}</span>;
+  return (
+    <span className="inline-flex items-center gap-1.5 text-xs text-slate">
+      <span className={`h-1.5 w-1.5 rounded-full ${s.cls}`} aria-hidden />
+      {s.label}
+    </span>
+  );
 }
 
 export const sourceLabel = (s: Source) => SOURCE_STYLE[s].label;
 
 export function Badge({ children, tone = "neutral" }: { children: React.ReactNode; tone?: "neutral" | "maroon" | "navy" | "green" | "amber" }) {
   const cls = {
-    neutral: "bg-tint text-slate",
-    maroon: "bg-maroon-50 text-maroon",
-    navy: "bg-navy-50 text-navy",
-    green: "bg-emerald-50 text-emerald-800",
-    amber: "bg-amber-50 text-amber-800",
+    neutral: "text-slate",
+    maroon: "text-maroon",
+    navy: "text-navy",
+    green: "text-emerald-700",
+    amber: "text-amber-700",
   }[tone];
-  return <span className={`inline-flex items-center rounded px-1.5 py-0.5 text-[11px] font-semibold ${cls}`}>{children}</span>;
+  return <span className={`inline-flex items-center rounded border border-line bg-white px-1.5 py-px text-[11px] font-semibold ${cls}`}>{children}</span>;
 }
 
 export function Stars({ rating, count }: { rating: number; count?: number }) {
@@ -67,7 +72,8 @@ export function SupplierBadges({ supplier }: { supplier: Supplier }) {
 
 export function Card({ children, className = "", accent }: { children: React.ReactNode; className?: string; accent?: "rose" | "steel" | "navy" | "maroon" }) {
   const top = accent ? { rose: "border-t-[3px] border-t-rose", steel: "border-t-[3px] border-t-steel", navy: "border-t-[3px] border-t-navy", maroon: "border-t-[3px] border-t-maroon" }[accent] : "";
-  return <div className={`rounded-xl border border-navy/10 bg-white shadow-card ${top} ${className}`}>{children}</div>;
+  void top; // accents retired in the lighter design; kept in the signature for callers
+  return <div className={`rounded-lg border border-line bg-white ${className}`}>{children}</div>;
 }
 
 /** Numbered maroon badges naming the revenue options an action triggers, as in the deck. */
@@ -91,8 +97,8 @@ export function RevenueTags({ options, size = "sm", force }: { options: readonly
 }
 
 export function Eyebrow({ children, tone = "maroon" }: { children: React.ReactNode; tone?: "maroon" | "rose" | "slate" | "steel" }) {
-  const c = { maroon: "text-maroon", rose: "text-rose", slate: "text-slate", steel: "text-steel" }[tone];
-  return <div className={`text-[11px] font-semibold uppercase tracking-[0.18em] ${c}`}>{children}</div>;
+  void tone;
+  return <div className="text-sm text-slate">{children}</div>;
 }
 
 export function Button({
@@ -104,7 +110,7 @@ export function Button({
   const cls = {
     primary: "bg-navy text-white hover:bg-navy-600 disabled:bg-steel",
     maroon: "bg-maroon text-white hover:bg-maroon/90 disabled:bg-steel",
-    secondary: "border border-navy/20 bg-white text-navy hover:bg-tint disabled:text-steel",
+    secondary: "border border-line bg-white text-navy hover:border-navy/30 disabled:text-steel",
     ghost: "text-navy hover:bg-tint disabled:text-steel",
   }[variant];
   return (
@@ -121,7 +127,7 @@ export function LinkButton({ href, children, variant = "primary", className = ""
   const cls = {
     primary: "bg-navy text-white hover:bg-navy-600",
     maroon: "bg-maroon text-white hover:bg-maroon/90",
-    secondary: "border border-navy/20 bg-white text-navy hover:bg-tint",
+    secondary: "border border-line bg-white text-navy hover:border-navy/30",
   }[variant];
   return (
     <Link href={href} className={`inline-flex items-center justify-center gap-1.5 rounded-md px-3.5 py-2 text-sm font-semibold transition-colors ${cls} ${className}`}>
@@ -133,22 +139,21 @@ export function LinkButton({ href, children, variant = "primary", className = ""
 export function PageTitle({ eyebrow, title, children }: { eyebrow?: string; title: string; children?: React.ReactNode }) {
   return (
     <div className="mb-8">
-      {eyebrow && <Eyebrow>{eyebrow}</Eyebrow>}
-      <h1 className="mt-2 text-3xl font-light tracking-tight text-navy sm:text-[2.1rem]">{title}</h1>
-      {children && <div className="mt-2 max-w-3xl text-[15px] leading-relaxed text-slate">{children}</div>}
+      <h1 className="text-2xl font-semibold tracking-tight text-navy">{title}</h1>
+      {children && <div className="mt-1.5 max-w-2xl text-[15px] leading-relaxed text-slate">{children}</div>}
     </div>
   );
 }
 
 export function IconCircle({ children, size = "md" }: { children: React.ReactNode; size?: "md" | "lg" }) {
-  const d = size === "lg" ? "h-12 w-12 [&>svg]:h-5 [&>svg]:w-5" : "h-9 w-9 [&>svg]:h-4 [&>svg]:w-4";
-  return <span className={`flex shrink-0 items-center justify-center rounded-full bg-maroon text-sm font-bold text-white ${d}`}>{children}</span>;
+  const d = size === "lg" ? "h-11 w-11 [&>svg]:h-5 [&>svg]:w-5" : "h-8 w-8 [&>svg]:h-4 [&>svg]:w-4";
+  return <span className={`flex shrink-0 items-center justify-center rounded-full bg-tint text-sm font-semibold text-navy ${d}`}>{children}</span>;
 }
 
 export function SectionLabel({ children, right }: { children: React.ReactNode; right?: React.ReactNode }) {
   return (
     <div className="mb-3 flex items-center justify-between gap-3">
-      <h2 className="text-[11px] font-semibold uppercase tracking-[0.16em] text-slate">{children}</h2>
+      <h2 className="text-base font-semibold text-navy">{children}</h2>
       {right}
     </div>
   );

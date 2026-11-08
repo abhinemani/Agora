@@ -34,7 +34,7 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
   const [role, setRoleState] = useState<Role>("buyer");
   const [ledgerOpen, setLedgerOpenState] = useState(false);
   const [seen, setSeen] = useState<number | null>(null);
-  const [showEarn, setShowEarnState] = useState(true);
+  const [showEarn, setShowEarnState] = useState(false);
 
   const refresh = useCallback(async () => {
     const res = await fetch("/api/state", { cache: "no-store" });
@@ -49,7 +49,7 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
     try {
       const r = localStorage.getItem("role") as Role | null;
       if (r) setRoleState(r);
-      if (localStorage.getItem("showEarn") === "0") setShowEarnState(false);
+      if (localStorage.getItem("showEarn") === "1") setShowEarnState(true);
     } catch {}
   }, [refresh]);
 

@@ -59,7 +59,7 @@ function Checkout() {
         <Link href={request ? `/request/${request.id}` : "/"} className="text-xs font-semibold text-slate hover:text-navy">
           ← Back to options
         </Link>
-        <h1 className="mt-2 text-3xl font-light tracking-tight text-navy">Checkout</h1>
+        <h1 className="mt-2 text-3xl font-semibold tracking-tight text-navy">Checkout</h1>
       </div>
 
       <Card className="p-5">
@@ -106,7 +106,7 @@ function Checkout() {
 
       <div className="grid gap-4 md:grid-cols-2">
         <Card className="p-5">
-          <div className="text-xs font-semibold uppercase tracking-wider text-slate">Deliver to</div>
+          <div className="text-xs font-semibold text-slate">Deliver to</div>
           {db.session.buyer && db.session.buyer.name !== db.agency.name ? (
             <>
               <div className="mt-2 text-sm font-semibold text-navy">{db.session.buyer.name}</div>
@@ -122,7 +122,7 @@ function Checkout() {
           )}
         </Card>
         <Card className="p-5">
-          <div className="text-xs font-semibold uppercase tracking-wider text-slate">Payment</div>
+          <div className="text-xs font-semibold text-slate">Payment</div>
           {po ? (
             <>
               <div className="mt-2 text-sm font-semibold text-navy">Purchase order</div>

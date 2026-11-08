@@ -61,7 +61,7 @@ function Node({ k, title, sub, opts = [], fired, dashed, accent }: { k?: string;
       }`}
     >
       {opts.length > 0 && <Tags opts={opts} fired={fired} />}
-      {k && <div className="text-[10px] font-semibold uppercase tracking-[0.16em] text-slate">{k}</div>}
+      {k && <div className="text-[10px] font-semibold text-slate">{k}</div>}
       <div className="text-sm font-semibold text-navy">{title}</div>
       {sub && <div className="text-[11px] text-slate">{sub}</div>}
     </div>
@@ -75,7 +75,7 @@ const Chain = ({ active }: { active: string }) => (
       {["Plan", "Source", "Contract", "Buy", "Pay"].map((s, i) => (
         <span key={s} className="flex items-center gap-2">
           {i > 0 && <Arrow className="h-4 w-4 text-slate" />}
-          <span className={`rounded-full px-6 py-1.5 text-sm font-semibold text-white sm:px-9 ${s === active ? "bg-maroon" : "bg-navy"}`}>{s}</span>
+          <span className={`rounded-full border px-5 py-1 text-sm sm:px-7 ${s === active ? "border-maroon bg-maroon text-white" : "border-line bg-white text-navy"}`}>{s}</span>
         </span>
       ))}
     </div>
@@ -101,15 +101,13 @@ export default function Model() {
   return (
     <div className="space-y-16">
       {/* Hero */}
-      <section className="relative left-1/2 -mt-8 w-screen -translate-x-1/2 bg-navy px-4 pb-12 pt-14 text-white">
-        <div className="mx-auto max-w-6xl">
-          <Eyebrow tone="rose">Sovra · Business model, live</Eyebrow>
-          <h1 className="mt-4 text-4xl font-light tracking-tight sm:text-5xl">How the storefront earns</h1>
-          <p className="mt-4 max-w-2xl text-lg font-light text-steel">
-            A local government's own storefront for everything it can buy, and ten ways to earn from it beyond SaaS. Every diagram on this page is driven by what has happened in this demo session.
+      <section className="pt-4">
+        <div>
+          <h1 className="text-[2.1rem] font-semibold tracking-tight text-navy">How the storefront earns</h1>
+          <p className="mt-2 max-w-2xl text-[17px] text-slate">
+            A local government's own storefront for everything it can buy, and ten ways to earn from it beyond SaaS. Every diagram below reflects what has happened in this demo session.
           </p>
-          <div className="mt-6 h-0.5 w-16 bg-maroon" />
-          <div className="mt-8 grid gap-6 sm:grid-cols-3">
+          <div className="mt-8 grid gap-4 sm:grid-cols-3">
             <Stat label="Earned this session" value={money(total)} />
             <Stat label="Revenue options fired" value={`${firedCount} of 10`} />
             <Stat label="Riverbend's net subscription" value={money(2000 - credits)} sub={`$2,000 less ${money(credits)} in credits`} />
@@ -119,7 +117,7 @@ export default function Model() {
 
       {/* Three kinds of purchase */}
       <section>
-        <h2 className="text-3xl font-light tracking-tight text-navy">Three kinds of purchase, each earning differently</h2>
+        <h2 className="text-xl font-semibold tracking-tight text-navy">Three kinds of purchase, each earning differently</h2>
         <div className="mt-6 grid gap-4 md:grid-cols-3">
           {(
             [
@@ -152,7 +150,7 @@ export default function Model() {
 
       {/* Buyer value chain */}
       <section>
-        <h2 className="text-3xl font-light tracking-tight text-navy">One storefront, and an RFP only when needed</h2>
+        <h2 className="text-xl font-semibold tracking-tight text-navy">One storefront, and an RFP only when needed</h2>
         <Card className="mt-6 p-6">
           <Chain active="Buy" />
           <div className="grid items-center gap-4 md:grid-cols-[1fr_auto_1.1fr_auto_1.6fr_auto_1.1fr_auto_1fr]">
@@ -167,7 +165,7 @@ export default function Model() {
                 <Node title="GSA and resellers" sub="approved vendors" opts={[2]} fired={fired} />
                 <Node title="No approval needed" sub="a box of pencils" opts={[5]} fired={fired} />
               </div>
-              <div className="mt-2 text-center text-[10px] font-semibold uppercase tracking-[0.16em] text-slate">In the storefront</div>
+              <div className="mt-2 text-center text-[10px] font-semibold text-slate">In the storefront</div>
             </div>
             <Flow />
             <Node k="Buy" title="Checkout" sub="PO or P-card" opts={[9]} fired={fired} />
@@ -186,7 +184,7 @@ export default function Model() {
 
       {/* Supplier loop */}
       <section>
-        <h2 className="text-3xl font-light tracking-tight text-navy">A supplier's win becomes a listing</h2>
+        <h2 className="text-xl font-semibold tracking-tight text-navy">A supplier's win becomes a listing</h2>
         <Card className="mt-6 p-6">
           <Chain active="Buy" />
           <div className="grid items-center gap-4 md:grid-cols-[1fr_auto_1fr_auto_1fr_auto_1fr_auto_1fr]">
@@ -214,7 +212,7 @@ export default function Model() {
 
       {/* Flywheel */}
       <section>
-        <h2 className="text-3xl font-light tracking-tight text-navy">Every turn of the flywheel earns revenue</h2>
+        <h2 className="text-xl font-semibold tracking-tight text-navy">Every turn of the flywheel earns revenue</h2>
         <p className="mt-2 text-slate">Start at the top and follow the arrows clockwise. Each box shows what it has earned so far.</p>
         <div className="mt-8 grid items-center gap-6 lg:grid-cols-[1fr_minmax(0,400px)_1fr]">
           <div className="order-2 space-y-4 lg:order-1">
@@ -242,28 +240,28 @@ export default function Model() {
       </section>
 
       {/* Five ways */}
-      <section className="-mx-4 bg-navy px-4 py-14 text-white sm:rounded-3xl">
-        <div className="mx-auto max-w-5xl">
-          <h2 className="text-3xl font-light tracking-tight">Revenue per storefront adds up five ways</h2>
-          <div className="mt-8 divide-y divide-white/10">
+      <section>
+        <div>
+          <h2 className="text-xl font-semibold tracking-tight text-navy">Revenue per storefront adds up five ways</h2>
+          <div className="mt-6 divide-y divide-line rounded-lg border border-line bg-white px-6">
             {FIVE_WAYS.map((w, i) => (
               <div key={w.label} className="grid grid-cols-[2rem_1fr_auto] items-center gap-4 py-4 sm:grid-cols-[2rem_1fr_14rem_8rem]">
-                <span className="text-2xl font-light text-rose">{i === 0 ? "" : "+"}</span>
-                <span className="text-lg font-light sm:text-2xl">{w.label}</span>
-                <span className="hidden text-right text-sm text-steel sm:block">
+                <span className="text-xl text-maroon">{i === 0 ? "" : "+"}</span>
+                <span className="text-base text-navy sm:text-lg">{w.label}</span>
+                <span className="hidden text-right text-sm text-slate sm:block">
                   {w.who} · option{w.options.length > 1 ? "s" : ""} {w.options.join(", ")}
                 </span>
-                <span className="text-right text-lg font-semibold tabular-nums">{money(sum(w.options), false)}</span>
+                <span className="text-right text-base font-semibold tabular-nums text-navy">{money(sum(w.options), false)}</span>
               </div>
             ))}
-            <div className="grid grid-cols-[2rem_1fr_auto] items-center gap-4 pt-5 sm:grid-cols-[2rem_1fr_14rem_8rem]">
-              <span className="text-2xl font-light text-rose">=</span>
-              <span className="text-lg font-semibold sm:text-2xl">Riverbend storefront, this session</span>
+            <div className="grid grid-cols-[2rem_1fr_auto] items-center gap-4 py-4 sm:grid-cols-[2rem_1fr_14rem_8rem]">
+              <span className="text-xl text-maroon">=</span>
+              <span className="text-base font-semibold text-navy sm:text-lg">Riverbend storefront, this session</span>
               <span className="hidden sm:block" />
-              <span className="text-right text-xl font-bold tabular-nums">{money(total, false)}</span>
+              <span className="text-right text-lg font-semibold tabular-nums text-navy">{money(total, false)}</span>
             </div>
           </div>
-          <p className="mt-8 max-w-3xl text-steel">
+          <p className="mt-4 max-w-3xl text-sm text-slate">
             Each turn of the flywheel grows the middle terms. Credits are only a share of spend fees, so Sovra's net take rises as spend grows, even as the agency's cost falls.
           </p>
         </div>
@@ -271,10 +269,10 @@ export default function Model() {
 
       {/* Ten ways */}
       <section>
-        <h2 className="text-3xl font-light tracking-tight text-navy">Ten ways to earn, and four fit inside Edge</h2>
+        <h2 className="text-xl font-semibold tracking-tight text-navy">Ten ways to earn, and four fit inside Edge</h2>
         <Card className="mt-6 overflow-x-auto">
           <table className="w-full min-w-[760px] text-sm">
-            <thead className="bg-tint text-left text-[11px] uppercase tracking-wider text-slate">
+            <thead className="bg-tint text-left text-[11px] text-slate">
               <tr>
                 <th className="px-4 py-3">#</th>
                 <th className="px-4 py-3">Option</th>
@@ -322,10 +320,10 @@ export default function Model() {
 
 function Stat({ label, value, sub }: { label: string; value: string; sub?: string }) {
   return (
-    <div className="rounded-xl border border-white/10 bg-white/[0.04] p-5">
-      <div className="text-[11px] font-semibold uppercase tracking-[0.16em] text-steel">{label}</div>
-      <div className="mt-2 text-3xl font-light tabular-nums">{value}</div>
-      {sub && <div className="mt-1 text-xs text-steel">{sub}</div>}
+    <div className="rounded-lg border border-line bg-white p-5">
+      <div className="text-sm text-slate">{label}</div>
+      <div className="mt-1 text-2xl font-semibold tabular-nums text-navy">{value}</div>
+      {sub && <div className="mt-1 text-xs text-slate">{sub}</div>}
     </div>
   );
 }
@@ -353,7 +351,7 @@ function RevBox({ kind = "Revenue", title, sub, amount, opts, fired, credit }: {
 function Mini({ step, label, value }: { step: string; label: string; value: string | number }) {
   return (
     <div className="rounded-lg bg-white p-3 text-center shadow-card">
-      <div className="text-[10px] font-semibold uppercase tracking-[0.16em] text-rose">{step}</div>
+      <div className="text-[10px] font-semibold text-rose">{step}</div>
       <div className="mt-1 text-xl font-light text-navy tabular-nums">{value}</div>
       <div className="text-[11px] text-slate">{label}</div>
     </div>

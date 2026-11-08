@@ -42,7 +42,7 @@ export default function ProcurementHome() {
           </div>
         </Card>
         <Card className="p-5">
-          <div className="text-xs font-semibold uppercase tracking-wider text-slate">Storefront today</div>
+          <div className="text-xs font-semibold text-slate">Storefront today</div>
           <div className="mt-2 text-4xl font-light text-navy">{db.listings.filter((l) => l.storefront_ids.includes("sf_riverbend")).length}</div>
           <div className="text-sm text-slate">listings from {db.contracts.filter((c) => c.storefront_ids.includes("sf_riverbend")).length} contracts</div>
           <Link href="/procurement/spend" className="mt-3 inline-block text-sm font-semibold text-maroon hover:underline">
@@ -52,7 +52,7 @@ export default function ProcurementHome() {
       </div>
 
       <section>
-        <h2 className="mb-2 text-sm font-semibold uppercase tracking-wider text-slate">Pending approvals ({pending.length})</h2>
+        <h2 className="mb-2 text-sm font-semibold text-slate">Pending approvals ({pending.length})</h2>
         <Card className="divide-y divide-navy/5">
           {pending.map((o) => {
             const l = db.listings.find((x) => x.id === o.listing_id)!;
@@ -85,7 +85,7 @@ export default function ProcurementHome() {
 
       <div className="grid gap-6 md:grid-cols-2">
         <section>
-          <h2 className="mb-2 text-sm font-semibold uppercase tracking-wider text-slate">Solicitations</h2>
+          <h2 className="mb-2 text-sm font-semibold text-slate">Solicitations</h2>
           <Card className="divide-y divide-navy/5">
             {awardedUnlisted.map((s) => (
               <Link key={s.id} href="/solicitations" className="flex items-center justify-between gap-3 p-4 hover:bg-tint/50">
@@ -102,7 +102,7 @@ export default function ProcurementHome() {
           </Card>
         </section>
         <section>
-          <h2 className="mb-2 text-sm font-semibold uppercase tracking-wider text-slate">Recent orders</h2>
+          <h2 className="mb-2 text-sm font-semibold text-slate">Recent orders</h2>
           <Card className="divide-y divide-navy/5">
             {recent.map((o) => {
               const l = db.listings.find((x) => x.id === o.listing_id)!;

@@ -24,8 +24,8 @@ export default function OrderConfirmation() {
             <Check />
           </IconCircle>
           <div>
-            <div className="text-[11px] font-semibold uppercase tracking-[0.18em] text-maroon">{order.status === "placed" ? "Order placed" : order.status === "approved" ? "PO approved" : "Sent for approval"}</div>
-            <h1 className="mt-1 text-3xl font-light tracking-tight text-navy">Order {order.id}</h1>
+            <div className="text-[11px] font-semibold text-maroon">{order.status === "placed" ? "Order placed" : order.status === "approved" ? "PO approved" : "Sent for approval"}</div>
+            <h1 className="mt-1 text-3xl font-semibold tracking-tight text-navy">Order {order.id}</h1>
             <p className="mt-1 text-sm text-slate">
               {order.quantity} × {listing.title} from {supplier.name}, {money(order.total)}.
             </p>

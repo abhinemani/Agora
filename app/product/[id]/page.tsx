@@ -55,7 +55,7 @@ function Product() {
 
       <Card className="p-6">
         <Eyebrow>{supplier.name}</Eyebrow>
-        <h1 className="mt-2 text-3xl font-light tracking-tight text-navy">{title}</h1>
+        <h1 className="mt-2 text-3xl font-semibold tracking-tight text-navy">{title}</h1>
         {l.keywords && <div className="mt-1 text-xs text-slate">{l.keywords}</div>}
         {l.detail && <p className="mt-3 text-sm leading-relaxed text-slate">{l.detail}</p>}
 
@@ -101,7 +101,7 @@ function Product() {
       <section>
         <div className="mb-3 flex flex-wrap items-end justify-between gap-2">
           <div>
-            <h2 className="text-2xl font-light tracking-tight text-navy">Ways to buy</h2>
+            <h2 className="text-2xl font-semibold tracking-tight text-navy">Ways to buy</h2>
             <p className="text-sm text-slate">
               {buyer ? (
                 <>

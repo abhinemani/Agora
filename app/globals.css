@@ -6,12 +6,16 @@
   color-scheme: light;
 }
 body {
-  background: #eef1f6;
+  background: #f7f8fa;
   color: #14213d;
   font-family: "Open Sans", system-ui, sans-serif;
 }
 input,
 textarea,
 select {
-  @apply rounded-md border border-navy/20 bg-white px-3 py-2 text-sm text-navy outline-none focus:border-navy focus:ring-2 focus:ring-steel/40;
+  @apply rounded-md border border-line bg-white px-3 py-2 text-sm text-navy outline-none focus:border-navy focus:ring-2 focus:ring-steel/40;
+}
+:focus-visible {
+  outline: 2px solid #7a1f2b;
+  outline-offset: 2px;
 }

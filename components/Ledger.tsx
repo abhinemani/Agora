@@ -15,7 +15,7 @@ const PAYER_LABEL: Record<Payer, string> = {
 };
 
 export function Ledger() {
-  const { db, ledgerOpen, setLedgerOpen, act } = useStore();
+  const { db, ledgerOpen, setLedgerOpen, act, showEarn, setShowEarn, llm } = useStore();
   const [resetting, setResetting] = useState(false);
   const [view, setView] = useState<"events" | "totals">("events");
   if (!ledgerOpen || !db) return null;
@@ -36,22 +36,22 @@ export function Ledger() {
     <div className="fixed inset-0 z-50 flex justify-end">
       <button aria-label="Close ledger" className="absolute inset-0 bg-navy/40" onClick={() => setLedgerOpen(false)} />
       <aside className="relative flex h-full w-full max-w-xl flex-col bg-white shadow-2xl">
-        <div className="bg-navy px-5 py-4 text-white">
+        <div className="border-b border-line px-5 py-4">
           <div className="flex items-start justify-between">
             <div>
-              <div className="text-xs font-semibold uppercase tracking-wider text-rose">Sovra revenue (demo)</div>
-              <div className="mt-1 text-4xl font-light tabular-nums">{money(total)}</div>
-              <div className="mt-1 text-xs text-steel">
+              <div className="text-sm text-slate">Sovra revenue, demo</div>
+              <div className="mt-1 text-3xl font-semibold tabular-nums text-navy">{money(total)}</div>
+              <div className="mt-1 text-xs text-slate">
                 {events.length} events · {fired} of 10 revenue options fired · <span className="italic">Placeholder pricing</span>
               </div>
             </div>
-            <button onClick={() => setLedgerOpen(false)} className="rounded px-2 py-1 text-steel hover:bg-white/10 hover:text-white" aria-label="Close">
+            <button onClick={() => setLedgerOpen(false)} className="rounded px-2 py-1 text-slate hover:bg-tint hover:text-navy" aria-label="Close">
               ✕
             </button>
           </div>
           <div className="mt-4 flex gap-1 text-xs">
             {(["events", "totals"] as const).map((v) => (
-              <button key={v} onClick={() => setView(v)} className={`rounded px-3 py-1 font-semibold ${view === v ? "bg-white text-navy" : "text-steel hover:text-white"}`}>
+              <button key={v} onClick={() => setView(v)} className={`rounded px-3 py-1 font-semibold ${view === v ? "bg-tint text-navy" : "text-slate hover:text-navy"}`}>
                 {v === "events" ? "Events" : "Totals"}
               </button>
             ))}
@@ -80,7 +80,7 @@ export function Ledger() {
           ) : (
             <div className="space-y-6 px-5 py-4">
               <section>
-                <h3 className="mb-2 text-xs font-semibold uppercase tracking-wider text-slate">Revenue per storefront adds up five ways</h3>
+                <h3 className="mb-2 text-xs font-semibold text-slate">Revenue per storefront adds up five ways</h3>
                 <div className="divide-y divide-navy/5 rounded-lg bg-tint px-3">
                   {FIVE_WAYS.map((w, i) => (
                     <div key={w.label} className="flex items-center gap-3 py-2 text-sm">
@@ -98,7 +98,7 @@ export function Ledger() {
                 </p>
               </section>
               <section>
-                <h3 className="mb-2 text-xs font-semibold uppercase tracking-wider text-slate">By option</h3>
+                <h3 className="mb-2 text-xs font-semibold text-slate">By option</h3>
                 <table className="w-full text-sm">
                   <tbody>
                     {byOption.map((o) => (
@@ -119,7 +119,7 @@ export function Ledger() {
                 </table>
               </section>
               <section>
-                <h3 className="mb-2 text-xs font-semibold uppercase tracking-wider text-slate">By payer</h3>
+                <h3 className="mb-2 text-xs font-semibold text-slate">By payer</h3>
                 <div className="space-y-2">
                   {byPayer.map(({ p, amount }) => (
                     <div key={p}>
@@ -145,7 +145,15 @@ export function Ledger() {
         </div>
 
         <div className="flex items-center justify-between border-t border-navy/10 px-5 py-3">
-          <span className="text-xs text-slate">Amounts are placeholders, not pricing proposals.</span>
+          <div className="space-y-1 text-xs text-slate">
+            <label className="flex cursor-pointer items-center gap-2">
+              <input type="checkbox" className="!p-0" checked={showEarn} onChange={(e) => setShowEarn(e.target.checked)} />
+              Show revenue badges across the storefront
+            </label>
+            <div>
+              Placeholder pricing. {llm ? "Requests and contracts are read by Claude." : "Offline parsing: no API key is set."}
+            </div>
+          </div>
           <Button
             variant="secondary"
             disabled={resetting}

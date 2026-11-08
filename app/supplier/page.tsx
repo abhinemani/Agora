@@ -31,7 +31,7 @@ function Supplier() {
   const params = useSearchParams();
   const router = useRouter();
   const tab = (params.get("tab") as Tab) ?? "contracts";
-  const { db, act, role, setRole } = useStore();
+  const { db, act, role, setRole, showEarn } = useStore();
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
@@ -56,12 +56,12 @@ function Supplier() {
           <div className="flex gap-4">
             <span className="flex h-14 w-14 items-center justify-center rounded-full bg-maroon text-xl font-bold text-white">RO</span>
             <div>
-              <h1 className="text-3xl font-light tracking-tight text-navy">{s.name}</h1>
+              <h1 className="text-2xl font-semibold tracking-tight text-navy">{s.name}</h1>
               <div className="text-sm text-slate">
                 {s.city}, {s.state} · {s.categories.join(", ")}
               </div>
               <div className="mt-2 flex flex-wrap items-center gap-2">
-                <span className="rounded-full bg-navy px-2.5 py-0.5 text-[11px] font-semibold uppercase tracking-wide text-white">{TIER_LABEL[s.edge_tier]}</span>
+                <Badge tone="navy">{TIER_LABEL[s.edge_tier]}</Badge>
                 {s.certifications.map((c) => (
                   <Badge key={c} tone="maroon">
                     {c}-certified
@@ -78,7 +78,7 @@ function Supplier() {
           </div>
           <div className="space-y-3 text-sm">
             <div>
-              <div className="mb-1 text-[11px] font-semibold uppercase tracking-wide text-slate">Edge tier (demo control)</div>
+              <div className="mb-1 text-[11px] font-semibold text-slate">Edge tier (demo control)</div>
               <div className="flex rounded-md bg-tint p-0.5">
                 {(["discover", "win", "position"] as EdgeTier[]).map((t) => (
                   <button key={t} onClick={() => run("setTier", { tier: t })} className={`rounded px-3 py-1 text-xs font-semibold ${s.edge_tier === t ? "bg-navy text-white" : "text-navy"}`}>
@@ -108,8 +108,8 @@ function Supplier() {
 
       <ErrorNote message={error} />
 
-      <Journey tier={s.edge_tier} />
-      <Payoff />
+      {showEarn && <Journey tier={s.edge_tier} />}
+      {showEarn && <Payoff />}
 
       <div className="flex gap-1 border-b border-navy/10">
         {TABS.map((t) => (
@@ -146,7 +146,7 @@ function ContractsTab({ run }: { run: Run }) {
     <div className="grid gap-6 lg:grid-cols-3">
       <div className="space-y-3 lg:col-span-2">
         <div className="flex items-center justify-between">
-          <h2 className="text-sm font-semibold uppercase tracking-wider text-slate">Contracts held</h2>
+          <h2 className="text-sm font-semibold text-slate">Contracts held</h2>
           <LinkButton href="/contracts/upload?as=supplier" variant="maroon">
             Upload a contract
           </LinkButton>
@@ -183,7 +183,7 @@ function ContractsTab({ run }: { run: Run }) {
         })}
       </div>
       <section>
-        <h2 className="mb-3 text-sm font-semibold uppercase tracking-wider text-slate">Needs attention ({queue.length})</h2>
+        <h2 className="mb-3 text-sm font-semibold text-slate">Needs attention ({queue.length})</h2>
         <Card className="divide-y divide-navy/5">
           {queue.map((a) => (
             <div key={a.id} className="p-4">
@@ -319,7 +319,7 @@ function AppsTab({ run }: { run: Run }) {
     <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
       {db!.apps.map((a) => (
         <Card key={a.id} className="flex flex-col p-5">
-          <div className="text-xs font-semibold uppercase tracking-wider text-maroon">{a.partner}</div>
+          <div className="text-xs font-semibold text-maroon">{a.partner}</div>
           <div className="mt-1 font-semibold text-navy">{a.name}</div>
           <p className="mt-1 flex-1 text-sm text-slate">{a.blurb}</p>
           {a.started ? (
@@ -410,7 +410,7 @@ function Journey({ tier }: { tier: EdgeTier }) {
                     <RevenueTags options={st.opts} />
                   </span>
                 )}
-                <div className="text-[9px] font-semibold uppercase tracking-[0.16em] text-slate">{st.tier}</div>
+                <div className="text-[9px] font-semibold text-slate">{st.tier}</div>
                 <div className="text-sm font-semibold text-navy">{st.title}</div>
                 <div className="text-[11px] text-slate">{on ? st.sub : `Needs Edge ${st.need === "win" ? "Win" : "Position"}`}</div>
               </div>
@@ -443,14 +443,14 @@ function Payoff() {
       </div>
       <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
         {cards.map((c) => (
-          <div key={c.title} className="rounded-xl bg-navy p-4 text-white">
+          <div key={c.title} className="rounded-lg border border-line bg-white p-4">
             <div className="flex items-center gap-3">
               <IconCircle>{c.icon}</IconCircle>
-              <div className="text-sm font-semibold leading-tight">{c.title}</div>
+              <div className="text-sm font-semibold leading-tight text-navy">{c.title}</div>
             </div>
-            <div className="mt-3 text-2xl font-light">{c.stat}</div>
-            <div className="text-[11px] text-steel">{c.unit}</div>
-            <p className="mt-2 text-xs leading-relaxed text-steel">{c.body}</p>
+            <div className="mt-3 text-2xl font-semibold text-navy">{c.stat}</div>
+            <div className="text-xs text-slate">{c.unit}</div>
+            <p className="mt-2 text-xs leading-relaxed text-slate">{c.body}</p>
           </div>
         ))}
       </div>

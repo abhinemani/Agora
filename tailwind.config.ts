@@ -10,6 +10,8 @@ export default {
         rose: "#D06470",
         steel: "#8DA2C0",
         tint: "#EEF1F6",
+        page: "#F7F8FA",
+        line: "#E4E8EF",
         slate: { DEFAULT: "#5A6478" },
       },
       fontFamily: {

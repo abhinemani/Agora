@@ -107,7 +107,7 @@ function NewSolicitation() {
 function Field({ label, children }: { label: string; children: React.ReactNode }) {
   return (
     <div>
-      <div className="mb-1 text-xs font-semibold uppercase tracking-wider text-slate">{label}</div>
+      <div className="mb-1 text-xs font-semibold text-slate">{label}</div>
       {children}
     </div>
   );

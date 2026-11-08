@@ -131,7 +131,7 @@ function Upload() {
             onChange={(e) => e.target.files?.length && start(e.target.files)}
           />
         </div>
-        <h2 className="mb-3 mt-8 text-sm font-semibold uppercase tracking-wider text-slate">Or use a sample contract</h2>
+        <h2 className="mb-3 mt-8 text-sm font-semibold text-slate">Or use a sample contract</h2>
         <div className="grid gap-4 md:grid-cols-3">
           {SAMPLE_CONTRACTS.map((s) => (
             <button key={s.id} onClick={() => start({ sample: s.id })} className="text-left">
@@ -150,7 +150,7 @@ function Upload() {
             </button>
           ))}
         </div>
-        <h2 className="mb-1 mt-10 text-sm font-semibold uppercase tracking-wider text-slate">Or download a test file and upload it yourself</h2>
+        <h2 className="mb-1 mt-10 text-sm font-semibold text-slate">Or download a test file and upload it yourself</h2>
         <p className="mb-3 text-sm text-slate">Save one of these, then drag it into the drop zone above. Each one exercises a different part of the parser.</p>
         <Card className="divide-y divide-navy/5">
           {TEST_FILES.map((t) => (
@@ -197,7 +197,7 @@ function Upload() {
               <Check />
             </IconCircle>
             <div>
-              <h1 className="text-2xl font-light tracking-tight text-navy">
+              <h1 className="text-2xl font-semibold tracking-tight text-navy">
                 {published.listed} items listed in {published.storefronts.join(", ")}
                 {published.storefronts.length > 1 ? " storefronts" : "'s storefront"}.
               </h1>
@@ -350,14 +350,14 @@ function Review(props: {
           {items.length} rows found in {result.files.length} file{result.files.length > 1 ? "s" : ""} in {(result.duration_ms / 1000).toFixed(1)}s.{" "}
           Low-confidence rows are highlighted and sorted to the top. Nothing is listed until you accept it.
         </PageTitle>
-        <span className="mb-6 rounded border border-steel/60 px-2 py-0.5 text-[10px] uppercase tracking-wide text-slate">
+        <span className="mb-6 rounded border border-steel/60 px-2 py-0.5 text-[10px] text-slate">
           {result.mode === "llm" ? "Structured by Claude" : "Offline parsing"}
         </span>
       </div>
 
       <Card className="p-5">
         <div className="mb-3 flex items-center justify-between">
-          <h2 className="text-sm font-semibold uppercase tracking-wider text-slate">Contract header</h2>
+          <h2 className="text-sm font-semibold text-slate">Contract header</h2>
           <div className="flex gap-2 text-xs text-slate">
             {result.files.map((f) => (
               <span key={f.filename} className="rounded bg-tint px-2 py-0.5 font-mono">
@@ -410,7 +410,7 @@ function Review(props: {
       <div className="grid gap-6 xl:grid-cols-[minmax(0,1fr)_280px]">
         <div className="min-w-0 space-y-4">
           <div className="flex flex-wrap items-center justify-between gap-2">
-            <h2 className="text-sm font-semibold uppercase tracking-wider text-slate">
+            <h2 className="text-sm font-semibold text-slate">
               Line items · {accepted} accepted · {pending} to review{lowPending ? ` (${lowPending} flagged)` : ""}
             </h2>
             <Button
@@ -422,7 +422,7 @@ function Review(props: {
           </div>
           <Card className="overflow-x-auto">
             <table className="w-full min-w-[700px] text-sm">
-              <thead className="bg-tint text-left text-[11px] uppercase tracking-wide text-slate">
+              <thead className="bg-tint text-left text-[11px] text-slate">
                 <tr>
                   <th className="px-3 py-2">SKU · Description</th>
                   <th className="px-3 py-2">Unit</th>
@@ -442,7 +442,7 @@ function Review(props: {
 
           {unresolved.length > 0 && (
             <section>
-              <h2 className="mb-2 text-sm font-semibold uppercase tracking-wider text-slate">Unresolved · {unresolved.length} found but not priced</h2>
+              <h2 className="mb-2 text-sm font-semibold text-slate">Unresolved · {unresolved.length} found but not priced</h2>
               <Card className="divide-y divide-navy/5">
                 {unresolved.map((it) => (
                   <UnresolvedRow key={it.id} it={it} selected={it.id === selected} onSelect={() => setSelected(it.id)} update={(p) => update(it.id, p)} />
@@ -501,7 +501,7 @@ function Review(props: {
 function HField({ label, children }: { label: string; children: React.ReactElement }) {
   return (
     <label className="block">
-      <span className="mb-1 block text-[11px] font-semibold uppercase tracking-wide text-slate">{label}</span>
+      <span className="mb-1 block text-[11px] font-semibold text-slate">{label}</span>
       <span className="block [&>*]:w-full">{children}</span>
     </label>
   );

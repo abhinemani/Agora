@@ -3,6 +3,7 @@
 
 import type { Category, Db, Listing, Source } from "./types";
 import { fireMonthlyLines } from "./revenue_rules";
+import tylerCatalog from "../seed/catalogs/tyler-technologies-2025-03.json";
 
 const DAY = 86_400_000;
 const isoDate = (offsetDays: number) => new Date(Date.now() + offsetDays * DAY).toISOString().slice(0, 10);
@@ -511,6 +512,68 @@ export function seed(): Db {
     counters: { revenue: 0, request: 0, order: 1040, solicitation: 7, contract: 0, listing: 40, doc: 0, item: 0, attention: 0 },
   };
 
+  addTylerCatalog(db);
   fireMonthlyLines(db);
   return db;
+}
+
+/** Tyler Technologies' March 2025 price catalog, imported by
+ * scripts/import-price-catalog.mjs. Only population-banded rows that fit this
+ * agency are listed, so a buyer sees one price per product. */
+function addTylerCatalog(db: Db) {
+  db.suppliers.push({
+    id: "sup_tyler",
+    name: "Tyler Technologies",
+    city: "Plano",
+    state: "TX",
+    is_local: false,
+    certifications: [],
+    verified: { insurance: false, bond: false },
+    edge_tier: "discover",
+    rating: 0, // no peer reviews seeded for a real vendor
+    review_count: 0,
+    sponsored: false,
+    categories: ["Software and services", "Professional services"],
+  });
+  db.contracts.push({
+    id: "ctr_tyler_catalog",
+    supplier_id: "sup_tyler",
+    // The catalog file names no contract vehicle; shown as a state IT contract.
+    source: "state_contract",
+    owner: "Statewide IT contract",
+    title: "Government software and services price catalog",
+    contract_number: "TYL-CAT-2025-03",
+    start: "2025-03-01",
+    end: "",
+    piggybackable: false,
+    piggyback_clause_text: "",
+    payment_terms: "Per contract",
+    delivery_terms: "Software delivered electronically; services scheduled with the vendor",
+    storefront_ids: ["sf_riverbend"],
+    source_document_id: null,
+    onboarding_billed: true,
+  });
+  const pop = db.agency.population;
+  let n = 0;
+  for (const item of tylerCatalog.items) {
+    const band = item.band;
+    if (band && (pop < band.min || (band.max !== null && pop > band.max))) continue;
+    n++;
+    db.listings.push({
+      id: `lst_t${String(n).padStart(4, "0")}`,
+      contract_id: "ctr_tyler_catalog",
+      supplier_id: "sup_tyler",
+      source: "state_contract",
+      sku: item.sku,
+      title: item.title,
+      category: item.category as Category,
+      unit_price: item.unit_price,
+      unit: item.unit,
+      lead_time_days: item.unit === "hr" ? 10 : 14,
+      extracted_item_id: null,
+      storefront_ids: ["sf_riverbend"],
+      detail: band ? `${item.detail} Priced for population ${band.label}.` : item.detail,
+      keywords: item.path,
+    });
+  }
 }

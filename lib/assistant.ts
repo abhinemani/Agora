@@ -29,25 +29,61 @@ function singular(w: string) {
   return w;
 }
 
+/** Light stemming so "management" meets "manager" and "permitting" meets
+ * "permit". Applied to both sides of every comparison. */
+function stem(w: string) {
+  if (w.length <= 4) return w;
+  let s = w.replace(/(ments|ment|ings|ing|ions|ion|ers|er|ed)$/, "");
+  if (s.length < 3) s = w;
+  s = s.replace(/e$/, "");
+  if (/([bdgklmnprt])\1$/.test(s)) s = s.slice(0, -1);
+  return s;
+}
+
 export function tokens(text: string): string[] {
   return text
     .toLowerCase()
     .replace(/[^a-z0-9\s-]/g, " ")
     .split(/[\s-]+/)
     .filter((w) => w && !STOP.has(w) && !/^\d+$/.test(w))
-    .map(singular);
+    .map((w) => stem(singular(w)));
 }
 
-function score(itemTokens: string[], title: string) {
+type Weights = Map<string, number>;
+
+function score(itemTokens: string[], title: string, weights?: Weights) {
   const t = new Set(tokens(title));
-  return itemTokens.filter((w) => t.has(w)).length;
+  return itemTokens.filter((w) => t.has(w)).reduce((n, w) => n + (weights ? (weights.get(w) ?? 0) : 1), 0);
 }
 
-function bestMatches<T>(itemTokens: string[], rows: T[], titleOf: (r: T) => string) {
-  const scored = rows.map((r) => ({ r, s: score(itemTokens, titleOf(r)) }));
+/** Rarer words count for more (inverse document frequency), so "permitting"
+ * decides a match and "software" barely does. Cached per listing set. */
+let idfCache: { rows: unknown[]; size: number; weights: Weights } | null = null;
+function idf<T>(rows: T[], textOf: (r: T) => string): Weights {
+  if (idfCache && idfCache.rows === rows && idfCache.size === rows.length) return idfCache.weights;
+  const df = new Map<string, number>();
+  for (const r of rows) for (const w of new Set(tokens(textOf(r)))) df.set(w, (df.get(w) ?? 0) + 1);
+  const n = rows.length;
+  const weights: Weights = new Map([...df].map(([w, d]) => [w, Math.log((n + 1) / (d + 1)) + 0.1]));
+  idfCache = { rows, size: rows.length, weights };
+  return weights;
+}
+
+/** Share of a listing's name the request covers, ignoring tier qualifiers in
+ * parentheses, so the core product ("Enterprise Jury Manager") outranks its
+ * add-ons and fine print. Rounded so near-ties fall through to price. */
+function coverage(itemTokens: string[], title: string) {
+  const t = tokens(title.replace(/\([^)]*\)/g, " "));
+  if (!t.length) return 0;
+  const hit = t.filter((w) => itemTokens.includes(w)).length;
+  return Math.round((hit / t.length) * 20) / 20;
+}
+
+function bestMatches<T>(itemTokens: string[], rows: T[], titleOf: (r: T) => string, weights?: Weights) {
+  const scored = rows.map((r) => ({ r, s: score(itemTokens, titleOf(r), weights) }));
   const best = Math.max(0, ...scored.map((x) => x.s));
   if (best === 0) return { rows: [] as T[], best };
-  const floor = Math.max(1, Math.ceil(best * 0.67));
+  const floor = weights ? best * 0.67 : Math.max(1, Math.ceil(best * 0.67));
   return { rows: scored.filter((x) => x.s >= floor).map((x) => x.r), best };
 }
 
@@ -57,23 +93,23 @@ const MONTHS = ["january", "february", "march", "april", "may", "june", "july", 
 
 const DEPARTMENT_HINTS: [RegExp, string][] = [
   [/rec center|recreation|park|pool|ice rink|rink|arena|playground|senior center|community center/i, "Parks and Recreation"],
-  [/front desk|city hall|clerk|council|reception|admin/i, "City Hall Administration"],
+  [/front desk|city hall|clerk|council|reception|admin|court|jury|budget|finance/i, "City Hall Administration"],
   [/police|officer|patrol|station/i, "Police"],
   [/library|branch/i, "Library"],
   [/road|street|crew|public works|yard|fleet|water|sewer/i, "Public Works"],
 ];
 
 const CATEGORY_HINTS: [RegExp, Category][] = [
-  [/table|chair|desk|cabinet|furniture|seating|bench/i, "Furniture"],
-  [/pencil|pen|paper|stapler|notes|toner|ink|binder|folder|whiteboard|coffee|cup/i, "Office supplies"],
-  [/clean|soap|trash|liner|mop|towel|janitorial|custodial|disinfect/i, "Janitorial"],
-  [/laptop|monitor|computer|tablet|printer|switch|dock|keyboard/i, "IT hardware"],
-  [/software|license|saas|subscription/i, "Software and services"],
-  [/led|light|lighting|retrofit|hvac|roof|plumbing|electrical|refrigerat|fixture/i, "Facilities and MRO"],
-  [/vehicle|truck|tire|brake|fleet|plow/i, "Fleet and parts"],
-  [/asphalt|concrete|gravel|pipe|culvert|surfacing/i, "Public works materials"],
-  [/vest|hard hat|glove|uniform|safety|first aid|jacket/i, "Safety and uniforms"],
-  [/consult|engineering|design services|audit|inspection/i, "Professional services"],
+  [/\b(table|chair|desk|cabinet|furniture|seating|bench)/i, "Furniture"],
+  [/\b(pencil|pen|paper|stapler|notes|toner|ink|binder|folder|whiteboard|coffee|cup)/i, "Office supplies"],
+  [/\b(clean|soap|trash|liner|mop|towel|janitorial|custodial|disinfect)/i, "Janitorial"],
+  [/\b(laptop|monitor|computer|tablet|printer|switch|dock|keyboard)/i, "IT hardware"],
+  [/\b(software|license|saas|subscription)/i, "Software and services"],
+  [/\b(led|light|lighting|retrofit|hvac|roof|plumbing|electrical|refrigerat|fixture)/i, "Facilities and MRO"],
+  [/\b(vehicle|truck|tire|brake|fleet|plow)/i, "Fleet and parts"],
+  [/\b(asphalt|concrete|gravel|pipe|culvert|surfacing)/i, "Public works materials"],
+  [/\b(vest|hard hat|glove|uniform|safety|first aid|jacket)/i, "Safety and uniforms"],
+  [/\b(consult|engineering|design services|audit|inspection)/i, "Professional services"],
 ];
 
 const WORD_NUMBERS: Record<string, number> = { a: 1, an: 1, one: 1, two: 2, three: 3, four: 4, five: 5, six: 6, ten: 10, twelve: 12, dozen: 12, twenty: 20 };
@@ -93,7 +129,9 @@ function itemPhrase(text: string) {
 function offlineParse(text: string, db: Db): Omit<ParsedRequest, "est_total"> {
   const qtyNum = text.match(/\b(\d[\d,]*)\b(?!\s*(st|nd|rd|th)\b)/);
   const qtyWord = text.toLowerCase().match(/\b(a|an|one|two|three|four|five|six|ten|twelve|twenty|dozen)\b/);
-  const quantity = qtyNum ? parseInt(qtyNum[1].replace(/,/g, ""), 10) : qtyWord ? WORD_NUMBERS[qtyWord[1]] : 1;
+  // Whichever comes first wins: "two 24 inch monitors" is 2, "40 folding tables" is 40.
+  const wordFirst = qtyWord && (!qtyNum || (qtyWord.index ?? 0) < (qtyNum.index ?? 0));
+  const quantity = wordFirst ? WORD_NUMBERS[qtyWord![1]] : qtyNum ? parseInt(qtyNum[1].replace(/,/g, ""), 10) : 1;
 
   const dl = text.match(/\b(before|by|until|no later than)\s+([a-z]+(?:\s+\d{1,2})?)/i);
   const deadline = dl && MONTHS.includes(dl[2].split(/\s+/)[0].toLowerCase()) ? `${dl[1]} ${dl[2]}` : null;
@@ -208,10 +246,21 @@ function fmtDate(d: Date) {
   return d.toLocaleDateString("en-US", { month: "short", day: "numeric" });
 }
 
+const listingText = (l: Listing) => `${l.title} ${l.keywords ?? ""}`;
+
 export function estimateTotal(db: Db, item: string, quantity: number) {
-  const { rows } = bestMatches(tokens(item), db.listings.filter((l) => l.storefront_ids.includes("sf_riverbend")), (l) => l.title);
+  const itemTokens = tokens(item);
+  const weights = idf(db.listings, listingText);
+  const { rows } = bestMatches(itemTokens, db.listings.filter((l) => l.storefront_ids.includes("sf_riverbend")), listingText, weights);
   if (!rows.length) return 0;
-  const prices = rows.map((r) => r.unit_price).sort((a, b) => a - b);
+  // Estimate from the closest matches only, so a catalog's cheap add-ons
+  // ($0.05 text messages) don't drag the estimate for the core product.
+  const byName = (l: Listing) => Math.round(score(itemTokens, l.title, weights) * 10);
+  const topName = Math.max(...rows.map(byName));
+  const named = rows.filter((l) => byName(l) === topName);
+  const topCover = Math.max(...named.map((l) => coverage(itemTokens, l.title)));
+  const core = named.filter((l) => coverage(itemTokens, l.title) >= topCover - 0.2);
+  const prices = core.map((r) => r.unit_price).sort((a, b) => a - b);
   return Math.round(prices[Math.floor(prices.length / 2)] * quantity * 100) / 100;
 }
 
@@ -222,7 +271,12 @@ export function buildResults(db: Db, request: Request): Results {
   const limit = db.agency.quick_buy_threshold;
 
   const storefront = db.listings.filter((l) => l.storefront_ids.includes("sf_riverbend"));
-  const { rows: matched } = bestMatches(itemTokens, storefront, (l) => l.title);
+  const weights = idf(db.listings, listingText);
+  const { rows: found } = bestMatches(itemTokens, storefront, listingText, weights);
+  // When the request implies a category and some matches are in it, keep those:
+  // "24 inch monitors" means hardware, not monitoring software.
+  const inCategory = parsed.category ? found.filter((l) => l.category === parsed.category) : [];
+  const matched = inCategory.length ? inCategory : found;
 
   const due = deadlineDate(parsed.deadline);
   const options: ResultOption[] = matched
@@ -238,7 +292,7 @@ export function buildResults(db: Db, request: Request): Results {
         contract_number: db.contracts.find((c) => c.id === l.contract_id)?.contract_number ?? null,
         total: Math.round(l.unit_price * parsed.quantity * 100) / 100,
         rule: ruleFor(db, l, parsed.quantity),
-        delivery: `Arrives by ${fmtDate(arrives)}${meets === null ? "" : meets ? ` · meets your ${parsed.deadline} deadline` : ` · misses your ${parsed.deadline} deadline`}`,
+        delivery: `${l.category === "Software and services" || l.category === "Professional services" ? "Available by" : "Arrives by"} ${fmtDate(arrives)}${meets === null ? "" : meets ? ` · meets your ${parsed.deadline} deadline` : ` · misses your ${parsed.deadline} deadline`}`,
         meets_deadline: meets,
         sponsored: supplier.sponsored && supplier.edge_tier !== "discover" && l.source !== "no_approval",
         pref_fit,
@@ -250,6 +304,16 @@ export function buildResults(db: Db, request: Request): Results {
     const pa = (favor ? a.pref_fit : 0) + (a.sponsored ? 0.5 : 0);
     const pb = (favor ? b.pref_fit : 0) + (b.sponsored ? 0.5 : 0);
     if (pa !== pb) return pb - pa;
+    // Words in the product's own name count before words from its category path.
+    const ta = Math.round(score(itemTokens, a.listing.title, weights) * 10);
+    const tb = Math.round(score(itemTokens, b.listing.title, weights) * 10);
+    if (ta !== tb) return tb - ta;
+    const ra = Math.round(score(itemTokens, listingText(a.listing), weights) * 10);
+    const rb = Math.round(score(itemTokens, listingText(b.listing), weights) * 10);
+    if (ra !== rb) return rb - ra;
+    const ca = coverage(itemTokens, a.listing.title);
+    const cb = coverage(itemTokens, b.listing.title);
+    if (ca !== cb) return cb - ca;
     if (a.listing.unit_price !== b.listing.unit_price) return a.listing.unit_price - b.listing.unit_price;
     const da = a.meets_deadline === false ? 1 : 0;
     const dbb = b.meets_deadline === false ? 1 : 0;
@@ -278,8 +342,8 @@ export function buildResults(db: Db, request: Request): Results {
     );
     explanation.push(
       favor
-        ? `You asked to favor local and MBE-certified suppliers, so they rank first within each group. Then cheaper unit price, then delivery against your deadline, then peer rating.`
-        : `Within each group, cheaper unit price comes first, then delivery against your deadline, then peer rating.`,
+        ? `You asked to favor local and MBE-certified suppliers, so they rank first within each group. Then the closest match to what you asked for, then cheaper unit price, then delivery against your deadline, then peer rating.`
+        : `Within each group, the closest match to what you asked for comes first, then cheaper unit price, then delivery against your deadline, then peer rating.`,
     );
     if (options.some((o) => o.sponsored))
       explanation.push(`Listings marked Sponsored paid for a small boost, and only within their own contract group. They never jump ahead of a different source.`);

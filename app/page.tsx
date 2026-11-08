@@ -112,7 +112,7 @@ export default function BuyerHome() {
           </div>
           <div className="mt-8 flex flex-wrap justify-center gap-x-8 gap-y-2 text-sm text-steel">
             <span>
-              <span className="font-semibold text-white">{listingCount}</span> items on contract or ready to buy
+              <span className="font-semibold text-white">{listingCount.toLocaleString()}</span> items on contract or ready to buy
             </span>
             <span>
               <span className="font-semibold text-white">{sources}</span> sources in one storefront

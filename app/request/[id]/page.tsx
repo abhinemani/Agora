@@ -33,12 +33,16 @@ function earnsFor(o: ResultOption) {
   return tags;
 }
 
+/** Options shown per source before "Show all"; large catalogs can match dozens. */
+const GROUP_LIMIT = 6;
+
 export default function RequestResults() {
   const { id } = useParams<{ id: string }>();
   const ask = useSearchParams().get("ask") === "1";
   const { db, act } = useStore();
   const [results, setResults] = useState<Results | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [expanded, setExpanded] = useState<string[]>([]);
   const [answered, setAnswered] = useState(false);
   const [why, setWhy] = useState(false);
 
@@ -151,10 +155,15 @@ export default function RequestResults() {
                     {g.source === "no_approval" && <span className="text-xs text-slate">Small purchase, no contract required.</span>}
                   </div>
                   <div className="space-y-3">
-                    {g.options.map((o) => (
+                    {(expanded.includes(g.source) ? g.options : g.options.slice(0, GROUP_LIMIT)).map((o) => (
                       <OptionCard key={o.listing.id} o={o} qty={p.quantity} requestId={id} />
                     ))}
                   </div>
+                  {g.options.length > GROUP_LIMIT && !expanded.includes(g.source) && (
+                    <button onClick={() => setExpanded([...expanded, g.source])} className="mt-3 w-full rounded-lg border border-dashed border-navy/20 py-2 text-sm font-semibold text-navy hover:bg-white">
+                      Show all {g.options.length} {g.label.toLowerCase()} options
+                    </button>
+                  )}
                 </section>
               ))}
             </div>

@@ -162,6 +162,8 @@ export interface Listing {
   storefront_ids: string[];
   /** Short spec line shown under the title. */
   detail?: string;
+  /** Extra words search should match, e.g. a catalog's category path. */
+  keywords?: string;
 }
 
 export interface ParsedRequest {

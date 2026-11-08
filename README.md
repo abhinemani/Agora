@@ -19,6 +19,14 @@ The **How it earns** page (in the header for every role) turns the Marketplace 2
 
 Proactive buying is live too: the expiring custodial contract on the buyer home starts an early renewal solicitation drafted from the past custodial bid.
 
+## Vendor price catalog
+
+Riverbend's storefront also carries Tyler Technologies' March 2025 price catalog (`seed/catalogs/tyler-technologies-price-catalog-2025-03.xlsx`), so buyers can ask for software and services such as "jury management", "open data portal" or "an implementation consultant". `npm run import:catalog` turns the spreadsheet into `seed/catalogs/tyler-technologies-2025-03.json`, which the seed loads on every reset.
+
+The catalog keeps each price inside the product description, so the importer reads only the price line and lists a row only when it holds one clear price. Of 1,672 rows, 1,350 import cleanly; the other 322 are skipped with a reason recorded in the JSON (no price, a price range or "up to" ceiling, tiers or a minimum spread over several lines, or a price with a percentage or second component). Products priced by population band are listed only in the band that fits Riverbend's 85,000 residents, which leaves 1,211 listings.
+
+The file doesn't name its contract vehicle, so it appears as a state contract with the reference `TYL-CAT-2025-03`; change `addTylerCatalog` in `lib/seed.ts` once the real vehicle is known. Tyler has no seeded reviews or ratings.
+
 ## Putting it online
 
 The easiest host is **Render**, using the `render.yaml` blueprint in this repo. Go to [dashboard.render.com](https://dashboard.render.com), choose **New → Blueprint**, connect this GitHub repo, and accept the defaults. Render will ask for `ANTHROPIC_API_KEY`; leave it blank to run offline. You'll get a public `https://riverbend-storefront.onrender.com`-style URL in a few minutes, and every push to `main` redeploys.

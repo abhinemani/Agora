@@ -21,7 +21,7 @@ export const SOURCE_LABEL: Record<Source, string> = {
 // ---------------------------------------------------------------- tokenizing
 
 const STOP = new Set(
-  "a an the of for and or with to in on at by from some new need needs we our my i us please get buy order want ft in x unit units each dozen box boxes case cases pack packs pk set sets ea about around approx roughly online".split(" "),
+  "a an the of for and or with to in on at by from some new need needs we our my i us please get buy order want ft in x unit units each dozen box boxes case cases pack packs pk set sets ea about around approx roughly online software".split(" "),
 );
 
 function singular(w: string) {
@@ -81,7 +81,13 @@ function coverage(itemTokens: string[], title: string) {
 }
 
 function bestMatches<T>(itemTokens: string[], rows: T[], titleOf: (r: T) => string, weights?: Weights) {
-  const scored = rows.map((r) => ({ r, s: score(itemTokens, titleOf(r), weights) }));
+  let scored = rows.map((r) => ({ r, s: score(itemTokens, titleOf(r), weights), n: score(itemTokens, titleOf(r)) }));
+  if (weights) {
+    // Breadth first: products matching more of the request's words beat one rare
+    // word ("open data platform" over "turnkey portal" for "open data portal").
+    const most = Math.max(0, ...scored.map((x) => x.n));
+    if (most >= 2) scored = scored.filter((x) => x.n >= most);
+  }
   const best = Math.max(0, ...scored.map((x) => x.s));
   if (best === 0) return { rows: [] as T[], best };
   const floor = weights ? best * 0.67 : Math.max(1, Math.ceil(best * 0.67));
@@ -147,7 +153,7 @@ function offlineParse(text: string, db: Db): Omit<ParsedRequest, "est_total"> {
 
   const department = DEPARTMENT_HINTS.find(([re]) => re.test(text))?.[1] ?? db.agency.departments[0].name;
   const item = itemPhrase(text) || text;
-  const category = CATEGORY_HINTS.find(([re]) => re.test(item))?.[1] ?? null;
+  const category = CATEGORY_HINTS.find(([re]) => re.test(expand(item)))?.[1] ?? null;
   return { item, quantity: Math.max(1, quantity), deadline, department, category };
 }
 
@@ -281,7 +287,7 @@ function fmtDate(d: Date) {
 const listingText = (l: Listing) => `${l.title} ${l.keywords ?? ""}`;
 
 export function estimateTotal(db: Db, item: string, quantity: number) {
-  const itemTokens = tokens(item);
+  const itemTokens = tokens(expand(item));
   const weights = idf(db.listings, listingText);
   const { rows } = bestMatches(itemTokens, db.listings.filter((l) => l.storefront_ids.includes("sf_riverbend")), listingText, weights);
   if (!rows.length) return 0;
@@ -296,9 +302,15 @@ export function estimateTotal(db: Db, item: string, quantity: number) {
   return Math.round(prices[Math.floor(prices.length / 2)] * quantity * 100) / 100;
 }
 
+/** Common phrases buyers use for products catalogs name by abbreviation. */
+const SYNONYMS: [RegExp, string][] = [
+  [/computer[- ]aided dispatch/gi, "CAD"],
+];
+const expand = (item: string) => SYNONYMS.reduce((t, [re, to]) => t.replace(re, to), item);
+
 export function buildResults(db: Db, request: Request): Results {
   const { parsed } = request;
-  const itemTokens = tokens(parsed.item);
+  const itemTokens = tokens(expand(parsed.item));
   const favor = request.preference_answer === "yes";
   const limit = db.agency.quick_buy_threshold;
 

@@ -591,7 +591,9 @@ function addTylerCatalog(db: Db) {
     eligibility: { states: "any", note: "government, education and nonprofit agencies nationwide", requires: "Free Sourcewell membership" },
   });
   let n = 0;
+  // Only the 100 featured products (scripts/feature-tyler.mjs); the rest stay in the file.
   for (const item of tylerCatalog.items) {
+    if (!item.featured) continue;
     const band = item.band;
     n++;
     db.listings.push({

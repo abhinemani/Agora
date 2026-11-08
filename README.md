@@ -25,7 +25,7 @@ Intake asks who is buying (agency, state, type and optional population) before s
 
 | Vehicle | Number | Open to | Pricing | Verification |
 | --- | --- | --- | --- | --- |
-| NJSTART, Tyler Technologies | 26-TELE-114629 | New Jersey public entities | Published prices (1,350) | Source document |
+| NJSTART, Tyler Technologies | 26-TELE-114629 | New Jersey public entities | Published prices: 100 featured products of 1,073 | Source document |
 | NJSTART, Maximus US Services | 26-TELE-115813, adopted from NASPO ValuePoint AR3758 | New Jersey public entities | 14 published rates | Source document, checked line by line against the scanned Attachment C |
 | Sourcewell, Tyler Technologies | 060624-TTI | Members nationwide | Discount off list; quote required | Research lead |
 | Carahsoft (Iowa / NASPO AR2472, CoreTrust) | 2024-BUS-0226, 24COR-018GR | Adopting states, CoreTrust members | Quote only; no price files loaded | Research lead |
@@ -37,7 +37,7 @@ When a product sits on a contract the buyer can't use but the same supplier has 
 
 Riverbend's storefront also carries Tyler Technologies' March 2025 price catalog (`seed/catalogs/tyler-technologies-price-catalog-2025-03.xlsx`), so buyers can ask for software and services such as "jury management", "open data portal" or "an implementation consultant". `npm run import:catalog` turns the spreadsheet into `seed/catalogs/tyler-technologies-2025-03.json`, which the seed loads on every reset.
 
-The catalog keeps each price inside the product description, so the importer reads only the price line and lists a row only when it holds one clear price. Of 1,672 rows, 1,350 import cleanly; the other 322 are skipped with a reason recorded in the JSON (no price, a price range or "up to" ceiling, tiers or a minimum spread over several lines, or a price with a percentage or second component). Products priced in tiers (by population or volume) show as one product with a tier picker, preset to the tier that fits the buyer's population.
+The catalog keeps each price inside the product description, so the importer reads only the price line and lists a row only when it holds one clear price. Of 1,672 rows, 1,350 import cleanly; the other 322 are skipped with a reason recorded in the JSON (no price, a price range or "up to" ceiling, tiers or a minimum spread over several lines, or a price with a percentage or second component). Products priced in tiers (by population or volume) show as one product with a tier picker, preset to the tier that fits the buyer's population. The storefront carries the 100 Tyler products a city, county or school district is most likely to buy (210 price rows across their tiers). `scripts/feature-tyler.mjs` picks them: core subscriptions and platforms score up; third-party add-ons, training and implementation hours, hardware, usage fees, and state-, federal- or enterprise-scale offerings score down; and each product line has a quota so payments, permitting, records, public safety, open data and the rest are all represented. The other rows stay in the JSON, so widening the cut means changing the quotas and running `npm run import:catalog`.
 
 It is New Jersey's state contract on NJSTART, 26-TELE-114629, so it is open to New Jersey public entities only. Tyler has no seeded reviews or ratings.
 

@@ -78,6 +78,31 @@ function bandOf(name) {
   return null;
 }
 
+/** Split a product name into the product and its tier qualifier, so tiers of
+ * one product share a family: "CAD Data Mart Includes 3-4 users",
+ * "User License: # Recorded Documents/Yr 0 - 10,000 (Tier LA)",
+ * "12 Perspective Creation Licenses", "Portal < 100 Users", "(50k - 150k)". */
+function splitTier(name) {
+  let base = name;
+  const parts = [];
+  const cut = (re) => {
+    const m = base.match(re);
+    if (m) {
+      parts.push(clean(m[1] ?? m[0]));
+      base = base.replace(re, " ");
+    }
+  };
+  cut(/\s*\(((?=[^)]*(\d|tier|population|up to|under|over))[^)]*)\)/i);
+  cut(/:?\s*(#\s*recorded documents\/yr.*)$/i);
+  cut(/\s+(includes\s+[\d+\-\s]+users?)\b/i);
+  cut(/\s*([<>]\s*[\d,]+\s*users?)\b/i);
+  cut(/\s*-?\s*\((\d+\s*-\s*\d+\s*users?)\)/i);
+  cut(/\s+-?\s*\(?(\d+\s*-\s*\d+\s*users?)\)?/i);
+  cut(/^(\d+)\s+(?=[a-z])/i);
+  base = clean(base.replace(/\s*[-:]\s*$/, ""));
+  return { base, qualifier: parts.join(" · ") };
+}
+
 const wb = XLSX.read(readFileSync(SRC), { type: "buffer" });
 const items = [];
 const skipped = [];
@@ -101,8 +126,7 @@ for (const sheet of wb.SheetNames) {
     const firstSentence = clean(String(r[cDesc]).split(/\r?\n/)[0]).split(/(?<=\.)\s/)[0];
     const band = bandOf(name) ?? bandOf(sku);
     // Tiers of one product share a family: the name without its tier qualifier.
-    const base = clean(name.replace(/\s*\((?=[^)]*(\d|tier|population|up to|under|over))[^)]*\)/gi, " ").replace(/\s*-\s*$/, ""));
-    const qualifier = name.match(/\(([^)]*(?:\d|tier|population|up to|under|over)[^)]*)\)/i)?.[1];
+    const { base, qualifier } = splitTier(name);
     items.push({
       sku: sku || `TYL-${sheet.slice(0, 10)}-${i + 2}`,
       title: name,
@@ -113,7 +137,7 @@ for (const sheet of wb.SheetNames) {
       category: p.unit === "hr" ? "Professional services" : "Software and services",
       band: band ? { min: band.min, max: band.max === Infinity ? null : band.max, label: band.label } : null,
       family: `tyler:${base.toLowerCase()}|${path.join(" › ").toLowerCase()}`,
-      variant: band ? band.label : qualifier ? clean(qualifier) : sku,
+      variant: band ? band.label : qualifier || sku,
       source_row: `${sheet}, row ${i + 2}`,
       price_line: p.line,
     });

@@ -1,0 +1,242 @@
+{
+ "source": "https://www.naspovaluepoint.org/portfolios/citizen-engagement-platforms/",
+ "retrieved": "2026-11-09",
+ "portfolio": "Citizen Engagement Platforms",
+ "lead_state": "Utah",
+ "solicitation": "KM21-47",
+ "awards": [
+  {
+   "supplier": "Citibot, Inc.",
+   "naspo_url": "https://www.naspovaluepoint.org/suppliers/citibot-inc/",
+   "website": "citibot.io",
+   "master_agreement": "AR3751",
+   "awarded": "2021-09-15",
+   "expires": "2027-09-14",
+   "renewal_limit": "2028-09-14",
+   "scope": [
+    "Category 3: Chatbots & Customer Service"
+   ],
+   "pa_states": [
+    "NM"
+   ],
+   "documents": {
+    "master_agreement": "https://s3.us-east-1.amazonaws.com/nvp/Master%20Agreements/Citibot%2C%20Inc./Citibot%20Master%20Agreement.pdf",
+    "price_files": []
+   }
+  },
+  {
+   "supplier": "CitizenLab",
+   "naspo_url": "https://www.naspovaluepoint.org/suppliers/citizenlab/",
+   "website": "citizenlab.co",
+   "master_agreement": "AR3752",
+   "awarded": "2023-11-29",
+   "expires": "2027-09-14",
+   "renewal_limit": "2028-09-14",
+   "scope": [
+    "Category 4: Customer Engagement"
+   ],
+   "pa_states": [],
+   "documents": {
+    "master_agreement": "https://s3.us-east-1.amazonaws.com/nvp/Master%20Agreements/CitizenLab/CitizenLab%20Master%20Agreement.pdf",
+    "price_files": [
+     "https://s3.us-east-1.amazonaws.com/nvp/Master%20Agreements/CitizenLab/CitizenLab%20Pricing.pdf"
+    ]
+   }
+  },
+  {
+   "supplier": "CoreSphere, LLC",
+   "naspo_url": "https://www.naspovaluepoint.org/suppliers/coresphere/",
+   "website": "coresphere.com",
+   "master_agreement": "AR3753",
+   "awarded": "2021-09-15",
+   "expires": "2027-09-14",
+   "renewal_limit": "2028-09-14",
+   "scope": [
+    "Category 4: Customer Engagement"
+   ],
+   "pa_states": [
+    "HI",
+    "MO",
+    "MT",
+    "NM"
+   ],
+   "documents": {
+    "master_agreement": "https://s3.us-east-1.amazonaws.com/nvp/Master%20Agreements/Coresphere%2C%20LLC/CoreSphere%20Master%20Agreement.pdf",
+    "price_files": [
+     "https://s3.us-east-1.amazonaws.com/nvp/Master%20Agreements/Coresphere%2C%20LLC/CoreSphere%20Price%20Catalog.pdf"
+    ]
+   }
+  },
+  {
+   "supplier": "Indigov Corp.",
+   "naspo_url": "https://www.naspovaluepoint.org/suppliers/indigov/",
+   "website": "indigov.com",
+   "master_agreement": "AR3757",
+   "awarded": "2021-09-15",
+   "expires": "2026-09-14",
+   "renewal_limit": "2028-09-14",
+   "scope": [
+    "Category 1: Platform Management",
+    "Category 4: Customer Engagement"
+   ],
+   "pa_states": [
+    "HI",
+    "KY",
+    "NM",
+    "UT"
+   ],
+   "documents": {
+    "master_agreement": "https://s3.us-east-1.amazonaws.com/nvp/Master%20Agreements/Indigov%20Corp./Indigov%20Master%20Agreement.pdf",
+    "price_files": [
+     "https://s3.us-east-1.amazonaws.com/nvp/Master%20Agreements/Indigov%20Corp./Indigov%20Price%20Catalog.pdf"
+    ]
+   }
+  },
+  {
+   "supplier": "MAXIMUS US Services, Inc.",
+   "naspo_url": "https://www.naspovaluepoint.org/suppliers/maximus-us-services-inc/",
+   "website": "maximus.com",
+   "master_agreement": "AR3758",
+   "awarded": "2023-11-22",
+   "expires": "2027-09-14",
+   "renewal_limit": "2028-09-14",
+   "scope": [
+    "Category 1: Platform Management",
+    "Category 5: Social Listening"
+   ],
+   "pa_states": [
+    "HI"
+   ],
+   "documents": {
+    "master_agreement": "https://s3.us-east-1.amazonaws.com/nvp/Master%20Agreements/Maximus%20US%20Services%2C%20Inc./Maximus%20Master%20Agreement.pdf",
+    "price_files": [
+     "https://s3.us-east-1.amazonaws.com/nvp/Master%20Agreements/Maximus%20US%20Services%2C%20Inc./Maximus%20Cost%20Sheet.pdf"
+    ]
+   }
+  },
+  {
+   "supplier": "Medallia, Inc.",
+   "naspo_url": "https://www.naspovaluepoint.org/suppliers/medallia/",
+   "website": "medallia.com",
+   "master_agreement": "AR3759",
+   "awarded": "2021-09-15",
+   "expires": "2027-09-14",
+   "renewal_limit": "2028-09-14",
+   "scope": [
+    "Category 4: Customer Engagement",
+    "Category 5: Social Listening"
+   ],
+   "pa_states": [
+    "KY",
+    "NM"
+   ],
+   "documents": {
+    "master_agreement": "https://s3.us-east-1.amazonaws.com/nvp/Master%20Agreements/Medallia%2C%20Inc./Medallia%20Master%20Agreement.pdf",
+    "price_files": [
+     "https://s3.us-east-1.amazonaws.com/nvp/Master%20Agreements/Medallia%2C%20Inc./Medallia%20Price%20Catalog%20August%202026.pdf"
+    ]
+   }
+  },
+  {
+   "supplier": "Merit International",
+   "naspo_url": "https://www.naspovaluepoint.org/suppliers/merit-international/",
+   "website": "merits.com",
+   "master_agreement": "AR3760",
+   "awarded": "2025-02-01",
+   "expires": "2026-09-14",
+   "renewal_limit": "2028-09-14",
+   "scope": [
+    "Category 1: Platform Management"
+   ],
+   "pa_states": [
+    "IA"
+   ],
+   "documents": {
+    "master_agreement": "https://s3.us-east-1.amazonaws.com/nvp/Master%20Agreements/Merit%20International/Merit%20International%20Master%20Agreement.pdf",
+    "price_files": []
+   }
+  },
+  {
+   "supplier": "PayIt, LLC",
+   "naspo_url": "https://www.naspovaluepoint.org/suppliers/payit/",
+   "website": "payitgov.com",
+   "master_agreement": "AR3761",
+   "awarded": "2021-09-15",
+   "expires": "2027-09-14",
+   "renewal_limit": "2028-09-14",
+   "scope": [
+    "Category 4: Customer Engagement"
+   ],
+   "pa_states": [
+    "CO",
+    "HI",
+    "ID",
+    "KS",
+    "NM"
+   ],
+   "documents": {
+    "master_agreement": "https://s3.us-east-1.amazonaws.com/nvp/Master%20Agreements/PayIt%2C%20LLC/PayIt%20Master%20Agreement.pdf",
+    "price_files": [
+     "https://s3.us-east-1.amazonaws.com/nvp/Master%20Agreements/PayIt%2C%20LLC/PayIt%20Pricing%20October%202026.xlsx"
+    ]
+   }
+  },
+  {
+   "supplier": "SAMBUQ Corp.",
+   "naspo_url": "https://www.naspovaluepoint.org/suppliers/sambuq/",
+   "website": "sambuq.com",
+   "master_agreement": "AR3762",
+   "awarded": "2021-09-15",
+   "expires": "2027-09-14",
+   "renewal_limit": "2028-09-14",
+   "scope": [
+    "Category 1: Platform Management"
+   ],
+   "pa_states": [
+    "NM"
+   ],
+   "documents": {
+    "master_agreement": "https://s3.us-east-1.amazonaws.com/nvp/Master%20Agreements/SAMBUQ%20Corp./Sambuq%20Master%20Agreement.pdf",
+    "price_files": [
+     "https://s3.us-east-1.amazonaws.com/nvp/Master%20Agreements/SAMBUQ%20Corp./Sambuq%20Price%20Catalog.pdf"
+    ]
+   }
+  },
+  {
+   "supplier": "Tyler Technologies, Inc.",
+   "naspo_url": "https://www.naspovaluepoint.org/suppliers/tyler-technologies-inc/",
+   "website": "tylertech.com",
+   "master_agreement": "AR3764",
+   "awarded": "2022-04-19",
+   "expires": "2027-09-14",
+   "renewal_limit": "2028-09-14",
+   "scope": [
+    "Category 1: Platform Management",
+    "Category 2: Master Data Management"
+   ],
+   "pa_states": [
+    "AK",
+    "AL",
+    "AR",
+    "CT",
+    "HI",
+    "IA",
+    "ID",
+    "KS",
+    "LA",
+    "MT",
+    "NE",
+    "NJ",
+    "NM",
+    "NV",
+    "WY"
+   ],
+   "documents": {
+    "master_agreement": "https://s3.us-east-1.amazonaws.com/nvp/Master%20Agreements/Tyler%20Technologies%2C%20Inc./Tyler%20Technologies%20Master%20Agreement.pdf",
+    "price_files": [
+     "https://s3.us-east-1.amazonaws.com/nvp/Master%20Agreements/Tyler%20Technologies%2C%20Inc./Tyler%20Technologies%20Product%20Catalog%20-%20September%202026.xlsx"
+    ]
+   }
+  }
+ ]
+}

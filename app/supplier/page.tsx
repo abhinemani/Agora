@@ -58,7 +58,7 @@ function Supplier() {
             <div>
               <h1 className="text-2xl font-semibold tracking-tight text-navy">{s.name}</h1>
               <div className="text-sm text-slate">
-                {s.city}, {s.state} · {s.categories.join(", ")}
+                {s.city ? `${s.city}, ${s.state} · ` : ""}{s.categories.join(", ")}
               </div>
               <div className="mt-2 flex flex-wrap items-center gap-2">
                 <Badge tone="navy">{TIER_LABEL[s.edge_tier]}</Badge>

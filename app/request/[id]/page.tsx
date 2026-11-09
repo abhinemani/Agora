@@ -8,7 +8,7 @@ import { CategoryIcon } from "@/components/CategoryIcon";
 import { useStore } from "@/components/store";
 import { Lock, People, Plus, Sparkle } from "@/components/icons";
 import { Badge, Button, Card, ErrorNote, Eyebrow, IconCircle, LinkButton, Loading, RevenueTags, SourcePill, Stars, SupplierBadges, money } from "@/components/ui";
-import type { Results, ResultOption, Unavailable } from "@/lib/assistant";
+import type { ContractLead, Results, ResultOption, Unavailable } from "@/lib/assistant";
 import { PURCHASE_KINDS, TRANSACTION_FEE_SOURCES } from "@/lib/revenue_rules";
 
 function KindBanner({ kind }: { kind: (typeof PURCHASE_KINDS)[keyof typeof PURCHASE_KINDS] }) {
@@ -184,6 +184,7 @@ export default function RequestResults() {
           <div className="grid gap-4 md:grid-cols-3">
             {results.peer && <PeerCard peer={results.peer} qty={p.quantity} />}
             <UnavailableCard items={results.unavailable} buyerName={results.buyer?.name ?? "this agency"} />
+            <ContractLeadsCard leads={results.contract_leads} />
             <div className="flex flex-col justify-between rounded-2xl border border-line bg-white p-5">
               <div>
                 <div className="text-base font-bold tracking-tight text-navy">Don't see what you need?</div>
@@ -207,10 +208,18 @@ export default function RequestResults() {
               </IconCircle>
               <div>
                 <h2 className="text-2xl font-extrabold tracking-tight text-navy">
-                  {results.unavailable.length
-                    ? `No contract open to ${results.buyer?.name ?? "you"} covers this yet.`
-                    : "No contract covers this yet. You may be the first agency to buy it."}
+                  {results.contract_leads.some((c) => c.eligible)
+                    ? "No published prices for this yet, but there are contracts that cover it."
+                    : results.unavailable.length
+                      ? `No contract open to ${results.buyer?.name ?? "you"} covers this yet.`
+                      : "No contract covers this yet. You may be the first agency to buy it."}
                 </h2>
+                {results.contract_leads.some((c) => c.eligible) && (
+                  <p className="mt-2 text-sm text-navy">
+                    The contracts listed alongside cover this kind of purchase, but Agora doesn't hold their prices yet. Ask the supplier for a quote under the contract
+                    before running a solicitation.
+                  </p>
+                )}
                 <p className="mt-2 text-sm text-slate">
                   This is rare: most requests resolve to something already on contract or under a quick-buy limit. {results.buyer?.name ?? "Your agency"} can run a
                   solicitation, and once it's awarded the contract joins Agora, ready for the next agency that needs the same thing.
@@ -234,6 +243,7 @@ export default function RequestResults() {
           <div className="space-y-4">
             {results.peer && <PeerCard peer={results.peer} qty={p.quantity} />}
             <UnavailableCard items={results.unavailable} buyerName={results.buyer?.name ?? "this agency"} />
+            <ContractLeadsCard leads={results.contract_leads} />
           </div>
         </div>
       )}
@@ -414,6 +424,31 @@ function PeerCard({ peer, qty }: { peer: NonNullable<Results["peer"]>; qty: numb
           <Badge tone="amber">Their contract does not allow piggybacking</Badge>
         )}
       </div>
+    </Card>
+  );
+}
+
+/** Contracts that cover the request with no prices loaded: a quote is the next step. */
+function ContractLeadsCard({ leads }: { leads: ContractLead[] }) {
+  if (!leads.length) return null;
+  return (
+    <Card className="rounded-2xl p-5">
+      <div className="text-sm font-semibold text-navy">Also on contract, by quote</div>
+      <p className="mt-0.5 text-[11px] text-slate">These contracts cover this, but their prices aren't loaded into Agora.</p>
+      <ul className="mt-3 space-y-3">
+        {leads.slice(0, 5).map((c) => (
+          <li key={c.contract_id} className="text-xs">
+            <Link href={`/storefronts/${c.supplier_id}`} className="font-semibold text-navy hover:text-maroon hover:underline">
+              {c.supplier}
+            </Link>
+            <div className="text-slate">
+              {c.vehicle} {c.contract_number} · {c.title}
+            </div>
+            <div className={c.eligible ? "text-emerald-700" : "text-maroon"}>{c.eligible ? c.reason : `Not open to you: ${c.reason.replace(/^Open to /, "open to ")}`}</div>
+          </li>
+        ))}
+      </ul>
+      {leads.length > 5 && <p className="mt-2 text-[11px] text-slate">And {leads.length - 5} more on the Contracts page.</p>}
     </Card>
   );
 }

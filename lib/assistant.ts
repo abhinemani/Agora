@@ -4,7 +4,7 @@
 import * as z from "zod/v4";
 import { structured } from "./llm";
 import { CATEGORIES } from "./types";
-import type { Buyer, Category, Db, Listing, ParsedRequest, PeerPurchase, Request, Solicitation, Source, Supplier } from "./types";
+import type { Buyer, Category, Contract, Db, Listing, ParsedRequest, PeerPurchase, Request, Solicitation, Source, Supplier } from "./types";
 import { checkEligibility, defaultVariant, familyOf, SOURCEWELL_TYLER_NOTES } from "./vehicles";
 
 export const SOURCE_ORDER: Source[] = ["own_contract", "state_contract", "coop_contract", "reseller", "gsa", "no_approval"];
@@ -32,8 +32,11 @@ function singular(w: string) {
 
 /** Light stemming so "management" meets "manager" and "permitting" meets
  * "permit". Applied to both sides of every comparison. */
+/** Words whose suffix is part of the meaning: "customer" is not "custom". */
+const NO_STEM = new Set(["customer", "customers", "center", "centers", "water", "paper", "computer", "computers", "printer", "printers", "monitor", "monitors"]);
+
 function stem(w: string) {
-  if (w.length <= 4) return w;
+  if (w.length <= 4 || NO_STEM.has(w)) return w;
   let s = w.replace(/(ments|ment|ings|ing|ions|ion|ers|er|ed)$/, "");
   if (s.length < 3) s = w;
   s = s.replace(/e$/, "");
@@ -278,6 +281,45 @@ export interface Results {
   buyer: Buyer | null;
   /** Matches on contracts this buyer can't use, grouped by contract. */
   unavailable: Unavailable[];
+  /** Contracts that cover the request but carry no loaded prices: buy by quote. */
+  contract_leads: ContractLead[];
+}
+
+export interface ContractLead {
+  contract_id: string;
+  supplier_id: string;
+  supplier: string;
+  vehicle: string;
+  contract_number: string;
+  title: string;
+  eligible: boolean;
+  reason: string;
+}
+
+const contractText = (db: Db, c: Contract) => `${c.title} ${c.vehicle ?? ""} ${db.suppliers.find((s) => s.id === c.supplier_id)?.name ?? ""}`;
+
+/** Contracts with no line items loaded whose scope matches the request. */
+function contractLeads(db: Db, itemTokens: string[], buyer: Buyer | null): ContractLead[] {
+  const priced = new Set(db.listings.map((l) => l.contract_id));
+  const bare = db.contracts.filter((c) => !priced.has(c.id) && c.pricing_basis !== "discount_from_list");
+  if (!bare.length) return [];
+  const weights = idf(db.contracts, (c) => contractText(db, c));
+  const { rows } = bestMatches(itemTokens, bare, (c) => contractText(db, c), weights);
+  return rows
+    .map((c) => {
+      const e = checkEligibility(c, buyer);
+      return {
+        contract_id: c.id,
+        supplier_id: c.supplier_id,
+        supplier: db.suppliers.find((s) => s.id === c.supplier_id)?.name ?? "",
+        vehicle: c.vehicle ?? c.owner,
+        contract_number: c.contract_number,
+        title: c.title,
+        eligible: e.eligible,
+        reason: e.reason,
+      };
+    })
+    .sort((a, b) => Number(b.eligible) - Number(a.eligible));
 }
 
 function fmtDate(d: Date) {
@@ -289,7 +331,7 @@ const listingText = (l: Listing) => `${l.title} ${l.keywords ?? ""}`;
 export function estimateTotal(db: Db, item: string, quantity: number) {
   const itemTokens = tokens(expand(item));
   const weights = idf(db.listings, listingText);
-  const { rows } = bestMatches(itemTokens, db.listings.filter((l) => l.marketplace_ids.includes("mkt_riverbend")), listingText, weights);
+  const { rows } = bestMatches(itemTokens, db.listings, listingText, weights);
   if (!rows.length) return 0;
   // Estimate from the closest matches only, so a catalog's cheap add-ons
   // ($0.05 text messages) don't drag the estimate for the core product.
@@ -479,7 +521,8 @@ export function buildResults(db: Db, request: Request): Results {
     if (peer) explanation.push(`${peer.agency_name} bought something comparable recently, so it's shown as a peer pick.`);
   }
 
-  return { request, groups, peer, no_match, similar_solicitation, explanation, buyer, unavailable };
+  const contract_leads = contractLeads(db, itemTokens, buyer);
+  return { request, groups, peer, no_match, similar_solicitation, explanation, buyer, unavailable, contract_leads };
 }
 
 export function findSimilarSolicitation(db: Db, request: Request): Solicitation | null {

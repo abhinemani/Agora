@@ -21,7 +21,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <Header />
           <main className="mx-auto max-w-6xl px-4 py-8">{children}</main>
           <footer className="mt-10 border-t border-line px-4 py-6 text-center text-[11px] text-[#8795a9]">
-            Agora · Cooperative purchasing concept · Tyler and Maximus data from NJSTART price schedules · Sourcewell prices require a separate vendor quote
+            Agora · Cooperative purchasing concept · Tyler and Maximus prices from NASPO ValuePoint and NJSTART price files · NASPO awards from naspovaluepoint.org · Sourcewell prices require a vendor quote
           </footer>
           <Ledger />
         </StoreProvider>

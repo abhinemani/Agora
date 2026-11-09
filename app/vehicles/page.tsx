@@ -84,6 +84,7 @@ export default function Vehicles() {
                       </div>
                     </div>
                     <div className="flex flex-wrap items-center gap-2 sm:flex-col sm:items-end">
+                      {c.end && c.end < new Date().toISOString().slice(0, 10) && <span className="text-xs font-semibold text-maroon">Expired {c.end}</span>}
                       {buyer && (
                         <span
                           className={`inline-flex items-center gap-1 text-xs font-semibold ${!access.eligible ? "text-maroon" : v === "research_lead" ? "text-amber-800" : "text-emerald-800"}`}

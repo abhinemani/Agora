@@ -4,6 +4,8 @@
 import type { Category, Db, Listing, Source } from "./types";
 import { fireMonthlyLines } from "./revenue_rules";
 import tylerCatalog from "../seed/catalogs/tyler-technologies-2025-03.json";
+import tylerNaspo from "../seed/catalogs/tyler-technologies-naspo-ar3764-2026-09.json";
+import naspoCitizenEngagement from "../seed/catalogs/naspo-citizen-engagement-platforms.json";
 
 const DAY = 86_400_000;
 const isoDate = (offsetDays: number) => new Date(Date.now() + offsetDays * DAY).toISOString().slice(0, 10);
@@ -523,6 +525,7 @@ export function seed(): Db {
   addTylerCatalog(db);
   addMaximus(db);
   addCarahsoftLeads(db);
+  addNaspoCitizenEngagement(db);
   fireMonthlyLines(db);
   return db;
 }
@@ -544,6 +547,47 @@ function addTylerCatalog(db: Db) {
     review_count: 0,
     sponsored: false,
     categories: ["Software and services", "Professional services"],
+    website: "tylertech.com",
+    profile: {
+      tagline: "Software for courts, public safety, payments, records and open data",
+      about:
+        "Tyler Technologies sells software and services to state and local governments. Its Agora storefront carries the 100 products a city, county or school district is most likely to buy from its NASPO ValuePoint price list, from resident engagement and online payments to dispatch, jury management, permitting and open data.",
+      featured_families: [],
+      disclaimer:
+        "Example storefront. Built by Agora from Tyler's public NASPO ValuePoint and NJSTART price files; not written or endorsed by Tyler Technologies.",
+    },
+  });
+  const ar3764 = naspoCitizenEngagement.awards.find((a) => a.master_agreement === "AR3764")!;
+  db.contracts.push({
+    id: "ctr_tyler_naspo",
+    supplier_id: "sup_tyler",
+    source: "coop_contract",
+    owner: `NASPO ValuePoint (lead state ${naspoCitizenEngagement.lead_state})`,
+    title: `${naspoCitizenEngagement.portfolio}: platform management and master data management`,
+    contract_number: "AR3764",
+    start: ar3764.awarded ?? "",
+    end: ar3764.expires ?? "",
+    piggybackable: true,
+    piggyback_clause_text: "",
+    payment_terms: "Per your state's participating addendum",
+    delivery_terms: "Software delivered electronically; services scheduled with the vendor",
+    marketplace_ids: ["mkt_riverbend"],
+    source_document_id: null,
+    onboarding_billed: true,
+    vehicle: "NASPO ValuePoint",
+    verification: "source_document",
+    pricing_basis: "published_price",
+    source_url: ar3764.naspo_url,
+    eligibility: {
+      states: ar3764.pa_states,
+      note: `public entities in the ${ar3764.pa_states.length} states with a participating addendum`,
+      requires: "Your state's participating addendum (some cover state agencies only)",
+    },
+    documents: [
+      ...(ar3764.documents.master_agreement ? [{ label: "Master agreement AR3764", url: ar3764.documents.master_agreement }] : []),
+      ...ar3764.documents.price_files.map((url) => ({ label: "Price catalog, September 2026", url })),
+      { label: "Supplier page on NASPO ValuePoint", url: ar3764.naspo_url },
+    ],
   });
   db.contracts.push({
     id: "ctr_tyler_catalog",
@@ -564,6 +608,10 @@ function addTylerCatalog(db: Db) {
     vehicle: "NJSTART",
     verification: "source_document",
     pricing_basis: "published_price",
+    master_agreement: "NASPO ValuePoint AR3764",
+    adopts: "ctr_tyler_naspo",
+    relation_note:
+      "New Jersey's participating addendum M4027 to NASPO AR3764. Its price file has the same products at the same prices as the NASPO catalog (203 of 204 rows match).",
     eligibility: { states: ["NJ"], note: "New Jersey state agencies and local public entities" },
   });
   // Tyler's national co-op award: a discount off list, so it carries no prices.
@@ -606,18 +654,21 @@ function addTylerCatalog(db: Db) {
     return t.includes("million") && n < 1000 ? n * 1e6 : n;
   };
   featured.sort((a, b) => familyOrder.get(a.family)! - familyOrder.get(b.family)! || size(a) - size(b) || a.unit_price - b.unit_price);
+  const sku = (s: string) => s.replace(/\s+/g, "").toUpperCase();
+  const naspoRow = new Map(tylerNaspo.items.map((i) => [`${sku(i.sku)}|${i.title.replace(/\s+/g, " ").trim().toLowerCase()}`, i]));
   for (const item of featured) {
     const band = item.band;
+    const onNaspo = naspoRow.get(`${sku(item.sku)}|${item.title.replace(/\s+/g, " ").trim().toLowerCase()}`);
     n++;
     db.listings.push({
       id: `lst_t${String(n).padStart(4, "0")}`,
-      contract_id: "ctr_tyler_catalog",
+      contract_id: onNaspo ? "ctr_tyler_naspo" : "ctr_tyler_catalog",
       supplier_id: "sup_tyler",
-      source: "state_contract",
+      source: onNaspo ? "coop_contract" : "state_contract",
       sku: item.sku,
       title: item.tier ? `${item.name} (${item.tier})` : (item.name ?? item.title),
       category: item.category as Category,
-      unit_price: item.unit_price,
+      unit_price: onNaspo?.unit_price ?? item.unit_price,
       unit: item.unit,
       lead_time_days: item.unit === "hr" ? 10 : 14,
       extracted_item_id: null,
@@ -631,6 +682,19 @@ function addTylerCatalog(db: Db) {
       band: band ? { min: band.min, max: band.max ?? null, label: band.label } : null,
     });
   }
+  // Products the storefront leads with, one from each of the lines cities buy most.
+  const lead = [
+    "Jury management software",
+    "Computer-aided dispatch: police, one jurisdiction",
+    "Permitting and licensing software (per user)",
+    "Online payments: ACH bank transfers",
+    "Open data portal",
+    "Police records management system",
+  ];
+  const tyler = db.suppliers.find((x) => x.id === "sup_tyler")!;
+  tyler.profile!.featured_families = lead
+    .map((name) => db.listings.find((l) => l.supplier_id === "sup_tyler" && (l.title === name || l.title.startsWith(`${name} (`)))?.family)
+    .filter((f): f is string => !!f);
 }
 
 /** Maximus US Services on NJSTART 26-TELE-115813, adopted from NASPO ValuePoint
@@ -671,6 +735,7 @@ function addMaximus(db: Db) {
     verification: "source_document",
     pricing_basis: "published_price",
     master_agreement: "NASPO ValuePoint AR3758",
+    relation_note: "New Jersey's adoption of NASPO ValuePoint AR3758, per the NJSTART price schedule.",
     eligibility: { states: ["NJ"], note: "New Jersey state agencies and local public entities" },
   });
   const rows: [string, string, string, string, number, string, Category][] = [
@@ -759,4 +824,74 @@ function addCarahsoftLeads(db: Db) {
     });
   lead("ctr_carahsoft_iowa", "Iowa / NASPO ValuePoint AR2472", "2024-BUS-0226", "https://bidopportunities.iowa.gov/Home/ContractInfo?contractId=39e5d203-5faa-4e4a-a031-eca76be5ae6f", "states that have adopted NASPO ValuePoint AR2472");
   lead("ctr_carahsoft_coretrust", "CoreTrust", "24COR-018GR", "https://www.carahsoft.com/buy/slg-contracts/coretrust-24cor-018gr", "CoreTrust members");
+}
+
+/** NASPO ValuePoint's Citizen Engagement Platforms portfolio (lead state Utah,
+ * solicitation KM21-47), read from naspovaluepoint.org by
+ * scripts/import-naspo.mjs. Tyler's award (AR3764) is loaded with its prices
+ * above; the rest are listed with their real terms and participating states but
+ * no prices, since their price files aren't loaded. */
+function addNaspoCitizenEngagement(db: Db) {
+  const portfolio = naspoCitizenEngagement;
+  const supplierFor: Record<string, string> = { AR3764: "sup_tyler", AR3758: "sup_maximus" };
+  for (const a of portfolio.awards) {
+    if (!a.master_agreement || a.master_agreement === "AR3764") continue;
+    let supplierId = supplierFor[a.master_agreement];
+    if (!supplierId) {
+      supplierId = `sup_naspo_${a.master_agreement.toLowerCase()}`;
+      db.suppliers.push({
+        id: supplierId,
+        name: a.supplier.replace(/,? (Inc|LLC|Corp)\.?$/, ""),
+        city: "",
+        state: "",
+        is_local: false,
+        certifications: [],
+        verified: { insurance: false, bond: false },
+        edge_tier: "discover",
+        rating: 0,
+        review_count: 0,
+        sponsored: false,
+        categories: ["Software and services"],
+        website: a.website ?? undefined,
+      });
+    }
+    const scope = a.scope.map((c) => c.replace(/^Category \d+: /, "")).join(", ");
+    db.contracts.push({
+      id: `ctr_naspo_${a.master_agreement.toLowerCase()}`,
+      supplier_id: supplierId,
+      source: "coop_contract",
+      owner: `NASPO ValuePoint (lead state ${portfolio.lead_state})`,
+      title: `${portfolio.portfolio}: ${scope.toLowerCase()}`,
+      contract_number: a.master_agreement,
+      start: a.awarded ?? "",
+      end: a.expires ?? "",
+      piggybackable: true,
+      piggyback_clause_text: "",
+      payment_terms: "Per your state's participating addendum",
+      delivery_terms: "Per quote",
+      marketplace_ids: ["mkt_riverbend"],
+      source_document_id: null,
+      onboarding_billed: true,
+      vehicle: "NASPO ValuePoint",
+      verification: "source_document",
+      pricing_basis: "quote",
+      covers_supplier_catalog: true,
+      source_url: a.naspo_url,
+      relation_note: a.documents.price_files.length
+        ? "NASPO ValuePoint publishes a price file for this award; it isn't loaded into Agora yet, so the supplier quotes."
+        : "No price file is posted for this award; the supplier quotes.",
+      eligibility: {
+        states: a.pa_states,
+        note: a.pa_states.length
+          ? `public entities in states with a participating addendum (${a.pa_states.join(", ")})`
+          : "states that sign a participating addendum (none listed yet)",
+        requires: "Your state's participating addendum",
+      },
+      documents: [
+        ...(a.documents.master_agreement ? [{ label: `Master agreement ${a.master_agreement}`, url: a.documents.master_agreement }] : []),
+        ...a.documents.price_files.map((url) => ({ label: "Price file", url })),
+        { label: "Supplier page on NASPO ValuePoint", url: a.naspo_url },
+      ],
+    });
+  }
 }

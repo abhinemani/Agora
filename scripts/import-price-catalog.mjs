@@ -2,7 +2,10 @@
 // lib/seed.ts loads on every reset. Prices are read only from the price line at
 // the end of each description; rows without one readable price are skipped and
 // reported, never guessed.
-//   node scripts/import-price-catalog.mjs
+//   node scripts/import-price-catalog.mjs [source.xlsx output.json]
+// With no arguments it imports the NJSTART Tyler catalog; pass paths (relative
+// to seed/catalogs) to import another file in the same layout, such as Tyler's
+// NASPO ValuePoint AR3764 catalog.
 
 import * as XLSX from "xlsx";
 import { readFileSync, writeFileSync } from "node:fs";
@@ -10,8 +13,8 @@ import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 
 const DIR = join(dirname(fileURLToPath(import.meta.url)), "..", "seed", "catalogs");
-const SRC = join(DIR, "tyler-technologies-price-catalog-2025-03.xlsx");
-const OUT = join(DIR, "tyler-technologies-2025-03.json");
+const SRC = join(DIR, process.argv[2] ?? "tyler-technologies-price-catalog-2025-03.xlsx");
+const OUT = join(DIR, process.argv[3] ?? "tyler-technologies-2025-03.json");
 
 const AMOUNT = /\$\s?[\d,]+(?:\.\d+)?|(?<![\w.$])[\d,]{1,12}\.\d{2}(?![\d%])/g;
 const money = (s) => parseFloat(s.replace(/[$,\s]/g, ""));
@@ -148,7 +151,7 @@ writeFileSync(
   OUT,
   JSON.stringify(
     {
-      source_file: "tyler-technologies-price-catalog-2025-03.xlsx",
+      source_file: SRC.split("/").pop(),
       imported: items.length,
       skipped_count: skipped.length,
       items,

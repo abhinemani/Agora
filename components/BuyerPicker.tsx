@@ -55,7 +55,7 @@ export function BuyerPicker({ onDone, onClose, compact = false }: { onDone?: (b:
             setting your agency shows only the ways you can actually buy.
           </p>
 
-          <div className="mt-4 grid gap-2 sm:grid-cols-4">
+          <div className="mt-4 grid gap-2 sm:grid-cols-3 lg:grid-cols-5">
             <button
               disabled={busy}
               onClick={async () => {

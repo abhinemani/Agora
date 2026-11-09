@@ -44,9 +44,7 @@ export default function Storefronts() {
               {s.edge_tier === "position" && <span className="rounded-md bg-[#e8f6ef] px-2 py-1 text-[10px] font-bold text-[#167854]">Featured storefront</span>}
             </div>
             <div className="mt-4 text-lg font-bold tracking-tight text-navy">{s.name}</div>
-            <div className="text-xs text-slate">
-              {s.city}, {s.state}
-            </div>
+            <div className="text-xs text-slate">{s.city ? `${s.city}, ${s.state}` : (s.website ?? "")}</div>
             <div className="mt-2 flex flex-wrap items-center gap-2">
               <SupplierBadges supplier={s} />
               <Stars rating={s.rating} count={s.review_count} />

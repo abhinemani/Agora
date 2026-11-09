@@ -24,10 +24,11 @@ export const STATES: [string, string][] = [
 ];
 export const stateName = (code: string) => STATES.find(([c]) => c === code)?.[1] ?? code;
 
-/** One-click buyers for the intake step. Harmon Lake is fictional. */
+/** One-click buyers for the intake step. Riverbend, Harmon Lake and Cedar Bend are fictional. */
 export const BUYER_PRESETS: { buyer: Buyer; blurb: string }[] = [
   { buyer: { name: "City of Riverbend", state: "OR", entity_type: "municipality", population: 85_000 }, blurb: "Has its own city marketplace: Oregon contracts plus national co-ops" },
   { buyer: { name: "Harmon Lake Township", state: "NJ", entity_type: "municipality", population: 42_000 }, blurb: "A New Jersey municipality: NJSTART contracts open up" },
+  { buyer: { name: "City of Cedar Bend", state: "IA", entity_type: "municipality", population: 60_000 }, blurb: "An Iowa city: NASPO ValuePoint contracts with an Iowa addendum open up" },
   { buyer: { name: "New Jersey state department", state: "NJ", entity_type: "state_agency", population: null }, blurb: "Buying directly under New Jersey state contracts" },
 ];
 
@@ -40,6 +41,8 @@ export interface EligibilityCheck {
  * purchases) are open to anyone under their own quick-buy limit. */
 export function checkEligibility(contract: Contract | undefined, buyer: Buyer | null): EligibilityCheck {
   if (!contract) return { eligible: true, reason: "Small purchase, no contract required" };
+  if (contract.end && contract.end < new Date().toISOString().slice(0, 10))
+    return { eligible: false, reason: `Expired ${new Date(`${contract.end}T12:00:00Z`).toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" })}` };
   const e = contract.eligibility;
   if (!e || !buyer) return { eligible: true, reason: e?.note ?? "" };
   if (e.agencies && !e.agencies.includes(buyer.name)) return { eligible: false, reason: `${contract.owner}'s own contract; not open to other agencies` };
@@ -112,6 +115,18 @@ export function routesFor(db: Db, listing: Listing, buyer: Buyer | null): Route[
       action: "buy",
     });
   }
+  // A state's participating addendum to this contract, at the same published prices.
+  for (const c of db.contracts.filter((c) => own && c.adopts === own.id)) {
+    routes.push({
+      contract: c,
+      listing,
+      eligibility: checkEligibility(c, buyer),
+      basis: "published_price",
+      price_note: `Same published price under ${c.owner}: $${listing.unit_price.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })} / ${listing.unit}`,
+      research_note: c.relation_note ?? null,
+      action: "buy",
+    });
+  }
   for (const c of db.contracts.filter((c) => c.supplier_id === listing.supplier_id && c.covers_supplier_catalog && c.id !== own?.id)) {
     const text = `${listing.title} ${listing.keywords ?? ""}`;
     const note = c.vehicle === "Sourcewell" ? SOURCEWELL_TYLER_NOTES.find((n) => n.match.test(text)) : undefined;
@@ -120,14 +135,16 @@ export function routesFor(db: Db, listing: Listing, buyer: Buyer | null): Route[
       listing: null,
       eligibility: checkEligibility(c, buyer),
       basis: c.pricing_basis ?? "quote",
-      price_note: c.pricing_basis === "discount_from_list" ? "Discount off the supplier's current list price; the supplier quotes the final price" : "Priced by quote",
+      price_note: c.pricing_basis === "discount_from_list" ? "Discount off the supplier's current list price; the supplier quotes the final price" : (c.relation_note ?? "Priced by quote"),
       research_note: note
         ? `Research lead (unverified): Sourcewell's discount summary lists ${note.percent}% off list for ${note.product}. Confirm on the source document.`
         : null,
       action: "quote",
     });
   }
-  if (own?.master_agreement) {
+  // The master agreement itself, when Agora doesn't hold it as a contract.
+  const masterNumber = own?.master_agreement?.split(" ").pop();
+  if (own?.master_agreement && !db.contracts.some((c) => c.supplier_id === own.supplier_id && c.contract_number === masterNumber)) {
     routes.push({
       contract: { ...own, id: `${own.id}-master`, vehicle: own.master_agreement.split(" AR")[0], contract_number: own.master_agreement, owner: own.master_agreement, eligibility: { states: "any", note: "states that have adopted this master agreement" } },
       listing: null,

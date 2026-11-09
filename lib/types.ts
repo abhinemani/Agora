@@ -84,6 +84,18 @@ export interface Supplier {
   review_count: number;
   sponsored: boolean;
   categories: Category[];
+  /** A featured storefront's own copy. Absent for a basic storefront. */
+  profile?: SupplierProfile;
+  website?: string;
+}
+
+export interface SupplierProfile {
+  tagline: string;
+  about: string;
+  /** Families (Listing.family) shown first on the storefront. */
+  featured_families?: string[];
+  /** Shown under the storefront header, e.g. where the content comes from. */
+  disclaimer?: string;
 }
 
 export interface Review {
@@ -125,6 +137,12 @@ export interface Contract {
   master_agreement?: string;
   /** Route covers every product the supplier sells (e.g. a discount-off-list co-op award). */
   covers_supplier_catalog?: boolean;
+  /** A state's participating addendum to another contract in Agora, at that contract's published prices. */
+  adopts?: string;
+  /** Plain-language note on how this contract relates to others, shown on product pages. */
+  relation_note?: string;
+  /** Source documents: master agreement, price files, participating addenda. */
+  documents?: { label: string; url: string }[];
 }
 
 export interface ContractDocument {

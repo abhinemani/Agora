@@ -41,13 +41,27 @@ No agency is set by default, so search covers every contract. An agency (name, s
 
 | Vehicle | Number | Open to | Pricing | Verification |
 | --- | --- | --- | --- | --- |
-| NJSTART, Tyler Technologies | 26-TELE-114629 | New Jersey public entities | Published prices: 100 featured products of 1,073 | Source document |
+| NASPO ValuePoint, Tyler Technologies | AR3764 (lead state Utah, Citizen Engagement Platforms) | Public entities in the 15 states with a participating addendum | Published prices: 203 of the 100 featured products' 204 price rows, from the September 2026 catalog | Source document |
+| NJSTART, Tyler Technologies | 26-TELE-114629, New Jersey's participating addendum M4027 to AR3764 | New Jersey public entities | Same prices as AR3764 (one row exists only here) | Source document |
+| NASPO ValuePoint, eight more Citizen Engagement Platforms suppliers and Maximus | AR3751–AR3762 | Public entities in each award's participating states | Quote only; price files not loaded | Source document (terms); two awards expired September 14, 2026 |
 | NJSTART, Maximus US Services | 26-TELE-115813, adopted from NASPO ValuePoint AR3758 | New Jersey public entities | 14 published rates | Source document, checked line by line against the scanned Attachment C |
 | Sourcewell, Tyler Technologies | 060624-TTI | Members nationwide | Discount off list; quote required | Research lead |
 | Carahsoft (Iowa / NASPO AR2472, CoreTrust) | 2024-BUS-0226, 24COR-018GR | Adopting states, CoreTrust members | Quote only; no price files loaded | Research lead |
 | Riverbend, ORCPP, WSPC, GSA, reseller | various | as stated | Published prices | Demo data |
 
-When a product sits on a contract the buyer can't use but the same supplier has an open co-op award, it is offered by quote through that award, with the closed contract's price shown only as a reference. Sourcewell discount percentages from the research seed appear only as labeled, unverified notes, never as prices. The three buyer presets are the City of Riverbend (Oregon), Harmon Lake Township (a fictional New Jersey municipality) and a New Jersey state department.
+When a product sits on a contract the buyer can't use but the same supplier has an open co-op award, it is offered by quote through that award, with the closed contract's price shown only as a reference. Sourcewell discount percentages from the research seed appear only as labeled, unverified notes, never as prices. The four buyer presets are the City of Riverbend (Oregon), Harmon Lake Township (a fictional New Jersey municipality), the City of Cedar Bend (a fictional Iowa city, which reaches Tyler through NASPO) and a New Jersey state department. Contracts past their end date are shown as expired and can't be bought from.
+
+## NASPO ValuePoint
+
+`npm run import:naspo` (`scripts/import-naspo.mjs`) reads one NASPO ValuePoint portfolio from naspovaluepoint.org (its public WordPress API and supplier pages) and writes `seed/catalogs/naspo-citizen-engagement-platforms.json`: each award's master agreement number, award and expiration dates, the states with a participating addendum, and links to the master agreement and price files. It needs network access to www.naspovaluepoint.org and, for documents, its S3 buckets; run Node with `NODE_USE_ENV_PROXY=1` behind a proxy.
+
+Tyler's AR3764 price catalog (September 2026, `seed/catalogs/tyler-technologies-naspo-ar3764-catalog-2026-09.xlsx`) was imported with the same importer as the NJSTART file (`node scripts/import-price-catalog.mjs tyler-technologies-naspo-ar3764-catalog-2026-09.xlsx tyler-technologies-naspo-ar3764-2026-09.json`). Its sheets are the AR3764 award categories, and 203 of the 204 featured NJSTART rows match it on SKU, name and price, so Tyler's products sit on AR3764 and NJSTART shows as New Jersey's route to the same prices. That link is read from the documents (New Jersey's executed addendum M4027 names AR3764), not stated in the NJSTART file itself.
+
+Suppliers whose awards have no loaded prices still turn up in search: a request that matches an award's scope ("chatbot", "customer engagement") lists it under **Also on contract, by quote**, with whether the buyer's state has signed on.
+
+## Example storefront: Tyler Technologies
+
+`/storefronts/sup_tyler` shows what a featured storefront looks like: a tagline and about text, the 13 product lines from Tyler's catalog (each filters the catalog), six featured products, every contract with its participating states and source documents, and the full catalog. It is labeled as an example built from Tyler's public price files, not written or endorsed by Tyler. The other NASPO suppliers have basic storefronts built from their contracts alone.
 
 ## Vendor price catalog
 

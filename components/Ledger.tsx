@@ -80,7 +80,7 @@ export function Ledger() {
           ) : (
             <div className="space-y-6 px-5 py-4">
               <section>
-                <h3 className="mb-2 text-xs font-semibold text-slate">Revenue per storefront adds up five ways</h3>
+                <h3 className="mb-2 text-xs font-semibold text-slate">Revenue per city marketplace adds up five ways</h3>
                 <div className="divide-y divide-navy/5 rounded-lg bg-tint px-3">
                   {FIVE_WAYS.map((w, i) => (
                     <div key={w.label} className="flex items-center gap-3 py-2 text-sm">
@@ -148,7 +148,7 @@ export function Ledger() {
           <div className="space-y-1 text-xs text-slate">
             <label className="flex cursor-pointer items-center gap-2">
               <input type="checkbox" className="!p-0" checked={showEarn} onChange={(e) => setShowEarn(e.target.checked)} />
-              Show revenue badges across the storefront
+              Show revenue badges across Agora
             </label>
             <div>
               Placeholder pricing. {llm ? "Requests and contracts are read by Claude." : "Offline parsing: no API key is set."}

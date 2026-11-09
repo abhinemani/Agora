@@ -34,13 +34,13 @@ export const TEST_FILES = [
     file: "techsource-it-peripherals.docx",
     format: "DOCX",
     title: "IT peripherals reseller addendum",
-    tests: "A Word table, a reseller source, and a SKU already in the storefront at a new price.",
+    tests: "A Word table, a reseller source, and a SKU already in Agora at a new price.",
   },
   {
     file: "evergreen-public-works-materials.pdf",
     format: "PDF",
     title: "Riverbend public works materials",
-    tests: "No piggyback clause, so other storefronts stay locked. A price range lands in Unresolved.",
+    tests: "No piggyback clause, so other cities' marketplaces stay locked. A price range lands in Unresolved.",
   },
   {
     file: "fleet-parts-price-list.csv",

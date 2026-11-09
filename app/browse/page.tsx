@@ -26,7 +26,7 @@ function Browse() {
   const [filter, setFilter] = useState("");
   const [limit, setLimit] = useState(PAGE);
   if (!db) return <Loading />;
-  const listings = db.listings.filter((l) => l.storefront_ids.includes("sf_riverbend"));
+  const listings = db.listings.filter((l) => l.marketplace_ids.includes("mkt_riverbend"));
   const counts = Object.fromEntries(CATEGORIES.map((c) => [c, listings.filter((l) => l.category === c).length]));
   const words = filter.toLowerCase().split(/\s+/).filter(Boolean);
   const inCat = listings.filter((l) => l.category === cat).sort((a, b) => a.title.localeCompare(b.title));
@@ -40,7 +40,7 @@ function Browse() {
 
   return (
     <div>
-      <PageTitle eyebrow="Browse by category" title="Everything in Riverbend's storefront">
+      <PageTitle eyebrow="Browse by category" title="Everything in Agora">
         Asking is usually faster, but here's the full shelf, labeled by source.
       </PageTitle>
       <div className="grid gap-6 md:grid-cols-4">

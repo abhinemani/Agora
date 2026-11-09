@@ -10,7 +10,7 @@ import type { EdgeTier } from "@/lib/types";
 
 const TABS = [
   { id: "contracts", label: "Contracts" },
-  { id: "storefronts", label: "Storefronts" },
+  { id: "marketplaces", label: "City marketplaces" },
   { id: "insights", label: "Insights" },
   { id: "apps", label: "Apps" },
   { id: "reviews", label: "Reviews" },
@@ -125,7 +125,7 @@ function Supplier() {
       </div>
 
       {tab === "contracts" && <ContractsTab run={run} />}
-      {tab === "storefronts" && <StorefrontsTab run={run} />}
+      {tab === "marketplaces" && <MarketplacesTab run={run} />}
       {tab === "insights" && <InsightsTab run={run} />}
       {tab === "apps" && <AppsTab run={run} />}
       {tab === "reviews" && <ReviewsTab run={run} />}
@@ -172,9 +172,9 @@ function ContractsTab({ run }: { run: Run }) {
               </div>
               <div className="mt-3 flex flex-wrap gap-1.5 text-xs">
                 <span className="text-slate">Appears in:</span>
-                {c.storefront_ids.map((id) => (
+                {c.marketplace_ids.map((id) => (
                   <Badge key={id} tone="navy">
-                    {db!.storefronts.find((s) => s.id === id)?.agency_name}
+                    {db!.marketplaces.find((s) => s.id === id)?.agency_name}
                   </Badge>
                 ))}
               </div>
@@ -205,24 +205,24 @@ function ContractsTab({ run }: { run: Run }) {
   );
 }
 
-function StorefrontsTab({ run }: { run: Run }) {
+function MarketplacesTab({ run }: { run: Run }) {
   const { db } = useStore();
   const sid = db!.session.acting_supplier_id;
   const s = db!.suppliers.find((x) => x.id === sid)!;
   const contracts = db!.contracts.filter((c) => c.supplier_id === sid);
-  const active = new Set(contracts.flatMap((c) => c.storefront_ids));
+  const active = new Set(contracts.flatMap((c) => c.marketplace_ids));
   const listings = db!.listings.filter((l) => l.supplier_id === sid);
 
   return (
     <div className="grid gap-4 md:grid-cols-2">
-      {db!.storefronts.map((sf) => {
+      {db!.marketplaces.map((sf) => {
         const on = active.has(sf.id);
-        const count = listings.filter((l) => l.storefront_ids.includes(sf.id)).length;
+        const count = listings.filter((l) => l.marketplace_ids.includes(sf.id)).length;
         return (
           <Card key={sf.id} className="flex items-center justify-between gap-4 p-5">
             <div>
               <div className="font-semibold text-navy">{sf.agency_name}</div>
-              <div className="text-xs text-slate">{sf.id === "sf_riverbend" ? "Home storefront" : `${sf.distance_miles} mi from Riverbend`}</div>
+              <div className="text-xs text-slate">{sf.id === "mkt_riverbend" ? "Home marketplace" : `${sf.distance_miles} mi from Riverbend`}</div>
             </div>
             {on ? (
               <div className="text-right">
@@ -232,8 +232,8 @@ function StorefrontsTab({ run }: { run: Run }) {
             ) : (
               <div className="text-right">
                 <div className="mb-1 text-xs text-slate">Available to list · $400/yr</div>
-                <Button variant="maroon" onClick={() => run("addStorefront", { storefrontId: sf.id })}>
-                  Add storefront
+                <Button variant="maroon" onClick={() => run("addMarketplace", { marketplaceId: sf.id })}>
+                  List here
                 </Button>
               </div>
             )}
@@ -241,7 +241,7 @@ function StorefrontsTab({ run }: { run: Run }) {
         );
       })}
       <p className="text-xs text-slate md:col-span-2">
-        Adding a storefront lists your piggybackable contracts in a neighboring agency's storefront. {s.name} holds {contracts.filter((c) => c.piggybackable).length} piggybackable contracts.
+        Listing in another city's marketplace puts your piggybackable contracts in front of its buyers. Your storefront page stays the same everywhere. {s.name} holds {contracts.filter((c) => c.piggybackable).length} piggybackable contracts.
       </p>
     </div>
   );
@@ -378,9 +378,9 @@ const STEPS: { tier: string; title: string; sub: string; opts: number[]; need: E
   { tier: "Discover", title: "Find bids", sub: "on the network", opts: [], need: null },
   { tier: "Win", title: "Write the bid", sub: "and submit it", opts: [], need: "win" },
   { tier: "Contract", title: "Win the award", sub: "becomes a contract", opts: [], need: null },
-  { tier: "Position", title: "Get listed", sub: "in every storefront", opts: [2], need: "position" },
+  { tier: "Position", title: "Get listed", sub: "with a storefront", opts: [2], need: "position" },
   { tier: "Buy · Pay", title: "Take orders", sub: "and get paid", opts: [9, 5, 3], need: null },
-  { tier: "Position", title: "Reach more", sub: "storefronts", opts: [4], need: "position" },
+  { tier: "Position", title: "Reach more", sub: "city marketplaces", opts: [4], need: "position" },
   { tier: "Position", title: "See unmet demand", sub: "and upcoming bids", opts: [6], need: "position" },
 ];
 
@@ -427,18 +427,18 @@ function Payoff() {
   const { db } = useStore();
   const s = db!.suppliers.find((x) => x.id === db!.session.acting_supplier_id)!;
   const appearances = db!.counters[`appear_${s.id}`] ?? 0;
-  const storefronts = new Set(db!.contracts.filter((c) => c.supplier_id === s.id).flatMap((c) => c.storefront_ids)).size;
+  const marketplaces = new Set(db!.contracts.filter((c) => c.supplier_id === s.id).flatMap((c) => c.marketplace_ids)).size;
   const reviewers = new Set(db!.reviews.filter((r) => r.supplier_id === s.id).map((r) => r.agency_name)).size;
   const cards = [
     { icon: <Search />, title: "Found in everyday buying", stat: `${appearances}`, unit: `buyer result page${appearances === 1 ? "" : "s"} this session`, body: "AI search matches your profile to small buys and co-op purchases that never become an RFP." },
     { icon: <BadgeCheck />, title: "Meets agency preferences", stat: [s.is_local ? "Local" : null, ...s.certifications].filter(Boolean).join(" + ") || "None", unit: "verified", body: "Certifications put you at the top when an agency asks for local or MBE vendors." },
     { icon: <Star />, title: "Reviews replace references", stat: s.rating.toFixed(1), unit: `from ${reviewers} agencies`, body: "Peer reviews give a buyer confidence without calling two or three references." },
-    { icon: <Globe />, title: "One profile, every storefront", stat: `${storefronts}`, unit: `storefront${storefronts === 1 ? "" : "s"} active`, body: "Contracts listed once show up wherever an agency is allowed to buy from you." },
+    { icon: <Globe />, title: "One storefront, every marketplace", stat: `${marketplaces}`, unit: `city marketplace${marketplaces === 1 ? "" : "s"}`, body: "Your storefront lists your catalog once; it shows up in every city marketplace allowed to buy from you." },
   ];
   return (
     <div>
       <div className="mb-3 flex items-center justify-between">
-        <Eyebrow tone="slate">Your profile pays off beyond RFPs</Eyebrow>
+        <Eyebrow tone="slate">Your storefront pays off beyond RFPs</Eyebrow>
         <RevenueTags options={[6]} />
       </div>
       <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">

@@ -24,11 +24,11 @@ interface PublishResult {
   listed: number;
   replaced: number;
   attention: number;
-  storefronts: string[];
+  marketplaces: string[];
   contract: { id: string; contract_number: string };
 }
 
-const STEPS = ["Reading files", "Extracting text and tables", "Finding contract terms", "Structuring priced line items", "Checking against the storefront"];
+const STEPS = ["Reading files", "Extracting text and tables", "Finding contract terms", "Structuring priced line items", "Checking against Agora"];
 
 export default function UploadPage() {
   return (
@@ -48,7 +48,7 @@ function Upload() {
   const [header, setHeader] = useState<ContractHeader | null>(null);
   const [items, setItems] = useState<ExtractedItem[]>([]);
   const [selected, setSelected] = useState<string | null>(null);
-  const [storefronts, setStorefronts] = useState<string[]>(["sf_riverbend"]);
+  const [marketplaces, setMarketplaces] = useState<string[]>(["mkt_riverbend"]);
   const [published, setPublished] = useState<PublishResult | null>(null);
   const [busy, setBusy] = useState(false);
   const fileRef = useRef<HTMLInputElement>(null);
@@ -198,8 +198,8 @@ function Upload() {
             </IconCircle>
             <div>
               <h1 className="text-2xl font-semibold tracking-tight text-navy">
-                {published.listed} items listed in {published.storefronts.join(", ")}
-                {published.storefronts.length > 1 ? " storefronts" : "'s storefront"}.
+                {published.listed} items listed in {published.marketplaces.join(", ")}
+                {published.marketplaces.length > 1 ? " marketplaces" : "'s marketplace"}.
               </h1>
               <p className="mt-1 text-sm text-slate">
                 {published.attention ? `${published.attention} item${published.attention > 1 ? "s" : ""} need attention and are waiting on the Contracts tab.` : "Nothing needs attention."}
@@ -256,8 +256,8 @@ function Upload() {
       setItems={setItems}
       selected={selected}
       setSelected={setSelected}
-      storefronts={storefronts}
-      setStorefronts={setStorefronts}
+      marketplaces={marketplaces}
+      setMarketplaces={setMarketplaces}
       busy={busy}
       error={error}
       onPublish={async () => {
@@ -269,7 +269,7 @@ function Upload() {
             documentIds: result.documents.map((d) => d.id),
             header,
             items,
-            storefrontIds: storefronts,
+            marketplaceIds: marketplaces,
             role: as,
           });
           await refresh();
@@ -321,14 +321,14 @@ function Review(props: {
   setItems: (fn: (items: ExtractedItem[]) => ExtractedItem[]) => void;
   selected: string | null;
   setSelected: (id: string | null) => void;
-  storefronts: string[];
-  setStorefronts: (ids: string[]) => void;
+  marketplaces: string[];
+  setMarketplaces: (ids: string[]) => void;
   busy: boolean;
   error: string | null;
   onPublish: () => void;
 }) {
   const { db } = useStore();
-  const { result, header, setHeader, items, setItems, selected, setSelected, storefronts, setStorefronts } = props;
+  const { result, header, setHeader, items, setItems, selected, setSelected, marketplaces, setMarketplaces } = props;
   // Sort once per parse so rows don't jump while the reviewer works through them.
   const order = useMemo(() => sortItems(result.items).map((i) => i.id), [result.items]);
   const rows = order.map((id) => items.find((i) => i.id === id)!).filter(Boolean);
@@ -457,19 +457,19 @@ function Review(props: {
           <SourceViewer item={sel} files={result.files} />
 
           <Card className="p-5">
-            <div className="text-sm font-semibold text-navy">Publish to storefronts</div>
+            <div className="text-sm font-semibold text-navy">Publish to city marketplaces</div>
             <div className="mt-3 space-y-2">
-              {db!.storefronts.map((sf) => {
-                const home = sf.id === "sf_riverbend";
+              {db!.marketplaces.map((sf) => {
+                const home = sf.id === "mkt_riverbend";
                 const disabled = home || !canScale;
                 return (
                   <label key={sf.id} className={`flex items-center gap-2 text-sm ${disabled && !home ? "text-steel" : "text-navy"}`}>
                     <input
                       type="checkbox"
                       className="!p-0"
-                      checked={storefronts.includes(sf.id)}
+                      checked={marketplaces.includes(sf.id)}
                       disabled={disabled}
-                      onChange={(e) => setStorefronts(e.target.checked ? [...storefronts, sf.id] : storefronts.filter((x) => x !== sf.id))}
+                      onChange={(e) => setMarketplaces(e.target.checked ? [...marketplaces, sf.id] : marketplaces.filter((x) => x !== sf.id))}
                     />
                     {sf.agency_name}
                     {!home && <span className="text-xs text-slate">· {sf.distance_miles} mi</span>}
@@ -480,8 +480,8 @@ function Review(props: {
             {!canScale && (
               <p className="mt-2 text-xs text-slate">
                 {!header.piggyback_clause_present
-                  ? "Other storefronts need a piggyback clause in the contract."
-                  : "Listing in other agencies' storefronts is available to Edge Position suppliers."}
+                  ? "Other cities' marketplaces need a piggyback clause in the contract."
+                  : "Listing in other cities' marketplaces is available to Edge Position suppliers."}
               </p>
             )}
             <div className="mt-4 rounded-md bg-tint p-3 text-xs text-slate">

@@ -17,7 +17,7 @@ const EXAMPLES = ["40 folding tables for the Eastside rec center, delivered befo
 /** Products shown on the shelf, when the buyer may use their contracts. */
 const SHELF = ["lst_006", "lst_031", "lst_026", "lst_009", "lst_002", "lst_028"];
 
-export default function RiverbendStorefront() {
+export default function RiverbendMarketplace() {
   const { db, act, role, setRole } = useStore();
   const router = useRouter();
   const [text, setText] = useState("");
@@ -31,7 +31,7 @@ export default function RiverbendStorefront() {
   if (!db) return <Loading />;
 
   const buyer = RIVERBEND;
-  const open = (l: Listing) => l.storefront_ids.includes("sf_riverbend") && checkEligibility(db.contracts.find((c) => c.id === l.contract_id), buyer).eligible;
+  const open = (l: Listing) => l.marketplace_ids.includes("mkt_riverbend") && checkEligibility(db.contracts.find((c) => c.id === l.contract_id), buyer).eligible;
   const available = db.listings.filter(open);
   const contracts = new Set(available.map((l) => l.contract_id).filter(Boolean));
   const byId = (id: string) => db.listings.find((l) => l.id === id);
@@ -71,15 +71,15 @@ export default function RiverbendStorefront() {
   return (
     <div className="space-y-14 pb-8">
       <div>
-        <Link href="/storefronts" className="text-sm text-slate hover:text-navy">
-          Storefronts
+        <Link href="/marketplaces" className="text-sm text-slate hover:text-navy">
+          City marketplaces
         </Link>
         <div className="mt-4 flex flex-wrap items-end justify-between gap-6 rounded-2xl border border-line bg-white p-8">
           <div className="max-w-xl">
-            <div className="text-sm font-semibold text-maroon">City storefront</div>
+            <div className="text-sm font-semibold text-maroon">City marketplace · powered by Agora</div>
             <h1 className="mt-1 text-[2.2rem] font-extrabold leading-tight tracking-[-0.035em] text-navy">City of Riverbend</h1>
             <p className="mt-2 text-[15px] leading-relaxed text-slate">
-              Riverbend's own corner of Agora: the {contracts.size} contracts its staff can buy from, renewals coming due, and one-click reorders, all under the city's own rules
+              Riverbend's own marketplace, built on Agora: the {contracts.size} contracts its staff can buy from, renewals coming due, and one-click reorders, all under the city's own rules
               and $10K quick-buy limit.
             </p>
           </div>

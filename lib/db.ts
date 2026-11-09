@@ -4,16 +4,16 @@
 import { seed } from "./seed";
 import type { Db } from "./types";
 
-const g = globalThis as unknown as { __storefrontDb?: Db };
+const g = globalThis as unknown as { __agoraDb?: Db };
 
 export function getDb(): Db {
-  if (!g.__storefrontDb) g.__storefrontDb = seed();
-  return g.__storefrontDb;
+  if (!g.__agoraDb) g.__agoraDb = seed();
+  return g.__agoraDb;
 }
 
 export function resetDb(): Db {
-  g.__storefrontDb = seed();
-  return g.__storefrontDb;
+  g.__agoraDb = seed();
+  return g.__agoraDb;
 }
 
 export function nextId(db: Db, kind: string, prefix: string, pad = 3): string {

@@ -76,7 +76,7 @@ export default function Vehicles() {
                       </div>
                     </div>
                     <div className="text-xs text-slate">
-                      <div>{c.eligibility ? `Open to ${c.eligibility.note}` : "Open to agencies in its storefront"}</div>
+                      <div>{c.eligibility ? `Open to ${c.eligibility.note}` : "Open to the agency that holds it"}</div>
                       {c.eligibility?.requires && <div>Requires: {c.eligibility.requires}</div>}
                       <div className="mt-1">
                         {BASIS[c.pricing_basis ?? "published_price"]}

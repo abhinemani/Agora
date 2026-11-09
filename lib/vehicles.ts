@@ -26,7 +26,7 @@ export const stateName = (code: string) => STATES.find(([c]) => c === code)?.[1]
 
 /** One-click buyers for the intake step. Harmon Lake is fictional. */
 export const BUYER_PRESETS: { buyer: Buyer; blurb: string }[] = [
-  { buyer: { name: "City of Riverbend", state: "OR", entity_type: "municipality", population: 85_000 }, blurb: "The demo storefront: Oregon contracts plus national co-ops" },
+  { buyer: { name: "City of Riverbend", state: "OR", entity_type: "municipality", population: 85_000 }, blurb: "Has its own city marketplace: Oregon contracts plus national co-ops" },
   { buyer: { name: "Harmon Lake Township", state: "NJ", entity_type: "municipality", population: 42_000 }, blurb: "A New Jersey municipality: NJSTART contracts open up" },
   { buyer: { name: "New Jersey state department", state: "NJ", entity_type: "state_agency", population: null }, blurb: "Buying directly under New Jersey state contracts" },
 ];

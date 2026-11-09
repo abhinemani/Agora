@@ -7,12 +7,12 @@ export const REVENUE_OPTIONS: Record<
   number,
   { name: string; payer: Payer; rule: string }
 > = {
-  1: { name: "Storefront subscription", payer: "local_government", rule: "$2,000/mo base, credited 25% of options 3 + 9" },
+  1: { name: "City marketplace subscription", payer: "local_government", rule: "$2,000/mo base, credited 25% of options 3 + 9" },
   2: { name: "Supplier onboarding and listing", payer: "supplier", rule: "$1,500 one-time + $600/yr per contract" },
   3: { name: "Transaction fee", payer: "supplier", rule: "1.0% of contract orders" },
-  4: { name: "Scale to other storefronts", payer: "supplier", rule: "$400/yr per added storefront" },
+  4: { name: "List in more city marketplaces", payer: "supplier", rule: "$400/yr per added city marketplace" },
   5: { name: "Sponsored placement", payer: "supplier", rule: "$2.00 per results page impression" },
-  6: { name: "Supplier profile and insights", payer: "supplier", rule: "$350/mo while on Position; review responses" },
+  6: { name: "Supplier storefront and insights", payer: "supplier", rule: "$350/mo while on Position; review responses" },
   7: { name: "Spend intelligence", payer: "local_government", rule: "$500/mo while dashboard is enabled" },
   8: { name: "Managed sourcing", payer: "local_government", rule: "$1,200 per published solicitation" },
   9: { name: "Embedded payments", payer: "card_network", rule: "1.25% of P-card orders" },
@@ -25,7 +25,7 @@ export const RATES = {
   onboardingOneTime: 1500,
   onboardingAnnual: 600,
   transactionFee: 0.01,
-  extraStorefrontAnnual: 400,
+  extraMarketplaceAnnual: 400,
   sponsoredImpression: 2,
   profileMonthly: 350,
   reviewResponse: 0, // bundled into the Position subscription; shown as a $0 event
@@ -69,12 +69,12 @@ export function fire(
 
 /** Monthly lines recorded at reset (options 1, 6, 7). */
 export function fireMonthlyLines(db: Db) {
-  fire(db, 1, RATES.subscriptionMonthly, "Monthly storefront subscription · City of Riverbend", db.agency.id);
+  fire(db, 1, RATES.subscriptionMonthly, "Monthly city marketplace subscription · City of Riverbend", db.agency.id);
   if (db.session.spend_dashboard_enabled) {
     fire(db, 7, RATES.spendIntelMonthly, "Monthly spend intelligence · City of Riverbend", db.agency.id);
   }
   for (const s of db.suppliers.filter((s) => s.edge_tier === "position")) {
-    fire(db, 6, RATES.profileMonthly, `Monthly Edge Position profile · ${s.name}`, s.id);
+    fire(db, 6, RATES.profileMonthly, `Monthly storefront on Edge Position · ${s.name}`, s.id);
   }
 }
 
@@ -84,7 +84,7 @@ function creditSubscription(db: Db, basis: number, trigger: string, related_id: 
   const credit = basis * RATES.subscriptionCreditShare;
   if (credit <= 0) return;
   const evt = fire(db, 1, -credit, `Subscription credit (25% of ${trigger})`, related_id);
-  evt.option_name = "Storefront subscription credit";
+  evt.option_name = "City marketplace subscription credit";
 }
 
 export function onOrderPlaced(
@@ -103,7 +103,7 @@ export function onOrderPlaced(
     fired.push(fire(db, 9, fee, `P-card interchange 1.25% on ${args.orderId}`, args.orderId));
     creditSubscription(db, fee, "embedded payments", args.orderId);
   }
-  // Contracts that pre-date the storefront are onboarded on their first order.
+  // Contracts that pre-date the city's marketplace are onboarded on their first order.
   if (args.contractId) {
     const c = db.contracts.find((c) => c.id === args.contractId);
     if (c && !c.onboarding_billed) {
@@ -124,8 +124,8 @@ export function onContractOnboarded(db: Db, contractId: string, trigger: string)
   );
 }
 
-export function onStorefrontAdded(db: Db, supplierName: string, storefrontName: string, relatedId: string) {
-  return fire(db, 4, RATES.extraStorefrontAnnual, `${supplierName} added ${storefrontName} storefront`, relatedId);
+export function onMarketplaceAdded(db: Db, supplierName: string, marketplaceName: string, relatedId: string) {
+  return fire(db, 4, RATES.extraMarketplaceAnnual, `${supplierName} listed in ${marketplaceName}'s marketplace`, relatedId);
 }
 
 export function onSponsoredImpression(db: Db, supplierName: string, requestId: string) {
@@ -156,11 +156,11 @@ export function onAppStarted(db: Db, appName: string, partner: string, id: strin
 /** Options that fit inside an Edge supplier tier (deck: "four fit inside Edge"). */
 export const EDGE_TIER: Partial<Record<number, "Win" | "Position">> = { 2: "Position", 4: "Position", 5: "Win", 6: "Position" };
 
-/** Revenue per storefront adds up five ways. */
+/** Revenue per city marketplace adds up five ways. */
 export const FIVE_WAYS: { label: string; who: string; options: number[] }[] = [
   { label: "Subscription minus credits", who: "Local government", options: [1] },
   { label: "Suppliers listed × listing fee", who: "Suppliers", options: [2, 4, 6] },
-  { label: "Spend through the storefront × take rate", who: "Suppliers, card networks", options: [3, 5, 9] },
+  { label: "Spend through the marketplace × take rate", who: "Suppliers, card networks", options: [3, 5, 9] },
   { label: "Partner apps sold × revenue share", who: "Suppliers via partners", options: [10] },
   { label: "Data and services", who: "Both sides", options: [7, 8] },
 ];

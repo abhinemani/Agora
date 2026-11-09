@@ -12,7 +12,7 @@ const TRY: Record<number, { href: string; label: string }> = {
   1: { href: "/", label: "Credited on every contract or P-card order" },
   2: { href: "/contracts/upload?as=supplier", label: "Upload a contract" },
   3: { href: "/", label: "Order folding tables" },
-  4: { href: "/supplier?tab=storefronts", label: "Add a storefront" },
+  4: { href: "/supplier?tab=marketplaces", label: "List in another city marketplace" },
   5: { href: "/", label: "Search for folding tables" },
   6: { href: "/supplier?tab=reviews", label: "Respond to a review" },
   7: { href: "/procurement/spend", label: "Open spend intelligence" },
@@ -95,7 +95,7 @@ export default function Model() {
   const smallOrders = db.orders.filter((o) => db.listings.find((l) => l.id === o.listing_id)?.source === "no_approval");
   const newSols = db.solicitations.filter((s) => s.published_at);
   const credits = -db.revenue.filter((e) => e.option === 1 && e.amount < 0).reduce((n, e) => n + e.amount, 0);
-  const activeStorefronts = new Set(db.contracts.flatMap((c) => c.storefront_ids)).size;
+  const activeMarketplaces = new Set(db.contracts.flatMap((c) => c.marketplace_ids)).size;
   const listedSuppliers = new Set(db.listings.map((l) => l.supplier_id)).size;
 
   return (
@@ -103,9 +103,9 @@ export default function Model() {
       {/* Hero */}
       <section className="pt-4">
         <div>
-          <h1 className="text-[2.1rem] font-semibold tracking-tight text-navy">How the storefront earns</h1>
+          <h1 className="text-[2.1rem] font-semibold tracking-tight text-navy">How Agora earns</h1>
           <p className="mt-2 max-w-2xl text-[17px] text-slate">
-            A local government's own storefront for everything it can buy, and ten ways to earn from it beyond SaaS. Every diagram below reflects what has happened in this demo session.
+            One marketplace any agency can search, two products sold on top of it (city marketplaces for agencies, storefronts for suppliers), and ten ways to earn beyond SaaS. Every diagram below reflects what has happened in this demo session.
           </p>
           <div className="mt-8 grid gap-4 sm:grid-cols-3">
             <Stat label="Earned this session" value={money(total)} />
@@ -150,13 +150,13 @@ export default function Model() {
 
       {/* Buyer value chain */}
       <section>
-        <h2 className="text-xl font-semibold tracking-tight text-navy">One storefront, and an RFP only when needed</h2>
+        <h2 className="text-xl font-semibold tracking-tight text-navy">One marketplace, and an RFP only when needed</h2>
         <Card className="mt-6 p-6">
           <Chain active="Buy" />
           <div className="grid items-center gap-4 md:grid-cols-[1fr_auto_1.1fr_auto_1.6fr_auto_1.1fr_auto_1fr]">
             <Node k="Plan" title="A staff need" fired={fired} />
             <Flow />
-            <Node k="Buy" title="Ask or search" sub="one storefront" opts={[7, 1]} fired={fired} />
+            <Node k="Buy" title="Ask or search" sub="one marketplace" opts={[7, 1]} fired={fired} />
             <Flow />
             <div className="rounded-xl border border-dashed border-steel p-3">
               <div className="space-y-3">
@@ -165,7 +165,7 @@ export default function Model() {
                 <Node title="GSA and resellers" sub="approved vendors" opts={[2]} fired={fired} />
                 <Node title="No approval needed" sub="a box of pencils" opts={[5]} fired={fired} />
               </div>
-              <div className="mt-2 text-center text-[10px] font-semibold text-slate">In the storefront</div>
+              <div className="mt-2 text-center text-[10px] font-semibold text-slate">In the marketplace</div>
             </div>
             <Flow />
             <Node k="Buy" title="Checkout" sub="PO or P-card" opts={[9]} fired={fired} />
@@ -194,7 +194,7 @@ export default function Model() {
             <Flow />
             <Node k="Contract" title="Win the award" fired={fired} />
             <Flow />
-            <Node k="Position" title="Get listed" sub="in the storefront" opts={[2]} accent fired={fired} />
+            <Node k="Position" title="Get listed" sub="with a storefront" opts={[2]} accent fired={fired} />
             <Flow />
             <Node k="Buy · Pay" title="Take orders" sub="and get paid" opts={[9, 5, 3]} accent fired={fired} />
           </div>
@@ -204,7 +204,7 @@ export default function Model() {
             </div>
             <Node k="Position" title="See unmet demand" sub={`${db.unmet.length} searches no contract covered`} opts={[6]} dashed fired={fired} />
             <Arrow className="mx-auto h-4 w-4 rotate-180 text-rose" />
-            <Node k="Position" title="Reach more storefronts" sub={`${activeStorefronts} storefronts active`} opts={[4]} dashed fired={fired} />
+            <Node k="Position" title="Reach more cities" sub={`${activeMarketplaces} city marketplaces`} opts={[4]} dashed fired={fired} />
           </div>
           <p className="mt-6 text-xs text-slate">Badges show the revenue option at each step; E is the existing Edge subscription. Filled badges have fired in this session.</p>
         </Card>
@@ -225,12 +225,12 @@ export default function Model() {
           </div>
           <div className="order-3 space-y-4">
             <RevBox title="Subscription" sub="Local government pays, less credits from fees" amount={sum([1])} opts={[1]} fired={fired} />
-            <RevBox title="Supplier fees" sub="Listings in each storefront, plus partner apps" amount={sum([2, 10, 4])} opts={[2, 10, 4]} fired={fired} />
+            <RevBox title="Supplier fees" sub="Storefronts, listings in each city marketplace, partner apps" amount={sum([2, 10, 4])} opts={[2, 10, 4]} fired={fired} />
             <RevBox title="Fees on spend" sub="Order fees, card share, sponsored placement" amount={sum([3, 5, 9])} opts={[3, 5, 9]} fired={fired} />
           </div>
         </div>
         <div className="mt-8 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-6">
-          <Mini step="Start" label="Storefronts" value={activeStorefronts} />
+          <Mini step="Start" label="City marketplaces" value={activeMarketplaces} />
           <Mini step="Step 2" label="Suppliers listed" value={listedSuppliers} />
           <Mini step="Step 3" label="Orders" value={db.orders.length} />
           <Mini step="Step 4" label="Requests captured" value={db.requests.length} />
@@ -242,7 +242,7 @@ export default function Model() {
       {/* Five ways */}
       <section>
         <div>
-          <h2 className="text-xl font-semibold tracking-tight text-navy">Revenue per storefront adds up five ways</h2>
+          <h2 className="text-xl font-semibold tracking-tight text-navy">Revenue per city marketplace adds up five ways</h2>
           <div className="mt-6 divide-y divide-line rounded-lg border border-line bg-white px-6">
             {FIVE_WAYS.map((w, i) => (
               <div key={w.label} className="grid grid-cols-[2rem_1fr_auto] items-center gap-4 py-4 sm:grid-cols-[2rem_1fr_14rem_8rem]">
@@ -256,7 +256,7 @@ export default function Model() {
             ))}
             <div className="grid grid-cols-[2rem_1fr_auto] items-center gap-4 py-4 sm:grid-cols-[2rem_1fr_14rem_8rem]">
               <span className="text-xl text-maroon">=</span>
-              <span className="text-base font-semibold text-navy sm:text-lg">Riverbend storefront, this session</span>
+              <span className="text-base font-semibold text-navy sm:text-lg">Riverbend's marketplace, this session</span>
               <span className="hidden sm:block" />
               <span className="text-right text-lg font-semibold tabular-nums text-navy">{money(total, false)}</span>
             </div>
@@ -360,7 +360,7 @@ function Mini({ step, label, value }: { step: string; label: string; value: stri
 
 function Flywheel() {
   const steps = [
-    ["Start", "More", "storefronts"],
+    ["Start", "More", "city marketplaces"],
     ["Step 2", "More", "suppliers"],
     ["Step 3", "More", "orders"],
     ["Step 4", "More", "data"],
@@ -371,7 +371,7 @@ function Flywheel() {
   const R = 140;
   const pt = (deg: number, r = R) => [C + r * Math.cos((deg * Math.PI) / 180), C + r * Math.sin((deg * Math.PI) / 180)];
   return (
-    <svg viewBox="0 0 400 400" className="mx-auto w-full max-w-[400px]" role="img" aria-label="Marketplace 2.0 flywheel: more storefronts, more suppliers, more orders, more data, gaps filled, lower net cost">
+    <svg viewBox="0 0 400 400" className="mx-auto w-full max-w-[400px]" role="img" aria-label="Marketplace 2.0 flywheel: more city marketplaces, more suppliers, more orders, more data, gaps filled, lower net cost">
       <defs>
         <marker id="fw-arrow" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
           <path d="M0 0 10 5 0 10z" fill="#D06470" />

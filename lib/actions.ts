@@ -11,7 +11,7 @@ import {
   onReviewResponse,
   onSolicitationPublished,
   onSponsoredImpression,
-  onStorefrontAdded,
+  onMarketplaceAdded,
 } from "./revenue_rules";
 import type { Buyer, Category, Contract, ContractDocument, ContractHeader, Db, EdgeTier, ExtractedItem, Listing, Request, Role, Solicitation } from "./types";
 import { checkEligibility, STATES } from "./vehicles";
@@ -123,7 +123,7 @@ export function getResults(requestId: string) {
     onSponsoredImpression(db, s.name, request.id);
   }
 
-  // Count each supplier's appearances in buyer results for their profile page.
+  // Count each supplier's appearances in buyer results for their storefront stats.
   for (const sup of new Set(results.groups.flatMap((g) => g.options.map((o) => o.supplier.id)))) {
     const key = `appear:${request.id}:${sup}`;
     if (impressionsBilled.has(key)) continue;
@@ -253,7 +253,7 @@ export function publishSolicitation(draft: Solicitation) {
   return sol;
 }
 
-/** An awarded solicitation becomes a contract and a listing in the storefront. */
+/** An awarded solicitation becomes a contract and a listing in the city's marketplace. */
 export function listAward(solicitationId: string) {
   const db = getDb();
   const sol = db.solicitations.find((s) => s.id === solicitationId) ?? fail("Solicitation not found");
@@ -272,7 +272,7 @@ export function listAward(solicitationId: string) {
     piggyback_clause_text: sol.piggybackable ? "Other public agencies may purchase under the terms of this award with the Contractor's consent." : "",
     payment_terms: "Net 30",
     delivery_terms: "FOB destination, installed",
-    storefront_ids: ["sf_riverbend"],
+    marketplace_ids: ["mkt_riverbend"],
     source_document_id: null,
     onboarding_billed: true,
   };
@@ -289,7 +289,7 @@ export function listAward(solicitationId: string) {
     unit: sol.awarded_unit ?? "ea",
     lead_time_days: 30,
     extracted_item_id: null,
-    storefront_ids: ["sf_riverbend"],
+    marketplace_ids: ["mkt_riverbend"],
     detail: "Awarded through Riverbend solicitation; available to other agencies",
   };
   db.listings.push(listing);
@@ -356,13 +356,13 @@ export function publishContract(args: {
   documentIds: string[];
   header: ContractHeader;
   items: ExtractedItem[];
-  storefrontIds: string[];
+  marketplaceIds: string[];
   role: Role;
 }) {
   const db = getDb();
   const h = args.header;
   if (!h.supplier_name.trim()) fail("The contract needs a supplier name.");
-  const storefrontIds = args.storefrontIds.length ? args.storefrontIds : ["sf_riverbend"];
+  const marketplaceIds = args.marketplaceIds.length ? args.marketplaceIds : ["mkt_riverbend"];
 
   let supplier = findSupplier(db, h.supplier_name);
   if (!supplier) {
@@ -398,13 +398,13 @@ export function publishContract(args: {
       piggyback_clause_text: h.piggyback_clause_text,
       payment_terms: h.payment_terms,
       delivery_terms: h.delivery_terms,
-      storefront_ids: storefrontIds,
+      marketplace_ids: marketplaceIds,
       source_document_id: args.documentIds[0] ?? null,
       onboarding_billed: true,
     };
     db.contracts.push(contract);
   } else {
-    contract.storefront_ids = [...new Set([...contract.storefront_ids, ...storefrontIds])];
+    contract.marketplace_ids = [...new Set([...contract.marketplace_ids, ...marketplaceIds])];
   }
 
   let listed = 0;
@@ -431,7 +431,7 @@ export function publishContract(args: {
           contract_id: contract.id,
           source: contract.source,
           extracted_item_id: item.id,
-          storefront_ids: [...new Set([...existing.storefront_ids, ...storefrontIds])],
+          marketplace_ids: [...new Set([...existing.marketplace_ids, ...marketplaceIds])],
         });
         item.listing_id = existing.id;
         replaced++;
@@ -448,7 +448,7 @@ export function publishContract(args: {
           unit: item.unit,
           lead_time_days: item.category === "Furniture" ? 14 : 3,
           extracted_item_id: item.id,
-          storefront_ids: storefrontIds,
+          marketplace_ids: marketplaceIds,
         };
         db.listings.push(listing);
         item.listing_id = listing.id;
@@ -477,9 +477,9 @@ export function publishContract(args: {
   }
 
   if (listed > 0) {
-    onContractOnboarded(db, contract.id, `${supplier.name} published ${contract.contract_number} to ${db.storefronts.find((s) => s.id === storefrontIds[0])?.agency_name}`);
-    for (const sf of storefrontIds.slice(1)) {
-      onStorefrontAdded(db, supplier.name, db.storefronts.find((s) => s.id === sf)?.agency_name ?? sf, contract.id);
+    onContractOnboarded(db, contract.id, `${supplier.name} published ${contract.contract_number} to ${db.marketplaces.find((s) => s.id === marketplaceIds[0])?.agency_name}`);
+    for (const sf of marketplaceIds.slice(1)) {
+      onMarketplaceAdded(db, supplier.name, db.marketplaces.find((s) => s.id === sf)?.agency_name ?? sf, contract.id);
     }
   }
 
@@ -488,7 +488,7 @@ export function publishContract(args: {
     listed,
     replaced,
     attention: attention.length,
-    storefronts: storefrontIds.map((id) => db.storefronts.find((s) => s.id === id)?.agency_name ?? id),
+    marketplaces: marketplaceIds.map((id) => db.marketplaces.find((s) => s.id === id)?.agency_name ?? id),
   };
 }
 
@@ -510,7 +510,7 @@ export function resolveAttention(id: string, price: number) {
     unit: item?.unit ?? "ea",
     lead_time_days: 5,
     extracted_item_id: item?.id ?? null,
-    storefront_ids: contract.storefront_ids,
+    marketplace_ids: contract.marketplace_ids,
   };
   db.listings.push(listing);
   if (item) Object.assign(item, { status: "accepted", unit_price: price, listing_id: listing.id });
@@ -540,16 +540,16 @@ export function setSponsored(on: boolean) {
   return s;
 }
 
-export function addStorefront(storefrontId: string) {
+export function addMarketplace(marketplaceId: string) {
   const db = getDb();
   const s = actingSupplier(db);
-  const sf = db.storefronts.find((x) => x.id === storefrontId) ?? fail("Storefront not found");
+  const sf = db.marketplaces.find((x) => x.id === marketplaceId) ?? fail("Marketplace not found");
   const eligible = db.contracts.filter((c) => c.supplier_id === s.id && c.piggybackable);
   if (!eligible.length) fail("None of your contracts allow piggybacking.");
-  for (const c of eligible) if (!c.storefront_ids.includes(sf.id)) c.storefront_ids.push(sf.id);
+  for (const c of eligible) if (!c.marketplace_ids.includes(sf.id)) c.marketplace_ids.push(sf.id);
   for (const l of db.listings.filter((l) => eligible.some((c) => c.id === l.contract_id)))
-    if (!l.storefront_ids.includes(sf.id)) l.storefront_ids.push(sf.id);
-  return onStorefrontAdded(db, s.name, sf.agency_name, sf.id);
+    if (!l.marketplace_ids.includes(sf.id)) l.marketplace_ids.push(sf.id);
+  return onMarketplaceAdded(db, s.name, sf.agency_name, sf.id);
 }
 
 export function startApp(appId: string) {

@@ -38,7 +38,7 @@ function Product() {
   if (!db) return <Loading />;
 
   const start = db.listings.find((l) => l.id === id);
-  if (!start) return <ErrorNote message="That product isn't in the storefront." />;
+  if (!start) return <ErrorNote message="That product isn't in Agora." />;
   const variants = familyOf(db, start);
   const l = variants.find((v) => v.id === chosen) ?? start;
   const supplier = db.suppliers.find((s) => s.id === l.supplier_id)!;
@@ -61,7 +61,9 @@ function Product() {
           <div className="min-w-0 flex-1">
             <h1 className="text-2xl font-semibold tracking-tight text-navy">{title}</h1>
             <div className="mt-1.5 flex flex-wrap items-center gap-x-3 gap-y-1 text-sm">
-              <span className="text-navy">{supplier.name}</span>
+              <Link href={`/storefronts/${supplier.id}`} className="text-navy hover:text-maroon hover:underline">
+                {supplier.name}
+              </Link>
               <SupplierBadges supplier={supplier} />
               <Stars rating={supplier.rating} count={supplier.review_count || undefined} />
             </div>

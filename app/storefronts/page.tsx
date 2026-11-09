@@ -1,79 +1,66 @@
+"use client";
+
 import Link from "next/link";
+import { TwoProducts } from "@/components/TwoProducts";
+import { useStore } from "@/components/store";
+import { Loading, Stars, SupplierBadges, supplierColor } from "@/components/ui";
 
-const STOREFRONTS = [
-  { name: "City of Riverbend", where: "Oregon · pop. 85,000", href: "/storefronts/riverbend", live: true, blurb: "Own contracts, a $10K quick-buy limit, renewals and reorders.", color: "#315BD0" },
-  { name: "Harper County", where: "Texas · pop. 210,000", live: false, blurb: "County fleet, public safety, and courts.", color: "#167757" },
-  { name: "Town of Millbrook", where: "New Jersey · pop. 18,000", live: false, blurb: "A small town buying mostly off NJSTART.", color: "#B45309" },
-  { name: "Lakeview School District", where: "Ohio · 12 schools", live: false, blurb: "Classroom tech, facilities, and food service.", color: "#7C3AED" },
-];
-
-const INCLUDED = [
-  ["Your contracts first", "The marketplace narrowed to vehicles your staff may use, with your own awards added and labeled."],
-  ["Your rules", "Quick-buy limits, preferred suppliers, and local or MBE preferences applied on every search."],
-  ["Your calendar", "Renewals coming due, reorders, and capital-plan purchases on one page."],
-];
-
+/** Storefronts are supplier pages: each vendor's catalog, contracts and reviews. */
 export default function Storefronts() {
+  const { db } = useStore();
+  if (!db) return <Loading />;
+
+  const rows = db.suppliers
+    .map((s) => {
+      const listings = db.listings.filter((l) => l.supplier_id === s.id);
+      const products = new Set(listings.map((l) => l.family ?? l.id)).size;
+      const contracts = db.contracts.filter((c) => c.supplier_id === s.id);
+      const vehicles = [...new Set(contracts.map((c) => c.vehicle ?? c.owner))];
+      return { s, products, contracts: contracts.length, vehicles, color: supplierColor(s.id) };
+    })
+    .sort((a, b) => Number(b.s.edge_tier === "position") - Number(a.s.edge_tier === "position") || b.products - a.products);
+
   return (
     <div className="space-y-12 pb-8">
       <div className="max-w-2xl pt-6">
-        <div className="text-[11px] font-extrabold uppercase tracking-[0.18em] text-maroon/80">City storefronts</div>
-        <h1 className="mt-3 text-[clamp(2rem,4vw,2.8rem)] font-extrabold leading-[1.1] tracking-[-0.035em] text-navy">A storefront for every city, on one shared marketplace.</h1>
+        <div className="text-[11px] font-extrabold uppercase tracking-[0.18em] text-maroon/80">Storefronts</div>
+        <h1 className="mt-3 text-[clamp(2rem,4vw,2.8rem)] font-extrabold leading-[1.1] tracking-[-0.035em] text-navy">Every supplier, and everything they sell.</h1>
         <p className="mt-3 text-base leading-relaxed text-slate">
-          Anyone can search Agora. A storefront is what a city, county, or district adds on top: the same catalog, narrowed and shaped for its own buyers.
+          A storefront is a supplier's own page in Agora: its catalog, the contracts you can buy it through, its certifications, and what other agencies say about it.
         </p>
       </div>
 
-      <section className="grid gap-4 sm:grid-cols-2">
-        {STOREFRONTS.map((s) => {
-          const body = (
-            <>
-              <div className="flex items-start justify-between gap-3">
-                <span className="grid h-11 w-11 place-items-center rounded-xl text-lg font-extrabold text-white" style={{ background: s.color }}>
-                  {s.name.replace(/^(City|Town) of /, "")[0]}
-                </span>
-                <span
-                  className={`rounded-md px-2 py-1 text-[10px] font-bold ${s.live ? "bg-[#e8f6ef] text-[#167854]" : "bg-[#eef3fa] text-[#59708c]"}`}
-                >
-                  {s.live ? "Live" : "Available"}
-                </span>
-              </div>
-              <div className="mt-5 text-lg font-bold tracking-tight text-navy">{s.name}</div>
-              <div className="text-xs text-slate">{s.where}</div>
-              <p className="mt-2 text-sm text-slate">{s.blurb}</p>
-              <div className="mt-auto border-t border-[#edf0f5] pt-3 text-sm font-semibold text-maroon">{s.live ? "Visit storefront →" : "Demo on request"}</div>
-            </>
-          );
-          return s.href ? (
-            <Link key={s.name} href={s.href} className="flex min-h-[220px] flex-col gap-0 rounded-2xl border border-line bg-white p-5 transition hover:border-[#bbcae8]">
-              {body}
-            </Link>
-          ) : (
-            <div key={s.name} className="flex min-h-[220px] flex-col rounded-2xl border border-dashed border-line bg-white/60 p-5">
-              {body}
+      <section className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        {rows.map(({ s, products, contracts, vehicles, color }) => (
+          <Link
+            key={s.id}
+            href={`/storefronts/${s.id}`}
+            className="flex min-h-[230px] flex-col rounded-2xl border border-line bg-white p-5 transition hover:border-[#bbcae8] hover:shadow-[0_16px_32px_-24px_rgba(20,33,61,0.4)]"
+          >
+            <div className="flex items-start justify-between gap-3">
+              <span className="grid h-11 w-11 place-items-center rounded-xl text-lg font-extrabold text-white" style={{ background: color }}>
+                {s.name[0]}
+              </span>
+              {s.edge_tier === "position" && <span className="rounded-md bg-[#e8f6ef] px-2 py-1 text-[10px] font-bold text-[#167854]">Featured storefront</span>}
             </div>
-          );
-        })}
+            <div className="mt-4 text-lg font-bold tracking-tight text-navy">{s.name}</div>
+            <div className="text-xs text-slate">
+              {s.city}, {s.state}
+            </div>
+            <div className="mt-2 flex flex-wrap items-center gap-2">
+              <SupplierBadges supplier={s} />
+              <Stars rating={s.rating} count={s.review_count} />
+            </div>
+            <div className="mt-auto border-t border-[#edf0f5] pt-3 text-xs text-slate">
+              <span className="font-semibold text-navy">{products.toLocaleString()}</span> product{products === 1 ? "" : "s"} ·{" "}
+              <span className="font-semibold text-navy">{contracts}</span> contract{contracts === 1 ? "" : "s"}
+              {vehicles.length ? ` · ${vehicles.slice(0, 3).join(", ")}` : ""}
+            </div>
+          </Link>
+        ))}
       </section>
 
-      <section className="rounded-3xl border border-line bg-white p-6 sm:p-8">
-        <h2 className="text-xl font-extrabold tracking-tight text-navy">What a storefront adds</h2>
-        <div className="mt-5 grid gap-6 sm:grid-cols-3">
-          {INCLUDED.map(([t, d]) => (
-            <div key={t}>
-              <div className="text-sm font-bold text-navy">{t}</div>
-              <p className="mt-1 text-sm leading-relaxed text-slate">{d}</p>
-            </div>
-          ))}
-        </div>
-        <p className="mt-6 border-t border-line pt-4 text-xs text-slate">
-          The marketplace stays free to search. Storefronts are a paid add-on for the agency; see{" "}
-          <Link href="/model" className="font-semibold text-maroon hover:underline">
-            how Agora earns
-          </Link>
-          .
-        </p>
-      </section>
+      <TwoProducts />
     </div>
   );
 }

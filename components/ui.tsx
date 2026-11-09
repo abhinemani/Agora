@@ -167,3 +167,11 @@ export function ErrorNote({ message }: { message: string | null }) {
   if (!message) return null;
   return <div className="rounded-md border border-maroon/30 bg-maroon-50 px-3 py-2 text-sm text-maroon">{message}</div>;
 }
+
+const SUPPLIER_COLORS = ["#315BD0", "#167757", "#B45309", "#7C3AED", "#BE185D", "#0E7490", "#4D7C0F", "#9333EA", "#C2410C"];
+/** A steady color per supplier, for storefront avatars. */
+export function supplierColor(id: string) {
+  let h = 0;
+  for (const ch of id) h = (h * 31 + ch.charCodeAt(0)) >>> 0;
+  return SUPPLIER_COLORS[h % SUPPLIER_COLORS.length];
+}

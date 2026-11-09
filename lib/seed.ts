@@ -1,4 +1,4 @@
-// Seed data for the City of Riverbend storefront. IDs are stable so the demo
+// Seed data for Agora and the City of Riverbend's city marketplace. IDs are stable so the demo
 // script in section 8 of the spec is repeatable after every reset.
 
 import type { Category, Db, Listing, Source } from "./types";
@@ -33,7 +33,7 @@ function L(
     unit,
     lead_time_days,
     extracted_item_id: null,
-    storefront_ids: ["sf_riverbend"],
+    marketplace_ids: ["mkt_riverbend"],
     detail,
   };
 }
@@ -55,11 +55,11 @@ export function seed(): Db {
         { id: "dept_library", name: "Library", address: "301 Elm St, Riverbend, OR 97390" },
       ],
     },
-    storefronts: [
-      { id: "sf_riverbend", agency_name: "City of Riverbend", distance_miles: 0 },
-      { id: "sf_harper", agency_name: "Harper County", distance_miles: 12 },
-      { id: "sf_millbrook", agency_name: "Town of Millbrook", distance_miles: 8 },
-      { id: "sf_lakeview", agency_name: "Lakeview School District", distance_miles: 15 },
+    marketplaces: [
+      { id: "mkt_riverbend", agency_name: "City of Riverbend", distance_miles: 0 },
+      { id: "mkt_harper", agency_name: "Harper County", distance_miles: 12 },
+      { id: "mkt_millbrook", agency_name: "Town of Millbrook", distance_miles: 8 },
+      { id: "mkt_lakeview", agency_name: "Lakeview School District", distance_miles: 15 },
     ],
     suppliers: [
       {
@@ -205,7 +205,7 @@ export function seed(): Db {
         piggyback_clause_text: "Other public agencies may purchase under the terms of this agreement with the Contractor's consent.",
         payment_terms: "Net 30",
         delivery_terms: "FOB destination, inside delivery",
-        storefront_ids: ["sf_riverbend"],
+        marketplace_ids: ["mkt_riverbend"],
         source_document_id: null,
         onboarding_billed: false,
         vehicle: "Riverbend", verification: "demo", eligibility: { states: ["OR"], note: "Oregon public agencies (other agencies piggyback with the supplier's consent)" },
@@ -223,7 +223,7 @@ export function seed(): Db {
         piggyback_clause_text: "Available to all ORCPP members.",
         payment_terms: "Net 30",
         delivery_terms: "FOB destination",
-        storefront_ids: ["sf_riverbend"],
+        marketplace_ids: ["mkt_riverbend"],
         source_document_id: null,
         onboarding_billed: true,
         vehicle: "ORCPP", verification: "demo", eligibility: { states: ["OR"], note: "Oregon public agencies in the ORCPP program" },
@@ -241,7 +241,7 @@ export function seed(): Db {
         piggyback_clause_text: "",
         payment_terms: "Net 30",
         delivery_terms: "FOB destination",
-        storefront_ids: ["sf_riverbend"],
+        marketplace_ids: ["mkt_riverbend"],
         source_document_id: null,
         onboarding_billed: true,
         vehicle: "Riverbend", verification: "demo", eligibility: { states: ["OR"], agencies: ["City of Riverbend"], note: "City of Riverbend only" },
@@ -259,7 +259,7 @@ export function seed(): Db {
         piggyback_clause_text: "Available to all ORCPP members.",
         payment_terms: "Net 30",
         delivery_terms: "FOB destination",
-        storefront_ids: ["sf_riverbend"],
+        marketplace_ids: ["mkt_riverbend"],
         source_document_id: null,
         onboarding_billed: true,
         vehicle: "ORCPP", verification: "demo", eligibility: { states: ["OR"], note: "Oregon public agencies in the ORCPP program" },
@@ -277,7 +277,7 @@ export function seed(): Db {
         piggyback_clause_text: "Any public agency may use this contract upon registering with the Cooperative.",
         payment_terms: "Net 45",
         delivery_terms: "FOB destination, curbside",
-        storefront_ids: ["sf_riverbend"],
+        marketplace_ids: ["mkt_riverbend"],
         source_document_id: null,
         onboarding_billed: true,
         vehicle: "WSPC", verification: "demo", eligibility: { states: "any", note: "any public agency registered with the Cooperative" },
@@ -295,7 +295,7 @@ export function seed(): Db {
         piggyback_clause_text: "Authorized for participating entities in member states.",
         payment_terms: "Net 30",
         delivery_terms: "FOB destination",
-        storefront_ids: ["sf_riverbend"],
+        marketplace_ids: ["mkt_riverbend"],
         source_document_id: null,
         onboarding_billed: true,
         vehicle: "Reseller", verification: "demo", eligibility: { states: "any", note: "participating public entities" },
@@ -313,7 +313,7 @@ export function seed(): Db {
         piggyback_clause_text: "Available to state and local governments under the Cooperative Purchasing program.",
         payment_terms: "Net 30",
         delivery_terms: "FOB origin",
-        storefront_ids: ["sf_riverbend"],
+        marketplace_ids: ["mkt_riverbend"],
         source_document_id: null,
         onboarding_billed: true,
         vehicle: "GSA", verification: "demo", eligibility: { states: "any", note: "state and local governments through GSA Cooperative Purchasing" },
@@ -558,7 +558,7 @@ function addTylerCatalog(db: Db) {
     piggyback_clause_text: "",
     payment_terms: "Per contract",
     delivery_terms: "Software delivered electronically; services scheduled with the vendor",
-    storefront_ids: ["sf_riverbend"],
+    marketplace_ids: ["mkt_riverbend"],
     source_document_id: null,
     onboarding_billed: true,
     vehicle: "NJSTART",
@@ -580,7 +580,7 @@ function addTylerCatalog(db: Db) {
     piggyback_clause_text: "",
     payment_terms: "Per quote",
     delivery_terms: "Per quote",
-    storefront_ids: ["sf_riverbend"],
+    marketplace_ids: ["mkt_riverbend"],
     source_document_id: null,
     onboarding_billed: true,
     vehicle: "Sourcewell",
@@ -621,7 +621,7 @@ function addTylerCatalog(db: Db) {
       unit: item.unit,
       lead_time_days: item.unit === "hr" ? 10 : 14,
       extracted_item_id: null,
-      storefront_ids: ["sf_riverbend"],
+      marketplace_ids: ["mkt_riverbend"],
       detail: item.summary ?? item.detail,
       // The catalog's own wording stays searchable alongside the plain name.
       keywords: `${item.path} ${item.title}`,
@@ -664,7 +664,7 @@ function addMaximus(db: Db) {
     piggyback_clause_text: "",
     payment_terms: "Per contract",
     delivery_terms: "Services scheduled with the vendor",
-    storefront_ids: ["sf_riverbend"],
+    marketplace_ids: ["mkt_riverbend"],
     source_document_id: null,
     onboarding_billed: true,
     vehicle: "NJSTART",
@@ -702,7 +702,7 @@ function addMaximus(db: Db) {
       unit,
       lead_time_days: 14,
       extracted_item_id: null,
-      storefront_ids: ["sf_riverbend"],
+      marketplace_ids: ["mkt_riverbend"],
       detail:
         family === "max:social"
           ? "Social listening analysis using ML/NLP models, with staffing and AWS hosting included in the per-interaction rate."
@@ -748,7 +748,7 @@ function addCarahsoftLeads(db: Db) {
       piggyback_clause_text: "",
       payment_terms: "Per quote",
       delivery_terms: "Per quote",
-      storefront_ids: ["sf_riverbend"],
+      marketplace_ids: ["mkt_riverbend"],
       source_document_id: null,
       onboarding_billed: true,
       vehicle: owner.split(" ")[0],

@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { CATEGORY_TONE, CategoryIcon } from "@/components/CategoryIcon";
 import { HeroPreview } from "@/components/HeroPreview";
+import { TwoProducts } from "@/components/TwoProducts";
 import { Arrow, Search } from "@/components/icons";
 import { useStore } from "@/components/store";
 import { ErrorNote, Loading } from "@/components/ui";
@@ -101,7 +102,7 @@ export default function Home() {
       </section>
 
       {/* How it works, shown rather than told. */}
-      <section className="grid items-center gap-10 rounded-3xl border border-line bg-white p-6 sm:p-10 md:grid-cols-[1fr_1.05fr]">
+      <section className="grid grid-cols-1 items-center gap-10 rounded-3xl border border-line bg-white p-6 sm:p-10 md:grid-cols-[minmax(0,1fr)_minmax(0,1.05fr)]">
         <div>
           <div className="text-[11px] font-extrabold uppercase tracking-[0.18em] text-maroon/80">One request, every contract</div>
           <h2 className="mt-3 text-[1.9rem] font-extrabold leading-tight tracking-[-0.03em] text-navy">Stop checking five portals for the same folding table.</h2>
@@ -157,25 +158,21 @@ export default function Home() {
         </div>
       </section>
 
-      {/* The product we sell on top: a city's own storefront. */}
-      <section className="mt-14 grid gap-8 overflow-hidden rounded-3xl bg-navy p-8 text-white sm:p-10 md:grid-cols-[1.2fr_1fr] md:items-center">
-        <div>
-          <div className="text-[11px] font-extrabold uppercase tracking-[0.18em] text-white/60">City storefronts</div>
-          <h2 className="mt-3 text-[1.8rem] font-extrabold leading-tight tracking-[-0.03em]">Your city's own corner of Agora.</h2>
-          <p className="mt-3 max-w-lg text-[15px] leading-relaxed text-white/75">
-            A storefront narrows the marketplace to the contracts your staff may use, adds your own awards and quick-buy limits, and puts renewals and reorders on one page.
+      {/* What we sell on top of the free marketplace: one product per side. */}
+      <section className="mt-14 overflow-hidden rounded-3xl bg-navy p-8 text-white sm:p-10">
+        <div className="max-w-2xl">
+          <div className="text-[11px] font-extrabold uppercase tracking-[0.18em] text-white/60">Built on Agora</div>
+          <h2 className="mt-3 text-[1.8rem] font-extrabold leading-tight tracking-[-0.03em]">A marketplace for your city. A storefront for your company.</h2>
+          <p className="mt-3 text-[15px] leading-relaxed text-white/75">
+            Searching Agora is free. A city can run its own marketplace on it, with its contracts and rules; a supplier can run a storefront in it, with its catalog and
+            reviews. Riverbend's marketplace is live as an example.
           </p>
-          <Link href="/storefronts" className="mt-6 inline-flex items-center gap-1.5 rounded-[10px] bg-white px-4 py-3 text-sm font-bold text-navy hover:bg-white/90">
-            See storefronts <Arrow className="h-4 w-4" />
-          </Link>
         </div>
-        <Link href="/storefronts/riverbend" className="block rounded-2xl bg-white/10 p-5 ring-1 ring-white/15 transition hover:bg-white/15">
-          <div className="text-xs text-white/60">Live example</div>
-          <div className="mt-1 text-lg font-bold">City of Riverbend, OR</div>
-          <div className="mt-1 text-sm text-white/70">Own contracts, a $10K quick-buy limit, renewal reminders, and one-click reorders.</div>
-          <div className="mt-4 inline-flex items-center gap-1 text-sm font-semibold">
-            Visit storefront <Arrow className="h-4 w-4" />
-          </div>
+        <div className="mt-6">
+          <TwoProducts dark />
+        </div>
+        <Link href="/marketplaces/riverbend" className="mt-4 inline-flex items-center gap-1 text-sm font-semibold text-white/80 hover:text-white">
+          Open Riverbend's city marketplace <Arrow className="h-4 w-4" />
         </Link>
       </section>
 

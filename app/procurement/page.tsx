@@ -21,7 +21,7 @@ export default function ProcurementHome() {
   return (
     <div className="space-y-6">
       <PageTitle eyebrow="Purchasing" title="Good morning, Marcus">
-        Approvals waiting on you, contracts to bring into the storefront, and where Riverbend's money is going.
+        Approvals waiting on you, contracts to bring into Riverbend's marketplace, and where Riverbend's money is going.
       </PageTitle>
 
       <div className="grid gap-4 md:grid-cols-3">
@@ -31,7 +31,7 @@ export default function ProcurementHome() {
           </IconCircle>
           <div className="flex-1">
             <div className="text-lg font-semibold text-navy">
-              Add a contract to the storefront <RevenueTags options={[2]} />
+              Add a contract to the marketplace <RevenueTags options={[2]} />
             </div>
             <p className="mt-1 text-sm text-slate">
               Upload a contract and its price list. Items, prices and terms are extracted into listings in minutes, so departments can buy from it today.
@@ -42,9 +42,9 @@ export default function ProcurementHome() {
           </div>
         </Card>
         <Card className="p-5">
-          <div className="text-xs font-semibold text-slate">Storefront today</div>
-          <div className="mt-2 text-4xl font-light text-navy">{db.listings.filter((l) => l.storefront_ids.includes("sf_riverbend")).length}</div>
-          <div className="text-sm text-slate">listings from {db.contracts.filter((c) => c.storefront_ids.includes("sf_riverbend")).length} contracts</div>
+          <div className="text-xs font-semibold text-slate">Marketplace today</div>
+          <div className="mt-2 text-4xl font-light text-navy">{db.listings.filter((l) => l.marketplace_ids.includes("mkt_riverbend")).length}</div>
+          <div className="text-sm text-slate">listings from {db.contracts.filter((c) => c.marketplace_ids.includes("mkt_riverbend")).length} contracts</div>
           <Link href="/procurement/spend" className="mt-3 inline-block text-sm font-semibold text-maroon hover:underline">
             Spend intelligence →
           </Link>

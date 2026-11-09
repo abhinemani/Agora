@@ -289,7 +289,7 @@ const listingText = (l: Listing) => `${l.title} ${l.keywords ?? ""}`;
 export function estimateTotal(db: Db, item: string, quantity: number) {
   const itemTokens = tokens(expand(item));
   const weights = idf(db.listings, listingText);
-  const { rows } = bestMatches(itemTokens, db.listings.filter((l) => l.storefront_ids.includes("sf_riverbend")), listingText, weights);
+  const { rows } = bestMatches(itemTokens, db.listings.filter((l) => l.marketplace_ids.includes("mkt_riverbend")), listingText, weights);
   if (!rows.length) return 0;
   // Estimate from the closest matches only, so a catalog's cheap add-ons
   // ($0.05 text messages) don't drag the estimate for the core product.
@@ -317,9 +317,10 @@ export function buildResults(db: Db, request: Request): Results {
   const favor = request.preference_answer === "yes";
   const limit = db.agency.quick_buy_threshold;
 
-  const storefront = db.listings.filter((l) => l.storefront_ids.includes("sf_riverbend"));
+  // Agora searches every listing; a city marketplace is a view onto the same catalog.
+  const catalog = db.listings;
   const weights = idf(db.listings, listingText);
-  const { rows: found } = bestMatches(itemTokens, storefront, listingText, weights);
+  const { rows: found } = bestMatches(itemTokens, catalog, listingText, weights);
   // When the request implies a category and some matches are in it, keep those:
   // "24 inch monitors" means hardware, not monitoring software.
   const inCategory = parsed.category ? found.filter((l) => l.category === parsed.category) : [];

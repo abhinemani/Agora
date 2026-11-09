@@ -22,6 +22,7 @@ const NAV: Record<Role, { href: string; label: string }[]> = {
     { href: "/storefronts", label: "Storefronts" },
     { href: "/vehicles", label: "Contracts" },
     { href: "/requests", label: "Requests" },
+    { href: "/marketplaces", label: "For cities" },
   ],
   procurement: [
     { href: "/procurement", label: "Approvals" },
@@ -148,7 +149,7 @@ export function Header() {
                   <span className="font-semibold tabular-nums">{compact(total)}</span>
                 </button>
                 <Link role="menuitem" href="/model" onClick={() => setOpen(false)} className="block px-4 py-2 text-sm text-navy hover:bg-page">
-                  How the storefront earns
+                  How Agora earns
                 </Link>
               </div>
             </div>

@@ -402,7 +402,7 @@ const LlmSchema = z.object({
   unresolved: z.array(ItemSchema).describe("Items found without a single readable price: ranges, 'contact for quote', 'per attached schedule', TBD"),
 });
 
-const SYSTEM = `You extract public-sector contracts into structured listings for a government purchasing storefront.
+const SYSTEM = `You extract public-sector contracts into structured listings for a government purchasing marketplace.
 Rules:
 - Never invent or estimate a price. If a price is a range, missing, "TBD", "quote", or refers to a schedule that is not in the text, put the item in unresolved with unit_price null.
 - If a cell or line holds more than one price for the same item without a clear quantity break, use the first, set confidence below 0.6 and explain in issue.
@@ -511,7 +511,7 @@ export function findSupplier(db: Db, name: string): Supplier | undefined {
 
 export function dedupe(db: Db, items: ExtractedItem[], supplierName: string) {
   const supplier = findSupplier(db, supplierName);
-  const storefront = db.listings.filter((l) => l.storefront_ids.includes("sf_riverbend"));
+  const catalog = db.listings;
   const seen = new Map<string, number>();
   for (const it of items) {
     const norm = normalizeDescription(it.description);
@@ -522,13 +522,13 @@ export function dedupe(db: Db, items: ExtractedItem[], supplierName: string) {
       it.flags.push(`Duplicate of row ${seen.get(key)! + 1} in this upload`);
     } else seen.set(key, it.row_index);
 
-    const bySku = it.sku ? storefront.find((l) => l.sku === it.sku) : undefined;
-    const byDesc = !bySku && supplier ? storefront.find((l) => l.supplier_id === supplier.id && normalizeDescription(l.title) === norm) : undefined;
+    const bySku = it.sku ? catalog.find((l) => l.sku === it.sku) : undefined;
+    const byDesc = !bySku && supplier ? catalog.find((l) => l.supplier_id === supplier.id && normalizeDescription(l.title) === norm) : undefined;
     const match = bySku ?? byDesc;
     if (match && it.duplicate_of_row == null) {
       it.duplicate_of_listing_id = match.id;
       it.replace_existing = true;
-      it.flags.push(`Already in the storefront as "${match.title}" at $${match.unit_price.toFixed(2)} (matched on ${bySku ? "SKU" : "description"})`);
+      it.flags.push(`Already in Agora as "${match.title}" at $${match.unit_price.toFixed(2)} (matched on ${bySku ? "SKU" : "description"})`);
     }
   }
 }

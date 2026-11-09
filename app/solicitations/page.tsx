@@ -15,7 +15,7 @@ export default function Solicitations() {
   return (
     <div>
       <PageTitle eyebrow="The exception, not the rule" title="Solicitations">
-        Riverbend only bids what no contract covers. Every award becomes a storefront listing, open to neighboring agencies when piggybackable.
+        Riverbend only bids what no contract covers. Every award becomes a listing in Riverbend's marketplace, open to other agencies when piggybackable.
       </PageTitle>
       <ErrorNote message={error} />
       <Card className="mt-4 divide-y divide-navy/5">
@@ -42,7 +42,7 @@ export default function Solicitations() {
               </div>
               {s.status === "awarded" && (
                 s.awarded_listing_id ? (
-                  <Badge tone="green">Listed in storefront</Badge>
+                  <Badge tone="green">Listed in marketplace</Badge>
                 ) : (
                   <Button
                     variant="maroon"
@@ -58,7 +58,7 @@ export default function Solicitations() {
                       setBusy(null);
                     }}
                   >
-                    List award in storefront
+                    List award in marketplace
                   </Button>
                 )
               )}

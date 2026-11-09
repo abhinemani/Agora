@@ -279,7 +279,9 @@ function OptionCard({ o, qty, requestId }: { o: ResultOption; qty: number; reque
         </div>
       </div>
       <div className="mt-4 flex flex-wrap items-center gap-1.5 text-[11px] text-slate">
-        <span>{o.supplier.name}</span>
+        <Link href={`/storefronts/${o.supplier.id}`} className="hover:text-maroon hover:underline">
+          {o.supplier.name}
+        </Link>
         <SupplierBadges supplier={o.supplier} />
       </div>
       <Link href={href} className="mt-0.5 text-[17px] font-bold leading-snug tracking-[-0.01em] text-navy hover:text-maroon">

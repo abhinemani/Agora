@@ -74,7 +74,7 @@ export default function MyRequests() {
                 </Badge>
               </Link>
             ))}
-            {!db.requests.length && <div className="p-4 text-sm text-slate">No requests yet. Ask for something from the storefront.</div>}
+            {!db.requests.length && <div className="p-4 text-sm text-slate">No requests yet. Search for something from the home page.</div>}
           </Card>
         </section>
       </div>

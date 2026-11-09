@@ -1,4 +1,4 @@
-// Data model for the storefront prototype. Mirrors section 5 of the build spec.
+// Data model for the Agora prototype. Mirrors section 5 of the build spec.
 
 export type Source =
   | "own_contract"
@@ -65,7 +65,7 @@ export interface Agency {
   departments: { id: string; name: string; address: string }[];
 }
 
-export interface Storefront {
+export interface CityMarketplace {
   id: string;
   agency_name: string;
   distance_miles: number;
@@ -109,7 +109,7 @@ export interface Contract {
   piggyback_clause_text: string;
   payment_terms: string;
   delivery_terms: string;
-  storefront_ids: string[];
+  marketplace_ids: string[];
   source_document_id: string | null;
   /** Whether option 2 (onboarding) has been billed for this contract. */
   onboarding_billed: boolean;
@@ -162,7 +162,7 @@ export interface ExtractedItem {
   listing_id: string | null;
   /** Parser notes shown to the reviewer, e.g. why confidence is low. */
   flags: string[];
-  /** Existing storefront listing this row appears to duplicate. */
+  /** Existing Agora listing this row appears to duplicate. */
   duplicate_of_listing_id?: string | null;
   /** Earlier row in the same upload this row duplicates. */
   duplicate_of_row?: number | null;
@@ -195,7 +195,7 @@ export interface Listing {
   unit: string;
   lead_time_days: number;
   extracted_item_id: string | null;
-  storefront_ids: string[];
+  marketplace_ids: string[];
   /** Short spec line shown under the title. */
   detail?: string;
   /** Extra words search should match, e.g. a catalog's category path. */
@@ -344,7 +344,7 @@ export interface PartnerApp {
 
 export interface Db {
   agency: Agency;
-  storefronts: Storefront[];
+  marketplaces: CityMarketplace[];
   suppliers: Supplier[];
   reviews: Review[];
   contracts: Contract[];

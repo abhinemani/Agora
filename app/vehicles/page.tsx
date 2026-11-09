@@ -33,7 +33,7 @@ export default function Vehicles() {
 
   return (
     <div className="space-y-8">
-      <PageTitle eyebrow="Contract vehicles" title="Every contract in the storefront">
+      <PageTitle eyebrow="Contract vehicles" title="Every contract in Agora">
         Which contracts are loaded, who may use each one, how prices are set, and how far each has been verified.
         {buyer ? (
           <>
@@ -45,7 +45,7 @@ export default function Vehicles() {
           </>
         ) : null}
       </PageTitle>
-      {(!buyer || changing) && <BuyerPicker onDone={() => setChanging(false)} />}
+      {changing && <BuyerPicker onDone={() => setChanging(false)} />}
 
       {GROUPS.map((g) => {
         const contracts = db.contracts.filter(g.test);
@@ -76,7 +76,7 @@ export default function Vehicles() {
                       </div>
                     </div>
                     <div className="text-xs text-slate">
-                      <div>{c.eligibility ? `Open to ${c.eligibility.note}` : "Open to agencies in this storefront"}</div>
+                      <div>{c.eligibility ? `Open to ${c.eligibility.note}` : "Open to agencies in its storefront"}</div>
                       {c.eligibility?.requires && <div>Requires: {c.eligibility.requires}</div>}
                       <div className="mt-1">
                         {BASIS[c.pricing_basis ?? "published_price"]}

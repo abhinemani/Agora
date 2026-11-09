@@ -4,22 +4,24 @@ import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import type { Role } from "@/lib/types";
+import { BuyerPicker } from "./BuyerPicker";
 import { Menu } from "./icons";
 import { useStore } from "./store";
 import { compact } from "./ui";
 
 const ROLES: { id: Role; label: string; person: string; initials: string; home: string }[] = [
-  { id: "buyer", label: "Buyer", person: "Dana Whitfield, Parks and Recreation", initials: "DW", home: "/" },
-  { id: "procurement", label: "Procurement", person: "Marcus Reyes, Purchasing", initials: "MR", home: "/procurement" },
+  { id: "buyer", label: "Buyer", person: "Agency staff searching for what they need", initials: "B", home: "/" },
+  { id: "procurement", label: "Procurement", person: "Marcus Reyes, City of Riverbend purchasing", initials: "MR", home: "/procurement" },
   { id: "supplier", label: "Supplier", person: "Ana Ruiz, Riverside Office Supply", initials: "AR", home: "/supplier" },
 ];
 
 const NAV: Record<Role, { href: string; label: string }[]> = {
   buyer: [
-    { href: "/", label: "Shop" },
+    { href: "/", label: "Search" },
     { href: "/browse", label: "Browse" },
-    { href: "/requests", label: "Requests" },
+    { href: "/storefronts", label: "Storefronts" },
     { href: "/vehicles", label: "Contracts" },
+    { href: "/requests", label: "Requests" },
   ],
   procurement: [
     { href: "/procurement", label: "Approvals" },
@@ -39,6 +41,8 @@ export function Header() {
   const router = useRouter();
   const path = usePathname();
   const [open, setOpen] = useState(false);
+  const [picking, setPicking] = useState(false);
+  const buyer = db?.session.buyer;
   const menu = useRef<HTMLDivElement>(null);
   const total = db?.revenue.reduce((n, e) => n + e.amount, 0) ?? 0;
   const current = ROLES.find((r) => r.id === role)!;
@@ -62,9 +66,11 @@ export function Header() {
   return (
     <header className="sticky top-0 z-30 border-b border-line bg-white/90 backdrop-blur">
       <div className="mx-auto flex h-16 max-w-6xl items-center gap-3 px-4 sm:gap-8">
-        <Link href={current.home} className="flex items-center gap-2.5" aria-label="Riverbend Storefront home">
-          <span className="grid h-8 w-8 place-items-center rounded-lg bg-navy text-[13px] font-bold tracking-tight text-white">Rb</span>
-          <span className="hidden text-[15px] font-semibold tracking-tight text-navy sm:block">Riverbend Storefront</span>
+        <Link href={current.home} className="flex items-center gap-2" aria-label="Agora home">
+          <span className="grid h-9 w-9 place-items-center rounded-[10px] bg-navy text-lg font-semibold text-white">α</span>
+          <span className="hidden text-[22px] font-bold tracking-[-0.04em] text-navy sm:block">
+            ago<span className="text-maroon">ra</span>
+          </span>
         </Link>
 
         <nav className="flex min-w-0 items-center gap-0.5 overflow-x-auto text-sm sm:gap-1">
@@ -123,6 +129,17 @@ export function Header() {
                   role="menuitem"
                   onClick={() => {
                     setOpen(false);
+                    setPicking(true);
+                  }}
+                  className="flex w-full items-center justify-between gap-3 px-4 py-2 text-left text-sm text-navy hover:bg-page"
+                >
+                  Your agency
+                  <span className="truncate text-xs text-slate">{buyer ? `${buyer.name}, ${buyer.state}` : "Any agency"}</span>
+                </button>
+                <button
+                  role="menuitem"
+                  onClick={() => {
+                    setOpen(false);
                     setLedgerOpen(true);
                   }}
                   className="flex w-full items-center justify-between px-4 py-2 text-sm text-navy hover:bg-page"
@@ -138,6 +155,13 @@ export function Header() {
           )}
         </div>
       </div>
+      {picking && (
+        <div className="border-t border-line bg-page py-4">
+          <div className="mx-auto max-w-6xl px-4">
+            <BuyerPicker onDone={() => setPicking(false)} onClose={() => setPicking(false)} />
+          </div>
+        </div>
+      )}
     </header>
   );
 }

@@ -1,6 +1,12 @@
-# Riverbend Storefront (Marketplace 2.0 prototype)
+# Agora (Marketplace 2.0 prototype)
 
-A clickable prototype of one local government's storefront for everything it's allowed to buy, plus the supplier side of that storefront, with Sovra's revenue mechanics visible on screen. It's built for leadership demos, not production. There's one city (the fictional City of Riverbend), seeded data, and no real integrations.
+A clickable prototype of a centralized procurement marketplace: any city, county or school district searches state and cooperative contracts in one place, sees which ones it may use, and buys. On top of the shared marketplace, an agency can have its own **city storefront** (the product we sell), narrowed to its contracts and shaped by its rules. The supplier side and Sovra's revenue mechanics are visible on screen too. It's built for leadership demos, not production: seeded data, no real integrations, and one live storefront (the fictional City of Riverbend).
+
+## Marketplace and storefronts
+
+The home page (`/`) is the marketplace. It asks one question, "What are you looking to buy?", and searches every contract in Agora without needing an agency. Setting an agency (account menu → **Your agency**, or **Set your agency** on any results page) hides the contracts that agency can't use; leaving it blank shows who each contract is open to.
+
+**Storefronts** (`/storefronts`) lists the city storefronts. Riverbend's (`/storefronts/riverbend`) is live: searching there searches as Riverbend, with its own contracts, local-vendor preference, $10K quick-buy limit, renewals coming due and reorders. The other storefronts on the list are shown as available to sell.
 
 ## Running it
 
@@ -17,11 +23,11 @@ State lives in memory on the server. **Reset demo** (in the revenue ledger) rese
 
 The **How it earns** page (in the header for every role) turns the Marketplace 2.0 deck into live diagrams: the three kinds of purchase, the buyer value chain, the supplier loop, the flywheel, the five-way revenue equation and the ten-option table. Revenue badges fill in as options fire during the demo, and every option links to the place in the app that triggers it. The numbered maroon badges also appear on result cards, checkout and the supplier journey; switch them off with **Show how Sovra earns** under the header for a buyer-only view.
 
-Proactive buying is live too: the expiring custodial contract on the buyer home starts an early renewal solicitation drafted from the past custodial bid.
+Proactive buying is live too: the expiring custodial contract on Riverbend's storefront starts an early renewal solicitation drafted from the past custodial bid.
 
 ## Buyers, eligibility and ways to buy
 
-The buyer defaults to the City of Riverbend and can be changed at any time (agency, state, type and optional population), because contracts are open to different buyers. Every contract carries eligibility rules, a pricing basis and a verification level, and results show only the routes that buyer can use. Matches on closed contracts are summarized instead of hidden, and each product page lists every way to buy it side by side.
+No agency is set by default, so search covers every contract. An agency (name, state, type and optional population) can be set or cleared at any time, because contracts are open to different buyers. Every contract carries eligibility rules, a pricing basis and a verification level, and results show only the routes that buyer can use. Matches on closed contracts are summarized instead of hidden, and each product page lists every way to buy it side by side.
 
 | Vehicle | Number | Open to | Pricing | Verification |
 | --- | --- | --- | --- | --- |
@@ -35,9 +41,9 @@ When a product sits on a contract the buyer can't use but the same supplier has 
 
 ## Vendor price catalog
 
-Riverbend's storefront also carries Tyler Technologies' March 2025 price catalog (`seed/catalogs/tyler-technologies-price-catalog-2025-03.xlsx`), so buyers can ask for software and services such as "jury management", "open data portal" or "an implementation consultant". `npm run import:catalog` turns the spreadsheet into `seed/catalogs/tyler-technologies-2025-03.json`, which the seed loads on every reset.
+Agora also carries Tyler Technologies' March 2025 price catalog (`seed/catalogs/tyler-technologies-price-catalog-2025-03.xlsx`), so buyers can ask for software and services such as "jury management", "open data portal" or "an implementation consultant". `npm run import:catalog` turns the spreadsheet into `seed/catalogs/tyler-technologies-2025-03.json`, which the seed loads on every reset.
 
-The catalog keeps each price inside the product description, so the importer reads only the price line and lists a row only when it holds one clear price. Of 1,672 rows, 1,350 import cleanly; the other 322 are skipped with a reason recorded in the JSON (no price, a price range or "up to" ceiling, tiers or a minimum spread over several lines, or a price with a percentage or second component). Products priced in tiers (by population or volume) show as one product with a tier picker, preset to the tier that fits the buyer's population. The storefront carries the 100 Tyler products a city, county or school district is most likely to buy (210 price rows across their tiers). `scripts/feature-tyler.mjs` picks them: core subscriptions and platforms score up; third-party add-ons, training and implementation hours, hardware, usage fees, and state-, federal- or enterprise-scale offerings score down; and each product line has a quota so payments, permitting, records, public safety, open data and the rest are all represented. The other rows stay in the JSON, so widening the cut means changing the quotas and running `npm run import:catalog`.
+The catalog keeps each price inside the product description, so the importer reads only the price line and lists a row only when it holds one clear price. Of 1,672 rows, 1,350 import cleanly; the other 322 are skipped with a reason recorded in the JSON (no price, a price range or "up to" ceiling, tiers or a minimum spread over several lines, or a price with a percentage or second component). Products priced in tiers (by population or volume) show as one product with a tier picker, preset to the tier that fits the buyer's population. Agora carries the 100 Tyler products a city, county or school district is most likely to buy (210 price rows across their tiers). `scripts/feature-tyler.mjs` picks them: core subscriptions and platforms score up; third-party add-ons, training and implementation hours, hardware, usage fees, and state-, federal- or enterprise-scale offerings score down; and each product line has a quota so payments, permitting, records, public safety, open data and the rest are all represented. The other rows stay in the JSON, so widening the cut means changing the quotas and running `npm run import:catalog`.
 
 It is New Jersey's state contract on NJSTART, 26-TELE-114629, so it is open to New Jersey public entities only. Tyler has no seeded reviews or ratings.
 
@@ -51,7 +57,7 @@ Pick a host that runs one long-lived Node server (Render, Railway, Fly.io). The 
 
 The prototype supports section 8 of the spec end to end. Switch roles with the Buyer / Procurement / Supplier control in the header, and open **Sovra revenue (demo)** at any point to watch the ledger fill up.
 
-1. **Buyer:** ask for "40 folding tables for the Eastside rec center, delivered before March" and answer **Yes** to the local/MBE question. Riverside Office Supply (own contract, Local + MBE) ranks first, then the state contract, a sponsored National Furniture co-op listing, and a Harper County peer pick.
+1. **Buyer:** open **Storefronts → City of Riverbend**, ask for "40 folding tables for the Eastside rec center, delivered before March" and answer **Yes** to the local/MBE question. Riverside Office Supply (own contract, Local + MBE) ranks first, then the state contract, a sponsored National Furniture co-op listing, and a Harper County peer pick.
 2. **Buy from Riverside.** The order is over $10K, so it routes to a PO and **Send for approval** (options 3 and 2, plus a credit toward option 1).
 3. **Procurement:** approve the PO, then open Spend intelligence.
 4. **Buyer:** "a box of pencils for the front desk" returns a single no-approval option. The P-card checkout fires option 9.
@@ -66,7 +72,8 @@ The prototype supports section 8 of the spec end to end. Switch roles with the B
 | --- | --- |
 | `lib/revenue_rules.ts` | The ten revenue options, amounts and firing rules, all in one file for tuning |
 | `lib/seed.ts` | Agency, 8 suppliers, 40 listings across all six sources, solicitations, peers, reviews |
-| `lib/assistant.ts` | Request parsing, matching, ranking, threshold and payment rules, "Why this order?" |
+| `lib/assistant.ts` | Request parsing, matching, ranking, threshold and payment rules, "How these are ranked" |
+| `app/page.tsx`, `app/storefronts/` | The marketplace home, the storefront list, and Riverbend's storefront |
 | `lib/parser.ts` | Contract extraction (PDF / DOCX / XLSX / CSV), LLM structuring, offline heuristic, dedupe |
 | `lib/actions.ts` | Every state change, which is also where revenue events fire |
 | `seed/contracts/` | Three real sample contracts (PDFs and an XLSX), regenerated by `npm run seed:contracts` |

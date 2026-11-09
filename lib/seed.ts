@@ -516,7 +516,7 @@ export function seed(): Db {
       { title: "First aid kit, 50-person", supplier: "Patriot Safety & Uniform", date: "2026-09-22", qty: 6, listing_id: "lst_034" },
     ],
     quotes: [],
-    session: { preference_answer: null, spend_dashboard_enabled: true, acting_supplier_id: "sup_riverside", buyer: { name: "City of Riverbend", state: "OR", entity_type: "municipality", population: 85_000 } },
+    session: { preference_answer: null, spend_dashboard_enabled: true, acting_supplier_id: "sup_riverside", buyer: null },
     counters: { revenue: 0, request: 0, order: 1040, solicitation: 7, contract: 0, listing: 40, doc: 0, item: 0, attention: 0 },
   };
 
@@ -694,7 +694,7 @@ function addMaximus(db: Db) {
           : family === "max:hosting"
             ? "Monthly fixed fee for platform licenses and hosting."
             : "Hourly labor categories for platform delivery, development, architecture, testing and project support.",
-      keywords: "Maximus platform management digital government social listening resident engagement",
+      keywords: `Maximus platform management digital government social listening resident engagement ${variant}`,
       family,
       variant,
       band: null,

@@ -35,8 +35,8 @@ function earnsFor(o: ResultOption) {
   return tags;
 }
 
-/** Options shown per source before "Show all"; large catalogs can match dozens. */
-const GROUP_LIMIT = 6;
+/** Cards shown before "Show all"; large catalogs can match dozens. */
+const GRID_LIMIT = 9;
 
 export default function RequestResults() {
   const { id } = useParams<{ id: string }>();
@@ -44,14 +44,15 @@ export default function RequestResults() {
   const { db, act, showEarn } = useStore();
   const [results, setResults] = useState<Results | null>(null);
   const [error, setError] = useState<string | null>(null);
-  const [expanded, setExpanded] = useState<string[]>([]);
+  const [showAll, setShowAll] = useState(false);
   const [answered, setAnswered] = useState(false);
   const [why, setWhy] = useState(false);
   const [changing, setChanging] = useState(false);
 
   const request = db?.requests.find((r) => r.id === id);
   const buyer = db?.session.buyer ?? null;
-  const needsBuyer = Boolean(db) && !buyer;
+  // Agora searches every contract by default; the agency is optional.
+  const needsBuyer = false;
   // Riverbend's preference policy is the only one on file, so only its buyers are asked.
   const isHome = buyer?.name === db?.agency.name;
   const needsAnswer = !needsBuyer && isHome && ask && !answered && request && (request.preference_answer === null || request.preference_answer === "always_ask");
@@ -80,32 +81,46 @@ export default function RequestResults() {
 
   const p = request.parsed;
 
+  const all = results ? results.groups.flatMap((g) => g.options) : [];
+  const shown = showAll ? all : all.slice(0, GRID_LIMIT);
+  const sources = results ? results.groups.length : 0;
+
   return (
     <div className="space-y-6">
       <div>
         <Link href="/" className="text-sm text-slate hover:text-navy">
-          New request
+          ← New search
         </Link>
-        <h1 className="mt-3 text-2xl font-semibold tracking-tight text-navy">{request.raw_text}</h1>
-        <p className="mt-1.5 text-sm text-slate" title={request.parse_mode === "llm" ? "Read by Claude" : "Read with offline rules"}>
-          {p.quantity > 1 ? `${p.quantity} needed` : "One needed"} for {p.department}
-          {p.deadline ? `, ${p.deadline}` : ""}
-          {p.est_total ? `, about ${money(p.est_total, false)}` : ""}.
-          {buyer && (
-            <>
-              {" "}
-              Buying for <span className="text-navy">{buyer.name}</span>
-              {", "}
-              {buyer.state}.{" "}
-              <button onClick={() => setChanging(!changing)} className="text-maroon hover:underline">
-                {changing ? "Cancel" : "Change"}
+        <div className="mt-4 flex flex-wrap items-start justify-between gap-4">
+          <div className="min-w-0">
+            <h1 className="text-[1.8rem] font-extrabold leading-tight tracking-[-0.03em] text-navy">Results for “{request.raw_text}”</h1>
+            <p className="mt-1.5 text-sm text-slate" title={request.parse_mode === "llm" ? "Read by Claude" : "Read with offline rules"}>
+              {results && !results.no_match ? `${all.length} option${all.length === 1 ? "" : "s"} across ${sources} kind${sources === 1 ? "" : "s"} of contract. ` : ""}
+              {p.quantity > 1 ? `${p.quantity} needed` : "One needed"}
+              {p.deadline ? `, ${p.deadline}` : ""}
+              {p.est_total ? `, about ${money(p.est_total, false)}` : ""}.
+              {request.preference_answer === "yes" && " Favoring local and MBE suppliers."}
+            </p>
+          </div>
+          <div className="flex shrink-0 flex-wrap items-center gap-2">
+            {results && !results.no_match && (
+              <button onClick={() => setWhy(!why)} className="rounded-[9px] border border-[#dbe4f0] bg-white px-3.5 py-2.5 text-xs font-bold text-[#385783] hover:border-[#8fa8e8]">
+                {why ? "Hide ranking" : "How these are ranked"}
               </button>
-            </>
-          )}
+            )}
+            <button onClick={() => setChanging(!changing)} className="rounded-[9px] border border-[#dbe4f0] bg-white px-3.5 py-2.5 text-xs font-bold text-[#385783] hover:border-[#8fa8e8]">
+              {changing ? "Cancel" : buyer ? `For ${buyer.name}` : "Set your agency"}
+            </button>
+          </div>
+        </div>
+        <p className="mt-2 text-xs text-slate">
+          {buyer
+            ? `Showing only contracts open to ${buyer.name}, ${buyer.state}.`
+            : "Showing every contract in Agora. Set your agency to hide the ones you can't use."}
         </p>
       </div>
 
-      {(needsBuyer || changing) && <BuyerPicker onDone={() => setChanging(false)} />}
+      {changing && <BuyerPicker onDone={() => setChanging(false)} onClose={() => setChanging(false)} />}
 
       {needsAnswer && !changing && (
         <Card accent="maroon" className="flex flex-wrap items-center gap-4 p-5">
@@ -140,23 +155,11 @@ export default function RequestResults() {
       )}
 
       <ErrorNote message={error} />
-      {!needsBuyer && !needsAnswer && !results && !error && <Loading label={`Checking every contract ${buyer?.name ?? "you"} can use`} />}
+      {!needsBuyer && !needsAnswer && !results && !error && <Loading label={buyer ? `Checking every contract ${buyer.name} can use` : "Checking every contract in Agora"} />}
 
       {results && !results.no_match && (
         <>
           {showEarn && <KindBanner kind={results.groups.every((g) => g.source === "no_approval") ? PURCHASE_KINDS.no_approval : PURCHASE_KINDS.contract} />}
-          <div className="flex flex-wrap items-center justify-between gap-2">
-            <div className="text-sm text-slate">
-              {(() => {
-                const n = results.groups.reduce((m, g) => m + g.options.length, 0);
-                return `${n} option${n === 1 ? "" : "s"} from ${results.groups.length} source${results.groups.length > 1 ? "s" : ""}`;
-              })()}
-              {request.preference_answer === "yes" && " · favoring local and MBE suppliers"}
-            </div>
-            <button onClick={() => setWhy(!why)} className="text-sm font-semibold text-maroon hover:underline">
-              {why ? "Hide" : "Why this order?"}
-            </button>
-          </div>
           {why && (
             <Card className="bg-navy-50/60 p-4">
               <ul className="list-disc space-y-1 pl-5 text-sm text-navy">
@@ -167,38 +170,29 @@ export default function RequestResults() {
             </Card>
           )}
 
-          <div className="grid gap-6 lg:grid-cols-3">
-            <div className="space-y-6 lg:col-span-2">
-              {results.groups.map((g) => (
-                <section key={g.source}>
-                  <div className="mb-2 flex items-center gap-2">
-                    <SourcePill source={g.source} />
-                    {g.source === "no_approval" && <span className="text-xs text-slate">Small purchase, no contract required.</span>}
-                  </div>
-                  <div className="space-y-3">
-                    {(expanded.includes(g.source) ? g.options : g.options.slice(0, GROUP_LIMIT)).map((o) => (
-                      <OptionCard key={o.listing.id} o={o} qty={p.quantity} requestId={id} />
-                    ))}
-                  </div>
-                  {g.options.length > GROUP_LIMIT && !expanded.includes(g.source) && (
-                    <button onClick={() => setExpanded([...expanded, g.source])} className="mt-3 w-full rounded-lg border border-dashed border-navy/20 py-2 text-sm font-semibold text-navy hover:bg-white">
-                      Show all {g.options.length} {g.label.toLowerCase()} options
-                    </button>
-                  )}
-                </section>
-              ))}
+          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {shown.map((o) => (
+              <OptionCard key={o.listing.id} o={o} qty={p.quantity} requestId={id} />
+            ))}
+          </div>
+          {all.length > shown.length && (
+            <button onClick={() => setShowAll(true)} className="w-full rounded-xl border border-dashed border-navy/20 py-3 text-sm font-semibold text-navy hover:bg-white">
+              Show all {all.length} options
+            </button>
+          )}
+
+          <div className="grid gap-4 md:grid-cols-3">
+            {results.peer && <PeerCard peer={results.peer} qty={p.quantity} />}
+            <UnavailableCard items={results.unavailable} buyerName={results.buyer?.name ?? "this agency"} />
+            <div className="flex flex-col justify-between rounded-2xl border border-line bg-white p-5">
+              <div>
+                <div className="text-base font-bold tracking-tight text-navy">Don't see what you need?</div>
+                <p className="mt-1 text-sm text-slate">Turn this request into a solicitation. Agora drafts it from what you asked for and the closest past award.</p>
+              </div>
+              <Link href={`/solicitations/new?request=${id}`} className="mt-4 text-sm font-bold text-maroon hover:underline">
+                Build a solicitation →
+              </Link>
             </div>
-            <aside className="space-y-4">
-              {results.peer && <PeerCard peer={results.peer} qty={p.quantity} />}
-              <UnavailableCard items={results.unavailable} buyerName={results.buyer?.name ?? "this agency"} />
-              <Card className="p-4 text-xs text-slate">
-                <div className="mb-1 font-semibold text-navy">Not what you need?</div>
-                If nothing here fits, Marcus in Purchasing can start a solicitation.{" "}
-                <Link href={`/solicitations/new?request=${id}`} className="font-semibold text-maroon hover:underline">
-                  Start one anyway
-                </Link>
-              </Card>
-            </aside>
           </div>
         </>
       )}
@@ -212,23 +206,23 @@ export default function RequestResults() {
                 <Plus />
               </IconCircle>
               <div>
-                <h2 className="text-2xl font-semibold tracking-tight text-navy">
+                <h2 className="text-2xl font-extrabold tracking-tight text-navy">
                   {results.unavailable.length
                     ? `No contract open to ${results.buyer?.name ?? "you"} covers this yet.`
                     : "No contract covers this yet. You may be the first agency to buy it."}
                 </h2>
                 <p className="mt-2 text-sm text-slate">
-                  This is rare: most requests resolve to something already on contract or under the quick-buy limit. {results.buyer?.name ?? "Your agency"} can run a
-                  solicitation, and when it's awarded the contract lands in this storefront, ready for the next department and for neighboring agencies.
+                  This is rare: most requests resolve to something already on contract or under a quick-buy limit. {results.buyer?.name ?? "Your agency"} can run a
+                  solicitation, and once it's awarded the contract joins Agora, ready for the next agency that needs the same thing.
                 </p>
                 {results.similar_solicitation && (
                   <p className="mt-3 text-sm text-navy">
-                    I'll start from your closest past solicitation: <span className="font-semibold">{results.similar_solicitation.title}</span>.
+                    I'll start from the closest past solicitation: <span className="font-semibold">{results.similar_solicitation.title}</span>.
                   </p>
                 )}
                 <div className="mt-4 flex gap-2">
                   <LinkButton href={`/solicitations/new?request=${id}`} variant="maroon">
-                    Start a solicitation
+                    Build a solicitation
                   </LinkButton>
                   <LinkButton href="/" variant="secondary">
                     Try different words
@@ -271,77 +265,66 @@ function OptionCard({ o, qty, requestId }: { o: ResultOption; qty: number; reque
     l.id === o.listing.id || qr
       ? o.rule
       : total < limit
-        ? { text: `Under your $${Math.round(limit / 1000)}K quick-buy limit · P-card OK${via}`, payment: "pcard" as const }
+        ? { text: `Under a $${Math.round(limit / 1000)}K quick-buy limit · P-card OK${via}`, payment: "pcard" as const }
         : { text: `Needs PO · over $${Math.round(limit / 1000)}K${via}`, payment: "po" as const };
   const title = tiered ? l.title.replace(/\s*\([^)]*\)\s*$/, "") : l.title;
+  const href = `/product/${l.id}?qty=${qty}&request=${requestId}`;
   return (
-    <Card className="p-5">
-      <div className="flex flex-wrap items-start justify-between gap-4">
+    <div className="flex min-h-[290px] flex-col rounded-2xl border border-line bg-white p-[18px] shadow-[0_3px_15px_rgba(19,45,82,0.02)] transition hover:border-[#bbcae8]">
+      <div className="flex items-start justify-between gap-3">
         <CategoryIcon category={l.category} />
-        <div className="min-w-0 flex-1">
-          <div className="flex flex-wrap items-center gap-2">
-            <Link href={`/product/${l.id}?qty=${qty}&request=${requestId}`} className="font-semibold text-navy hover:text-maroon hover:underline">
-              {title}
-            </Link>
-            {o.sponsored && <span className="text-xs text-slate">Sponsored</span>}
-          </div>
-          {l.detail && <div className="text-xs text-slate">{l.detail}</div>}
-          {qr && (
-            <div className="mt-2 text-sm text-amber-800">
-              {qr.reference} isn't open to your agency. Buy through {qr.vehicle} {qr.contract_number} instead: the supplier quotes a discount off its list price.
-              {qr.research_note ? ` ${qr.research_note}.` : ""}
-            </div>
-          )}
-          {tiered && (
-            <label className="mt-2 flex flex-wrap items-center gap-2 text-xs text-slate">
-              {o.variants.length} pricing tiers
-              <select value={chosen} onChange={(e) => setChosen(e.target.value)} className="max-w-full !py-1 text-xs">
-                {o.variants.map((v) => (
-                  <option key={v.id} value={v.id}>
-                    {v.variant ?? v.sku} · {money(v.unit_price)} / {v.unit}
-                  </option>
-                ))}
-              </select>
-            </label>
-          )}
-          <div className="mt-2 flex flex-wrap items-center gap-2 text-sm">
-            <span className="text-navy">{o.supplier.name}</span>
-            <SupplierBadges supplier={o.supplier} />
-            <Stars rating={o.supplier.rating} count={o.supplier.review_count} />
-          </div>
-          <div className="mt-2 flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-slate">
-            {o.contract_number && (
-              <span>
-                {o.vehicle && <span className="font-semibold text-navy">{o.vehicle} </span>}
-                {o.contract_number}
-              </span>
-            )}
-            <span className={o.meets_deadline === false ? "text-maroon" : ""}>{o.delivery}</span>
-          </div>
-          <div className="mt-2 flex flex-wrap items-center gap-3">
-            <span className={`text-sm ${rule.payment === "po" ? "text-amber-700" : "text-emerald-700"}`}>
-              {rule.text}
-            </span>
-            {!qr && <RevenueTags options={earnsFor({ ...o, rule })} />}
-            <Link href={`/product/${l.id}?qty=${qty}&request=${requestId}`} className="text-xs font-semibold text-maroon hover:underline">
-              {l.contract_id ? "Ways to buy" : "Details"}
-            </Link>
-          </div>
+        <div className="flex flex-col items-end gap-1">
+          <SourcePill source={l.source} />
+          {o.sponsored && <span className="text-[10px] text-slate">Sponsored</span>}
         </div>
-        {qr ? (
-          <div className="text-right">
-            <div className="text-[11px] text-slate">Reference price</div>
-            <div className="text-lg font-semibold text-slate">
-              {money(l.unit_price)}
-              <span className="text-xs font-normal"> / {l.unit}</span>
-            </div>
-            <div className="text-[11px] text-slate">on {qr.reference}</div>
-            {quoted ? (
-              <div className="mt-3 max-w-[11rem] text-xs font-semibold text-emerald-800">Quote request {quoted} sent through {qr.vehicle}.</div>
+      </div>
+      <div className="mt-4 flex flex-wrap items-center gap-1.5 text-[11px] text-slate">
+        <span>{o.supplier.name}</span>
+        <SupplierBadges supplier={o.supplier} />
+      </div>
+      <Link href={href} className="mt-0.5 text-[17px] font-bold leading-snug tracking-[-0.01em] text-navy hover:text-maroon">
+        {title}
+      </Link>
+      <p className="mt-1.5 line-clamp-3 text-xs leading-relaxed text-slate">
+        {qr
+          ? `${qr.reference} isn't open to your agency. Buy through ${qr.vehicle} ${qr.contract_number}: the supplier quotes a discount off list.${qr.research_note ? ` ${qr.research_note}.` : ""}`
+          : l.detail || [o.vehicle, o.contract_number].filter(Boolean).join(" ") || o.delivery}
+      </p>
+      {tiered && (
+        <label className="mb-1 flex flex-wrap items-center gap-2 text-[11px] text-slate">
+          {o.variants.length} tiers
+          <select value={chosen} onChange={(e) => setChosen(e.target.value)} className="min-w-0 max-w-full flex-1 !py-1 text-xs">
+            {o.variants.map((v) => (
+              <option key={v.id} value={v.id}>
+                {v.variant ?? v.sku} · {money(v.unit_price)} / {v.unit}
+              </option>
+            ))}
+          </select>
+        </label>
+      )}
+      <div className="mb-3 mt-1 flex flex-wrap items-center gap-x-2 gap-y-1 text-[11px]">
+        {!qr && <span className={rule.payment === "po" ? "text-amber-700" : "text-emerald-700"}>{rule.text}</span>}
+        <Stars rating={o.supplier.rating} count={o.supplier.review_count} />
+        {!qr && <RevenueTags options={earnsFor({ ...o, rule })} />}
+      </div>
+      <div className="mt-auto flex items-end justify-between gap-2 border-t border-[#edf0f5] pt-3">
+        <div className="min-w-0">
+          <div className={`text-[15px] font-extrabold tabular-nums ${qr ? "text-slate" : "text-navy"}`}>
+            {money(l.unit_price)}
+            <span className="text-[11px] font-medium text-slate"> / {l.unit}</span>
+          </div>
+          <div className="text-[10px] text-slate">{qr ? `Reference price on ${qr.reference}` : qty > 1 ? `${qty} for ${money(total)}` : o.delivery}</div>
+        </div>
+        <div className="flex shrink-0 items-center gap-1.5">
+          <Link href={href} className="rounded-[9px] border border-[#dbe4f0] bg-white px-3 py-2 text-xs font-bold text-[#385783] hover:border-[#8fa8e8]">
+            View →
+          </Link>
+          {qr ? (
+            quoted ? (
+              <span className="text-[11px] font-semibold text-emerald-800">Quote {quoted} sent</span>
             ) : (
-              <Button
-                variant="secondary"
-                className="mt-3"
+              <button
+                className="rounded-[9px] bg-maroon px-3 py-2 text-xs font-bold text-white hover:bg-maroon-600"
                 onClick={async () => {
                   setQuoteError(null);
                   try {
@@ -353,26 +336,21 @@ function OptionCard({ o, qty, requestId }: { o: ResultOption; qty: number; reque
                 }}
               >
                 Request a quote
-              </Button>
-            )}
-            <ErrorNote message={quoteError} />
-          </div>
-        ) : (
-          <div className="text-right">
-            <div className="text-lg font-semibold text-navy">
-              {money(l.unit_price)}
-              <span className="text-xs font-normal text-slate"> / {l.unit}</span>
-            </div>
-            <div className="text-xs text-slate">
-              {qty} × = <span className="font-semibold text-navy">{money(total)}</span>
-            </div>
-            <LinkButton href={`/checkout?listing=${l.id}&qty=${qty}&request=${requestId}`} className="mt-3">
+              </button>
+            )
+          ) : (
+            <Link href={`/checkout?listing=${l.id}&qty=${qty}&request=${requestId}`} className="rounded-[9px] bg-maroon px-3 py-2 text-xs font-bold text-white hover:bg-maroon-600">
               Buy
-            </LinkButton>
-          </div>
-        )}
+            </Link>
+          )}
+        </div>
       </div>
-    </Card>
+      {quoteError && (
+        <div className="mt-2">
+          <ErrorNote message={quoteError} />
+        </div>
+      )}
+    </div>
   );
 }
 
@@ -380,7 +358,7 @@ function OptionCard({ o, qty, requestId }: { o: ResultOption; qty: number; reque
 function UnavailableCard({ items, buyerName }: { items: Unavailable[]; buyerName: string }) {
   if (!items.length) return null;
   return (
-    <Card className="p-4">
+    <Card className="rounded-2xl p-5">
       <div className="flex items-center gap-2 text-sm font-semibold text-navy">
         <Lock className="h-4 w-4 text-slate" /> On contracts {buyerName} can't use
       </div>
@@ -400,14 +378,14 @@ function UnavailableCard({ items, buyerName }: { items: Unavailable[]; buyerName
           </li>
         ))}
       </ul>
-      <p className="mt-3 text-[11px] text-slate">Change the buyer above to see how the options change.</p>
+      <p className="mt-3 text-[11px] text-slate">Change your agency above to see how the options change.</p>
     </Card>
   );
 }
 
 function PeerCard({ peer, qty }: { peer: NonNullable<Results["peer"]>; qty: number }) {
   return (
-    <Card accent="steel" className="p-4">
+    <Card accent="steel" className="rounded-2xl p-5">
       <div className="flex items-center justify-between">
         <span className="flex items-center gap-1.5">
           <People className="h-3.5 w-3.5 text-slate" />

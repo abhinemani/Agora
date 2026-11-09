@@ -148,7 +148,7 @@ function Product() {
             </button>
           )}
         </div>
-        {(!buyer || changing) && (
+        {changing && (
           <div className="mb-4">
             <BuyerPicker onDone={() => setChanging(false)} />
           </div>

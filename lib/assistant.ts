@@ -10,7 +10,7 @@ import { checkEligibility, defaultVariant, familyOf, SOURCEWELL_TYLER_NOTES } fr
 export const SOURCE_ORDER: Source[] = ["own_contract", "state_contract", "coop_contract", "reseller", "gsa", "no_approval"];
 
 export const SOURCE_LABEL: Record<Source, string> = {
-  own_contract: "Riverbend contract",
+  own_contract: "Agency contract",
   state_contract: "State contract",
   coop_contract: "Co-op contract",
   reseller: "Reseller",
@@ -216,7 +216,7 @@ export function ruleFor(db: Db, listing: Listing, quantity: number): RuleLine {
       ? ` · Piggyback via ${contract?.contract_number ?? "contract"}`
       : "";
   return total < limit
-    ? { text: `Under your ${k} quick-buy limit · P-card OK${via}`, payment: "pcard" }
+    ? { text: `Under ${db.session.buyer ? "your" : "a typical"} ${k} quick-buy limit · P-card OK${via}`, payment: "pcard" }
     : { text: `Needs PO · over ${k}${via}`, payment: "po" };
 }
 
@@ -469,8 +469,8 @@ export function buildResults(db: Db, request: Request): Results {
     const est = parsed.est_total;
     explanation.push(
       est >= limit
-        ? `At about $${Math.round(est).toLocaleString()}, this is over your $${(limit / 1000).toFixed(0)}K quick-buy limit, so it needs a PO and an approval. Off-contract small-purchase options are hidden.`
-        : `At about $${Math.round(est).toLocaleString()}, this is under your $${(limit / 1000).toFixed(0)}K quick-buy limit, so a P-card works on any source.`,
+        ? `At about $${Math.round(est).toLocaleString()}, this is over ${db.session.buyer ? "your" : "a typical"} $${(limit / 1000).toFixed(0)}K quick-buy limit, so it needs a PO and an approval. Off-contract small-purchase options are hidden.`
+        : `At about $${Math.round(est).toLocaleString()}, this is under ${db.session.buyer ? "your" : "a typical"} $${(limit / 1000).toFixed(0)}K quick-buy limit, so a P-card works on any source.`,
     );
     if (peer) explanation.push(`${peer.agency_name} bought something comparable recently, so it's shown as a peer pick.`);
   }

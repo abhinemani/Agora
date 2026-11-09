@@ -63,12 +63,26 @@ export function setBuyer(buyer: Buyer) {
   return db.session.buyer;
 }
 
+/** Order numbers carry the buying agency's initials ("City of Riverbend" → RB,
+ * "Harmon Lake Township" → HL); AG when no agency is set. */
+function orderPrefix(name?: string) {
+  if (!name) return "AG";
+  if (name === "City of Riverbend") return "RB";
+  const words = name.split(/\s+/).filter((w) => !/^(of|the|city|town|township|county|borough|village|state|department)$/i.test(w));
+  return (words.map((w) => w[0]).join("").slice(0, 2) || name.slice(0, 2)).toUpperCase();
+}
+
+export function clearBuyer() {
+  getDb().session.buyer = null;
+  return null;
+}
+
 /** A co-op route priced off list: record the request for a supplier quote. */
 export function requestQuote(args: { listingId: string; contractId: string; quantity: number; note?: string }) {
   const db = getDb();
   const listing = db.listings.find((l) => l.id === args.listingId) ?? fail("Listing not found");
   const contract = db.contracts.find((c) => c.id === args.contractId) ?? fail("Contract not found");
-  const buyer = db.session.buyer ?? fail("Tell us who's buying first.");
+  const buyer = db.session.buyer ?? fail("Set your agency first (top right, Your agency) so the supplier knows who's asking.");
   const check = checkEligibility(contract, buyer);
   if (!check.eligible) fail(`${contract.vehicle ?? contract.owner} ${contract.contract_number} isn't open to ${buyer.name}: ${check.reason}.`);
   const quote = {
@@ -148,7 +162,7 @@ export function placeOrder(args: { listingId: string; quantity: number; requestI
 
   const n = (db.counters.order = (db.counters.order ?? 0) + 1);
   const order = {
-    id: `RB-${rule.payment === "po" ? "PO" : "PC"}-${n}`,
+    id: `${orderPrefix(db.session.buyer?.name)}-${rule.payment === "po" ? "PO" : "PC"}-${n}`,
     request_id: args.requestId ?? null,
     listing_id: listing.id,
     quantity: qty,

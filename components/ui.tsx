@@ -12,7 +12,7 @@ export const compact = (n: number) =>
   n >= 1_000_000 ? `$${(n / 1_000_000).toFixed(2)}M` : n >= 1000 ? `$${Math.round(n / 1000)}K` : money(n, false);
 
 const SOURCE_STYLE: Record<Source, { label: string; cls: string }> = {
-  own_contract: { label: "Riverbend contract", cls: "bg-navy" },
+  own_contract: { label: "Agency contract", cls: "bg-navy" },
   state_contract: { label: "State contract", cls: "bg-steel" },
   coop_contract: { label: "Co-op contract", cls: "bg-maroon" },
   reseller: { label: "Reseller", cls: "bg-slate" },

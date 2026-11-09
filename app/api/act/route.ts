@@ -11,6 +11,7 @@ const handlers: Record<string, Handler> = {
   createRequest: (b) => A.createRequest(b.text),
   setPreference: (b) => A.setPreference(b.requestId, b.answer),
   setBuyer: (b) => A.setBuyer(b.buyer),
+  clearBuyer: () => A.clearBuyer(),
   requestQuote: (b) => A.requestQuote(b),
   getResults: (b) => A.getResults(b.requestId),
   placeOrder: (b) => A.placeOrder(b),

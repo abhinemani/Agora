@@ -109,7 +109,12 @@ function Checkout() {
       <div className="grid gap-4 md:grid-cols-2">
         <Card className="p-5">
           <div className="text-xs font-semibold text-slate">Deliver to</div>
-          {db.session.buyer && db.session.buyer.name !== db.agency.name ? (
+          {!db.session.buyer ? (
+            <>
+              <div className="mt-2 text-sm font-semibold text-navy">Your agency</div>
+              <div className="text-sm text-slate">Set your agency in the menu to fill in the address</div>
+            </>
+          ) : db.session.buyer.name !== db.agency.name ? (
             <>
               <div className="mt-2 text-sm font-semibold text-navy">{db.session.buyer.name}</div>
               <div className="text-sm text-slate">Address on file, {db.session.buyer.state}</div>

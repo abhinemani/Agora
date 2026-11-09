@@ -5,10 +5,10 @@ import type { Buyer, EntityType } from "@/lib/types";
 import { BUYER_PRESETS, ENTITY_LABEL, STATES } from "@/lib/vehicles";
 import { People } from "./icons";
 import { useStore } from "./store";
-import { Button, Card, ErrorNote, Eyebrow, IconCircle } from "./ui";
+import { Button, Card, ErrorNote, IconCircle } from "./ui";
 
 /** "Who's buying?": decides which contracts the buyer may use. */
-export function BuyerPicker({ onDone, compact = false }: { onDone?: (b: Buyer) => void; compact?: boolean }) {
+export function BuyerPicker({ onDone, onClose, compact = false }: { onDone?: (b: Buyer | null) => void; onClose?: () => void; compact?: boolean }) {
   const { act, db } = useStore();
   const current = db?.session.buyer;
   const [custom, setCustom] = useState(false);
@@ -42,14 +42,34 @@ export function BuyerPicker({ onDone, compact = false }: { onDone?: (b: Buyer) =
           </IconCircle>
         )}
         <div className="min-w-0 flex-1">
-          <Eyebrow>Who's buying?</Eyebrow>
-          <div className="mt-1 text-lg font-semibold text-navy">Which agency is this for?</div>
+          <div className="flex items-start justify-between gap-4">
+            <div className="text-lg font-semibold text-navy">Set your agency (optional)</div>
+            {onClose && (
+              <button onClick={onClose} className="text-sm text-slate hover:text-navy" aria-label="Close">
+                Close
+              </button>
+            )}
+          </div>
           <p className="mt-1 text-sm text-slate">
-            Contracts are open to different buyers: NJSTART to New Jersey public entities, Sourcewell to members nationwide, an agency's own contracts mostly to itself. We'll
-            show only the ways you can actually buy.
+            Agora searches every contract by default. Contracts are open to different buyers (NJSTART to New Jersey public entities, Sourcewell to members nationwide), so
+            setting your agency shows only the ways you can actually buy.
           </p>
 
-          <div className="mt-4 grid gap-2 sm:grid-cols-3">
+          <div className="mt-4 grid gap-2 sm:grid-cols-4">
+            <button
+              disabled={busy}
+              onClick={async () => {
+                setBusy(true);
+                await act("clearBuyer");
+                setBusy(false);
+                onDone?.(null);
+              }}
+              className={`rounded-lg border p-3 text-left transition hover:border-navy/40 ${!current ? "border-navy bg-navy-50" : "border-line bg-white"}`}
+            >
+              <div className="text-sm font-semibold text-navy">Any agency</div>
+              <div className="text-[11px] text-slate">Every contract in Agora</div>
+              <div className="mt-1 text-xs text-slate">Shows who each contract is open to</div>
+            </button>
             {BUYER_PRESETS.map(({ buyer, blurb }) => {
               const active = current?.name === buyer.name && current?.state === buyer.state;
               return (

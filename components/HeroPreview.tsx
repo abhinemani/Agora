@@ -6,6 +6,15 @@ import { CategoryIcon } from "./CategoryIcon";
 import { Check } from "./icons";
 import { SourcePill, money } from "./ui";
 
+const KIND: Record<string, string> = {
+  own_contract: "agency contract",
+  state_contract: "state contract",
+  coop_contract: "co-op contract open nationwide",
+  reseller: "reseller agreement",
+  gsa: "GSA schedule",
+  no_approval: "small purchase",
+};
+
 /** The one moving thing on the home page: a real request resolving across
  * contracts, row by row, ending on the best fit. Static under reduced motion. */
 export function HeroPreview({
@@ -31,7 +40,7 @@ export function HeroPreview({
   }, [rows.length, run]);
 
   const done = step > rows.length;
-  const best = rows[0];
+  const best = rows.reduce((a, b) => (b.listing.unit_price < a.listing.unit_price ? b : a), rows[0]);
 
   return (
     <div className="relative rounded-2xl border border-line bg-white p-5 shadow-[0_24px_48px_-24px_rgba(20,33,61,0.35)]">
@@ -72,7 +81,7 @@ export function HeroPreview({
 
       <div className={`mt-3 flex items-center gap-2 text-xs transition-opacity duration-500 ${done ? "opacity-100" : "opacity-0"}`}>
         <Check className="h-4 w-4 text-emerald-600" />
-        <span className="text-emerald-800">Best fit: local, MBE-certified, on your own contract</span>
+        <span className="text-emerald-800">Lowest price: {best?.supplier.name}, on a {KIND[best?.listing.source ?? "coop_contract"]}</span>
       </div>
 
       <div className="mt-4 flex items-center gap-2">

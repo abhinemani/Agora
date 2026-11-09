@@ -9,7 +9,7 @@
     "start": "next start",
     "typecheck": "tsc --noEmit",
     "seed:contracts": "node scripts/generate-sample-contracts.mjs",
-    "import:catalog": "node scripts/import-price-catalog.mjs && node scripts/feature-tyler.mjs"
+    "import:catalog": "node scripts/import-price-catalog.mjs && node scripts/feature-tyler.mjs && node scripts/name-tyler.mjs"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^1.3.0",

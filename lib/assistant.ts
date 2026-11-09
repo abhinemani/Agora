@@ -311,6 +311,9 @@ const expand = (item: string) => SYNONYMS.reduce((t, [re, to]) => t.replace(re, 
 export function buildResults(db: Db, request: Request): Results {
   const { parsed } = request;
   const itemTokens = tokens(expand(parsed.item));
+  // Product names use plain words ("Computer-aided dispatch: police"), so names
+  // are scored on the buyer's own words and the spelled-out synonyms too.
+  const nameTokens = [...new Set([...itemTokens, ...tokens(parsed.item), ...tokens(parsed.item.replace(/\bCAD\b/gi, "computer aided dispatch"))])];
   const favor = request.preference_answer === "yes";
   const limit = db.agency.quick_buy_threshold;
 
@@ -392,14 +395,14 @@ export function buildResults(db: Db, request: Request): Results {
     const pb = (favor ? b.pref_fit : 0) + (b.sponsored ? 0.5 : 0);
     if (pa !== pb) return pb - pa;
     // Words in the product's own name count before words from its category path.
-    const ta = Math.round(score(itemTokens, a.listing.title, weights) * 10);
-    const tb = Math.round(score(itemTokens, b.listing.title, weights) * 10);
+    const ta = Math.round(score(nameTokens, a.listing.title, weights) * 10);
+    const tb = Math.round(score(nameTokens, b.listing.title, weights) * 10);
     if (ta !== tb) return tb - ta;
     const ra = Math.round(score(itemTokens, listingText(a.listing), weights) * 10);
     const rb = Math.round(score(itemTokens, listingText(b.listing), weights) * 10);
     if (ra !== rb) return rb - ra;
-    const ca = coverage(itemTokens, a.listing.title);
-    const cb = coverage(itemTokens, b.listing.title);
+    const ca = coverage(nameTokens, a.listing.title);
+    const cb = coverage(nameTokens, b.listing.title);
     if (ca !== cb) return cb - ca;
     if (a.listing.unit_price !== b.listing.unit_price) return a.listing.unit_price - b.listing.unit_price;
     const da = a.meets_deadline === false ? 1 : 0;

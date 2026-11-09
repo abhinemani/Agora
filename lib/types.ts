@@ -200,6 +200,8 @@ export interface Listing {
   detail?: string;
   /** Extra words search should match, e.g. a catalog's category path. */
   keywords?: string;
+  /** Where the product sits in the vendor's catalog, shown under its name. */
+  path?: string;
   /** Listings sharing a family are tiers of one product, shown as one card. */
   family?: string;
   /** This tier's label within its family, e.g. "50k - 150k" or "Developer". */

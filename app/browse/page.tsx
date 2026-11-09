@@ -83,7 +83,7 @@ function Browse() {
                     <Link href={`/product/${l.id}`} className="text-sm font-semibold text-navy hover:text-maroon hover:underline">
                       {l.title}
                     </Link>
-                    {l.keywords && <div className="truncate text-xs text-slate">{l.keywords}</div>}
+                    {l.path && <div className="truncate text-xs text-slate">{l.path}</div>}
                     <div className="mt-1 flex items-center gap-2 text-xs text-slate">
                       <SourcePill source={l.source} /> {s.name}
                     </div>

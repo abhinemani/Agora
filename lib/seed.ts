@@ -591,9 +591,22 @@ function addTylerCatalog(db: Db) {
     eligibility: { states: "any", note: "government, education and nonprofit agencies nationwide", requires: "Free Sourcewell membership" },
   });
   let n = 0;
-  // Only the 100 featured products (scripts/feature-tyler.mjs); the rest stay in the file.
-  for (const item of tylerCatalog.items) {
-    if (!item.featured) continue;
+  // Only the 100 featured products (scripts/feature-tyler.mjs), under the plain
+  // names from scripts/name-tyler.mjs; the rest stay in the file. Tiers are
+  // listed smallest first, so the tier picker reads in order.
+  const featured = tylerCatalog.items.filter((i) => i.featured && !i.hidden);
+  const familyOrder = new Map<string, number>();
+  featured.forEach((i) => familyOrder.has(i.family) || familyOrder.set(i.family, familyOrder.size));
+  const size = (i: (typeof featured)[number]) => {
+    const t = (i.tier ?? "").replace(/,/g, "");
+    const m = t.match(/\d+(?:\.\d+)?/);
+    if (!m) return 0;
+    const n = Number(m[0]);
+    // "Population 1–5 million" is a million-scale band; "500000–1 million" is not.
+    return t.includes("million") && n < 1000 ? n * 1e6 : n;
+  };
+  featured.sort((a, b) => familyOrder.get(a.family)! - familyOrder.get(b.family)! || size(a) - size(b) || a.unit_price - b.unit_price);
+  for (const item of featured) {
     const band = item.band;
     n++;
     db.listings.push({
@@ -602,17 +615,19 @@ function addTylerCatalog(db: Db) {
       supplier_id: "sup_tyler",
       source: "state_contract",
       sku: item.sku,
-      title: item.title,
+      title: item.tier ? `${item.name} (${item.tier})` : (item.name ?? item.title),
       category: item.category as Category,
       unit_price: item.unit_price,
       unit: item.unit,
       lead_time_days: item.unit === "hr" ? 10 : 14,
       extracted_item_id: null,
       storefront_ids: ["sf_riverbend"],
-      detail: item.detail,
-      keywords: item.path,
+      detail: item.summary ?? item.detail,
+      // The catalog's own wording stays searchable alongside the plain name.
+      keywords: `${item.path} ${item.title}`,
+      path: item.path,
       family: item.family,
-      variant: item.variant,
+      variant: item.tier ?? undefined,
       band: band ? { min: band.min, max: band.max ?? null, label: band.label } : null,
     });
   }

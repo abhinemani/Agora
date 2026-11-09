@@ -16,7 +16,9 @@
    "variant": "DSD-REP-REPEBES-TR",
    "source_row": "Category 1 - Platform Mgmnt, row 16",
    "price_line": "$0.50/per signature",
-   "featured": true
+   "featured": true,
+   "name": "Engagement Builder e-signatures",
+   "summary": "Electronic signatures on resident forms built in Engagement Builder, priced per signature."
   },
   {
    "sku": "DSD-ENB-EBPINT-SUB",
@@ -31,7 +33,9 @@
    "variant": "DSD-ENB-EBPINT-SUB",
    "source_row": "Category 1 - Platform Mgmnt, row 34",
    "price_line": "$500,000/year",
-   "featured": true
+   "featured": true,
+   "name": "Engagement Builder data integration",
+   "summary": "Connects Engagement Builder forms and requests to Tyler Data & Insights for reporting."
   },
   {
    "sku": "DSD-PBB-XSSA-SUB",
@@ -256,7 +260,9 @@
    "variant": "DSD-TPY-PPACG-TR",
    "source_row": "Category 1 - Platform Mgmnt, row 70",
    "price_line": "$1.00 per transaction (discounts available based on volume)",
-   "featured": true
+   "featured": true,
+   "name": "Online payments: ACH bank transfers",
+   "summary": "Accept resident payments by bank transfer through Tyler's payments platform, priced per transaction."
   },
   {
    "sku": "DSD-CSS-PS1NPCI-REC",
@@ -466,7 +472,9 @@
    "variant": "DSD-TDS-DISMPA-TR",
    "source_row": "Category 1 - Platform Mgmnt, row 88",
    "price_line": "$25,000/month",
-   "featured": true
+   "featured": true,
+   "name": "Digital disbursements platform",
+   "summary": "Send refunds, benefits and other payments by direct deposit, push-to-card or prepaid card from one platform."
   },
   {
    "sku": "DSD-TDS-DISREC-TR",
@@ -571,7 +579,9 @@
    "variant": "DSD-TDS-DISPSC-SVC",
    "source_row": "Category 1 - Platform Mgmnt, row 98",
    "price_line": "$200 per hour",
-   "featured": true
+   "featured": true,
+   "name": "Digital disbursements setup and configuration",
+   "summary": "Tyler staff hours to configure the disbursements platform for your programs."
   },
   {
    "sku": "DSD-PFS-SASRAPPD-SVC",
@@ -931,7 +941,9 @@
    "variant": "N2280000",
    "source_row": "Category 1 - Platform Mgmnt, row 122",
    "price_line": "$17,812.50/year",
-   "featured": true
+   "featured": true,
+   "name": "Case management app, turnkey (annual)",
+   "summary": "A pre-configured case management app on Tyler's low-code platform for a common agency process."
   },
   {
    "sku": "N2290001",
@@ -946,7 +958,9 @@
    "variant": "5 minimum named users",
    "source_row": "Category 1 - Platform Mgmnt, row 123",
    "price_line": "$1,484.38/year per user",
-   "featured": true
+   "featured": true,
+   "name": "Case management app, turnkey: user license (annual)",
+   "summary": "One named user for the turnkey case management app. Five users minimum."
   },
   {
    "sku": "N2300001",
@@ -961,7 +975,10 @@
    "variant": "< 100 Users",
    "source_row": "Category 1 - Platform Mgmnt, row 124",
    "price_line": "$5,937.50/year",
-   "featured": true
+   "featured": true,
+   "name": "Case management app, turnkey: public portal (annual)",
+   "summary": "A portal where residents or outside agencies submit and track cases in the turnkey app.",
+   "tier": "Under 100 users"
   },
   {
    "sku": "N2310101",
@@ -976,7 +993,10 @@
    "variant": "> 100 Users",
    "source_row": "Category 1 - Platform Mgmnt, row 125",
    "price_line": "$11,875.00/year",
-   "featured": true
+   "featured": true,
+   "name": "Case management app, turnkey: public portal (annual)",
+   "summary": "A portal where residents or outside agencies submit and track cases in the turnkey app.",
+   "tier": "Over 100 users"
   },
   {
    "sku": "N2320000",
@@ -991,7 +1011,9 @@
    "variant": "N2320000",
    "source_row": "Category 1 - Platform Mgmnt, row 126",
    "price_line": "$42,750.00/year",
-   "featured": true
+   "featured": true,
+   "name": "Case management app, turnkey plus (annual)",
+   "summary": "A pre-configured case management app for more complex processes, on Tyler's low-code platform."
   },
   {
    "sku": "N2330001",
@@ -1006,7 +1028,9 @@
    "variant": "5 minimum named users",
    "source_row": "Category 1 - Platform Mgmnt, row 127",
    "price_line": "$1,484.38/year per user",
-   "featured": true
+   "featured": true,
+   "name": "Case management app, turnkey plus: user license (annual)",
+   "summary": "One named user for the turnkey plus app. Five users minimum."
   },
   {
    "sku": "N2340001",
@@ -1021,7 +1045,10 @@
    "variant": "< 100 Users",
    "source_row": "Category 1 - Platform Mgmnt, row 128",
    "price_line": "$8,906.25/year",
-   "featured": true
+   "featured": true,
+   "name": "Case management app, turnkey plus: public portal (annual)",
+   "summary": "A portal where residents or outside agencies submit and track cases in the turnkey plus app.",
+   "tier": "Under 100 users"
   },
   {
    "sku": "N2350101",
@@ -1036,7 +1063,10 @@
    "variant": "> 100 Users",
    "source_row": "Category 1 - Platform Mgmnt, row 129",
    "price_line": "$14,843.75/year",
-   "featured": true
+   "featured": true,
+   "name": "Case management app, turnkey plus: public portal (annual)",
+   "summary": "A portal where residents or outside agencies submit and track cases in the turnkey plus app.",
+   "tier": "Over 100 users"
   },
   {
    "sku": "N2360000",
@@ -1051,7 +1081,9 @@
    "variant": "N2360000",
    "source_row": "Category 1 - Platform Mgmnt, row 130",
    "price_line": "$53,437.50/year",
-   "featured": true
+   "featured": true,
+   "name": "Case management app, turnkey advanced (annual)",
+   "summary": "The most capable pre-configured case management app on Tyler's low-code platform."
   },
   {
    "sku": "N2370001",
@@ -1066,7 +1098,9 @@
    "variant": "5 minimum named users",
    "source_row": "Category 1 - Platform Mgmnt, row 131",
    "price_line": "$1,484.38/year per user",
-   "featured": true
+   "featured": true,
+   "name": "Case management app, turnkey advanced: user license (annual)",
+   "summary": "One named user for the turnkey advanced app. Five users minimum."
   },
   {
    "sku": "N2380001",
@@ -1081,7 +1115,10 @@
    "variant": "< 100 Users",
    "source_row": "Category 1 - Platform Mgmnt, row 132",
    "price_line": "$11,875.00/year",
-   "featured": true
+   "featured": true,
+   "name": "Case management app, turnkey advanced: public portal (annual)",
+   "summary": "A portal where residents or outside agencies submit and track cases in the turnkey advanced app.",
+   "tier": "Under 100 users"
   },
   {
    "sku": "N2390101",
@@ -1096,7 +1133,10 @@
    "variant": "> 100 Users",
    "source_row": "Category 1 - Platform Mgmnt, row 133",
    "price_line": "$17,812.50/year",
-   "featured": true
+   "featured": true,
+   "name": "Case management app, turnkey advanced: public portal (annual)",
+   "summary": "A portal where residents or outside agencies submit and track cases in the turnkey advanced app.",
+   "tier": "Over 100 users"
   },
   {
    "sku": "N2400001",
@@ -1171,7 +1211,9 @@
    "variant": "5 minimum named users",
    "source_row": "Category 1 - Platform Mgmnt, row 138",
    "price_line": "$2,472.38/year per user",
-   "featured": true
+   "featured": true,
+   "name": "Case management app, turnkey: user license (perpetual)",
+   "summary": "A permanent named-user license for the turnkey case management app. Five users minimum."
   },
   {
    "sku": "N2300001",
@@ -1186,7 +1228,10 @@
    "variant": "< 100 Users",
    "source_row": "Category 1 - Platform Mgmnt, row 139",
    "price_line": "$11,875.00 each",
-   "featured": true
+   "featured": true,
+   "name": "Case management app, turnkey: public portal (perpetual)",
+   "summary": "A permanent license for the turnkey app's resident and partner portal.",
+   "tier": "Under 100 users"
   },
   {
    "sku": "N2310101",
@@ -1201,7 +1246,10 @@
    "variant": "> 100 Users",
    "source_row": "Category 1 - Platform Mgmnt, row 140",
    "price_line": "$23,750.00 each",
-   "featured": true
+   "featured": true,
+   "name": "Case management app, turnkey: public portal (perpetual)",
+   "summary": "A permanent license for the turnkey app's resident and partner portal.",
+   "tier": "Over 100 users"
   },
   {
    "sku": "N2320000",
@@ -1231,7 +1279,9 @@
    "variant": "5 minimum named users",
    "source_row": "Category 1 - Platform Mgmnt, row 142",
    "price_line": "$2,472.38/year per user",
-   "featured": true
+   "featured": true,
+   "name": "Case management app, turnkey plus: user license (perpetual)",
+   "summary": "A permanent named-user license for the turnkey plus app. Five users minimum."
   },
   {
    "sku": "N2340001",
@@ -1291,7 +1341,9 @@
    "variant": "5 minimum named users",
    "source_row": "Category 1 - Platform Mgmnt, row 146",
    "price_line": "$2,472.38/year per user",
-   "featured": true
+   "featured": true,
+   "name": "Case management app, turnkey advanced: user license (perpetual)",
+   "summary": "A permanent named-user license for the turnkey advanced app. Five users minimum."
   },
   {
    "sku": "N2380001",
@@ -1516,7 +1568,9 @@
    "variant": "N2200000",
    "source_row": "Category 1 - Platform Mgmnt, row 161",
    "price_line": "$29,717.19/year",
-   "featured": true
+   "featured": true,
+   "name": "Low-code case management platform (annual)",
+   "summary": "Tyler's low-code platform for building your own case management apps."
   },
   {
    "sku": "N2210001",
@@ -1531,7 +1585,9 @@
    "variant": "5 minimum concurrent users",
    "source_row": "Category 1 - Platform Mgmnt, row 162",
    "price_line": "$3,580.31/year per user",
-   "featured": true
+   "featured": true,
+   "name": "Low-code case management platform: user license (annual)",
+   "summary": "One concurrent user on the low-code platform. Five users minimum."
   },
   {
    "sku": "N2220001",
@@ -1546,7 +1602,9 @@
    "variant": "5 minimum concurrent users",
    "source_row": "Category 1 - Platform Mgmnt, row 163",
    "price_line": "$2,167.19/year per user",
-   "featured": true
+   "featured": true,
+   "name": "Document scanning add-on (annual, per user)",
+   "summary": "Scan paper, faxes and email straight into case files on the low-code platform."
   },
   {
    "sku": "N2230001",
@@ -1576,7 +1634,9 @@
    "variant": "5 minimum concurrent users",
    "source_row": "Category 1 - Platform Mgmnt, row 165",
    "price_line": "$3,325.00/year per user",
-   "featured": true
+   "featured": true,
+   "name": "Online submissions add-on (annual, per user)",
+   "summary": "Lets people outside the agency submit forms and documents into the low-code platform."
   },
   {
    "sku": "N2250001",
@@ -1591,7 +1651,9 @@
    "variant": "5 minimum named users",
    "source_row": "Category 1 - Platform Mgmnt, row 166",
    "price_line": "$1,425.00/year per user",
-   "featured": true
+   "featured": true,
+   "name": "Mobile app add-on (annual, per user)",
+   "summary": "Work cases from a phone or tablet in the field. Five users minimum."
   },
   {
    "sku": "N2260001",
@@ -1606,7 +1668,9 @@
    "variant": "5 minimum concurrent users",
    "source_row": "Category 1 - Platform Mgmnt, row 167",
    "price_line": "$2,760.94/year per user",
-   "featured": true
+   "featured": true,
+   "name": "Case analytics add-on (annual, per user)",
+   "summary": "Dashboards and reports on case data in the low-code platform."
   },
   {
    "sku": "N2270001",
@@ -1621,7 +1685,9 @@
    "variant": "5 minimum named users",
    "source_row": "Category 1 - Platform Mgmnt, row 168",
    "price_line": "$1,235.00/year per user",
-   "featured": true
+   "featured": true,
+   "name": "Mobile field data collection (annual, per user)",
+   "summary": "Capture inspections and field data on a phone or tablet, with photos and location."
   },
   {
    "sku": "N2200000",
@@ -1711,7 +1777,9 @@
    "variant": "5 minimum named users",
    "source_row": "Category 1 - Platform Mgmnt, row 174",
    "price_line": "$3,040.00/year per user",
-   "featured": true
+   "featured": true,
+   "name": "Mobile app add-on (perpetual, per user)",
+   "summary": "A permanent license to work cases from a phone or tablet. Five users minimum."
   },
   {
    "sku": "N2430001",
@@ -4066,7 +4134,9 @@
    "variant": "TYL-SW-001",
    "source_row": "Category 1 - Platform Mgmnt, row 332",
    "price_line": "$179,200.00/year",
-   "featured": true
+   "featured": true,
+   "name": "Computer-aided dispatch: police, one jurisdiction",
+   "summary": "Dispatch software for a single police agency: call intake, unit status and incident tracking."
   },
   {
    "sku": "TYL-SW-002",
@@ -4081,7 +4151,9 @@
    "variant": "TYL-SW-002",
    "source_row": "Category 1 - Platform Mgmnt, row 333",
    "price_line": "$218,200.00/year",
-   "featured": true
+   "featured": true,
+   "name": "Computer-aided dispatch: police, multiple jurisdictions",
+   "summary": "Dispatch software for a center that dispatches for several police agencies."
   },
   {
    "sku": "TYL-SW-003",
@@ -4096,7 +4168,9 @@
    "variant": "TYL-SW-003",
    "source_row": "Category 1 - Platform Mgmnt, row 334",
    "price_line": "$179,200.00/year",
-   "featured": true
+   "featured": true,
+   "name": "Computer-aided dispatch: fire and EMS",
+   "summary": "Dispatch software for fire and EMS, for one jurisdiction or several."
   },
   {
    "sku": "TYL-SW-004",
@@ -4111,7 +4185,9 @@
    "variant": "TYL-SW-004",
    "source_row": "Category 1 - Platform Mgmnt, row 335",
    "price_line": "$241,600.00/year",
-   "featured": true
+   "featured": true,
+   "name": "Computer-aided dispatch: police, fire and EMS combined",
+   "summary": "One dispatch system for a center handling police, fire and EMS calls together."
   },
   {
    "sku": "TYL-SW-005",
@@ -4141,7 +4217,9 @@
    "variant": "TYL-SW-006",
    "source_row": "Category 1 - Platform Mgmnt, row 337",
    "price_line": "$28,000.00/year",
-   "featured": true
+   "featured": true,
+   "name": "Dispatch add-on: automatic routing",
+   "summary": "Suggests the fastest route to each call for the responding unit."
   },
   {
    "sku": "TYL-SW-007",
@@ -4156,7 +4234,9 @@
    "variant": "TYL-SW-007",
    "source_row": "Category 1 - Platform Mgmnt, row 338",
    "price_line": "$28,000.00/year",
-   "featured": true
+   "featured": true,
+   "name": "Dispatch add-on: vehicle location tracking (AVL)",
+   "summary": "Shows where every unit is on the dispatch map in real time."
   },
   {
    "sku": "TYL-SW-008",
@@ -4216,7 +4296,9 @@
    "variant": "TYL-SW-011",
    "source_row": "Category 1 - Platform Mgmnt, row 342",
    "price_line": "$60,000.00/year",
-   "featured": true
+   "featured": true,
+   "name": "Dispatch add-on: web monitor",
+   "summary": "A browser view of live dispatch activity for supervisors and partner agencies."
   },
   {
    "sku": "TYL-SW-012",
@@ -4501,7 +4583,9 @@
    "variant": "TYL-SW-031",
    "source_row": "Category 1 - Platform Mgmnt, row 361",
    "price_line": "$300,000.00/year",
-   "featured": true
+   "featured": true,
+   "name": "Police records management system",
+   "summary": "Incident reports, arrests, case files and evidence for a police department."
   },
   {
    "sku": "TYL-SW-032",
@@ -4651,7 +4735,9 @@
    "variant": "TYL-SW-041",
    "source_row": "Category 1 - Platform Mgmnt, row 371",
    "price_line": "$7,000.00/year",
-   "featured": true
+   "featured": true,
+   "name": "Firearm permits module",
+   "summary": "Process and track firearm permit applications in the police records system."
   },
   {
    "sku": "TYL-SW-042",
@@ -4696,7 +4782,9 @@
    "variant": "TYL-SW-044",
    "source_row": "Category 1 - Platform Mgmnt, row 374",
    "price_line": "$48,000.00/year",
-   "featured": true
+   "featured": true,
+   "name": "Public safety document management",
+   "summary": "Stores and links documents, photos and files to police records."
   },
   {
    "sku": "TYL-SW-045",
@@ -4876,7 +4964,10 @@
    "variant": "Includes 2 users",
    "source_row": "Category 1 - Platform Mgmnt, row 386",
    "price_line": "$12,000.00/year",
-   "featured": true
+   "featured": true,
+   "name": "Dispatch reporting database",
+   "summary": "A reporting copy of dispatch data for analysts, priced by number of users.",
+   "tier": "2 users"
   },
   {
    "sku": "TYL-SW-057",
@@ -4891,7 +4982,10 @@
    "variant": "Includes 3-4 users",
    "source_row": "Category 1 - Platform Mgmnt, row 387",
    "price_line": "$16,000.00/year",
-   "featured": true
+   "featured": true,
+   "name": "Dispatch reporting database",
+   "summary": "A reporting copy of dispatch data for analysts, priced by number of users.",
+   "tier": "3–4 users"
   },
   {
    "sku": "TYL-SW-058",
@@ -4906,7 +5000,10 @@
    "variant": "Includes 5-6 users",
    "source_row": "Category 1 - Platform Mgmnt, row 388",
    "price_line": "$20,000.00 /year",
-   "featured": true
+   "featured": true,
+   "name": "Dispatch reporting database",
+   "summary": "A reporting copy of dispatch data for analysts, priced by number of users.",
+   "tier": "5–6 users"
   },
   {
    "sku": "TYL-SW-059",
@@ -4921,7 +5018,10 @@
    "variant": "Includes 7-9 users",
    "source_row": "Category 1 - Platform Mgmnt, row 389",
    "price_line": "$26,000.00 /year",
-   "featured": true
+   "featured": true,
+   "name": "Dispatch reporting database",
+   "summary": "A reporting copy of dispatch data for analysts, priced by number of users.",
+   "tier": "7–9 users"
   },
   {
    "sku": "TYL-SW-060",
@@ -4936,7 +5036,10 @@
    "variant": "Includes 10+ users",
    "source_row": "Category 1 - Platform Mgmnt, row 390",
    "price_line": "$36,000.00 /year",
-   "featured": true
+   "featured": true,
+   "name": "Dispatch reporting database",
+   "summary": "A reporting copy of dispatch data for analysts, priced by number of users.",
+   "tier": "10+ users"
   },
   {
    "sku": "TYL-SW-061",
@@ -4951,7 +5054,10 @@
    "variant": "Includes 2 users",
    "source_row": "Category 1 - Platform Mgmnt, row 391",
    "price_line": "$12,000.00 /year",
-   "featured": true
+   "featured": true,
+   "name": "Police records reporting database",
+   "summary": "A reporting copy of records data for analysts, priced by number of users.",
+   "tier": "2 users"
   },
   {
    "sku": "TYL-SW-062",
@@ -4966,7 +5072,10 @@
    "variant": "Includes 3-4 users",
    "source_row": "Category 1 - Platform Mgmnt, row 392",
    "price_line": "$16,000.00 /year",
-   "featured": true
+   "featured": true,
+   "name": "Police records reporting database",
+   "summary": "A reporting copy of records data for analysts, priced by number of users.",
+   "tier": "3–4 users"
   },
   {
    "sku": "TYL-SW-063",
@@ -4981,7 +5090,10 @@
    "variant": "Includes 5-6 users",
    "source_row": "Category 1 - Platform Mgmnt, row 393",
    "price_line": "$20,000.00 /year",
-   "featured": true
+   "featured": true,
+   "name": "Police records reporting database",
+   "summary": "A reporting copy of records data for analysts, priced by number of users.",
+   "tier": "5–6 users"
   },
   {
    "sku": "TYL-SW-064",
@@ -4996,7 +5108,10 @@
    "variant": "Includes 7-9 users",
    "source_row": "Category 1 - Platform Mgmnt, row 394",
    "price_line": "$26,000.00 /year",
-   "featured": true
+   "featured": true,
+   "name": "Police records reporting database",
+   "summary": "A reporting copy of records data for analysts, priced by number of users.",
+   "tier": "7–9 users"
   },
   {
    "sku": "TYL-SW-065",
@@ -5011,7 +5126,10 @@
    "variant": "Includes 10+ users",
    "source_row": "Category 1 - Platform Mgmnt, row 395",
    "price_line": "$36,000.00 /year",
-   "featured": true
+   "featured": true,
+   "name": "Police records reporting database",
+   "summary": "A reporting copy of records data for analysts, priced by number of users.",
+   "tier": "10+ users"
   },
   {
    "sku": "TYL-SW-066",
@@ -5026,7 +5144,9 @@
    "variant": "TYL-SW-066",
    "source_row": "Category 1 - Platform Mgmnt, row 396",
    "price_line": "$120,000.00/year",
-   "featured": true
+   "featured": true,
+   "name": "Public safety mobile server",
+   "summary": "The server that connects patrol and fire laptops to dispatch and records."
   },
   {
    "sku": "TYL-SW-067",
@@ -5041,7 +5161,9 @@
    "variant": "TYL-SW-067",
    "source_row": "Category 1 - Platform Mgmnt, row 397",
    "price_line": "$550.00 /year per user",
-   "featured": true
+   "featured": true,
+   "name": "Patrol car mobile app (per officer)",
+   "summary": "Dispatch, messaging and records lookups on the patrol car laptop."
   },
   {
    "sku": "TYL-SW-068",
@@ -5056,7 +5178,9 @@
    "variant": "TYL-SW-068",
    "source_row": "Category 1 - Platform Mgmnt, row 398",
    "price_line": "$550.00 /year per user",
-   "featured": true
+   "featured": true,
+   "name": "Fire and EMS mobile app (per user)",
+   "summary": "Dispatch, mapping and run information on the apparatus laptop."
   },
   {
    "sku": "TYL-SW-069",
@@ -5071,7 +5195,9 @@
    "variant": "TYL-SW-069",
    "source_row": "Category 1 - Platform Mgmnt, row 399",
    "price_line": "$550.00 /year per user",
-   "featured": true
+   "featured": true,
+   "name": "Field incident reporting (per officer)",
+   "summary": "Officers write and submit incident reports from the field."
   },
   {
    "sku": "TYL-SW-071",
@@ -5086,7 +5212,9 @@
    "variant": "TYL-SW-071",
    "source_row": "Category 1 - Platform Mgmnt, row 400",
    "price_line": "$480 /year per user",
-   "featured": true
+   "featured": true,
+   "name": "Electronic citations (per officer)",
+   "summary": "Write traffic and parking tickets on a handheld or laptop instead of paper."
   },
   {
    "sku": "TYL-SW-072",
@@ -5101,7 +5229,9 @@
    "variant": "TYL-SW-072",
    "source_row": "Category 1 - Platform Mgmnt, row 401",
    "price_line": "$240.00/year per user",
-   "featured": true
+   "featured": true,
+   "name": "Electronic crash reports (per officer)",
+   "summary": "Complete crash reports in the field and submit them electronically."
   },
   {
    "sku": "TYL-SW-077",
@@ -5131,7 +5261,9 @@
    "variant": "TYL-SW-078",
    "source_row": "Category 1 - Platform Mgmnt, row 403",
    "price_line": "$475.00/year per user",
-   "featured": true
+   "featured": true,
+   "name": "Fire field app (per user)",
+   "summary": "Incident and inspection data on a phone or tablet for firefighters."
   },
   {
    "sku": "TYL-SW-079",
@@ -5146,7 +5278,9 @@
    "variant": "TYL-SW-079",
    "source_row": "Category 1 - Platform Mgmnt, row 404",
    "price_line": "$475.00/year per user",
-   "featured": true
+   "featured": true,
+   "name": "Police field app (per officer)",
+   "summary": "Records lookups and reporting on a phone or tablet for officers."
   },
   {
    "sku": "TYL-SW-080",
@@ -5176,7 +5310,9 @@
    "variant": "TYL-SW-081",
    "source_row": "Category 1 - Platform Mgmnt, row 406",
    "price_line": "$400.00/year per user",
-   "featured": true
+   "featured": true,
+   "name": "Fire dispatch messaging (per user)",
+   "summary": "Receive dispatches and messages on a mobile device."
   },
   {
    "sku": "TYL-SW-082",
@@ -5311,7 +5447,9 @@
    "variant": "TYL-EP-003",
    "source_row": "Category 1 - Platform Mgmnt, row 415",
    "price_line": "$300,000.00/year",
-   "featured": true
+   "featured": true,
+   "name": "Public safety suite, enhanced (annual)",
+   "summary": "Tyler's integrated dispatch, records and mobile suite as an annual subscription."
   },
   {
    "sku": "TYL-EP-004",
@@ -5326,7 +5464,9 @@
    "variant": "TYL-EP-004",
    "source_row": "Category 1 - Platform Mgmnt, row 416",
    "price_line": "$3,500.00/year",
-   "featured": true
+   "featured": true,
+   "name": "Public safety suite, mobile add-on (annual)",
+   "summary": "Adds mobile access to the public safety suite subscription."
   },
   {
    "sku": "TYL-EP-006",
@@ -6256,7 +6396,9 @@
    "variant": "TYL-SS-061",
    "source_row": "Category 1 - Platform Mgmnt, row 479",
    "price_line": "$450.00/year per user",
-   "featured": true
+   "featured": true,
+   "name": "Public safety field data collection (per user)",
+   "summary": "Capture field data and photos on a phone or tablet for public safety staff."
   },
   {
    "sku": "TYL-SS-062",
@@ -9016,7 +9158,9 @@
    "variant": "EM-LIC",
    "source_row": "Category 1 - Platform Mgmnt, row 664",
    "price_line": "$895.00/year per user",
-   "featured": true
+   "featured": true,
+   "name": "Electronic citations, Enforcement Mobile (per officer)",
+   "summary": "Tyler's Enforcement Mobile ticket-writing app for officers in the field."
   },
   {
    "sku": "EM-CRSH-LIC",
@@ -9031,7 +9175,9 @@
    "variant": "EM-CRSH-LIC",
    "source_row": "Category 1 - Platform Mgmnt, row 665",
    "price_line": "$325.00/year per user",
-   "featured": true
+   "featured": true,
+   "name": "Electronic crash reports with diagram tool (per officer)",
+   "summary": "Crash reporting in Enforcement Mobile, including a scene diagram tool."
   },
   {
    "sku": "EM-CRSH-WOD-LIC",
@@ -9046,7 +9192,9 @@
    "variant": "EM-CRSH-WOD-LIC",
    "source_row": "Category 1 - Platform Mgmnt, row 666",
    "price_line": "$450.00 per year per user",
-   "featured": true
+   "featured": true,
+   "name": "Electronic crash reports without diagram tool (per officer)",
+   "summary": "Crash reporting in Enforcement Mobile, without the diagram tool."
   },
   {
    "sku": "EM-INTF-CMS-LIC",
@@ -9091,7 +9239,9 @@
    "variant": "EM-INTF-RMS",
    "source_row": "Category 1 - Platform Mgmnt, row 669",
    "price_line": "$10,414.00 /year",
-   "featured": true
+   "featured": true,
+   "name": "Enforcement Mobile link to your records system",
+   "summary": "Sends citations and crash reports from Enforcement Mobile into your police records system."
   },
   {
    "sku": "EM-TASK-CUST-LIC",
@@ -9106,7 +9256,9 @@
    "variant": "EM-TASK-CUST-LIC",
    "source_row": "Category 1 - Platform Mgmnt, row 670",
    "price_line": "$15,000.00 /year",
-   "featured": true
+   "featured": true,
+   "name": "Enforcement Mobile custom form",
+   "summary": "A custom form or workflow built for your agency in Enforcement Mobile."
   },
   {
    "sku": "EM-TASK-LIC",
@@ -9181,7 +9333,9 @@
    "variant": "EM-CRSH-DT-LIC-S",
    "source_row": "Category 1 - Platform Mgmnt, row 675",
    "price_line": "$250.00/year per user",
-   "featured": true
+   "featured": true,
+   "name": "Crash diagram tool, installed (per officer)",
+   "summary": "A crash scene drawing tool installed on the officer's device."
   },
   {
    "sku": "EM-MSGSWTCH-LIC-S",
@@ -9196,7 +9350,9 @@
    "variant": "EM-MSGSWTCH-LIC-S",
    "source_row": "Category 1 - Platform Mgmnt, row 676",
    "price_line": "$250.00/year",
-   "featured": true
+   "featured": true,
+   "name": "Enforcement Mobile state database connection",
+   "summary": "Connects Enforcement Mobile to state driver and vehicle lookups."
   },
   {
    "sku": "EM-INTF-CRSH-S",
@@ -11881,7 +12037,9 @@
    "variant": "SFCDE-ONPREM-CS-ALL",
    "source_row": "Category 1 - Platform Mgmnt, row 857",
    "price_line": "$11,900.00/year",
-   "featured": true
+   "featured": true,
+   "name": "Civil process: serving papers (per user)",
+   "summary": "Track and manage service of civil papers for a sheriff's office."
   },
   {
    "sku": "SFCDE_ONPREM_CM_ALL",
@@ -11896,7 +12054,9 @@
    "variant": "SFCDE_ONPREM_CM_ALL",
    "source_row": "Category 1 - Platform Mgmnt, row 858",
    "price_line": "$3,300.00 per year per concurrent user",
-   "featured": true
+   "featured": true,
+   "name": "Civil process mobile app (per user)",
+   "summary": "Deputies record service attempts and results in the field."
   },
   {
    "sku": "SFT-SALESWEB-LIC",
@@ -11911,7 +12071,9 @@
    "variant": "SFT-SALESWEB-LIC",
    "source_row": "Category 1 - Platform Mgmnt, row 859",
    "price_line": "$5,900.00/year",
-   "featured": true
+   "featured": true,
+   "name": "Civil process: public sheriff's sales site",
+   "summary": "Publishes upcoming sheriff's sales and foreclosures online."
   },
   {
    "sku": "SFCDE-CIVILQ-LIC",
@@ -11926,7 +12088,9 @@
    "variant": "SFCDE-CIVILQ-LIC",
    "source_row": "Category 1 - Platform Mgmnt, row 860",
    "price_line": "$5,900.00/year",
-   "featured": true
+   "featured": true,
+   "name": "Civil process: staff case lookup",
+   "summary": "Lets office staff look up civil process cases and their status."
   },
   {
    "sku": "SFC-CQP-LIC",
@@ -11941,7 +12105,9 @@
    "variant": "SFC-CQP-LIC",
    "source_row": "Category 1 - Platform Mgmnt, row 861",
    "price_line": "$5,900.00/year",
-   "featured": true
+   "featured": true,
+   "name": "Civil process: public case lookup",
+   "summary": "Lets the public check the status of civil papers online."
   },
   {
    "sku": "SFTCODE-CCConnect",
@@ -11971,7 +12137,9 @@
    "variant": "CVP-CIVVIEW-LIC",
    "source_row": "Category 1 - Platform Mgmnt, row 863",
    "price_line": "$5,900.00/year",
-   "featured": true
+   "featured": true,
+   "name": "Civil process: attorney portal",
+   "summary": "Lets attorneys and law firms track the papers they've filed."
   },
   {
    "sku": "SC-GIS-LIC",
@@ -12016,7 +12184,9 @@
    "variant": "SFCDE-CM3-SUB",
    "source_row": "Category 1 - Platform Mgmnt, row 866",
    "price_line": "$2,600.00/year per concurrent user",
-   "featured": true
+   "featured": true,
+   "name": "Civil process mobile app, cloud (per user)",
+   "summary": "Deputies record service attempts in the field, as a cloud subscription."
   },
   {
    "sku": "SFT-SALESWEB3YR-SUB",
@@ -12031,7 +12201,9 @@
    "variant": "SFT-SALESWEB3YR-SUB",
    "source_row": "Category 1 - Platform Mgmnt, row 867",
    "price_line": "$4,300.00/year",
-   "featured": true
+   "featured": true,
+   "name": "Civil process: public sheriff's sales site, cloud",
+   "summary": "Publishes upcoming sheriff's sales online, as a cloud subscription."
   },
   {
    "sku": "SFCDE-CQ3-SUB",
@@ -12196,7 +12368,10 @@
    "variant": "Up to 5,000 Summons Annually",
    "source_row": "Category 1 - Platform Mgmnt, row 878",
    "price_line": "$27,674 per year",
-   "featured": true
+   "featured": true,
+   "name": "Jury management software",
+   "summary": "Summons, juror portal, source lists and juror pay for a court, priced by summonses a year.",
+   "tier": "Up to 5,000 summonses a year"
   },
   {
    "sku": "EJSEJMLICTJURJMS(A)",
@@ -12211,7 +12386,10 @@
    "variant": "Up to 10,000 Summons Annually",
    "source_row": "Category 1 - Platform Mgmnt, row 879",
    "price_line": "$35,466 per year",
-   "featured": true
+   "featured": true,
+   "name": "Jury management software",
+   "summary": "Summons, juror portal, source lists and juror pay for a court, priced by summonses a year.",
+   "tier": "Up to 10,000 summonses a year"
   },
   {
    "sku": "EJSEJMLICTJURJMS(B)",
@@ -12226,7 +12404,10 @@
    "variant": "Up to 15,000 Summons Annually",
    "source_row": "Category 1 - Platform Mgmnt, row 880",
    "price_line": "$38,690 per year",
-   "featured": true
+   "featured": true,
+   "name": "Jury management software",
+   "summary": "Summons, juror portal, source lists and juror pay for a court, priced by summonses a year.",
+   "tier": "Up to 15,000 summonses a year"
   },
   {
    "sku": "EJSEJMLICTJURJMS(C)",
@@ -12241,7 +12422,10 @@
    "variant": "Up to 20,000 Summons Annually",
    "source_row": "Category 1 - Platform Mgmnt, row 881",
    "price_line": "$47,499 per year",
-   "featured": true
+   "featured": true,
+   "name": "Jury management software",
+   "summary": "Summons, juror portal, source lists and juror pay for a court, priced by summonses a year.",
+   "tier": "Up to 20,000 summonses a year"
   },
   {
    "sku": "EJSEJMLICTJURJMS(D)",
@@ -12256,7 +12440,10 @@
    "variant": "Up to 25,000 Summons Annually",
    "source_row": "Category 1 - Platform Mgmnt, row 882",
    "price_line": "$50,280 per year",
-   "featured": true
+   "featured": true,
+   "name": "Jury management software",
+   "summary": "Summons, juror portal, source lists and juror pay for a court, priced by summonses a year.",
+   "tier": "Up to 25,000 summonses a year"
   },
   {
    "sku": "EJSEJMLICTJURJMS(E)",
@@ -12271,7 +12458,10 @@
    "variant": "Up to 30,000 Summons Annually",
    "source_row": "Category 1 - Platform Mgmnt, row 883",
    "price_line": "$59,132 per year",
-   "featured": true
+   "featured": true,
+   "name": "Jury management software",
+   "summary": "Summons, juror portal, source lists and juror pay for a court, priced by summonses a year.",
+   "tier": "Up to 30,000 summonses a year"
   },
   {
    "sku": "EJSEJMLICTJURJMS(F)",
@@ -12286,7 +12476,10 @@
    "variant": "Up to 35,000 Summons Annually",
    "source_row": "Category 1 - Platform Mgmnt, row 884",
    "price_line": "$61,337 per year",
-   "featured": true
+   "featured": true,
+   "name": "Jury management software",
+   "summary": "Summons, juror portal, source lists and juror pay for a court, priced by summonses a year.",
+   "tier": "Up to 35,000 summonses a year"
   },
   {
    "sku": "EJSEJMLICTJURJMS(G)",
@@ -12301,7 +12494,10 @@
    "variant": "Up to 40,000 Summons Annually",
    "source_row": "Category 1 - Platform Mgmnt, row 885",
    "price_line": "$71,172 per year",
-   "featured": true
+   "featured": true,
+   "name": "Jury management software",
+   "summary": "Summons, juror portal, source lists and juror pay for a court, priced by summonses a year.",
+   "tier": "Up to 40,000 summonses a year"
   },
   {
    "sku": "EJSEJMLICTJURJMS(H)",
@@ -12316,7 +12512,10 @@
    "variant": "Up to 50,000 Summons Annually",
    "source_row": "Category 1 - Platform Mgmnt, row 886",
    "price_line": "$80,802 per year",
-   "featured": true
+   "featured": true,
+   "name": "Jury management software",
+   "summary": "Summons, juror portal, source lists and juror pay for a court, priced by summonses a year.",
+   "tier": "Up to 50,000 summonses a year"
   },
   {
    "sku": "EJSEJMLICTJURJMS(I)",
@@ -12331,7 +12530,10 @@
    "variant": "Up to 75,000 Summons Annually",
    "source_row": "Category 1 - Platform Mgmnt, row 887",
    "price_line": "$103,609 per year",
-   "featured": true
+   "featured": true,
+   "name": "Jury management software",
+   "summary": "Summons, juror portal, source lists and juror pay for a court, priced by summonses a year.",
+   "tier": "Up to 75,000 summonses a year"
   },
   {
    "sku": "EJSEJMLICTJURJMS(J)",
@@ -12346,7 +12548,10 @@
    "variant": "Up to 100,000 Summons Annually",
    "source_row": "Category 1 - Platform Mgmnt, row 888",
    "price_line": "$121,513 per year",
-   "featured": true
+   "featured": true,
+   "name": "Jury management software",
+   "summary": "Summons, juror portal, source lists and juror pay for a court, priced by summonses a year.",
+   "tier": "Up to 100,000 summonses a year"
   },
   {
    "sku": "EJSEJMLICTJURJMS(K)",
@@ -12361,7 +12566,10 @@
    "variant": "Up to 150,000 Summons Annually",
    "source_row": "Category 1 - Platform Mgmnt, row 889",
    "price_line": "$146,234 per year",
-   "featured": true
+   "featured": true,
+   "name": "Jury management software",
+   "summary": "Summons, juror portal, source lists and juror pay for a court, priced by summonses a year.",
+   "tier": "Up to 150,000 summonses a year"
   },
   {
    "sku": "EJSEJMLICTJURJMS(L)",
@@ -12376,7 +12584,10 @@
    "variant": "Up to 200,000 Summons Annually",
    "source_row": "Category 1 - Platform Mgmnt, row 890",
    "price_line": "$165,676 per year",
-   "featured": true
+   "featured": true,
+   "name": "Jury management software",
+   "summary": "Summons, juror portal, source lists and juror pay for a court, priced by summonses a year.",
+   "tier": "Up to 200,000 summonses a year"
   },
   {
    "sku": "EJSEJMLICTJURJMS(M)",
@@ -12391,7 +12602,10 @@
    "variant": "Up to 400,000 Summons Annually",
    "source_row": "Category 1 - Platform Mgmnt, row 891",
    "price_line": "$224,712 per year",
-   "featured": true
+   "featured": true,
+   "name": "Jury management software",
+   "summary": "Summons, juror portal, source lists and juror pay for a court, priced by summonses a year.",
+   "tier": "Up to 400,000 summonses a year"
   },
   {
    "sku": "EJSEJMLICTJURJMS(N)",
@@ -12406,7 +12620,10 @@
    "variant": "Up to 600,000 Summons Annually",
    "source_row": "Category 1 - Platform Mgmnt, row 892",
    "price_line": "$253,110 per year",
-   "featured": true
+   "featured": true,
+   "name": "Jury management software",
+   "summary": "Summons, juror portal, source lists and juror pay for a court, priced by summonses a year.",
+   "tier": "Up to 600,000 summonses a year"
   },
   {
    "sku": "EJSEJMRECTJURSMS(A)",
@@ -13111,7 +13328,9 @@
    "variant": "PSEPSESUBFIREMOBFLIP(A)",
    "source_row": "Category 1 - Platform Mgmnt, row 942",
    "price_line": "$2,230 annual/named user",
-   "featured": true
+   "featured": true,
+   "name": "Fire inspection app",
+   "summary": "Fire inspectors complete inspections on a tablet, per inspector per year."
   },
   {
    "sku": "PSEPSESUBFIREMOBFLIP(B)",
@@ -13126,7 +13345,9 @@
    "variant": "PSEPSESUBFIREMOBFLIP(B)",
    "source_row": "Category 1 - Platform Mgmnt, row 943",
    "price_line": "$2,818 annual/named user",
-   "featured": true
+   "featured": true,
+   "name": "Fire inspection app, plus",
+   "summary": "Fire inspections on a tablet with added scheduling and reporting, per inspector per year."
   },
   {
    "sku": "PSEPSESUBFIREMOBFLIP(C)",
@@ -13141,7 +13362,9 @@
    "variant": "PSEPSESUBFIREMOBFLIP(C)",
    "source_row": "Category 1 - Platform Mgmnt, row 944",
    "price_line": "$2,230 annual/named user",
-   "featured": true
+   "featured": true,
+   "name": "Fire company inspection app",
+   "summary": "Engine companies complete in-service inspections on a tablet, per user per year."
   },
   {
    "sku": "PSEPSESUBFIREMOBFLIP(D)",
@@ -13156,7 +13379,9 @@
    "variant": "PSEPSESUBFIREMOBFLIP(D)",
    "source_row": "Category 1 - Platform Mgmnt, row 945",
    "price_line": "$1,830 annual/named user",
-   "featured": true
+   "featured": true,
+   "name": "Fire pre-incident planning app",
+   "summary": "Building pre-plans and hazards on a tablet for responding crews, per user per year."
   },
   {
    "sku": "PSEPSESUBFIREMOBFLIP(E)",
@@ -13171,7 +13396,9 @@
    "variant": "PSEPSESUBFIREMOBFLIP(E)",
    "source_row": "Category 1 - Platform Mgmnt, row 946",
    "price_line": "$2,818 annual/named user",
-   "featured": true
+   "featured": true,
+   "name": "Fire permits app",
+   "summary": "Issue and inspect fire permits on a tablet, per user per year."
   },
   {
    "sku": "PSEPSESUBFIREMOBFLIP(F)",
@@ -13411,7 +13638,10 @@
    "variant": "10 - 50 Users",
    "source_row": "Category 1 - Platform Mgmnt, row 963",
    "price_line": "$1,800 Per user/per year",
-   "featured": true
+   "featured": true,
+   "name": "Probation case management",
+   "summary": "Case management for probation and community supervision officers, priced per user.",
+   "tier": "10–50 users"
   },
   {
    "sku": "EJSESUSUBSPV(B)",
@@ -13426,7 +13656,10 @@
    "variant": "51 - 200 Users",
    "source_row": "Category 1 - Platform Mgmnt, row 964",
    "price_line": "$1,500 Per user/per year",
-   "featured": true
+   "featured": true,
+   "name": "Probation case management",
+   "summary": "Case management for probation and community supervision officers, priced per user.",
+   "tier": "51–200 users"
   },
   {
    "sku": "EJSESUSUBSPV(C)",
@@ -13441,7 +13674,10 @@
    "variant": "201 - 450 Users",
    "source_row": "Category 1 - Platform Mgmnt, row 965",
    "price_line": "$1,200 Per user/per year",
-   "featured": true
+   "featured": true,
+   "name": "Probation case management",
+   "summary": "Case management for probation and community supervision officers, priced per user.",
+   "tier": "201–450 users"
   },
   {
    "sku": "EJSESUSUBAB16K",
@@ -13456,7 +13692,10 @@
    "variant": "10 - 50 Users, Includes up to 16,000 Reminders",
    "source_row": "Category 1 - Platform Mgmnt, row 967",
    "price_line": "$360 Per user/per year",
-   "featured": true
+   "featured": true,
+   "name": "Probation client portal, basic",
+   "summary": "Online check-ins and automated reminders for people under supervision, priced per officer.",
+   "tier": "10–50 officers · 16,000 reminders"
   },
   {
    "sku": "EJSESUSUBAB32K(A)",
@@ -13471,7 +13710,10 @@
    "variant": "10 - 50 Users, Includes up to 32,000 Reminders",
    "source_row": "Category 1 - Platform Mgmnt, row 968",
    "price_line": "$516 Per user/per year",
-   "featured": true
+   "featured": true,
+   "name": "Probation client portal, basic",
+   "summary": "Online check-ins and automated reminders for people under supervision, priced per officer.",
+   "tier": "10–50 officers · 32,000 reminders"
   },
   {
    "sku": "EJSESUSUBAB(A)",
@@ -13486,7 +13728,10 @@
    "variant": "10 - 50 Users, Includes up to 62,000 Reminders",
    "source_row": "Category 1 - Platform Mgmnt, row 969",
    "price_line": "$660 Per user/per year",
-   "featured": true
+   "featured": true,
+   "name": "Probation client portal, basic",
+   "summary": "Online check-ins and automated reminders for people under supervision, priced per officer.",
+   "tier": "10–50 officers · 62,000 reminders"
   },
   {
    "sku": "EJSESUSUBAB32K(B)",
@@ -13501,7 +13746,10 @@
    "variant": "51-200 Users, Includes up to 32,000 Reminders",
    "source_row": "Category 1 - Platform Mgmnt, row 970",
    "price_line": "$240 Per user/per year",
-   "featured": true
+   "featured": true,
+   "name": "Probation client portal, basic",
+   "summary": "Online check-ins and automated reminders for people under supervision, priced per officer.",
+   "tier": "51–200 officers · 32,000 reminders"
   },
   {
    "sku": "EJSESUSUBAB(B)",
@@ -13516,7 +13764,10 @@
    "variant": "51-200 Users, Includes up to 62,000 Reminders",
    "source_row": "Category 1 - Platform Mgmnt, row 971",
    "price_line": "$312 Per user/per year",
-   "featured": true
+   "featured": true,
+   "name": "Probation client portal, basic",
+   "summary": "Online check-ins and automated reminders for people under supervision, priced per officer.",
+   "tier": "51–200 officers · 62,000 reminders"
   },
   {
    "sku": "EJSESUSUBAB(C)",
@@ -13531,7 +13782,10 @@
    "variant": "201-400 Users, Includes up to 62,000 Reminders",
    "source_row": "Category 1 - Platform Mgmnt, row 972",
    "price_line": "$180 Per user/per year",
-   "featured": true
+   "featured": true,
+   "name": "Probation client portal, basic",
+   "summary": "Online check-ins and automated reminders for people under supervision, priced per officer.",
+   "tier": "201–400 officers · 62,000 reminders"
   },
   {
    "sku": "EJSESUSUBAP16K",
@@ -13546,7 +13800,10 @@
    "variant": "10 - 50 Users, Includes up to 16,000 Reminders",
    "source_row": "Category 1 - Platform Mgmnt, row 974",
    "price_line": "$900 Per user/per year",
-   "featured": true
+   "featured": true,
+   "name": "Probation client portal, premium",
+   "summary": "Online check-ins, payments and automated reminders for people under supervision, priced per officer.",
+   "tier": "10–50 officers · 16,000 reminders"
   },
   {
    "sku": "EJSESUSUBAP32K(A)",
@@ -13561,7 +13818,10 @@
    "variant": "10 - 50 Users, Includes up to 32,000 Reminders",
    "source_row": "Category 1 - Platform Mgmnt, row 975",
    "price_line": "$1056 Per user/per year",
-   "featured": true
+   "featured": true,
+   "name": "Probation client portal, premium",
+   "summary": "Online check-ins, payments and automated reminders for people under supervision, priced per officer.",
+   "tier": "10–50 officers · 32,000 reminders"
   },
   {
    "sku": "EJSESUSUBAP(A)",
@@ -13576,7 +13836,10 @@
    "variant": "10 - 50 Users, Includes up to 62,000 Reminders",
    "source_row": "Category 1 - Platform Mgmnt, row 976",
    "price_line": "$1,200 Per user/per year",
-   "featured": true
+   "featured": true,
+   "name": "Probation client portal, premium",
+   "summary": "Online check-ins, payments and automated reminders for people under supervision, priced per officer.",
+   "tier": "10–50 officers · 62,000 reminders"
   },
   {
    "sku": "EJSESUSUBAP32K(B)",
@@ -13591,7 +13854,10 @@
    "variant": "51-200 Users, Includes up to 32,000 Reminders",
    "source_row": "Category 1 - Platform Mgmnt, row 977",
    "price_line": "$780 Per user/per year",
-   "featured": true
+   "featured": true,
+   "name": "Probation client portal, premium",
+   "summary": "Online check-ins, payments and automated reminders for people under supervision, priced per officer.",
+   "tier": "51–200 officers · 32,000 reminders"
   },
   {
    "sku": "EJSESUSUBAP(B)",
@@ -13606,7 +13872,10 @@
    "variant": "51-200 Users, Includes up to 62,000 Reminders",
    "source_row": "Category 1 - Platform Mgmnt, row 978",
    "price_line": "$852 Per user/per year",
-   "featured": true
+   "featured": true,
+   "name": "Probation client portal, premium",
+   "summary": "Online check-ins, payments and automated reminders for people under supervision, priced per officer.",
+   "tier": "51–200 officers · 62,000 reminders"
   },
   {
    "sku": "EJSESUSUBAP(C)",
@@ -13621,7 +13890,10 @@
    "variant": "201-400 Users, Includes up to 62,000 Reminders",
    "source_row": "Category 1 - Platform Mgmnt, row 979",
    "price_line": "$480 Per user/per year",
-   "featured": true
+   "featured": true,
+   "name": "Probation client portal, premium",
+   "summary": "Online check-ins, payments and automated reminders for people under supervision, priced per officer.",
+   "tier": "201–400 officers · 62,000 reminders"
   },
   {
    "sku": "EJSESUSUBAPARS",
@@ -13831,7 +14103,10 @@
    "variant": "10-19 Users",
    "source_row": "Category 1 - Platform Mgmnt, row 997",
    "price_line": "$55 Per user/per year",
-   "featured": true
+   "featured": true,
+   "name": "Probation analytics",
+   "summary": "Caseload and outcome dashboards for supervision agencies, priced per user.",
+   "tier": "10–19 users"
   },
   {
    "sku": "EJSCANSUBPROBIN(B)",
@@ -13846,7 +14121,10 @@
    "variant": "20-50 Users",
    "source_row": "Category 1 - Platform Mgmnt, row 998",
    "price_line": "$50 Per user/per year",
-   "featured": true
+   "featured": true,
+   "name": "Probation analytics",
+   "summary": "Caseload and outcome dashboards for supervision agencies, priced per user.",
+   "tier": "20–50 users"
   },
   {
    "sku": "EJSCANSUBPROBIN(C)",
@@ -13861,7 +14139,10 @@
    "variant": "51-200 Users",
    "source_row": "Category 1 - Platform Mgmnt, row 999",
    "price_line": "$41 Per user/per year",
-   "featured": true
+   "featured": true,
+   "name": "Probation analytics",
+   "summary": "Caseload and outcome dashboards for supervision agencies, priced per user.",
+   "tier": "51–200 users"
   },
   {
    "sku": "EJSCANSUBPROBIN(D)",
@@ -13876,7 +14157,10 @@
    "variant": "201-450 Users",
    "source_row": "Category 1 - Platform Mgmnt, row 1000",
    "price_line": "$33 Per user/per year",
-   "featured": true
+   "featured": true,
+   "name": "Probation analytics",
+   "summary": "Caseload and outcome dashboards for supervision agencies, priced per user.",
+   "tier": "201–450 users"
   },
   {
    "sku": "EJSESUHDWBLTG(A)",
@@ -14086,7 +14370,10 @@
    "variant": "10 - 50 Users",
    "source_row": "Category 1 - Platform Mgmnt, row 1016",
    "price_line": "$270 per user/per year",
-   "featured": true
+   "featured": true,
+   "name": "Probation system integrations",
+   "summary": "Connects probation case management to courts, jails and other systems, priced per user.",
+   "tier": "10–50 users"
   },
   {
    "sku": "EJSESUSUBESPVITLKT (B)",
@@ -14101,7 +14388,10 @@
    "variant": "51 - 200 Users",
    "source_row": "Category 1 - Platform Mgmnt, row 1017",
    "price_line": "$225 per user/per year",
-   "featured": true
+   "featured": true,
+   "name": "Probation system integrations",
+   "summary": "Connects probation case management to courts, jails and other systems, priced per user.",
+   "tier": "51–200 users"
   },
   {
    "sku": "EJSESUSUBESPVITLKT (C)",
@@ -14116,7 +14406,10 @@
    "variant": "201 - 450 Users",
    "source_row": "Category 1 - Platform Mgmnt, row 1018",
    "price_line": "$180 per user/per year",
-   "featured": true
+   "featured": true,
+   "name": "Probation system integrations",
+   "summary": "Connects probation case management to courts, jails and other systems, priced per user.",
+   "tier": "201–450 users"
   },
   {
    "sku": "EJSECRSUBTCMPDA5",
@@ -14131,7 +14424,9 @@
    "variant": "EJSECRSUBTCMPDA5",
    "source_row": "Category 1 - Platform Mgmnt, row 1021",
    "price_line": "$2,000 per device/per year",
-   "featured": true
+   "featured": true,
+   "name": "Probation mobile app (per device)",
+   "summary": "Officers work cases and record field contacts on a mobile device."
   },
   {
    "sku": "AT-PRREC-TRAV-SUB (ATP)",
@@ -14347,7 +14642,10 @@
    "variant": "population >280,000",
    "source_row": "Category 1 - Platform Mgmnt, row 1040",
    "price_line": "$1,447,338.00/year",
-   "featured": true
+   "featured": true,
+   "name": "Property assessment and tax software, cloud",
+   "summary": "Tyler Tax Pro for assessment and tax billing, moved to a cloud subscription. Priced by population.",
+   "tier": "Population over 280,000"
   },
   {
    "sku": "AT-ORION-CAST-SUB (A)",
@@ -14366,7 +14664,10 @@
    "variant": "population 0-80,000",
    "source_row": "Category 1 - Platform Mgmnt, row 1041",
    "price_line": "$676,981.00/year",
-   "featured": true
+   "featured": true,
+   "name": "Property assessment and tax software, cloud",
+   "summary": "Tyler Tax Pro for assessment and tax billing, moved to a cloud subscription. Priced by population.",
+   "tier": "Population up to 80,000"
   },
   {
    "sku": "AT-ORION-CAST-SUB (C)",
@@ -14385,7 +14686,10 @@
    "variant": "population 160,001-280,000",
    "source_row": "Category 1 - Platform Mgmnt, row 1042",
    "price_line": "$1,260,581.00/year",
-   "featured": true
+   "featured": true,
+   "name": "Property assessment and tax software, cloud",
+   "summary": "Tyler Tax Pro for assessment and tax billing, moved to a cloud subscription. Priced by population.",
+   "tier": "Population 160,001–280,000"
   },
   {
    "sku": "AT-ORION-CAST-SUB (B)",
@@ -14404,7 +14708,10 @@
    "variant": "population 80,001-160,000",
    "source_row": "Category 1 - Platform Mgmnt, row 1043",
    "price_line": "$1,099,506.00/year",
-   "featured": true
+   "featured": true,
+   "name": "Property assessment and tax software, cloud",
+   "summary": "Tyler Tax Pro for assessment and tax billing, moved to a cloud subscription. Priced by population.",
+   "tier": "Population 80,001–160,000"
   },
   {
    "sku": "AT-ORION-CATA-MNT (D)",
@@ -14707,7 +15014,9 @@
    "variant": "EPLEBMSUBUSER",
    "source_row": "Category 1 - Platform Mgmnt, row 1080",
    "price_line": "$2,300.00/year per user",
-   "featured": true
+   "featured": true,
+   "name": "Permitting and licensing software (per user)",
+   "summary": "Building permits, business licenses, inspections and code enforcement, per staff user per year."
   },
   {
    "sku": "EPLEEXSUBVIEW",
@@ -14767,7 +15076,10 @@
    "variant": "Tier SA · # Recorded Documents/Yr 0 - 10,000",
    "source_row": "Category 1 - Platform Mgmnt, row 1100",
    "price_line": "$36,498.00/year",
-   "featured": true
+   "featured": true,
+   "name": "Land records and recording software",
+   "summary": "Recording, indexing and search for deeds and official records, priced by documents recorded a year.",
+   "tier": "Up to 10,000 recorded documents a year"
   },
   {
    "sku": "REC-BASE (SB)",
@@ -14782,7 +15094,10 @@
    "variant": "Tier SB · # Recorded Documents/Yr 10,000 - 50,000",
    "source_row": "Category 1 - Platform Mgmnt, row 1101",
    "price_line": "$69,851.00/year",
-   "featured": true
+   "featured": true,
+   "name": "Land records and recording software",
+   "summary": "Recording, indexing and search for deeds and official records, priced by documents recorded a year.",
+   "tier": "10,000–50,000 recorded documents a year"
   },
   {
    "sku": "REC-BASE (SD)",
@@ -14797,7 +15112,10 @@
    "variant": "Tier SD · # Recorded Documents/Yr 100,000 - 250,000",
    "source_row": "Category 1 - Platform Mgmnt, row 1102",
    "price_line": "$188,205.00/year",
-   "featured": true
+   "featured": true,
+   "name": "Land records and recording software",
+   "summary": "Recording, indexing and search for deeds and official records, priced by documents recorded a year.",
+   "tier": "100,000–250,000 recorded documents a year"
   },
   {
    "sku": "REC-BASE (SE)",
@@ -14812,7 +15130,10 @@
    "variant": "Tier SE · # Recorded Documents/Yr 250,000 - 500,000",
    "source_row": "Category 1 - Platform Mgmnt, row 1103",
    "price_line": "$292,656.00/year",
-   "featured": true
+   "featured": true,
+   "name": "Land records and recording software",
+   "summary": "Recording, indexing and search for deeds and official records, priced by documents recorded a year.",
+   "tier": "250,000–500,000 recorded documents a year"
   },
   {
    "sku": "REC-BASE (SC)",
@@ -14827,7 +15148,10 @@
    "variant": "Tier SC · # Recorded Documents/Yr 50,000 - 100,000",
    "source_row": "Category 1 - Platform Mgmnt, row 1104",
    "price_line": "$120,025.00/year",
-   "featured": true
+   "featured": true,
+   "name": "Land records and recording software",
+   "summary": "Recording, indexing and search for deeds and official records, priced by documents recorded a year.",
+   "tier": "50,000–100,000 recorded documents a year"
   },
   {
    "sku": "REC-BASE (SF)",
@@ -14842,7 +15166,10 @@
    "variant": "Tier SF · # Recorded Documents/Yr 500,000 +",
    "source_row": "Category 1 - Platform Mgmnt, row 1105",
    "price_line": "$378,085.00/year",
-   "featured": true
+   "featured": true,
+   "name": "Land records and recording software",
+   "summary": "Recording, indexing and search for deeds and official records, priced by documents recorded a year.",
+   "tier": "Over 500,000 recorded documents a year"
   },
   {
    "sku": "REC-SS-FRAUD (A)",
@@ -15112,7 +15439,10 @@
    "variant": "Tier LA · # Recorded Documents/Yr 0 - 10,000",
    "source_row": "Category 1 - Platform Mgmnt, row 1123",
    "price_line": "$1,748.00/year",
-   "featured": true
+   "featured": true,
+   "name": "Land records software: user license",
+   "summary": "One staff user of the land records system, priced by the office's recording volume.",
+   "tier": "Up to 10,000 recorded documents a year"
   },
   {
    "sku": "REC-BASE (LB)",
@@ -15127,7 +15457,10 @@
    "variant": "Tier LB · # Recorded Documents/Yr 10,000 - 50,000",
    "source_row": "Category 1 - Platform Mgmnt, row 1124",
    "price_line": "$2,535.00/year",
-   "featured": true
+   "featured": true,
+   "name": "Land records software: user license",
+   "summary": "One staff user of the land records system, priced by the office's recording volume.",
+   "tier": "10,000–50,000 recorded documents a year"
   },
   {
    "sku": "REC-BASE (LD)",
@@ -15142,7 +15475,10 @@
    "variant": "Tier LD · # Recorded Documents/Yr 100,000 - 250,000",
    "source_row": "Category 1 - Platform Mgmnt, row 1125",
    "price_line": "$4,272.00/year",
-   "featured": true
+   "featured": true,
+   "name": "Land records software: user license",
+   "summary": "One staff user of the land records system, priced by the office's recording volume.",
+   "tier": "100,000–250,000 recorded documents a year"
   },
   {
    "sku": "REC-BASE (LE)",
@@ -15157,7 +15493,10 @@
    "variant": "Tier LE · # Recorded Documents/Yr 250,000 - 500,000",
    "source_row": "Category 1 - Platform Mgmnt, row 1126",
    "price_line": "$5,326.00/year",
-   "featured": true
+   "featured": true,
+   "name": "Land records software: user license",
+   "summary": "One staff user of the land records system, priced by the office's recording volume.",
+   "tier": "250,000–500,000 recorded documents a year"
   },
   {
    "sku": "REC-BASE (LC)",
@@ -15172,7 +15511,10 @@
    "variant": "Tier LC · # Recorded Documents/Yr 50,000 - 100,000",
    "source_row": "Category 1 - Platform Mgmnt, row 1127",
    "price_line": "$3,495.00/year",
-   "featured": true
+   "featured": true,
+   "name": "Land records software: user license",
+   "summary": "One staff user of the land records system, priced by the office's recording volume.",
+   "tier": "50,000–100,000 recorded documents a year"
   },
   {
    "sku": "REC-BASE (LF)",
@@ -15187,7 +15529,10 @@
    "variant": "Tier LF · # Recorded Documents/Yr 500,000 +",
    "source_row": "Category 1 - Platform Mgmnt, row 1128",
    "price_line": "$6,991.00/year",
-   "featured": true
+   "featured": true,
+   "name": "Land records software: user license",
+   "summary": "One staff user of the land records system, priced by the office's recording volume.",
+   "tier": "Over 500,000 recorded documents a year"
   },
   {
    "sku": "IDME-HLP-001",
@@ -15221,7 +15566,8 @@
    "variant": "1M - 5M",
    "source_row": "Category 2 - Master Data Mgmnt, row 3",
    "price_line": "$58,639.80/year",
-   "featured": true
+   "featured": true,
+   "hidden": true
   },
   {
    "sku": "Soc-SU-ODP-P-Basic",
@@ -15341,7 +15687,10 @@
    "variant": "TYL-MS-006a",
    "source_row": "Category 2 - Master Data Mgmnt, row 11",
    "price_line": "$300.00/year",
-   "featured": true
+   "featured": true,
+   "name": "Public safety data dashboards",
+   "summary": "Crime and calls-for-service dashboards for the public and command staff, priced per sworn officer.",
+   "tier": "1–50 sworn officers"
   },
   {
    "sku": "TYL-MS-006b",
@@ -15356,7 +15705,10 @@
    "variant": "TYL-MS-006b",
    "source_row": "Category 2 - Master Data Mgmnt, row 12",
    "price_line": "$250.00/year",
-   "featured": true
+   "featured": true,
+   "name": "Public safety data dashboards",
+   "summary": "Crime and calls-for-service dashboards for the public and command staff, priced per sworn officer.",
+   "tier": "51–100 sworn officers"
   },
   {
    "sku": "TYL-MS-006c",
@@ -15371,7 +15723,10 @@
    "variant": "TYL-MS-006c",
    "source_row": "Category 2 - Master Data Mgmnt, row 13",
    "price_line": "$200.00/year",
-   "featured": true
+   "featured": true,
+   "name": "Public safety data dashboards",
+   "summary": "Crime and calls-for-service dashboards for the public and command staff, priced per sworn officer.",
+   "tier": "100–300 sworn officers"
   },
   {
    "sku": "TYL-MS-006d",
@@ -15386,7 +15741,10 @@
    "variant": "TYL-MS-006d",
    "source_row": "Category 2 - Master Data Mgmnt, row 14",
    "price_line": "$150.00/year",
-   "featured": true
+   "featured": true,
+   "name": "Public safety data dashboards",
+   "summary": "Crime and calls-for-service dashboards for the public and command staff, priced per sworn officer.",
+   "tier": "300+ sworn officers"
   },
   {
    "sku": "SOC-CC-1",
@@ -15439,7 +15797,8 @@
    "variant": "50k - 150k",
    "source_row": "Category 2 - Master Data Mgmnt, row 17",
    "price_line": "$14,400.00/year",
-   "featured": true
+   "featured": true,
+   "hidden": true
   },
   {
    "sku": "SOC-PR-3",
@@ -15454,7 +15813,8 @@
    "variant": "SOC-PR-3",
    "source_row": "Category 2 - Master Data Mgmnt, row 18",
    "price_line": "$14,400.00/year",
-   "featured": true
+   "featured": true,
+   "hidden": true
   },
   {
    "sku": "SOC-PS-SUP-B",
@@ -15484,7 +15844,8 @@
    "variant": "SOC-APP-OB",
    "source_row": "Category 2 - Master Data Mgmnt, row 20",
    "price_line": "$17,587.00/year",
-   "featured": true
+   "featured": true,
+   "hidden": true
   },
   {
    "sku": "SOC-APP-OE",
@@ -16552,7 +16913,9 @@
    "variant": "SOC-INS-1",
    "source_row": "Category 2 - Master Data Mgmnt, row 80",
    "price_line": "$120,000.00/year",
-   "featured": true
+   "featured": true,
+   "name": "Data benchmarking dashboard",
+   "summary": "Explore, analyze and compare data across places."
   },
   {
    "sku": "SOC-OB-1",
@@ -16571,7 +16934,10 @@
    "variant": "Under 25k",
    "source_row": "Category 2 - Master Data Mgmnt, row 81",
    "price_line": "$4,200.00/year",
-   "featured": true
+   "featured": true,
+   "name": "Open budget transparency site",
+   "summary": "Publishes your operating and capital budgets in an explorable public site. Priced by population.",
+   "tier": "Population under 25,000"
   },
   {
    "sku": "SOC-OB-2",
@@ -16590,7 +16956,10 @@
    "variant": "25k - 50k",
    "source_row": "Category 2 - Master Data Mgmnt, row 82",
    "price_line": "$8,400.00/year",
-   "featured": true
+   "featured": true,
+   "name": "Open budget transparency site",
+   "summary": "Publishes your operating and capital budgets in an explorable public site. Priced by population.",
+   "tier": "Population 25,000–50,000"
   },
   {
    "sku": "SOC-OB-3",
@@ -16609,7 +16978,10 @@
    "variant": "50k - 150k",
    "source_row": "Category 2 - Master Data Mgmnt, row 83",
    "price_line": "$14,400.00/year",
-   "featured": true
+   "featured": true,
+   "name": "Open budget transparency site",
+   "summary": "Publishes your operating and capital budgets in an explorable public site. Priced by population.",
+   "tier": "Population 50,000–150,000"
   },
   {
    "sku": "SOC-OB-4",
@@ -16628,7 +17000,10 @@
    "variant": "150k - 500k",
    "source_row": "Category 2 - Master Data Mgmnt, row 84",
    "price_line": "$18,000.00/year",
-   "featured": true
+   "featured": true,
+   "name": "Open budget transparency site",
+   "summary": "Publishes your operating and capital budgets in an explorable public site. Priced by population.",
+   "tier": "Population 150,000–500,000"
   },
   {
    "sku": "SOC-OB-5",
@@ -16647,7 +17022,10 @@
    "variant": "500k - 1M",
    "source_row": "Category 2 - Master Data Mgmnt, row 85",
    "price_line": "$36,000.00/year",
-   "featured": true
+   "featured": true,
+   "name": "Open budget transparency site",
+   "summary": "Publishes your operating and capital budgets in an explorable public site. Priced by population.",
+   "tier": "Population 500,000–1 million"
   },
   {
    "sku": "SOC-OB-6",
@@ -16666,7 +17044,10 @@
    "variant": "1M - 5M",
    "source_row": "Category 2 - Master Data Mgmnt, row 86",
    "price_line": "$60,000.00/year",
-   "featured": true
+   "featured": true,
+   "name": "Open budget transparency site",
+   "summary": "Publishes your operating and capital budgets in an explorable public site. Priced by population.",
+   "tier": "Population 1–5 million"
   },
   {
    "sku": "SOC-OB-7",
@@ -16685,7 +17066,10 @@
    "variant": "5M - 9M",
    "source_row": "Category 2 - Master Data Mgmnt, row 87",
    "price_line": "$84,000.00/year",
-   "featured": true
+   "featured": true,
+   "name": "Open budget transparency site",
+   "summary": "Publishes your operating and capital budgets in an explorable public site. Priced by population.",
+   "tier": "Population 5–9 million"
   },
   {
    "sku": "SOC-OB-8",
@@ -16704,7 +17088,10 @@
    "variant": "9M+",
    "source_row": "Category 2 - Master Data Mgmnt, row 88",
    "price_line": "$120,000.00/year",
-   "featured": true
+   "featured": true,
+   "name": "Open budget transparency site",
+   "summary": "Publishes your operating and capital budgets in an explorable public site. Priced by population.",
+   "tier": "Population 9 million+"
   },
   {
    "sku": "SOC-OD-1",
@@ -16723,7 +17110,10 @@
    "variant": "Under 25k",
    "source_row": "Category 2 - Master Data Mgmnt, row 89",
    "price_line": "$9,600.00/year",
-   "featured": true
+   "featured": true,
+   "name": "Open data portal",
+   "summary": "Publish datasets, maps and charts on a public open data site. Priced by population.",
+   "tier": "Population under 25,000"
   },
   {
    "sku": "SOC-OD-2",
@@ -16742,7 +17132,10 @@
    "variant": "25k - 50k",
    "source_row": "Category 2 - Master Data Mgmnt, row 90",
    "price_line": "$18,000.00/year",
-   "featured": true
+   "featured": true,
+   "name": "Open data portal",
+   "summary": "Publish datasets, maps and charts on a public open data site. Priced by population.",
+   "tier": "Population 25,000–50,000"
   },
   {
    "sku": "SOC-OD-3",
@@ -16761,7 +17154,10 @@
    "variant": "50k - 150k",
    "source_row": "Category 2 - Master Data Mgmnt, row 91",
    "price_line": "$30,000.00/year",
-   "featured": true
+   "featured": true,
+   "name": "Open data portal",
+   "summary": "Publish datasets, maps and charts on a public open data site. Priced by population.",
+   "tier": "Population 50,000–150,000"
   },
   {
    "sku": "SOC-OD-4",
@@ -16780,7 +17176,10 @@
    "variant": "150k - 500k",
    "source_row": "Category 2 - Master Data Mgmnt, row 92",
    "price_line": "$48,000.00/year",
-   "featured": true
+   "featured": true,
+   "name": "Open data portal",
+   "summary": "Publish datasets, maps and charts on a public open data site. Priced by population.",
+   "tier": "Population 150,000–500,000"
   },
   {
    "sku": "SOC-OD-5",
@@ -16799,7 +17198,10 @@
    "variant": "500k - 1M",
    "source_row": "Category 2 - Master Data Mgmnt, row 93",
    "price_line": "$84,000.00/year",
-   "featured": true
+   "featured": true,
+   "name": "Open data portal",
+   "summary": "Publish datasets, maps and charts on a public open data site. Priced by population.",
+   "tier": "Population 500,000–1 million"
   },
   {
    "sku": "SOC-OD-6",
@@ -16818,7 +17220,10 @@
    "variant": "1M - 5M",
    "source_row": "Category 2 - Master Data Mgmnt, row 94",
    "price_line": "$84,000.00/year",
-   "featured": true
+   "featured": true,
+   "name": "Open data portal",
+   "summary": "Publish datasets, maps and charts on a public open data site. Priced by population.",
+   "tier": "Population 1–5 million"
   },
   {
    "sku": "SOC-OD-7",
@@ -16837,7 +17242,10 @@
    "variant": "5M - 9M",
    "source_row": "Category 2 - Master Data Mgmnt, row 95",
    "price_line": "$120,000.00/year",
-   "featured": true
+   "featured": true,
+   "name": "Open data portal",
+   "summary": "Publish datasets, maps and charts on a public open data site. Priced by population.",
+   "tier": "Population 5–9 million"
   },
   {
    "sku": "SOC-OD-8",
@@ -16856,7 +17264,10 @@
    "variant": "9M+",
    "source_row": "Category 2 - Master Data Mgmnt, row 96",
    "price_line": "$180,000.00/year",
-   "featured": true
+   "featured": true,
+   "name": "Open data portal",
+   "summary": "Publish datasets, maps and charts on a public open data site. Priced by population.",
+   "tier": "Population 9 million+"
   },
   {
    "sku": "SOC-OD-B",
@@ -16871,7 +17282,9 @@
    "variant": "SOC-OD-B",
    "source_row": "Category 2 - Master Data Mgmnt, row 97",
    "price_line": "$60,000.00/year",
-   "featured": true
+   "featured": true,
+   "name": "Open data portal, basic edition",
+   "summary": "A hosted open data site with set limits on datasets and storage."
   },
   {
    "sku": "SOC-ODC-FED-1",
@@ -17021,7 +17434,8 @@
    "variant": "SOC-OD-Fed-B",
    "source_row": "Category 2 - Master Data Mgmnt, row 107",
    "price_line": "$77,405.00/year",
-   "featured": true
+   "featured": true,
+   "hidden": true
   },
   {
    "sku": "SOC-OD-Fed-MSA10",
@@ -17036,7 +17450,10 @@
    "variant": "10",
    "source_row": "Category 2 - Master Data Mgmnt, row 108",
    "price_line": "$445,041.00/year",
-   "featured": true
+   "featured": true,
+   "name": "Open data portal, multi-site master subscription",
+   "summary": "A master subscription to run several open data sites under one agreement.",
+   "tier": "10-site subscription"
   },
   {
    "sku": "SOC-OD-Fed-MSA5",
@@ -17051,7 +17468,10 @@
    "variant": "5",
    "source_row": "Category 2 - Master Data Mgmnt, row 109",
    "price_line": "$309,618.00/year",
-   "featured": true
+   "featured": true,
+   "name": "Open data portal, multi-site master subscription",
+   "summary": "A master subscription to run several open data sites under one agreement.",
+   "tier": "5-site subscription"
   },
   {
    "sku": "SOC-OD-Fed-P",
@@ -17156,7 +17576,9 @@
    "variant": "SOC-ODP-FTC",
    "source_row": "Category 2 - Master Data Mgmnt, row 116",
    "price_line": "$74,227.00/year",
-   "featured": true
+   "featured": true,
+   "name": "Financial transparency dashboards",
+   "summary": "Public dashboards that show where money comes from and goes."
   },
   {
    "sku": "SOC-ODP-MAU",
@@ -17201,7 +17623,9 @@
    "variant": "SOC-ODP-ODC",
    "source_row": "Category 2 - Master Data Mgmnt, row 119",
    "price_line": "$74,227.00/year",
-   "featured": true
+   "featured": true,
+   "name": "Open data portal, connected edition",
+   "summary": "An open data site that connects to Tyler's other Data & Insights apps."
   },
   {
    "sku": "SOC-ODP-OPC",
@@ -17216,7 +17640,8 @@
    "variant": "SOC-ODP-OPC",
    "source_row": "Category 2 - Master Data Mgmnt, row 120",
    "price_line": "$74,227.00/year",
-   "featured": true
+   "featured": true,
+   "hidden": true
   },
   {
    "sku": "SOC-OE-1",
@@ -17235,7 +17660,10 @@
    "variant": "Under 25k",
    "source_row": "Category 2 - Master Data Mgmnt, row 121",
    "price_line": "$4,200.00/year",
-   "featured": true
+   "featured": true,
+   "name": "Open checkbook transparency site",
+   "summary": "Publishes vendor payments and spending in a searchable public site. Priced by population.",
+   "tier": "Population under 25,000"
   },
   {
    "sku": "SOC-OE-2",
@@ -17254,7 +17682,10 @@
    "variant": "25k - 50k",
    "source_row": "Category 2 - Master Data Mgmnt, row 122",
    "price_line": "$8,400.00/year",
-   "featured": true
+   "featured": true,
+   "name": "Open checkbook transparency site",
+   "summary": "Publishes vendor payments and spending in a searchable public site. Priced by population.",
+   "tier": "Population 25,000–50,000"
   },
   {
    "sku": "SOC-OE-3",
@@ -17273,7 +17704,10 @@
    "variant": "50k - 150k",
    "source_row": "Category 2 - Master Data Mgmnt, row 123",
    "price_line": "$14,400.00/year",
-   "featured": true
+   "featured": true,
+   "name": "Open checkbook transparency site",
+   "summary": "Publishes vendor payments and spending in a searchable public site. Priced by population.",
+   "tier": "Population 50,000–150,000"
   },
   {
    "sku": "SOC-OE-4",
@@ -17292,7 +17726,10 @@
    "variant": "150k - 500k",
    "source_row": "Category 2 - Master Data Mgmnt, row 124",
    "price_line": "$18,000.00/year",
-   "featured": true
+   "featured": true,
+   "name": "Open checkbook transparency site",
+   "summary": "Publishes vendor payments and spending in a searchable public site. Priced by population.",
+   "tier": "Population 150,000–500,000"
   },
   {
    "sku": "SOC-OE-5",
@@ -17311,7 +17748,10 @@
    "variant": "500k - 1M",
    "source_row": "Category 2 - Master Data Mgmnt, row 125",
    "price_line": "$36,000.00/year",
-   "featured": true
+   "featured": true,
+   "name": "Open checkbook transparency site",
+   "summary": "Publishes vendor payments and spending in a searchable public site. Priced by population.",
+   "tier": "Population 500,000–1 million"
   },
   {
    "sku": "SOC-OE-6",
@@ -17330,7 +17770,10 @@
    "variant": "1M - 5M",
    "source_row": "Category 2 - Master Data Mgmnt, row 126",
    "price_line": "$60,000.00/year",
-   "featured": true
+   "featured": true,
+   "name": "Open checkbook transparency site",
+   "summary": "Publishes vendor payments and spending in a searchable public site. Priced by population.",
+   "tier": "Population 1–5 million"
   },
   {
    "sku": "SOC-OE-7",
@@ -17349,7 +17792,10 @@
    "variant": "5M - 9M",
    "source_row": "Category 2 - Master Data Mgmnt, row 127",
    "price_line": "$84,000.00/year",
-   "featured": true
+   "featured": true,
+   "name": "Open checkbook transparency site",
+   "summary": "Publishes vendor payments and spending in a searchable public site. Priced by population.",
+   "tier": "Population 5–9 million"
   },
   {
    "sku": "SOC-OE-8",
@@ -17368,7 +17814,10 @@
    "variant": "9M+",
    "source_row": "Category 2 - Master Data Mgmnt, row 128",
    "price_line": "$120,000.00/year",
-   "featured": true
+   "featured": true,
+   "name": "Open checkbook transparency site",
+   "summary": "Publishes vendor payments and spending in a searchable public site. Priced by population.",
+   "tier": "Population 9 million+"
   },
   {
    "sku": "SOC-OFC-FED-1",
@@ -17447,7 +17896,10 @@
    "variant": "Under 25k",
    "source_row": "Category 2 - Master Data Mgmnt, row 133",
    "price_line": "$14,400.00/year",
-   "featured": true
+   "featured": true,
+   "name": "Performance measures site",
+   "summary": "Publishes your goals and performance measures with live data. Priced by population.",
+   "tier": "Population under 25,000"
   },
   {
    "sku": "SOC-OP-3",
@@ -17466,7 +17918,10 @@
    "variant": "50k - 150k",
    "source_row": "Category 2 - Master Data Mgmnt, row 134",
    "price_line": "$30,000.00/year",
-   "featured": true
+   "featured": true,
+   "name": "Performance measures site",
+   "summary": "Publishes your goals and performance measures with live data. Priced by population.",
+   "tier": "Population 50,000–150,000"
   },
   {
    "sku": "SOC-OP-4",
@@ -17485,7 +17940,10 @@
    "variant": "150k - 500k",
    "source_row": "Category 2 - Master Data Mgmnt, row 135",
    "price_line": "$48,000.00/year",
-   "featured": true
+   "featured": true,
+   "name": "Performance measures site",
+   "summary": "Publishes your goals and performance measures with live data. Priced by population.",
+   "tier": "Population 150,000–500,000"
   },
   {
    "sku": "SOC-OP-5",
@@ -17504,7 +17962,10 @@
    "variant": "500k - 1M",
    "source_row": "Category 2 - Master Data Mgmnt, row 136",
    "price_line": "$84,000.00/year",
-   "featured": true
+   "featured": true,
+   "name": "Performance measures site",
+   "summary": "Publishes your goals and performance measures with live data. Priced by population.",
+   "tier": "Population 500,000–1 million"
   },
   {
    "sku": "SOC-OP-6",
@@ -17523,7 +17984,10 @@
    "variant": "1M - 5M",
    "source_row": "Category 2 - Master Data Mgmnt, row 137",
    "price_line": "$84,000.00/year",
-   "featured": true
+   "featured": true,
+   "name": "Performance measures site",
+   "summary": "Publishes your goals and performance measures with live data. Priced by population.",
+   "tier": "Population 1–5 million"
   },
   {
    "sku": "SOC-OP-7",
@@ -17542,7 +18006,10 @@
    "variant": "5M - 9M",
    "source_row": "Category 2 - Master Data Mgmnt, row 138",
    "price_line": "$120,000.00/year",
-   "featured": true
+   "featured": true,
+   "name": "Performance measures site",
+   "summary": "Publishes your goals and performance measures with live data. Priced by population.",
+   "tier": "Population 5–9 million"
   },
   {
    "sku": "SOC-OP-8",
@@ -17561,7 +18028,10 @@
    "variant": "9M+",
    "source_row": "Category 2 - Master Data Mgmnt, row 139",
    "price_line": "$180,000.00/year",
-   "featured": true
+   "featured": true,
+   "name": "Performance measures site",
+   "summary": "Publishes your goals and performance measures with live data. Priced by population.",
+   "tier": "Population 9 million+"
   },
   {
    "sku": "SOC-OPC-FED-1",
@@ -17655,7 +18125,10 @@
    "variant": "Under 25k",
    "source_row": "Category 2 - Master Data Mgmnt, row 145",
    "price_line": "$4,200.00/year",
-   "featured": true
+   "featured": true,
+   "name": "Open payroll transparency site",
+   "summary": "Publishes government payroll data in a searchable public site. Priced by population.",
+   "tier": "Population under 25,000"
   },
   {
    "sku": "SOC-PR-2",
@@ -17674,7 +18147,10 @@
    "variant": "25k - 50k",
    "source_row": "Category 2 - Master Data Mgmnt, row 146",
    "price_line": "$8,400.00/year",
-   "featured": true
+   "featured": true,
+   "name": "Open payroll transparency site",
+   "summary": "Publishes government payroll data in a searchable public site. Priced by population.",
+   "tier": "Population 25,000–50,000"
   },
   {
    "sku": "SOC-PR-3",
@@ -17693,7 +18169,10 @@
    "variant": "50k - 150k",
    "source_row": "Category 2 - Master Data Mgmnt, row 147",
    "price_line": "$14,400.00/year",
-   "featured": true
+   "featured": true,
+   "name": "Open payroll transparency site",
+   "summary": "Publishes government payroll data in a searchable public site. Priced by population.",
+   "tier": "Population 50,000–150,000"
   },
   {
    "sku": "SOC-PR-4",
@@ -17712,7 +18191,10 @@
    "variant": "150k - 500k",
    "source_row": "Category 2 - Master Data Mgmnt, row 148",
    "price_line": "$18,000.00/year",
-   "featured": true
+   "featured": true,
+   "name": "Open payroll transparency site",
+   "summary": "Publishes government payroll data in a searchable public site. Priced by population.",
+   "tier": "Population 150,000–500,000"
   },
   {
    "sku": "SOC-PR-5",
@@ -17731,7 +18213,10 @@
    "variant": "500k - 1M",
    "source_row": "Category 2 - Master Data Mgmnt, row 149",
    "price_line": "$36,000.00/year",
-   "featured": true
+   "featured": true,
+   "name": "Open payroll transparency site",
+   "summary": "Publishes government payroll data in a searchable public site. Priced by population.",
+   "tier": "Population 500,000–1 million"
   },
   {
    "sku": "SOC-PR-6",
@@ -17750,7 +18235,10 @@
    "variant": "1M - 5M",
    "source_row": "Category 2 - Master Data Mgmnt, row 150",
    "price_line": "$60,000.00/year",
-   "featured": true
+   "featured": true,
+   "name": "Open payroll transparency site",
+   "summary": "Publishes government payroll data in a searchable public site. Priced by population.",
+   "tier": "Population 1–5 million"
   },
   {
    "sku": "SOC-PR-7",
@@ -17769,7 +18257,10 @@
    "variant": "5M - 9M",
    "source_row": "Category 2 - Master Data Mgmnt, row 151",
    "price_line": "$84,000.00/year",
-   "featured": true
+   "featured": true,
+   "name": "Open payroll transparency site",
+   "summary": "Publishes government payroll data in a searchable public site. Priced by population.",
+   "tier": "Population 5–9 million"
   },
   {
    "sku": "SOC-PS-BP-DCOE",
@@ -18759,7 +19250,9 @@
    "variant": "SOC-SCGC-DEP",
    "source_row": "Category 2 - Master Data Mgmnt, row 217",
    "price_line": "$371,134.00/year",
-   "featured": true
+   "featured": true,
+   "name": "Data & Insights full suite, department edition",
+   "summary": "Every Tyler Data & Insights app, licensed for one department."
   },
   {
    "sku": "SOC-SCGC-FED-1-AGENCY",
@@ -19044,7 +19537,9 @@
    "variant": "SOC-SCGC-PRO",
    "source_row": "Category 2 - Master Data Mgmnt, row 236",
    "price_line": "$247,423.00/year",
-   "featured": true
+   "featured": true,
+   "name": "Data & Insights full suite, program edition",
+   "summary": "Every Tyler Data & Insights app, licensed for one program."
   },
   {
    "sku": "SOC-SCGC-SMC",
@@ -19314,7 +19809,9 @@
    "variant": "SOC-SDA-1",
    "source_row": "Category 2 - Master Data Mgmnt, row 254",
    "price_line": "$2,500.00/year",
-   "featured": true
+   "featured": true,
+   "name": "Data skills training for staff",
+   "summary": "Training courses that teach government staff to analyze and present data."
   },
   {
    "sku": "SOC-SRV-00100",
@@ -19556,7 +20053,10 @@
    "variant": "Under 25k",
    "source_row": "Category 2 - Master Data Mgmnt, row 268",
    "price_line": "$690.00/year",
-   "featured": true
+   "featured": true,
+   "name": "Report builder licenses",
+   "summary": "Licenses for staff to build charts and data stories in Data & Insights. Packs of 5, 12 or 30, priced by population.",
+   "tier": "Population under 25,000 · 12 licenses"
   },
   {
    "sku": "SOC-STA-12",
@@ -19590,7 +20090,10 @@
    "variant": "Under 25k",
    "source_row": "Category 2 - Master Data Mgmnt, row 270",
    "price_line": "300.00/year",
-   "featured": true
+   "featured": true,
+   "name": "Report builder licenses",
+   "summary": "Licenses for staff to build charts and data stories in Data & Insights. Packs of 5, 12 or 30, priced by population.",
+   "tier": "Population under 25,000 · 5 licenses"
   },
   {
    "sku": "SOC-STA3-5",
@@ -19609,7 +20112,10 @@
    "variant": "50k - 150k",
    "source_row": "Category 2 - Master Data Mgmnt, row 271",
    "price_line": "$900.00/year",
-   "featured": true
+   "featured": true,
+   "name": "Report builder licenses",
+   "summary": "Licenses for staff to build charts and data stories in Data & Insights. Packs of 5, 12 or 30, priced by population.",
+   "tier": "Population 50,000–150,000 · 5 licenses"
   },
   {
    "sku": "SOC-STA4-30",
@@ -19628,7 +20134,10 @@
    "variant": "150k - 500k",
    "source_row": "Category 2 - Master Data Mgmnt, row 272",
    "price_line": "$7,950.00/year",
-   "featured": true
+   "featured": true,
+   "name": "Report builder licenses",
+   "summary": "Licenses for staff to build charts and data stories in Data & Insights. Packs of 5, 12 or 30, priced by population.",
+   "tier": "Population 150,000–500,000 · 30 licenses"
   },
   {
    "sku": "SOC-STA4-5",
@@ -19647,7 +20156,10 @@
    "variant": "150k - 500k",
    "source_row": "Category 2 - Master Data Mgmnt, row 273",
    "price_line": "$1,500.00/year",
-   "featured": true
+   "featured": true,
+   "name": "Report builder licenses",
+   "summary": "Licenses for staff to build charts and data stories in Data & Insights. Packs of 5, 12 or 30, priced by population.",
+   "tier": "Population 150,000–500,000 · 5 licenses"
   },
   {
    "sku": "SOC-STA-5",
@@ -19681,7 +20193,10 @@
    "variant": "500k - 1M",
    "source_row": "Category 2 - Master Data Mgmnt, row 275",
    "price_line": "$14,310.00/year",
-   "featured": true
+   "featured": true,
+   "name": "Report builder licenses",
+   "summary": "Licenses for staff to build charts and data stories in Data & Insights. Packs of 5, 12 or 30, priced by population.",
+   "tier": "Population 500,000–1 million · 30 licenses"
   },
   {
    "sku": "SOC-STA5-5",
@@ -19700,7 +20215,10 @@
    "variant": "500k - 1M",
    "source_row": "Category 2 - Master Data Mgmnt, row 276",
    "price_line": "$2,700.00/year",
-   "featured": true
+   "featured": true,
+   "name": "Report builder licenses",
+   "summary": "Licenses for staff to build charts and data stories in Data & Insights. Packs of 5, 12 or 30, priced by population.",
+   "tier": "Population 500,000–1 million · 5 licenses"
   },
   {
    "sku": "SOC-STA6-12",
@@ -19719,7 +20237,10 @@
    "variant": "1M - 5M",
    "source_row": "Category 2 - Master Data Mgmnt, row 277",
    "price_line": "$6,210.00/year",
-   "featured": true
+   "featured": true,
+   "name": "Report builder licenses",
+   "summary": "Licenses for staff to build charts and data stories in Data & Insights. Packs of 5, 12 or 30, priced by population.",
+   "tier": "Population 1–5 million · 12 licenses"
   },
   {
    "sku": "SOC-STA6-30",
@@ -19738,7 +20259,10 @@
    "variant": "1M - 5M",
    "source_row": "Category 2 - Master Data Mgmnt, row 278",
    "price_line": "$14,310.00/year",
-   "featured": true
+   "featured": true,
+   "name": "Report builder licenses",
+   "summary": "Licenses for staff to build charts and data stories in Data & Insights. Packs of 5, 12 or 30, priced by population.",
+   "tier": "Population 1–5 million · 30 licenses"
   },
   {
    "sku": "SOC-STA6-5",
@@ -19757,7 +20281,10 @@
    "variant": "1M - 5M",
    "source_row": "Category 2 - Master Data Mgmnt, row 279",
    "price_line": "$2,700.00/year",
-   "featured": true
+   "featured": true,
+   "name": "Report builder licenses",
+   "summary": "Licenses for staff to build charts and data stories in Data & Insights. Packs of 5, 12 or 30, priced by population.",
+   "tier": "Population 1–5 million · 5 licenses"
   },
   {
    "sku": "SOC-STA7-5",
@@ -19776,7 +20303,10 @@
    "variant": "5M - 9M",
    "source_row": "Category 2 - Master Data Mgmnt, row 280",
    "price_line": "$3,900.00/year",
-   "featured": true
+   "featured": true,
+   "name": "Report builder licenses",
+   "summary": "Licenses for staff to build charts and data stories in Data & Insights. Packs of 5, 12 or 30, priced by population.",
+   "tier": "Population 5–9 million · 5 licenses"
   },
   {
    "sku": "SOC-STA8-5",
@@ -19795,7 +20325,10 @@
    "variant": "9M+",
    "source_row": "Category 2 - Master Data Mgmnt, row 281",
    "price_line": "$6,000.00/year",
-   "featured": true
+   "featured": true,
+   "name": "Report builder licenses",
+   "summary": "Licenses for staff to build charts and data stories in Data & Insights. Packs of 5, 12 or 30, priced by population.",
+   "tier": "Population 9 million+ · 5 licenses"
   },
   {
    "sku": "SOC-SUP-FME",
@@ -19915,7 +20448,9 @@
    "variant": "SOC-FTS-ESS",
    "source_row": "Category 2 - Master Data Mgmnt, row 289",
    "price_line": "$225,000.00/year",
-   "featured": true
+   "featured": true,
+   "name": "Financial transparency suite, essentials",
+   "summary": "Budget, checkbook and payroll transparency apps together."
   },
   {
    "sku": "SOC-FTS-ENT",
@@ -19930,7 +20465,9 @@
    "variant": "SOC-FTS-ENT",
    "source_row": "Category 2 - Master Data Mgmnt, row 290",
    "price_line": "$225,000.00/year",
-   "featured": true
+   "featured": true,
+   "name": "Financial transparency suite, enterprise",
+   "summary": "The full set of financial transparency apps with more data and users."
   },
   {
    "sku": "SOC-FTS-CON",
@@ -19945,7 +20482,9 @@
    "variant": "SOC-FTS-CON",
    "source_row": "Category 2 - Master Data Mgmnt, row 291",
    "price_line": "$225,000.00/year",
-   "featured": true
+   "featured": true,
+   "name": "Financial transparency suite, connected",
+   "summary": "Financial transparency apps connected to your finance system."
   },
   {
    "sku": "SOC-FTS-OPAST",
@@ -20020,7 +20559,9 @@
    "variant": "SOC-CI-STAN",
    "source_row": "Category 2 - Master Data Mgmnt, row 296",
    "price_line": "$160,000.00/year",
-   "featured": true
+   "featured": true,
+   "name": "Cannabis program analytics",
+   "summary": "Tracks licensing, sales and tax data for a cannabis program."
   },
   {
    "sku": "SOC-CI-ENT",

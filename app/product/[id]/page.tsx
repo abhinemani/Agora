@@ -65,7 +65,7 @@ function Product() {
               <SupplierBadges supplier={supplier} />
               <Stars rating={supplier.rating} count={supplier.review_count || undefined} />
             </div>
-            {l.keywords && <div className="mt-1 text-xs text-slate">{l.keywords}</div>}
+            {l.path && <div className="mt-1 text-xs text-slate">{l.path}</div>}
           </div>
         </div>
         {l.detail && <p className="mt-4 text-[15px] leading-relaxed text-slate">{l.detail}</p>}

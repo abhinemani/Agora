@@ -20,7 +20,7 @@ interface Report {
 }
 
 const STATUS = { none: "No member list yet", partial: "Partial member list", full: "Full member list" } as const;
-const SOURCE = { "co-op": "uploaded from the co-op", scraped: "scraped from public pages", demo: "demo list for illustration" } as const;
+const SOURCE = { "co-op": "uploaded from the co-op", scraped: "scraped from public pages", demo: "demo list for illustration", published: "known from public sources" } as const;
 const FIELD = { name: "Government", domain: "Website", email: "Email", state: "State" } as Record<string, string>;
 
 /** Sovra ops: upload each co-op's list of member governments, so Agora can tell every agency which co-ops it's on. */
@@ -123,9 +123,21 @@ function CoopCard({ coop }: { coop: Coop }) {
             {coop.member_list_source && <span>{SOURCE[coop.member_list_source]}</span>}
             {coop.member_list_updated_at && <span>, updated {new Date(coop.member_list_updated_at).toLocaleString([], { dateStyle: "medium", timeStyle: "short" })}</span>}
           </div>
-          <div className="mt-1 text-sm text-navy">
-            {members.length} government{members.length === 1 ? "" : "s"} on the list, {agencies.length} matched to agencies in Agora
-          </div>
+          {coop.roster_count ? (
+            <div className="mt-1 text-sm text-navy">
+              {coop.roster_count.toLocaleString()} government{coop.roster_count === 1 ? "" : "s"} in the{" "}
+              <a href="/data" className="text-primary">
+                co-op directory
+              </a>
+              {coop.roster_retrieved ? `, retrieved ${new Date(`${coop.roster_retrieved}T12:00:00Z`).toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" })}` : ""}
+              {members.length ? ` · ${members.length} more on the list below` : ""} · {agencies.length} matched to agencies in Agora
+            </div>
+          ) : (
+            <div className="mt-1 text-sm text-navy">
+              {members.length} government{members.length === 1 ? "" : "s"} on the list, {agencies.length} matched to agencies in Agora
+            </div>
+          )}
+          {coop.member_list_source === "published" && <div className="mt-1 max-w-lg text-xs text-slate">{coop.note}</div>}
           {coop.access === "state_addendum" && (
             <div className="mt-1 max-w-lg text-xs text-slate">Agencies also reach {coop.name} through their state's participating addendum, whether or not they're on this list.</div>
           )}

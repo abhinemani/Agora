@@ -46,23 +46,57 @@ export function normalizeDomain(d: string | undefined | null): string {
   return d.trim().toLowerCase().replace(/^[a-z]+:\/\//, "").replace(/^www\./, "").replace(/[/?#].*$/, "");
 }
 
-/** "The Town of Crested Butte" → "crested butte": for matching member lists that carry no website. */
-export function normalizeName(n: string | undefined | null): string {
-  return (n ?? "")
-    .toLowerCase()
-    .replace(/&/g, " and ")
-    .replace(/[^a-z0-9 ]/g, " ")
-    .replace(/\b(the|of|city|town|township|village|borough|county|cnty|twp|municipality|district|school|isd|usd)\b/g, " ")
-    .replace(/\s+/g, " ")
-    .trim();
+const STATE_SUFFIX =
+  /,\s*(al|ak|az|ar|ca|co|ct|de|dc|fl|ga|hi|id|il|in|ia|ks|ky|la|me|md|ma|mi|mn|ms|mo|mt|ne|nv|nh|nj|nm|ny|nc|nd|oh|ok|or|pa|ri|sc|sd|tn|tx|ut|vt|va|wa|wv|wi|wy|pr|gu|vi)\.?$/;
+
+/** One government's name reduced to a matching key, so the same government listed
+ * different ways by different co-ops lines up: "Town of Crested Butte" and "Crested
+ * Butte" → "crested butte"; "Plano ISD" and "Plano Independent School District" →
+ * "plano isd"; "Lawrence, City of (MARC-KCRPC)" → "lawrence". Words that tell two
+ * governments in one place apart (county, township, isd, district) are standardized,
+ * never dropped, so City of Plano and Plano ISD stay two governments. */
+export function entityKey(n: string | undefined | null): string {
+  let s = (n ?? "").toLowerCase().normalize("NFKD").replace(/[\u0300-\u036f]/g, "");
+  s = s.replace(/\([^)]*\)/g, " ").replace(/&/g, " and ").replace(/[\u2010-\u2015]/g, "-").trim();
+  // "City of Lawrence, KS" → "City of Lawrence"
+  s = s.replace(STATE_SUFFIX, "");
+  // "Lawrence, City of" → "City of Lawrence"
+  s = s.replace(/^(.*?),\s*(city|town|village|borough|township|county|parish) of\s*$/, "$2 of $1");
+  // "Township of Franklin" → "franklin township"; "County of Marin" → "marin county"
+  s = s.replace(/^(?:the\s+)?(township|county|parish) of\s+(.+)$/, "$2 $1");
+  s = s.replace(/^(?:the\s+)?(?:city|town|village|borough|municipality|incorporated village|city and county) of\s+/, "");
+  s = s.replace(/^the\s+/, "");
+  const swaps: [RegExp, string][] = [
+    [/\bconsolidated independent school district\b/g, "cisd"],
+    [/\bindependent school district\b/g, "isd"],
+    [/\bunified school district\b/g, "usd"],
+    [/\bcommon school district\b/g, "csd"],
+    [/\bcentral school district\b/g, "csd"],
+    [/\bschool dist\b/g, "school district"],
+    [/\bmunicipal utility district\b/g, "mud"],
+    [/\bspecial utility district\b/g, "sud"],
+    [/\bemergency services district\b/g, "esd"],
+    [/\bfire protection district\b/g, "fpd"],
+    [/\bsaint\b/g, "st"],
+    [/\bmount\b/g, "mt"],
+    [/\bfort\b/g, "ft"],
+    [/\btwp\b/g, "township"],
+    [/\bcnty\b|\bco\b(?=\s*$)/g, "county"],
+    [/\bdept\b/g, "department"],
+    [/\bno\.?\s*(?=\d)/g, ""],
+    [/#\s*/g, ""],
+  ];
+  for (const [re, to] of swaps) s = s.replace(re, to);
+  s = s.replace(/[^a-z0-9 ]/g, " ").replace(/\b(inc|llc|the)\b/g, " ");
+  return s.replace(/\s+/g, " ").trim();
 }
 
 /** Does this member-list entry name this agency? By website first, then by name within the same state. */
 export function memberMatches(m: CoopMember, buyer: Buyer): boolean {
   const domain = normalizeDomain(buyer.domain);
   if (domain && normalizeDomain(m.domain) === domain) return true;
-  const name = normalizeName(buyer.name);
-  return Boolean(name && m.state && m.state.toUpperCase() === buyer.state && normalizeName(m.name) === name && normalizeName(m.name) !== "");
+  const name = entityKey(buyer.name);
+  return Boolean(name && m.state && m.state.toUpperCase() === buyer.state && entityKey(m.name) === name);
 }
 
 /** Reverse lookup: which co-ops list this agency as a member. */
@@ -84,6 +118,7 @@ export function onCoopContract(db: Pick<Db, "coops" | "memberships">, buyer: Buy
   if (!coop || !buyer) return false;
   if (isMember(db, buyer.name, coop.id)) return true;
   const states = contract.eligibility?.states;
+  if (contract.eligibility?.adopters?.some((a) => a.state === buyer.state && entityKey(a.name) === entityKey(buyer.name))) return true;
   return coop.access === "state_addendum" && Array.isArray(states) && states.includes(buyer.state);
 }
 
@@ -95,6 +130,39 @@ export function coopIdForVehicle(vehicle: string | undefined): string | undefine
   if (/wspc/i.test(vehicle)) return "coop_wspc";
   return undefined;
 }
+
+/** A co-op Agora knows from published rosters or agencies' own procurement pages. No relationship yet. */
+const published = (id: string, name: string, website: string, note: string): Coop => ({
+  id,
+  name,
+  website,
+  member_list_status: "none",
+  member_list_source: "published",
+  access: "membership",
+  buy_in_agora: false,
+  note,
+});
+
+/** Co-ops in the November 2026 public co-op workbook (seed/coops/source). Roster counts are filled in by seed(). */
+export const PUBLISHED_COOPS: Coop[] = [
+  published("coop_hgacbuy", "HGACBuy", "https://www.hgacbuy.org", "Published member roster, retrieved November 13, 2026, including nonprofits (dropped from the directory)."),
+  published("coop_buyboard", "BuyBoard (Texas)", "https://www.buyboard.com", "Published Texas member listings; public status is inferred from names, and churches and private schools are dropped."),
+  published("coop_buyboard_national", "BuyBoard National", "https://www.buyboardnational.com", "Published national roster listings; public status inferred from names."),
+  published("coop_mohave", "Mohave Educational Services Cooperative", "https://www.mesc.org", "Main published roster (Arizona)."),
+  published("coop_eandi", "E&I Cooperative Services", "https://www.eandi.org", "Public institution directory; mostly colleges and schools, public status inferred from names."),
+  published("coop_costars", "COSTARS", "https://www.dgs.pa.gov/COSTARS", "Pennsylvania DGS registered member directory."),
+  published("coop_tips", "TIPS", "https://www.tips-usa.com", "No bulk roster: TIPS offers it to vendors only. Known from agencies' own procurement pages."),
+  published("coop_omnia", "OMNIA Partners", "https://www.omniapartners.com/publicsector", "No published roster. Known from agencies' procurement pages and state adoption flyers."),
+  published("coop_equalis", "Equalis Group", "https://equalisgroup.org", "No public membership list. Known from agencies' procurement pages."),
+  published("coop_1gpa", "1GPA", "https://www.1gpa.org", "Member names on request only. Known from agencies' procurement pages."),
+  published("coop_choice", "Choice Partners", "https://www.choicepartners.org", "No current roster. Known from agencies' procurement pages."),
+  published("coop_pace", "PACE (ESC Region 20)", "", "No bulk roster. Known from agencies' procurement pages."),
+  published("coop_pca", "Purchasing Cooperative of America", "https://www.pcamerica.org", "No bulk roster. Known from agencies' procurement pages."),
+  published("coop_kpn", "Keystone Purchasing Network", "https://www.kpn.org", "No bulk roster. Known from agencies' procurement pages and published awards."),
+  published("coop_nppgov", "NPPGov", "https://nppgov.com", "No bulk roster. Known from agencies' procurement pages and published purchases."),
+  published("coop_peppm", "PEPPM", "https://www.peppm.org", "Eligibility list names entity classes, not members. Known from agencies' procurement pages."),
+  published("coop_mmcap", "MMCAP Infuse", "https://mmcap.org", "Roster restricted to authenticated portals. Known from agencies' procurement pages."),
+];
 
 export const SEED_COOPS: Coop[] = [
   {
@@ -110,15 +178,15 @@ export const SEED_COOPS: Coop[] = [
     id: "coop_sourcewell",
     name: "Sourcewell",
     website: "https://www.sourcewell-mn.gov",
-    member_list_status: "partial",
-    member_list_source: "demo",
+    member_list_status: "none",
+    member_list_source: "published",
+    // The real roster lives in the co-op directory; these two fictional demo cities are added by hand.
     members: [
-      { name: "Town of Crested Butte", domain: "townofcrestedbutte.colorado.gov", state: "CO" },
       { name: "City of Cedar Bend", domain: "cedarbend-ia.example", state: "IA" },
       { name: "City of Riverbend", domain: "riverbend-or.example", state: "OR" },
     ],
     buy_in_agora: false,
-    note: "Demo member list for illustration, not from Sourcewell. Contracts are research leads.",
+    note: "Published roster of registered public agencies, retrieved November 13, 2026. Riverbend and Cedar Bend are added as demo members. Contracts are research leads.",
   },
   {
     id: "coop_wspc",
@@ -133,4 +201,5 @@ export const SEED_COOPS: Coop[] = [
     buy_in_agora: true,
     note: "Demo co-op that shares its member list and has agreed to in-Agora buying.",
   },
+  ...PUBLISHED_COOPS,
 ];

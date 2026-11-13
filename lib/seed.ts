@@ -4,11 +4,21 @@
 import { SEED_COOPS, coopIdForVehicle } from "./coops";
 import { glCode } from "./orders";
 import { demoChecks } from "./verification";
-import type { Category, Db, Listing, Order, OrderStatus, Source } from "./types";
+import type { Category, Coop, Db, Listing, Order, OrderStatus, Source } from "./types";
 import { fireMonthlyLines } from "./revenue_rules";
 import tylerCatalog from "../seed/catalogs/tyler-technologies-2025-03.json";
 import tylerNaspo from "../seed/catalogs/tyler-technologies-naspo-ar3764-2026-09.json";
 import naspoCitizenEngagement from "../seed/catalogs/naspo-citizen-engagement-platforms.json";
+import naspoAccess from "../seed/catalogs/naspo-contract-access.json";
+import coopInsights from "../seed/coops/insights.json";
+
+/** Governments the co-op directory places on each co-op (lib/directory.ts), from seed/coops/insights.json. */
+function withRosterCount(c: Coop): Coop {
+  const counts = (coopInsights.coop_counts as Record<string, Record<string, number>>)[c.id];
+  if (!counts) return { ...c };
+  const total = Object.values(counts).reduce((s, n) => s + n, 0);
+  return { ...c, members: c.members?.map((m) => ({ ...m })), roster_count: total, roster_retrieved: coopInsights.retrieved };
+}
 
 const DAY = 86_400_000;
 const isoDate = (offsetDays: number) => new Date(Date.now() + offsetDays * DAY).toISOString().slice(0, 10);
@@ -522,10 +532,10 @@ export function seed(): Db {
       { title: "First aid kit, 50-person", supplier: "Patriot Safety & Uniform", date: "2026-09-22", qty: 6, listing_id: "lst_034" },
     ],
     quotes: [],
-    coops: SEED_COOPS.map((c) => ({ ...c })),
+    coops: SEED_COOPS.map(withRosterCount),
     clicks: [],
     // Riverbend runs a city marketplace, so its setup is already done.
-    memberships: [{ agency: "City of Riverbend", coop_id: "coop_wspc", source: "detected", confirmed: true }],
+    memberships: [{ agency: "City of Riverbend", coop_id: "coop_wspc", source: "detected", evidence: "list", confirmed: true }],
     referrals: [],
     impressions: [],
     // Harmon Lake has used four of its five free RFPs this year, so the limit shows in one click.
@@ -565,6 +575,8 @@ export function seed(): Db {
   addCarahsoftLeads(db);
   addNaspoCitizenEngagement(db);
   addComputerEquipment(db);
+  addNaspoParks(db);
+  addNaspoLocalAdopters(db);
   for (const c of db.contracts) if (c.source === "coop_contract") c.coop_id ??= coopIdForVehicle(c.vehicle);
   fireMonthlyLines(db);
   return db;
@@ -933,6 +945,79 @@ function addNaspoCitizenEngagement(db: Db) {
         { label: "Supplier page on NASPO ValuePoint", url: a.naspo_url },
       ],
     });
+  }
+}
+
+/** NASPO ValuePoint's Parks and Recreation Equipment and Installation portfolio, from
+ * the Contract Access tab of the co-op workbook (scripts/import-coop-data.ts). Each
+ * award lists the states with a participating addendum and links each addendum. Terms
+ * and dates aren't in the workbook, so these are research leads, quote only. */
+function addNaspoParks(db: Db) {
+  const { parks, source } = naspoAccess;
+  for (const a of parks.awards) {
+    const slug = a.supplier.toLowerCase().replace(/\bdba\b.*$/, "").replace(/[^a-z0-9]+/g, "_").replace(/^_|_$/g, "").slice(0, 40);
+    const supplierId = `sup_parks_${slug}`;
+    const name = /\bdba\b/i.test(a.supplier) ? a.supplier.split(/\bdba\b/i)[1].trim() : a.supplier.replace(/,? (Inc|LLC|Co|Corp)\.?(,? LLC)?$/i, "");
+    db.suppliers.push({
+      id: supplierId,
+      name,
+      city: "",
+      state: "",
+      is_local: false,
+      certifications: [],
+      verified: { insurance: false, bond: false },
+      edge_tier: "discover",
+      rating: 0,
+      review_count: 0,
+      sponsored: false,
+      categories: ["Facilities and MRO"],
+    });
+    db.contracts.push({
+      id: `ctr_naspo_parks_${slug}`,
+      supplier_id: supplierId,
+      source: "coop_contract",
+      owner: "NASPO ValuePoint",
+      title: `${parks.portfolio}: playgrounds, park and recreation equipment`,
+      scope: "playground play structure park recreation equipment installation shade structure surfacing site furnishings outdoor fitness splash pad",
+      contract_number: a.master_agreement || "Parks and Recreation award",
+      start: "",
+      end: "",
+      piggybackable: true,
+      piggyback_clause_text: "",
+      payment_terms: "Per your state's participating addendum",
+      delivery_terms: "Per quote, including installation",
+      marketplace_ids: [],
+      source_document_id: null,
+      onboarding_billed: true,
+      vehicle: "NASPO ValuePoint",
+      verification: "research_lead",
+      pricing_basis: "quote",
+      covers_supplier_catalog: true,
+      source_url: source,
+      relation_note: "Agreement number as listed on NASPO ValuePoint's portfolio page; confirm the current term and your state's participating addendum before ordering.",
+      eligibility: {
+        states: a.pa_states,
+        note: `public entities in states with a participating addendum (${a.pa_states.join(", ")})`,
+        requires: "Your state's participating addendum",
+      },
+      documents: [
+        { label: "Parks and Recreation portfolio on NASPO ValuePoint", url: source },
+        ...a.addenda.map((d) => ({ label: `Participating addendum, ${d.state}`, url: d.url })),
+      ],
+    });
+  }
+}
+
+/** Local governments that signed their own NASPO participating addendum (San Joaquin
+ * County, City of Albany…): they may use every award in that portfolio even where their
+ * state hasn't signed. */
+function addNaspoLocalAdopters(db: Db) {
+  const portfolioOf = (c: Db["contracts"][number]) =>
+    c.vehicle !== "NASPO ValuePoint" ? null : c.title.startsWith("Citizen Engagement") ? "Citizen engagement" : c.title.startsWith("Parks and Recreation") ? "Parks and recreation" : null;
+  for (const c of db.contracts) {
+    const p = portfolioOf(c);
+    const adopters = p ? naspoAccess.adopters.filter((a) => a.portfolio === p).map((a) => ({ name: a.name, state: a.state })) : [];
+    if (adopters.length && c.eligibility) c.eligibility.adopters = adopters;
   }
 }
 

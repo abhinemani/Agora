@@ -205,6 +205,9 @@ export function Header() {
                 <Link role="menuitem" href="/coops" onClick={() => setOpen(false)} className="flex min-h-12 items-center px-4 text-ui-xs text-ink no-underline hover:bg-base-lightest">
                   Co-op member lists
                 </Link>
+                <Link role="menuitem" href="/data" onClick={() => setOpen(false)} className="flex min-h-12 items-center px-4 text-ui-xs text-ink no-underline hover:bg-base-lightest">
+                  Co-op data
+                </Link>
                 <div className="flex min-h-12 items-center justify-between gap-3 px-4 text-ui-xs text-ink">
                   <span>Appearance</span>
                   <span className="flex" role="radiogroup" aria-label="Appearance">

@@ -65,7 +65,7 @@ export function BuyerPicker({ onDone, onClose, compact = false }: { onDone?: (b:
                 setBusy(false);
                 onDone?.(null);
               }}
-              className={`rounded-lg border p-3 text-left transition hover:border-navy/40 ${!current ? "border-navy bg-navy-50" : "border-line bg-white"}`}
+              className={`rounded-lg border p-3 text-left transition hover:border-navy/40 ${!current ? "border-primary bg-primary-lighter" : "border-line bg-white"}`}
             >
               <div className="text-sm font-semibold text-navy">Any agency</div>
               <div className="text-[11px] text-slate">Every contract in Agora</div>
@@ -78,7 +78,7 @@ export function BuyerPicker({ onDone, onClose, compact = false }: { onDone?: (b:
                   key={buyer.name}
                   disabled={busy}
                   onClick={() => choose(buyer)}
-                  className={`rounded-lg border p-3 text-left transition hover:border-navy/40 hover:shadow-card ${active ? "border-navy bg-navy-50" : "border-navy/15 bg-white"}`}
+                  className={`rounded-lg border p-3 text-left transition hover:border-navy/40 hover:shadow-card ${active ? "border-primary bg-primary-lighter" : "border-navy/15 bg-white"}`}
                 >
                   <div className="text-sm font-semibold text-navy">
                     {buyer.name}, {buyer.state}

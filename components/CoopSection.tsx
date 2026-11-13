@@ -7,7 +7,7 @@ import { goHref } from "@/lib/coops";
 import { CoopLink } from "./CoopLink";
 import { CoopMemberships } from "./CoopMemberships";
 import { useStore } from "./store";
-import { Badge, ErrorNote } from "./ui";
+import { Badge, ErrorNote, Alert } from "./ui";
 
 /** 0–100 fit, colored by strength. */
 export function FitPill({ fit }: { fit: number }) {
@@ -28,7 +28,7 @@ export function CoopSection({ section, requestId, onMembershipChange }: { sectio
   const others = section.hits.filter((h) => !h.member);
 
   return (
-    <section id="coops" className="scroll-mt-24 rounded-2xl border border-l-[4px] border-line border-l-src-coop bg-white p-5">
+    <section id="coops" className="scroll-mt-24 border-y border-base-lighter bg-white py-6">
       <div className="flex flex-wrap items-end justify-between gap-3">
         <div>
           <h2 className="text-lg font-bold tracking-tight text-navy">Co-op contracts for this</h2>
@@ -45,11 +45,11 @@ export function CoopSection({ section, requestId, onMembershipChange }: { sectio
       )}
 
       {section.better && (
-        <div className="mt-4 rounded-lg border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-900">
-          <span className="font-semibold">A co-op you're not on fits this better.</span> {section.better.hit.coop} {section.better.hit.contract_number} scores {section.better.hit.fit}
+        <Alert type="warning" heading="A co-op you're not on fits this better" className="mt-4">
+          {section.better.hit.coop} {section.better.hit.contract_number} scores {section.better.hit.fit}
           {section.better.than ? `, against ${section.better.than.fit} for the best contract on your co-ops (${section.better.than.coop} ${section.better.than.contract_number})` : ", and none of your co-ops has a contract for this"}
           . Fit compares scope, not price, until price files are loaded.
-        </div>
+        </Alert>
       )}
 
       {buyer ? (
@@ -130,7 +130,7 @@ function Hit({ h, requestId }: { h: CoopHit; requestId: string }) {
         ) : (
           <>
             {h.link_out?.has_link && (
-              <a href={goHref(h.contract_id, { request: requestId })} target="_blank" rel="noreferrer" className="text-xs font-semibold text-[#385783] hover:underline">
+              <a href={goHref(h.contract_id, { request: requestId })} target="_blank" rel="noreferrer" className="text-xs font-semibold text-primary hover:underline">
                 View contract ↗
               </a>
             )}
@@ -148,7 +148,7 @@ function Hit({ h, requestId }: { h: CoopHit; requestId: string }) {
                     setError((e as Error).message);
                   }
                 }}
-                className="rounded-[9px] bg-maroon px-3 py-2 text-xs font-bold text-white hover:bg-maroon-600 disabled:opacity-50"
+                className="inline-flex items-center rounded-md bg-primary px-4 py-2.5 text-ui-xs font-bold leading-none text-white no-underline hover:bg-base-darker active:bg-primary-dark disabled:bg-disabled-lighter disabled:text-disabled-dark"
               >
                 Ask purchasing to get us on this
               </button>

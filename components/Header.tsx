@@ -46,6 +46,14 @@ export function Header() {
   const path = usePathname();
   const [open, setOpen] = useState(false);
   const [picking, setPicking] = useState(false);
+  // A light shadow under the header once content scrolls beneath it.
+  const [scrolled, setScrolled] = useState(false);
+  useEffect(() => {
+    const on = () => setScrolled(window.scrollY > 4);
+    on();
+    window.addEventListener("scroll", on, { passive: true });
+    return () => window.removeEventListener("scroll", on);
+  }, []);
   const buyer = db?.session.buyer;
   const menu = useRef<HTMLDivElement>(null);
   const total = db?.revenue.reduce((n, e) => n + e.amount, 0) ?? 0;
@@ -71,56 +79,54 @@ export function Header() {
   }, [open]);
 
   return (
-    <header className="sticky top-0 z-30 border-b border-line bg-white/90 backdrop-blur">
-      <div className="mx-auto flex h-16 max-w-6xl items-center gap-3 px-4 sm:gap-8">
-        <Link href={current.home} className="flex items-center gap-2" aria-label="Agora home">
-          <span className="grid h-9 w-9 place-items-center rounded-[10px] bg-navy text-lg font-semibold text-white">α</span>
-          <span className="hidden text-[22px] font-bold tracking-[-0.04em] text-navy sm:block">
-            ago<span className="text-maroon">ra</span>
-          </span>
+    <header className={`sticky top-0 z-30 bg-white ${scrolled ? "shadow-1" : ""}`}>
+      <div className="bg-ink px-4 py-2 text-center text-ui-3xs text-white">
+        Searching is free for every agency. <span className="hidden sm:inline">Your own contracts come first, then your state's, then your co-ops.</span>
+      </div>
+      <div className="mx-auto grid h-16 max-w-6xl grid-cols-[1fr_auto_1fr] items-center gap-3 px-4">
+        <span aria-hidden />
+        <Link href={current.home} className="font-heading text-heading-lg font-light uppercase tracking-[0.3em] text-ink no-underline" aria-label="Agora home">
+          Agora
         </Link>
 
-        <nav className="flex min-w-0 items-center gap-0.5 overflow-x-auto text-sm sm:gap-1">
-          {NAV[role].map((n) => (
-            <Link
-              key={n.href}
-              href={n.href}
-              className={`shrink-0 rounded-md px-2 py-1.5 transition-colors sm:px-3 ${isActive(n.href) ? "bg-[#EDF1F7] font-semibold text-navy" : "text-slate hover:text-navy"}`}
-            >
-              {n.label}
-            </Link>
-          ))}
-        </nav>
+        <div className="flex items-center justify-end gap-3">
+
 
         <Link
           href="/cart"
-          className={`relative ml-auto flex shrink-0 items-center gap-1.5 rounded-full border px-3 py-1.5 text-sm font-semibold transition-colors ${cartCount ? "border-navy/20 text-navy hover:border-navy/40" : "border-line text-slate hover:text-navy"}`}
+          className="relative flex shrink-0 items-center gap-2 px-2 text-ui-xs text-ink no-underline hover:underline"
           aria-label={`Cart, ${cartCount} item${cartCount === 1 ? "" : "s"}${cartWaiting ? `, ${cartWaiting} waiting on approval` : ""}`}
         >
-          <Cart className="h-4 w-4" />
+          <span className="relative">
+            <Cart className="h-6 w-6" />
+            {cartCount > 0 && (
+              <span key={cartCount} className="cart-bump absolute -right-2 -top-1.5 grid h-4 min-w-4 place-items-center rounded-full bg-ink px-1 text-ui-3xs font-bold tabular-nums text-white">
+                {cartCount}
+              </span>
+            )}
+            {cartWaiting > 0 && !cartCount && <span className="absolute -right-0.5 -top-0.5 h-1.5 w-1.5 rounded-full bg-secondary" aria-hidden />}
+          </span>
           <span className="hidden sm:inline">Cart</span>
-          {cartCount > 0 && <span key={cartCount} className="cart-bump grid h-5 min-w-5 place-items-center rounded-full bg-navy px-1.5 text-[11px] tabular-nums text-white">{cartCount}</span>}
-          {cartWaiting > 0 && <span className="h-2 w-2 rounded-full bg-amber-500" aria-hidden />}
         </Link>
 
-        <div ref={menu} className="relative shrink-0">
+        <div ref={menu} className="relative flex shrink-0 items-center">
           <button
             onClick={() => setOpen(!open)}
             aria-expanded={open}
             aria-haspopup="menu"
-            className="flex items-center gap-2 rounded-full border border-line py-1 pl-1 pr-2.5 text-sm text-navy hover:border-navy/30"
+            className="flex h-10 items-center gap-2 py-1 pl-1 pr-2 text-ui-xs text-ink hover:underline"
           >
-            <span className="relative grid h-7 w-7 place-items-center rounded-full bg-maroon text-[11px] font-semibold text-white">
+            <span className="relative grid h-8 w-8 place-items-center rounded-sm bg-primary-lighter text-ui-2xs font-bold text-primary-darker">
               {current.initials}
-              {fresh > 0 && <span className="absolute -right-0.5 -top-0.5 h-2.5 w-2.5 rounded-full border-2 border-white bg-rose" aria-label={`${fresh} new revenue events`} />}
+              {fresh > 0 && <span className="absolute -right-0.5 -top-0.5 h-2.5 w-2.5 rounded-full border-2 border-white bg-secondary" aria-label={`${fresh} new revenue events`} />}
             </span>
             <span className="hidden sm:inline">{current.label}</span>
-            <Menu className="h-4 w-4 text-slate" />
+            <Menu className="h-5 w-5 text-base-dark" />
           </button>
 
           {open && (
-            <div role="menu" className="absolute right-0 mt-2 w-72 overflow-hidden rounded-xl border border-line bg-white shadow-[0_12px_32px_-12px_rgba(20,33,61,0.25)]">
-              <div className="px-4 pb-2 pt-3 text-xs text-slate">View the demo as</div>
+            <div role="menu" className="absolute right-0 top-full mt-1 w-72 overflow-hidden border border-base-lighter bg-white py-2 text-ink shadow-3">
+              <div className="px-4 pb-1 pt-2 text-ui-3xs uppercase tracking-label text-base-dark">View the demo as</div>
               {ROLES.map((r) => (
                 <button
                   key={r.id}
@@ -131,28 +137,28 @@ export function Header() {
                     setOpen(false);
                     router.push(r.home);
                   }}
-                  className={`flex w-full items-center gap-3 px-4 py-2 text-left hover:bg-page ${role === r.id ? "bg-page" : ""}`}
+                  className={`flex min-h-12 w-full items-center gap-3 px-4 py-2 text-left hover:bg-base-lightest ${role === r.id ? "bg-base-lightest" : ""}`}
                 >
-                  <span className={`grid h-7 w-7 place-items-center rounded-full text-[11px] font-semibold ${role === r.id ? "bg-maroon text-white" : "bg-[#EDF1F7] text-navy"}`}>
+                  <span className={`grid h-8 w-8 place-items-center rounded-sm text-ui-2xs font-bold ${role === r.id ? "bg-ink text-white" : "bg-base-lighter text-ink"}`}>
                     {r.initials}
                   </span>
                   <span className="min-w-0">
-                    <span className="block text-sm font-semibold text-navy">{r.label}</span>
-                    <span className="block truncate text-xs text-slate">{r.person}</span>
+                    <span className="block text-ui-xs font-bold">{r.label}</span>
+                    <span className="block truncate text-ui-3xs text-base-dark">{r.person}</span>
                   </span>
                 </button>
               ))}
-              <div className="mt-2 border-t border-line py-1">
+              <div className="mt-2 border-t border-base-lighter pt-2">
                 <button
                   role="menuitem"
                   onClick={() => {
                     setOpen(false);
                     setPicking(true);
                   }}
-                  className="flex w-full items-center justify-between gap-3 px-4 py-2 text-left text-sm text-navy hover:bg-page"
+                  className="flex min-h-12 w-full items-center justify-between gap-3 px-4 py-2 text-left text-ui-xs text-ink hover:bg-base-lightest"
                 >
                   Your agency
-                  <span className="truncate text-xs text-slate">{buyer ? `${buyer.name}, ${buyer.state}` : "Any agency"}</span>
+                  <span className="truncate text-ui-3xs text-base-dark">{buyer ? `${buyer.name}, ${buyer.state}` : "Any agency"}</span>
                 </button>
                 <button
                   role="menuitem"
@@ -160,21 +166,36 @@ export function Header() {
                     setOpen(false);
                     setLedgerOpen(true);
                   }}
-                  className="flex w-full items-center justify-between px-4 py-2 text-sm text-navy hover:bg-page"
+                  className="flex min-h-12 w-full items-center justify-between px-4 py-2 text-ui-xs text-ink hover:bg-base-lightest"
                 >
                   Sovra revenue
-                  <span className="font-semibold tabular-nums">{compact(total)}</span>
+                  <span className="tabular-nums text-base-dark">{compact(total)}</span>
                 </button>
-                <Link role="menuitem" href="/model" onClick={() => setOpen(false)} className="block px-4 py-2 text-sm text-navy hover:bg-page">
+                <Link role="menuitem" href="/model" onClick={() => setOpen(false)} className="flex min-h-12 items-center px-4 text-ui-xs text-ink no-underline hover:bg-base-lightest">
                   How Agora earns
                 </Link>
-                <Link role="menuitem" href="/coops" onClick={() => setOpen(false)} className="block px-4 py-2 text-sm text-navy hover:bg-page">
+                <Link role="menuitem" href="/coops" onClick={() => setOpen(false)} className="flex min-h-12 items-center px-4 text-ui-xs text-ink no-underline hover:bg-base-lightest">
                   Co-op member lists
                 </Link>
               </div>
             </div>
           )}
         </div>
+        </div>
+      </div>
+      <div className="border-b border-base-lighter">
+        <nav className="mx-auto flex max-w-6xl justify-center gap-2 overflow-x-auto px-4 sm:gap-6" aria-label="Main">
+          {NAV[role].map((n) => (
+            <Link
+              key={n.href}
+              href={n.href}
+              aria-current={isActive(n.href) ? "page" : undefined}
+              className={`shrink-0 border-b-2 px-1 py-3 text-ui-xs no-underline hover:border-ink ${isActive(n.href) ? "border-ink text-ink" : "border-transparent text-base-darker"}`}
+            >
+              {n.label}
+            </Link>
+          ))}
+        </nav>
       </div>
       {picking && (
         <div className="border-t border-line bg-page py-4">

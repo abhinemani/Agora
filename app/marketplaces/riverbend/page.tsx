@@ -77,14 +77,14 @@ export default function RiverbendMarketplace() {
         <div className="mt-4 flex flex-wrap items-end justify-between gap-6 rounded-2xl border border-line bg-white p-8">
           <div className="max-w-xl">
             <div className="text-sm font-semibold text-maroon">City marketplace · powered by Agora</div>
-            <h1 className="mt-1 text-[2.2rem] font-extrabold leading-tight tracking-[-0.035em] text-navy">City of Riverbend</h1>
+            <h1 className="mt-1 text-[2.2rem] font-extrabold leading-tight text-navy">City of Riverbend</h1>
             <p className="mt-2 text-[15px] leading-relaxed text-slate">
               Riverbend's own marketplace, built on Agora: the {contracts.size} contracts its staff can buy from, renewals coming due, and one-click reorders, all under the city's own rules
               and $10K quick-buy limit.
             </p>
           </div>
           <form
-            className="flex w-full max-w-md items-center gap-2 rounded-xl border border-line bg-white p-1.5 pl-4 shadow-[0_12px_30px_-18px_rgba(25,44,72,0.35)] focus-within:border-maroon/50"
+            className="flex w-full max-w-md items-center gap-2 rounded-xl border border-line bg-white p-1.5 pl-4 shadow-2 focus-within:border-maroon/50"
             onSubmit={(e) => {
               e.preventDefault();
               submit(text);
@@ -149,7 +149,7 @@ export default function RiverbendMarketplace() {
               <Link
                 key={l.id}
                 href={`/product/${l.id}`}
-                className="group flex flex-col overflow-hidden rounded-2xl border border-line bg-white transition-shadow hover:shadow-[0_16px_32px_-20px_rgba(20,33,61,0.4)]"
+                className="group flex flex-col overflow-hidden rounded-2xl border border-line bg-white transition-shadow hover:shadow-2"
               >
                 <div className="h-32 transition-transform duration-300 group-hover:scale-[1.03]">
                   <CategoryIcon category={l.category} size="xl" />

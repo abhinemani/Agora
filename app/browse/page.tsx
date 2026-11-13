@@ -53,7 +53,7 @@ function Browse() {
                 setCat(c);
                 setLimit(PAGE);
               }}
-              className={`flex w-full justify-between rounded-md px-3 py-2 text-left text-sm ${cat === c ? "bg-navy text-white" : "text-navy hover:bg-white"}`}
+              className={`flex w-full justify-between rounded-md px-3 py-2 text-left text-sm ${cat === c ? "bg-primary-lighter text-primary-darker" : "text-navy hover:bg-white"}`}
             >
               {c} <span className={cat === c ? "text-steel" : "text-slate"}>{counts[c].toLocaleString()}</span>
             </button>

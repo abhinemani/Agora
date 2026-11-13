@@ -97,9 +97,26 @@ Each **order** now runs to reconciled, with a timeline on its page. A P-card ord
 
 **Verification.** Supplier badges now open the checks behind them: SAM.gov registration, the SAM.gov exclusions list, Section 889, certificate of insurance, performance bond and each certification. Every check shows its source and the date it was last run, and expiring or failed checks show as "N checks to review." Storefronts list the checks in full. Only the eight fictional demo suppliers carry results, all labeled as demo data. Real companies (Tyler, Dell and the rest) show every check as not checked yet, because Agora holds no real SAM.gov or insurance results for them.
 
-## Look and feel
+## Look and feel: USWDS with a retail theme
 
-The type is Public Sans, the typeface of the U.S. Web Design System that many government sites already use. Color marks where something is bought, the same way everywhere: evergreen for an agency's own contracts, ochre for state contracts, violet for co-ops, slate for resellers and GSA, teal for small purchases (`src` in `tailwind.config.ts`, `SOURCE_HEX` in `components/ui.tsx`). Result cards carry that color on their left edge. Results open with **Where you can buy this**, a strip that counts each route in the order to try it (yours, state, your co-ops, co-ops to join, other) and links to each section.
+Agora is built on the [U.S. Web Design System](https://designsystem.digital.gov/) (USWDS), with a custom USWDS theme in a warm, editorial retail style: ink calls to action on white, warm-gray neutrals, light sans headlines, square corners and image-led product tiles. The style is inspired by home-goods retailers like Crate & Barrel, but uses none of their name, logo, fonts or photography. The tokens are generated from the official `@uswds/uswds` package, not hand-picked. `node scripts/uswds-theme.mjs` reads USWDS's own SCSS (system color tokens, theme color settings, type scale, typeface cap heights, line heights), applies Agora's theme settings (`AGORA_THEME` in the script, the equivalent of a project's `_uswds-theme.scss`), and writes `lib/uswds-theme.json`, which `tailwind.config.ts` reads. USWDS token names work as classes: `bg-primary`, `hover:bg-primary-dark`, `text-base-dark`, `border-base-lighter`, `bg-success-lighter`, `text-error-dark`. Agora's older color names map onto USWDS theme tokens, so every page follows the system.
+
+- **Theme settings:** primary is gray-90 ink, primary-dark is black, the base neutrals come from the gray-warm family, the heading role uses the sans typeface at a light weight, and buttons, cards, tags and inputs have square corners. Focus blue and the success, warning, error and info colors stay USWDS defaults. Change `AGORA_THEME` and rerun the script to restyle everything; deleting it restores the stock USWDS look.
+- **Type:** Source Sans for body, UI and headings (USWDS's default heading font, Merriweather, is switched off by the theme). Sizes come from the USWDS theme scale, normalized by each typeface's cap height the way USWDS does it (`text-heading-xl` with `font-heading`, `text-ui-xs`, `text-body-md`).
+- **Color:** USWDS theme colors, as set by Agora's theme: ink primary, gray-warm base, and the USWDS success, warning, error and info families. Agora's five buying routes are project colors drawn from USWDS system colors at vivid grade 60, with grade 10 backgrounds and grade 80 text, following USWDS's "magic number" for accessible contrast.
+- **Components:** these follow their USWDS counterparts.
+  - Default, outline and unstyled buttons, with 4px corners and darker hover and active states.
+  - Card containers with hairline base-lighter borders, and result tiles laid out like a retail product grid: a large image panel on warm gray, a small spaced maker name, the product name, then price and actions.
+  - Tags, and slim alerts with the 8px left bar.
+  - A summary box for "your agency already has a contract for this."
+  - Text inputs, and checkboxes in place of toggle switches (USWDS has no switch).
+  - A segmented button group.
+  - A retail-style header: a thin ink announcement strip, a centered spaced wordmark, cart and account on the right, and centered navigation that underlines the current page.
+  - A modal for supplier checks.
+  - A step indicator and process list on the order page.
+- **Focus:** keyboard focus uses USWDS's 0.25rem outline in focus blue (#2491ff).
+
+Agora is not a federal government site, so it does not use the USWDS government banner ("An official website of the United States government") or the identifier. Those are for official government websites only. To pick up a newer USWDS release, update the package and rerun the script.
 
 ## NASPO ValuePoint
 

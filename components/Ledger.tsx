@@ -6,7 +6,7 @@ import { isContractLevelUrl } from "@/lib/coops";
 import { EDGE_TIER, FIVE_WAYS, REVENUE_OPTIONS } from "@/lib/revenue_rules";
 import type { Payer } from "@/lib/types";
 import { useStore } from "./store";
-import { Button, money } from "./ui";
+import { Button, Checkbox, money } from "./ui";
 
 const PAYER_LABEL: Record<Payer, string> = {
   local_government: "Local government",
@@ -35,8 +35,8 @@ export function Ledger() {
 
   return (
     <div className="fixed inset-0 z-50 flex justify-end">
-      <button aria-label="Close ledger" className="absolute inset-0 bg-navy/40" onClick={() => setLedgerOpen(false)} />
-      <aside className="relative flex h-full w-full max-w-xl flex-col bg-white shadow-2xl">
+      <button aria-label="Close ledger" className="absolute inset-0 bg-ink/[.32]" onClick={() => setLedgerOpen(false)} />
+      <aside className="relative flex h-full w-full max-w-xl flex-col bg-white shadow-5">
         <div className="border-b border-line px-5 py-4">
           <div className="flex items-start justify-between">
             <div>
@@ -131,7 +131,7 @@ export function Ledger() {
                         <span className="font-semibold tabular-nums">{money(amount)}</span>
                       </div>
                       <div className="mt-1 h-1.5 rounded bg-tint">
-                        <div className="h-1.5 rounded bg-navy" style={{ width: `${total > 0 ? Math.max(0, (amount / total) * 100) : 0}%` }} />
+                        <div className="h-1.5 rounded bg-primary" style={{ width: `${total > 0 ? Math.max(0, (amount / total) * 100) : 0}%` }} />
                       </div>
                     </div>
                   ))}
@@ -223,20 +223,18 @@ function CoopTraffic() {
                   ))}
                 </div>
               </div>
-              <label className="mt-2 flex cursor-pointer items-center gap-2 text-xs text-navy">
-                <input
-                  type="checkbox"
-                  className="!p-0"
+              <div className="mt-3">
+                <Checkbox
                   checked={coop.buy_in_agora}
                   disabled={busy === coop.id}
-                  onChange={async (e) => {
+                  onChange={async (on) => {
                     setBusy(coop.id);
-                    await act("setCoopBuyInAgora", { coopId: coop.id, on: e.target.checked });
+                    await act("setCoopBuyInAgora", { coopId: coop.id, on });
                     setBusy(null);
                   }}
+                  label="Members may buy inside Agora (the co-op has agreed)"
                 />
-                Members may buy inside Agora (the co-op has agreed)
-              </label>
+              </div>
             </div>
           );
         })}

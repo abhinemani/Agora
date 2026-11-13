@@ -81,11 +81,11 @@ export default function SupplierStorefront() {
               <span className="grid h-[72px] w-[72px] place-items-center rounded-2xl border-4 border-white text-3xl font-extrabold text-white shadow-sm" style={{ background: color }}>
                 {s.name[0]}
               </span>
-              <div className="mt-3 flex items-center gap-2 text-[11px] font-extrabold uppercase tracking-[0.18em] text-maroon/80">
+              <div className="mt-3 flex items-center gap-2 text-[11px] font-extrabold uppercase text-maroon/80">
                 Storefront
-                {profile && <span className="rounded bg-[#e8f6ef] px-1.5 py-0.5 text-[10px] tracking-normal text-[#167854] normal-case">Featured</span>}
+                {profile && <span className="rounded bg-success-lighter px-1.5 py-0.5 text-[10px] tracking-normal text-success-darker normal-case">Featured</span>}
               </div>
-              <h1 className="mt-1 text-[2.1rem] font-extrabold leading-tight tracking-[-0.03em] text-navy">{s.name}</h1>
+              <h1 className="mt-1 text-[2.1rem] font-extrabold leading-tight text-navy">{s.name}</h1>
               {profile && <p className="mt-1 text-[15px] text-slate">{profile.tagline}</p>}
               <div className="mt-2 flex flex-wrap items-center gap-x-3 gap-y-1 text-sm text-slate">
                 {s.city && (
@@ -126,7 +126,7 @@ export default function SupplierStorefront() {
           <div>
             <h2 className="text-xl font-extrabold tracking-tight text-navy">About</h2>
             <p className="mt-2 text-[15px] leading-relaxed text-slate">{profile.about}</p>
-            <a href="#ways-to-buy" className="mt-4 inline-flex rounded-[10px] bg-maroon px-4 py-2.5 text-sm font-bold text-white hover:bg-maroon-600">
+            <a href="#ways-to-buy" className="mt-4 inline-flex rounded-lg bg-maroon px-4 py-2.5 text-sm font-bold text-white hover:bg-maroon-600">
               See ways to buy
             </a>
           </div>
@@ -143,7 +143,7 @@ export default function SupplierStorefront() {
                       setShown(PAGE);
                       document.getElementById("catalog")?.scrollIntoView({ behavior: "smooth" });
                     }}
-                    className="rounded-xl border border-line bg-white p-3 text-left transition hover:-translate-y-0.5 hover:border-[#bbcae8]"
+                    className="rounded-xl border border-line bg-white p-3 text-left transition hover:-translate-y-0.5 hover:border-base-dark"
                   >
                     <span className="block h-1.5 w-8 rounded-full" style={{ background: lineColor(n) }} />
                     <span className="mt-2 block text-sm font-semibold leading-snug text-navy">{n}</span>
@@ -166,7 +166,7 @@ export default function SupplierStorefront() {
               <Link
                 key={p.l.id}
                 href={`/product/${p.l.id}`}
-                className="group flex flex-col overflow-hidden rounded-2xl border border-line bg-white transition hover:shadow-[0_16px_32px_-20px_rgba(20,33,61,0.4)]"
+                className="group flex flex-col overflow-hidden rounded-2xl border border-line bg-white transition hover:shadow-2"
               >
                 <div className="flex h-24 items-center justify-between px-5" style={{ background: CATEGORY_TONE[p.l.category].bg }}>
                   <CategoryIcon category={p.l.category} size="md" />
@@ -244,7 +244,7 @@ export default function SupplierStorefront() {
                     setLine(n);
                     setShown(PAGE);
                   }}
-                  className={`rounded-full border px-3 py-1.5 text-xs ${line === n ? "border-maroon bg-maroon-50 text-maroon" : "border-line bg-white text-[#4c607e] hover:border-maroon"}`}
+                  className={`rounded-full border px-3 py-1.5 text-xs ${line === n ? "border-maroon bg-maroon-50 text-maroon" : "border-line bg-white text-base-dark hover:border-maroon"}`}
                 >
                   {n ?? `All ${products.length}`}
                 </button>
@@ -253,7 +253,7 @@ export default function SupplierStorefront() {
           )}
           <div className="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {filtered.slice(0, shown).map((p) => (
-              <Link key={p.l.id} href={`/product/${p.l.id}`} className="flex flex-col rounded-2xl border border-line bg-white p-4 transition hover:border-[#bbcae8]">
+              <Link key={p.l.id} href={`/product/${p.l.id}`} className="flex flex-col rounded-2xl border border-line bg-white p-4 transition hover:border-base-dark">
                 <div className="flex items-start justify-between gap-3">
                   <CategoryIcon category={p.l.category} size="sm" />
                   <SourcePill source={p.l.source} contractId={p.l.contract_id} />
@@ -328,7 +328,7 @@ function ContractCard({ c }: { c: Contract }) {
         <span className="font-semibold text-navy">{c.vehicle ?? c.owner}</span>
         <span className="font-mono text-xs text-slate">{c.contract_number}</span>
         <SourcePill source={c.source} contractId={c.id} />
-        {expired && <span className="rounded bg-[#fdecec] px-1.5 py-0.5 text-[10px] font-bold text-[#b42318]">Expired</span>}
+        {expired && <span className="rounded bg-error-lighter px-1.5 py-0.5 text-[10px] font-bold text-error-dark">Expired</span>}
       </div>
       <div className="mt-1 text-sm text-navy">{c.title}</div>
       <div className="mt-1 text-xs text-slate">
@@ -342,7 +342,7 @@ function ContractCard({ c }: { c: Contract }) {
             <span
               key={st}
               title={stateName(st)}
-              className={`rounded px-1.5 py-0.5 font-mono text-[10px] font-semibold ${buyer?.state === st ? "bg-maroon text-white" : "bg-[#eef3fa] text-[#59708c]"}`}
+              className={`rounded px-1.5 py-0.5 font-mono text-[10px] font-semibold ${buyer?.state === st ? "bg-maroon text-white" : "bg-primary-lighter text-base-dark"}`}
             >
               {st}
             </span>

@@ -131,19 +131,19 @@ function CoopCard({ coop }: { coop: Coop }) {
           )}
         </div>
         <div className="flex flex-col items-end gap-2">
-          <div className="flex rounded-md border border-line p-0.5 text-xs" role="radiogroup" aria-label="Upload mode">
+          <div className="flex" role="radiogroup" aria-label="Upload mode">
             {(
               [
                 ["merge", "Add to list"],
                 ["replace", "Replace list"],
               ] as const
-            ).map(([m, label]) => (
+            ).map(([m, label], i) => (
               <button
                 key={m}
                 role="radio"
                 aria-checked={mode === m}
                 onClick={() => setMode(m)}
-                className={`rounded px-2.5 py-1 font-semibold ${mode === m ? "bg-navy text-white" : "text-slate hover:text-navy"}`}
+                className={`px-4 py-2 text-ui-2xs font-bold ${i ? "-ml-0.5 rounded-r-md" : "rounded-l-md"} ${mode === m ? "relative z-10 bg-primary text-white" : "bg-white text-primary shadow-[inset_0_0_0_1px_theme(colors.primary.DEFAULT)] hover:text-primary-dark"}`}
               >
                 {label}
               </button>

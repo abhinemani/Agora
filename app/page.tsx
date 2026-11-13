@@ -71,7 +71,7 @@ export default function Home() {
             Search state and cooperative contracts in one place. Agora shows which ones your agency can use, what they cost, and how to buy.
           </p>
           <div className="mx-auto mt-14 max-w-3xl">
-            <DimensionFrame label={`FIG. 2 · SEARCH ${db.contracts.length} CONTRACTS`}>
+            <DimensionFrame working={busy} label={busy ? `FIG. 2 · CHECKING ${db.contracts.length} CONTRACTS` : `FIG. 2 · SEARCH ${db.contracts.length} CONTRACTS`}>
               <form
                 className="flex flex-col gap-2 bg-[#fff] p-1.5 focus-within:outline focus-within:outline-4 focus-within:outline-focus sm:flex-row sm:items-center sm:pl-4"
                 onSubmit={(e) => {

@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import { useState } from "react";
-import { CATEGORY_TONE, CategoryIcon } from "@/components/CategoryIcon";
+import { CategoryIcon } from "@/components/CategoryIcon";
 import { Check, File, Globe, Lock, Search } from "@/components/icons";
 import { useStore } from "@/components/store";
 import { ClaimStorefront } from "@/components/ClaimStorefront";
@@ -167,9 +167,9 @@ export default function SupplierStorefront() {
               <Link
                 key={p.l.id}
                 href={`/product/${p.l.id}`}
-                className="group flex flex-col overflow-hidden rounded-2xl border border-line bg-white transition hover:shadow-2"
+                className="group flex flex-col overflow-hidden border border-base-lighter bg-white no-underline transition-colors hover:border-primary-light"
               >
-                <div className="flex h-24 items-center justify-between px-5" style={{ background: CATEGORY_TONE[p.l.category].bg }}>
+                <div className="flex h-24 items-center justify-between border-b border-base-lighter bg-primary-lighter/25 px-5">
                   <CategoryIcon category={p.l.category} size="md" />
                   <span className="rounded-full bg-white/80 px-2.5 py-1 text-[11px] font-semibold" style={{ color: lineColor(p.line) }}>
                     {p.line}

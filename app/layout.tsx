@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Header } from "@/components/Header";
 import { Ledger } from "@/components/Ledger";
+import { SiteFooter } from "@/components/SiteFooter";
 import { StoreProvider } from "@/components/store";
 import "./globals.css";
 
@@ -27,9 +28,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <StoreProvider>
           <Header />
           <main className="mx-auto max-w-6xl px-4 py-8">{children}</main>
-          <footer className="mt-10 bg-base-lightest px-4 py-6 text-center text-ui-3xs text-base-dark">
-            Agora · Cooperative purchasing concept · Tyler and Maximus prices from NASPO ValuePoint and NJSTART price files · NASPO awards from naspovaluepoint.org · Sourcewell prices require a vendor quote
-          </footer>
+          <SiteFooter />
           <Ledger />
         </StoreProvider>
       </body>

@@ -69,3 +69,14 @@ button:focus-visible {
 @media (prefers-reduced-motion: reduce) {
   .mark-closing { animation: none; }
 }
+
+/* The same motion on the home search box: its corner ticks close in while a search runs. */
+@keyframes tick-in {
+  55% { transform: translate(var(--dx), var(--dy)); }
+}
+.frame-working .frame-tick {
+  animation: tick-in 1.3s ease-in-out infinite;
+}
+@media (prefers-reduced-motion: reduce) {
+  .frame-working .frame-tick { animation: none; }
+}

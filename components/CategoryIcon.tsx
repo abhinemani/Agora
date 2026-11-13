@@ -1,27 +1,6 @@
 import type { Category } from "@/lib/types";
 import { Box, Briefcase, Chair, Cloud, Cone, Laptop, Paper, Shield, Spray, Truck, Wrench } from "./icons";
 
-/** Each category has its own hue: a soft tint behind a saturated icon, at
- * matched lightness so they sit together next to the navy and maroon. */
-const HUE: Record<Category, string> = {
-  "Office supplies": "#B36B00",
-  Furniture: "#1D7A69",
-  Janitorial: "#1E6FA8",
-  "IT hardware": "#4A44B5",
-  "Software and services": "#7B3BB9",
-  "Facilities and MRO": "#C0501A",
-  "Fleet and parts": "#36507E",
-  "Public works materials": "#8A7410",
-  "Safety and uniforms": "#B3243F",
-  "Professional services": "#2E7A3D",
-  Other: "#14213D",
-};
-/** Each category's hue mixed into the page surface: a soft tint on white, a deep tone in dark mode. */
-const mix = (hue: string, pct: number, onto: string) => `color-mix(in srgb, ${hue} ${pct}%, rgb(var(--us-${onto})))`;
-export const CATEGORY_TONE: Record<Category, { bg: string; fg: string; deep: string }> = Object.fromEntries(
-  (Object.keys(HUE) as Category[]).map((c) => [c, { bg: mix(HUE[c], 14, "white"), fg: mix(HUE[c], 78, "base-ink"), deep: mix(HUE[c], 32, "white") }]),
-) as Record<Category, { bg: string; fg: string; deep: string }>;
-
 const ICON: Record<Category, (p: { className?: string }) => React.ReactElement> = {
   "Office supplies": Paper,
   Furniture: Chair,

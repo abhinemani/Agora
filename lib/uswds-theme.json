@@ -2,7 +2,9 @@
   "source": "@uswds/uswds 3.13.0, default theme with Agora's theme settings",
   "overrides": {
     "color": {},
-    "font": {},
+    "font": {
+      "font-type-sans": "public-sans"
+    },
     "shape": {
       "button": "4",
       "card": "8",
@@ -983,12 +985,12 @@
   },
   "font": {
     "families": {
-      "sans": "Source Sans 3",
+      "sans": "Public Sans",
       "serif": "Merriweather",
       "mono": "Roboto Mono"
     },
     "tokens": {
-      "sans": "source-sans-pro",
+      "sans": "public-sans",
       "serif": "merriweather",
       "mono": "roboto-mono"
     },
@@ -1010,26 +1012,26 @@
         "3xl": "2.9272rem"
       },
       "body": {
-        "3xs": "0.8651rem",
-        "2xs": "0.9316rem",
-        "xs": "0.9982rem",
-        "sm": "1.0647rem",
-        "md": "1.1313rem",
-        "lg": "1.464rem",
-        "xl": "2.1294rem",
-        "2xl": "2.6618rem",
-        "3xl": "3.1941rem"
+        "3xs": "0.8125rem",
+        "2xs": "0.875rem",
+        "xs": "0.9375rem",
+        "sm": "1rem",
+        "md": "1.0625rem",
+        "lg": "1.375rem",
+        "xl": "2rem",
+        "2xl": "2.5rem",
+        "3xl": "3rem"
       },
       "ui": {
-        "3xs": "0.8651rem",
-        "2xs": "0.9316rem",
-        "xs": "0.9982rem",
-        "sm": "1.0647rem",
-        "md": "1.1313rem",
-        "lg": "1.464rem",
-        "xl": "2.1294rem",
-        "2xl": "2.6618rem",
-        "3xl": "3.1941rem"
+        "3xs": "0.8125rem",
+        "2xs": "0.875rem",
+        "xs": "0.9375rem",
+        "sm": "1rem",
+        "md": "1.0625rem",
+        "lg": "1.375rem",
+        "xl": "2rem",
+        "2xl": "2.5rem",
+        "3xl": "3rem"
       }
     },
     "headings": {

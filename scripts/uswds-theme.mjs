@@ -34,7 +34,8 @@ const hex = (token) => system[token] ?? (() => { throw new Error(`No USWDS syste
 // below changes one USWDS default; leave a key out to keep the default.
 const AGORA_THEME = {
   color: {},
-  font: {},
+  // Public Sans, USWDS's own typeface, for body and interface text (USWDS default: Source Sans Pro).
+  font: { "font-type-sans": "public-sans" },
   // USWDS defaults: buttons "md" (4px), cards "lg" (8px), tags "sm" (2px), square inputs.
   shape: { button: "4", card: "8", tag: "2", input: "0" },
   weights: { heading: 700 },
@@ -175,7 +176,7 @@ const out = {
   shape: AGORA_THEME.shape,
   color: { theme, routes, avatars, ramps: { success: ramp("green-cool"), warning: ramp("gold"), error: ramp("red-warm"), base: ramp("gray-cool"), primary: ramp("blue") }, focus: hex(read("settings/_settings-general.scss").match(/^\$theme-focus-color:\s*"([a-z0-9-]+)"/m)[1]) },
   font: {
-    families: { sans: "Source Sans 3", serif: "Merriweather", mono: "Roboto Mono" },
+    families: { sans: { "public-sans": "Public Sans", "source-sans-pro": "Source Sans 3" }[fonts.sans], serif: "Merriweather", mono: "Roboto Mono" },
     tokens: fonts,
     roles,
     sizes: { heading: normalized(fonts[roles.heading]), body: normalized(fonts[roles.body]), ui: normalized(fonts[roles.ui]) },

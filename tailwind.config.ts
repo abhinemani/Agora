@@ -25,11 +25,11 @@ export default {
       // from the generated palette. The <alpha-value> keeps opacity modifiers working.
       colors: toVars(us.palette),
       fontFamily: {
-        sans: [`"${us.font.families.sans}"`, '"Source Sans Pro"', "Helvetica Neue", "Helvetica", "Roboto", "Arial", "sans-serif"],
-        body: [`"${us.font.families.sans}"`, '"Source Sans Pro"', "Helvetica Neue", "Helvetica", "Roboto", "Arial", "sans-serif"],
-        ui: [`"${us.font.families.sans}"`, '"Source Sans Pro"', "Helvetica Neue", "Helvetica", "Roboto", "Arial", "sans-serif"],
+        sans: [`"${us.font.families.sans}"`, "Helvetica Neue", "Helvetica", "Roboto", "Arial", "sans-serif"],
+        body: [`"${us.font.families.sans}"`, "Helvetica Neue", "Helvetica", "Roboto", "Arial", "sans-serif"],
+        ui: [`"${us.font.families.sans}"`, "Helvetica Neue", "Helvetica", "Roboto", "Arial", "sans-serif"],
         // The heading role follows the theme: sans in Agora's theme, serif in USWDS's default.
-        heading: us.font.roles.heading === "serif" ? [`"${us.font.families.serif}"`, "Georgia", "Cambria", '"Times New Roman"', "Times", "serif"] : [`"${us.font.families.sans}"`, '"Source Sans Pro"', "Helvetica Neue", "Helvetica", "Arial", "sans-serif"],
+        heading: us.font.roles.heading === "serif" ? [`"${us.font.families.serif}"`, "Georgia", "Cambria", '"Times New Roman"', "Times", "serif"] : [`"${us.font.families.sans}"`, "Helvetica Neue", "Helvetica", "Arial", "sans-serif"],
         mono: [`"${us.font.families.mono}"`, "Bitstream Vera Sans Mono", "Consolas", "Courier", "monospace"],
       },
       fontSize: { ...sizes("heading"), ...sizes("body"), ...sizes("ui") },

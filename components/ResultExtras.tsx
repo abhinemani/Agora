@@ -13,7 +13,7 @@ import { Button, ErrorNote, LinkButton, money } from "./ui";
 export function OwnContractsCard({ hits, agency }: { hits: OwnHit[]; agency: string }) {
   if (!hits.length) return null;
   return (
-    <section id="own-contracts" className="scroll-mt-24 rounded-2xl border border-l-[4px] border-emerald-200 border-l-src-own bg-emerald-50/60 p-5">
+    <section id="own-contracts" className="scroll-mt-24 rounded-xl bg-success-container/60 p-5">
       <div className="flex items-center gap-2">
         <span className="grid h-6 w-6 place-items-center rounded-full bg-emerald-600 text-white">
           <Check className="h-3.5 w-3.5" />

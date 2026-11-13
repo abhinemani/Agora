@@ -60,14 +60,14 @@ export default function OrdersOversight() {
       <PageTitle title="Orders">Every order across the agency: who asked for it, who it's for, where it stands, and the step that's next.</PageTitle>
 
       {toReconcile.length > 0 && (
-        <Card className="flex flex-wrap items-center justify-between gap-3 border-amber-200 bg-amber-50 p-4 text-sm text-amber-900">
+        <div className="flex flex-wrap items-center justify-between gap-3 rounded-lg bg-warning-container p-4 text-body-m text-warning-on-container">
           <span>
             <span className="font-semibold">{toReconcile.length} P-card charge{toReconcile.length === 1 ? "" : "s"}</span> received and waiting to be matched to a receipt.
           </span>
           <Button variant="secondary" onClick={() => setStatus("delivered")}>
             Show them
           </Button>
-        </Card>
+        </div>
       )}
 
       <div className="flex flex-wrap items-end gap-3">
@@ -158,7 +158,7 @@ export default function OrdersOversight() {
                   <td className="px-4 py-3">
                     <div className="flex gap-0.5" aria-hidden>
                       {steps.map((s, i) => (
-                        <span key={s} className={`h-1.5 w-5 rounded-full ${i <= at ? (o.status === "reconciled" ? "bg-emerald-600" : "bg-navy") : "bg-line"}`} />
+                        <span key={s} className={`h-1.5 w-5 rounded-full ${i <= at ? (o.status === "reconciled" ? "bg-emerald-600" : "bg-primary") : "bg-line"}`} />
                       ))}
                     </div>
                     <div className="mt-1 block">

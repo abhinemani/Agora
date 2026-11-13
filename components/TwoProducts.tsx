@@ -37,9 +37,9 @@ export function TwoProducts({ dark = false }: { dark?: boolean }) {
           <Link
             key={i.title}
             href={i.href}
-            className={`flex flex-col rounded-2xl p-5 transition ${dark ? "bg-white/10 ring-1 ring-white/15 hover:bg-white/15" : "border border-line hover:border-[#bbcae8]"}`}
+            className={`flex flex-col rounded-2xl p-5 transition ${dark ? "bg-white/10 ring-1 ring-white/15 hover:bg-white/15" : "border border-line hover:border-outline"}`}
           >
-            <div className="text-[11px] font-extrabold uppercase tracking-[0.16em]" style={{ color: dark ? "rgba(255,255,255,0.6)" : i.color }}>
+            <div className="text-[11px] font-extrabold uppercase" style={{ color: dark ? "rgba(255,255,255,0.6)" : i.color }}>
               {i.eyebrow}
             </div>
             <div className={`mt-2 text-lg font-bold tracking-tight ${dark ? "text-white" : "text-navy"}`}>{i.title}</div>

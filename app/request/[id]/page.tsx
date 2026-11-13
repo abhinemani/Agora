@@ -12,7 +12,7 @@ import { ExpiredNote, InviteAdminBanner, NextSteps, OwnContractsCard } from "@/c
 import { CategoryIcon } from "@/components/CategoryIcon";
 import { useStore } from "@/components/store";
 import { Lock, People, Plus, Sparkle } from "@/components/icons";
-import { Badge, Button, Card, ErrorNote, Eyebrow, IconCircle, LinkButton, Loading, RevenueTags, SOURCE_HEX, SourcePill, Stars, SupplierBadges, money } from "@/components/ui";
+import { Badge, Button, Card, ErrorNote, Eyebrow, IconCircle, LinkButton, Loading, RevenueTags, SourcePill, Stars, SupplierBadges, money } from "@/components/ui";
 import { goHref } from "@/lib/coops";
 import type { ContractLead, Results, ResultOption, Unavailable } from "@/lib/assistant";
 import { PURCHASE_KINDS, TRANSACTION_FEE_SOURCES } from "@/lib/revenue_rules";
@@ -99,7 +99,7 @@ export default function RequestResults() {
         </Link>
         <div className="mt-4 flex flex-wrap items-start justify-between gap-4">
           <div className="min-w-0">
-            <h1 className="text-[1.8rem] font-extrabold leading-tight tracking-[-0.03em] text-navy">Results for “{request.raw_text}”</h1>
+            <h1 className="text-[1.8rem] font-extrabold leading-tight text-navy">Results for “{request.raw_text}”</h1>
             <p className="mt-1.5 text-sm text-slate" title={request.parse_mode === "llm" ? "Read by Claude" : "Read with offline rules"}>
               {results && !results.no_match ? `${all.length} option${all.length === 1 ? "" : "s"} across ${sources} kind${sources === 1 ? "" : "s"} of contract. ` : ""}
               {p.quantity > 1 ? `${p.quantity} needed` : "One needed"}
@@ -110,11 +110,11 @@ export default function RequestResults() {
           </div>
           <div className="flex shrink-0 flex-wrap items-center gap-2">
             {results && !results.no_match && (
-              <button onClick={() => setWhy(!why)} className="rounded-[9px] border border-[#dbe4f0] bg-white px-3.5 py-2.5 text-xs font-bold text-[#385783] hover:border-[#8fa8e8]">
+              <button onClick={() => setWhy(!why)} className="state-layer inline-flex h-8 items-center rounded-md border border-outline px-4 text-label-l text-on-surface-variant">
                 {why ? "Hide ranking" : "How these are ranked"}
               </button>
             )}
-            <button onClick={() => setChanging(!changing)} className="rounded-[9px] border border-[#dbe4f0] bg-white px-3.5 py-2.5 text-xs font-bold text-[#385783] hover:border-[#8fa8e8]">
+            <button onClick={() => setChanging(!changing)} className="state-layer inline-flex h-8 items-center rounded-md border border-outline px-4 text-label-l text-on-surface-variant">
               {changing ? "Cancel" : buyer ? `For ${buyer.name}` : "Set your agency"}
             </button>
           </div>
@@ -294,10 +294,7 @@ function OptionCard({ o, qty, requestId }: { o: ResultOption; qty: number; reque
   const title = tiered ? l.title.replace(/\s*\([^)]*\)\s*$/, "") : l.title;
   const href = `/product/${l.id}?qty=${qty}&request=${requestId}`;
   return (
-    <div
-      className="flex min-h-[290px] flex-col rounded-2xl border border-l-[4px] border-line bg-white p-[18px] shadow-[0_3px_15px_rgba(19,45,82,0.02)] transition-colors hover:border-[#bbcae8]"
-      style={{ borderLeftColor: SOURCE_HEX[qr ? o.group : l.source] }}
-    >
+    <div className="flex min-h-[290px] flex-col rounded-lg border border-outline-variant bg-surface-container-lowest p-4 transition-shadow hover:shadow-elevation-1">
       <div className="flex items-start justify-between gap-3">
         <CategoryIcon category={l.category} />
         <div className="flex flex-col items-end gap-1">
@@ -316,7 +313,7 @@ function OptionCard({ o, qty, requestId }: { o: ResultOption; qty: number; reque
         </Link>
         <SupplierBadges supplier={o.supplier} />
       </div>
-      <Link href={href} className="mt-0.5 text-[17px] font-bold leading-snug tracking-[-0.01em] text-navy hover:text-maroon">
+      <Link href={href} className="mt-0.5 text-[17px] font-bold leading-snug text-navy hover:text-maroon">
         {title}
       </Link>
       <p className="mt-1.5 line-clamp-3 text-xs leading-relaxed text-slate">
@@ -347,7 +344,7 @@ function OptionCard({ o, qty, requestId }: { o: ResultOption; qty: number; reque
         <Stars rating={o.supplier.rating} count={o.supplier.review_count} />
         {!qr && !lo && <RevenueTags options={earnsFor({ ...o, rule })} />}
       </div>
-      <div className="mt-auto flex items-end justify-between gap-2 border-t border-[#edf0f5] pt-3">
+      <div className="mt-auto flex items-end justify-between gap-2 border-t border-outline-variant pt-3">
         <div className="min-w-0">
           <div className={`text-[15px] font-extrabold tabular-nums ${qr ? "text-slate" : "text-navy"}`}>
             {money(l.unit_price)}
@@ -357,7 +354,7 @@ function OptionCard({ o, qty, requestId }: { o: ResultOption; qty: number; reque
         </div>
         <div className="flex shrink-0 items-center gap-1.5">
           {lo || qr ? (
-            <Link href={href} className="rounded-[9px] border border-[#dbe4f0] bg-white px-3 py-2 text-xs font-bold text-[#385783] hover:border-[#8fa8e8]">
+            <Link href={href} className="state-layer inline-flex h-9 items-center rounded-full border border-outline px-4 text-label-l text-primary">
               View
             </Link>
           ) : (
@@ -370,7 +367,7 @@ function OptionCard({ o, qty, requestId }: { o: ResultOption; qty: number; reque
               <span className="text-[11px] font-semibold text-emerald-800">Quote {quoted} sent</span>
             ) : (
               <button
-                className="rounded-[9px] bg-maroon px-3 py-2 text-xs font-bold text-white hover:bg-maroon-600"
+                className="state-layer inline-flex h-9 items-center rounded-full bg-primary px-4 text-label-l text-on-primary"
                 onClick={async () => {
                   setQuoteError(null);
                   try {
@@ -385,7 +382,7 @@ function OptionCard({ o, qty, requestId }: { o: ResultOption; qty: number; reque
               </button>
             )
           ) : (
-            <Link href={`/checkout?listing=${l.id}&qty=${qty}&request=${requestId}`} className="rounded-[9px] bg-maroon px-3 py-2 text-xs font-bold text-white hover:bg-maroon-600">
+            <Link href={`/checkout?listing=${l.id}&qty=${qty}&request=${requestId}`} className="state-layer inline-flex h-9 items-center rounded-full bg-primary px-4 text-label-l text-on-primary">
               Buy
             </Link>
           )}

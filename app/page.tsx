@@ -55,13 +55,13 @@ export default function Home() {
     <div className="pb-8">
       {/* Hero: one question, one box. */}
       <section className="px-1 pb-14 pt-12 text-center sm:pt-20">
-        <div className="text-[11px] font-extrabold uppercase tracking-[0.18em] text-maroon/80">Government buying, simplified</div>
-        <h1 className="mx-auto mt-4 max-w-3xl text-[clamp(2.1rem,5vw,3.6rem)] font-extrabold leading-[1.07] tracking-[-0.04em] text-navy">What are you looking to buy?</h1>
+        <div className="text-[11px] font-extrabold uppercase text-maroon/80">Government buying, simplified</div>
+        <h1 className="mx-auto mt-4 max-w-3xl text-[clamp(2.1rem,5vw,3.6rem)] font-extrabold leading-[1.07] text-navy">What are you looking to buy?</h1>
         <p className="mx-auto mt-4 max-w-xl text-base leading-relaxed text-slate">
           Search state and cooperative contracts in one place. Agora shows which ones your agency can use, what they cost, and how to buy.
         </p>
         <form
-          className="mx-auto mt-8 flex max-w-3xl items-center gap-2 rounded-2xl border border-[#d4ddeb] bg-white p-2 pl-4 shadow-[0_16px_50px_rgba(44,71,122,0.08)] focus-within:border-maroon/50"
+          className="mx-auto mt-8 flex max-w-3xl items-center gap-2 rounded-2xl border border-outline-variant bg-white p-2 pl-4 shadow-elevation-2 focus-within:border-maroon/50"
           onSubmit={(e) => {
             e.preventDefault();
             submit(text);
@@ -78,7 +78,7 @@ export default function Home() {
           <button
             type="submit"
             disabled={busy || !text.trim()}
-            className="inline-flex shrink-0 items-center gap-1.5 rounded-[10px] bg-maroon px-4 py-3.5 text-sm font-bold text-white transition hover:bg-maroon-600 disabled:opacity-50 sm:px-5"
+            className="inline-flex shrink-0 items-center gap-1.5 rounded-lg bg-maroon px-4 py-3.5 text-sm font-bold text-white transition hover:bg-maroon-600 disabled:opacity-50 sm:px-5"
           >
             Find solutions <Arrow className="hidden h-4 w-4 sm:block" />
           </button>
@@ -89,7 +89,7 @@ export default function Home() {
               key={e}
               onClick={() => submit(e)}
               disabled={busy}
-              className="rounded-full border border-line bg-white px-3.5 py-2 text-xs text-[#4c607e] transition hover:border-maroon hover:text-maroon"
+              className="rounded-full border border-line bg-white px-3.5 py-2 text-xs text-on-surface-variant transition hover:border-maroon hover:text-maroon"
             >
               {e}
             </button>
@@ -104,8 +104,8 @@ export default function Home() {
       {/* How it works, shown rather than told. */}
       <section className="grid grid-cols-1 items-center gap-10 rounded-3xl border border-line bg-white p-6 sm:p-10 md:grid-cols-[minmax(0,1fr)_minmax(0,1.05fr)]">
         <div>
-          <div className="text-[11px] font-extrabold uppercase tracking-[0.18em] text-maroon/80">One request, every contract</div>
-          <h2 className="mt-3 text-[1.9rem] font-extrabold leading-tight tracking-[-0.03em] text-navy">Stop checking five portals for the same folding table.</h2>
+          <div className="text-[11px] font-extrabold uppercase text-maroon/80">One request, every contract</div>
+          <h2 className="mt-3 text-[1.9rem] font-extrabold leading-tight text-navy">Stop checking five portals for the same folding table.</h2>
           <p className="mt-3 text-[15px] leading-relaxed text-slate">
             Agora reads {db.contracts.length} contracts from {suppliers} suppliers, {products.toLocaleString()} products in all, and lines them up side by side. Tell it your agency
             and it hides the ones you can't use; leave it blank and it shows who each contract is open to.
@@ -159,10 +159,10 @@ export default function Home() {
       </section>
 
       {/* What we sell on top of the free marketplace: one product per side. */}
-      <section className="mt-14 overflow-hidden rounded-3xl bg-navy p-8 text-white sm:p-10">
+      <section className="mt-14 overflow-hidden rounded-3xl bg-inverse-surface p-8 text-inverse-on-surface sm:p-10">
         <div className="max-w-2xl">
-          <div className="text-[11px] font-extrabold uppercase tracking-[0.18em] text-white/60">Built on Agora</div>
-          <h2 className="mt-3 text-[1.8rem] font-extrabold leading-tight tracking-[-0.03em]">A marketplace for your city. A storefront for your company.</h2>
+          <div className="text-[11px] font-extrabold uppercase text-white/60">Built on Agora</div>
+          <h2 className="mt-3 text-[1.8rem] font-extrabold leading-tight">A marketplace for your city. A storefront for your company.</h2>
           <p className="mt-3 text-[15px] leading-relaxed text-white/75">
             Searching Agora is free. A city can run its own marketplace on it, with its contracts and rules; a supplier can run a storefront in it, with its catalog and
             reviews. Riverbend's marketplace is live as an example.

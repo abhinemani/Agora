@@ -97,9 +97,19 @@ Each **order** now runs to reconciled, with a timeline on its page. A P-card ord
 
 **Verification.** Supplier badges now open the checks behind them: SAM.gov registration, the SAM.gov exclusions list, Section 889, certificate of insurance, performance bond and each certification. Every check shows its source and the date it was last run, and expiring or failed checks show as "N checks to review." Storefronts list the checks in full. Only the eight fictional demo suppliers carry results, all labeled as demo data. Real companies (Tyler, Dell and the rest) show every check as not checked yet, because Agora holds no real SAM.gov or insurance results for them.
 
-## Look and feel
+## Look and feel: Material 3
 
-The type is Public Sans, the typeface of the U.S. Web Design System that many government sites already use. Color marks where something is bought, the same way everywhere: evergreen for an agency's own contracts, ochre for state contracts, violet for co-ops, slate for resellers and GSA, teal for small purchases (`src` in `tailwind.config.ts`, `SOURCE_HEX` in `components/ui.tsx`). Result cards carry that color on their left edge. Results open with **Where you can buy this**, a strip that counts each route in the order to try it (yours, state, your co-ops, co-ops to join, other) and links to each section.
+Agora follows Google's Material 3. The color scheme is generated, not hand-picked. `node scripts/m3-theme.mjs` runs Google's `material-color-utilities` on Agora's blue (#315BD0) with M3's fidelity scheme, which is meant for brand colors: the primary container is the brand blue itself. The script writes every color role and tonal palette to `lib/m3-theme.json`. One role is overridden: the secondary container uses M3's baseline tone mapping (tone 90, with text at tone 10), so tonal buttons and the navigation indicator read clearly. The five buying-route colors (your contracts, state, co-ops, other, small purchase) and the success and warning colors are M3 custom colors, harmonized toward the seed. `tailwind.config.ts` reads the JSON. M3 role names work as classes (`bg-surface-container`, `text-on-primary`), and Agora's older color names and Tailwind's emerald, amber and red map onto M3 roles and harmonized palettes. To change the brand color, edit `SEED` and rerun the script.
+
+Type is Roboto on M3's type scale (`text-headline-m`, `text-title-s`, `text-label-l` and the rest), using only regular and medium weights. Shapes follow M3's corner scale: 4px for text fields, 8px for chips, 12px for cards, 16px for sheets, 28px for dialogs, and fully round buttons. Components follow their M3 counterparts:
+
+- **Buttons:** filled, tonal, outlined and text, each with a state layer.
+- **Cards and chips:** outlined cards, and tonal chips for each buying route.
+- **Navigation:** a top app bar that fills on scroll, with pill indicators on its nav items, and primary tabs on the cart page.
+- **Inputs:** a segmented button for member-list uploads, outlined text fields, and switches for settings that take effect immediately.
+- **Overlays:** menus, a dialog for supplier checks, a side sheet for the ledger, a badge on the cart, and linear progress for loading.
+
+Keyboard focus uses M3's 3px focus indicator. Results still open with **Where you can buy this**, now on a surface-container card.
 
 ## NASPO ValuePoint
 

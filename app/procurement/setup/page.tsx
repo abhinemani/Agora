@@ -5,7 +5,7 @@ import { ContractRegister } from "@/components/ContractRegister";
 import { CoopMemberships } from "@/components/CoopMemberships";
 import { Check } from "@/components/icons";
 import { useStore } from "@/components/store";
-import { Button, Card, ErrorNote, Loading, PageTitle } from "@/components/ui";
+import { Button, Card, ErrorNote, Loading, PageTitle, Switch } from "@/components/ui";
 import { FREE_RFP_LIMIT, rfpsLeft, settingsFor, setupStatus } from "@/lib/agency";
 import { stateName } from "@/lib/vehicles";
 import { useEffect, useState } from "react";
@@ -104,20 +104,18 @@ export default function AgencySetup() {
               </span>
             </div>
             <div className="mt-1 h-1.5 rounded bg-tint">
-              <div className={`h-1.5 rounded ${left === 0 ? "bg-maroon" : "bg-navy"}`} style={{ width: `${Math.min(100, (settings.rfp_used / FREE_RFP_LIMIT) * 100)}%` }} />
+              <div className={`h-1.5 rounded ${left === 0 ? "bg-maroon" : "bg-primary"}`} style={{ width: `${Math.min(100, (settings.rfp_used / FREE_RFP_LIMIT) * 100)}%` }} />
             </div>
           </div>
         )}
-        <label className={`mt-4 flex items-center gap-2 text-sm ${settings.plan === "paid" ? "text-navy" : "text-slate"}`}>
-          <input
-            type="checkbox"
-            className="!p-0"
+        <div className="mt-4">
+          <Switch
             checked={!settings.ad_free}
             disabled={settings.plan !== "paid"}
-            onChange={(e) => run("setAdFree", { on: !e.target.checked })}
+            onChange={(on) => run("setAdFree", { on: !on })}
+            label={<>Show sponsored placements to staff{settings.plan !== "paid" && " (always on in the free plan)"}</>}
           />
-          Show sponsored placements to staff{settings.plan !== "paid" && " (always on in the free plan)"}
-        </label>
+        </div>
         <ErrorNote message={error} />
       </Card>
     </div>

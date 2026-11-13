@@ -19,8 +19,8 @@ export default function Marketplaces() {
   return (
     <div className="space-y-12 pb-8">
       <div className="max-w-2xl pt-6">
-        <div className="text-[11px] font-extrabold uppercase tracking-[0.18em] text-maroon/80">City marketplaces</div>
-        <h1 className="mt-3 text-[clamp(2rem,4vw,2.8rem)] font-extrabold leading-[1.1] tracking-[-0.035em] text-navy">Agora, as your city's own marketplace.</h1>
+        <div className="text-[11px] font-extrabold uppercase text-maroon/80">City marketplaces</div>
+        <h1 className="mt-3 text-[clamp(2rem,4vw,2.8rem)] font-extrabold leading-[1.1] text-navy">Agora, as your city's own marketplace.</h1>
         <p className="mt-3 text-base leading-relaxed text-slate">
           Anyone can search Agora for free. A city marketplace is a white-labeled Agora that a city, county, or district runs for its own staff: its contracts, its rules, its
           brand, on top of the same shared catalog.
@@ -35,16 +35,16 @@ export default function Marketplaces() {
                 <span className="grid h-11 w-11 place-items-center rounded-xl text-lg font-extrabold text-white" style={{ background: s.color }}>
                   {s.name.replace(/^(City|Town) of /, "")[0]}
                 </span>
-                <span className={`rounded-md px-2 py-1 text-[10px] font-bold ${s.live ? "bg-[#e8f6ef] text-[#167854]" : "bg-[#eef3fa] text-[#59708c]"}`}>{s.live ? "Live" : "Available"}</span>
+                <span className={`rounded-md px-2 py-1 text-[10px] font-bold ${s.live ? "bg-success-container text-success" : "bg-secondary-container text-on-surface-variant"}`}>{s.live ? "Live" : "Available"}</span>
               </div>
               <div className="mt-5 text-lg font-bold tracking-tight text-navy">{s.name}</div>
               <div className="text-xs text-slate">{s.where}</div>
               <p className="mt-2 text-sm text-slate">{s.blurb}</p>
-              <div className="mt-auto border-t border-[#edf0f5] pt-3 text-sm font-semibold text-maroon">{s.live ? "Open marketplace →" : "Demo on request"}</div>
+              <div className="mt-auto border-t border-outline-variant pt-3 text-sm font-semibold text-maroon">{s.live ? "Open marketplace →" : "Demo on request"}</div>
             </>
           );
           return s.href ? (
-            <Link key={s.name} href={s.href} className="flex min-h-[220px] flex-col rounded-2xl border border-line bg-white p-5 transition hover:border-[#bbcae8]">
+            <Link key={s.name} href={s.href} className="flex min-h-[220px] flex-col rounded-2xl border border-line bg-white p-5 transition hover:border-outline">
               {body}
             </Link>
           ) : (

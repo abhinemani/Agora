@@ -28,7 +28,7 @@ export function CoopSection({ section, requestId, onMembershipChange }: { sectio
   const others = section.hits.filter((h) => !h.member);
 
   return (
-    <section id="coops" className="scroll-mt-24 rounded-2xl border border-l-[4px] border-line border-l-src-coop bg-white p-5">
+    <section id="coops" className="scroll-mt-24 rounded-xl bg-surface-container-low p-5">
       <div className="flex flex-wrap items-end justify-between gap-3">
         <div>
           <h2 className="text-lg font-bold tracking-tight text-navy">Co-op contracts for this</h2>
@@ -130,7 +130,7 @@ function Hit({ h, requestId }: { h: CoopHit; requestId: string }) {
         ) : (
           <>
             {h.link_out?.has_link && (
-              <a href={goHref(h.contract_id, { request: requestId })} target="_blank" rel="noreferrer" className="text-xs font-semibold text-[#385783] hover:underline">
+              <a href={goHref(h.contract_id, { request: requestId })} target="_blank" rel="noreferrer" className="text-xs font-semibold text-primary hover:underline">
                 View contract ↗
               </a>
             )}
@@ -148,7 +148,7 @@ function Hit({ h, requestId }: { h: CoopHit; requestId: string }) {
                     setError((e as Error).message);
                   }
                 }}
-                className="rounded-[9px] bg-maroon px-3 py-2 text-xs font-bold text-white hover:bg-maroon-600 disabled:opacity-50"
+                className="state-layer inline-flex h-9 items-center rounded-full bg-primary px-4 text-label-l text-on-primary disabled:bg-on-surface/[.12] disabled:text-on-surface/[.38]"
               >
                 Ask purchasing to get us on this
               </button>

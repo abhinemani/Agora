@@ -28,7 +28,7 @@ export default function Spend() {
               <div key={r.key} className="grid grid-cols-[10rem_1fr_5rem] items-center gap-3 text-sm">
                 <span className="text-slate">{r.label}</span>
                 <div className="h-3 rounded bg-tint">
-                  <div className="h-3 rounded bg-navy" style={{ width: `${(r.amount / max) * 100}%` }} />
+                  <div className="h-3 rounded bg-primary" style={{ width: `${(r.amount / max) * 100}%` }} />
                 </div>
                 <span className="text-right font-semibold tabular-nums text-navy">{compact(r.amount)}</span>
               </div>

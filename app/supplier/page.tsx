@@ -81,7 +81,7 @@ function Supplier() {
               <div className="mb-1 text-[11px] font-semibold text-slate">Edge tier (demo control)</div>
               <div className="flex rounded-md bg-tint p-0.5">
                 {(["discover", "win", "position"] as EdgeTier[]).map((t) => (
-                  <button key={t} onClick={() => run("setTier", { tier: t })} className={`rounded px-3 py-1 text-xs font-semibold ${s.edge_tier === t ? "bg-navy text-white" : "text-navy"}`}>
+                  <button key={t} onClick={() => run("setTier", { tier: t })} className={`rounded px-3 py-1 text-xs font-semibold ${s.edge_tier === t ? "bg-secondary-container text-on-secondary-container" : "text-navy"}`}>
                     {TIER_LABEL[t].replace("Edge ", "")}
                   </button>
                 ))}

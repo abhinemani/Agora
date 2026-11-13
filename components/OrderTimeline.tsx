@@ -50,9 +50,9 @@ export function OrderTimeline({ orderId }: { orderId: string }) {
           const e = happened.get(s);
           return (
             <li key={s} className="relative flex gap-3 pb-4 last:pb-0">
-              {i < steps.length - 1 && <span className={`absolute left-[9px] top-5 h-full w-0.5 ${i < at ? "bg-navy" : "bg-line"}`} aria-hidden />}
+              {i < steps.length - 1 && <span className={`absolute left-[9px] top-5 h-full w-0.5 ${i < at ? "bg-primary" : "bg-line"}`} aria-hidden />}
               <span
-                className={`relative z-10 mt-0.5 grid h-5 w-5 shrink-0 place-items-center rounded-full text-[10px] font-bold ${done ? (s === "reconciled" ? "bg-emerald-600 text-white" : "bg-navy text-white") : "border-2 border-line bg-white"} ${current ? "ring-4 ring-navy/10" : ""}`}
+                className={`relative z-10 mt-0.5 grid h-5 w-5 shrink-0 place-items-center rounded-full text-[10px] font-bold ${done ? (s === "reconciled" ? "bg-emerald-600 text-white" : "bg-secondary-container text-on-secondary-container") : "border-2 border-line bg-white"} ${current ? "ring-4 ring-navy/10" : ""}`}
               >
                 {done ? "✓" : ""}
               </span>

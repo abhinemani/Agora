@@ -46,6 +46,14 @@ export function Header() {
   const path = usePathname();
   const [open, setOpen] = useState(false);
   const [picking, setPicking] = useState(false);
+  // M3 top app bar: flat on the surface, a surface-container fill once content scrolls under it.
+  const [scrolled, setScrolled] = useState(false);
+  useEffect(() => {
+    const on = () => setScrolled(window.scrollY > 4);
+    on();
+    window.addEventListener("scroll", on, { passive: true });
+    return () => window.removeEventListener("scroll", on);
+  }, []);
   const buyer = db?.session.buyer;
   const menu = useRef<HTMLDivElement>(null);
   const total = db?.revenue.reduce((n, e) => n + e.amount, 0) ?? 0;
@@ -71,21 +79,20 @@ export function Header() {
   }, [open]);
 
   return (
-    <header className="sticky top-0 z-30 border-b border-line bg-white/90 backdrop-blur">
+    <header className={`sticky top-0 z-30 transition-colors duration-200 ${scrolled ? "bg-surface-container" : "bg-surface"}`}>
       <div className="mx-auto flex h-16 max-w-6xl items-center gap-3 px-4 sm:gap-8">
         <Link href={current.home} className="flex items-center gap-2" aria-label="Agora home">
-          <span className="grid h-9 w-9 place-items-center rounded-[10px] bg-navy text-lg font-semibold text-white">α</span>
-          <span className="hidden text-[22px] font-bold tracking-[-0.04em] text-navy sm:block">
-            ago<span className="text-maroon">ra</span>
-          </span>
+          <span className="grid h-10 w-10 place-items-center rounded-lg bg-primary text-title-l text-on-primary">α</span>
+          <span className="hidden text-title-l text-on-surface sm:block">Agora</span>
         </Link>
 
-        <nav className="flex min-w-0 items-center gap-0.5 overflow-x-auto text-sm sm:gap-1">
+        <nav className="-my-1 flex min-w-0 items-center gap-1 overflow-x-auto p-1">
           {NAV[role].map((n) => (
             <Link
               key={n.href}
               href={n.href}
-              className={`shrink-0 rounded-md px-2 py-1.5 transition-colors sm:px-3 ${isActive(n.href) ? "bg-[#EDF1F7] font-semibold text-navy" : "text-slate hover:text-navy"}`}
+              aria-current={isActive(n.href) ? "page" : undefined}
+              className={`state-layer shrink-0 rounded-full px-3 py-2 text-label-l sm:px-4 ${isActive(n.href) ? "bg-secondary-container text-on-secondary-container" : "text-on-surface-variant"}`}
             >
               {n.label}
             </Link>
@@ -94,13 +101,19 @@ export function Header() {
 
         <Link
           href="/cart"
-          className={`relative ml-auto flex shrink-0 items-center gap-1.5 rounded-full border px-3 py-1.5 text-sm font-semibold transition-colors ${cartCount ? "border-navy/20 text-navy hover:border-navy/40" : "border-line text-slate hover:text-navy"}`}
+          className="state-layer relative ml-auto flex h-10 shrink-0 items-center gap-2 rounded-full px-3 text-label-l text-on-surface-variant"
           aria-label={`Cart, ${cartCount} item${cartCount === 1 ? "" : "s"}${cartWaiting ? `, ${cartWaiting} waiting on approval` : ""}`}
         >
-          <Cart className="h-4 w-4" />
+          <span className="relative">
+            <Cart className="h-6 w-6" />
+            {cartCount > 0 && (
+              <span key={cartCount} className="cart-bump absolute -right-2 -top-1.5 grid h-4 min-w-4 place-items-center rounded-full bg-error px-1 text-label-s tabular-nums text-on-error">
+                {cartCount}
+              </span>
+            )}
+            {cartWaiting > 0 && !cartCount && <span className="absolute -right-0.5 -top-0.5 h-1.5 w-1.5 rounded-full bg-error" aria-hidden />}
+          </span>
           <span className="hidden sm:inline">Cart</span>
-          {cartCount > 0 && <span key={cartCount} className="cart-bump grid h-5 min-w-5 place-items-center rounded-full bg-navy px-1.5 text-[11px] tabular-nums text-white">{cartCount}</span>}
-          {cartWaiting > 0 && <span className="h-2 w-2 rounded-full bg-amber-500" aria-hidden />}
         </Link>
 
         <div ref={menu} className="relative shrink-0">
@@ -108,19 +121,19 @@ export function Header() {
             onClick={() => setOpen(!open)}
             aria-expanded={open}
             aria-haspopup="menu"
-            className="flex items-center gap-2 rounded-full border border-line py-1 pl-1 pr-2.5 text-sm text-navy hover:border-navy/30"
+            className="state-layer flex h-10 items-center gap-2 rounded-full border border-outline-variant py-1 pl-1 pr-3 text-label-l text-on-surface"
           >
-            <span className="relative grid h-7 w-7 place-items-center rounded-full bg-maroon text-[11px] font-semibold text-white">
+            <span className="relative grid h-8 w-8 place-items-center rounded-full bg-primary-container text-label-m text-on-primary-container">
               {current.initials}
-              {fresh > 0 && <span className="absolute -right-0.5 -top-0.5 h-2.5 w-2.5 rounded-full border-2 border-white bg-rose" aria-label={`${fresh} new revenue events`} />}
+              {fresh > 0 && <span className="absolute -right-0.5 -top-0.5 h-2.5 w-2.5 rounded-full border-2 border-surface bg-error" aria-label={`${fresh} new revenue events`} />}
             </span>
             <span className="hidden sm:inline">{current.label}</span>
-            <Menu className="h-4 w-4 text-slate" />
+            <Menu className="h-5 w-5 text-on-surface-variant" />
           </button>
 
           {open && (
-            <div role="menu" className="absolute right-0 mt-2 w-72 overflow-hidden rounded-xl border border-line bg-white shadow-[0_12px_32px_-12px_rgba(20,33,61,0.25)]">
-              <div className="px-4 pb-2 pt-3 text-xs text-slate">View the demo as</div>
+            <div role="menu" className="absolute right-0 mt-2 w-72 overflow-hidden rounded-sm bg-surface-container py-2 shadow-elevation-2">
+              <div className="px-4 pb-1 pt-2 text-title-s text-on-surface-variant">View the demo as</div>
               {ROLES.map((r) => (
                 <button
                   key={r.id}
@@ -131,28 +144,28 @@ export function Header() {
                     setOpen(false);
                     router.push(r.home);
                   }}
-                  className={`flex w-full items-center gap-3 px-4 py-2 text-left hover:bg-page ${role === r.id ? "bg-page" : ""}`}
+                  className={`state-layer flex min-h-12 w-full items-center gap-3 px-4 py-2 text-left ${role === r.id ? "bg-secondary-container text-on-secondary-container" : "text-on-surface"}`}
                 >
-                  <span className={`grid h-7 w-7 place-items-center rounded-full text-[11px] font-semibold ${role === r.id ? "bg-maroon text-white" : "bg-[#EDF1F7] text-navy"}`}>
+                  <span className={`grid h-8 w-8 place-items-center rounded-full text-label-m ${role === r.id ? "bg-primary text-on-primary" : "bg-primary-container text-on-primary-container"}`}>
                     {r.initials}
                   </span>
                   <span className="min-w-0">
-                    <span className="block text-sm font-semibold text-navy">{r.label}</span>
-                    <span className="block truncate text-xs text-slate">{r.person}</span>
+                    <span className="block text-label-l">{r.label}</span>
+                    <span className="block truncate text-body-s text-on-surface-variant">{r.person}</span>
                   </span>
                 </button>
               ))}
-              <div className="mt-2 border-t border-line py-1">
+              <div className="mt-2 border-t border-outline-variant pt-2">
                 <button
                   role="menuitem"
                   onClick={() => {
                     setOpen(false);
                     setPicking(true);
                   }}
-                  className="flex w-full items-center justify-between gap-3 px-4 py-2 text-left text-sm text-navy hover:bg-page"
+                  className="state-layer flex min-h-12 w-full items-center justify-between gap-3 px-4 py-2 text-left text-label-l text-on-surface"
                 >
                   Your agency
-                  <span className="truncate text-xs text-slate">{buyer ? `${buyer.name}, ${buyer.state}` : "Any agency"}</span>
+                  <span className="truncate text-body-s text-on-surface-variant">{buyer ? `${buyer.name}, ${buyer.state}` : "Any agency"}</span>
                 </button>
                 <button
                   role="menuitem"
@@ -160,15 +173,15 @@ export function Header() {
                     setOpen(false);
                     setLedgerOpen(true);
                   }}
-                  className="flex w-full items-center justify-between px-4 py-2 text-sm text-navy hover:bg-page"
+                  className="state-layer flex min-h-12 w-full items-center justify-between px-4 py-2 text-label-l text-on-surface"
                 >
                   Sovra revenue
-                  <span className="font-semibold tabular-nums">{compact(total)}</span>
+                  <span className="tabular-nums text-on-surface-variant">{compact(total)}</span>
                 </button>
-                <Link role="menuitem" href="/model" onClick={() => setOpen(false)} className="block px-4 py-2 text-sm text-navy hover:bg-page">
+                <Link role="menuitem" href="/model" onClick={() => setOpen(false)} className="state-layer flex min-h-12 items-center px-4 text-label-l text-on-surface">
                   How Agora earns
                 </Link>
-                <Link role="menuitem" href="/coops" onClick={() => setOpen(false)} className="block px-4 py-2 text-sm text-navy hover:bg-page">
+                <Link role="menuitem" href="/coops" onClick={() => setOpen(false)} className="state-layer flex min-h-12 items-center px-4 text-label-l text-on-surface">
                   Co-op member lists
                 </Link>
               </div>

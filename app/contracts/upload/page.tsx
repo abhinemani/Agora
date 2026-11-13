@@ -177,7 +177,7 @@ function Upload() {
           <ul className="mt-4 space-y-3">
             {STEPS.map((s, i) => (
               <li key={s} className="flex items-center gap-3 text-sm">
-                <span className={`flex h-5 w-5 items-center justify-center rounded-full text-[10px] ${i < tick ? "bg-navy text-white" : i === tick ? "animate-pulse bg-maroon text-white" : "bg-tint text-steel"}`}>
+                <span className={`flex h-5 w-5 items-center justify-center rounded-full text-[10px] ${i < tick ? "bg-secondary-container text-on-secondary-container" : i === tick ? "animate-pulse bg-maroon text-white" : "bg-tint text-steel"}`}>
                   {i < tick ? "✓" : i + 1}
                 </span>
                 <span className={i <= tick ? "text-navy" : "text-steel"}>{s}</span>
@@ -559,7 +559,7 @@ function Row({ it, selected, onSelect, update }: { it: ExtractedItem; selected: 
               <button
                 disabled={it.unit_price === null}
                 onClick={(e) => { e.stopPropagation(); update({ status: "accepted" }); }}
-                className="rounded bg-navy px-2 py-1 text-xs font-semibold text-white disabled:bg-steel"
+                className="state-layer rounded-full bg-primary px-3 py-1 text-label-m text-on-primary disabled:bg-on-surface/[.12] disabled:text-on-surface/[.38]"
               >
                 Looks right
               </button>

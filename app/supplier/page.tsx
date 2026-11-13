@@ -81,7 +81,7 @@ function Supplier() {
               <div className="mb-1 text-[11px] font-semibold text-slate">Edge tier (demo control)</div>
               <div className="flex rounded-md bg-tint p-0.5">
                 {(["discover", "win", "position"] as EdgeTier[]).map((t) => (
-                  <button key={t} onClick={() => run("setTier", { tier: t })} className={`rounded px-3 py-1 text-xs font-semibold ${s.edge_tier === t ? "bg-secondary-container text-on-secondary-container" : "text-navy"}`}>
+                  <button key={t} onClick={() => run("setTier", { tier: t })} className={`rounded px-3 py-1 text-xs font-semibold ${s.edge_tier === t ? "bg-primary-lighter text-primary-darker" : "text-navy"}`}>
                     {TIER_LABEL[t].replace("Edge ", "")}
                   </button>
                 ))}
@@ -92,15 +92,14 @@ function Supplier() {
                 <span className="font-semibold">Sponsored placement</span>
                 <span className="block text-xs text-slate">{s.edge_tier === "discover" ? "Needs Win or Position" : "$2.00 per buyer impression"}</span>
               </span>
-              <button
-                role="switch"
-                aria-checked={s.sponsored}
+              <input
+                type="checkbox"
+                aria-label="Sponsored placement"
+                checked={s.sponsored}
                 disabled={s.edge_tier === "discover"}
-                onClick={() => run("setSponsored", { on: !s.sponsored })}
-                className={`relative h-6 w-11 rounded-full transition ${s.sponsored ? "bg-maroon" : "bg-steel/50"} disabled:opacity-40`}
-              >
-                <span className={`absolute top-0.5 h-5 w-5 rounded-full bg-white shadow transition ${s.sponsored ? "left-[22px]" : "left-0.5"}`} />
-              </button>
+                onChange={() => run("setSponsored", { on: !s.sponsored })}
+                className="h-5 w-5 shrink-0 disabled:opacity-40"
+              />
             </label>
           </div>
         </div>

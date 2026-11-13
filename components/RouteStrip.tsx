@@ -1,7 +1,7 @@
 "use client";
 
 import type { Results } from "@/lib/assistant";
-import m3 from "@/lib/m3-theme.json";
+import us from "@/lib/uswds-theme.json";
 import { SOURCE_HEX } from "./ui";
 
 interface Segment {
@@ -36,9 +36,9 @@ export function RouteStrip({ results }: { results: Results }) {
   const first = segments.find((s) => s.count > 0 && !s.open);
 
   return (
-    <nav aria-label="Where you can buy this" className="rounded-xl bg-surface-container-low px-4 py-3">
+    <nav aria-label="Where you can buy this" className="rounded-xl bg-base-lightest px-4 py-3">
       <div className="flex flex-wrap items-baseline justify-between gap-2">
-        <h2 className="text-title-m text-on-surface">Where you can buy this</h2>
+        <h2 className="text-body-md font-bold text-ink">Where you can buy this</h2>
         <p className="text-xs text-slate">{first ? `Start with ${first.label.toLowerCase()}.` : "Nothing on contract yet."} Try routes left to right.</p>
       </div>
       <ol className="mt-3 grid grid-cols-2 gap-2 sm:flex sm:gap-0">
@@ -46,16 +46,16 @@ export function RouteStrip({ results }: { results: Results }) {
           <li key={s.key} className="flex min-w-0 flex-1 items-stretch">
             <a
               href={s.href}
-              className={`state-layer flex min-w-0 flex-1 flex-col rounded-lg px-3 py-2 ${s.count ? "" : "opacity-50"}`}
+              className={`hover-tint flex min-w-0 flex-1 flex-col rounded-lg px-3 py-2 ${s.count ? "" : "opacity-50"}`}
               aria-label={`${s.label}: ${s.count}`}
             >
               <span
                 className="h-1.5 rounded-full"
-                style={s.open ? { border: `1.5px dashed ${s.color}`, background: "transparent", height: 6 } : { background: s.count ? s.color : m3.roles["outline-variant"] }}
+                style={s.open ? { border: `1.5px dashed ${s.color}`, background: "transparent", height: 6 } : { background: s.count ? s.color : us.color.theme["base-lighter"] }}
                 aria-hidden
               />
-              <span className="mt-2 text-headline-m tabular-nums text-on-surface">{s.count}</span>
-              <span className="truncate text-label-l" style={{ color: s.count ? s.color : undefined }}>
+              <span className="mt-2 font-heading text-heading-xl font-bold tabular-nums text-ink">{s.count}</span>
+              <span className="truncate text-ui-xs font-bold" style={{ color: s.count ? s.color : undefined }}>
                 {s.label}
               </span>
             </a>

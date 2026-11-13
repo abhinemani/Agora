@@ -84,7 +84,7 @@ export default function RiverbendMarketplace() {
             </p>
           </div>
           <form
-            className="flex w-full max-w-md items-center gap-2 rounded-xl border border-line bg-white p-1.5 pl-4 shadow-elevation-2 focus-within:border-maroon/50"
+            className="flex w-full max-w-md items-center gap-2 rounded-xl border border-line bg-white p-1.5 pl-4 shadow-2 focus-within:border-maroon/50"
             onSubmit={(e) => {
               e.preventDefault();
               submit(text);
@@ -149,7 +149,7 @@ export default function RiverbendMarketplace() {
               <Link
                 key={l.id}
                 href={`/product/${l.id}`}
-                className="group flex flex-col overflow-hidden rounded-2xl border border-line bg-white transition-shadow hover:shadow-elevation-2"
+                className="group flex flex-col overflow-hidden rounded-2xl border border-line bg-white transition-shadow hover:shadow-2"
               >
                 <div className="h-32 transition-transform duration-300 group-hover:scale-[1.03]">
                   <CategoryIcon category={l.category} size="xl" />

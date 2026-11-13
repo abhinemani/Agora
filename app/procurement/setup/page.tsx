@@ -5,7 +5,7 @@ import { ContractRegister } from "@/components/ContractRegister";
 import { CoopMemberships } from "@/components/CoopMemberships";
 import { Check } from "@/components/icons";
 import { useStore } from "@/components/store";
-import { Button, Card, ErrorNote, Loading, PageTitle, Switch } from "@/components/ui";
+import { Button, Card, ErrorNote, Loading, PageTitle, Checkbox } from "@/components/ui";
 import { FREE_RFP_LIMIT, rfpsLeft, settingsFor, setupStatus } from "@/lib/agency";
 import { stateName } from "@/lib/vehicles";
 import { useEffect, useState } from "react";
@@ -109,7 +109,7 @@ export default function AgencySetup() {
           </div>
         )}
         <div className="mt-4">
-          <Switch
+          <Checkbox
             checked={!settings.ad_free}
             disabled={settings.plan !== "paid"}
             onChange={(on) => run("setAdFree", { on: !on })}

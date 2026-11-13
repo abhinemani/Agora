@@ -46,7 +46,7 @@ export function Header() {
   const path = usePathname();
   const [open, setOpen] = useState(false);
   const [picking, setPicking] = useState(false);
-  // M3 top app bar: flat on the surface, a surface-container fill once content scrolls under it.
+  // A light shadow under the header once content scrolls beneath it.
   const [scrolled, setScrolled] = useState(false);
   useEffect(() => {
     const on = () => setScrolled(window.scrollY > 4);
@@ -79,20 +79,20 @@ export function Header() {
   }, [open]);
 
   return (
-    <header className={`sticky top-0 z-30 transition-colors duration-200 ${scrolled ? "bg-surface-container" : "bg-surface"}`}>
-      <div className="mx-auto flex h-16 max-w-6xl items-center gap-3 px-4 sm:gap-8">
-        <Link href={current.home} className="flex items-center gap-2" aria-label="Agora home">
-          <span className="grid h-10 w-10 place-items-center rounded-lg bg-primary text-title-l text-on-primary">α</span>
-          <span className="hidden text-title-l text-on-surface sm:block">Agora</span>
+    <header className={`sticky top-0 z-30 border-b border-base-lighter bg-white ${scrolled ? "shadow-1" : ""}`}>
+      <div className="mx-auto flex h-16 max-w-6xl items-stretch gap-3 px-4 sm:gap-8">
+        <Link href={current.home} className="flex items-center gap-2 no-underline" aria-label="Agora home">
+          <span className="grid h-9 w-9 place-items-center rounded-md bg-primary-darker font-heading text-heading-md font-bold text-white">α</span>
+          <span className="hidden font-heading text-heading-md font-bold text-ink sm:block">Agora</span>
         </Link>
 
-        <nav className="-my-1 flex min-w-0 items-center gap-1 overflow-x-auto p-1">
+        <nav className="flex min-w-0 items-stretch gap-1 overflow-x-auto">
           {NAV[role].map((n) => (
             <Link
               key={n.href}
               href={n.href}
               aria-current={isActive(n.href) ? "page" : undefined}
-              className={`state-layer shrink-0 rounded-full px-3 py-2 text-label-l sm:px-4 ${isActive(n.href) ? "bg-secondary-container text-on-secondary-container" : "text-on-surface-variant"}`}
+              className={`flex shrink-0 items-center border-b-4 px-2 pt-1 text-ui-xs font-bold no-underline hover:text-primary sm:px-3 ${isActive(n.href) ? "border-primary text-primary" : "border-transparent text-base-dark"}`}
             >
               {n.label}
             </Link>
@@ -101,39 +101,39 @@ export function Header() {
 
         <Link
           href="/cart"
-          className="state-layer relative ml-auto flex h-10 shrink-0 items-center gap-2 rounded-full px-3 text-label-l text-on-surface-variant"
+          className="relative ml-auto flex shrink-0 items-center gap-2 px-2 text-ui-xs font-bold text-base-dark no-underline hover:text-primary"
           aria-label={`Cart, ${cartCount} item${cartCount === 1 ? "" : "s"}${cartWaiting ? `, ${cartWaiting} waiting on approval` : ""}`}
         >
           <span className="relative">
             <Cart className="h-6 w-6" />
             {cartCount > 0 && (
-              <span key={cartCount} className="cart-bump absolute -right-2 -top-1.5 grid h-4 min-w-4 place-items-center rounded-full bg-error px-1 text-label-s tabular-nums text-on-error">
+              <span key={cartCount} className="cart-bump absolute -right-2 -top-1.5 grid h-4 min-w-4 place-items-center rounded-full bg-secondary px-1 text-ui-3xs font-bold tabular-nums text-white">
                 {cartCount}
               </span>
             )}
-            {cartWaiting > 0 && !cartCount && <span className="absolute -right-0.5 -top-0.5 h-1.5 w-1.5 rounded-full bg-error" aria-hidden />}
+            {cartWaiting > 0 && !cartCount && <span className="absolute -right-0.5 -top-0.5 h-1.5 w-1.5 rounded-full bg-secondary" aria-hidden />}
           </span>
           <span className="hidden sm:inline">Cart</span>
         </Link>
 
-        <div ref={menu} className="relative shrink-0">
+        <div ref={menu} className="relative flex shrink-0 items-center">
           <button
             onClick={() => setOpen(!open)}
             aria-expanded={open}
             aria-haspopup="menu"
-            className="state-layer flex h-10 items-center gap-2 rounded-full border border-outline-variant py-1 pl-1 pr-3 text-label-l text-on-surface"
+            className="flex h-10 items-center gap-2 rounded-md py-1 pl-1 pr-2 text-ui-xs font-bold text-ink shadow-[inset_0_0_0_1px_theme(colors.base.light)] hover:shadow-[inset_0_0_0_1px_theme(colors.base.dark)]"
           >
-            <span className="relative grid h-8 w-8 place-items-center rounded-full bg-primary-container text-label-m text-on-primary-container">
+            <span className="relative grid h-8 w-8 place-items-center rounded-sm bg-primary-lighter text-ui-2xs font-bold text-primary-darker">
               {current.initials}
-              {fresh > 0 && <span className="absolute -right-0.5 -top-0.5 h-2.5 w-2.5 rounded-full border-2 border-surface bg-error" aria-label={`${fresh} new revenue events`} />}
+              {fresh > 0 && <span className="absolute -right-0.5 -top-0.5 h-2.5 w-2.5 rounded-full border-2 border-white bg-secondary" aria-label={`${fresh} new revenue events`} />}
             </span>
             <span className="hidden sm:inline">{current.label}</span>
-            <Menu className="h-5 w-5 text-on-surface-variant" />
+            <Menu className="h-5 w-5 text-base-dark" />
           </button>
 
           {open && (
-            <div role="menu" className="absolute right-0 mt-2 w-72 overflow-hidden rounded-sm bg-surface-container py-2 shadow-elevation-2">
-              <div className="px-4 pb-1 pt-2 text-title-s text-on-surface-variant">View the demo as</div>
+            <div role="menu" className="absolute right-0 top-full mt-1 w-72 overflow-hidden bg-primary-darker py-2 text-white shadow-3">
+              <div className="px-4 pb-1 pt-2 text-ui-3xs font-bold text-primary-light">View the demo as</div>
               {ROLES.map((r) => (
                 <button
                   key={r.id}
@@ -144,28 +144,28 @@ export function Header() {
                     setOpen(false);
                     router.push(r.home);
                   }}
-                  className={`state-layer flex min-h-12 w-full items-center gap-3 px-4 py-2 text-left ${role === r.id ? "bg-secondary-container text-on-secondary-container" : "text-on-surface"}`}
+                  className={`flex min-h-12 w-full items-center gap-3 px-4 py-2 text-left hover:bg-primary-dark ${role === r.id ? "bg-primary-dark" : ""}`}
                 >
-                  <span className={`grid h-8 w-8 place-items-center rounded-full text-label-m ${role === r.id ? "bg-primary text-on-primary" : "bg-primary-container text-on-primary-container"}`}>
+                  <span className={`grid h-8 w-8 place-items-center rounded-sm text-ui-2xs font-bold ${role === r.id ? "bg-white text-primary-darker" : "bg-primary-lighter text-primary-darker"}`}>
                     {r.initials}
                   </span>
                   <span className="min-w-0">
-                    <span className="block text-label-l">{r.label}</span>
-                    <span className="block truncate text-body-s text-on-surface-variant">{r.person}</span>
+                    <span className="block text-ui-xs font-bold">{r.label}</span>
+                    <span className="block truncate text-ui-3xs text-base-lighter">{r.person}</span>
                   </span>
                 </button>
               ))}
-              <div className="mt-2 border-t border-outline-variant pt-2">
+              <div className="mt-2 border-t border-primary-dark pt-2">
                 <button
                   role="menuitem"
                   onClick={() => {
                     setOpen(false);
                     setPicking(true);
                   }}
-                  className="state-layer flex min-h-12 w-full items-center justify-between gap-3 px-4 py-2 text-left text-label-l text-on-surface"
+                  className="flex min-h-12 w-full items-center justify-between gap-3 px-4 py-2 text-left text-ui-xs font-bold text-white hover:bg-primary-dark"
                 >
                   Your agency
-                  <span className="truncate text-body-s text-on-surface-variant">{buyer ? `${buyer.name}, ${buyer.state}` : "Any agency"}</span>
+                  <span className="truncate text-ui-3xs text-base-lighter">{buyer ? `${buyer.name}, ${buyer.state}` : "Any agency"}</span>
                 </button>
                 <button
                   role="menuitem"
@@ -173,15 +173,15 @@ export function Header() {
                     setOpen(false);
                     setLedgerOpen(true);
                   }}
-                  className="state-layer flex min-h-12 w-full items-center justify-between px-4 py-2 text-label-l text-on-surface"
+                  className="flex min-h-12 w-full items-center justify-between px-4 py-2 text-ui-xs font-bold text-white hover:bg-primary-dark"
                 >
                   Sovra revenue
-                  <span className="tabular-nums text-on-surface-variant">{compact(total)}</span>
+                  <span className="tabular-nums text-base-lighter">{compact(total)}</span>
                 </button>
-                <Link role="menuitem" href="/model" onClick={() => setOpen(false)} className="state-layer flex min-h-12 items-center px-4 text-label-l text-on-surface">
+                <Link role="menuitem" href="/model" onClick={() => setOpen(false)} className="flex min-h-12 items-center px-4 text-ui-xs font-bold text-white no-underline hover:bg-primary-dark">
                   How Agora earns
                 </Link>
-                <Link role="menuitem" href="/coops" onClick={() => setOpen(false)} className="state-layer flex min-h-12 items-center px-4 text-label-l text-on-surface">
+                <Link role="menuitem" href="/coops" onClick={() => setOpen(false)} className="flex min-h-12 items-center px-4 text-ui-xs font-bold text-white no-underline hover:bg-primary-dark">
                   Co-op member lists
                 </Link>
               </div>

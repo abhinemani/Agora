@@ -97,19 +97,25 @@ Each **order** now runs to reconciled, with a timeline on its page. A P-card ord
 
 **Verification.** Supplier badges now open the checks behind them: SAM.gov registration, the SAM.gov exclusions list, Section 889, certificate of insurance, performance bond and each certification. Every check shows its source and the date it was last run, and expiring or failed checks show as "N checks to review." Storefronts list the checks in full. Only the eight fictional demo suppliers carry results, all labeled as demo data. Real companies (Tyler, Dell and the rest) show every check as not checked yet, because Agora holds no real SAM.gov or insurance results for them.
 
-## Look and feel: Material 3
+## Look and feel: U.S. Web Design System
 
-Agora follows Google's Material 3. The color scheme is generated, not hand-picked. `node scripts/m3-theme.mjs` runs Google's `material-color-utilities` on Agora's blue (#315BD0) with M3's fidelity scheme, which is meant for brand colors: the primary container is the brand blue itself. The script writes every color role and tonal palette to `lib/m3-theme.json`. One role is overridden: the secondary container uses M3's baseline tone mapping (tone 90, with text at tone 10), so tonal buttons and the navigation indicator read clearly. The five buying-route colors (your contracts, state, co-ops, other, small purchase) and the success and warning colors are M3 custom colors, harmonized toward the seed. `tailwind.config.ts` reads the JSON. M3 role names work as classes (`bg-surface-container`, `text-on-primary`), and Agora's older color names and Tailwind's emerald, amber and red map onto M3 roles and harmonized palettes. To change the brand color, edit `SEED` and rerun the script.
+Agora follows the [U.S. Web Design System](https://designsystem.digital.gov/) (USWDS) and its default theme. The tokens are generated from the official `@uswds/uswds` package, not hand-picked. `node scripts/uswds-theme.mjs` reads USWDS's own SCSS (system color tokens, theme color settings, type scale, typeface cap heights, line heights) and writes `lib/uswds-theme.json`, which `tailwind.config.ts` reads. USWDS token names work as classes: `bg-primary`, `hover:bg-primary-dark`, `text-base-dark`, `border-base-lighter`, `bg-success-lighter`, `text-error-dark`. Agora's older color names map onto USWDS theme tokens, so every page follows the system.
 
-Type is Roboto on M3's type scale (`text-headline-m`, `text-title-s`, `text-label-l` and the rest), using only regular and medium weights. Shapes follow M3's corner scale: 4px for text fields, 8px for chips, 12px for cards, 16px for sheets, 28px for dialogs, and fully round buttons. Components follow their M3 counterparts:
+- **Type:** USWDS's default font roles, Source Sans for body and UI and Merriweather for headings. Sizes come from the USWDS theme scale, normalized by each typeface's cap height the way USWDS does it (`text-heading-xl` with `font-heading`, `text-ui-xs`, `text-body-md`).
+- **Color:** USWDS theme colors: primary blue-60v (#005ea2), base gray-cool, and the success, warning, error and info families. Agora's five buying routes are project colors drawn from USWDS system colors at vivid grade 60, with grade 10 backgrounds and grade 80 text, following USWDS's "magic number" for accessible contrast.
+- **Components:** these follow their USWDS counterparts.
+  - Default, outline and unstyled buttons, with 4px corners and darker hover and active states.
+  - Card containers with 2px base-lighter borders and 8px corners.
+  - Tags, and slim alerts with the 8px left bar.
+  - A summary box for "your agency already has a contract for this."
+  - Text inputs, and checkboxes in place of toggle switches (USWDS has no switch).
+  - A segmented button group.
+  - The basic header, with a 4px current-page bar and the dark submenu.
+  - A modal for supplier checks.
+  - A step indicator and process list on the order page.
+- **Focus:** keyboard focus uses USWDS's 0.25rem outline in focus blue (#2491ff).
 
-- **Buttons:** filled, tonal, outlined and text, each with a state layer.
-- **Cards and chips:** outlined cards, and tonal chips for each buying route.
-- **Navigation:** a top app bar that fills on scroll, with pill indicators on its nav items, and primary tabs on the cart page.
-- **Inputs:** a segmented button for member-list uploads, outlined text fields, and switches for settings that take effect immediately.
-- **Overlays:** menus, a dialog for supplier checks, a side sheet for the ledger, a badge on the cart, and linear progress for loading.
-
-Keyboard focus uses M3's 3px focus indicator. Results still open with **Where you can buy this**, now on a surface-container card.
+Agora is not a federal government site, so it does not use the USWDS government banner ("An official website of the United States government") or the identifier. Those are for official government websites only. To pick up a newer USWDS release, update the package and rerun the script.
 
 ## NASPO ValuePoint
 

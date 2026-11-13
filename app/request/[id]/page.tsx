@@ -110,11 +110,11 @@ export default function RequestResults() {
           </div>
           <div className="flex shrink-0 flex-wrap items-center gap-2">
             {results && !results.no_match && (
-              <button onClick={() => setWhy(!why)} className="state-layer inline-flex h-8 items-center rounded-md border border-outline px-4 text-label-l text-on-surface-variant">
+              <button onClick={() => setWhy(!why)} className="inline-flex items-center rounded-md bg-white px-3 py-2 text-ui-2xs font-bold leading-none text-base-darker shadow-[inset_0_0_0_1px_theme(colors.base.light)] hover:text-primary hover:shadow-[inset_0_0_0_1px_theme(colors.primary.DEFAULT)]">
                 {why ? "Hide ranking" : "How these are ranked"}
               </button>
             )}
-            <button onClick={() => setChanging(!changing)} className="state-layer inline-flex h-8 items-center rounded-md border border-outline px-4 text-label-l text-on-surface-variant">
+            <button onClick={() => setChanging(!changing)} className="inline-flex items-center rounded-md bg-white px-3 py-2 text-ui-2xs font-bold leading-none text-base-darker shadow-[inset_0_0_0_1px_theme(colors.base.light)] hover:text-primary hover:shadow-[inset_0_0_0_1px_theme(colors.primary.DEFAULT)]">
               {changing ? "Cancel" : buyer ? `For ${buyer.name}` : "Set your agency"}
             </button>
           </div>
@@ -294,7 +294,7 @@ function OptionCard({ o, qty, requestId }: { o: ResultOption; qty: number; reque
   const title = tiered ? l.title.replace(/\s*\([^)]*\)\s*$/, "") : l.title;
   const href = `/product/${l.id}?qty=${qty}&request=${requestId}`;
   return (
-    <div className="flex min-h-[290px] flex-col rounded-lg border border-outline-variant bg-surface-container-lowest p-4 transition-shadow hover:shadow-elevation-1">
+    <div className="flex min-h-[290px] flex-col rounded-lg border-2 border-base-lighter bg-white p-4 transition-shadow hover:shadow-2">
       <div className="flex items-start justify-between gap-3">
         <CategoryIcon category={l.category} />
         <div className="flex flex-col items-end gap-1">
@@ -344,7 +344,7 @@ function OptionCard({ o, qty, requestId }: { o: ResultOption; qty: number; reque
         <Stars rating={o.supplier.rating} count={o.supplier.review_count} />
         {!qr && !lo && <RevenueTags options={earnsFor({ ...o, rule })} />}
       </div>
-      <div className="mt-auto flex items-end justify-between gap-2 border-t border-outline-variant pt-3">
+      <div className="mt-auto flex items-end justify-between gap-2 border-t border-base-lighter pt-3">
         <div className="min-w-0">
           <div className={`text-[15px] font-extrabold tabular-nums ${qr ? "text-slate" : "text-navy"}`}>
             {money(l.unit_price)}
@@ -354,7 +354,7 @@ function OptionCard({ o, qty, requestId }: { o: ResultOption; qty: number; reque
         </div>
         <div className="flex shrink-0 items-center gap-1.5">
           {lo || qr ? (
-            <Link href={href} className="state-layer inline-flex h-9 items-center rounded-full border border-outline px-4 text-label-l text-primary">
+            <Link href={href} className="inline-flex items-center rounded-md bg-white px-4 py-2.5 text-ui-xs font-bold leading-none text-primary no-underline shadow-[inset_0_0_0_2px_theme(colors.primary.DEFAULT)] hover:text-primary-dark hover:shadow-[inset_0_0_0_2px_theme(colors.primary.dark)]">
               View
             </Link>
           ) : (
@@ -367,7 +367,7 @@ function OptionCard({ o, qty, requestId }: { o: ResultOption; qty: number; reque
               <span className="text-[11px] font-semibold text-emerald-800">Quote {quoted} sent</span>
             ) : (
               <button
-                className="state-layer inline-flex h-9 items-center rounded-full bg-primary px-4 text-label-l text-on-primary"
+                className="inline-flex items-center rounded-md bg-primary px-4 py-2.5 text-ui-xs font-bold leading-none text-white no-underline hover:bg-primary-dark active:bg-primary-darker"
                 onClick={async () => {
                   setQuoteError(null);
                   try {
@@ -382,7 +382,7 @@ function OptionCard({ o, qty, requestId }: { o: ResultOption; qty: number; reque
               </button>
             )
           ) : (
-            <Link href={`/checkout?listing=${l.id}&qty=${qty}&request=${requestId}`} className="state-layer inline-flex h-9 items-center rounded-full bg-primary px-4 text-label-l text-on-primary">
+            <Link href={`/checkout?listing=${l.id}&qty=${qty}&request=${requestId}`} className="inline-flex items-center rounded-md bg-primary px-4 py-2.5 text-ui-xs font-bold leading-none text-white no-underline hover:bg-primary-dark active:bg-primary-darker">
               Buy
             </Link>
           )}

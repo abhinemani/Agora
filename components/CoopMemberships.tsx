@@ -29,15 +29,15 @@ export function CoopMemberships({ onChange }: { onChange?: () => void }) {
       {mine.map((m) => {
         const coop = db.coops.find((c) => c.id === m.coop_id);
         return (
-          <span key={m.coop_id} className="inline-flex h-8 items-center gap-2 rounded-md border border-outline-variant bg-surface-container-lowest pl-3 pr-1">
+          <span key={m.coop_id} className="inline-flex h-8 items-center gap-2 rounded-md border border-base-lighter bg-white pl-3 pr-1">
             <span className="font-semibold text-navy">{coop?.name}</span>
             <span className="text-[10px] text-slate">{m.source === "detected" ? (m.confirmed ? "detected, confirmed" : "detected from member list") : "added"}</span>
             {!m.confirmed && (
-              <button disabled={busy} onClick={() => run(m.coop_id, "confirm")} className="state-layer h-6 rounded-md bg-success-container px-2 text-label-m text-success-on-container">
+              <button disabled={busy} onClick={() => run(m.coop_id, "confirm")} className="hover-tint h-6 rounded-md bg-success-lighter px-2 text-ui-2xs font-bold text-success-darker">
                 Confirm
               </button>
             )}
-            <button disabled={busy} onClick={() => run(m.coop_id, "remove")} aria-label={`Remove ${coop?.name}`} className="state-layer grid h-6 w-6 place-items-center rounded-full text-on-surface-variant">
+            <button disabled={busy} onClick={() => run(m.coop_id, "remove")} aria-label={`Remove ${coop?.name}`} className="hover-tint grid h-6 w-6 place-items-center rounded-full text-base-dark">
               ✕
             </button>
           </span>

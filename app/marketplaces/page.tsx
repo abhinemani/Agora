@@ -35,16 +35,16 @@ export default function Marketplaces() {
                 <span className="grid h-11 w-11 place-items-center rounded-xl text-lg font-extrabold text-white" style={{ background: s.color }}>
                   {s.name.replace(/^(City|Town) of /, "")[0]}
                 </span>
-                <span className={`rounded-md px-2 py-1 text-[10px] font-bold ${s.live ? "bg-success-container text-success" : "bg-secondary-container text-on-surface-variant"}`}>{s.live ? "Live" : "Available"}</span>
+                <span className={`rounded-md px-2 py-1 text-[10px] font-bold ${s.live ? "bg-success-lighter text-success-darker" : "bg-primary-lighter text-base-dark"}`}>{s.live ? "Live" : "Available"}</span>
               </div>
               <div className="mt-5 text-lg font-bold tracking-tight text-navy">{s.name}</div>
               <div className="text-xs text-slate">{s.where}</div>
               <p className="mt-2 text-sm text-slate">{s.blurb}</p>
-              <div className="mt-auto border-t border-outline-variant pt-3 text-sm font-semibold text-maroon">{s.live ? "Open marketplace →" : "Demo on request"}</div>
+              <div className="mt-auto border-t border-base-lighter pt-3 text-sm font-semibold text-maroon">{s.live ? "Open marketplace →" : "Demo on request"}</div>
             </>
           );
           return s.href ? (
-            <Link key={s.name} href={s.href} className="flex min-h-[220px] flex-col rounded-2xl border border-line bg-white p-5 transition hover:border-outline">
+            <Link key={s.name} href={s.href} className="flex min-h-[220px] flex-col rounded-2xl border border-line bg-white p-5 transition hover:border-base-dark">
               {body}
             </Link>
           ) : (

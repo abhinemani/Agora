@@ -56,12 +56,12 @@ export default function Home() {
       {/* Hero: one question, one box. */}
       <section className="px-1 pb-14 pt-12 text-center sm:pt-20">
         <div className="text-[11px] font-extrabold uppercase text-maroon/80">Government buying, simplified</div>
-        <h1 className="mx-auto mt-4 max-w-3xl text-[clamp(2.1rem,5vw,3.6rem)] font-extrabold leading-[1.07] text-navy">What are you looking to buy?</h1>
+        <h1 className="mx-auto mt-4 max-w-3xl text-[clamp(2rem,4.4vw,3rem)] font-extrabold leading-[1.07] text-navy">What are you looking to buy?</h1>
         <p className="mx-auto mt-4 max-w-xl text-base leading-relaxed text-slate">
           Search state and cooperative contracts in one place. Agora shows which ones your agency can use, what they cost, and how to buy.
         </p>
         <form
-          className="mx-auto mt-8 flex max-w-3xl items-center gap-2 rounded-2xl border border-outline-variant bg-white p-2 pl-4 shadow-elevation-2 focus-within:border-maroon/50"
+          className="mx-auto mt-8 flex max-w-3xl items-center gap-2 rounded-2xl border border-base-lighter bg-white p-2 pl-4 shadow-2 focus-within:border-maroon/50"
           onSubmit={(e) => {
             e.preventDefault();
             submit(text);
@@ -89,7 +89,7 @@ export default function Home() {
               key={e}
               onClick={() => submit(e)}
               disabled={busy}
-              className="rounded-full border border-line bg-white px-3.5 py-2 text-xs text-on-surface-variant transition hover:border-maroon hover:text-maroon"
+              className="rounded-md bg-white px-3 py-2 text-ui-2xs text-base-darker shadow-[inset_0_0_0_1px_theme(colors.base.light)] transition hover:text-primary hover:shadow-[inset_0_0_0_1px_theme(colors.primary.DEFAULT)]"
             >
               {e}
             </button>
@@ -159,7 +159,7 @@ export default function Home() {
       </section>
 
       {/* What we sell on top of the free marketplace: one product per side. */}
-      <section className="mt-14 overflow-hidden rounded-3xl bg-inverse-surface p-8 text-inverse-on-surface sm:p-10">
+      <section className="mt-14 overflow-hidden rounded-3xl bg-base-darkest p-8 text-white sm:p-10">
         <div className="max-w-2xl">
           <div className="text-[11px] font-extrabold uppercase text-white/60">Built on Agora</div>
           <h2 className="mt-3 text-[1.8rem] font-extrabold leading-tight">A marketplace for your city. A storefront for your company.</h2>

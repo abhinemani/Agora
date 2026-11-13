@@ -6,7 +6,7 @@ import { isContractLevelUrl } from "@/lib/coops";
 import { EDGE_TIER, FIVE_WAYS, REVENUE_OPTIONS } from "@/lib/revenue_rules";
 import type { Payer } from "@/lib/types";
 import { useStore } from "./store";
-import { Button, Switch, money } from "./ui";
+import { Button, Checkbox, money } from "./ui";
 
 const PAYER_LABEL: Record<Payer, string> = {
   local_government: "Local government",
@@ -35,8 +35,8 @@ export function Ledger() {
 
   return (
     <div className="fixed inset-0 z-50 flex justify-end">
-      <button aria-label="Close ledger" className="absolute inset-0 bg-scrim/[.32]" onClick={() => setLedgerOpen(false)} />
-      <aside className="relative flex h-full w-full max-w-xl flex-col rounded-l-xl bg-surface-container-low shadow-elevation-3">
+      <button aria-label="Close ledger" className="absolute inset-0 bg-ink/[.32]" onClick={() => setLedgerOpen(false)} />
+      <aside className="relative flex h-full w-full max-w-xl flex-col bg-white shadow-5">
         <div className="border-b border-line px-5 py-4">
           <div className="flex items-start justify-between">
             <div>
@@ -224,7 +224,7 @@ function CoopTraffic() {
                 </div>
               </div>
               <div className="mt-3">
-                <Switch
+                <Checkbox
                   checked={coop.buy_in_agora}
                   disabled={busy === coop.id}
                   onChange={async (on) => {

@@ -8,7 +8,7 @@ export function AddToCart({ listingId, quantity, requestId, size = "sm" }: { lis
   const { act } = useStore();
   const [state, setState] = useState<"idle" | "busy" | "added">("idle");
   const [error, setError] = useState<string | null>(null);
-  const pad = size === "md" ? "h-10 px-6" : "h-9 px-4";
+  const pad = size === "md" ? "px-5 py-3" : "px-4 py-2.5";
   return (
     <span className="inline-flex flex-col items-end">
       <button
@@ -26,7 +26,7 @@ export function AddToCart({ listingId, quantity, requestId, size = "sm" }: { lis
             setState("idle");
           }
         }}
-        className={`state-layer rounded-full text-label-l transition-colors ${pad} ${state === "added" ? "bg-success-container text-success-on-container" : "bg-secondary-container text-on-secondary-container"}`}
+        className={`rounded-md text-ui-xs font-bold leading-none transition-colors ${pad} ${state === "added" ? "bg-success-lighter text-success-darker shadow-[inset_0_0_0_2px_theme(colors.success.DEFAULT)]" : "bg-white text-primary shadow-[inset_0_0_0_2px_theme(colors.primary.DEFAULT)] hover:text-primary-dark hover:shadow-[inset_0_0_0_2px_theme(colors.primary.dark)]"}`}
       >
         {state === "added" ? "✓ Added" : "Add to cart"}
       </button>

@@ -31,7 +31,7 @@ export default function CartPage() {
         {money(db.agency.quick_buy_threshold, false)} quick-buy limit, a PO at or over it.
       </PageTitle>
 
-      <div className="flex flex-wrap border-b border-outline-variant" role="tablist">
+      <div className="flex flex-wrap border-b border-base-lighter" role="tablist">
         {TABS.map((t) => {
           const n = t.id === "draft" ? (draft?.lines.length ?? 0) : count(t.id);
           const on = tab === t.id;
@@ -41,11 +41,11 @@ export default function CartPage() {
               role="tab"
               aria-selected={on}
               onClick={() => setTab(t.id)}
-              className={`state-layer relative flex h-12 items-center gap-2 px-4 text-title-s ${on ? "text-primary" : "text-on-surface-variant"}`}
+              className={`relative flex h-12 items-center gap-2 px-4 text-ui-xs font-bold hover:text-primary ${on ? "text-primary" : "text-base-dark"}`}
             >
               {t.label}
-              {n > 0 && <span className="grid h-4 min-w-4 place-items-center rounded-full bg-error px-1 text-label-s tabular-nums text-on-error">{n}</span>}
-              {on && <span className="absolute inset-x-4 bottom-0 h-[3px] rounded-t-full bg-primary" aria-hidden />}
+              {n > 0 && <span className="grid h-5 min-w-5 place-items-center rounded-full bg-secondary px-1.5 text-ui-3xs font-bold tabular-nums text-white">{n}</span>}
+              {on && <span className="absolute inset-x-0 bottom-0 h-1 bg-primary" aria-hidden />}
             </button>
           );
         })}

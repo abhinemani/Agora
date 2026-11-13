@@ -15,13 +15,13 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
-        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,400;0,500;1,400&family=Roboto+Mono:wght@400;500&display=swap" />
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Sans+3:ital,wght@0,400;0,600;0,700;1,400&family=Merriweather:wght@400;700&family=Roboto+Mono:wght@400;700&display=swap" />
       </head>
       <body className="min-h-screen overflow-x-clip antialiased">
         <StoreProvider>
           <Header />
           <main className="mx-auto max-w-6xl px-4 py-8">{children}</main>
-          <footer className="mt-10 border-t border-outline-variant px-4 py-6 text-center text-body-s text-on-surface-variant">
+          <footer className="mt-10 bg-base-lightest px-4 py-6 text-center text-ui-3xs text-base-dark">
             Agora · Cooperative purchasing concept · Tyler and Maximus prices from NASPO ValuePoint and NJSTART price files · NASPO awards from naspovaluepoint.org · Sourcewell prices require a vendor quote
           </footer>
           <Ledger />

@@ -60,7 +60,7 @@ export default function OrdersOversight() {
       <PageTitle title="Orders">Every order across the agency: who asked for it, who it's for, where it stands, and the step that's next.</PageTitle>
 
       {toReconcile.length > 0 && (
-        <div className="flex flex-wrap items-center justify-between gap-3 rounded-lg bg-warning-container p-4 text-body-m text-warning-on-container">
+        <div className="flex flex-wrap items-center justify-between gap-3 border-l-8 border-warning bg-warning-lighter px-4 py-3 text-ui-xs text-ink">
           <span>
             <span className="font-semibold">{toReconcile.length} P-card charge{toReconcile.length === 1 ? "" : "s"}</span> received and waiting to be matched to a receipt.
           </span>

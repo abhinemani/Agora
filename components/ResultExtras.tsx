@@ -13,17 +13,17 @@ import { Button, ErrorNote, LinkButton, money } from "./ui";
 export function OwnContractsCard({ hits, agency }: { hits: OwnHit[]; agency: string }) {
   if (!hits.length) return null;
   return (
-    <section id="own-contracts" className="scroll-mt-24 rounded-xl bg-success-container/60 p-5">
+    <section id="own-contracts" className="scroll-mt-24 rounded-md border border-info-light bg-info-lighter p-6" aria-labelledby="own-contracts-heading">
       <div className="flex items-center gap-2">
-        <span className="grid h-6 w-6 place-items-center rounded-full bg-emerald-600 text-white">
+        <span className="grid h-6 w-6 place-items-center rounded-full bg-success-darker text-white">
           <Check className="h-3.5 w-3.5" />
         </span>
-        <h2 className="text-lg font-bold tracking-tight text-navy">{agency} already has a contract for this</h2>
+        <h2 id="own-contracts-heading" className="font-heading text-heading-md font-bold text-ink">{agency} already has a contract for this</h2>
       </div>
-      <p className="mt-1 text-xs text-slate">From your agency's contract register. Buy under it before looking anywhere else.</p>
+      <p className="mt-1 text-ui-xs text-base-darker">From your agency's contract register. Buy under it before looking anywhere else.</p>
       <ul className="mt-3 space-y-2">
         {hits.map((h) => (
-          <li key={h.contract_id} className="flex flex-wrap items-start justify-between gap-3 rounded-xl border border-emerald-200 bg-white p-3">
+          <li key={h.contract_id} className="flex flex-wrap items-start justify-between gap-3 rounded-md border border-info-light bg-white p-3">
             <div className="min-w-0">
               <div className="text-sm font-semibold text-navy">{h.title}</div>
               <div className="mt-0.5 text-xs text-slate">
@@ -168,7 +168,7 @@ export function InviteAdminBanner({ requestId }: { requestId: string }) {
   const missing = gaps.map((g) => g.what).join(" and ");
   const effect = gaps.map((g) => g.effect).join(", and ");
   return (
-    <div className="flex flex-wrap items-center gap-x-3 gap-y-2 rounded-xl border border-line bg-white px-4 py-2.5 text-xs text-slate">
+    <div className="flex flex-wrap items-center gap-x-3 gap-y-2 border-l-8 border-info bg-info-lighter px-4 py-3 text-ui-xs text-ink">
       <span>
         {buyer.name} hasn't set up {missing} yet, so {effect}.{" "}
         {invited ? <span className="font-semibold text-emerald-800">Purchasing was invited ({invited.email}).</span> : "Your purchasing admin can finish setup in a few minutes."}

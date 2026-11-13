@@ -43,7 +43,7 @@ export function HeroPreview({
   const best = rows.reduce((a, b) => (b.listing.unit_price < a.listing.unit_price ? b : a), rows[0]);
 
   return (
-    <div className="relative rounded-2xl border border-line bg-white p-5 shadow-elevation-2">
+    <div className="relative rounded-2xl border border-line bg-white p-5 shadow-2">
       <div className="flex items-center justify-between gap-3">
         <div className="min-w-0">
           <div className="truncate text-sm font-semibold text-navy">“40 folding tables for the rec center”</div>
@@ -85,7 +85,7 @@ export function HeroPreview({
       </div>
 
       <div className="mt-4 flex items-center gap-2">
-        <button onClick={onRun} className="flex-1 state-layer rounded-full bg-primary py-2 text-label-l text-on-primary">
+        <button onClick={onRun} className="flex-1 hover-tint rounded-full bg-primary py-2 text-ui-xs font-bold text-white">
           Run this search
         </button>
         <button onClick={() => setRun(run + 1)} className="rounded-lg border border-line px-3 py-2 text-sm text-slate hover:text-navy">

@@ -20,10 +20,10 @@ export function CoopLink({
   size?: "sm" | "md";
   disabled?: boolean;
 }) {
-  const pad = size === "md" ? "h-10 px-6" : "h-9 px-4";
+  const pad = size === "md" ? "px-5 py-3" : "px-4 py-2.5";
   if (!hasLink || disabled)
     return (
-      <span className={`inline-flex cursor-not-allowed items-center rounded-full bg-on-surface/[.12] text-label-l text-on-surface/[.38] ${pad}`} title={hasLink ? undefined : "No contract-level link on file yet"}>
+      <span className={`inline-flex cursor-not-allowed items-center rounded-md bg-disabled-lighter text-ui-xs font-bold leading-none text-disabled-dark ${pad}`} title={hasLink ? undefined : "No contract-level link on file yet"}>
         {hasLink ? "Not available" : "Contract link missing"}
       </span>
     );
@@ -32,7 +32,7 @@ export function CoopLink({
       href={goHref(contractId, { listing: listingId, request: requestId })}
       target="_blank"
       rel="noreferrer"
-      className={`state-layer inline-flex items-center rounded-full bg-primary text-label-l text-on-primary ${pad}`}
+      className={`inline-flex items-center rounded-md bg-primary text-ui-xs font-bold leading-none text-white no-underline hover:bg-primary-dark active:bg-primary-darker ${pad}`}
       title={`Opens this contract on ${coop}'s site`}
     >
       Buy on {shortName(coop)} ↗

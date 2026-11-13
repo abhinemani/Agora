@@ -3,7 +3,9 @@
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Suspense, useState } from "react";
+import { CoopLink } from "@/components/CoopLink";
 import { useStore } from "@/components/store";
+import { coopOf, isContractLevelUrl, linksOut } from "@/lib/coops";
 import { Button, Card, ErrorNote, Loading, RevenueTags, SourcePill, SupplierBadges, money } from "@/components/ui";
 import { TRANSACTION_FEE_SOURCES } from "@/lib/revenue_rules";
 import type { Order } from "@/lib/types";
@@ -30,6 +32,18 @@ function Checkout() {
   const request = db.requests.find((r) => r.id === params.get("request"));
   const supplier = db.suppliers.find((s) => s.id === listing.supplier_id)!;
   const contract = db.contracts.find((c) => c.id === listing.contract_id);
+  if (linksOut(db, contract)) {
+    const coop = coopOf(db, contract)!;
+    return (
+      <Card className="mx-auto max-w-xl space-y-3 p-6">
+        <h1 className="text-xl font-semibold text-navy">Buy this on {coop.name}</h1>
+        <p className="text-sm text-slate">
+          {listing.title} is on {contract!.vehicle} {contract!.contract_number}. Agora sends you to the contract on {coop.name}'s site to order, so the purchase stays between your agency, the supplier and the co-op.
+        </p>
+        <CoopLink contractId={contract!.id} coop={coop.name} hasLink={isContractLevelUrl(contract!.source_url)} listingId={listing.id} requestId={request?.id} size="md" />
+      </Card>
+    );
+  }
   const deptName = request?.parsed.department ?? "Parks and Recreation";
   const dept = db.agency.departments.find((d) => d.name === deptName) ?? db.agency.departments[0];
 
@@ -72,7 +86,7 @@ function Checkout() {
               {supplier.name} <SupplierBadges supplier={supplier} />
             </div>
             <div className="mt-2 flex items-center gap-2 text-xs text-slate">
-              <SourcePill source={listing.source} /> {contract?.contract_number} {listing.sku && `· SKU ${listing.sku}`}
+              <SourcePill source={listing.source} contractId={listing.contract_id} /> {contract?.contract_number} {listing.sku && `· SKU ${listing.sku}`}
             </div>
           </div>
           <div className="flex items-center gap-2">

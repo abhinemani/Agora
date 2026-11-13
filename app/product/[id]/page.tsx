@@ -5,11 +5,14 @@ import { useParams, useSearchParams } from "next/navigation";
 import { Suspense, useState } from "react";
 import { BuyerPicker } from "@/components/BuyerPicker";
 import { CategoryIcon } from "@/components/CategoryIcon";
+import { AddToCart } from "@/components/AddToCart";
+import { CoopLink } from "@/components/CoopLink";
 import { Alert, Check, File, Lock } from "@/components/icons";
 import { useStore } from "@/components/store";
 import { Badge, Button, Card, ErrorNote, LinkButton, Loading, SourcePill, Stars, SupplierBadges, money } from "@/components/ui";
 import type { Contract, QuoteRequest } from "@/lib/types";
 import { familyOf, routesFor, stateName, type Route } from "@/lib/vehicles";
+import { coopOf, isContractLevelUrl, linksOut } from "@/lib/coops";
 
 const USAGE_UNITS = /^(hr|hour|interaction|transaction|text|postcard|summons|minute|call|signature|device\/day|parcel|user|user\/yr|mo)$/i;
 
@@ -17,6 +20,7 @@ const VERIFICATION: Record<NonNullable<Contract["verification"]>, { label: strin
   source_document: { label: "From the source price document", tone: "green" },
   research_lead: { label: "Research lead: verify before use", tone: "amber" },
   demo: { label: "Demo data", tone: "neutral" },
+  agency_register: { label: "From your contract register", tone: "green" },
 };
 
 export default function ProductPage() {
@@ -162,7 +166,10 @@ function Product() {
                 <div className="text-base font-semibold text-navy">Small purchase</div>
                 <div className="mt-1 text-sm text-slate">No contract needed while the total stays under your quick-buy limit. Pay by P-card.</div>
               </div>
-              <LinkButton href={`/checkout?listing=${l.id}&qty=${qty}${requestId ? `&request=${requestId}` : ""}`}>Buy at {money(l.unit_price * qty)}</LinkButton>
+              <div className="flex items-center gap-2">
+                <AddToCart listingId={l.id} quantity={qty} requestId={requestId} size="md" />
+                <LinkButton href={`/checkout?listing=${l.id}&qty=${qty}${requestId ? `&request=${requestId}` : ""}`}>Buy at {money(l.unit_price * qty)}</LinkButton>
+              </div>
             </Card>
           )}
           {routes.map((r) => (
@@ -175,10 +182,11 @@ function Product() {
 }
 
 function RouteCard({ r, productId, qty, requestId }: { r: Route; productId: string; qty: number; requestId: string | null }) {
-  const { act } = useStore();
+  const { db, act } = useStore();
   const [quote, setQuote] = useState<QuoteRequest | null>(null);
   const [error, setError] = useState<string | null>(null);
   const c = r.contract;
+  const out = db && (r.action === "buy" || r.action === "quote") && linksOut(db, c) ? coopOf(db, c) : null;
   const v = VERIFICATION[c.verification ?? "demo"];
   const open = r.eligibility.eligible;
 
@@ -189,7 +197,7 @@ function RouteCard({ r, productId, qty, requestId }: { r: Route; productId: stri
           <div className="flex flex-wrap items-center gap-2">
             <span className="text-base font-semibold text-navy">{c.vehicle ?? c.owner}</span>
             <span className="font-mono text-xs text-slate">{c.contract_number}</span>
-            <SourcePill source={c.source} />
+            <SourcePill source={c.source} contractId={c.id} />
           </div>
           <div className="mt-0.5 text-xs text-slate">{c.owner}</div>
           <div className={`mt-2 flex items-start gap-1.5 text-sm ${!open ? "text-maroon" : c.verification === "research_lead" ? "text-amber-800" : "text-emerald-800"}`}>
@@ -218,14 +226,25 @@ function RouteCard({ r, productId, qty, requestId }: { r: Route; productId: stri
           </div>
         </div>
         <div className="flex min-w-[10rem] flex-col items-end gap-2">
-          {r.action === "buy" && r.listing && (
+          {out && (
+            <>
+              <CoopLink contractId={c.id} coop={out.name} hasLink={isContractLevelUrl(c.source_url)} listingId={productId} requestId={requestId} size="md" disabled={!open} />
+              <span className="max-w-[13rem] text-right text-[11px] text-slate">
+                {r.action === "quote" ? "Request your quote" : "Order"} on {out.name}'s contract page.
+              </span>
+            </>
+          )}
+          {!out && r.action === "buy" && r.listing && (
             open ? (
-              <LinkButton href={`/checkout?listing=${r.listing.id}&qty=${qty}${requestId ? `&request=${requestId}` : ""}`}>Buy at {money(r.listing.unit_price * qty)}</LinkButton>
+              <div className="flex items-center gap-2">
+                <AddToCart listingId={r.listing.id} quantity={qty} requestId={requestId} size="md" />
+                <LinkButton href={`/checkout?listing=${r.listing.id}&qty=${qty}${requestId ? `&request=${requestId}` : ""}`}>Buy at {money(r.listing.unit_price * qty)}</LinkButton>
+              </div>
             ) : (
               <Button disabled>Not available</Button>
             )
           )}
-          {r.action === "quote" &&
+          {!out && r.action === "quote" &&
             (quote ? (
               <span className="max-w-[12rem] text-right text-xs font-semibold text-emerald-800">
                 Quote request {quote.id} sent. The supplier replies through {c.vehicle}.

@@ -6,6 +6,8 @@ import { structured } from "./llm";
 import { CATEGORIES } from "./types";
 import type { Buyer, Category, Contract, Db, Listing, ParsedRequest, PeerPurchase, Request, Solicitation, Source, Supplier } from "./types";
 import { checkEligibility, defaultVariant, familyOf, SOURCEWELL_TYLER_NOTES } from "./vehicles";
+import { settingsFor } from "./agency";
+import { coopOf, isContractLevelUrl, linksOut, membershipsFor, onCoopContract } from "./coops";
 
 export const SOURCE_ORDER: Source[] = ["own_contract", "state_contract", "coop_contract", "reseller", "gsa", "no_approval"];
 
@@ -103,6 +105,31 @@ function bestMatches<T>(itemTokens: string[], rows: T[], titleOf: (r: T) => stri
     if (asked > 0 && best / asked < 0.35) return { rows: [] as T[], best: 0 };
   }
   return { rows: scored.filter((x) => x.s >= floor).map((x) => x.r), best };
+}
+
+/** Words catalogs use interchangeably; a contract naming either covers the other. */
+const SAME_AS: Record<string, string[]> = { laptop: ["notebook"], notebook: ["laptop"], pc: ["computer"], computer: ["pc"] };
+
+/** Fit score, 0 to 100: how much of the request a contract or product covers.
+ * Words named in its title count fully; words found only in its wider scope
+ * count 70%, since a broad contract ("technology products") covers a need less
+ * squarely than one built for it ("desktops, laptops, tablets"). Rarer words
+ * weigh more. Sponsorship never enters this score. */
+export function fitScore(itemTokens: string[], title: string, scope: string, weights: Weights): number {
+  if (!itemTokens.length) return 0;
+  const inTitle = new Set(tokens(title));
+  const inScope = new Set(tokens(scope));
+  const has = (set: Set<string>, w: string) => set.has(w) || (SAME_AS[w] ?? []).some((x) => set.has(x));
+  const rarest = Math.max(1, ...weights.values());
+  let asked = 0;
+  let got = 0;
+  for (const w of new Set(itemTokens)) {
+    const weight = weights.get(w) ?? rarest;
+    asked += weight;
+    if (has(inTitle, w)) got += weight;
+    else if (has(inScope, w)) got += weight * 0.7;
+  }
+  return asked ? Math.round((100 * got) / asked) : 0;
 }
 
 // ---------------------------------------------------------------- parsing
@@ -252,6 +279,67 @@ export interface ResultOption {
   /** Set when the listing's own contract is closed to this buyer but the same
    * supplier's co-op award is open: buy there by quote, price shown for reference. */
   quote_route: { contract_id: string; vehicle: string; contract_number: string; reference: string; research_note: string | null } | null;
+  /** Set when this route is bought on the co-op's own contract page, through the tracked redirect. */
+  link_out: LinkOut | null;
+  /** 0 to 100: how much of the request this product covers. */
+  fit: number;
+  /** For co-op routes: whether the agency belongs to that co-op. Null for other sources. */
+  member: boolean | null;
+}
+
+/** A contract from the agency's own register that covers the request. */
+export interface OwnHit {
+  contract_id: string;
+  title: string;
+  vendor: string;
+  supplier_id: string;
+  contract_number: string;
+  end: string;
+  ceiling: number | null;
+  url: string | null;
+  fit: number;
+}
+
+/** A co-op contract that covers the request, shown in the co-op section of results. */
+export interface CoopHit {
+  contract_id: string;
+  coop_id: string;
+  coop: string;
+  contract_number: string;
+  title: string;
+  supplier: string;
+  supplier_id: string;
+  fit: number;
+  /** The agency belongs to this co-op (detected or confirmed). */
+  member: boolean;
+  eligible: boolean;
+  reason: string;
+  /** A note to read alongside, e.g. a research-lead discount or an unconfirmed term. */
+  note: string | null;
+  verification: Contract["verification"];
+  link_out: LinkOut | null;
+  /** Products Agora holds for this contract that match the request. */
+  products: number;
+}
+
+export interface CoopSection {
+  hits: CoopHit[];
+  /** The agency has told Agora (or Agora detected) at least one membership. */
+  memberships_known: boolean;
+  /** A co-op the agency isn't on fits better than every co-op it is on. */
+  better: { hit: CoopHit; than: CoopHit | null } | null;
+}
+
+export interface LinkOut {
+  contract_id: string;
+  coop: string;
+  /** False when no contract-level link is on file (a data defect). */
+  has_link: boolean;
+}
+
+function linkOutFor(db: Db, c: Contract | undefined): LinkOut | null {
+  if (!c || !linksOut(db, c)) return null;
+  return { contract_id: c.id, coop: coopOf(db, c)?.name ?? c.vehicle ?? c.owner, has_link: isContractLevelUrl(c.source_url) };
 }
 
 export interface Unavailable {
@@ -283,6 +371,12 @@ export interface Results {
   unavailable: Unavailable[];
   /** Contracts that cover the request but carry no loaded prices: buy by quote. */
   contract_leads: ContractLead[];
+  /** Co-op contracts that cover the request, split by the agency's memberships. */
+  coops: CoopSection;
+  /** Contracts in the agency's own register that cover the request: shown first. */
+  own_contracts: OwnHit[];
+  /** Matching contracts past their end date, hidden unless the buyer asks. */
+  expired: Unavailable[];
 }
 
 export interface ContractLead {
@@ -294,14 +388,82 @@ export interface ContractLead {
   title: string;
   eligible: boolean;
   reason: string;
+  link_out: LinkOut | null;
 }
 
-const contractText = (db: Db, c: Contract) => `${c.title} ${c.vehicle ?? ""} ${db.suppliers.find((s) => s.id === c.supplier_id)?.name ?? ""}`;
+const contractText = (db: Db, c: Contract) => `${c.title} ${c.scope ?? ""} ${c.vehicle ?? ""} ${db.suppliers.find((s) => s.id === c.supplier_id)?.name ?? ""}`;
+
+const isExpired = (c: Contract) => Boolean(c.end && c.end < new Date().toISOString().slice(0, 10));
+
+/** The agency's own register contracts that cover the request, and the expired ones among them. */
+function ownContracts(db: Db, itemTokens: string[], buyer: Buyer | null) {
+  if (!buyer) return { hits: [] as OwnHit[], expired: [] as Unavailable[] };
+  const weights = idf(db.contracts, (c) => contractText(db, c));
+  const hits: OwnHit[] = [];
+  const expired: Unavailable[] = [];
+  for (const c of db.contracts.filter((c) => c.register_of === buyer.name)) {
+    const fit = fitScore(itemTokens, c.title, c.scope ?? "", weights);
+    if (fit < 50) continue;
+    const vendor = db.suppliers.find((s) => s.id === c.supplier_id)?.name ?? "";
+    if (isExpired(c)) {
+      expired.push({ master_agreement: null, vehicle: buyer.name, contract_number: c.contract_number, owner: vendor, reason: checkEligibility(c, buyer).reason, products: 0, examples: [c.title] });
+      continue;
+    }
+    hits.push({ contract_id: c.id, title: c.title, vendor, supplier_id: c.supplier_id, contract_number: c.contract_number, end: c.end, ceiling: c.ceiling ?? null, url: c.source_url ?? null, fit });
+  }
+  return { hits: hits.sort((a, b) => b.fit - a.fit), expired };
+}
+
+/** Co-op contracts covering the request: by their own scope, or by the products Agora holds for them. */
+function coopSection(db: Db, itemTokens: string[], buyer: Buyer | null, matched: Listing[]): CoopSection {
+  const agency = buyer?.name ?? null;
+  const cWeights = idf(db.contracts, (c) => contractText(db, c));
+  const lWeights = idf(db.listings, listingText);
+  const hits: CoopHit[] = [];
+  for (const c of db.contracts) {
+    const coop = coopOf(db, c);
+    if (!coop) continue;
+    if (c.end && c.end < new Date().toISOString().slice(0, 10)) continue;
+    const supplier = db.suppliers.find((s) => s.id === c.supplier_id);
+    const own = fitScore(itemTokens, c.title, `${c.scope ?? ""} ${supplier?.name ?? ""}`, cWeights);
+    // A contract's products count toward its fit; a whole-catalog award covers the supplier's products.
+    const products = matched.filter((l) => l.contract_id === c.id || (c.covers_supplier_catalog && l.supplier_id === c.supplier_id));
+    const viaProducts = Math.max(0, ...products.map((l) => fitScore(itemTokens, l.title, l.keywords ?? "", lWeights)));
+    const fit = Math.max(own, viaProducts);
+    if (fit < 35) continue;
+    const e = checkEligibility(c, buyer);
+    hits.push({
+      contract_id: c.id,
+      coop_id: coop.id,
+      coop: coop.name,
+      contract_number: c.contract_number,
+      title: c.title,
+      supplier: supplier?.name ?? "",
+      supplier_id: c.supplier_id,
+      fit,
+      member: onCoopContract(db, buyer, c),
+      eligible: e.eligible,
+      reason: e.reason,
+      note: c.relation_note ?? null,
+      verification: c.verification,
+      link_out: linkOutFor(db, c),
+      products: new Set(products.map((l) => l.family ?? l.id)).size,
+    });
+  }
+  hits.sort((a, b) => Number(b.member) - Number(a.member) || Number(b.eligible) - Number(a.eligible) || b.fit - a.fit || a.coop.localeCompare(b.coop));
+  const memberships_known = membershipsFor(db, agency).length > 0 || hits.some((h) => h.member);
+  const bestMember = hits.filter((h) => h.member && h.eligible).sort((a, b) => b.fit - a.fit)[0] ?? null;
+  const bestOther = hits.filter((h) => !h.member && h.eligible).sort((a, b) => b.fit - a.fit)[0] ?? null;
+  // Flag only a real gap: a clearly better fit on a co-op the agency hasn't joined.
+  const better = memberships_known && bestOther && (!bestMember || bestOther.fit >= bestMember.fit + 10) ? { hit: bestOther, than: bestMember } : null;
+  return { hits, memberships_known, better };
+}
 
 /** Contracts with no line items loaded whose scope matches the request. */
 function contractLeads(db: Db, itemTokens: string[], buyer: Buyer | null): ContractLead[] {
   const priced = new Set(db.listings.map((l) => l.contract_id));
-  const bare = db.contracts.filter((c) => !priced.has(c.id) && c.pricing_basis !== "discount_from_list");
+  // Co-op contracts have their own section; these are the other quote-only contracts.
+  const bare = db.contracts.filter((c) => !priced.has(c.id) && c.pricing_basis !== "discount_from_list" && !coopOf(db, c) && !c.register_of && !isExpired(c));
   if (!bare.length) return [];
   const weights = idf(db.contracts, (c) => contractText(db, c));
   const { rows } = bestMatches(itemTokens, bare, (c) => contractText(db, c), weights);
@@ -317,9 +479,28 @@ function contractLeads(db: Db, itemTokens: string[], buyer: Buyer | null): Contr
         title: c.title,
         eligible: e.eligible,
         reason: e.reason,
+        link_out: linkOutFor(db, c),
       };
     })
     .sort((a, b) => Number(b.eligible) - Number(a.eligible));
+}
+
+/** Quote-only contracts that would have matched but have expired. */
+function expiredLeads(db: Db, itemTokens: string[]): Unavailable[] {
+  const priced = new Set(db.listings.map((l) => l.contract_id));
+  const gone = db.contracts.filter((c) => isExpired(c) && !priced.has(c.id) && !c.register_of);
+  if (!gone.length) return [];
+  const weights = idf(db.contracts, (c) => contractText(db, c));
+  const { rows } = bestMatches(itemTokens, gone, (c) => contractText(db, c), weights);
+  return rows.map((c) => ({
+    master_agreement: c.master_agreement ?? null,
+    vehicle: c.vehicle ?? c.owner,
+    contract_number: c.contract_number,
+    owner: db.suppliers.find((s) => s.id === c.supplier_id)?.name ?? c.owner,
+    reason: checkEligibility(c, null).reason,
+    products: 0,
+    examples: [c.title],
+  }));
 }
 
 function fmtDate(d: Date) {
@@ -379,13 +560,21 @@ export function buildResults(db: Db, request: Request): Results {
   const blockedByContract = new Map<string, Listing[]>();
   for (const l of relevant)
     if (!checkEligibility(contractOf(l), buyer).eligible && !quoteRouteFor(l)) blockedByContract.set(l.contract_id!, [...(blockedByContract.get(l.contract_id!) ?? []), l]);
-  const unavailable: Unavailable[] = [...blockedByContract].map(([cid, ls]) => {
+  const blocked: Unavailable[] = [...blockedByContract].map(([cid, ls]) => {
     const c = db.contracts.find((x) => x.id === cid)!;
     const families = [...new Map(ls.map((l) => [l.family ?? l.id, l.title])).values()];
     return { master_agreement: c.master_agreement ?? null, vehicle: c.vehicle ?? c.owner, contract_number: c.contract_number, owner: c.owner, reason: checkEligibility(c, buyer).reason, products: families.length, examples: families.slice(0, 2) };
   });
 
+  // Expired contracts are hidden by default; the buyer can still ask to see them.
+  const expiredNumbers = new Set(db.contracts.filter(isExpired).map((c) => `${c.vehicle ?? c.owner}|${c.contract_number}`));
+  const unavailable = blocked.filter((u) => !expiredNumbers.has(`${u.vehicle}|${u.contract_number}`));
+  const expiredBlocked = blocked.filter((u) => expiredNumbers.has(`${u.vehicle}|${u.contract_number}`));
+
   const due = deadlineDate(parsed.deadline);
+  const optWeights = idf(db.listings, listingText);
+  // A paid agency may turn sponsored placements off for its staff.
+  const adFree = buyer ? settingsFor(db, buyer.name).ad_free : false;
   const optionFor = (l: Listing): ResultOption => {
       const supplier = db.suppliers.find((s) => s.id === l.supplier_id)!;
       const arrives = new Date(Date.now() + l.lead_time_days * 86_400_000);
@@ -399,12 +588,15 @@ export function buildResults(db: Db, request: Request): Results {
         rule: ruleFor(db, l, parsed.quantity),
         delivery: `${l.category === "Software and services" || l.category === "Professional services" ? "Available by" : "Arrives by"} ${fmtDate(arrives)}${meets === null ? "" : meets ? ` · meets your ${parsed.deadline} deadline` : ` · misses your ${parsed.deadline} deadline`}`,
         meets_deadline: meets,
-        sponsored: supplier.sponsored && supplier.edge_tier !== "discover" && l.source !== "no_approval",
+        sponsored: !adFree && supplier.sponsored && supplier.edge_tier !== "discover" && l.source !== "no_approval",
         pref_fit,
         variants: [l],
         vehicle: contractOf(l)?.vehicle ?? null,
         group: l.source,
         quote_route: null,
+        link_out: linkOutFor(db, contractOf(l)),
+        fit: fitScore(itemTokens, l.title, l.keywords ?? "", optWeights),
+        member: coopOf(db, contractOf(l)) ? onCoopContract(db, buyer, contractOf(l)!) : null,
       };
     };
   const quoteOptionFor = (l: Listing): ResultOption => {
@@ -418,6 +610,8 @@ export function buildResults(db: Db, request: Request): Results {
       vehicle: route.vehicle ?? null,
       contract_number: route.contract_number,
       rule: { text: `Quote via ${route.vehicle} ${route.contract_number} · discount off list`, payment: "po" },
+      link_out: linkOutFor(db, route),
+      member: coopOf(db, route) ? onCoopContract(db, buyer, route) : null,
       quote_route: {
         contract_id: route.id,
         vehicle: route.vehicle ?? route.owner,
@@ -495,6 +689,9 @@ export function buildResults(db: Db, request: Request): Results {
       explanation.push(
         `Only contracts open to ${buyer.name} (${buyer.state}) are shown.${unavailable.length ? ` ${unavailable.reduce((n, u) => n + u.products, 0)} more matching products sit on contracts it can't use.` : ""}`,
       );
+    explanation.push(
+      `Each card's fit score (0 to 100) is how much of your request it covers. Words in a product's or contract's name count fully, words only in its wider scope count 70%, and rarer words weigh more. Sponsorship never changes a fit score.`,
+    );
     if (viaQuote.length)
       explanation.push(
         `Some products are on a state contract ${buyer?.name ?? "you"} can't use, but the supplier's national co-op award is open to you. Those are listed for a quote, with the state price shown only as a reference.`,
@@ -522,7 +719,10 @@ export function buildResults(db: Db, request: Request): Results {
   }
 
   const contract_leads = contractLeads(db, itemTokens, buyer);
-  return { request, groups, peer, no_match, similar_solicitation, explanation, buyer, unavailable, contract_leads };
+  const coops = coopSection(db, itemTokens, buyer, relevant);
+  const own = ownContracts(db, itemTokens, buyer);
+  const expired = [...own.expired, ...expiredBlocked, ...expiredLeads(db, itemTokens)];
+  return { request, groups, peer, no_match, similar_solicitation, explanation, buyer, unavailable, contract_leads, coops, own_contracts: own.hits, expired };
 }
 
 export function findSimilarSolicitation(db: Db, request: Request): Solicitation | null {

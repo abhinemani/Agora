@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { goHref, listingLinksOut } from "@/lib/coops";
 import { useSearchParams } from "next/navigation";
 import { Suspense, useState } from "react";
 import { CategoryIcon } from "@/components/CategoryIcon";
@@ -85,16 +86,22 @@ function Browse() {
                     </Link>
                     {l.path && <div className="truncate text-xs text-slate">{l.path}</div>}
                     <div className="mt-1 flex items-center gap-2 text-xs text-slate">
-                      <SourcePill source={l.source} /> {s.name}
+                      <SourcePill source={l.source} contractId={l.contract_id} /> {s.name}
                     </div>
                   </div>
                   <div className="flex items-center gap-3">
                     <span className="text-sm font-semibold text-navy">
                       {money(l.unit_price)} <span className="text-xs font-normal text-slate">/ {l.unit}</span>
                     </span>
-                    <Link href={`/checkout?listing=${l.id}&qty=1`} className="rounded-md border border-navy/20 px-2.5 py-1 text-xs font-semibold text-navy hover:bg-tint">
-                      Buy
-                    </Link>
+                    {listingLinksOut(db, l) ? (
+                      <a href={goHref(l.contract_id!, { listing: l.id })} target="_blank" rel="noreferrer" className="rounded-md border border-navy/20 px-2.5 py-1 text-xs font-semibold text-navy hover:bg-tint">
+                        On {db.contracts.find((c) => c.id === l.contract_id)?.vehicle ?? "co-op"} ↗
+                      </a>
+                    ) : (
+                      <Link href={`/checkout?listing=${l.id}&qty=1`} className="rounded-md border border-navy/20 px-2.5 py-1 text-xs font-semibold text-navy hover:bg-tint">
+                        Buy
+                      </Link>
+                    )}
                   </div>
                 </div>
               );

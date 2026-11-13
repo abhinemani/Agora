@@ -1,7 +1,10 @@
 // Seed data for Agora and the City of Riverbend's city marketplace. IDs are stable so the demo
 // script in section 8 of the spec is repeatable after every reset.
 
-import type { Category, Db, Listing, Source } from "./types";
+import { SEED_COOPS, coopIdForVehicle } from "./coops";
+import { glCode } from "./orders";
+import { demoChecks } from "./verification";
+import type { Category, Db, Listing, Order, OrderStatus, Source } from "./types";
 import { fireMonthlyLines } from "./revenue_rules";
 import tylerCatalog from "../seed/catalogs/tyler-technologies-2025-03.json";
 import tylerNaspo from "../seed/catalogs/tyler-technologies-naspo-ar3764-2026-09.json";
@@ -518,14 +521,41 @@ export function seed(): Db {
       { title: "First aid kit, 50-person", supplier: "Patriot Safety & Uniform", date: "2026-09-22", qty: 6, listing_id: "lst_034" },
     ],
     quotes: [],
+    coops: SEED_COOPS.map((c) => ({ ...c })),
+    clicks: [],
+    // Riverbend runs a city marketplace, so its setup is already done.
+    memberships: [{ agency: "City of Riverbend", coop_id: "coop_wspc", source: "detected", confirmed: true }],
+    referrals: [],
+    impressions: [],
+    // Harmon Lake has used four of its five free RFPs this year, so the limit shows in one click.
+    agency_settings: [{ agency: "Harmon Lake Township", plan: "free", rfp_year: new Date().getFullYear(), rfp_used: 4, ad_free: false }],
+    invites: [],
+    handoffs: [],
+    carts: [],
     session: { preference_answer: null, spend_dashboard_enabled: true, acting_supplier_id: "sup_riverside", buyer: null },
     counters: { revenue: 0, request: 0, order: 1040, solicitation: 7, contract: 0, listing: 40, doc: 0, item: 0, attention: 0 },
   };
+
+  // Demo verification results for the fictional suppliers (real companies show "not checked yet").
+  const VERIFY: Record<string, { samRenewsIn: number; certExpiresIn?: number }> = {
+    sup_riverside: { samRenewsIn: 210, certExpiresIn: 40 },
+    sup_national: { samRenewsIn: 300 },
+    sup_cascade: { samRenewsIn: 180 },
+    sup_cleanline: { samRenewsIn: 150, certExpiresIn: 365 },
+    sup_techsource: { samRenewsIn: 90 },
+    sup_patriot: { samRenewsIn: 240, certExpiresIn: 500 },
+    sup_metromart: { samRenewsIn: 18 },
+    sup_evergreen: { samRenewsIn: 330, certExpiresIn: 280 },
+  };
+  for (const sup of db.suppliers) if (VERIFY[sup.id]) sup.checks = demoChecks(sup, VERIFY[sup.id]);
+  seedOrderHistory(db);
 
   addTylerCatalog(db);
   addMaximus(db);
   addCarahsoftLeads(db);
   addNaspoCitizenEngagement(db);
+  addComputerEquipment(db);
+  for (const c of db.contracts) if (c.source === "coop_contract") c.coop_id ??= coopIdForVehicle(c.vehicle);
   fireMonthlyLines(db);
   return db;
 }
@@ -894,4 +924,145 @@ function addNaspoCitizenEngagement(db: Db) {
       ],
     });
   }
+}
+
+/** Laptop and computer contracts on NASPO ValuePoint and Sourcewell, for the
+ * co-op membership demo. Master agreement numbers come from public documents
+ * (a Hawaii SPO vendor list, Dell's posted master agreement, a Sourcewell CDW
+ * rate card); terms aren't confirmed, so they're research leads and quote only. */
+function addComputerEquipment(db: Db) {
+  const HAWAII_LIST =
+    "https://spo.hawaii.gov/wp-content/uploads/2026/Vendor-List-24-03-Change-No.-21-NASPO-Computer-Equipment-Desktop-Laptops-Tablets-Servers-Storage-including-Related-Peripherals-Services-07-23-2026-2remediated.pdf";
+  const supplier = (id: string, name: string, city: string, state: string, website: string) =>
+    db.suppliers.push({ id, name, city, state, is_local: false, certifications: [], verified: { insurance: false, bond: false }, edge_tier: "discover", rating: 0, review_count: 0, sponsored: false, categories: ["IT hardware"], website });
+  supplier("sup_dell", "Dell Technologies", "Round Rock", "TX", "dell.com");
+  supplier("sup_hp", "HP Inc.", "Palo Alto", "CA", "hp.com");
+  supplier("sup_lenovo", "Lenovo", "Morrisville", "NC", "lenovo.com");
+  supplier("sup_apple", "Apple", "Cupertino", "CA", "apple.com");
+  supplier("sup_cdw", "CDW Government", "Vernon Hills", "IL", "cdwg.com");
+  supplier("sup_ideal", "Ideal System Solutions", "Minneapolis", "MN", "idealssi.com");
+
+  const base = {
+    piggybackable: true,
+    piggyback_clause_text: "",
+    delivery_terms: "Per quote",
+    marketplace_ids: [] as string[],
+    source_document_id: null,
+    onboarding_billed: true,
+    verification: "research_lead" as const,
+    pricing_basis: "quote" as const,
+    start: "",
+    end: "",
+  };
+  const naspo = (id: string, supplier_id: string, number: string, url: string, docLabel: string) =>
+    db.contracts.push({
+      ...base,
+      id,
+      supplier_id,
+      source: "coop_contract",
+      owner: "NASPO ValuePoint (lead state Minnesota)",
+      title: "Computer Equipment: desktops, laptops, tablets, servers and storage",
+      scope: "notebook computer pc chromebook monitor peripheral rugged",
+      contract_number: number,
+      payment_terms: "Per your state's participating addendum",
+      vehicle: "NASPO ValuePoint",
+      source_url: url,
+      relation_note: "Master agreement number from public documents; confirm the current term and your state's participating addendum before ordering.",
+      eligibility: { states: "any", note: "public entities in states with a participating addendum to the Computer Equipment portfolio", requires: "Your state's participating addendum" },
+      documents: [{ label: docLabel, url }],
+    });
+  naspo("ctr_naspo_ce_dell", "sup_dell", "23026", "https://www.delltechnologies.com/asset/en-us/solutions/oem-solutions/legal-pricing/dell-naspo-master-agreement-23026.pdf", "Dell's posted master agreement 23026");
+  naspo("ctr_naspo_ce_hp", "sup_hp", "23011", HAWAII_LIST, "Hawaii SPO vendor list, NASPO Computer Equipment");
+  naspo("ctr_naspo_ce_lenovo", "sup_lenovo", "23013", HAWAII_LIST, "Hawaii SPO vendor list, NASPO Computer Equipment");
+  naspo("ctr_naspo_ce_apple", "sup_apple", "23003", HAWAII_LIST, "Hawaii SPO vendor list, NASPO Computer Equipment");
+
+  const sourcewell = (id: string, supplier_id: string, number: string, url: string, note: string) =>
+    db.contracts.push({
+      ...base,
+      id,
+      supplier_id,
+      source: "coop_contract",
+      owner: "Sourcewell",
+      title: "Technology products and services with related solutions",
+      scope: "computer hardware notebook mobile device desktop tablet software support",
+      contract_number: number,
+      payment_terms: "Per quote",
+      vehicle: "Sourcewell",
+      pricing_basis: "discount_from_list",
+      source_url: url,
+      relation_note: note,
+      eligibility: { states: "any", note: "government, education and nonprofit agencies nationwide", requires: "Free Sourcewell membership" },
+      documents: [{ label: "Sourcewell contract document", url }],
+    });
+  sourcewell(
+    "ctr_sw_cdw",
+    "sup_cdw",
+    "121923-CDW",
+    "https://files.sourcewell.org/public/Shared%20Documents/Solicitations/10827/00005730/Additional%20Documents/121923%20CDW%20Product%20Rate%20Card%20August%202026.pdf",
+    "Research lead (unverified): CDW's August 2026 rate card lists 5% off notebooks and mobile devices.",
+  );
+  sourcewell("ctr_sw_ideal", "sup_ideal", "121923-IDL", "https://www.idealssi.com/sourcewell/", "Research lead (unverified): computer hardware, software and support; listed maturity February 27, 2028.");
+}
+
+/** A few of Riverbend's earlier orders at different stages, so the oversight table
+ * and reconciliation have something in them before the demo places anything. */
+function seedOrderHistory(db: Db) {
+  const at = (daysAgo: number, hour = 10) => {
+    const d = new Date(Date.now() - daysAgo * 86_400_000);
+    d.setHours(hour, 0, 0, 0);
+    return d.toISOString();
+  };
+  const make = (
+    n: number,
+    listingId: string,
+    quantity: number,
+    department: string,
+    requester: string,
+    payment: "pcard" | "po",
+    steps: [OrderStatus, number, string][],
+  ): Order => {
+    const listing = db.listings.find((l) => l.id === listingId)!;
+    const total = Math.round(listing.unit_price * quantity * 100) / 100;
+    const last = steps[steps.length - 1][0];
+    return {
+      id: `RB-${payment === "po" ? "PO" : "PC"}-${n}`,
+      request_id: null,
+      listing_id: listingId,
+      quantity,
+      total,
+      payment,
+      status: last,
+      department,
+      created_at: at(steps[0][1]),
+      requester,
+      cart_id: null,
+      gl_code: glCode(db, department),
+      events: steps.map(([status, daysAgo, note]) => ({ status, at: at(daysAgo), note })),
+      ...(steps.some(([s]) => s === "invoiced") ? { invoice: { number: `INV-${n}`, amount: total } } : {}),
+    };
+  };
+  db.orders.push(
+    make(1036, "lst_009", 12, "Public Works", "Luis Ortega", "pcard", [
+      ["placed", 9, "Ordered on the P-card; charged when it ships"],
+      ["shipped", 8, "CleanLine Janitorial Supply shipped it"],
+    ]),
+    make(1035, "lst_031", 40, "Police", "Sgt. Amy Cole", "pcard", [
+      ["placed", 16, "Ordered on the P-card; charged when it ships"],
+      ["shipped", 14, "Patriot Safety & Uniform shipped it"],
+      ["delivered", 12, "Received by Police"],
+    ]),
+    make(1034, "lst_002", 60, "Parks and Recreation", "Dana Whitfield", "po", [
+      ["pending_approval", 33, "PO created and sent for approval"],
+      ["approved", 32, "PO approved by Marcus Reyes, Purchasing"],
+      ["shipped", 26, "Riverside Office Supply shipped it"],
+      ["delivered", 24, "Received by Parks and Recreation"],
+      ["invoiced", 21, "Invoice INV-1034 matches the PO and the receipt"],
+    ]),
+    make(1033, "lst_034", 6, "Library", "Priya Nair", "pcard", [
+      ["placed", 52, "Ordered on the P-card; charged when it ships"],
+      ["shipped", 51, "Patriot Safety & Uniform shipped it"],
+      ["delivered", 49, "Received by Library"],
+      ["reconciled", 40, "Card charge matched to the receipt and coded to 100-450-6100"],
+    ]),
+  );
 }

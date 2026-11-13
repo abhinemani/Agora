@@ -24,11 +24,13 @@ export const STATES: [string, string][] = [
 ];
 export const stateName = (code: string) => STATES.find(([c]) => c === code)?.[1] ?? code;
 
-/** One-click buyers for the intake step. Riverbend, Harmon Lake and Cedar Bend are fictional. */
+/** One-click buyers for the intake step. Riverbend, Harmon Lake and Cedar Bend are fictional;
+ * Crested Butte is a real Colorado town, used with demo co-op memberships. */
 export const BUYER_PRESETS: { buyer: Buyer; blurb: string }[] = [
-  { buyer: { name: "City of Riverbend", state: "OR", entity_type: "municipality", population: 85_000 }, blurb: "Has its own city marketplace: Oregon contracts plus national co-ops" },
-  { buyer: { name: "Harmon Lake Township", state: "NJ", entity_type: "municipality", population: 42_000 }, blurb: "A New Jersey municipality: NJSTART contracts open up" },
-  { buyer: { name: "City of Cedar Bend", state: "IA", entity_type: "municipality", population: 60_000 }, blurb: "An Iowa city: NASPO ValuePoint contracts with an Iowa addendum open up" },
+  { buyer: { name: "Town of Crested Butte", state: "CO", entity_type: "municipality", population: 1_600, domain: "townofcrestedbutte.colorado.gov" }, blurb: "A small Colorado town: see which co-ops it belongs to and which it could join" },
+  { buyer: { name: "City of Riverbend", state: "OR", entity_type: "municipality", population: 85_000, domain: "riverbend-or.example" }, blurb: "Has its own city marketplace: Oregon contracts plus national co-ops" },
+  { buyer: { name: "Harmon Lake Township", state: "NJ", entity_type: "municipality", population: 42_000, domain: "harmonlake-nj.example" }, blurb: "A New Jersey municipality: NJSTART contracts open up" },
+  { buyer: { name: "City of Cedar Bend", state: "IA", entity_type: "municipality", population: 60_000, domain: "cedarbend-ia.example" }, blurb: "An Iowa city: NASPO ValuePoint contracts with an Iowa addendum open up" },
   { buyer: { name: "New Jersey state department", state: "NJ", entity_type: "state_agency", population: null }, blurb: "Buying directly under New Jersey state contracts" },
 ];
 

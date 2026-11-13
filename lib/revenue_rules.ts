@@ -1,6 +1,7 @@
 // The ten revenue options and when each fires. Everything a demo might want to
 // tune lives here. Amounts are placeholders, not pricing proposals.
 
+import { isTrx } from "./trx";
 import type { Db, Payer, RevenueEvent, Source } from "./types";
 
 export const REVENUE_OPTIONS: Record<
@@ -94,7 +95,7 @@ export function onOrderPlaced(
   const fired: RevenueEvent[] = [];
   if (TRANSACTION_FEE_SOURCES.includes(args.source)) {
     const fee = args.total * RATES.transactionFee;
-    const label = args.source === "state_contract" ? "TRX fee" : "Transaction fee";
+    const label = isTrx(db.contracts.find((c) => c.id === args.contractId)) ? "TRX fee" : "Transaction fee";
     fired.push(fire(db, 3, fee, `${label} 1.0% on ${args.orderId} · ${args.supplierName}`, args.orderId));
     creditSubscription(db, fee, "transaction fee", args.orderId);
   }
@@ -167,7 +168,7 @@ export const FIVE_WAYS: { label: string; who: string; options: number[] }[] = [
 
 /** Three kinds of purchase, each earning differently. */
 export const PURCHASE_KINDS = {
-  contract: { n: 1, title: "Already on a contract", earns: "supplier listing fees, and the TRX fee on state contracts", options: [2, 3] },
+  contract: { n: 1, title: "Already on a contract", earns: "supplier listing fees, and the TRX fee on state contracts in TRX states", options: [2, 3] },
   no_approval: { n: 2, title: "No approval needed", earns: "card and order fees, and sponsored placement", options: [9, 5] },
   new_need: { n: 3, title: "The rare new need", earns: "managed sourcing; the award becomes a listing others can use", options: [8, 2] },
 } as const;

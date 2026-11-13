@@ -23,6 +23,8 @@ export interface Buyer {
   state: string;
   entity_type: EntityType;
   population: number | null;
+  /** Website domain, matched against co-op member lists to detect memberships. */
+  domain?: string;
 }
 
 /** Who may buy from a contract vehicle. */
@@ -86,6 +88,8 @@ export interface Supplier {
   categories: Category[];
   /** A featured storefront's own copy. Absent for a basic storefront. */
   profile?: SupplierProfile;
+  /** The checks behind the Verified badge. Only demo suppliers carry results. */
+  checks?: VerificationCheck[];
   website?: string;
 }
 
@@ -131,7 +135,7 @@ export interface Contract {
   /** How a buyer gets a price: a published schedule, a discount off list, or a quote. */
   pricing_basis?: "published_price" | "discount_from_list" | "quote";
   /** Where the terms come from: a source document we hold, research to verify, or demo data. */
-  verification?: "source_document" | "research_lead" | "demo";
+  verification?: "source_document" | "research_lead" | "demo" | "agency_register";
   source_url?: string;
   /** Master agreement other states can adopt, e.g. "NASPO ValuePoint AR3758". */
   master_agreement?: string;
@@ -143,6 +147,118 @@ export interface Contract {
   relation_note?: string;
   /** Source documents: master agreement, price files, participating addenda. */
   documents?: { label: string; url: string }[];
+  /** The co-op that awarded it (co-op contracts only). */
+  coop_id?: string;
+  /** Scope words beyond the title, e.g. the categories a master agreement covers. */
+  scope?: string;
+  /** Added from this agency's contract register; visible only to that agency. */
+  register_of?: string;
+  /** Not-to-exceed amount from the register, if given. */
+  ceiling?: number;
+}
+
+/** A purchasing cooperative. Agora sends buyers to its contract pages rather
+ * than selling through it, so the co-op sees the traffic, unless the co-op has
+ * agreed to let its members buy inside Agora. */
+export interface Coop {
+  id: string;
+  name: string;
+  website: string;
+  /** Whether the co-op shares its member list; no formal relationship without one. */
+  member_list_status: "none" | "partial" | "full";
+  /** Where the member list came from. "demo" lists are illustrative, not from the co-op. */
+  member_list_source?: "co-op" | "scraped" | "demo";
+  members?: CoopMember[];
+  member_list_updated_at?: string;
+  /** How agencies get on it: a membership, or their state signing a participating addendum (NASPO ValuePoint). */
+  access?: "membership" | "state_addendum";
+  /** Members may check out or request quotes in Agora. Off unless the co-op has agreed. */
+  buy_in_agora: boolean;
+  /** Plain-language status shown to Sovra ops. */
+  note: string;
+}
+
+/** One government on a co-op's member list. Matched to agencies by website, or by name and state. */
+export interface CoopMember {
+  name: string;
+  domain: string;
+  state?: string;
+}
+
+/** An agency's membership in a co-op: detected from a member list, or added by the agency. */
+export interface CoopMembership {
+  agency: string;
+  coop_id: string;
+  source: "detected" | "manual";
+  /** The purchasing admin has confirmed it. Detected memberships count before confirmation. */
+  confirmed: boolean;
+}
+
+/** A requester asked purchasing to get the agency onto a co-op contract. */
+export interface Referral {
+  id: string;
+  request_id: string | null;
+  contract_id: string;
+  coop_id: string;
+  agency: string;
+  need: string;
+  fit: number;
+  created_at: string;
+}
+
+/** A co-op contract shown in results, for traffic reporting. */
+export interface Impression {
+  request_id: string;
+  contract_id: string;
+  coop_id: string;
+  agency: string | null;
+  rank: number;
+  fit: number;
+  member: boolean;
+  created_at: string;
+}
+
+/** Per-agency setup: plan, free-tier usage and whether staff see sponsored placements. */
+export interface AgencySettings {
+  agency: string;
+  plan: "free" | "paid";
+  /** Year the RFP counter covers; it resets when the year turns. */
+  rfp_year: number;
+  /** Solicitations published this year, counted against the free plan's limit. */
+  rfp_used: number;
+  /** Hide sponsored placements from staff (paid plans only). */
+  ad_free: boolean;
+}
+
+/** A requester asked the agency's purchasing admin to finish setup. */
+export interface Invite {
+  id: string;
+  agency: string;
+  email: string;
+  request_id: string | null;
+  created_at: string;
+}
+
+/** A solicitation sent somewhere other than RFP Lite: Sovra's full RFP tool or the agency's own. */
+export interface RfpHandoff {
+  id: string;
+  agency: string;
+  request_id: string;
+  tool: "sovra_rfp" | "euna" | "opengov" | "bonfire";
+  title: string;
+  created_at: string;
+}
+
+/** One outbound click to a contract page, logged by the /go redirect. */
+export interface ClickEvent {
+  id: string;
+  contract_id: string;
+  coop_id: string | null;
+  listing_id: string | null;
+  request_id: string | null;
+  buyer_name: string | null;
+  url: string;
+  created_at: string;
 }
 
 export interface ContractDocument {
@@ -257,6 +373,8 @@ export interface Request {
   outcome: "ordered" | "solicitation" | "abandoned" | null;
 }
 
+export type OrderStatus = "placed" | "pending_approval" | "approved" | "shipped" | "delivered" | "invoiced" | "reconciled";
+
 export interface Order {
   id: string;
   request_id: string | null;
@@ -264,9 +382,54 @@ export interface Order {
   quantity: number;
   total: number;
   payment: "pcard" | "po";
-  status: "placed" | "pending_approval" | "approved";
+  status: OrderStatus;
   department: string;
   created_at: string;
+  /** Who asked for it, and the cart it came from, if any. */
+  requester?: string;
+  cart_id?: string | null;
+  /** Each step the order has been through, oldest first. */
+  events?: { status: OrderStatus; at: string; note: string }[];
+  /** PO orders: the supplier's invoice, matched against the PO and the receipt. */
+  invoice?: { number: string; amount: number };
+  /** Where finance codes it, e.g. "100-410-6100". */
+  gl_code?: string;
+}
+
+export interface CartLine {
+  listing_id: string;
+  quantity: number;
+  request_id?: string | null;
+}
+
+/** A shopping cart. Built by a requester, optionally handed to someone who can buy,
+ * sent for approval when any supplier's share needs a PO, then checked out into orders. */
+export interface Cart {
+  id: string;
+  agency: string;
+  status: "draft" | "pending" | "approved" | "rejected";
+  lines: CartLine[];
+  created_by: string;
+  /** Who has the cart now: the requester, or whoever it was handed to. */
+  holder: string;
+  handoff?: { from: string; to: string; division: string; ship_to: string; notes: string; at: string };
+  submitted_at?: string;
+  decided_by?: string;
+  decided_at?: string;
+  reject_reason?: string;
+  order_ids: string[];
+  created_at: string;
+  updated_at: string;
+}
+
+/** One check behind a supplier's "Verified" badge. */
+export interface VerificationCheck {
+  id: "sam_registration" | "sam_exclusions" | "section_889" | "insurance" | "bond" | "certification";
+  label: string;
+  status: "pass" | "fail" | "expiring" | "not_checked";
+  detail: string;
+  source: string;
+  checked_at: string | null;
 }
 
 export interface Solicitation {
@@ -366,6 +529,15 @@ export interface Db {
   suppliers: Supplier[];
   reviews: Review[];
   contracts: Contract[];
+  coops: Coop[];
+  clicks: ClickEvent[];
+  memberships: CoopMembership[];
+  referrals: Referral[];
+  impressions: Impression[];
+  agency_settings: AgencySettings[];
+  carts: Cart[];
+  invites: Invite[];
+  handoffs: RfpHandoff[];
   documents: ContractDocument[];
   extracted: ExtractedItem[];
   listings: Listing[];

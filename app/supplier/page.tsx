@@ -159,7 +159,7 @@ function ContractsTab({ run }: { run: Run }) {
                 <div>
                   <div className="flex items-center gap-2">
                     <span className="font-semibold text-navy">{c.title}</span>
-                    <SourcePill source={c.source} />
+                    <SourcePill source={c.source} contractId={c.id} />
                   </div>
                   <div className="mt-1 text-xs text-slate">
                     {c.contract_number} · {c.owner} · through {c.end}

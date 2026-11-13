@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useState } from "react";
+import { isContractLevelUrl } from "@/lib/coops";
 import { EDGE_TIER, FIVE_WAYS, REVENUE_OPTIONS } from "@/lib/revenue_rules";
 import type { Payer } from "@/lib/types";
 import { useStore } from "./store";
@@ -17,7 +18,7 @@ const PAYER_LABEL: Record<Payer, string> = {
 export function Ledger() {
   const { db, ledgerOpen, setLedgerOpen, act, showEarn, setShowEarn, llm } = useStore();
   const [resetting, setResetting] = useState(false);
-  const [view, setView] = useState<"events" | "totals">("events");
+  const [view, setView] = useState<"events" | "totals" | "coops">("events");
   if (!ledgerOpen || !db) return null;
 
   const events = db.revenue;
@@ -50,16 +51,18 @@ export function Ledger() {
             </button>
           </div>
           <div className="mt-4 flex gap-1 text-xs">
-            {(["events", "totals"] as const).map((v) => (
+            {(["events", "totals", "coops"] as const).map((v) => (
               <button key={v} onClick={() => setView(v)} className={`rounded px-3 py-1 font-semibold ${view === v ? "bg-tint text-navy" : "text-slate hover:text-navy"}`}>
-                {v === "events" ? "Events" : "Totals"}
+                {v === "events" ? "Events" : v === "totals" ? "Totals" : "Co-op traffic"}
               </button>
             ))}
           </div>
         </div>
 
         <div className="flex-1 overflow-y-auto">
-          {view === "events" ? (
+          {view === "coops" ? (
+            <CoopTraffic />
+          ) : view === "events" ? (
             <ul className="divide-y divide-navy/5">
               {events.map((e) => (
                 <li key={e.id} className="flex gap-3 px-5 py-3">
@@ -169,6 +172,99 @@ export function Ledger() {
           </Button>
         </div>
       </aside>
+    </div>
+  );
+}
+
+const LIST_STATUS = { none: "No member list", partial: "Partial member list", full: "Member list shared" } as const;
+
+/** Sovra ops: outbound clicks per co-op, and whether each co-op's members may buy in Agora. */
+function CoopTraffic() {
+  const { db, act } = useStore();
+  const [busy, setBusy] = useState<string | null>(null);
+  if (!db) return null;
+  const contractById = new Map(db.contracts.map((c) => [c.id, c]));
+  return (
+    <div className="space-y-6 px-5 py-4">
+      <p className="text-xs text-slate">
+        <span className="font-semibold text-navy">{db.requests.length} search{db.requests.length === 1 ? "" : "es"}</span> this session. Co-op results send buyers to the co-op's own contract page through a tracked link, so each co-op can see the traffic Sovra sends it. Buying inside Agora stays off until a co-op agrees.
+      </p>
+      <section className="space-y-3">
+        {db.coops.map((coop) => {
+          const contracts = db.contracts.filter((c) => c.coop_id === coop.id);
+          const clicks = db.clicks.filter((k) => k.coop_id === coop.id);
+          const shown = db.impressions.filter((i) => i.coop_id === coop.id).length;
+          const referred = db.referrals.filter((r) => r.coop_id === coop.id).length;
+          const missing = contracts.filter((c) => !isContractLevelUrl(c.source_url)).length;
+          return (
+            <div key={coop.id} className="rounded-lg border border-line p-3">
+              <div className="flex items-start justify-between gap-3">
+                <div className="min-w-0">
+                  <div className="text-sm font-semibold text-navy">{coop.name}</div>
+                  <div className="text-[11px] text-slate">
+                    {contracts.length} contract{contracts.length === 1 ? "" : "s"} · {LIST_STATUS[coop.member_list_status]}
+                    {coop.member_list_source === "demo" && " (demo)"} · {db.memberships.filter((m) => m.coop_id === coop.id).length} agencies matched
+                    {missing > 0 && <span className="text-amber-700"> · {missing} without a contract-level link</span>}
+                  </div>
+                  <div className="mt-1 text-[11px] text-steel">{coop.note}</div>
+                </div>
+                <div className="flex gap-4 text-right">
+                  {(
+                    [
+                      [shown, "shown"],
+                      [clicks.length, "clicks"],
+                      [referred, "join asks"],
+                    ] as const
+                  ).map(([n, label]) => (
+                    <div key={label}>
+                      <div className="text-xl font-semibold tabular-nums text-navy">{n}</div>
+                      <div className="text-[10px] text-slate">{label}</div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+              <label className="mt-2 flex cursor-pointer items-center gap-2 text-xs text-navy">
+                <input
+                  type="checkbox"
+                  className="!p-0"
+                  checked={coop.buy_in_agora}
+                  disabled={busy === coop.id}
+                  onChange={async (e) => {
+                    setBusy(coop.id);
+                    await act("setCoopBuyInAgora", { coopId: coop.id, on: e.target.checked });
+                    setBusy(null);
+                  }}
+                />
+                Members may buy inside Agora (the co-op has agreed)
+              </label>
+            </div>
+          );
+        })}
+      </section>
+      <Link href="/coops" className="block text-xs font-semibold text-maroon hover:underline">
+        Upload or update co-op member lists
+      </Link>
+      <section>
+        <h3 className="mb-2 text-xs font-semibold text-slate">Recent clicks</h3>
+        {db.clicks.length ? (
+          <ul className="divide-y divide-navy/5 text-xs">
+            {db.clicks.slice(0, 20).map((k) => {
+              const c = contractById.get(k.contract_id);
+              return (
+                <li key={k.id} className="flex justify-between gap-3 py-2">
+                  <span className="min-w-0 text-navy">
+                    {c?.vehicle} {c?.contract_number}
+                    <span className="block text-[11px] text-slate">{k.buyer_name ?? "No agency set"}</span>
+                  </span>
+                  <span className="shrink-0 text-slate">{new Date(k.created_at).toLocaleTimeString([], { hour: "numeric", minute: "2-digit" })}</span>
+                </li>
+              );
+            })}
+          </ul>
+        ) : (
+          <p className="text-xs text-slate">No clicks yet. Search for something on a co-op contract and choose Buy on the co-op.</p>
+        )}
+      </section>
     </div>
   );
 }

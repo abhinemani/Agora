@@ -4,10 +4,16 @@ import Link from "next/link";
 import { useParams, useSearchParams } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
 import { BuyerPicker } from "@/components/BuyerPicker";
+import { AddToCart } from "@/components/AddToCart";
+import { CoopLink } from "@/components/CoopLink";
+import { CoopSection, FitPill } from "@/components/CoopSection";
+import { RouteStrip } from "@/components/RouteStrip";
+import { ExpiredNote, InviteAdminBanner, NextSteps, OwnContractsCard } from "@/components/ResultExtras";
 import { CategoryIcon } from "@/components/CategoryIcon";
 import { useStore } from "@/components/store";
 import { Lock, People, Plus, Sparkle } from "@/components/icons";
-import { Badge, Button, Card, ErrorNote, Eyebrow, IconCircle, LinkButton, Loading, RevenueTags, SourcePill, Stars, SupplierBadges, money } from "@/components/ui";
+import { Badge, Button, Card, ErrorNote, Eyebrow, IconCircle, LinkButton, Loading, RevenueTags, SOURCE_HEX, SourcePill, Stars, SupplierBadges, money } from "@/components/ui";
+import { goHref } from "@/lib/coops";
 import type { ContractLead, Results, ResultOption, Unavailable } from "@/lib/assistant";
 import { PURCHASE_KINDS, TRANSACTION_FEE_SOURCES } from "@/lib/revenue_rules";
 
@@ -157,6 +163,10 @@ export default function RequestResults() {
       <ErrorNote message={error} />
       {!needsBuyer && !needsAnswer && !results && !error && <Loading label={buyer ? `Checking every contract ${buyer.name} can use` : "Checking every contract in Agora"} />}
 
+      {results && <RouteStrip results={results} />}
+      {results && <InviteAdminBanner requestId={id} />}
+      {results && <OwnContractsCard hits={results.own_contracts} agency={results.buyer?.name ?? "Your agency"} />}
+
       {results && !results.no_match && (
         <>
           {showEarn && <KindBanner kind={results.groups.every((g) => g.source === "no_approval") ? PURCHASE_KINDS.no_approval : PURCHASE_KINDS.contract} />}
@@ -170,7 +180,7 @@ export default function RequestResults() {
             </Card>
           )}
 
-          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          <div id="options" className="grid scroll-mt-24 gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {shown.map((o) => (
               <OptionCard key={o.listing.id} o={o} qty={p.quantity} requestId={id} />
             ))}
@@ -180,6 +190,8 @@ export default function RequestResults() {
               Show all {all.length} options
             </button>
           )}
+
+          <CoopSection section={results.coops} requestId={id} onMembershipChange={() => setResults(null)} />
 
           <div className="grid gap-4 md:grid-cols-3">
             {results.peer && <PeerCard peer={results.peer} qty={p.quantity} />}
@@ -195,10 +207,12 @@ export default function RequestResults() {
               </Link>
             </div>
           </div>
+          <ExpiredNote items={results.expired} />
         </>
       )}
 
       {results && results.no_match && showEarn && <KindBanner kind={PURCHASE_KINDS.new_need} />}
+      {results && results.no_match && <CoopSection section={results.coops} requestId={id} onMembershipChange={() => setResults(null)} />}
       {results && results.no_match && (
         <div className="grid gap-6 lg:grid-cols-3">
           <Card className="p-6 lg:col-span-2">
@@ -208,7 +222,9 @@ export default function RequestResults() {
               </IconCircle>
               <div>
                 <h2 className="text-2xl font-extrabold tracking-tight text-navy">
-                  {results.contract_leads.some((c) => c.eligible)
+                  {results.own_contracts.length
+                    ? "Nothing else in Agora covers this, but your agency's own contract does."
+                    : results.contract_leads.some((c) => c.eligible) || results.coops.hits.some((h) => h.eligible)
                     ? "No published prices for this yet, but there are contracts that cover it."
                     : results.unavailable.length
                       ? `No contract open to ${results.buyer?.name ?? "you"} covers this yet.`
@@ -229,14 +245,10 @@ export default function RequestResults() {
                     I'll start from the closest past solicitation: <span className="font-semibold">{results.similar_solicitation.title}</span>.
                   </p>
                 )}
-                <div className="mt-4 flex gap-2">
-                  <LinkButton href={`/solicitations/new?request=${id}`} variant="maroon">
-                    Build a solicitation
-                  </LinkButton>
-                  <LinkButton href="/" variant="secondary">
-                    Try different words
-                  </LinkButton>
-                </div>
+                <NextSteps requestId={id} />
+                <Link href="/" className="mt-3 inline-block text-xs font-semibold text-slate hover:text-navy">
+                  Or try different words →
+                </Link>
               </div>
             </div>
           </Card>
@@ -244,6 +256,7 @@ export default function RequestResults() {
             {results.peer && <PeerCard peer={results.peer} qty={p.quantity} />}
             <UnavailableCard items={results.unavailable} buyerName={results.buyer?.name ?? "this agency"} />
             <ContractLeadsCard leads={results.contract_leads} />
+            <ExpiredNote items={results.expired} />
           </div>
         </div>
       )}
@@ -266,6 +279,7 @@ function OptionCard({ o, qty, requestId }: { o: ResultOption; qty: number; reque
   const [quoted, setQuoted] = useState<string | null>(null);
   const [quoteError, setQuoteError] = useState<string | null>(null);
   const qr = o.quote_route;
+  const lo = o.link_out;
   const l = o.variants.find((v) => v.id === chosen) ?? o.listing;
   const tiered = o.variants.length > 1;
   const total = Math.round(l.unit_price * qty * 100) / 100;
@@ -280,12 +294,20 @@ function OptionCard({ o, qty, requestId }: { o: ResultOption; qty: number; reque
   const title = tiered ? l.title.replace(/\s*\([^)]*\)\s*$/, "") : l.title;
   const href = `/product/${l.id}?qty=${qty}&request=${requestId}`;
   return (
-    <div className="flex min-h-[290px] flex-col rounded-2xl border border-line bg-white p-[18px] shadow-[0_3px_15px_rgba(19,45,82,0.02)] transition hover:border-[#bbcae8]">
+    <div
+      className="flex min-h-[290px] flex-col rounded-2xl border border-l-[4px] border-line bg-white p-[18px] shadow-[0_3px_15px_rgba(19,45,82,0.02)] transition-colors hover:border-[#bbcae8]"
+      style={{ borderLeftColor: SOURCE_HEX[qr ? o.group : l.source] }}
+    >
       <div className="flex items-start justify-between gap-3">
         <CategoryIcon category={l.category} />
         <div className="flex flex-col items-end gap-1">
-          <SourcePill source={l.source} />
-          {o.sponsored && <span className="text-[10px] text-slate">Sponsored</span>}
+          <SourcePill source={l.source} contractId={l.contract_id} />
+          <div className="flex items-center gap-1.5">
+            {o.member === true && db?.session.buyer && <span className="text-[10px] font-semibold text-emerald-700">Your co-op</span>}
+            {o.member === false && db?.session.buyer && <span className="text-[10px] font-semibold text-maroon">Join to use</span>}
+            {o.sponsored && <span className="text-[10px] text-slate">Sponsored</span>}
+            <FitPill fit={o.fit} />
+          </div>
         </div>
       </div>
       <div className="mt-4 flex flex-wrap items-center gap-1.5 text-[11px] text-slate">
@@ -299,7 +321,7 @@ function OptionCard({ o, qty, requestId }: { o: ResultOption; qty: number; reque
       </Link>
       <p className="mt-1.5 line-clamp-3 text-xs leading-relaxed text-slate">
         {qr
-          ? `${qr.reference} isn't open to your agency. Buy through ${qr.vehicle} ${qr.contract_number}: the supplier quotes a discount off list.${qr.research_note ? ` ${qr.research_note}.` : ""}`
+          ? `${qr.reference} isn't open to your agency. Buy through ${qr.vehicle} ${qr.contract_number}: the supplier quotes a discount off list${lo ? `, on ${lo.coop}'s contract page` : ""}.${qr.research_note ? ` ${qr.research_note}.` : ""}`
           : l.detail || [o.vehicle, o.contract_number].filter(Boolean).join(" ") || o.delivery}
       </p>
       {tiered && (
@@ -315,9 +337,15 @@ function OptionCard({ o, qty, requestId }: { o: ResultOption; qty: number; reque
         </label>
       )}
       <div className="mb-3 mt-1 flex flex-wrap items-center gap-x-2 gap-y-1 text-[11px]">
-        {!qr && <span className={rule.payment === "po" ? "text-amber-700" : "text-emerald-700"}>{rule.text}</span>}
+        {lo && !qr ? (
+          <span className="text-slate">
+            Bought on {lo.coop}'s site · {o.contract_number}
+          </span>
+        ) : (
+          !qr && <span className={rule.payment === "po" ? "text-amber-700" : "text-emerald-700"}>{rule.text}</span>
+        )}
         <Stars rating={o.supplier.rating} count={o.supplier.review_count} />
-        {!qr && <RevenueTags options={earnsFor({ ...o, rule })} />}
+        {!qr && !lo && <RevenueTags options={earnsFor({ ...o, rule })} />}
       </div>
       <div className="mt-auto flex items-end justify-between gap-2 border-t border-[#edf0f5] pt-3">
         <div className="min-w-0">
@@ -328,10 +356,16 @@ function OptionCard({ o, qty, requestId }: { o: ResultOption; qty: number; reque
           <div className="text-[10px] text-slate">{qr ? `Reference price on ${qr.reference}` : qty > 1 ? `${qty} for ${money(total)}` : o.delivery}</div>
         </div>
         <div className="flex shrink-0 items-center gap-1.5">
-          <Link href={href} className="rounded-[9px] border border-[#dbe4f0] bg-white px-3 py-2 text-xs font-bold text-[#385783] hover:border-[#8fa8e8]">
-            View →
-          </Link>
-          {qr ? (
+          {lo || qr ? (
+            <Link href={href} className="rounded-[9px] border border-[#dbe4f0] bg-white px-3 py-2 text-xs font-bold text-[#385783] hover:border-[#8fa8e8]">
+              View
+            </Link>
+          ) : (
+            <AddToCart listingId={l.id} quantity={qty} requestId={requestId} />
+          )}
+          {lo ? (
+            <CoopLink contractId={lo.contract_id} coop={lo.coop} hasLink={lo.has_link} listingId={l.id} requestId={requestId} />
+          ) : qr ? (
             quoted ? (
               <span className="text-[11px] font-semibold text-emerald-800">Quote {quoted} sent</span>
             ) : (
@@ -445,6 +479,11 @@ function ContractLeadsCard({ leads }: { leads: ContractLead[] }) {
               {c.vehicle} {c.contract_number} · {c.title}
             </div>
             <div className={c.eligible ? "text-emerald-700" : "text-maroon"}>{c.eligible ? c.reason : `Not open to you: ${c.reason.replace(/^Open to /, "open to ")}`}</div>
+            {c.link_out?.has_link && (
+              <a href={goHref(c.contract_id)} target="_blank" rel="noreferrer" className="font-semibold text-maroon hover:underline">
+                View on {c.link_out.coop} ↗
+              </a>
+            )}
           </li>
         ))}
       </ul>

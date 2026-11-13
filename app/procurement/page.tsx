@@ -4,6 +4,8 @@ import Link from "next/link";
 import { Upload } from "@/components/icons";
 import { useEffect } from "react";
 import { useStore } from "@/components/store";
+import { goHref } from "@/lib/coops";
+import { CartSummary } from "@/components/CartParts";
 import { Badge, Button, Card, IconCircle, LinkButton, Loading, PageTitle, RevenueTags, SourcePill, money } from "@/components/ui";
 
 export default function ProcurementHome() {
@@ -51,6 +53,51 @@ export default function ProcurementHome() {
         </Card>
       </div>
 
+      {db.carts.some((c) => c.status === "pending") && (
+        <section>
+          <h2 className="mb-2 text-sm font-semibold text-slate">Carts waiting on you ({db.carts.filter((c) => c.status === "pending").length})</h2>
+          <div className="space-y-3">
+            {db.carts
+              .filter((c) => c.status === "pending")
+              .map((c) => (
+                <CartSummary key={c.id} cart={c} approver />
+              ))}
+          </div>
+        </section>
+      )}
+
+      {db.referrals.length > 0 && (
+        <section>
+          <h2 className="mb-2 text-sm font-semibold text-slate">Requests to join a co-op contract ({db.referrals.length})</h2>
+          <Card className="divide-y divide-navy/5">
+            {db.referrals.map((r) => {
+              const c = db.contracts.find((x) => x.id === r.contract_id);
+              const coop = db.coops.find((x) => x.id === r.coop_id);
+              return (
+                <div key={r.id} className="flex flex-wrap items-center justify-between gap-4 p-5">
+                  <div className="min-w-0">
+                    <div className="font-semibold text-navy">
+                      {coop?.name} {c?.contract_number}
+                    </div>
+                    <div className="mt-1 text-sm text-navy">
+                      “{r.need}” · fit {r.fit}
+                    </div>
+                    <div className="text-xs text-slate">
+                      {r.agency} isn't on {coop?.name} yet. {c?.eligibility?.requires ? `Needs: ${c.eligibility.requires}.` : ""}
+                    </div>
+                  </div>
+                  {c?.source_url && (
+                    <a href={goHref(c.id)} target="_blank" rel="noreferrer" className="text-sm font-semibold text-maroon hover:underline">
+                      How to join, on {coop?.name} ↗
+                    </a>
+                  )}
+                </div>
+              );
+            })}
+          </Card>
+        </section>
+      )}
+
       <section>
         <h2 className="mb-2 text-sm font-semibold text-slate">Pending approvals ({pending.length})</h2>
         <Card className="divide-y divide-navy/5">
@@ -63,7 +110,7 @@ export default function ProcurementHome() {
                 <div>
                   <div className="flex items-center gap-2">
                     <span className="font-semibold text-navy">{o.id}</span>
-                    <SourcePill source={l.source} />
+                    <SourcePill source={l.source} contractId={l.contract_id} />
                   </div>
                   <div className="mt-1 text-sm text-navy">
                     {o.quantity} × {l.title} from {s.name}

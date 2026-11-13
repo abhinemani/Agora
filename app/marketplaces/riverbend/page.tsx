@@ -12,7 +12,8 @@ import type { Listing, Request } from "@/lib/types";
 import { CATEGORIES } from "@/lib/types";
 import { BUYER_PRESETS, checkEligibility } from "@/lib/vehicles";
 
-const RIVERBEND = BUYER_PRESETS[0].buyer;
+// Looked up by name, not position: the preset list order is for the picker.
+const RIVERBEND = BUYER_PRESETS.find((p) => p.buyer.name === "City of Riverbend")!.buyer;
 const EXAMPLES = ["40 folding tables for the Eastside rec center, delivered before March", "a box of pencils for the front desk", "jury management software"];
 /** Products shown on the shelf, when the buyer may use their contracts. */
 const SHELF = ["lst_006", "lst_031", "lst_026", "lst_009", "lst_002", "lst_028"];

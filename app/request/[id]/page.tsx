@@ -6,6 +6,7 @@ import { useCallback, useEffect, useState } from "react";
 import { BuyerPicker } from "@/components/BuyerPicker";
 import { CoopLink } from "@/components/CoopLink";
 import { CoopSection, FitPill } from "@/components/CoopSection";
+import { ExpiredNote, InviteAdminBanner, NextSteps, OwnContractsCard } from "@/components/ResultExtras";
 import { CategoryIcon } from "@/components/CategoryIcon";
 import { useStore } from "@/components/store";
 import { Lock, People, Plus, Sparkle } from "@/components/icons";
@@ -160,6 +161,9 @@ export default function RequestResults() {
       <ErrorNote message={error} />
       {!needsBuyer && !needsAnswer && !results && !error && <Loading label={buyer ? `Checking every contract ${buyer.name} can use` : "Checking every contract in Agora"} />}
 
+      {results && <InviteAdminBanner requestId={id} />}
+      {results && <OwnContractsCard hits={results.own_contracts} agency={results.buyer?.name ?? "Your agency"} />}
+
       {results && !results.no_match && (
         <>
           {showEarn && <KindBanner kind={results.groups.every((g) => g.source === "no_approval") ? PURCHASE_KINDS.no_approval : PURCHASE_KINDS.contract} />}
@@ -200,6 +204,7 @@ export default function RequestResults() {
               </Link>
             </div>
           </div>
+          <ExpiredNote items={results.expired} />
         </>
       )}
 
@@ -214,7 +219,9 @@ export default function RequestResults() {
               </IconCircle>
               <div>
                 <h2 className="text-2xl font-extrabold tracking-tight text-navy">
-                  {results.contract_leads.some((c) => c.eligible)
+                  {results.own_contracts.length
+                    ? "Nothing else in Agora covers this, but your agency's own contract does."
+                    : results.contract_leads.some((c) => c.eligible) || results.coops.hits.some((h) => h.eligible)
                     ? "No published prices for this yet, but there are contracts that cover it."
                     : results.unavailable.length
                       ? `No contract open to ${results.buyer?.name ?? "you"} covers this yet.`
@@ -235,14 +242,10 @@ export default function RequestResults() {
                     I'll start from the closest past solicitation: <span className="font-semibold">{results.similar_solicitation.title}</span>.
                   </p>
                 )}
-                <div className="mt-4 flex gap-2">
-                  <LinkButton href={`/solicitations/new?request=${id}`} variant="maroon">
-                    Build a solicitation
-                  </LinkButton>
-                  <LinkButton href="/" variant="secondary">
-                    Try different words
-                  </LinkButton>
-                </div>
+                <NextSteps requestId={id} />
+                <Link href="/" className="mt-3 inline-block text-xs font-semibold text-slate hover:text-navy">
+                  Or try different words →
+                </Link>
               </div>
             </div>
           </Card>
@@ -250,6 +253,7 @@ export default function RequestResults() {
             {results.peer && <PeerCard peer={results.peer} qty={p.quantity} />}
             <UnavailableCard items={results.unavailable} buyerName={results.buyer?.name ?? "this agency"} />
             <ContractLeadsCard leads={results.contract_leads} />
+            <ExpiredNote items={results.expired} />
           </div>
         </div>
       )}

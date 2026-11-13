@@ -26,6 +26,11 @@ export function SourcePill({ source }: { source: Source }) {
     <span className="inline-flex items-center gap-1.5 text-xs text-slate">
       <span className={`h-1.5 w-1.5 rounded-full ${s.cls}`} aria-hidden />
       {s.label}
+      {source === "state_contract" && (
+        <span className="rounded border border-navy/20 px-1 text-[10px] font-bold text-navy" title="A state contract on the TRX program, which Sovra supports">
+          TRX
+        </span>
+      )}
     </span>
   );
 }

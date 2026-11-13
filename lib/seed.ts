@@ -521,9 +521,14 @@ export function seed(): Db {
     quotes: [],
     coops: SEED_COOPS.map((c) => ({ ...c })),
     clicks: [],
-    memberships: [],
+    // Riverbend runs a city marketplace, so its setup is already done.
+    memberships: [{ agency: "City of Riverbend", coop_id: "coop_wspc", source: "detected", confirmed: true }],
     referrals: [],
     impressions: [],
+    // Harmon Lake has used four of its five free RFPs this year, so the limit shows in one click.
+    agency_settings: [{ agency: "Harmon Lake Township", plan: "free", rfp_year: new Date().getFullYear(), rfp_used: 4, ad_free: false }],
+    invites: [],
+    handoffs: [],
     session: { preference_answer: null, spend_dashboard_enabled: true, acting_supplier_id: "sup_riverside", buyer: null },
     counters: { revenue: 0, request: 0, order: 1040, solicitation: 7, contract: 0, listing: 40, doc: 0, item: 0, attention: 0 },
   };

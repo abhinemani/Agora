@@ -19,6 +19,7 @@ const VERIFICATION: Record<NonNullable<Contract["verification"]>, { label: strin
   source_document: { label: "From the source price document", tone: "green" },
   research_lead: { label: "Research lead: verify before use", tone: "amber" },
   demo: { label: "Demo data", tone: "neutral" },
+  agency_register: { label: "From your contract register", tone: "green" },
 };
 
 export default function ProductPage() {

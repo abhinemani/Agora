@@ -69,6 +69,20 @@ Each co-op contract shown in results is logged as an impression, once per search
 
 The laptop contracts behind the demo are real master agreements, carried as research leads because their current terms aren't confirmed. NASPO ValuePoint's Computer Equipment portfolio (lead state Minnesota) includes Dell 23026, HP 23011, Lenovo 23013 and Apple 23003, taken from Dell's posted agreement and a Hawaii SPO vendor list. Sourcewell's technology portfolio includes 121923-CDW, whose August 2026 rate card lists 5% off notebooks, and 121923-IDL. Sourcewell's and WSPC's member lists are **demo lists for illustration**, not from those co-ops.
 
+## Agency setup, plans and the free tier
+
+**Procurement → Setup** (`/procurement/setup`) is where a purchasing admin configures an agency once, so staff never have to. It shows a three-step checklist (state, the agency's own contracts, co-op memberships), the membership strip, the contract register and the plan.
+
+**Contract register.** The admin uploads a CSV or XLSX with one contract per row. `lib/register.ts` finds the header row by common column names ("Contract Name", "Vendor", "Contract #", "End Date", "Not to Exceed" and so on) and validates every row. A row with no title, no vendor, an unreadable date or a ceiling that isn't a single amount is not imported, and the report names the row and the reason. An expired row is imported but hidden from search. Re-uploading updates rows by contract number instead of duplicating them. Register contracts belong to that agency alone: `/api/state` strips other agencies' rows before anything reaches the browser, and search never shows them to anyone else. When a request matches one, results open with **"Your agency already has a contract for this."** **Try the sample register** loads `public/test-contracts/harmon-lake-contract-register.csv`: eight rows, with three broken on purpose and one expired.
+
+**Free tier.** Search is always free. The free plan includes 5 published RFPs a year (`FREE_RFP_LIMIT` in `lib/agency.ts`), and the counter resets each year. At the limit, RFP Lite asks the agency to upgrade, while search and handoffs keep working. Harmon Lake Township is seeded with 4 of 5 used, and Riverbend, a city marketplace customer, is on the paid plan. The free plan shows sponsored placements, marked as sponsored. A paid agency can turn them off for its staff, which drops both the label and the ranking nudge.
+
+**When nothing fits,** results offer three next steps: **RFP Lite** (free, counted against the plan), **Sovra's full RFP tool** (paid) and a handoff to the agency's own tool (Euna, OpenGov or Bonfire). Handoffs are recorded but don't call any outside system.
+
+**Setup questions route to purchasing.** If a requester searches before setup is done, a one-line banner says what's missing and what that means for the results, and offers **Invite purchasing**. The invite shows up on the setup page. No email is sent in the demo.
+
+Results also hide expired contracts by default, behind a one-line "N expired contracts also matched" with a **Show** link. State contracts carry a **TRX** label everywhere they appear.
+
 ## NASPO ValuePoint
 
 `npm run import:naspo` (`scripts/import-naspo.mjs`) reads one NASPO ValuePoint portfolio from naspovaluepoint.org (its public WordPress API and supplier pages) and writes `seed/catalogs/naspo-citizen-engagement-platforms.json`: each award's master agreement number, award and expiration dates, the states with a participating addendum, and links to the master agreement and price files. It needs network access to www.naspovaluepoint.org and, for documents, its S3 buckets; run Node with `NODE_USE_ENV_PROXY=1` behind a proxy.
@@ -110,6 +124,8 @@ The prototype supports section 8 of the spec end to end. Switch roles with the B
 7. **Supplier:** Insights shows the LED request as unmet demand. City marketplaces → **List here** for Harper County fires option 4. Apps → PO financing → **Get started** fires option 10. Responding to a review fires option 6.
 8. **Ledger → Totals** shows all ten options, broken out by option and by payer.
 9. **Buyer, co-op match:** set your agency to **Town of Crested Butte, CO** and ask for "laptops for the town hall". Agora detected Sourcewell from the town's website, so CDW and Ideal (fit 70, broad technology scope) sit under **Co-ops you're on**. NASPO's four Computer Equipment awards (fit 100, laptops named in the title) sit under **Co-ops you could join**, and the amber flag points out the better fit. Confirm Sourcewell, then choose **Ask purchasing to get us on this** on Dell 23026. Switch to **Procurement** to see the join request, and open **Ledger → Co-op traffic** for the impressions and the referral.
+10. **Procurement, setup:** open **Setup**, pick **Harmon Lake Township** and choose **Try the sample register**. Five contracts import, three rows are reported with their problems, and the expired janitorial contract is flagged. Switch to **Buyer** and ask for "bulletproof vests for patrol": the township's own body-armor contract comes first.
+11. **Buyer, the free tier:** still as Harmon Lake, ask for "LED retrofit for the ice rink" and choose **RFP Lite → Build it**. Publishing uses the last of the five free RFPs. Build another and the page asks to upgrade, but **Send it over** to Euna, back on the results page, still works.
 
 ## Where things live
 

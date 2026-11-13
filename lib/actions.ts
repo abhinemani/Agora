@@ -13,8 +13,11 @@ import {
   onSponsoredImpression,
   onMarketplaceAdded,
 } from "./revenue_rules";
+import { CATEGORIES } from "./types";
 import type { Buyer, Category, Contract, ContractDocument, ContractHeader, Db, EdgeTier, ExtractedItem, Listing, Request, Role, Solicitation } from "./types";
 import { checkEligibility, STATES } from "./vehicles";
+import { FREE_RFP_LIMIT, settingsFor } from "./agency";
+import { parseRegister } from "./register";
 import { coopOf, detectCoops, isContractLevelUrl, isMember, linksOut, normalizeDomain } from "./coops";
 
 const now = () => new Date().toISOString();
@@ -260,6 +263,11 @@ export function startRenewal(contractId: string) {
 export function publishSolicitation(draft: Solicitation) {
   const db = getDb();
   if (!draft.title?.trim()) fail("Give the solicitation a title.");
+  // Free intake covers FREE_RFP_LIMIT published RFPs a year; search is never limited.
+  const settings = saveSettings(db, db.session.buyer?.name ?? db.agency.name);
+  if (settings.plan === "free" && settings.rfp_used >= FREE_RFP_LIMIT)
+    fail(`PLAN_LIMIT: ${settings.agency} has used all ${FREE_RFP_LIMIT} free RFPs for ${settings.rfp_year}. Upgrade, or send this one to your own RFP tool.`);
+  if (settings.plan === "free") settings.rfp_used += 1;
   const sol: Solicitation = { ...draft, id: nextId(db, "solicitation", "sol"), status: "open", published_at: now() };
   db.solicitations.unshift(sol);
   const r = db.requests.find((r) => r.id === draft.request_id);
@@ -580,6 +588,134 @@ export function respondToReview(reviewId: string, text: string) {
   if (!text.trim()) fail("Write a response first.");
   r.response = text.trim();
   return onReviewResponse(db, actingSupplier(db).name, r.id);
+}
+
+// ---------------------------------------------------------------- contract register
+
+/** Import an agency's contract register: valid rows become contracts only that agency sees;
+ * rows that can't be mapped come back in the report. Re-importing updates rows by contract number. */
+export function importRegister(table: unknown[][], filename: string) {
+  const db = getDb();
+  const buyer = db.session.buyer ?? fail("Set your agency first, so Agora knows whose contracts these are.");
+  const parsed = parseRegister(table);
+  let added = 0;
+  let updated = 0;
+  for (const r of parsed.rows) {
+    let supplier = findSupplier(db, r.vendor);
+    if (!supplier) {
+      supplier = {
+        id: nextId(db, "supplier", "sup_reg"),
+        name: r.vendor,
+        city: "",
+        state: buyer.state,
+        is_local: false,
+        certifications: [],
+        verified: { insurance: false, bond: false },
+        edge_tier: "discover",
+        rating: 0,
+        review_count: 0,
+        sponsored: false,
+        categories: [],
+      };
+      db.suppliers.push(supplier);
+    }
+    const category = CATEGORIES.find((c) => c.toLowerCase() === r.category.toLowerCase());
+    const fields = {
+      supplier_id: supplier.id,
+      title: r.title,
+      start: r.start,
+      end: r.end,
+      ceiling: r.ceiling ?? undefined,
+      source_url: r.url || undefined,
+      scope: [r.category, category].filter(Boolean).join(" "),
+    };
+    const existing = db.contracts.find(
+      (c) => c.register_of === buyer.name && (r.number ? c.contract_number === r.number : c.title === r.title && c.supplier_id === supplier!.id),
+    );
+    if (existing) {
+      Object.assign(existing, fields);
+      updated++;
+      continue;
+    }
+    db.contracts.push({
+      ...fields,
+      id: nextId(db, "contract", "ctr_reg"),
+      source: "own_contract",
+      owner: buyer.name,
+      contract_number: r.number || `Row ${r.row}`,
+      piggybackable: false,
+      piggyback_clause_text: "",
+      payment_terms: "Per contract",
+      delivery_terms: "Per contract",
+      marketplace_ids: [],
+      source_document_id: null,
+      onboarding_billed: true,
+      vehicle: buyer.name,
+      verification: "agency_register",
+      pricing_basis: "quote",
+      register_of: buyer.name,
+      eligibility: { states: [buyer.state], agencies: [buyer.name], note: `${buyer.name} only` },
+    });
+    added++;
+  }
+  return { filename, agency: buyer.name, header_row: parsed.header_row, columns: parsed.columns, added, updated, rows: parsed.rows, issues: parsed.issues };
+}
+
+// ---------------------------------------------------------------- agency setup
+
+/** The agency's stored settings, created from defaults on first write. */
+function saveSettings(db: Db, agency: string) {
+  const current = settingsFor(db, agency);
+  const i = db.agency_settings.findIndex((s) => s.agency === agency);
+  if (i >= 0) db.agency_settings[i] = current;
+  else db.agency_settings.push(current);
+  return current;
+}
+
+const currentAgency = (db: Db) => db.session.buyer?.name ?? fail("Set your agency first.");
+
+/** Demo billing: move the agency between the free and paid plans. */
+export function setPlan(plan: "free" | "paid") {
+  const db = getDb();
+  if (plan !== "free" && plan !== "paid") fail("Pick the free or paid plan.");
+  const s = saveSettings(db, currentAgency(db));
+  s.plan = plan;
+  if (plan === "free") s.ad_free = false;
+  return s;
+}
+
+/** Paid plans may hide sponsored placements from their staff. */
+export function setAdFree(on: boolean) {
+  const db = getDb();
+  const s = saveSettings(db, currentAgency(db));
+  if (on && s.plan !== "paid") fail("Ad-free search comes with the paid plan.");
+  s.ad_free = on;
+  return s;
+}
+
+/** A requester routes setup questions to purchasing instead of being blocked by them. */
+export function inviteAdmin(args: { email: string; requestId?: string | null }) {
+  const db = getDb();
+  const agency = currentAgency(db);
+  const email = args.email?.trim() ?? "";
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) fail("Enter your purchasing admin's email address.");
+  const invite = { id: nextId(db, "invite", "inv", 3), agency, email, request_id: args.requestId ?? null, created_at: now() };
+  db.invites.unshift(invite);
+  return invite;
+}
+
+const HANDOFF_TOOLS = ["sovra_rfp", "euna", "opengov", "bonfire"] as const;
+
+/** Send a solicitation to Sovra's full RFP tool or the agency's own, instead of RFP Lite. Doesn't count against the free limit. */
+export function handoffRfp(args: { requestId: string; tool: (typeof HANDOFF_TOOLS)[number] }) {
+  const db = getDb();
+  const request = db.requests.find((r) => r.id === args.requestId) ?? fail("Request not found");
+  if (!HANDOFF_TOOLS.includes(args.tool)) fail("Pick where to send the solicitation.");
+  const agency = db.session.buyer?.name ?? db.agency.name;
+  const handoff = { id: nextId(db, "handoff", "rfp", 3), agency, request_id: request.id, tool: args.tool, title: request.parsed.item, created_at: now() };
+  db.handoffs.unshift(handoff);
+  request.outcome = "solicitation";
+  return handoff;
 }
 
 // ---------------------------------------------------------------- co-ops

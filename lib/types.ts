@@ -133,7 +133,7 @@ export interface Contract {
   /** How a buyer gets a price: a published schedule, a discount off list, or a quote. */
   pricing_basis?: "published_price" | "discount_from_list" | "quote";
   /** Where the terms come from: a source document we hold, research to verify, or demo data. */
-  verification?: "source_document" | "research_lead" | "demo";
+  verification?: "source_document" | "research_lead" | "demo" | "agency_register";
   source_url?: string;
   /** Master agreement other states can adopt, e.g. "NASPO ValuePoint AR3758". */
   master_agreement?: string;
@@ -149,6 +149,10 @@ export interface Contract {
   coop_id?: string;
   /** Scope words beyond the title, e.g. the categories a master agreement covers. */
   scope?: string;
+  /** Added from this agency's contract register; visible only to that agency. */
+  register_of?: string;
+  /** Not-to-exceed amount from the register, if given. */
+  ceiling?: number;
 }
 
 /** A purchasing cooperative. Agora sends buyers to its contract pages rather
@@ -201,6 +205,37 @@ export interface Impression {
   rank: number;
   fit: number;
   member: boolean;
+  created_at: string;
+}
+
+/** Per-agency setup: plan, free-tier usage and whether staff see sponsored placements. */
+export interface AgencySettings {
+  agency: string;
+  plan: "free" | "paid";
+  /** Year the RFP counter covers; it resets when the year turns. */
+  rfp_year: number;
+  /** Solicitations published this year, counted against the free plan's limit. */
+  rfp_used: number;
+  /** Hide sponsored placements from staff (paid plans only). */
+  ad_free: boolean;
+}
+
+/** A requester asked the agency's purchasing admin to finish setup. */
+export interface Invite {
+  id: string;
+  agency: string;
+  email: string;
+  request_id: string | null;
+  created_at: string;
+}
+
+/** A solicitation sent somewhere other than RFP Lite: Sovra's full RFP tool or the agency's own. */
+export interface RfpHandoff {
+  id: string;
+  agency: string;
+  request_id: string;
+  tool: "sovra_rfp" | "euna" | "opengov" | "bonfire";
+  title: string;
   created_at: string;
 }
 
@@ -442,6 +477,9 @@ export interface Db {
   memberships: CoopMembership[];
   referrals: Referral[];
   impressions: Impression[];
+  agency_settings: AgencySettings[];
+  invites: Invite[];
+  handoffs: RfpHandoff[];
   documents: ContractDocument[];
   extracted: ExtractedItem[];
   listings: Listing[];

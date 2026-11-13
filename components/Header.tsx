@@ -26,6 +26,7 @@ const NAV: Record<Role, { href: string; label: string }[]> = {
   ],
   procurement: [
     { href: "/procurement", label: "Approvals" },
+    { href: "/procurement/setup", label: "Setup" },
     { href: "/procurement/spend", label: "Spend" },
     { href: "/solicitations", label: "Solicitations" },
     { href: "/vehicles", label: "Contracts" },

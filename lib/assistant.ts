@@ -6,6 +6,7 @@ import { structured } from "./llm";
 import { CATEGORIES } from "./types";
 import type { Buyer, Category, Contract, Db, Listing, ParsedRequest, PeerPurchase, Request, Solicitation, Source, Supplier } from "./types";
 import { checkEligibility, defaultVariant, familyOf, SOURCEWELL_TYLER_NOTES } from "./vehicles";
+import { settingsFor } from "./agency";
 import { coopOf, isContractLevelUrl, linksOut, membershipsFor, onCoopContract } from "./coops";
 
 export const SOURCE_ORDER: Source[] = ["own_contract", "state_contract", "coop_contract", "reseller", "gsa", "no_approval"];
@@ -286,6 +287,19 @@ export interface ResultOption {
   member: boolean | null;
 }
 
+/** A contract from the agency's own register that covers the request. */
+export interface OwnHit {
+  contract_id: string;
+  title: string;
+  vendor: string;
+  supplier_id: string;
+  contract_number: string;
+  end: string;
+  ceiling: number | null;
+  url: string | null;
+  fit: number;
+}
+
 /** A co-op contract that covers the request, shown in the co-op section of results. */
 export interface CoopHit {
   contract_id: string;
@@ -359,6 +373,10 @@ export interface Results {
   contract_leads: ContractLead[];
   /** Co-op contracts that cover the request, split by the agency's memberships. */
   coops: CoopSection;
+  /** Contracts in the agency's own register that cover the request: shown first. */
+  own_contracts: OwnHit[];
+  /** Matching contracts past their end date, hidden unless the buyer asks. */
+  expired: Unavailable[];
 }
 
 export interface ContractLead {
@@ -374,6 +392,27 @@ export interface ContractLead {
 }
 
 const contractText = (db: Db, c: Contract) => `${c.title} ${c.scope ?? ""} ${c.vehicle ?? ""} ${db.suppliers.find((s) => s.id === c.supplier_id)?.name ?? ""}`;
+
+const isExpired = (c: Contract) => Boolean(c.end && c.end < new Date().toISOString().slice(0, 10));
+
+/** The agency's own register contracts that cover the request, and the expired ones among them. */
+function ownContracts(db: Db, itemTokens: string[], buyer: Buyer | null) {
+  if (!buyer) return { hits: [] as OwnHit[], expired: [] as Unavailable[] };
+  const weights = idf(db.contracts, (c) => contractText(db, c));
+  const hits: OwnHit[] = [];
+  const expired: Unavailable[] = [];
+  for (const c of db.contracts.filter((c) => c.register_of === buyer.name)) {
+    const fit = fitScore(itemTokens, c.title, c.scope ?? "", weights);
+    if (fit < 50) continue;
+    const vendor = db.suppliers.find((s) => s.id === c.supplier_id)?.name ?? "";
+    if (isExpired(c)) {
+      expired.push({ master_agreement: null, vehicle: buyer.name, contract_number: c.contract_number, owner: vendor, reason: checkEligibility(c, buyer).reason, products: 0, examples: [c.title] });
+      continue;
+    }
+    hits.push({ contract_id: c.id, title: c.title, vendor, supplier_id: c.supplier_id, contract_number: c.contract_number, end: c.end, ceiling: c.ceiling ?? null, url: c.source_url ?? null, fit });
+  }
+  return { hits: hits.sort((a, b) => b.fit - a.fit), expired };
+}
 
 /** Co-op contracts covering the request: by their own scope, or by the products Agora holds for them. */
 function coopSection(db: Db, itemTokens: string[], buyer: Buyer | null, matched: Listing[]): CoopSection {
@@ -424,7 +463,7 @@ function coopSection(db: Db, itemTokens: string[], buyer: Buyer | null, matched:
 function contractLeads(db: Db, itemTokens: string[], buyer: Buyer | null): ContractLead[] {
   const priced = new Set(db.listings.map((l) => l.contract_id));
   // Co-op contracts have their own section; these are the other quote-only contracts.
-  const bare = db.contracts.filter((c) => !priced.has(c.id) && c.pricing_basis !== "discount_from_list" && !coopOf(db, c));
+  const bare = db.contracts.filter((c) => !priced.has(c.id) && c.pricing_basis !== "discount_from_list" && !coopOf(db, c) && !c.register_of && !isExpired(c));
   if (!bare.length) return [];
   const weights = idf(db.contracts, (c) => contractText(db, c));
   const { rows } = bestMatches(itemTokens, bare, (c) => contractText(db, c), weights);
@@ -444,6 +483,24 @@ function contractLeads(db: Db, itemTokens: string[], buyer: Buyer | null): Contr
       };
     })
     .sort((a, b) => Number(b.eligible) - Number(a.eligible));
+}
+
+/** Quote-only contracts that would have matched but have expired. */
+function expiredLeads(db: Db, itemTokens: string[]): Unavailable[] {
+  const priced = new Set(db.listings.map((l) => l.contract_id));
+  const gone = db.contracts.filter((c) => isExpired(c) && !priced.has(c.id) && !c.register_of);
+  if (!gone.length) return [];
+  const weights = idf(db.contracts, (c) => contractText(db, c));
+  const { rows } = bestMatches(itemTokens, gone, (c) => contractText(db, c), weights);
+  return rows.map((c) => ({
+    master_agreement: c.master_agreement ?? null,
+    vehicle: c.vehicle ?? c.owner,
+    contract_number: c.contract_number,
+    owner: db.suppliers.find((s) => s.id === c.supplier_id)?.name ?? c.owner,
+    reason: checkEligibility(c, null).reason,
+    products: 0,
+    examples: [c.title],
+  }));
 }
 
 function fmtDate(d: Date) {
@@ -503,14 +560,21 @@ export function buildResults(db: Db, request: Request): Results {
   const blockedByContract = new Map<string, Listing[]>();
   for (const l of relevant)
     if (!checkEligibility(contractOf(l), buyer).eligible && !quoteRouteFor(l)) blockedByContract.set(l.contract_id!, [...(blockedByContract.get(l.contract_id!) ?? []), l]);
-  const unavailable: Unavailable[] = [...blockedByContract].map(([cid, ls]) => {
+  const blocked: Unavailable[] = [...blockedByContract].map(([cid, ls]) => {
     const c = db.contracts.find((x) => x.id === cid)!;
     const families = [...new Map(ls.map((l) => [l.family ?? l.id, l.title])).values()];
     return { master_agreement: c.master_agreement ?? null, vehicle: c.vehicle ?? c.owner, contract_number: c.contract_number, owner: c.owner, reason: checkEligibility(c, buyer).reason, products: families.length, examples: families.slice(0, 2) };
   });
 
+  // Expired contracts are hidden by default; the buyer can still ask to see them.
+  const expiredNumbers = new Set(db.contracts.filter(isExpired).map((c) => `${c.vehicle ?? c.owner}|${c.contract_number}`));
+  const unavailable = blocked.filter((u) => !expiredNumbers.has(`${u.vehicle}|${u.contract_number}`));
+  const expiredBlocked = blocked.filter((u) => expiredNumbers.has(`${u.vehicle}|${u.contract_number}`));
+
   const due = deadlineDate(parsed.deadline);
   const optWeights = idf(db.listings, listingText);
+  // A paid agency may turn sponsored placements off for its staff.
+  const adFree = buyer ? settingsFor(db, buyer.name).ad_free : false;
   const optionFor = (l: Listing): ResultOption => {
       const supplier = db.suppliers.find((s) => s.id === l.supplier_id)!;
       const arrives = new Date(Date.now() + l.lead_time_days * 86_400_000);
@@ -524,7 +588,7 @@ export function buildResults(db: Db, request: Request): Results {
         rule: ruleFor(db, l, parsed.quantity),
         delivery: `${l.category === "Software and services" || l.category === "Professional services" ? "Available by" : "Arrives by"} ${fmtDate(arrives)}${meets === null ? "" : meets ? ` · meets your ${parsed.deadline} deadline` : ` · misses your ${parsed.deadline} deadline`}`,
         meets_deadline: meets,
-        sponsored: supplier.sponsored && supplier.edge_tier !== "discover" && l.source !== "no_approval",
+        sponsored: !adFree && supplier.sponsored && supplier.edge_tier !== "discover" && l.source !== "no_approval",
         pref_fit,
         variants: [l],
         vehicle: contractOf(l)?.vehicle ?? null,
@@ -656,7 +720,9 @@ export function buildResults(db: Db, request: Request): Results {
 
   const contract_leads = contractLeads(db, itemTokens, buyer);
   const coops = coopSection(db, itemTokens, buyer, relevant);
-  return { request, groups, peer, no_match, similar_solicitation, explanation, buyer, unavailable, contract_leads, coops };
+  const own = ownContracts(db, itemTokens, buyer);
+  const expired = [...own.expired, ...expiredBlocked, ...expiredLeads(db, itemTokens)];
+  return { request, groups, peer, no_match, similar_solicitation, explanation, buyer, unavailable, contract_leads, coops, own_contracts: own.hits, expired };
 }
 
 export function findSimilarSolicitation(db: Db, request: Request): Solicitation | null {

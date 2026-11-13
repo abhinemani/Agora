@@ -5,6 +5,7 @@ import { useParams, useSearchParams } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
 import { BuyerPicker } from "@/components/BuyerPicker";
 import { CoopLink } from "@/components/CoopLink";
+import { CoopSection, FitPill } from "@/components/CoopSection";
 import { CategoryIcon } from "@/components/CategoryIcon";
 import { useStore } from "@/components/store";
 import { Lock, People, Plus, Sparkle } from "@/components/icons";
@@ -183,6 +184,8 @@ export default function RequestResults() {
             </button>
           )}
 
+          <CoopSection section={results.coops} requestId={id} onMembershipChange={() => setResults(null)} />
+
           <div className="grid gap-4 md:grid-cols-3">
             {results.peer && <PeerCard peer={results.peer} qty={p.quantity} />}
             <UnavailableCard items={results.unavailable} buyerName={results.buyer?.name ?? "this agency"} />
@@ -201,6 +204,7 @@ export default function RequestResults() {
       )}
 
       {results && results.no_match && showEarn && <KindBanner kind={PURCHASE_KINDS.new_need} />}
+      {results && results.no_match && <CoopSection section={results.coops} requestId={id} onMembershipChange={() => setResults(null)} />}
       {results && results.no_match && (
         <div className="grid gap-6 lg:grid-cols-3">
           <Card className="p-6 lg:col-span-2">
@@ -288,7 +292,12 @@ function OptionCard({ o, qty, requestId }: { o: ResultOption; qty: number; reque
         <CategoryIcon category={l.category} />
         <div className="flex flex-col items-end gap-1">
           <SourcePill source={l.source} />
-          {o.sponsored && <span className="text-[10px] text-slate">Sponsored</span>}
+          <div className="flex items-center gap-1.5">
+            {o.member === true && db?.session.buyer && <span className="text-[10px] font-semibold text-emerald-700">Your co-op</span>}
+            {o.member === false && db?.session.buyer && <span className="text-[10px] font-semibold text-maroon">Join to use</span>}
+            {o.sponsored && <span className="text-[10px] text-slate">Sponsored</span>}
+            <FitPill fit={o.fit} />
+          </div>
         </div>
       </div>
       <div className="mt-4 flex flex-wrap items-center gap-1.5 text-[11px] text-slate">

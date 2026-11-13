@@ -15,7 +15,7 @@ import {
 } from "./revenue_rules";
 import type { Buyer, Category, Contract, ContractDocument, ContractHeader, Db, EdgeTier, ExtractedItem, Listing, Request, Role, Solicitation } from "./types";
 import { checkEligibility, STATES } from "./vehicles";
-import { coopOf, isContractLevelUrl, linksOut } from "./coops";
+import { coopOf, detectCoops, isContractLevelUrl, isMember, linksOut, normalizeDomain } from "./coops";
 
 const now = () => new Date().toISOString();
 
@@ -60,7 +60,11 @@ export function setBuyer(buyer: Buyer) {
   if (!buyer?.name?.trim()) fail("Name the agency that's buying.");
   if (!STATES.some(([c]) => c === buyer.state)) fail("Pick the agency's state.");
   const pop = buyer.population == null || String(buyer.population) === "" ? null : Math.max(0, Math.round(Number(buyer.population)));
-  db.session.buyer = { name: buyer.name.trim(), state: buyer.state, entity_type: buyer.entity_type, population: Number.isFinite(pop as number) ? pop : null };
+  const domain = normalizeDomain(buyer.domain) || undefined;
+  db.session.buyer = { name: buyer.name.trim(), state: buyer.state, entity_type: buyer.entity_type, population: Number.isFinite(pop as number) ? pop : null, domain };
+  // Reverse lookup on the agency's website: co-ops whose member lists include it.
+  for (const coop of detectCoops(db, db.session.buyer))
+    if (!isMember(db, db.session.buyer.name, coop.id)) db.memberships.push({ agency: db.session.buyer.name, coop_id: coop.id, source: "detected", confirmed: false });
   return db.session.buyer;
 }
 
@@ -124,6 +128,14 @@ export function getResults(requestId: string) {
     impressionsBilled.add(key);
     onSponsoredImpression(db, s.name, request.id);
   }
+
+  // Co-op contracts shown, for the traffic Sovra reports to each co-op. Once per request.
+  results.coops.hits.forEach((h, rank) => {
+    const key = `coopimp:${request.id}:${h.contract_id}`;
+    if (impressionsBilled.has(key)) return;
+    impressionsBilled.add(key);
+    db.impressions.push({ request_id: request.id, contract_id: h.contract_id, coop_id: h.coop_id, agency: db.session.buyer?.name ?? null, rank: rank + 1, fit: h.fit, member: h.member, created_at: now() });
+  });
 
   // Count each supplier's appearances in buyer results for their storefront stats.
   for (const sup of new Set(results.groups.flatMap((g) => g.options.map((o) => o.supplier.id)))) {
@@ -578,6 +590,42 @@ export function setCoopBuyInAgora(coopId: string, on: boolean) {
   const coop = db.coops.find((c) => c.id === coopId) ?? fail("Co-op not found");
   coop.buy_in_agora = on;
   return coop;
+}
+
+/** The purchasing admin confirms, adds or removes one of the agency's co-op memberships. */
+export function setMembership(args: { coopId: string; op: "confirm" | "add" | "remove" }) {
+  const db = getDb();
+  const agency = db.session.buyer?.name ?? fail("Set your agency first.");
+  db.coops.find((c) => c.id === args.coopId) ?? fail("Co-op not found");
+  if (!["confirm", "add", "remove"].includes(args.op)) fail("Say whether to confirm, add or remove the co-op.");
+  const existing = db.memberships.find((m) => m.agency === agency && m.coop_id === args.coopId);
+  if (args.op === "remove") db.memberships = db.memberships.filter((m) => m !== existing);
+  else if (existing) existing.confirmed = true;
+  else db.memberships.push({ agency, coop_id: args.coopId, source: "manual", confirmed: true });
+  return db.memberships.filter((m) => m.agency === agency);
+}
+
+/** "Ask purchasing to get us on this contract": a note to the admin, logged as a referral for the co-op. */
+export function askToJoin(args: { contractId: string; requestId?: string | null; fit?: number }) {
+  const db = getDb();
+  const agency = db.session.buyer?.name ?? fail("Set your agency first, so purchasing knows who's asking.");
+  const contract = db.contracts.find((c) => c.id === args.contractId) ?? fail("Contract not found");
+  const coop = coopOf(db, contract) ?? fail("That isn't a co-op contract.");
+  const request = db.requests.find((r) => r.id === args.requestId);
+  const dupe = db.referrals.find((r) => r.agency === agency && r.contract_id === contract.id && r.request_id === (request?.id ?? null));
+  if (dupe) return dupe;
+  const referral = {
+    id: nextId(db, "referral", "ref", 3),
+    request_id: request?.id ?? null,
+    contract_id: contract.id,
+    coop_id: coop.id,
+    agency,
+    need: request?.raw_text ?? contract.title,
+    fit: Math.round(args.fit ?? 0),
+    created_at: now(),
+  };
+  db.referrals.unshift(referral);
+  return referral;
 }
 
 /** Log an outbound click and return where to send the buyer, or null if the contract has no link. */

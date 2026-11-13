@@ -12,11 +12,12 @@ export function BuyerPicker({ onDone, onClose, compact = false }: { onDone?: (b:
   const { act, db } = useStore();
   const current = db?.session.buyer;
   const [custom, setCustom] = useState(false);
-  const [form, setForm] = useState<{ name: string; state: string; entity_type: EntityType; population: string }>({
+  const [form, setForm] = useState<{ name: string; state: string; entity_type: EntityType; population: string; domain: string }>({
     name: current?.name ?? "",
     state: current?.state ?? "NJ",
     entity_type: current?.entity_type ?? "municipality",
     population: current?.population ? String(current.population) : "",
+    domain: current?.domain ?? "",
   });
   const [error, setError] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
@@ -55,7 +56,7 @@ export function BuyerPicker({ onDone, onClose, compact = false }: { onDone?: (b:
             setting your agency shows only the ways you can actually buy.
           </p>
 
-          <div className="mt-4 grid gap-2 sm:grid-cols-3 lg:grid-cols-5">
+          <div className="mt-4 grid gap-2 sm:grid-cols-3 lg:grid-cols-6">
             <button
               disabled={busy}
               onClick={async () => {
@@ -98,10 +99,10 @@ export function BuyerPicker({ onDone, onClose, compact = false }: { onDone?: (b:
             </button>
           ) : (
             <form
-              className="mt-4 grid gap-3 sm:grid-cols-[1.4fr_1fr_1.2fr_0.8fr_auto] sm:items-end"
+              className="mt-4 grid gap-3 sm:grid-cols-2 sm:items-end lg:grid-cols-[1.4fr_1fr_1.2fr_0.8fr_1.2fr_auto]"
               onSubmit={(e) => {
                 e.preventDefault();
-                choose({ name: form.name, state: form.state, entity_type: form.entity_type, population: form.population ? Number(form.population) : null });
+                choose({ name: form.name, state: form.state, entity_type: form.entity_type, population: form.population ? Number(form.population) : null, domain: form.domain || undefined });
               }}
             >
               <label className="block text-xs font-semibold text-slate">
@@ -131,6 +132,10 @@ export function BuyerPicker({ onDone, onClose, compact = false }: { onDone?: (b:
               <label className="block text-xs font-semibold text-slate">
                 Population
                 <input type="number" min={0} value={form.population} onChange={(e) => setForm({ ...form, population: e.target.value })} placeholder="optional" className="mt-1 w-full" />
+              </label>
+              <label className="block text-xs font-semibold text-slate">
+                Website
+                <input value={form.domain} onChange={(e) => setForm({ ...form, domain: e.target.value })} placeholder="finds your co-ops" className="mt-1 w-full" />
               </label>
               <Button type="submit" disabled={busy || !form.name.trim()}>
                 Use this agency

@@ -57,6 +57,18 @@ Agora doesn't sell through a co-op's contracts. A result on a co-op contract sho
 
 A co-op that has agreed can let its members buy inside Agora. Each co-op (`lib/coops.ts`) carries a `buy_in_agora` setting, off by default. In the seed, NASPO ValuePoint and Sourcewell are off because they're real co-ops with no agreement. The fictional WSPC is on, so demo step 1's National Furniture listing can still be bought in Agora. Checkout and quote requests refuse a link-out contract on the server as well as in the UI. Open **Sovra revenue (demo) → Co-op traffic** to see clicks per co-op, whether each co-op shares its member list, any contracts missing a contract-level link, and the switch for each co-op.
 
+## Co-op memberships and fit scores
+
+Results now have a **Co-op contracts for this** section, split into the co-ops an agency is on and the ones it could join. That split is the core of the partnerships spec: "when I'm looking for a laptop in Crested Butte, I need to see the co-ops I'm a member of and the ones I'm not."
+
+Agora learns an agency's memberships without staff having to know them. Each agency has a website domain, and setting the agency runs a reverse lookup against the member lists Agora holds (`Coop.members` in `lib/coops.ts`). Matches come in as **detected** memberships, which count right away. Purchasing can confirm them, remove them or add a co-op by hand from the strip at the top of the section. NASPO ValuePoint works differently: agencies use it through their state's participating addendum, so a NASPO contract that lists the buyer's state counts as one the agency is on.
+
+Every product card and co-op contract carries a **fit score** from 0 to 100: how much of the request it covers. Words in its name count fully, words only in its wider scope count 70%, and rarer words weigh more (`fitScore` in `lib/assistant.ts`). Sponsorship never changes a fit score. When a co-op the agency isn't on fits at least 10 points better than anything on its own co-ops, an amber flag says so. The comparison is by scope only, since price files aren't loaded for these contracts. A non-member contract offers **Ask purchasing to get us on this**, which logs a referral for that co-op and shows up on the Procurement home page as a join request.
+
+Each co-op contract shown in results is logged as an impression, once per search. The ledger's **Co-op traffic** tab shows impressions, clicks and join requests per co-op, plus how many agencies matched its member list.
+
+The laptop contracts behind the demo are real master agreements, carried as research leads because their current terms aren't confirmed. NASPO ValuePoint's Computer Equipment portfolio (lead state Minnesota) includes Dell 23026, HP 23011, Lenovo 23013 and Apple 23003, taken from Dell's posted agreement and a Hawaii SPO vendor list. Sourcewell's technology portfolio includes 121923-CDW, whose August 2026 rate card lists 5% off notebooks, and 121923-IDL. Sourcewell's and WSPC's member lists are **demo lists for illustration**, not from those co-ops.
+
 ## NASPO ValuePoint
 
 `npm run import:naspo` (`scripts/import-naspo.mjs`) reads one NASPO ValuePoint portfolio from naspovaluepoint.org (its public WordPress API and supplier pages) and writes `seed/catalogs/naspo-citizen-engagement-platforms.json`: each award's master agreement number, award and expiration dates, the states with a participating addendum, and links to the master agreement and price files. It needs network access to www.naspovaluepoint.org and, for documents, its S3 buckets; run Node with `NODE_USE_ENV_PROXY=1` behind a proxy.
@@ -97,6 +109,7 @@ The prototype supports section 8 of the spec end to end. Switch roles with the B
 6. **Supplier:** go to Upload a contract and pick **State office supplies**. Fix the flagged two-price row, merge the duplicate binder-clip row, **Accept all above 90%**, then publish. The result is 38 items listed and 4 needing attention (option 2). The new items are immediately searchable as a buyer.
 7. **Supplier:** Insights shows the LED request as unmet demand. City marketplaces → **List here** for Harper County fires option 4. Apps → PO financing → **Get started** fires option 10. Responding to a review fires option 6.
 8. **Ledger → Totals** shows all ten options, broken out by option and by payer.
+9. **Buyer, co-op match:** set your agency to **Town of Crested Butte, CO** and ask for "laptops for the town hall". Agora detected Sourcewell from the town's website, so CDW and Ideal (fit 70, broad technology scope) sit under **Co-ops you're on**. NASPO's four Computer Equipment awards (fit 100, laptops named in the title) sit under **Co-ops you could join**, and the amber flag points out the better fit. Confirm Sourcewell, then choose **Ask purchasing to get us on this** on Dell 23026. Switch to **Procurement** to see the join request, and open **Ledger → Co-op traffic** for the impressions and the referral.
 
 ## Where things live
 

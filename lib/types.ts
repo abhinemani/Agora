@@ -23,6 +23,8 @@ export interface Buyer {
   state: string;
   entity_type: EntityType;
   population: number | null;
+  /** Website domain, matched against co-op member lists to detect memberships. */
+  domain?: string;
 }
 
 /** Who may buy from a contract vehicle. */
@@ -145,6 +147,8 @@ export interface Contract {
   documents?: { label: string; url: string }[];
   /** The co-op that awarded it (co-op contracts only). */
   coop_id?: string;
+  /** Scope words beyond the title, e.g. the categories a master agreement covers. */
+  scope?: string;
 }
 
 /** A purchasing cooperative. Agora sends buyers to its contract pages rather
@@ -156,10 +160,48 @@ export interface Coop {
   website: string;
   /** Whether the co-op shares its member list; no formal relationship without one. */
   member_list_status: "none" | "partial" | "full";
+  /** Where the member list came from. "demo" lists are illustrative, not from the co-op. */
+  member_list_source?: "co-op" | "scraped" | "demo";
+  members?: { name: string; domain: string }[];
+  /** How agencies get on it: a membership, or their state signing a participating addendum (NASPO ValuePoint). */
+  access?: "membership" | "state_addendum";
   /** Members may check out or request quotes in Agora. Off unless the co-op has agreed. */
   buy_in_agora: boolean;
   /** Plain-language status shown to Sovra ops. */
   note: string;
+}
+
+/** An agency's membership in a co-op: detected from a member list, or added by the agency. */
+export interface CoopMembership {
+  agency: string;
+  coop_id: string;
+  source: "detected" | "manual";
+  /** The purchasing admin has confirmed it. Detected memberships count before confirmation. */
+  confirmed: boolean;
+}
+
+/** A requester asked purchasing to get the agency onto a co-op contract. */
+export interface Referral {
+  id: string;
+  request_id: string | null;
+  contract_id: string;
+  coop_id: string;
+  agency: string;
+  need: string;
+  fit: number;
+  created_at: string;
+}
+
+/** A co-op contract shown in results, for traffic reporting. */
+export interface Impression {
+  request_id: string;
+  contract_id: string;
+  coop_id: string;
+  agency: string | null;
+  rank: number;
+  fit: number;
+  member: boolean;
+  created_at: string;
 }
 
 /** One outbound click to a contract page, logged by the /go redirect. */
@@ -397,6 +439,9 @@ export interface Db {
   contracts: Contract[];
   coops: Coop[];
   clicks: ClickEvent[];
+  memberships: CoopMembership[];
+  referrals: Referral[];
+  impressions: Impression[];
   documents: ContractDocument[];
   extracted: ExtractedItem[];
   listings: Listing[];

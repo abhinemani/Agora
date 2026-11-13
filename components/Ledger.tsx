@@ -187,12 +187,14 @@ function CoopTraffic() {
   return (
     <div className="space-y-6 px-5 py-4">
       <p className="text-xs text-slate">
-        Co-op results send buyers to the co-op's own contract page through a tracked link, so each co-op can see the traffic Sovra sends it. Buying inside Agora stays off until a co-op agrees.
+        <span className="font-semibold text-navy">{db.requests.length} search{db.requests.length === 1 ? "" : "es"}</span> this session. Co-op results send buyers to the co-op's own contract page through a tracked link, so each co-op can see the traffic Sovra sends it. Buying inside Agora stays off until a co-op agrees.
       </p>
       <section className="space-y-3">
         {db.coops.map((coop) => {
           const contracts = db.contracts.filter((c) => c.coop_id === coop.id);
           const clicks = db.clicks.filter((k) => k.coop_id === coop.id);
+          const shown = db.impressions.filter((i) => i.coop_id === coop.id).length;
+          const referred = db.referrals.filter((r) => r.coop_id === coop.id).length;
           const missing = contracts.filter((c) => !isContractLevelUrl(c.source_url)).length;
           return (
             <div key={coop.id} className="rounded-lg border border-line p-3">
@@ -201,13 +203,24 @@ function CoopTraffic() {
                   <div className="text-sm font-semibold text-navy">{coop.name}</div>
                   <div className="text-[11px] text-slate">
                     {contracts.length} contract{contracts.length === 1 ? "" : "s"} · {LIST_STATUS[coop.member_list_status]}
+                    {coop.member_list_source === "demo" && " (demo)"} · {db.memberships.filter((m) => m.coop_id === coop.id).length} agencies matched
                     {missing > 0 && <span className="text-amber-700"> · {missing} without a contract-level link</span>}
                   </div>
                   <div className="mt-1 text-[11px] text-steel">{coop.note}</div>
                 </div>
-                <div className="text-right">
-                  <div className="text-xl font-semibold tabular-nums text-navy">{clicks.length}</div>
-                  <div className="text-[10px] text-slate">clicks sent</div>
+                <div className="flex gap-4 text-right">
+                  {(
+                    [
+                      [shown, "shown"],
+                      [clicks.length, "clicks"],
+                      [referred, "join asks"],
+                    ] as const
+                  ).map(([n, label]) => (
+                    <div key={label}>
+                      <div className="text-xl font-semibold tabular-nums text-navy">{n}</div>
+                      <div className="text-[10px] text-slate">{label}</div>
+                    </div>
+                  ))}
                 </div>
               </div>
               <label className="mt-2 flex cursor-pointer items-center gap-2 text-xs text-navy">

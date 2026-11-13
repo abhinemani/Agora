@@ -3,6 +3,7 @@
 import { useState } from "react";
 import type { Buyer, EntityType } from "@/lib/types";
 import { BUYER_PRESETS, ENTITY_LABEL, STATES } from "@/lib/vehicles";
+import { DirectorySearch } from "./DirectorySearch";
 import { People } from "./icons";
 import { useStore } from "./store";
 import { Button, Card, ErrorNote, IconCircle } from "./ui";
@@ -93,9 +94,19 @@ export function BuyerPicker({ onDone, onClose, compact = false }: { onDone?: (b:
             })}
           </div>
 
+          <div className="mt-4 max-w-xl">
+            <DirectorySearch
+              label="Or find yours among 72,000 governments"
+              onPick={(g) =>
+                choose({ name: g.name, state: g.state, entity_type: g.entity_type, population: null, domain: g.domain, directory_id: g.id })
+              }
+            />
+            <p className="mt-1 text-[11px] text-slate">Picking your agency brings in the co-ops it's on, from published rosters and its own procurement pages.</p>
+          </div>
+
           {!custom ? (
             <button onClick={() => setCustom(true)} className="mt-3 text-sm font-semibold text-maroon hover:underline">
-              Another agency →
+              Not listed? Enter it by hand →
             </button>
           ) : (
             <form

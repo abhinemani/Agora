@@ -24,6 +24,10 @@ import { parseRegister } from "./register";
 import { cartAgency, cartGroups, draftCart, glCode, needsApproval, nextStep, PURCHASER, REQUESTER } from "./orders";
 import { coopOf, detectCoops, isContractLevelUrl, isMember, linksOut, memberMatches, normalizeDomain } from "./coops";
 import { parseMemberList } from "./members";
+import { findGovernment } from "./directory";
+
+const EVIDENCE_RANK = { list: 0, roster: 1, agency: 2, purchase: 3 } as const;
+const rankEvidence = (e: keyof typeof EVIDENCE_RANK | undefined) => EVIDENCE_RANK[e ?? "list"];
 import { canSponsor, claimMatchesWebsite, isClaimed, isOffContract, listingFeeCurrent, PLANS } from "./suppliers";
 
 const now = () => new Date().toISOString();
@@ -70,10 +74,23 @@ export function setBuyer(buyer: Buyer) {
   if (!STATES.some(([c]) => c === buyer.state)) fail("Pick the agency's state.");
   const pop = buyer.population == null || String(buyer.population) === "" ? null : Math.max(0, Math.round(Number(buyer.population)));
   const domain = normalizeDomain(buyer.domain) || undefined;
-  db.session.buyer = { name: buyer.name.trim(), state: buyer.state, entity_type: buyer.entity_type, population: Number.isFinite(pop as number) ? pop : null, domain };
-  // Reverse lookup on the agency's website: co-ops whose member lists include it.
-  for (const coop of detectCoops(db, db.session.buyer))
-    if (!isMember(db, db.session.buyer.name, coop.id)) db.memberships.push({ agency: db.session.buyer.name, coop_id: coop.id, source: "detected", confirmed: false });
+  const set: Buyer = { name: buyer.name.trim(), state: buyer.state, entity_type: buyer.entity_type, population: Number.isFinite(pop as number) ? pop : null, domain };
+  // The co-op directory: published rosters, agencies' own pages and documented purchases.
+  const gov = findGovernment({ ...set, directory_id: buyer.directory_id });
+  if (gov) {
+    set.directory_id = gov.id;
+    if (!set.domain && gov.domain) set.domain = gov.domain;
+  }
+  db.session.buyer = set;
+  for (const c of gov?.coops ?? []) {
+    if (!db.coops.some((x) => x.id === c.coop_id)) continue;
+    const existing = db.memberships.find((m) => m.agency === set.name && m.coop_id === c.coop_id);
+    if (!existing) db.memberships.push({ agency: set.name, coop_id: c.coop_id, source: "detected", evidence: c.evidence, member_id: c.member_id, source_url: c.source_url, confirmed: false });
+    else if (existing.source === "detected" && rankEvidence(c.evidence) > rankEvidence(existing.evidence)) Object.assign(existing, { evidence: c.evidence, member_id: c.member_id ?? existing.member_id, source_url: c.source_url ?? existing.source_url });
+  }
+  // Member lists uploaded to Agora (and the demo lists), matched on website, then name and state.
+  for (const coop of detectCoops(db, set))
+    if (!isMember(db, set.name, coop.id)) db.memberships.push({ agency: set.name, coop_id: coop.id, source: "detected", evidence: "list", confirmed: false });
   return db.session.buyer;
 }
 
@@ -1064,8 +1081,9 @@ export function importMembers(args: { coopId: string; table: unknown[][]; mode: 
     const existing = db.memberships.find((m) => m.agency === buyer.name && m.coop_id === coop.id);
     if (onList) {
       matched.push(buyer.name);
-      if (!existing) db.memberships.push({ agency: buyer.name, coop_id: coop.id, source: "detected", confirmed: false });
-    } else if (existing && existing.source === "detected" && !existing.confirmed) {
+      if (!existing) db.memberships.push({ agency: buyer.name, coop_id: coop.id, source: "detected", evidence: "list", confirmed: false });
+    } else if (existing && existing.source === "detected" && !existing.confirmed && (existing.evidence ?? "list") === "list") {
+      // Only a membership that rested on a member list goes when the list drops it; roster, agency and purchase evidence stand.
       db.memberships = db.memberships.filter((m) => m !== existing);
     }
   }

@@ -14,7 +14,7 @@ export type EdgeTier = "discover" | "win" | "position";
 
 export type Role = "buyer" | "procurement" | "supplier";
 
-export type EntityType = "municipality" | "county" | "school_district" | "special_district" | "state_agency";
+export type EntityType = "municipality" | "county" | "school_district" | "special_district" | "state_agency" | "higher_education" | "tribal";
 
 /** Who is buying, asked at intake. Decides which contracts they may use. */
 export interface Buyer {
@@ -25,6 +25,8 @@ export interface Buyer {
   population: number | null;
   /** Website domain, matched against co-op member lists to detect memberships. */
   domain?: string;
+  /** The government's id in Agora's co-op directory (lib/directory.ts), when picked from it. */
+  directory_id?: string;
 }
 
 /** Who may buy from a contract vehicle. */
@@ -38,6 +40,8 @@ export interface Eligibility {
   note: string;
   /** Anything the buyer must have first, e.g. a free co-op membership. */
   requires?: string;
+  /** Local governments that signed their own participating addendum, outside the listed states. */
+  adopters?: { name: string; state: string }[];
 }
 
 export type Payer = "local_government" | "supplier" | "card_network" | "partner";
@@ -173,8 +177,12 @@ export interface Coop {
   /** Whether the co-op shares its member list; no formal relationship without one. */
   member_list_status: "none" | "partial" | "full";
   /** Where the member list came from. "demo" lists are illustrative, not from the co-op. */
-  member_list_source?: "co-op" | "scraped" | "demo";
+  member_list_source?: "co-op" | "scraped" | "demo" | "published";
   members?: CoopMember[];
+  /** Governments on the co-op's published roster, held in the directory (lib/directory.ts), not in members. */
+  roster_count?: number;
+  /** When the published roster was retrieved. */
+  roster_retrieved?: string;
   member_list_updated_at?: string;
   /** How agencies get on it: a membership, or their state signing a participating addendum (NASPO ValuePoint). */
   access?: "membership" | "state_addendum";
@@ -191,11 +199,21 @@ export interface CoopMember {
   state?: string;
 }
 
+/** How Agora knows about a membership, weakest to strongest. A roster listing says the
+ * agency registered; the agency's own pages say it uses the co-op; a purchase shows it bought. */
+export type MembershipEvidence = "list" | "roster" | "agency" | "purchase";
+
 /** An agency's membership in a co-op: detected from a member list, or added by the agency. */
 export interface CoopMembership {
   agency: string;
   coop_id: string;
   source: "detected" | "manual";
+  /** What the detection rests on. "list" is a member list uploaded to Agora (or a demo list). */
+  evidence?: MembershipEvidence;
+  /** The member ID the co-op or the agency published, when there is one. */
+  member_id?: string;
+  /** Where the evidence was published. */
+  source_url?: string;
   /** The purchasing admin has confirmed it. Detected memberships count before confirmation. */
   confirmed: boolean;
 }
@@ -588,4 +606,27 @@ export interface Db {
     buyer: Buyer | null;
   };
   counters: Record<string, number>;
+}
+
+/** One government in Agora's co-op directory (lib/directory.ts), as the browser sees it. */
+export interface DirectoryGovernment {
+  id: string;
+  name: string;
+  /** Other names the same government is published under. */
+  aliases: string[];
+  state: string;
+  city?: string;
+  county?: string;
+  entity_type: EntityType;
+  /** "public": a source classifies it as a government. "inferred": the name reads as one. */
+  status: "public" | "inferred";
+  domain?: string;
+  coops: { coop_id: string; evidence: MembershipEvidence; member_id?: string; source_url?: string }[];
+  /** Contract routes that aren't co-ops (GSA, Texas DIR, TXMAS…), with the strongest evidence for each. */
+  routes: Record<string, MembershipEvidence>;
+  /** Texas DIR reported sales, September 2025–September 2026. */
+  dir?: { sales: number; lines: number; first: string; last: string };
+  purchases?: { date: string; route: string; supplier: string; category: string; contract: string; amount: number | null; status: string; note: string; url: string }[];
+  /** Which sources mention it. */
+  sources: string[];
 }

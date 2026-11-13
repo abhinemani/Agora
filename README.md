@@ -67,7 +67,7 @@ Every product card and co-op contract carries a **fit score** from 0 to 100: how
 
 Each co-op contract shown in results is logged as an impression, once per search. The ledger's **Co-op traffic** tab shows impressions, clicks and join requests per co-op, plus how many agencies matched its member list.
 
-The laptop contracts behind the demo are real master agreements, carried as research leads because their current terms aren't confirmed. NASPO ValuePoint's Computer Equipment portfolio (lead state Minnesota) includes Dell 23026, HP 23011, Lenovo 23013 and Apple 23003, taken from Dell's posted agreement and a Hawaii SPO vendor list. Sourcewell's technology portfolio includes 121923-CDW, whose August 2026 rate card lists 5% off notebooks, and 121923-IDL. Sourcewell's and WSPC's member lists are **demo lists for illustration**, not from those co-ops.
+The laptop contracts behind the demo are real master agreements, carried as research leads because their current terms aren't confirmed. NASPO ValuePoint's Computer Equipment portfolio (lead state Minnesota) includes Dell 23026, HP 23011, Lenovo 23013 and Apple 23003, taken from Dell's posted agreement and a Hawaii SPO vendor list. Sourcewell's technology portfolio includes 121923-CDW, whose August 2026 rate card lists 5% off notebooks, and 121923-IDL. Memberships for real agencies now come from the co-op directory (below). WSPC, and the Sourcewell memberships of the fictional Riverbend and Cedar Bend, are **demo lists for illustration**.
 
 ## Agency setup, plans and the free tier
 
@@ -82,6 +82,22 @@ The laptop contracts behind the demo are real master agreements, carried as rese
 **Setup questions route to purchasing.** If a requester searches before setup is done, a one-line banner says what's missing and what that means for the results, and offers **Invite purchasing**. The invite shows up on the setup page. No email is sent in the demo.
 
 Results also hide expired contracts by default, behind a one-line "N expired contracts also matched" with a **Show** link. State contracts in TRX states (New Jersey, Oregon, Arkansas, Hawaii and New York; `TRX_STATES` in `lib/trx.ts`) carry a **TRX** label everywhere they appear, and the ledger books a TRX fee only on those. Other state contracts show an ordinary transaction fee.
+
+## The co-op directory and the Co-op data page
+
+Agora's co-op memberships for real agencies come from a public cooperative purchasing workbook, collected November 13, 2026 (`seed/coops/source/coop-memberships-2026-11-13.xlsx`). It has 90,469 published roster listings from Sourcewell, HGACBuy, BuyBoard (Texas and National), Mohave, E&I and COSTARS, plus Texas DIR sales by buyer, NASPO and OMNIA contract-access listings, agencies' own published co-op relationships and documented purchases. CISA's .gov registry (`seed/coops/source/dotgov-domains-2026-11-13.csv`, federal domains and contact emails removed) adds domains.
+
+`npm run import:coops` (`scripts/import-coop-data.ts`) builds three files from them:
+
+- `seed/coops/directory.json.gz`: 71,755 governments, one record each, with their co-ops, the evidence for each, .gov domains and DIR spend. Churches, private schools and nonprofits are set aside. A government whose source doesn't classify it is kept only when its name reads as government, and it's marked "inferred".
+- `seed/coops/insights.json`: the numbers behind the **Co-op data** page.
+- `seed/catalogs/naspo-contract-access.json`: NASPO ValuePoint's Parks and Recreation awards with their participating states, and local governments that signed their own addendum.
+
+Listings are joined by `entityKey` in `lib/coops.ts`, the same function the live matcher uses. It lines up "Plano ISD" with "Plano Independent School District" and "Lawrence, City of" with "City of Lawrence", but keeps City of Plano and Plano ISD apart. The directory is server-only (`lib/directory.ts`), so it never reaches the browser; `/api/directory?q=` serves the agency typeahead and `?id=` serves one record.
+
+**What it changes in the app.** "Your agency" now offers a search over every government in the directory. Picking one, or setting an agency the directory recognizes by website or by name and state, brings in its co-ops as detected memberships. Each carries its **evidence**: on a published roster, named on the agency's own procurement pages, or bought through it (an approved award or DIR sales). The membership strip in results shows the evidence and the member ID where one was published. Agora now tracks 19 real co-ops, up from two. An uploaded member list can't remove a membership that rests on stronger evidence. Ten NASPO Parks and Recreation awards are in search as quote-only research leads, and `Eligibility.adopters` lets a local government with its own addendum (San Joaquin County, City of Albany) use a portfolio its state hasn't signed.
+
+**Co-op data** (`/data`, in the account menu) explains all of this for leadership. It covers what's in the workbook, the five ways Agora uses it, a live agency lookup, the evidence ladder, documented purchases, a prospect list (the largest DIR buyers already on several co-ops), cautions (including six NASPO awards whose addendum states disagree with Agora's seed) and the data still needed, led by a government ID spine.
 
 ## Co-op member lists
 
@@ -114,7 +130,7 @@ These are settled, and the app follows them:
 - **The free-plan limit counts RFP Lite only.** Handing a request to Sovra's RFP tool or to the agency's own tool (Euna, OpenGov, Bonfire) never counts toward the five free RFPs a year.
 - **Only suppliers can buy placement.** Co-ops can't pay to rank higher, which keeps them neutral, since competing vendors sell through the same co-ops.
 - **Resellers stay in results, last.** Reseller contracts appear under "Other ways," after the agency's own, state and co-op routes. Civic Marketplace-type channels aren't included.
-- **The demo member lists stay, labeled.** Sourcewell's and WSPC's seeded member lists are marked as demo data. Real lists replace them through **Co-op member lists**.
+- **The demo member lists stay, labeled.** WSPC's list, and the two fictional cities added to Sourcewell's, are marked as demo data. Real agencies are matched against the published rosters in the co-op directory, and lists a co-op shares are uploaded through **Co-op member lists**.
 
 ## Supplier plans, placements and listing fees
 
@@ -200,6 +216,9 @@ The prototype supports section 8 of the spec end to end. Switch roles with the B
 | `lib/parser.ts` | Contract extraction (PDF / DOCX / XLSX / CSV), LLM structuring, offline heuristic, dedupe |
 | `lib/actions.ts` | Every state change, which is also where revenue events fire |
 | `seed/contracts/` | Three real sample contracts (PDFs and an XLSX), regenerated by `npm run seed:contracts` |
+| `scripts/import-coop-data.ts`, `seed/coops/` | The co-op workbook and .gov registry, and the directory and insights built from them by `npm run import:coops` |
+| `lib/directory.ts`, `app/api/directory/` | Server-only lookups in the co-op directory, and the API the agency typeahead calls |
+| `app/data/` | The Co-op data page |
 | `app/` | Next.js App Router pages and the `/api/state`, `/api/act`, `/api/contracts/parse` routes |
 
 ## Contract parsing

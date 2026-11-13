@@ -1,0 +1,490 @@
+{
+ "source": "https://www.naspovaluepoint.org/portfolios/parks-recreation-equipment-installation/",
+ "retrieved": "2026-11-13",
+ "note": "From the Contract Access tab of the co-op workbook. Agreement numbers are as listed on NASPO ValuePoint's portfolio page; confirm the current term before ordering.",
+ "parks": {
+  "portfolio": "Parks and Recreation Equipment and Installation",
+  "awards": [
+   {
+    "supplier": "BCI Burke Co., LLC",
+    "master_agreement": "PO-10700-00015859",
+    "pa_states": [
+     "AZ",
+     "CA",
+     "KY",
+     "MO",
+     "NM",
+     "OH",
+     "OK",
+     "OR",
+     "SC",
+     "SD",
+     "WA"
+    ],
+    "addenda": [
+     {
+      "state": "AZ",
+      "url": "https://s3.us-west-2.amazonaws.com/naspovaluepoint/1713823220_Executed%20PA_Arizona.pdf"
+     },
+     {
+      "state": "CA",
+      "url": "https://s3.us-west-2.amazonaws.com/naspovaluepoint/1764616418_PA%207-23-99-49-01%20and%20A1-A4.pdf"
+     },
+     {
+      "state": "KY",
+      "url": "https://s3.us-west-2.amazonaws.com/naspovaluepoint/1713978780_Kentucky%20Executed%20PA.pdf"
+     },
+     {
+      "state": "MO",
+      "url": "https://s3.us-west-2.amazonaws.com/naspovaluepoint/1696274536_CC232699001%20Contract%20Part%201.pdf"
+     },
+     {
+      "state": "NM",
+      "url": "https://s3.us-west-2.amazonaws.com/naspovaluepoint/1738075907_30-00000-23-00086AA%20Park%20%26%20Recreation%20Equipment%201226.pdf"
+     },
+     {
+      "state": "OH",
+      "url": "https://s3.us-west-2.amazonaws.com/naspovaluepoint/1775089246_1774698170_CTR035456_GPC047_RSC035456_Contract_V1__5_%20BCI%20Burke%20%281%29.pdf"
+     },
+     {
+      "state": "OK",
+      "url": "https://s3.us-west-2.amazonaws.com/naspovaluepoint/1710342703_Participating%20Addendum-%20BCI%20Burke%20-%20signed.pdf"
+     },
+     {
+      "state": "OR",
+      "url": "https://s3.us-west-2.amazonaws.com/naspovaluepoint/1687532296_93355283_OR%20PA_PO_10700_00019631_BCI_Burke_Executed.pdf"
+     },
+     {
+      "state": "SC",
+      "url": "https://s3.us-west-2.amazonaws.com/naspovaluepoint/1706810290_SC%20PA%20BCI%20Burke%20exe.pdf"
+     },
+     {
+      "state": "SD",
+      "url": "https://s3.us-west-2.amazonaws.com/naspovaluepoint/1684373460_Parks%20and%20Recreation%20Equipment%20BCI%20Burke%20South%20Dakota.pdf"
+     },
+     {
+      "state": "WA",
+      "url": "https://s3.us-west-2.amazonaws.com/naspovaluepoint/1710264033_15122pa_BCI%20Burke%20%28executed%29.pdf"
+     }
+    ]
+   },
+   {
+    "supplier": "Keystone Ridge Designs, Inc.",
+    "master_agreement": "PO-10700-00015860",
+    "pa_states": [
+     "OR"
+    ],
+    "addenda": [
+     {
+      "state": "OR",
+      "url": "https://s3.us-west-2.amazonaws.com/naspovaluepoint/1691085092_PO_10700_00021402_OR_PA_KeyStone%20Ridge-Signed.pdf"
+     }
+    ]
+   },
+   {
+    "supplier": "Landscape Structures, Inc.",
+    "master_agreement": "PO-10700-00015855",
+    "pa_states": [
+     "AR",
+     "CA",
+     "HI",
+     "IA",
+     "KY",
+     "MO",
+     "NM",
+     "NV",
+     "OH",
+     "OK",
+     "OR",
+     "SC",
+     "SD",
+     "UT",
+     "WA"
+    ],
+    "addenda": [
+     {
+      "state": "AR",
+      "url": "https://s3.us-west-2.amazonaws.com/naspovaluepoint/1697218949_Landscape%20Structures%20Inc%20PA%204600053456%20-%20EXECUTED.pdf"
+     },
+     {
+      "state": "CA",
+      "url": "https://s3.us-west-2.amazonaws.com/naspovaluepoint/1764616920_PA%207-23-99-49-02%20and%20A1-A4.pdf"
+     },
+     {
+      "state": "HI",
+      "url": "https://s3.us-west-2.amazonaws.com/naspovaluepoint/1712958903_NASPO%20Parks%20%20%283%29.pdf"
+     },
+     {
+      "state": "IA",
+      "url": "https://s3.us-west-2.amazonaws.com/naspovaluepoint/1687963928_PO-10700-00015855%20Landscape%20Structure%20PA_encrypted%20%281%29.pdf"
+     },
+     {
+      "state": "KY",
+      "url": "https://s3.us-west-2.amazonaws.com/naspovaluepoint/1721154562_Playground_Equipment_NASPO_PA%20-%20EXECUTED.pdf"
+     },
+     {
+      "state": "MO",
+      "url": "https://s3.us-west-2.amazonaws.com/naspovaluepoint/1691773354_CC232699002%20Contract_Executed.pdf"
+     },
+     {
+      "state": "NM",
+      "url": "https://s3.us-west-2.amazonaws.com/naspovaluepoint/1734640582_30-00000-23-00086AC%20Park%20%26%20Recreation%20Equipment%201226.pdf"
+     },
+     {
+      "state": "NV",
+      "url": "https://s3.us-west-2.amazonaws.com/naspovaluepoint/1698276291_PO-10700-00015855%2099SWC-NV24-19252%20Landscape%20Strucuters%2010.18.23.pdf"
+     },
+     {
+      "state": "OH",
+      "url": "https://s3.us-west-2.amazonaws.com/naspovaluepoint/1774698422_CTR026359_RSC026359_Contract_Rev_Landscape%20Structures%20%281%29.pdf"
+     },
+     {
+      "state": "OK",
+      "url": "https://s3.us-west-2.amazonaws.com/naspovaluepoint/1687979902_Participating%20Addendum-Landscape%20EXECUTED.pdf"
+     },
+     {
+      "state": "OR",
+      "url": "https://s3.us-west-2.amazonaws.com/naspovaluepoint/1684344666_Parks%20and%20Recreation%20Equipment%20Landscape%20Structures%20Oregon.pdf"
+     },
+     {
+      "state": "SC",
+      "url": "https://s3.us-west-2.amazonaws.com/naspovaluepoint/1687980399_SC%20PA%20Landscape%20Structures%20exe.pdf"
+     },
+     {
+      "state": "SD",
+      "url": "https://s3.us-west-2.amazonaws.com/naspovaluepoint/1684373309_Parks%20and%20Recreation%20Equipment%20Landscape%20Structures%20South%20Dakota.pdf"
+     },
+     {
+      "state": "UT",
+      "url": "https://s3.us-west-2.amazonaws.com/naspovaluepoint/1697204404_PA4316%20Landscape%20Structures%20Inc._EXECUTED.pdf"
+     },
+     {
+      "state": "WA",
+      "url": "https://s3.us-west-2.amazonaws.com/naspovaluepoint/1698158375_15122%20Landscape%20Strctrs%20-WA%20PA-EXECUTED.pdf"
+     }
+    ]
+   },
+   {
+    "supplier": "MRC, Inc.",
+    "master_agreement": "PO-10700-00015856",
+    "pa_states": [
+     "CA",
+     "IA",
+     "OR"
+    ],
+    "addenda": [
+     {
+      "state": "CA",
+      "url": "https://s3.us-west-2.amazonaws.com/naspovaluepoint/1764619353_PA%207-23-99-49-05%20and%20A1-A4.pdf"
+     },
+     {
+      "state": "IA",
+      "url": "https://s3.us-west-2.amazonaws.com/naspovaluepoint/1687462832_PO-10700-00015856%20MRC%20Inc_encrypted_%20signed.pdf"
+     },
+     {
+      "state": "OR",
+      "url": "https://s3.us-west-2.amazonaws.com/naspovaluepoint/1687532005_93355283_ORPA_PO_10700-00019358_MRC_Parks%20Executed.pdf"
+     }
+    ]
+   },
+   {
+    "supplier": "Northwest Playground Equipment, Inc.",
+    "master_agreement": "PO-10700-00015852",
+    "pa_states": [
+     "AK",
+     "HI",
+     "OR",
+     "WA"
+    ],
+    "addenda": [
+     {
+      "state": "AK",
+      "url": "https://s3.us-west-2.amazonaws.com/naspovaluepoint/1688135184_PA.pdf"
+     },
+     {
+      "state": "HI",
+      "url": "https://s3.us-west-2.amazonaws.com/naspovaluepoint/1711369298_NASPO%20Hawaii%20Northwest%20Playground%20AMD%201.pdf"
+     },
+     {
+      "state": "OR",
+      "url": "https://s3.us-west-2.amazonaws.com/naspovaluepoint/1687531674_93355283_ORPA_PO_10700_00018537_NW%20PlayG.pdf"
+     },
+     {
+      "state": "WA",
+      "url": "https://s3.us-west-2.amazonaws.com/naspovaluepoint/1693323604_15122%20NW%20Playground.exe.pdf"
+     }
+    ]
+   },
+   {
+    "supplier": "PlayCore Wisconsin, Inc. dba GameTime",
+    "master_agreement": "PO-10700-00015861",
+    "pa_states": [
+     "AL",
+     "AR",
+     "HI",
+     "MO",
+     "NM",
+     "SC",
+     "UT"
+    ],
+    "addenda": [
+     {
+      "state": "AL",
+      "url": "https://s3.us-west-2.amazonaws.com/naspovaluepoint/1709139751_State%20of%20Alabama_GameTime_NASPO%20ValuePoint%20PA.pdf"
+     },
+     {
+      "state": "AR",
+      "url": "https://s3.us-east-1.amazonaws.com/nvp/Participating%20Addenda/PA-000020429/PlayCoreWisconsinPA-Final_20261029171254.929_X.pdf"
+     },
+     {
+      "state": "HI",
+      "url": "https://s3.us-west-2.amazonaws.com/naspovaluepoint/1752273619_NASPO%20Parks%20and%20Recreation%20Equipment%20and%20Installation%20-%20PlayCore%20Wisconsin%20Inc%20dba%20GameTime%20%28part%203%29%20-%20signed.pdf"
+     },
+     {
+      "state": "MO",
+      "url": "https://s3.us-west-2.amazonaws.com/naspovaluepoint/1704975531_PlayCore%20Wisconsin%20Inc.%20DBA%20GameTime%20PA.pdf"
+     },
+     {
+      "state": "NM",
+      "url": "https://s3.us-west-2.amazonaws.com/naspovaluepoint/1738076533_30-00000-23-00086AK%20Park%20%26%20Recreation%20Equipment%201226.pdf"
+     },
+     {
+      "state": "SC",
+      "url": "https://s3.us-west-2.amazonaws.com/naspovaluepoint/1729872269_SC%20PA%20GameTime%20exe.pdf"
+     },
+     {
+      "state": "UT",
+      "url": "https://s3.us-west-2.amazonaws.com/naspovaluepoint/1740511025_Contract%20PA4773_completed.pdf"
+     }
+    ]
+   },
+   {
+    "supplier": "Playcraft Systems, LLC",
+    "master_agreement": "PO-10700-00015858",
+    "pa_states": [
+     "CA",
+     "HI",
+     "KY",
+     "NM",
+     "OR",
+     "WA"
+    ],
+    "addenda": [
+     {
+      "state": "CA",
+      "url": "https://s3.us-west-2.amazonaws.com/naspovaluepoint/1764617253_PA%207-23-99-49-03%20and%20A1-A4.pdf"
+     },
+     {
+      "state": "HI",
+      "url": "https://s3.us-west-2.amazonaws.com/naspovaluepoint/1710796704_NASPO%20Parks%20%20%282%29.pdf"
+     },
+     {
+      "state": "KY",
+      "url": "https://s3.us-west-2.amazonaws.com/naspovaluepoint/1734558592_Signed%20MA_758_2400000091_1_MA_FORM_ADV_%281%29%20%281%29%20%281%29.pdf"
+     },
+     {
+      "state": "NM",
+      "url": "https://s3.us-west-2.amazonaws.com/naspovaluepoint/1738090239_30-00000-23-00086AI%20Park%20%26%20Recreation%20Equipment%201226.pdf"
+     },
+     {
+      "state": "OR",
+      "url": "https://s3.us-west-2.amazonaws.com/naspovaluepoint/1684344390_Parks%20and%20Recreation%20Equipment%20Playcraft%20Systems%2C%20LLC.%20Oregon.pdf"
+     },
+     {
+      "state": "WA",
+      "url": "https://s3.us-west-2.amazonaws.com/naspovaluepoint/1715983119_15122c.Playcraft%20%28executed%29.pdf"
+     }
+    ]
+   },
+   {
+    "supplier": "PlayPower, Inc.",
+    "master_agreement": "PO-10700-00015853",
+    "pa_states": [
+     "AR",
+     "AZ",
+     "HI",
+     "IA",
+     "MO",
+     "NE",
+     "NM",
+     "OK",
+     "OR",
+     "SC",
+     "SD",
+     "UT",
+     "WA"
+    ],
+    "addenda": [
+     {
+      "state": "AR",
+      "url": "https://s3.us-west-2.amazonaws.com/naspovaluepoint/1692720768_93355283_PlayPower%20Participating%20Addendum%20-%20Arkensas.pdf"
+     },
+     {
+      "state": "AZ",
+      "url": "https://s3.us-west-2.amazonaws.com/naspovaluepoint/1725392091_%21NASPO%20AZ%20PlayPower%20PA_EXECUTED%207-24-23.pdf"
+     },
+     {
+      "state": "HI",
+      "url": "https://s3.us-west-2.amazonaws.com/naspovaluepoint/1715868526_NASPO%20Parks%20and%20Recreation%20Hawaii%20PA%20-%20Playpower%20Inc.pdf"
+     },
+     {
+      "state": "IA",
+      "url": "https://s3.us-west-2.amazonaws.com/naspovaluepoint/1687360709_PO-10700-00015853%20PlayPower%20Inc_encrypted_.pdf"
+     },
+     {
+      "state": "MO",
+      "url": "https://s3.us-west-2.amazonaws.com/naspovaluepoint/1725047050_PlayPower-%20State%20of%20Missouri%20PA.pdf"
+     },
+     {
+      "state": "NE",
+      "url": "https://s3.us-west-2.amazonaws.com/naspovaluepoint/1725376753_%21%21%21NASPO%20NE%20PA%20%28PlayPower%29%20EXECUTED%201-19-24.pdf"
+     },
+     {
+      "state": "NM",
+      "url": "https://s3.us-west-2.amazonaws.com/naspovaluepoint/1738076209_30-00000-23-00086AH%20Park%20%26%20Recreation%20Equipment%201226.pdf"
+     },
+     {
+      "state": "OK",
+      "url": "https://s3.us-west-2.amazonaws.com/naspovaluepoint/1725375174_%21NASPO%20OK%20PA-PlayPower_EXECUTED_5-1-2023.pdf"
+     },
+     {
+      "state": "OR",
+      "url": "https://s3.us-west-2.amazonaws.com/naspovaluepoint/1684347276_Parks%20and%20Recreation%20Equipment%20PlayPower%2C%20Inc.%20Oregon.pdf"
+     },
+     {
+      "state": "SC",
+      "url": "https://s3.us-west-2.amazonaws.com/naspovaluepoint/1689971324_SC%20PA%20PlayPower%20exe.pdf"
+     },
+     {
+      "state": "SD",
+      "url": "https://s3.us-west-2.amazonaws.com/naspovaluepoint/1690386068_PlayPower%20Participating%20Addendum%20-%20Executed.pdf"
+     },
+     {
+      "state": "UT",
+      "url": "https://s3.us-west-2.amazonaws.com/naspovaluepoint/1698836891_PA4281%20PlayPower%20Inc._executed.pdf"
+     },
+     {
+      "state": "WA",
+      "url": "https://s3.us-west-2.amazonaws.com/naspovaluepoint/1715982995_15122c.PlayPower%20%28executed%29.pdf"
+     }
+    ]
+   },
+   {
+    "supplier": "PS Commercial Play, LLC dba Play & Park Structures",
+    "master_agreement": "PO-10700-00015857",
+    "pa_states": [
+     "MO",
+     "OK",
+     "OR",
+     "SC",
+     "UT",
+     "WA"
+    ],
+    "addenda": [
+     {
+      "state": "MO",
+      "url": "https://s3.us-west-2.amazonaws.com/naspovaluepoint/1695911886_CC232699004%20Contract%20Part%201.pdf"
+     },
+     {
+      "state": "OK",
+      "url": "https://s3.us-west-2.amazonaws.com/naspovaluepoint/1715955820_Participating%20Addendum_Play%20and%20Park%20-%20signed.pdf"
+     },
+     {
+      "state": "OR",
+      "url": "https://s3.us-west-2.amazonaws.com/naspovaluepoint/1709132913_PO_10700_00022531_Oregons%20PA_Play_Park_Struct.pdf"
+     },
+     {
+      "state": "SC",
+      "url": "https://s3.us-west-2.amazonaws.com/naspovaluepoint/1689970664_SC%20PA%20Play%20and%20Park%20Structures%20exe.pdf"
+     },
+     {
+      "state": "UT",
+      "url": "https://s3.us-west-2.amazonaws.com/naspovaluepoint/1698836985_PA4317%20PS%20Commercial%20Play%20LLC%20DBA%20Play%20and%20Park%20Structures.pdf"
+     },
+     {
+      "state": "WA",
+      "url": "https://s3.us-west-2.amazonaws.com/naspovaluepoint/1715983208_15122c_PS%20Comm%20%28executed%29.pdf"
+     }
+    ]
+   },
+   {
+    "supplier": "Superior International Industries, Inc. dba Superior Recreational Products",
+    "master_agreement": "PO-10700-00015854",
+    "pa_states": [
+     "CA",
+     "IA",
+     "KS",
+     "MO",
+     "NM",
+     "OR",
+     "SC",
+     "SD",
+     "UT",
+     "WA"
+    ],
+    "addenda": [
+     {
+      "state": "CA",
+      "url": "https://s3.us-west-2.amazonaws.com/naspovaluepoint/1764618749_PA%207-23-99-49-04%20and%20A1-A4.pdf"
+     },
+     {
+      "state": "IA",
+      "url": "https://s3.us-west-2.amazonaws.com/naspovaluepoint/1687963220_PO-10700-00015854%20Superior%20International%20PA_encrypted_signed.pdf"
+     },
+     {
+      "state": "KS",
+      "url": "https://s3.us-west-2.amazonaws.com/naspovaluepoint/1692392181_Fully%20Executed%20Superior%20PA%202023.pdf"
+     },
+     {
+      "state": "MO",
+      "url": "https://s3.us-west-2.amazonaws.com/naspovaluepoint/1744733033_SRP-MISSOURI%20NASPO%20STATE%20PA-CC232699008_001.pdf"
+     },
+     {
+      "state": "NM",
+      "url": "https://s3.us-west-2.amazonaws.com/naspovaluepoint/1738076367_30-00000-23-00086AJ%20Park%20%26%20Recreation%20Equipment%201226.pdf"
+     },
+     {
+      "state": "OR",
+      "url": "https://s3.us-west-2.amazonaws.com/naspovaluepoint/1687530758_93355283_PO_10700_00020949_OR%20PA%20Executed.pdf"
+     },
+     {
+      "state": "SC",
+      "url": "https://s3.us-west-2.amazonaws.com/naspovaluepoint/1687962751_SC%20PA%20Superior%20Recreational%20Products%20exe.pdf"
+     },
+     {
+      "state": "SD",
+      "url": "https://s3.us-west-2.amazonaws.com/naspovaluepoint/1690985075_Superior-Paticipating%20Addendum-SD%20FINAL%208_2_23.pdf"
+     },
+     {
+      "state": "UT",
+      "url": "https://s3.us-west-2.amazonaws.com/naspovaluepoint/1698275429_UTAH-PA4318-SII-SRP.pdf"
+     },
+     {
+      "state": "WA",
+      "url": "https://s3.us-west-2.amazonaws.com/naspovaluepoint/1709767856_15122pa_Superior%20%28executed%29.pdf"
+     }
+    ]
+   }
+  ]
+ },
+ "adopters": [
+  {
+   "portfolio": "Citizen engagement",
+   "name": "San Joaquin County",
+   "state": "CA",
+   "url": "https://www.naspovaluepoint.org/portfolios/citizen-engagement-platforms/"
+  },
+  {
+   "portfolio": "Parks and recreation",
+   "name": "City of Albany",
+   "state": "NY",
+   "url": "https://www.naspovaluepoint.org/portfolios/parks-recreation-equipment-installation/"
+  },
+  {
+   "portfolio": "Parks and recreation",
+   "name": "Columbia County Department of Social Services",
+   "state": "NY",
+   "url": "https://www.naspovaluepoint.org/portfolios/parks-recreation-equipment-installation/"
+  }
+ ]
+}

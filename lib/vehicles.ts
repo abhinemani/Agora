@@ -1,6 +1,7 @@
 // Contract vehicles: who may use each contract, and every way to buy a product.
 // Safe to import from client components (no server-only dependencies).
 
+import { entityKey } from "./coops";
 import type { Buyer, Contract, Db, EntityType, Listing } from "./types";
 
 export const ENTITY_LABEL: Record<EntityType, string> = {
@@ -9,6 +10,8 @@ export const ENTITY_LABEL: Record<EntityType, string> = {
   school_district: "School district",
   special_district: "Special district or authority",
   state_agency: "State agency",
+  higher_education: "College or university",
+  tribal: "Tribal government",
 };
 
 export const STATES: [string, string][] = [
@@ -48,6 +51,8 @@ export function checkEligibility(contract: Contract | undefined, buyer: Buyer | 
   const e = contract.eligibility;
   if (!e || !buyer) return { eligible: true, reason: e?.note ?? "" };
   if (e.agencies && !e.agencies.includes(buyer.name)) return { eligible: false, reason: `${contract.owner}'s own contract; not open to other agencies` };
+  const adopter = e.adopters?.some((a) => a.state === buyer.state && entityKey(a.name) === entityKey(buyer.name));
+  if (adopter) return { eligible: true, reason: `${buyer.name} signed its own participating addendum` };
   if (e.states !== "any" && !e.states.includes(buyer.state)) return { eligible: false, reason: `Open to ${e.note}` };
   if (e.entity_types && !e.entity_types.includes(buyer.entity_type)) return { eligible: false, reason: `Open to ${e.note}` };
   return { eligible: true, reason: e.requires ? `${e.note} · ${e.requires}` : e.note };

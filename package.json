@@ -11,7 +11,8 @@
     "rehearse": "node scripts/rehearse-demo.cjs",
     "seed:contracts": "node scripts/generate-sample-contracts.mjs",
     "import:catalog": "node scripts/import-price-catalog.mjs && node scripts/feature-tyler.mjs && node scripts/name-tyler.mjs && node scripts/import-price-catalog.mjs tyler-technologies-naspo-ar3764-catalog-2026-09.xlsx tyler-technologies-naspo-ar3764-2026-09.json",
-    "import:naspo": "NODE_USE_ENV_PROXY=1 node scripts/import-naspo.mjs"
+    "import:naspo": "NODE_USE_ENV_PROXY=1 node scripts/import-naspo.mjs",
+    "import:coops": "tsx scripts/import-coop-data.ts"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^1.3.0",

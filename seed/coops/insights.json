@@ -1,0 +1,1385 @@
+{
+ "generated": "2026-11-13",
+ "retrieved": "2026-11-13",
+ "workbook": {
+  "roster_rows": 90469,
+  "tabs": [
+   "Overview",
+   "Memberships",
+   "DIR Buyers",
+   "Program Coverage",
+   "Purchase Evidence",
+   "BuyBoard Texas",
+   "E&I",
+   "COSTARS",
+   "Contract Access",
+   "Agency Relationships"
+  ],
+  "relationships": 73,
+  "relationship_agencies": 7,
+  "purchases": 18,
+  "contract_access": 127
+ },
+ "programs": [
+  {
+   "program": "Sourcewell",
+   "coop_id": "coop_sourcewell",
+   "raw": 48882,
+   "kept": 48881,
+   "inferred": 0,
+   "dropped": 1,
+   "states": 53
+  },
+  {
+   "program": "HGACBuy",
+   "coop_id": "coop_hgacbuy",
+   "raw": 10223,
+   "kept": 9744,
+   "inferred": 623,
+   "dropped": 479,
+   "states": 51
+  },
+  {
+   "program": "E&I",
+   "coop_id": "coop_eandi",
+   "raw": 10151,
+   "kept": 7244,
+   "inferred": 7244,
+   "dropped": 2907,
+   "states": 55
+  },
+  {
+   "program": "COSTARS",
+   "coop_id": "coop_costars",
+   "raw": 9802,
+   "kept": 7371,
+   "inferred": 948,
+   "dropped": 2431,
+   "states": 3
+  },
+  {
+   "program": "BuyBoard Texas",
+   "coop_id": "coop_buyboard",
+   "raw": 5886,
+   "kept": 3383,
+   "inferred": 3383,
+   "dropped": 2503,
+   "states": 1
+  },
+  {
+   "program": "BuyBoard National",
+   "coop_id": "coop_buyboard_national",
+   "raw": 5033,
+   "kept": 4671,
+   "inferred": 4671,
+   "dropped": 362,
+   "states": 50
+  },
+  {
+   "program": "Mohave",
+   "coop_id": "coop_mohave",
+   "raw": 492,
+   "kept": 489,
+   "inferred": 0,
+   "dropped": 3,
+   "states": 1
+  }
+ ],
+ "directory": {
+  "governments": 71755,
+  "from_rosters": 64229,
+  "on_a_roster": 64224,
+  "by_type": {
+   "tribal": 535,
+   "state_agency": 955,
+   "special_district": 21625,
+   "school_district": 19717,
+   "county": 4322,
+   "municipality": 21247,
+   "higher_education": 3354
+  },
+  "inferred": 8012,
+  "with_domain": 14132,
+  "roster_with_domain": 8043,
+  "dotgov_rows": 15750,
+  "dotgov_matched": 8062,
+  "dotgov_added": 6070
+ },
+ "overlap": {
+  "by_roster_count": {
+   "1": 51366,
+   "2": 9404,
+   "3": 3119,
+   "4+": 335
+  },
+  "conservative_key_entities": 75467,
+  "conservative_key_multi": 11309,
+  "entity_key_multi": 12858,
+  "on_three_or_more": 3464,
+  "examples": [
+   {
+    "name": "Baldwin County Board of Education",
+    "state": "AL",
+    "also": [
+     "Baldwin County Board of Education (AL)"
+    ],
+    "coops": 2
+   },
+   {
+    "name": "City of El Mirage",
+    "state": "AZ",
+    "also": [
+     "El Mirage, City of"
+    ],
+    "coops": 3
+   },
+   {
+    "name": "Eastern Arizona College",
+    "state": "AZ",
+    "also": [
+     "Eastern Arizona College (Graham County Community College)"
+    ],
+    "coops": 3
+   },
+   {
+    "name": "Santa Cruz Valley Unified School District 35",
+    "state": "AZ",
+    "also": [
+     "Santa Cruz Valley USD No.35"
+    ],
+    "coops": 2
+   },
+   {
+    "name": "Town of Superior",
+    "state": "AZ",
+    "also": [
+     "Superior, Town of"
+    ],
+    "coops": 2
+   },
+   {
+    "name": "Kern County",
+    "state": "CA",
+    "also": [
+     "County of Kern"
+    ],
+    "coops": 2
+   },
+   {
+    "name": "Milford Public Schools",
+    "state": "CT",
+    "also": [
+     "Milford Public Schools (CT)"
+    ],
+    "coops": 2
+   },
+   {
+    "name": "City of Saint Charles",
+    "state": "IL",
+    "also": [
+     "City of St. Charles"
+    ],
+    "coops": 2
+   }
+  ]
+ },
+ "coop_counts": {
+  "coop_sourcewell": {
+   "list": 0,
+   "roster": 48580,
+   "agency": 7,
+   "purchase": 0
+  },
+  "coop_hgacbuy": {
+   "list": 0,
+   "roster": 9688,
+   "agency": 5,
+   "purchase": 0
+  },
+  "coop_buyboard_national": {
+   "list": 0,
+   "roster": 4660,
+   "agency": 1,
+   "purchase": 0
+  },
+  "coop_eandi": {
+   "list": 0,
+   "roster": 7231,
+   "agency": 3,
+   "purchase": 0
+  },
+  "coop_mohave": {
+   "list": 0,
+   "roster": 489,
+   "agency": 0,
+   "purchase": 0
+  },
+  "coop_omnia": {
+   "list": 0,
+   "roster": 0,
+   "agency": 9,
+   "purchase": 1
+  },
+  "coop_nppgov": {
+   "list": 0,
+   "roster": 0,
+   "agency": 2,
+   "purchase": 1
+  },
+  "coop_1gpa": {
+   "list": 0,
+   "roster": 0,
+   "agency": 5,
+   "purchase": 0
+  },
+  "coop_choice": {
+   "list": 0,
+   "roster": 0,
+   "agency": 7,
+   "purchase": 0
+  },
+  "coop_equalis": {
+   "list": 0,
+   "roster": 0,
+   "agency": 6,
+   "purchase": 0
+  },
+  "coop_peppm": {
+   "list": 0,
+   "roster": 0,
+   "agency": 1,
+   "purchase": 0
+  },
+  "coop_pca": {
+   "list": 0,
+   "roster": 0,
+   "agency": 3,
+   "purchase": 0
+  },
+  "coop_tips": {
+   "list": 0,
+   "roster": 0,
+   "agency": 8,
+   "purchase": 0
+  },
+  "coop_naspo": {
+   "list": 0,
+   "roster": 0,
+   "agency": 3,
+   "purchase": 1
+  },
+  "coop_kpn": {
+   "list": 0,
+   "roster": 0,
+   "agency": 1,
+   "purchase": 1
+  },
+  "coop_costars": {
+   "list": 0,
+   "roster": 6857,
+   "agency": 0,
+   "purchase": 0
+  },
+  "coop_buyboard": {
+   "list": 0,
+   "roster": 3371,
+   "agency": 5,
+   "purchase": 0
+  },
+  "coop_pace": {
+   "list": 0,
+   "roster": 0,
+   "agency": 3,
+   "purchase": 0
+  },
+  "coop_mmcap": {
+   "list": 0,
+   "roster": 0,
+   "agency": 1,
+   "purchase": 0
+  }
+ },
+ "evidence": {
+  "roster": 64224,
+  "agency": 12,
+  "purchase": 3619,
+  "id_checks": [
+   {
+    "agency": "Lawrence",
+    "state": "KS",
+    "coop": "coop_equalis",
+    "published": "EG-0038475",
+    "roster": null,
+    "agrees": null
+   },
+   {
+    "agency": "Lawrence",
+    "state": "KS",
+    "coop": "coop_nppgov",
+    "published": "M-5806628",
+    "roster": null,
+    "agrees": null
+   },
+   {
+    "agency": "Lawrence",
+    "state": "KS",
+    "coop": "coop_omnia",
+    "published": "5058251",
+    "roster": null,
+    "agrees": null
+   },
+   {
+    "agency": "Lawrence",
+    "state": "KS",
+    "coop": "coop_sourcewell",
+    "published": "25807",
+    "roster": "25807",
+    "agrees": true
+   }
+  ]
+ },
+ "dir": {
+  "raw_rows": 4049,
+  "buyers": 3803,
+  "sales": 5431846703,
+  "by_type": {
+   "State Agency": 2107140658,
+   "Local Government": 1860751890,
+   "Higher Education": 771173794,
+   "K-12 School": 593896348,
+   "Out of State": 93287935,
+   "Assistance Organization": 5590980,
+   "NULL": 5098
+  },
+  "matched_to_rosters": 2161,
+  "blank_state_merges": 192,
+  "blank_state_examples": [
+   {
+    "name": "Texas Health and Human Services Commission",
+    "sales": 506035133,
+    "parts": 2
+   },
+   {
+    "name": "Texas Department of Transportation",
+    "sales": 237186958,
+    "parts": 2
+   },
+   {
+    "name": "Texas Department of Information Resources",
+    "sales": 154964045,
+    "parts": 2
+   }
+  ]
+ },
+ "prospects": [
+  {
+   "id": "gov_tx_austin",
+   "name": "City of Austin",
+   "state": "TX",
+   "type": "municipality",
+   "dir_sales": 129700061,
+   "coops": [
+    "coop_hgacbuy",
+    "coop_sourcewell",
+    "coop_buyboard"
+   ],
+   "strongest": "roster"
+  },
+  {
+   "id": "gov_tx_houston",
+   "name": "City of Houston",
+   "state": "TX",
+   "type": "municipality",
+   "dir_sales": 124959045,
+   "coops": [
+    "coop_hgacbuy",
+    "coop_sourcewell",
+    "coop_buyboard"
+   ],
+   "strongest": "roster"
+  },
+  {
+   "id": "gov_tx_dallas-area-rapid-transit",
+   "name": "Dallas Area Rapid Transit",
+   "state": "TX",
+   "type": "special_district",
+   "dir_sales": 63851360,
+   "coops": [
+    "coop_sourcewell",
+    "coop_hgacbuy",
+    "coop_buyboard"
+   ],
+   "strongest": "roster"
+  },
+  {
+   "id": "gov_tx_texas-tech-university",
+   "name": "Texas Tech University",
+   "state": "TX",
+   "type": "higher_education",
+   "dir_sales": 63341434,
+   "coops": [
+    "coop_hgacbuy",
+    "coop_sourcewell",
+    "coop_buyboard"
+   ],
+   "strongest": "roster"
+  },
+  {
+   "id": "gov_tx_san-antonio",
+   "name": "City of San Antonio",
+   "state": "TX",
+   "type": "municipality",
+   "dir_sales": 52623117,
+   "coops": [
+    "coop_hgacbuy",
+    "coop_sourcewell",
+    "coop_buyboard"
+   ],
+   "strongest": "roster"
+  },
+  {
+   "id": "gov_tx_dallas-county",
+   "name": "Dallas County",
+   "state": "TX",
+   "type": "county",
+   "dir_sales": 51277377,
+   "coops": [
+    "coop_hgacbuy",
+    "coop_sourcewell",
+    "coop_buyboard"
+   ],
+   "strongest": "roster"
+  },
+  {
+   "id": "gov_tx_metropolitan-transit-authority-of-harris-county",
+   "name": "Metropolitan Transit Authority of Harris County",
+   "state": "TX",
+   "type": "special_district",
+   "dir_sales": 51242827,
+   "coops": [
+    "coop_hgacbuy",
+    "coop_sourcewell",
+    "coop_buyboard"
+   ],
+   "strongest": "roster"
+  },
+  {
+   "id": "gov_tx_north-texas-tollway-authority",
+   "name": "North Texas Tollway Authority",
+   "state": "TX",
+   "type": "special_district",
+   "dir_sales": 50735015,
+   "coops": [
+    "coop_sourcewell",
+    "coop_buyboard"
+   ],
+   "strongest": "roster"
+  },
+  {
+   "id": "gov_tx_dallas",
+   "name": "City of Dallas",
+   "state": "TX",
+   "type": "municipality",
+   "dir_sales": 49846293,
+   "coops": [
+    "coop_hgacbuy",
+    "coop_sourcewell",
+    "coop_buyboard",
+    "coop_omnia"
+   ],
+   "strongest": "purchase"
+  },
+  {
+   "id": "gov_tx_harris-county",
+   "name": "Harris County",
+   "state": "TX",
+   "type": "county",
+   "dir_sales": 46897314,
+   "coops": [
+    "coop_hgacbuy",
+    "coop_sourcewell",
+    "coop_buyboard"
+   ],
+   "strongest": "roster"
+  },
+  {
+   "id": "gov_tx_texas-a-and-m-university",
+   "name": "Texas A&M University",
+   "state": "TX",
+   "type": "higher_education",
+   "dir_sales": 46100255,
+   "coops": [
+    "coop_hgacbuy",
+    "coop_sourcewell"
+   ],
+   "strongest": "roster"
+  },
+  {
+   "id": "gov_tx_travis-county",
+   "name": "Travis County",
+   "state": "TX",
+   "type": "county",
+   "dir_sales": 44563441,
+   "coops": [
+    "coop_hgacbuy",
+    "coop_sourcewell",
+    "coop_buyboard"
+   ],
+   "strongest": "roster"
+  },
+  {
+   "id": "gov_tx_lower-colorado-river-authority",
+   "name": "Lower Colorado River Authority",
+   "state": "TX",
+   "type": "special_district",
+   "dir_sales": 38431756,
+   "coops": [
+    "coop_hgacbuy",
+    "coop_sourcewell",
+    "coop_buyboard"
+   ],
+   "strongest": "roster"
+  },
+  {
+   "id": "gov_tx_university-of-texas-at-austin",
+   "name": "University of Texas at Austin",
+   "state": "TX",
+   "type": "higher_education",
+   "dir_sales": 36696202,
+   "coops": [
+    "coop_hgacbuy",
+    "coop_buyboard"
+   ],
+   "strongest": "roster"
+  },
+  {
+   "id": "gov_tx_harris-county-hospital-district",
+   "name": "Harris County Hospital District",
+   "state": "TX",
+   "type": "special_district",
+   "dir_sales": 32896980,
+   "coops": [
+    "coop_hgacbuy",
+    "coop_buyboard"
+   ],
+   "strongest": "roster"
+  },
+  {
+   "id": "gov_tx_university-of-texas-md-anderson-cancer-center",
+   "name": "University of Texas MD Anderson Cancer Center",
+   "state": "TX",
+   "type": "higher_education",
+   "dir_sales": 32798014,
+   "coops": [
+    "coop_sourcewell",
+    "coop_eandi"
+   ],
+   "strongest": "roster"
+  },
+  {
+   "id": "gov_tx_university-of-texas-at-san-antonio",
+   "name": "University of Texas at San Antonio",
+   "state": "TX",
+   "type": "higher_education",
+   "dir_sales": 32059359,
+   "coops": [
+    "coop_hgacbuy",
+    "coop_sourcewell",
+    "coop_buyboard"
+   ],
+   "strongest": "roster"
+  },
+  {
+   "id": "gov_tx_angelo-state-university",
+   "name": "Angelo State University",
+   "state": "TX",
+   "type": "higher_education",
+   "dir_sales": 32003149,
+   "coops": [
+    "coop_hgacbuy",
+    "coop_sourcewell",
+    "coop_buyboard",
+    "coop_eandi"
+   ],
+   "strongest": "roster"
+  },
+  {
+   "id": "gov_tx_bexar-county",
+   "name": "Bexar County",
+   "state": "TX",
+   "type": "county",
+   "dir_sales": 30237668,
+   "coops": [
+    "coop_hgacbuy",
+    "coop_sourcewell",
+    "coop_buyboard"
+   ],
+   "strongest": "roster"
+  },
+  {
+   "id": "gov_tx_lamar-cisd",
+   "name": "Lamar Consolidated Independent School District",
+   "state": "TX",
+   "type": "school_district",
+   "dir_sales": 26304134,
+   "coops": [
+    "coop_hgacbuy",
+    "coop_sourcewell",
+    "coop_buyboard"
+   ],
+   "strongest": "roster"
+  },
+  {
+   "id": "gov_tx_round-rock-isd",
+   "name": "Round Rock Independent School District",
+   "state": "TX",
+   "type": "school_district",
+   "dir_sales": 22701873,
+   "coops": [
+    "coop_hgacbuy",
+    "coop_sourcewell",
+    "coop_buyboard",
+    "coop_eandi"
+   ],
+   "strongest": "roster"
+  },
+  {
+   "id": "gov_tx_arlington",
+   "name": "City of Arlington",
+   "state": "TX",
+   "type": "municipality",
+   "dir_sales": 21246292,
+   "coops": [
+    "coop_hgacbuy",
+    "coop_sourcewell",
+    "coop_buyboard"
+   ],
+   "strongest": "roster"
+  },
+  {
+   "id": "gov_tx_ft-worth",
+   "name": "City of Fort Worth",
+   "state": "TX",
+   "type": "municipality",
+   "dir_sales": 18698209,
+   "coops": [
+    "coop_hgacbuy",
+    "coop_sourcewell",
+    "coop_buyboard"
+   ],
+   "strongest": "roster"
+  },
+  {
+   "id": "gov_tx_katy-isd",
+   "name": "Katy Independent School District",
+   "state": "TX",
+   "type": "school_district",
+   "dir_sales": 18444598,
+   "coops": [
+    "coop_hgacbuy",
+    "coop_sourcewell",
+    "coop_buyboard"
+   ],
+   "strongest": "roster"
+  },
+  {
+   "id": "gov_tx_austin-community-college",
+   "name": "Austin Community College",
+   "state": "TX",
+   "type": "higher_education",
+   "dir_sales": 17559554,
+   "coops": [
+    "coop_hgacbuy",
+    "coop_buyboard"
+   ],
+   "strongest": "roster"
+  },
+  {
+   "id": "gov_tx_el-paso",
+   "name": "City of El Paso",
+   "state": "TX",
+   "type": "municipality",
+   "dir_sales": 17389809,
+   "coops": [
+    "coop_hgacbuy",
+    "coop_sourcewell",
+    "coop_buyboard"
+   ],
+   "strongest": "roster"
+  },
+  {
+   "id": "gov_tx_carrollton-farmers-branch-isd",
+   "name": "Carrollton Farmers Branch Independent School District",
+   "state": "TX",
+   "type": "school_district",
+   "dir_sales": 17016959,
+   "coops": [
+    "coop_sourcewell",
+    "coop_hgacbuy",
+    "coop_buyboard",
+    "coop_eandi"
+   ],
+   "strongest": "roster"
+  },
+  {
+   "id": "gov_tx_plano",
+   "name": "City of Plano",
+   "state": "TX",
+   "type": "municipality",
+   "dir_sales": 16803634,
+   "coops": [
+    "coop_hgacbuy",
+    "coop_sourcewell",
+    "coop_buyboard"
+   ],
+   "strongest": "roster"
+  },
+  {
+   "id": "gov_tx_ft-bend-isd",
+   "name": "Fort Bend Independent School District",
+   "state": "TX",
+   "type": "school_district",
+   "dir_sales": 15710559,
+   "coops": [
+    "coop_hgacbuy",
+    "coop_sourcewell",
+    "coop_buyboard",
+    "coop_eandi"
+   ],
+   "strongest": "roster"
+  },
+  {
+   "id": "gov_tx_south-texas-college",
+   "name": "South Texas College",
+   "state": "TX",
+   "type": "higher_education",
+   "dir_sales": 14832508,
+   "coops": [
+    "coop_sourcewell",
+    "coop_buyboard",
+    "coop_eandi"
+   ],
+   "strongest": "roster"
+  },
+  {
+   "id": "gov_tx_cypress-fairbanks-isd",
+   "name": "Cypress Fairbanks Independent School District",
+   "state": "TX",
+   "type": "school_district",
+   "dir_sales": 14649376,
+   "coops": [
+    "coop_hgacbuy",
+    "coop_sourcewell",
+    "coop_buyboard",
+    "coop_eandi"
+   ],
+   "strongest": "roster"
+  },
+  {
+   "id": "gov_tx_ft-bend-county",
+   "name": "Fort Bend County",
+   "state": "TX",
+   "type": "county",
+   "dir_sales": 14609512,
+   "coops": [
+    "coop_hgacbuy",
+    "coop_sourcewell",
+    "coop_buyboard"
+   ],
+   "strongest": "roster"
+  },
+  {
+   "id": "gov_tx_dallas-college",
+   "name": "Dallas College",
+   "state": "TX",
+   "type": "higher_education",
+   "dir_sales": 14331360,
+   "coops": [
+    "coop_sourcewell",
+    "coop_buyboard",
+    "coop_eandi"
+   ],
+   "strongest": "roster"
+  },
+  {
+   "id": "gov_tx_university-of-texas-at-arlington",
+   "name": "University of Texas at Arlington",
+   "state": "TX",
+   "type": "higher_education",
+   "dir_sales": 13442202,
+   "coops": [
+    "coop_hgacbuy",
+    "coop_buyboard"
+   ],
+   "strongest": "roster"
+  },
+  {
+   "id": "gov_tx_sam-houston-state-university",
+   "name": "Sam Houston State University",
+   "state": "TX",
+   "type": "higher_education",
+   "dir_sales": 13213805,
+   "coops": [
+    "coop_hgacbuy",
+    "coop_sourcewell",
+    "coop_buyboard",
+    "coop_eandi"
+   ],
+   "strongest": "roster"
+  },
+  {
+   "id": "gov_tx_alamo-community-college-district",
+   "name": "Alamo Community College District",
+   "state": "TX",
+   "type": "higher_education",
+   "dir_sales": 13052789,
+   "coops": [
+    "coop_sourcewell",
+    "coop_hgacbuy"
+   ],
+   "strongest": "roster"
+  },
+  {
+   "id": "gov_tx_port-of-houston-authority",
+   "name": "Port of Houston Authority",
+   "state": "TX",
+   "type": "special_district",
+   "dir_sales": 12965821,
+   "coops": [
+    "coop_hgacbuy",
+    "coop_sourcewell",
+    "coop_buyboard"
+   ],
+   "strongest": "roster"
+  },
+  {
+   "id": "gov_tx_texas-a-and-m-university-system",
+   "name": "The Texas A&M University System",
+   "state": "TX",
+   "type": "higher_education",
+   "dir_sales": 12764585,
+   "coops": [
+    "coop_hgacbuy",
+    "coop_sourcewell"
+   ],
+   "strongest": "roster"
+  },
+  {
+   "id": "gov_tx_university-of-north-texas",
+   "name": "University of North Texas",
+   "state": "TX",
+   "type": "higher_education",
+   "dir_sales": 12473495,
+   "coops": [
+    "coop_hgacbuy",
+    "coop_sourcewell",
+    "coop_buyboard",
+    "coop_eandi"
+   ],
+   "strongest": "roster"
+  },
+  {
+   "id": "gov_tx_galveston-county",
+   "name": "Galveston County",
+   "state": "TX",
+   "type": "county",
+   "dir_sales": 12451875,
+   "coops": [
+    "coop_hgacbuy",
+    "coop_sourcewell",
+    "coop_buyboard"
+   ],
+   "strongest": "roster"
+  }
+ ],
+ "purchases": [
+  {
+   "government": "Jackson County",
+   "state": "MO",
+   "route": "GSA",
+   "status": "Award approved",
+   "date": "2026-09-14",
+   "supplier": "Smiths Detection",
+   "category": "X-ray inspection equipment",
+   "amount": 87710,
+   "note": "Resolution 22392 passed September 14. Award amount, not verified disbursement.",
+   "url": "https://jacksonco.legistar.com/LegislationDetail.aspx?G=D86851E4-A1AA-4ADA-B0A8-91CB5B217E40&GUID=AFE17119-3284-450F-A608-E4A1F14C0EB6&ID=8200122&Options=&Search="
+  },
+  {
+   "government": "New York City Department of Environmental Protection",
+   "state": "NY",
+   "route": "GSA",
+   "status": "Award notice published",
+   "date": "2026-06-05",
+   "supplier": "Starlims Corporation",
+   "category": "Wastewater laboratory information services",
+   "amount": 2038530,
+   "note": "City Record notice PIN 82626G0001001. Award value, not verified disbursement.",
+   "url": "https://a856-cityrecord.nyc.gov/RequestDetail/20260601019"
+  },
+  {
+   "government": "Ocala",
+   "state": "FL",
+   "route": "NASPO via Florida state contract",
+   "status": "Purchase authorization approved",
+   "date": "2026-10-06",
+   "supplier": "Dell",
+   "category": "Citywide IT equipment",
+   "amount": 645800,
+   "note": "File 2026-2119 shows approval. Estimated purchase amount, not verified disbursement.",
+   "url": "https://ocala.legistar.com/LegislationDetail.aspx?GUID=BF3BEE98-6343-4190-8ACB-E72AADA2337E&ID=8257043&Options=&Search="
+  },
+  {
+   "government": "Dallas",
+   "state": "TX",
+   "route": "OMNIA Partners",
+   "status": "Approved agreement",
+   "date": "2026-03-25",
+   "supplier": "Carahsoft",
+   "category": "Cybersecurity",
+   "amount": 1684573.47,
+   "note": "Not-to-exceed agreement amount; subject to appropriations",
+   "url": "https://cityofdallas.legistar.com/LegislationDetail.aspx?G=FA9AD36F-9FB5-4633-8A99-4487E4A1114C&GUID=E2B90483-C272-45FD-BDC7-D2171B99512B&ID=7956644&Options=&Search="
+  },
+  {
+   "government": "Charlotte",
+   "state": "NC",
+   "route": "GSA",
+   "status": "Approved agreement",
+   "date": "2026-08-24",
+   "supplier": "Carahsoft",
+   "category": "Software and technology services",
+   "amount": 800000,
+   "note": "Estimated annual expenditure",
+   "url": "https://charlottenc.legistar.com/LegislationDetail.aspx?G=BE036CCA-47DC-4396-B00E-55A8D4A8D752&GUID=550CE98A-8B76-4163-814D-1F6CAC30CDEF&ID=8160794&Options=&Search="
+  },
+  {
+   "government": "Delray Beach",
+   "state": "FL",
+   "route": "NASPO ValuePoint",
+   "status": "Prior use described; new spending recommended",
+   "date": "2026-09-22",
+   "supplier": "Motorola Solutions",
+   "category": "Public safety radios",
+   "amount": 315000,
+   "note": "Proposed additional spending ceiling; staff describes prior use",
+   "url": "https://delraybeach.legistar.com/LegislationDetail.aspx?GUID=70F5DB3E-C8FB-4290-833B-5CC7E8EEF8E8&ID=8213860&Options=&Search="
+  },
+  {
+   "government": "Pomona",
+   "state": "CA",
+   "route": "OMNIA Partners",
+   "status": "Purchase order recommended",
+   "date": "2026-08-03",
+   "supplier": "Grainger",
+   "category": "Building materials and supplies",
+   "amount": 600000,
+   "note": "Recommended three-year purchase order; approval not verified",
+   "url": "https://pomona.legistar.com/LegislationDetail.aspx?G=A7C284AA-7536-4467-80FE-E5FB5B4AA15B&GUID=CAA976D2-D623-4A4F-A6CA-B0C6096803BC&ID=8154662&Options=&Search="
+  },
+  {
+   "government": "Broken Arrow Municipal Authority",
+   "state": "OK",
+   "route": "OMNIA Partners",
+   "status": "Purchase recommended",
+   "date": "2026-06-15",
+   "supplier": "Applied Industrial Technologies",
+   "category": "Water treatment pumps",
+   "amount": 149855.08,
+   "note": "Proposed purchase; approval not verified",
+   "url": "https://brokenarrow.legistar.com/LegislationDetail.aspx?GUID=F3108BE4-981C-4063-8527-A99EC82F9039&ID=8071559&Options=&Search="
+  },
+  {
+   "government": "Doral",
+   "state": "FL",
+   "route": "OMNIA Partners",
+   "status": "Contract adoption proposed",
+   "date": "2026-09-09",
+   "supplier": "",
+   "category": "IT equipment and software",
+   "amount": null,
+   "note": "Agenda ready; final action not shown",
+   "url": "https://doral.legistar.com/LegislationDetail.aspx?GUID=E8E44986-E233-4D19-9569-F78CC035FEA0&ID=8195921&Options=&Search="
+  },
+  {
+   "government": "Doral",
+   "state": "FL",
+   "route": "TIPS",
+   "status": "Contract adoption proposed",
+   "date": "2026-09-09",
+   "supplier": "",
+   "category": "IT equipment and software",
+   "amount": null,
+   "note": "Agenda ready; final action not shown",
+   "url": "https://doral.legistar.com/LegislationDetail.aspx?GUID=E8E44986-E233-4D19-9569-F78CC035FEA0&ID=8195921&Options=&Search="
+  },
+  {
+   "government": "Doral",
+   "state": "FL",
+   "route": "NASPO ValuePoint",
+   "status": "Contract adoption proposed",
+   "date": "2026-09-09",
+   "supplier": "",
+   "category": "IT equipment and software",
+   "amount": null,
+   "note": "Agenda ready; final action not shown",
+   "url": "https://doral.legistar.com/LegislationDetail.aspx?GUID=E8E44986-E233-4D19-9569-F78CC035FEA0&ID=8195921&Options=&Search="
+  },
+  {
+   "government": "Sacramento",
+   "state": "CA",
+   "route": "Multiple cooperatives",
+   "status": "Authorization recommended",
+   "date": "2026-06-11",
+   "supplier": "",
+   "category": "Citywide IT",
+   "amount": 26925000,
+   "note": "Combined FY 2026/27 ceiling across multiple vehicles, not per-co-op spend",
+   "url": "https://sacramento.legistar.com/LegislationDetail.aspx?FullText=1&GUID=9F899EC3-32DA-40D0-8774-D3915DF67AAF&ID=8064770"
+  },
+  {
+   "government": "Fresno",
+   "state": "CA",
+   "route": "California CMAS",
+   "status": "Approved agreement",
+   "date": "2026-11-05",
+   "supplier": "Dell Technologies",
+   "category": "Adobe software",
+   "amount": 247591.79,
+   "note": "Annual cost under three-year agreement; not total contract value",
+   "url": "https://fresno.legistar.com/LegislationDetail.aspx?FullText=1&GUID=37324470-18B8-43A1-AFEF-EE1C9FC6D23F&ID=8305023"
+  },
+  {
+   "government": "Marco Island",
+   "state": "FL",
+   "route": "NPPGov",
+   "status": "Approved acquisition and lease authorization",
+   "date": "2026-08-17",
+   "supplier": "Ten-8 Fire & Safety",
+   "category": "Fire apparatus",
+   "amount": 2520474,
+   "note": "Acquisition and capital lease authorization ceiling; NPPGov contract attached",
+   "url": "https://marcoisland.legistar.com/LegislationDetail.aspx?GUID=9E66877E-9978-4B97-845A-06FBC57EBB1C&ID=8165611"
+  },
+  {
+   "government": "Newark",
+   "state": "NJ",
+   "route": "Keystone Purchasing Network",
+   "status": "Historical approved amendment",
+   "date": "2025-01-22",
+   "supplier": "Sportsfield Specialties",
+   "category": "Park safety netting and pitching mound",
+   "amount": 158141.03,
+   "note": "Amended contract ceiling. Stated contract period ended February 28, 2025.",
+   "url": "https://newark.mobile.legistar.com/LegislationDetail.aspx?From=RSS&FullText=1&GUID=967352AE-2BC9-4D21-817F-B719241376A9&ID=7095459"
+  },
+  {
+   "government": "Monroe County Water Authority",
+   "state": "NY",
+   "route": "New York OGS",
+   "status": "Purchase authorization proposed",
+   "date": "2026-07-09",
+   "supplier": "Five Star Equipment",
+   "category": "Wheel loader",
+   "amount": 281645.51,
+   "note": "Agenda item 26-140; final approval not established by this agenda",
+   "url": "https://mcwa-wordpress-media.s3.amazonaws.com/wp-content/uploads/2026-07-09-Updated-Agenda.pdf"
+  },
+  {
+   "government": "Monroe County Water Authority",
+   "state": "NY",
+   "route": "New York OGS",
+   "status": "Purchase authorization proposed",
+   "date": "2026-07-09",
+   "supplier": "Five Star Equipment",
+   "category": "Two backhoe loaders",
+   "amount": 294309.46,
+   "note": "Agenda item 26-141; final approval not established by this agenda",
+   "url": "https://mcwa-wordpress-media.s3.amazonaws.com/wp-content/uploads/2026-07-09-Updated-Agenda.pdf"
+  },
+  {
+   "government": "Sacramento",
+   "state": "CA",
+   "route": "NPPGov",
+   "status": "Contract authorization recommended",
+   "date": "2026-09-29",
+   "supplier": "Zoll Medical",
+   "category": "EMS monitor/defibrillators",
+   "amount": 6000000,
+   "note": "Proposed ceiling through February 9, 2030; agenda page does not confirm final action",
+   "url": "https://sacramento.legistar.com/LegislationDetail.aspx?FullText=1&GUID=00DFC87C-2335-4F29-B2FB-F867ED018115&ID=8237014"
+  }
+ ],
+ "naspo": {
+  "parks_awards": 10,
+  "parks_states": 20,
+  "adopters": [
+   {
+    "portfolio": "Citizen engagement",
+    "name": "San Joaquin County",
+    "state": "CA",
+    "url": "https://www.naspovaluepoint.org/portfolios/citizen-engagement-platforms/"
+   },
+   {
+    "portfolio": "Parks and recreation",
+    "name": "City of Albany",
+    "state": "NY",
+    "url": "https://www.naspovaluepoint.org/portfolios/parks-recreation-equipment-installation/"
+   },
+   {
+    "portfolio": "Parks and recreation",
+    "name": "Columbia County Department of Social Services",
+    "state": "NY",
+    "url": "https://www.naspovaluepoint.org/portfolios/parks-recreation-equipment-installation/"
+   }
+  ],
+  "citizen_addendum_diffs": [
+   {
+    "supplier": "CoreSphere, LLC",
+    "master_agreement": "AR3753",
+    "only_in_workbook": [],
+    "only_in_agora": [
+     "MT"
+    ]
+   },
+   {
+    "supplier": "Indigov Corp.",
+    "master_agreement": "AR3757",
+    "only_in_workbook": [],
+    "only_in_agora": [
+     "HI",
+     "KY",
+     "NM",
+     "UT"
+    ]
+   },
+   {
+    "supplier": "MAXIMUS US Services, Inc.",
+    "master_agreement": "AR3758",
+    "only_in_workbook": [],
+    "only_in_agora": [
+     "HI"
+    ]
+   },
+   {
+    "supplier": "Medallia, Inc.",
+    "master_agreement": "AR3759",
+    "only_in_workbook": [],
+    "only_in_agora": [
+     "KY"
+    ]
+   },
+   {
+    "supplier": "Merit International",
+    "master_agreement": "AR3760",
+    "only_in_workbook": [],
+    "only_in_agora": [
+     "IA"
+    ]
+   },
+   {
+    "supplier": "Tyler Technologies, Inc.",
+    "master_agreement": "AR3764",
+    "only_in_workbook": [],
+    "only_in_agora": [
+     "LA",
+     "NE"
+    ]
+   }
+  ]
+ },
+ "coverage": [
+  {
+   "program": "Sourcewell",
+   "status": "Roster imported",
+   "records": 48883,
+   "evidence": "Registered public agencies and public education",
+   "next": "54,255 raw accounts. Private education, federal, province/territory and unqualified accounts excluded. Tribal entities retained.",
+   "url": "https://www.sourcewell-mn.gov/become-member/search"
+  },
+  {
+   "program": "HGACBuy",
+   "status": "Roster imported",
+   "records": 10223,
+   "evidence": "Named member organizations",
+   "next": "All published rows retained, including nonprofits and unclassified organizations. Entity type is the source label.",
+   "url": "https://www.hgacbuy.org/Kentico.PageBuilder/Widgets/en-US/HGACBuy.Widgets.EndUsersList/Search"
+  },
+  {
+   "program": "BuyBoard National",
+   "status": "Roster imported",
+   "records": 5033,
+   "evidence": "National roster listings",
+   "next": "National list only. Texas cooperative is a separate list. Private/nonprofit participants retained and flagged where status is unverified.",
+   "url": "https://app.buyboard.com/Reports/CurrentCustomers_National.pdf"
+  },
+  {
+   "program": "Mohave",
+   "status": "Roster imported",
+   "records": 492,
+   "evidence": "Named member organizations",
+   "next": "Main Mohave roster only. ASPIN subset not counted twice. State assigned AZ from program scope and county list.",
+   "url": "https://mesc.org/current-mohave-members/"
+  },
+  {
+   "program": "Texas DIR",
+   "status": "Reported sales imported",
+   "records": 4049,
+   "evidence": "Vendor-reported buyer activity",
+   "next": "Non-telecommunications records, reporting months 202509-202609. Raw customer groups consolidated conservatively; source states can be blank.",
+   "url": "https://data.texas.gov/dataset/Official-VSR-Data-for-Cooperative-Tele-Contracts-F/a743-wj72"
+  },
+  {
+   "program": "TIPS",
+   "status": "Selected agency relationships imported",
+   "records": null,
+   "evidence": "Check membership by organization name",
+   "next": "Bulk membership download advertised for vendors. No vendor account used; no bulk rows imported. Selected public agency evidence is now included in Agency Relationships or Purchase Evidence; this is not a full member roster.",
+   "url": "https://www.tips-usa.com/membership/member-lookup"
+  },
+  {
+   "program": "E&I",
+   "status": "Public directory imported",
+   "records": 10151,
+   "evidence": "Institution membership lookup",
+   "next": "All 55 US state/territory queries succeeded. Parent and child/campus listings retained; public/private status not independently classified.",
+   "url": "https://www.eandi.org/member-center/member-locator/"
+  },
+  {
+   "program": "NASPO ValuePoint",
+   "status": "Addendum listings imported",
+   "records": 113,
+   "evidence": "Contract-specific state adoption and local eligibility",
+   "next": "Two portfolios: Citizen Engagement and Parks/Recreation. Individual addendum terms not reviewed. Inactive supplier listings flagged in Contract Access.",
+   "url": "https://www.naspovaluepoint.org/faqs-for-buyers/"
+  },
+  {
+   "program": "GSA",
+   "status": "Selected purchasing evidence imported",
+   "records": null,
+   "evidence": "Eligible entities and published local awards",
+   "next": "Eligibility directory is not an exhaustive customer list. Two published awards included on Purchase Evidence. Selected public agency evidence is now included in Agency Relationships or Purchase Evidence; this is not a full member roster.",
+   "url": "https://www.gsa.gov/policy-regulations/policy/acquisition-policy/eligibility-determinations/state-and-local"
+  },
+  {
+   "program": "OMNIA Partners",
+   "status": "State adoption listings imported",
+   "records": 14,
+   "evidence": "State-adopted contract addenda and local approvals",
+   "next": "14 state adoption flyer links in Contract Access; selected agency evidence also collected. No general roster obtained.",
+   "url": "https://www.omniapartners.com/resources/cooperative-contracting-resources"
+  },
+  {
+   "program": "Equalis Group",
+   "status": "Selected agency relationships imported",
+   "records": null,
+   "evidence": "Local membership approvals and contract awards",
+   "next": "2022 official RFP Q&A stated no public membership list. Current bulk availability unverified; no outreach planned. Selected public agency evidence is now included in Agency Relationships or Purchase Evidence; this is not a full member roster.",
+   "url": "https://equalisgroup.org/wp-content/uploads/2023/05/RFP-Region-10-Payroll-HR-Services-Questions-Answers.pdf"
+  },
+  {
+   "program": "1GPA",
+   "status": "Selected agency relationships imported",
+   "records": null,
+   "evidence": "Published local approvals and awards",
+   "next": "FAQ offers member names on request. No request made; use already published agency records instead. Selected public agency evidence is now included in Agency Relationships or Purchase Evidence; this is not a full member roster.",
+   "url": "https://1gpa.org/about-us/faq/"
+  },
+  {
+   "program": "Choice Partners",
+   "status": "Selected agency relationships imported",
+   "records": null,
+   "evidence": "Local participation agreements and published member announcements",
+   "next": "An older September 2024 roster surfaced on a third-party host; not imported as current membership. Selected public agency evidence is now included in Agency Relationships or Purchase Evidence; this is not a full member roster.",
+   "url": "https://mesc.org/coopQuestionarie/CP-Response.pdf"
+  },
+  {
+   "program": "TXMAS",
+   "status": "Selected agency relationships imported",
+   "records": null,
+   "evidence": "Published orders and local award notices",
+   "next": "Search contract IDs and published government orders. No buyer roster imported. Selected public agency evidence is now included in Agency Relationships or Purchase Evidence; this is not a full member roster.",
+   "url": "https://comptroller.texas.gov/purchasing/contracts/management.php"
+  },
+  {
+   "program": "California CMAS",
+   "status": "Selected purchasing evidence imported",
+   "records": null,
+   "evidence": "Published purchase orders and awards",
+   "next": "Quarterly supplier reporting exists; no reports requested. Use published orders and agency agendas. Selected public agency evidence is now included in Agency Relationships or Purchase Evidence; this is not a full member roster.",
+   "url": "https://www.dgs.ca.gov/PD-CMAS"
+  },
+  {
+   "program": "New York OGS",
+   "status": "Selected purchasing evidence imported",
+   "records": null,
+   "evidence": "Published awards and authorized-user records",
+   "next": "Eligible authorized users and observed purchasers must remain separate. Selected public agency evidence is now included in Agency Relationships or Purchase Evidence; this is not a full member roster.",
+   "url": "https://ogs.ny.gov/procurement/glossary-commonly-used-procurement-terms"
+  },
+  {
+   "program": "PEPPM",
+   "status": "Selected agency relationships imported",
+   "records": null,
+   "evidence": "Published technology orders and cooperative approvals",
+   "next": "Eligibility list contains entity classes, not verified purchasers. Selected public agency evidence is now included in Agency Relationships or Purchase Evidence; this is not a full member roster.",
+   "url": "https://peppm.org/library/article/buyer-info/"
+  },
+  {
+   "program": "Keystone Purchasing Network",
+   "status": "Selected purchasing evidence imported",
+   "records": null,
+   "evidence": "Published memberships and awards",
+   "next": "No bulk current roster imported. Selected public agency evidence is now included in Agency Relationships or Purchase Evidence; this is not a full member roster.",
+   "url": "https://www.thekpn.org/buyers/"
+  },
+  {
+   "program": "NPPGov",
+   "status": "Selected purchasing evidence imported",
+   "records": null,
+   "evidence": "Published membership approvals and purchases",
+   "next": "No bulk current roster imported. Selected public agency evidence is now included in Agency Relationships or Purchase Evidence; this is not a full member roster.",
+   "url": "https://nppgov.com/"
+  },
+  {
+   "program": "MMCAP Infuse",
+   "status": "Agency route listed; roster restricted",
+   "records": null,
+   "evidence": "Published state/facility approvals and contracts",
+   "next": "Roster advertised for state contacts and suppliers in authenticated portals. No account used or inquiry made. Selected public agency evidence is now included in Agency Relationships or Purchase Evidence; this is not a full member roster.",
+   "url": "https://mmcap.mn.gov/partners/membership-roster/index.jsp"
+  },
+  {
+   "program": "PACE",
+   "status": "Selected agency relationships imported",
+   "records": null,
+   "evidence": "Published local participation agreements",
+   "next": "No bulk current roster imported. Selected public agency evidence is now included in Agency Relationships or Purchase Evidence; this is not a full member roster.",
+   "url": "https://pace.esc20.net/apps/pages/pace-membership"
+  },
+  {
+   "program": "Purchasing Cooperative of America",
+   "status": "Selected agency relationships imported",
+   "records": null,
+   "evidence": "Published local approvals and purchase orders",
+   "next": "No bulk current roster imported. Selected public agency evidence is now included in Agency Relationships or Purchase Evidence; this is not a full member roster.",
+   "url": "https://www.pcamerica.org/member"
+  },
+  {
+   "program": "BuyBoard Texas",
+   "status": "Roster imported",
+   "records": 5886,
+   "evidence": "Texas member listings",
+   "next": "All published listings retained, including private/nonprofit entities. State assigned TX from roster scope.",
+   "url": "https://app.buyboard.com/Reports/CurrentCustomers_TX.pdf"
+  },
+  {
+   "program": "COSTARS",
+   "status": "Public directory imported",
+   "records": 9802,
+   "evidence": "Registered members",
+   "next": "Directory paginated to completion. All 9,802 member IDs unique; nonprofit participants included.",
+   "url": "https://www.costars.state.pa.us/SearchCOMember.aspx"
+  }
+ ]
+}

@@ -203,7 +203,8 @@ function CoopTraffic() {
                   <div className="text-sm font-semibold text-navy">{coop.name}</div>
                   <div className="text-[11px] text-slate">
                     {contracts.length} contract{contracts.length === 1 ? "" : "s"} · {LIST_STATUS[coop.member_list_status]}
-                    {coop.member_list_source === "demo" && " (demo)"} · {db.memberships.filter((m) => m.coop_id === coop.id).length} agencies matched
+                    {coop.member_list_source === "demo" && " (demo)"}
+                    {coop.roster_count ? ` · ${coop.roster_count.toLocaleString()} in the directory` : ""} · {db.memberships.filter((m) => m.coop_id === coop.id).length} agencies matched
                     {missing > 0 && <span className="text-amber-700"> · {missing} without a contract-level link</span>}
                   </div>
                   <div className="mt-1 text-[11px] text-steel">{coop.note}</div>

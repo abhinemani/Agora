@@ -90,6 +90,12 @@ export interface Supplier {
   profile?: SupplierProfile;
   /** The checks behind the Verified badge. Only demo suppliers carry results. */
   checks?: VerificationCheck[];
+  /** Someone from the company has claimed this storefront. */
+  claim?: SupplierClaim;
+  /** Paid storefront plan: a profile ($500/yr) or a profile with a catalog ($1,500/yr). */
+  plan?: SupplierPlan;
+  /** Off-contract suppliers pay a listing fee to appear; their listings show only while it's current. */
+  listing_fee_through?: string;
   website?: string;
 }
 
@@ -422,6 +428,26 @@ export interface Cart {
   updated_at: string;
 }
 
+export type SupplierPlan = "basic" | "profile" | "profile_catalog";
+
+export interface SupplierClaim {
+  name: string;
+  email: string;
+  at: string;
+  /** "verified" when the email's domain matches the company's website; otherwise it waits for Sovra review. */
+  status: "verified" | "pending";
+}
+
+/** A supplier pays to be shown as Sponsored for a category, in one state or anywhere. */
+export interface Placement {
+  id: string;
+  supplier_id: string;
+  category: Category;
+  /** Two-letter state, or "any". */
+  state: string;
+  created_at: string;
+}
+
 /** One check behind a supplier's "Verified" badge. */
 export interface VerificationCheck {
   id: "sam_registration" | "sam_exclusions" | "section_889" | "insurance" | "bond" | "certification";
@@ -536,6 +562,7 @@ export interface Db {
   impressions: Impression[];
   agency_settings: AgencySettings[];
   carts: Cart[];
+  placements: Placement[];
   invites: Invite[];
   handoffs: RfpHandoff[];
   documents: ContractDocument[];

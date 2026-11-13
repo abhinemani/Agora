@@ -23,14 +23,14 @@ const SOURCE_STYLE: Record<Source, { label: string; cls: string; dot: string }> 
   no_approval: { label: "No approval needed", cls: "bg-src-small-lighter text-src-small-darker", dot: "bg-src-small" },
 };
 
-/** The route colors (USWDS system colors), for the route strip. */
+/** The route colors (USWDS system colors) as CSS variables, so inline uses follow light and dark mode. */
 export const SOURCE_HEX: Record<Source, string> = {
-  own_contract: us.color.routes["src-own"].DEFAULT,
-  state_contract: us.color.routes["src-state"].DEFAULT,
-  coop_contract: us.color.routes["src-coop"].DEFAULT,
-  reseller: us.color.routes["src-other"].DEFAULT,
-  gsa: us.color.routes["src-other"].DEFAULT,
-  no_approval: us.color.routes["src-small"].DEFAULT,
+  own_contract: "rgb(var(--us-src-own))",
+  state_contract: "rgb(var(--us-src-state))",
+  coop_contract: "rgb(var(--us-src-coop))",
+  reseller: "rgb(var(--us-src-other))",
+  gsa: "rgb(var(--us-src-other))",
+  no_approval: "rgb(var(--us-src-small))",
 };
 
 /** Where a listing is bought, as a USWDS tag in that route's color. State contracts in TRX states get their label. */

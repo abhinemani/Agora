@@ -9,15 +9,11 @@ import us from "./lib/uswds-theme.json";
 // normalized by cap height as USWDS does. Agora's older color names map onto
 // USWDS theme tokens so every page follows the system.
 
+type Tree = string | { [k: string]: Tree };
+const v = (name: string) => `rgb(var(--us-${name}) / <alpha-value>)`;
+const toVars = (tree: Record<string, Tree>): Record<string, Tree> =>
+  Object.fromEntries(Object.entries(tree).map(([k, val]) => [k, typeof val === "string" ? v(val) : toVars(val)]));
 const t = us.color.theme;
-const r = us.color.ramps;
-const route = (k: keyof typeof us.color.routes) => ({ DEFAULT: us.color.routes[k].DEFAULT, lighter: us.color.routes[k].lighter, darker: us.color.routes[k].darker });
-const family = (name: "primary" | "secondary" | "accent-warm" | "accent-cool" | "error" | "warning" | "success" | "info" | "disabled") =>
-  Object.fromEntries(
-    Object.entries(t)
-      .filter(([k]) => k === name || (k.startsWith(`${name}-`) && !k.slice(name.length + 1).includes("-")))
-      .map(([k, v]) => [k === name ? "DEFAULT" : k.slice(name.length + 1), v]),
-  );
 const sizes = (role: "heading" | "body" | "ui"): Record<string, [string, { lineHeight: string }]> =>
   Object.fromEntries(Object.entries(us.font.sizes[role]).map(([k, v]) => [`${role}-${k}`, [v, { lineHeight: String(role === "heading" ? us.font.headingLineHeight : role === "ui" ? 1.35 : us.font.bodyLineHeight) }]]));
 
@@ -25,40 +21,9 @@ export default {
   content: ["./app/**/*.{ts,tsx}", "./components/**/*.{ts,tsx}"],
   theme: {
     extend: {
-      colors: {
-        primary: family("primary"),
-        secondary: family("secondary"),
-        "accent-warm": family("accent-warm"),
-        "accent-cool": family("accent-cool"),
-        error: family("error"),
-        warning: family("warning"),
-        success: family("success"),
-        info: family("info"),
-        disabled: family("disabled"),
-        base: { lightest: t["base-lightest"], lighter: t["base-lighter"], light: t["base-light"], medium: t.base, dark: t["base-dark"], darker: t["base-darker"], darkest: t["base-darkest"] },
-        ink: t["base-ink"],
-        focus: us.color.focus,
-        // Agora's buying routes, as USWDS system colors.
-        "src-own": route("src-own"),
-        "src-state": route("src-state"),
-        "src-coop": route("src-coop"),
-        "src-other": route("src-other"),
-        "src-small": route("src-small"),
-        // Agora's older names, now USWDS theme tokens.
-        navy: { DEFAULT: t["base-ink"], 600: t["base-darker"], 50: t["primary-lighter"] },
-        maroon: { DEFAULT: t.primary, 600: t["primary-dark"], 50: t["primary-lighter"] },
-        rose: t["primary-light"],
-        steel: t["base-light"],
-        tint: t["base-lightest"],
-        page: t["base-lightest"],
-        line: t["base-lighter"],
-        slate: { DEFAULT: t["base-dark"] },
-        green: { DEFAULT: t["success-darker"], 50: t["success-lighter"] },
-        // Status palettes: USWDS's success (green-cool), warning (gold) and error (red-warm) families.
-        emerald: r.success,
-        amber: r.warning,
-        red: r.error,
-      },
+      // Every color is a CSS variable from app/theme.css, so light and dark both come
+      // from the generated palette. The <alpha-value> keeps opacity modifiers working.
+      colors: toVars(us.palette),
       fontFamily: {
         sans: [`"${us.font.families.sans}"`, '"Source Sans Pro"', "Helvetica Neue", "Helvetica", "Roboto", "Arial", "sans-serif"],
         body: [`"${us.font.families.sans}"`, '"Source Sans Pro"', "Helvetica Neue", "Helvetica", "Roboto", "Arial", "sans-serif"],

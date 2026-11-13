@@ -1,10 +1,9 @@
+@import "./theme.css";
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  color-scheme: light;
-}
 body {
   @apply bg-white font-body text-body-sm text-ink;
   -webkit-font-smoothing: antialiased;
@@ -33,7 +32,7 @@ input[type="radio"] {
 input:focus,
 textarea:focus,
 select:focus {
-  outline: 0.25rem solid theme(colors.focus);
+  outline: 0.25rem solid rgb(var(--us-focus));
   outline-offset: 0;
 }
 a:focus-visible,

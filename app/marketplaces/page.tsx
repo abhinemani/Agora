@@ -32,7 +32,7 @@ export default function Marketplaces() {
           const body = (
             <>
               <div className="flex items-start justify-between gap-3">
-                <span className="grid h-11 w-11 place-items-center rounded-xl text-lg font-extrabold text-white" style={{ background: s.color }}>
+                <span className="grid h-11 w-11 place-items-center rounded-xl text-lg font-extrabold text-[#fff]" style={{ background: s.color }}>
                   {s.name.replace(/^(City|Town) of /, "")[0]}
                 </span>
                 <span className={`rounded-md px-2 py-1 text-[10px] font-bold ${s.live ? "bg-success-lighter text-success-darker" : "bg-primary-lighter text-base-dark"}`}>{s.live ? "Live" : "Available"}</span>

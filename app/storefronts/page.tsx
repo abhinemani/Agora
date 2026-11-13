@@ -38,7 +38,7 @@ export default function Storefronts() {
             className="flex min-h-[230px] flex-col rounded-2xl border border-line bg-white p-5 transition hover:border-base-dark hover:shadow-2"
           >
             <div className="flex items-start justify-between gap-3">
-              <span className="grid h-11 w-11 place-items-center rounded-xl text-lg font-extrabold text-white" style={{ background: color }}>
+              <span className="grid h-11 w-11 place-items-center rounded-xl text-lg font-extrabold text-[#fff]" style={{ background: color }}>
                 {s.name[0]}
               </span>
               {s.edge_tier === "position" && <span className="rounded-md bg-success-lighter px-2 py-1 text-[10px] font-bold text-success-darker">Featured storefront</span>}

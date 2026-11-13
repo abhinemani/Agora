@@ -7,6 +7,7 @@ import { CATEGORIES } from "./types";
 import type { Buyer, Category, Contract, Db, Listing, ParsedRequest, PeerPurchase, Request, Solicitation, Source, Supplier } from "./types";
 import { checkEligibility, defaultVariant, familyOf, SOURCEWELL_TYLER_NOTES } from "./vehicles";
 import { settingsFor } from "./agency";
+import { canSponsor, listingVisible, sponsoredFor } from "./suppliers";
 import { coopOf, isContractLevelUrl, linksOut, membershipsFor, onCoopContract } from "./coops";
 
 export const SOURCE_ORDER: Source[] = ["own_contract", "state_contract", "coop_contract", "reseller", "gsa", "no_approval"];
@@ -541,7 +542,8 @@ export function buildResults(db: Db, request: Request): Results {
   const limit = db.agency.quick_buy_threshold;
 
   // Agora searches every listing; a city marketplace is a view onto the same catalog.
-  const catalog = db.listings;
+  // Off-contract listings appear only while the supplier's listing fee is current.
+  const catalog = db.listings.filter((l) => listingVisible(db, l));
   const weights = idf(db.listings, listingText);
   const { rows: found } = bestMatches(itemTokens, catalog, listingText, weights);
   // When the request implies a category and some matches are in it, keep those:
@@ -588,7 +590,8 @@ export function buildResults(db: Db, request: Request): Results {
         rule: ruleFor(db, l, parsed.quantity),
         delivery: `${l.category === "Software and services" || l.category === "Professional services" ? "Available by" : "Arrives by"} ${fmtDate(arrives)}${meets === null ? "" : meets ? ` · meets your ${parsed.deadline} deadline` : ` · misses your ${parsed.deadline} deadline`}`,
         meets_deadline: meets,
-        sponsored: !adFree && supplier.sponsored && supplier.edge_tier !== "discover" && l.source !== "no_approval",
+        // Sponsored by a placement matching this category and the buyer's state. Never changes fit.
+        sponsored: !adFree && l.source !== "no_approval" && canSponsor(supplier) && sponsoredFor(db, supplier, l.category, buyer),
         pref_fit,
         variants: [l],
         vehicle: contractOf(l)?.vehicle ?? null,

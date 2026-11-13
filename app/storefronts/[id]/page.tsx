@@ -6,6 +6,7 @@ import { useState } from "react";
 import { CATEGORY_TONE, CategoryIcon } from "@/components/CategoryIcon";
 import { Check, File, Globe, Lock, Search } from "@/components/icons";
 import { useStore } from "@/components/store";
+import { ClaimStorefront } from "@/components/ClaimStorefront";
 import { VerificationList } from "@/components/Verification";
 import { verificationSummary } from "@/lib/verification";
 import { ErrorNote, Loading, SourcePill, Stars, SupplierBadges, money, supplierColor } from "@/components/ui";
@@ -69,7 +70,7 @@ export default function SupplierStorefront() {
             {profile && (
               <div className="absolute inset-y-0 right-0 hidden items-center gap-2 pr-8 opacity-90 sm:flex">
                 {lines.slice(0, 6).map((n) => (
-                  <span key={n} className="rounded-full bg-white/15 px-3 py-1 text-[11px] font-semibold text-white ring-1 ring-white/25">
+                  <span key={n} className="rounded-full bg-[#fff]/15 px-3 py-1 text-[11px] font-semibold text-[#fff] ring-1 ring-[#fff]/25">
                     {n}
                   </span>
                 ))}
@@ -78,7 +79,7 @@ export default function SupplierStorefront() {
           </div>
           <div className="flex flex-wrap items-end justify-between gap-6 px-6 pb-6 sm:px-8">
             <div className="relative z-10 -mt-9 min-w-0 max-w-2xl">
-              <span className="grid h-[72px] w-[72px] place-items-center rounded-2xl border-4 border-white text-3xl font-extrabold text-white shadow-sm" style={{ background: color }}>
+              <span className="grid h-[72px] w-[72px] place-items-center rounded-2xl border-4 border-white text-3xl font-extrabold text-[#fff] shadow-sm" style={{ background: color }}>
                 {s.name[0]}
               </span>
               <div className="mt-3 flex items-center gap-2 text-[11px] font-extrabold uppercase text-maroon/80">
@@ -191,6 +192,8 @@ export default function SupplierStorefront() {
           </div>
         </section>
       )}
+
+      <ClaimStorefront s={s} />
 
       <section id="verification" className="scroll-mt-24">
         <h2 className="text-xl font-extrabold tracking-tight text-navy">What's been checked</h2>

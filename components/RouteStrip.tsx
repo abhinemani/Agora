@@ -1,7 +1,6 @@
 "use client";
 
 import type { Results } from "@/lib/assistant";
-import us from "@/lib/uswds-theme.json";
 import { SOURCE_HEX } from "./ui";
 
 interface Segment {
@@ -51,7 +50,7 @@ export function RouteStrip({ results }: { results: Results }) {
             >
               <span
                 className="h-1.5 rounded-full"
-                style={s.open ? { border: `1.5px dashed ${s.color}`, background: "transparent", height: 6 } : { background: s.count ? s.color : us.color.theme["base-lighter"] }}
+                style={s.open ? { border: `1.5px dashed ${s.color}`, background: "transparent", height: 6 } : { background: s.count ? s.color : "rgb(var(--us-base-lighter))" }}
                 aria-hidden
               />
               <span className="mt-2 font-heading text-heading-xl font-light tabular-nums text-ink">{s.count}</span>

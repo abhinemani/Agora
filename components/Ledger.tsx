@@ -35,7 +35,7 @@ export function Ledger() {
 
   return (
     <div className="fixed inset-0 z-50 flex justify-end">
-      <button aria-label="Close ledger" className="absolute inset-0 bg-ink/[.32]" onClick={() => setLedgerOpen(false)} />
+      <button aria-label="Close ledger" className="absolute inset-0 bg-[#000]/50" onClick={() => setLedgerOpen(false)} />
       <aside className="relative flex h-full w-full max-w-xl flex-col bg-white shadow-5">
         <div className="border-b border-line px-5 py-4">
           <div className="flex items-start justify-between">

@@ -46,6 +46,23 @@ export function Header() {
   const path = usePathname();
   const [open, setOpen] = useState(false);
   const [picking, setPicking] = useState(false);
+  // Appearance: follow the system, or a saved Light or Dark choice (applied early by the script in layout.tsx).
+  const [appearance, setAppearance] = useState<"system" | "light" | "dark">("system");
+  useEffect(() => {
+    try {
+      const t = localStorage.getItem("theme");
+      if (t === "light" || t === "dark") setAppearance(t);
+    } catch {}
+  }, []);
+  const chooseAppearance = (a: "system" | "light" | "dark") => {
+    setAppearance(a);
+    try {
+      if (a === "system") localStorage.removeItem("theme");
+      else localStorage.setItem("theme", a);
+    } catch {}
+    if (a === "system") delete document.documentElement.dataset.theme;
+    else document.documentElement.dataset.theme = a;
+  };
   // A light shadow under the header once content scrolls beneath it.
   const [scrolled, setScrolled] = useState(false);
   useEffect(() => {
@@ -80,7 +97,7 @@ export function Header() {
 
   return (
     <header className={`sticky top-0 z-30 bg-white ${scrolled ? "shadow-1" : ""}`}>
-      <div className="bg-ink px-4 py-2 text-center text-ui-3xs text-white">
+      <div className="border-b border-base-lighter bg-[#000] px-4 py-2 text-center text-ui-3xs text-[#fff]">
         Searching is free for every agency. <span className="hidden sm:inline">Your own contracts come first, then your state's, then your co-ops.</span>
       </div>
       <div className="mx-auto grid h-16 max-w-6xl grid-cols-[1fr_auto_1fr] items-center gap-3 px-4">
@@ -177,6 +194,22 @@ export function Header() {
                 <Link role="menuitem" href="/coops" onClick={() => setOpen(false)} className="flex min-h-12 items-center px-4 text-ui-xs text-ink no-underline hover:bg-base-lightest">
                   Co-op member lists
                 </Link>
+                <div className="flex min-h-12 items-center justify-between gap-3 px-4 text-ui-xs text-ink">
+                  <span>Appearance</span>
+                  <span className="flex" role="radiogroup" aria-label="Appearance">
+                    {(["system", "light", "dark"] as const).map((a, i) => (
+                      <button
+                        key={a}
+                        role="radio"
+                        aria-checked={appearance === a}
+                        onClick={() => chooseAppearance(a)}
+                        className={`px-2.5 py-1 text-ui-3xs capitalize ${i ? "-ml-px" : ""} border ${appearance === a ? "relative z-10 border-ink bg-ink text-white" : "border-base-light text-ink hover:bg-base-lightest"}`}
+                      >
+                        {a}
+                      </button>
+                    ))}
+                  </span>
+                </div>
               </div>
             </div>
           )}

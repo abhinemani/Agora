@@ -1,7 +1,8 @@
-// Agora's co-op directory: every government the public co-op rosters, agency
-// procurement pages, documented purchases, Texas DIR and the .gov registry name,
-// one record each. Built by scripts/import-coop-data.ts into
-// seed/coops/directory.json.gz. Server only: 72,000 records stay here and the
+// Agora's co-op directory: every government the Census of Governments, NCES and
+// IPEDS list, plus every one the public co-op rosters, agency procurement pages,
+// documented purchases, Texas DIR and the .gov registry name, one record each.
+// Records carry permanent federal IDs where one matched. Built by scripts/import-coop-data.ts into
+// seed/coops/directory.json.gz. Server only: 130,000 records stay here and the
 // browser asks /api/directory for the few it needs.
 
 import { readFileSync } from "node:fs";
@@ -20,8 +21,14 @@ interface Row {
   t: EntityType;
   st: "public" | "inferred";
   d?: string;
-  /** The government's other .gov domains. */
+  /** The government's other domains. */
   ds?: string[];
+  /** Where the primary domain came from. */
+  w?: "gov" | "census" | "nces" | "ipeds";
+  /** Federal IDs: Census, NCES, IPEDS. */
+  g?: { c?: string; n?: string; u?: string };
+  pop?: number;
+  enr?: number;
   p: { c: string; e: MembershipEvidence; m?: string; u?: string }[];
   r?: Record<string, MembershipEvidence>;
   x?: { sales: number; lines: number; first: string; last: string };
@@ -47,6 +54,10 @@ function load(): Index {
   const idx: Index = { retrieved: raw.retrieved, rows: raw.rows, byId: new Map(), byKey: new Map(), byDomain: new Map(), text: [] };
   for (const r of raw.rows) {
     idx.byId.set(r.i, r);
+    // A federal ID finds the same record: "census:210967", "nces:4835100", "ipeds:100654".
+    if (r.g?.c) idx.byId.set(`census:${r.g.c}`, r);
+    if (r.g?.n) idx.byId.set(`nces:${r.g.n}`, r);
+    if (r.g?.u) idx.byId.set(`ipeds:${r.g.u}`, r);
     for (const n of [r.n, ...r.a]) {
       const k = `${r.s}|${entityKey(n)}`;
       if (!idx.byKey.has(k)) idx.byKey.set(k, r);
@@ -71,6 +82,10 @@ function toGovernment(r: Row): DirectoryGovernment {
     entity_type: r.t,
     status: r.st,
     domain: r.d,
+    domain_source: r.w,
+    ids: r.g ? { census: r.g.c, nces: r.g.n, ipeds: r.g.u } : undefined,
+    population: r.pop,
+    enrollment: r.enr,
     coops: r.p.map((p) => ({ coop_id: p.c, evidence: p.e, member_id: p.m, source_url: p.u })).sort((a, b) => RANK[b.evidence] - RANK[a.evidence]),
     routes: r.r ?? {},
     dir: r.x,
@@ -117,7 +132,9 @@ export function searchDirectory(q: string, opts: { state?: string; limit?: numbe
     const keys = [r.n, ...r.a].map(entityKey);
     let score = keys.includes(key) ? 100 : keys.some((k) => k.startsWith(key)) ? 60 : text.startsWith(query) ? 50 : 20;
     score += r.st === "public" ? 8 : 0;
-    score += Math.min(r.p.length, 6) * 2 + (r.d ? 3 : 0) + (r.x ? 2 : 0);
+    score += Math.min(r.p.length, 6) * 2 + (r.d ? 3 : 0) + (r.x ? 2 : 0) + (r.g ? 4 : 0);
+    // Bigger places first among equals: "Springfield" should find the city of 170,000 before the township of 800.
+    score += Math.min(4, Math.log10(1 + (r.pop ?? r.enr ?? 0)) / 1.5);
     scored.push({ r, score });
   }
   return scored

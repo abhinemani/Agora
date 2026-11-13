@@ -19,6 +19,7 @@ export const metadata: Metadata = {
 const n = (x: number) => x.toLocaleString("en-US");
 const usd = (x: number) =>
   x >= 1e9 ? `$${(x / 1e9).toFixed(1)}B` : x >= 1e6 ? `$${Math.round(x / 1e6).toLocaleString()}M` : `$${Math.round(x).toLocaleString()}`;
+const pct = (a: number, b: number) => `${Math.round((100 * a) / Math.max(1, b))}%`;
 const coopName = (id: string) => SEED_COOPS.find((c) => c.id === id)?.name ?? id;
 const date = (d: string) => new Date(`${d}T12:00:00Z`).toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" });
 
@@ -98,8 +99,8 @@ const LADDER = [
 const NEEDS = [
   {
     title: "A government ID for every agency",
-    body: "The Census of Governments gives every unit of government a permanent ID, and NCES and IPEDS do the same for school districts and colleges, with websites. Joining them would turn name matching into ID matching and fill in domains for the 80% of governments that don't have a .gov site.",
-    status: "Next",
+    body: `Done for most: ${n(insights.federal.governments_with_id)} governments now carry a Census, NCES or IPEDS ID, and ${n(insights.federal.websites.total)} have a website. What's left are tribal governments (the Bureau of Indian Affairs list would cover them), county departments that should point at their parent county, and volunteer fire companies, which are often nonprofits.`,
+    status: "Mostly done",
   },
   {
     title: "The missing rosters",
@@ -130,6 +131,7 @@ const NEEDS = [
 
 export default function CoopDataPage() {
   const d = insights.directory;
+  const f = insights.federal;
   const o = insights.overlap;
   const prospects = insights.prospects.slice(0, 15);
   const keptRows = insights.programs.reduce((s, p) => s + p.kept, 0);
@@ -147,13 +149,14 @@ export default function CoopDataPage() {
           </p>
           <p>
             This page explains the data that makes that work. It covers a workbook of {n(insights.workbook.roster_rows)} published co-op membership listings collected on{" "}
-            {date(insights.retrieved)}, how Agora turns those listings into a directory of {n(d.governments)} governments, what that unlocks in the product, where to be careful and
-            what we still need.
+            {date(insights.retrieved)}, how Agora joins them to the Census of Governments and the federal school and college registries to build a directory of {n(d.governments)}{" "}
+            governments with permanent IDs, what that unlocks in the product, where to be careful and what we still need.
           </p>
         </div>
         <nav className="mt-5 flex flex-wrap gap-x-4 gap-y-1 text-ui-xs" aria-label="On this page">
           {[
             ["#what", "What we have"],
+            ["#ids", "Permanent IDs"],
             ["#uses", "How Agora uses it"],
             ["#lookup", "Look up an agency"],
             ["#evidence", "How we know"],
@@ -171,9 +174,9 @@ export default function CoopDataPage() {
 
       <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
         <Stat value={n(d.governments)} label="Governments in the directory" note={`${n(d.on_a_roster)} on at least one co-op roster`} />
+        <Stat value={n(f.governments_with_id)} label="With a permanent federal ID" note={`${pct(f.roster_with_id, f.roster_governments)} of roster governments`} />
+        <Stat value={n(f.websites.total)} label="With a website" note={`Up from ${n(f.websites.by_source.gov ?? 0)} with .gov alone`} />
         <Stat value={n(o.entity_key_multi)} label="On two or more rosters" note={`${n(o.on_three_or_more)} on three or more co-ops`} />
-        <Stat value={n(d.with_domain)} label="Matched to a .gov domain" note="From CISA's .gov registry" />
-        <Stat value={usd(insights.dir.sales)} label="Texas DIR sales" note={`${n(insights.dir.buyers)} buyers, Sept. 2025 to Sept. 2026`} />
       </div>
 
       <Section
@@ -212,6 +215,94 @@ export default function CoopDataPage() {
       </Section>
 
       <Section
+        id="ids"
+        title="Permanent IDs for every government"
+        intro={
+          <>
+            <p>
+              Names are a weak way to join data. &quot;Plano ISD&quot; and &quot;Plano Independent School District&quot; are one district, while New York&apos;s Town of
+              DeRuyter and Village of DeRuyter are two governments. So Agora now joins every record to three federal registries that give each government a permanent ID. The
+              Census Bureau&apos;s Government Units List covers counties, municipalities, townships, special districts and school districts. NCES numbers every public school
+              district, and IPEDS every college.
+            </p>
+            <p>
+              Each directory entry is matched to one federal record. Entries that land on the same ID are one government, whatever they&apos;re called, which merged{" "}
+              {n(f.merged_by_id)} duplicate listings. Every government in the registries is now in the directory, roster or not: {n(f.added)} joined from the registries
+              alone. Each record also brings a website. {n(f.websites.total)} governments now have one, up from {n(f.websites.by_source.gov ?? 0)} with a .gov domain.
+            </p>
+            <p>
+              IDs also settle questions that names couldn&apos;t. {n(f.confirmed_public)} listings whose public status was only inferred from their names are now confirmed
+              public. IPEDS showed that {n(f.private_set_aside)} &quot;universities&quot; on the E&amp;I and BuyBoard rosters are private, so they&apos;re set aside (
+              {f.private_examples
+                .slice(0, 3)
+                .map((x) => x.name)
+                .join(", ")}
+              , and others).
+            </p>
+          </>
+        }
+      >
+        <div className="grid gap-3 sm:grid-cols-3">
+          {f.sources.map((src) => (
+            <Card key={src.id} className="p-4">
+              <div className="text-ui-md font-bold text-ink">{src.name}</div>
+              <div className="mt-1 font-heading text-heading-md font-bold text-primary-darker">{n(src.records)}</div>
+              <p className="mt-1 text-ui-xs text-base-darker">{src.note}</p>
+              <a href={src.url} target="_blank" rel="noreferrer" className="mt-2 inline-block text-ui-3xs font-bold text-primary">
+                Source ↗
+              </a>
+            </Card>
+          ))}
+        </div>
+
+        <h3 className="mt-8 text-ui-md font-bold text-ink">How much of each roster now has an ID</h3>
+        <p className="mt-1 max-w-[72ex] text-body-sm text-base-darker">
+          Nearly every city, town and county on a co-op roster now matches a Census record. Special districts and school entries match less often, mostly because many listings
+          aren&apos;t separate governments in the Census&apos;s eyes. They&apos;re a county&apos;s sheriff or district attorney, a volunteer fire company or a single school
+          campus. Tribal governments aren&apos;t in any of the three registries.
+        </p>
+        <div className="mt-3">
+          <Table
+            head={["Kind of government", "On a roster", "With a federal ID", "Share"]}
+            right={[1, 2, 3]}
+            rows={Object.entries(f.roster_by_type)
+              .sort((a, b) => b[1].all - a[1].all)
+              .map(([t, v]) => [ENTITY_LABEL[t as EntityType] ?? t, n(v.all), n(v.with_id), pct(v.with_id, v.all)])}
+          />
+        </div>
+
+        <h3 className="mt-8 text-ui-md font-bold text-ink">How the matching works</h3>
+        <ul className="mt-2 max-w-[72ex] list-disc space-y-2 pl-5 text-body-sm text-base-darker">
+          <li>
+            A Census school district is paired with its NCES record by website ({n(f.school_pairs.by_website)} districts), and otherwise by name ({n(f.school_pairs.by_name)}).
+            The Census abbreviates (&quot;Ada Exempted Sch Dist&quot;), so names are expanded before they&apos;re compared. Charter schools and service agencies are NCES
+            districts that the Census doesn&apos;t count as governments, so they stay separate.
+          </li>
+          <li>
+            A website counts only if no other government in the same registry lists it: 80 list sites.google.com, and dozens of Missouri soil districts share one state page.
+          </li>
+          <li>
+            Same-named townships are told apart by county. Ohio and Pennsylvania each have dozens of Franklin Townships, and the roster&apos;s county picks the right one.
+          </li>
+          <li>
+            A name that says Town never matches a record that says Village when both exist. The words only decide between candidates; a lone match counts whatever it&apos;s
+            called, since the Census calls the Town of Crested Butte a city.
+          </li>
+          <li>
+            {n(f.college_pairs)} community-college districts in the Census school list are paired with their IPEDS colleges.
+          </li>
+        </ul>
+        <p className="mt-4 text-ui-xs text-base-dark">
+          Merged by ID, for example:{" "}
+          {f.merge_examples
+            .slice(0, 5)
+            .map((m) => `${m.name} = ${m.merged[0]} (${m.state})`)
+            .join("; ")}
+          .
+        </p>
+      </Section>
+
+      <Section
         id="uses"
         title="How Agora uses it"
         intro={
@@ -239,8 +330,9 @@ export default function CoopDataPage() {
               title: "A directory of real agencies to pick from",
               body: (
                 <>
-                  &quot;Your agency&quot; is now a typeahead over {n(d.governments)} governments, so staff pick their agency instead of typing it. Each record carries the
-                  agency&apos;s type, its .gov domain where it has one, and its co-ops. That finishes step 3 of agency setup before anyone opens it.
+                  &quot;Your agency&quot; is now a typeahead over {n(d.governments)} governments: every government the Census, NCES and IPEDS list, plus everyone on a
+                  roster. Staff pick their agency instead of typing it. Each record carries its federal IDs, type, size, website and co-ops. That finishes step 3 of agency
+                  setup before anyone opens it.
                 </>
               ),
               href: "#lookup",
@@ -414,9 +506,9 @@ export default function CoopDataPage() {
               body: `${n(d.inferred)} governments in the directory are there because their names read as government (\"Plano ISD\", \"Sabine Fire District 1\"), not because a source said so. E&I and BuyBoard don't classify their listings. Their records are marked \"inferred\", and a few private schools likely slipped through.`,
             },
             {
-              title: "Names, not IDs, join the sources",
-              body: `The workbook's conservative key found ${n(o.conservative_key_multi)} governments on two or more rosters. Agora's matcher (entityKey in lib/coops.ts) standardizes \"ISD\", \"City of\" and \"Township of\" without dropping words that tell two governments apart, and finds ${n(o.entity_key_multi)}. It's better, but it's still name matching. A government ID spine is the real fix.`,
-              examples: o.examples.slice(0, 5).map((e) => `${e.name} = ${e.also[0]} (${e.state})`),
+              title: "IDs join most of it; names still join the rest",
+              body: `${pct(f.roster_with_id, f.roster_governments)} of roster governments now carry a federal ID, and records that share one are merged. The rest are still joined by name (entityKey in lib/coops.ts), which finds ${n(o.entity_key_multi)} governments on two or more rosters against ${n(o.conservative_key_multi)} for the workbook's conservative key. Name matching can still miss a spelling or, rarely, join two places. Roster entries without an ID look like these:`,
+              examples: f.unmatched_examples.slice(0, 5).map((e) => `${e.name}, ${e.state}`),
             },
             {
               title: "DIR states are inconsistent",
@@ -479,9 +571,11 @@ export default function CoopDataPage() {
         intro={
           <>
             <p>
-              Everything on this page is generated. <code>npm run import:coops</code> reads <code>seed/coops/source/coop-memberships-2026-11-13.xlsx</code> and CISA&apos;s .gov
-              registry (<code>seed/coops/source/dotgov-domains-2026-11-13.csv</code>, federal domains removed, contact emails left out). It writes the directory, these insights
-              and the NASPO Parks catalog. The directory stays on the server; the browser asks for a few records at a time.
+              Everything on this page is generated. <code>npm run fetch:federal</code> downloads the Census Government Units List 2026, the NCES district directory for
+              2024-25 and IPEDS 2024, keeping IDs, names, places, websites and sizes; officials&apos; names, phone numbers and street addresses are left out. Then{" "}
+              <code>npm run import:coops</code> reads them with <code>seed/coops/source/coop-memberships-2026-11-13.xlsx</code> and CISA&apos;s .gov registry (federal
+              domains removed, contact emails left out). It writes the directory, these insights and the NASPO Parks catalog. The directory stays on the server; the browser asks
+              for a few records at a time.
             </p>
             <p>
               The .gov registry matched {n(d.dotgov_matched)} governments already on a roster and added {n(d.dotgov_added)} more that aren&apos;t on any. Those are agencies Agora

@@ -6,7 +6,7 @@ import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import type { Role } from "@/lib/types";
 import { BuyerPicker } from "./BuyerPicker";
-import { Menu, Cart } from "./icons";
+import { Bars, Cart, Close, Menu } from "./icons";
 import { Logo } from "./Logo";
 import { useStore } from "./store";
 import { compact } from "./ui";
@@ -46,6 +46,9 @@ export function Header() {
   const router = useRouter();
   const path = usePathname();
   const [open, setOpen] = useState(false);
+  // Phones get the nav behind a menu button; it closes whenever the page changes.
+  const [navOpen, setNavOpen] = useState(false);
+  useEffect(() => setNavOpen(false), [path, role]);
   const [picking, setPicking] = useState(false);
   // Appearance: follow the system, or a saved Light or Dark choice (applied early by the script in layout.tsx).
   const [appearance, setAppearance] = useState<"system" | "light" | "dark">("system");
@@ -105,7 +108,7 @@ export function Header() {
         <Link href={current.home} className="flex items-center no-underline" aria-label="Agora home">
           <Logo />
         </Link>
-        <nav className="flex min-w-0 items-stretch gap-1 overflow-x-auto sm:gap-2" aria-label="Main">
+        <nav className="hidden min-w-0 items-stretch gap-1 overflow-x-auto sm:gap-2 md:flex" aria-label="Main">
           {NAV[role].map((n) => (
             <Link
               key={n.href}
@@ -117,7 +120,7 @@ export function Header() {
             </Link>
           ))}
         </nav>
-        <div className="ml-auto flex items-center gap-3">
+        <div className="ml-auto flex items-center gap-1 sm:gap-3">
 
 
         <Link
@@ -228,8 +231,36 @@ export function Header() {
             </div>
           )}
         </div>
+
+        <button
+          onClick={() => setNavOpen(!navOpen)}
+          aria-expanded={navOpen}
+          aria-controls="mobile-nav"
+          aria-label={navOpen ? "Close menu" : "Open menu"}
+          className="grid h-11 w-11 shrink-0 place-items-center text-ink hover:text-primary md:hidden"
+        >
+          {navOpen ? <Close className="h-6 w-6" /> : <Bars className="h-6 w-6" />}
+        </button>
         </div>
       </div>
+      {navOpen && (
+        <nav id="mobile-nav" aria-label="Main" className="border-t border-base-lighter bg-white md:hidden">
+          <ul className="mx-auto max-w-6xl py-1">
+            {NAV[role].map((n) => (
+              <li key={n.href}>
+                <Link
+                  href={n.href}
+                  aria-current={isActive(n.href) ? "page" : undefined}
+                  onClick={() => setNavOpen(false)}
+                  className={`flex min-h-12 items-center gap-3 px-4 text-ui-xs font-bold no-underline ${isActive(n.href) ? "bg-primary-lighter/60 text-primary" : "text-ink hover:bg-base-lightest"}`}
+                >
+                  {n.label}
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </nav>
+      )}
       {picking && (
         <div className="border-t border-line bg-page py-4">
           <div className="mx-auto max-w-6xl px-4">

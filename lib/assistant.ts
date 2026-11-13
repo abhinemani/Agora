@@ -692,6 +692,7 @@ export function buildResults(db: Db, request: Request): Results {
       explanation.push(
         `Only contracts open to ${buyer.name} (${buyer.state}) are shown.${unavailable.length ? ` ${unavailable.reduce((n, u) => n + u.products, 0)} more matching products sit on contracts it can't use.` : ""}`,
       );
+    explanation.push(`The Best fit badge marks the top-ranked option you can buy right away, without a quote or joining a co-op first.`);
     explanation.push(
       `Each card's fit score (0 to 100) is how much of your request it covers. Words in a product's or contract's name count fully, words only in its wider scope count 70%, and rarer words weigh more. Sponsorship never changes a fit score.`,
     );

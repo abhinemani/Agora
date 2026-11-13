@@ -10,6 +10,7 @@ import { CoopSection, FitPill } from "@/components/CoopSection";
 import { RouteStrip } from "@/components/RouteStrip";
 import { ExpiredNote, InviteAdminBanner, NextSteps, OwnContractsCard } from "@/components/ResultExtras";
 import { CategoryIcon } from "@/components/CategoryIcon";
+import { BestFit, TickFrame } from "@/components/blueprint";
 import { useStore } from "@/components/store";
 import { Lock, People, Plus, Sparkle } from "@/components/icons";
 import { Badge, Button, Card, Checkbox, ErrorNote, Eyebrow, IconCircle, LinkButton, Loading, RevenueTags, SourcePill, Stars, SupplierBadges, money } from "@/components/ui";
@@ -101,6 +102,8 @@ export default function RequestResults() {
   const coops = results && verifiedOnly ? { ...results.coops, hits: results.coops.hits.filter((h) => supplierVerified(h.supplier_id)), better: results.coops.better && supplierVerified(results.coops.better.hit.supplier_id) ? results.coops.better : null } : results?.coops;
   const hiddenByVerified = results && verifiedOnly ? everything.length - all.length + (results.coops.hits.length - (coops?.hits.length ?? 0)) : 0;
   const shown = showAll ? all : all.slice(0, GRID_LIMIT);
+  // Best fit: the top-ranked option the buyer can act on right away (no quote, no co-op to join first).
+  const bestId = all.length > 1 ? all.find((o) => !o.quote_route && o.member !== false)?.listing.id : undefined;
   const sources = results ? results.groups.length : 0;
 
   return (
@@ -195,7 +198,7 @@ export default function RequestResults() {
 
           <div id="options" className="grid scroll-mt-24 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-3">
             {shown.map((o) => (
-              <OptionCard key={o.listing.id} o={o} qty={p.quantity} requestId={id} />
+              <OptionCard key={o.listing.id} o={o} qty={p.quantity} requestId={id} best={o.listing.id === bestId} />
             ))}
           </div>
           {verifiedOnly && hiddenByVerified > 0 && (
@@ -294,7 +297,7 @@ function Parsed({ label, value }: { label: string; value: string }) {
   );
 }
 
-function OptionCard({ o, qty, requestId }: { o: ResultOption; qty: number; requestId: string }) {
+function OptionCard({ o, qty, requestId, best = false }: { o: ResultOption; qty: number; requestId: string; best?: boolean }) {
   const { db, act } = useStore();
   const [chosen, setChosen] = useState(o.listing.id);
   const [quoted, setQuoted] = useState<string | null>(null);
@@ -314,23 +317,27 @@ function OptionCard({ o, qty, requestId }: { o: ResultOption; qty: number; reque
         : { text: `Needs PO · over $${Math.round(limit / 1000)}K${via}`, payment: "po" as const };
   const title = tiered ? l.title.replace(/\s*\([^)]*\)\s*$/, "") : l.title;
   const href = `/product/${l.id}?qty=${qty}&request=${requestId}`;
+  const image = (
+    <Link href={href} className="relative grid aspect-[4/3] place-items-center overflow-hidden bg-base-lightest no-underline" aria-label={title}>
+            <span className="h-full w-full transition-transform duration-300 group-hover:scale-[1.03] motion-reduce:transition-none">
+              <CategoryIcon category={l.category} size="xl" neutral />
+            </span>
+            <span className="absolute left-3 top-3">
+              <SourcePill source={l.source} contractId={l.contract_id} />
+            </span>
+            <span className="absolute right-3 top-3 flex items-center gap-1.5">
+              {o.member === true && db?.session.buyer && <span className="bg-white px-1.5 py-0.5 text-ui-3xs text-success-darker">Your co-op</span>}
+              {o.member === false && db?.session.buyer && <span className="bg-white px-1.5 py-0.5 text-ui-3xs text-ink">Join to use</span>}
+              <FitPill fit={o.fit} />
+            </span>
+            {o.sponsored && <span className="absolute bottom-3 left-3 bg-white/90 px-1.5 py-0.5 text-ui-3xs text-base-dark">Sponsored</span>}
+          </Link>
+  );
   return (
     <div className="group flex flex-col bg-white">
-      <Link href={href} className="relative grid aspect-[4/3] place-items-center overflow-hidden bg-base-lightest no-underline" aria-label={title}>
-        <span className="h-full w-full transition-transform duration-300 group-hover:scale-[1.03] motion-reduce:transition-none">
-          <CategoryIcon category={l.category} size="xl" neutral />
-        </span>
-        <span className="absolute left-3 top-3">
-          <SourcePill source={l.source} contractId={l.contract_id} />
-        </span>
-        <span className="absolute right-3 top-3 flex items-center gap-1.5">
-          {o.member === true && db?.session.buyer && <span className="bg-white px-1.5 py-0.5 text-ui-3xs text-success-darker">Your co-op</span>}
-          {o.member === false && db?.session.buyer && <span className="bg-white px-1.5 py-0.5 text-ui-3xs text-ink">Join to use</span>}
-          <FitPill fit={o.fit} />
-        </span>
-        {o.sponsored && <span className="absolute bottom-3 left-3 bg-white/90 px-1.5 py-0.5 text-ui-3xs text-base-dark">Sponsored</span>}
-      </Link>
+      {best ? <TickFrame>{image}</TickFrame> : image}
       <div className="mt-4 flex flex-wrap items-center gap-1.5">
+        {best && <BestFit />}
         <Link href={`/storefronts/${o.supplier.id}`} className="text-ui-3xs uppercase tracking-label text-base-dark no-underline hover:underline">
           {o.supplier.name}
         </Link>

@@ -109,7 +109,7 @@ export function BlueprintBackdrop({
       </svg>
 
       {/* On a phone: a sheet border and a small city hall, so it reads as a drawing */}
-      <div className="absolute inset-3 border border-white/25 md:hidden" />
+      <div className="absolute inset-3 border border-[rgba(255,255,255,0.25)] md:hidden" />
       <svg viewBox="70 150 290 330" className="absolute bottom-7 left-6 w-[118px] opacity-[0.6] md:hidden">
         <g {...ink} strokeWidth={1.6}>
           <CityHall />

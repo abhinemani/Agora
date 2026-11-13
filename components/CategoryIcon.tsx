@@ -36,20 +36,19 @@ const ICON: Record<Category, (p: { className?: string }) => React.ReactElement> 
   Other: Box,
 };
 
-/** A tile that stands in for a product photo: tinted by category, or neutral warm gray for product grids. */
+/** A tile that stands in for a product photo. Every category shares one blueprint tint, so the
+ * only strong color on a page is contract eligibility; product grids use the neutral gray. */
 export function CategoryIcon({ category, size = "md", neutral = false }: { category: Category; size?: "sm" | "md" | "lg" | "xl"; neutral?: boolean }) {
   const Icon = ICON[category] ?? Box;
-  const tone = CATEGORY_TONE[category] ?? CATEGORY_TONE.Other;
   const dim = {
-    sm: "h-9 w-9 rounded-lg [&>svg]:h-4 [&>svg]:w-4",
-    md: "h-12 w-12 rounded-xl [&>svg]:h-5 [&>svg]:w-5",
-    lg: "h-14 w-14 rounded-xl [&>svg]:h-6 [&>svg]:w-6",
+    sm: "h-9 w-9 [&>svg]:h-4 [&>svg]:w-4",
+    md: "h-12 w-12 [&>svg]:h-5 [&>svg]:w-5",
+    lg: "h-14 w-14 [&>svg]:h-6 [&>svg]:w-6",
     xl: "h-full w-full [&>svg]:h-12 [&>svg]:w-12",
   }[size];
   return (
     <span
-      className={`flex shrink-0 items-center justify-center ${dim} ${neutral ? "bg-base-lightest text-base-darker [&>svg]:stroke-[1.25]" : ""}`}
-      style={neutral ? undefined : { background: tone.bg, color: tone.fg }}
+      className={`flex shrink-0 items-center justify-center ${dim} ${neutral ? "bg-base-lightest text-base-darker [&>svg]:stroke-[1.25]" : "border border-primary-lighter bg-primary-lighter/40 text-primary-dark [&>svg]:stroke-[1.5]"}`}
     >
       <Icon />
     </span>

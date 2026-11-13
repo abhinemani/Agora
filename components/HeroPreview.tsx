@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import type { Listing, Supplier } from "@/lib/types";
 import { CategoryIcon } from "./CategoryIcon";
-import { Check } from "./icons";
+import { Annotation, BestFit, Mark, TickFrame } from "./blueprint";
 import { SourcePill, money } from "./ui";
 
 const KIND: Record<string, string> = {
@@ -43,7 +43,8 @@ export function HeroPreview({
   const best = rows.reduce((a, b) => (b.listing.unit_price < a.listing.unit_price ? b : a), rows[0]);
 
   return (
-    <div className="relative rounded-2xl border border-line bg-white p-5 shadow-2">
+    <TickFrame>
+    <div className="relative border border-base-lighter bg-white p-5">
       <div className="flex items-center justify-between gap-3">
         <div className="min-w-0">
           <div className="truncate text-sm font-semibold text-navy">“40 folding tables for the rec center”</div>
@@ -51,7 +52,7 @@ export function HeroPreview({
             {done ? `${rows.length} contracts can supply it` : `Checking ${contractCount} contracts…`}
           </div>
         </div>
-        {!done && <span className="h-2 w-2 shrink-0 animate-pulse rounded-full bg-maroon" aria-hidden />}
+        <Mark className="h-6 w-6" working={!done} />
       </div>
 
       <ul className="mt-3 space-y-2">
@@ -61,14 +62,17 @@ export function HeroPreview({
           return (
             <li
               key={listing.id}
-              className={`flex items-center gap-3 rounded-xl border p-2.5 transition-all duration-500 ${shown ? "translate-y-0 opacity-100" : "translate-y-2 opacity-0"} ${
-                isBest ? "border-emerald-300 bg-emerald-50/60" : "border-line bg-white"
+              className={`flex items-center gap-3 border p-2.5 transition-all duration-500 motion-reduce:transition-none ${shown ? "translate-y-0 opacity-100" : "translate-y-2 opacity-0"} ${
+                isBest ? "border-primary-light bg-primary-lighter/40" : "border-base-lighter bg-white"
               }`}
             >
               <CategoryIcon category={listing.category} size="sm" />
               <div className="min-w-0 flex-1">
                 <div className="truncate text-sm text-navy">{supplier.name}</div>
-                <SourcePill source={listing.source} contractId={listing.contract_id} />
+                <span className="flex flex-wrap items-center gap-1.5">
+                  <SourcePill source={listing.source} contractId={listing.contract_id} />
+                  {isBest && <BestFit />}
+                </span>
               </div>
               <div className="text-right">
                 <div className="text-sm font-semibold tabular-nums text-navy">{money(listing.unit_price, false)}</div>
@@ -79,19 +83,21 @@ export function HeroPreview({
         })}
       </ul>
 
-      <div className={`mt-3 flex items-center gap-2 text-xs transition-opacity duration-500 ${done ? "opacity-100" : "opacity-0"}`}>
-        <Check className="h-4 w-4 text-emerald-600" />
-        <span className="text-emerald-800">Lowest price: {best?.supplier.name}, on a {KIND[best?.listing.source ?? "coop_contract"]}</span>
+      <div className={`mt-3 transition-opacity duration-500 ${done ? "opacity-100" : "opacity-0"}`}>
+        <Annotation className="text-primary-dark">
+          Best fit · lowest price · {best?.supplier.name} · {KIND[best?.listing.source ?? "coop_contract"]}
+        </Annotation>
       </div>
 
       <div className="mt-4 flex items-center gap-2">
-        <button onClick={onRun} className="flex-1 hover-tint rounded-full bg-primary py-2 text-ui-xs font-bold text-white">
+        <button onClick={onRun} className="flex-1 bg-primary py-2.5 text-ui-xs font-bold text-white hover:bg-primary-dark active:bg-primary-darker">
           Run this search
         </button>
-        <button onClick={() => setRun(run + 1)} className="rounded-lg border border-line px-3 py-2 text-sm text-slate hover:text-navy">
+        <button onClick={() => setRun(run + 1)} className="border border-base-light px-3 py-2 text-sm text-base-dark hover:border-base-dark hover:text-ink">
           Replay
         </button>
       </div>
     </div>
+    </TickFrame>
   );
 }

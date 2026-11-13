@@ -12,7 +12,6 @@ export function TwoProducts({ dark = false }: { dark?: boolean }) {
       price: "Subscription paid by the agency",
       href: "/marketplaces",
       cta: "See city marketplaces",
-      color: "#315BD0",
     },
     {
       eyebrow: "For suppliers",
@@ -21,14 +20,13 @@ export function TwoProducts({ dark = false }: { dark?: boolean }) {
       price: "Basic page free; featured storefront on the Edge Position supplier plan",
       href: "/storefronts",
       cta: "Browse storefronts",
-      color: "#167757",
     },
   ];
   return (
-    <section className={dark ? "" : "rounded-3xl border border-line bg-white p-6 sm:p-8"}>
+    <section className={dark ? "" : "border border-base-lighter bg-white p-6 sm:p-8"}>
       {!dark && (
         <>
-          <h2 className="text-xl font-extrabold tracking-tight text-navy">Two products on one marketplace</h2>
+          <h2 className="text-xl font-bold tracking-tight text-ink">Two products on one marketplace</h2>
           <p className="mt-1 text-sm text-slate">Searching Agora is free. Agencies and suppliers each pay for their own presence on it.</p>
         </>
       )}
@@ -37,15 +35,13 @@ export function TwoProducts({ dark = false }: { dark?: boolean }) {
           <Link
             key={i.title}
             href={i.href}
-            className={`flex flex-col rounded-2xl p-5 transition ${dark ? "bg-white/10 ring-1 ring-white/15 hover:bg-white/15" : "border border-line hover:border-base-dark"}`}
+            className={`flex flex-col p-5 no-underline transition ${dark ? "border border-[rgba(255,255,255,0.25)] bg-[#0F3D73] hover:border-[rgba(255,255,255,0.6)]" : "border border-base-lighter hover:border-primary-light"}`}
           >
-            <div className="text-[11px] font-extrabold uppercase" style={{ color: dark ? "rgba(255,255,255,0.6)" : i.color }}>
-              {i.eyebrow}
-            </div>
-            <div className={`mt-2 text-lg font-bold tracking-tight ${dark ? "text-white" : "text-navy"}`}>{i.title}</div>
-            <p className={`mt-1 text-sm leading-relaxed ${dark ? "text-white/75" : "text-slate"}`}>{i.body}</p>
-            <div className={`mt-3 text-xs ${dark ? "text-white/60" : "text-slate"}`}>{i.price}</div>
-            <div className={`mt-4 text-sm font-semibold ${dark ? "text-white" : "text-maroon"}`}>{i.cta} →</div>
+            <div className={`font-mono text-[11px] uppercase tracking-[0.14em] ${dark ? "text-[#A8CBF2]" : "text-primary"}`}>{i.eyebrow}</div>
+            <div className={`mt-2 text-lg font-bold tracking-tight ${dark ? "text-[#fff]" : "text-ink"}`}>{i.title}</div>
+            <p className={`mt-1 text-sm leading-relaxed ${dark ? "text-[#D3E3F6]" : "text-base-dark"}`}>{i.body}</p>
+            <div className={`mt-3 text-xs ${dark ? "text-[#BFD5EE]" : "text-base-dark"}`}>{i.price}</div>
+            <div className={`mt-4 text-sm font-semibold ${dark ? "text-[#fff]" : "text-primary"}`}>{i.cta} →</div>
           </Link>
         ))}
       </div>

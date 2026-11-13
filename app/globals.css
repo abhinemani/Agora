@@ -55,3 +55,17 @@ button:focus-visible {
 @media (prefers-reduced-motion: reduce) {
   .cart-bump { animation: none; }
 }
+
+/* Agora's one motion: the mark's inner ticks close in on the center while a search runs. */
+@keyframes mark-close {
+  0%, 100% { transform: scale(1.32); opacity: 0.45; }
+  55% { transform: scale(1); opacity: 1; }
+}
+.mark-closing {
+  animation: mark-close 1.3s ease-in-out infinite;
+  transform-box: fill-box;
+  transform-origin: center;
+}
+@media (prefers-reduced-motion: reduce) {
+  .mark-closing { animation: none; }
+}

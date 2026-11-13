@@ -148,7 +148,7 @@ function Hit({ h, requestId }: { h: CoopHit; requestId: string }) {
                     setError((e as Error).message);
                   }
                 }}
-                className="inline-flex items-center rounded-md bg-primary px-4 py-2.5 text-ui-xs font-bold leading-none text-white no-underline hover:bg-base-darker active:bg-primary-dark disabled:bg-disabled-lighter disabled:text-disabled-dark"
+                className="inline-flex items-center rounded-md bg-primary px-4 py-2.5 text-ui-xs font-bold leading-none text-white no-underline hover:bg-primary-dark active:bg-primary-darker disabled:bg-disabled-lighter disabled:text-disabled-dark"
               >
                 Ask purchasing to get us on this
               </button>

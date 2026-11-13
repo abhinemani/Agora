@@ -32,7 +32,7 @@ export function CoopLink({
       href={goHref(contractId, { listing: listingId, request: requestId })}
       target="_blank"
       rel="noreferrer"
-      className={`inline-flex items-center rounded-md bg-primary text-ui-xs font-bold leading-none text-white no-underline hover:bg-base-darker active:bg-primary-dark ${pad}`}
+      className={`inline-flex items-center rounded-md bg-primary text-ui-xs font-bold leading-none text-white no-underline hover:bg-primary-dark active:bg-primary-darker ${pad}`}
       title={`Opens this contract on ${coop}'s site`}
     >
       Buy on {shortName(coop)} ↗

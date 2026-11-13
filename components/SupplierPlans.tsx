@@ -42,7 +42,7 @@ export function SupplierPlans({ s }: { s: Supplier }) {
       <ErrorNote message={error} />
 
       <section>
-        <h2 className="font-heading text-heading-md font-normal text-ink">Storefront plan</h2>
+        <h2 className="font-heading text-heading-md font-bold text-ink">Storefront plan</h2>
         <div className="mt-4 grid gap-4 md:grid-cols-3">
           {(Object.keys(PLANS) as SupplierPlan[]).map((k) => {
             const p = PLANS[k];
@@ -71,7 +71,7 @@ export function SupplierPlans({ s }: { s: Supplier }) {
 
       {plan !== "basic" && (
         <section>
-          <h2 className="font-heading text-heading-md font-normal text-ink">Your storefront's description</h2>
+          <h2 className="font-heading text-heading-md font-bold text-ink">Your storefront's description</h2>
           <p className="mt-1 text-ui-xs text-base-dark">Shown at the top of your storefront, in place of what Agora wrote from your contracts.</p>
           <form
             className="mt-4 max-w-2xl space-y-3"
@@ -98,7 +98,7 @@ export function SupplierPlans({ s }: { s: Supplier }) {
       )}
 
       <section>
-        <h2 className="font-heading text-heading-md font-normal text-ink">Sponsored placements</h2>
+        <h2 className="font-heading text-heading-md font-bold text-ink">Sponsored placements</h2>
         <p className="mt-1 max-w-2xl text-ui-xs text-base-dark">
           Show your listings as Sponsored on searches in a category, in one state or anywhere. You pay $2.00 each time a results page shows them. Sponsorship can move you up within
           your own kind of contract; it never changes a fit score or which contracts an agency can use.
@@ -155,7 +155,7 @@ export function SupplierPlans({ s }: { s: Supplier }) {
 
       {offContract && (
         <Card className="p-5">
-          <h2 className="font-heading text-heading-md font-normal text-ink">Listing fee</h2>
+          <h2 className="font-heading text-heading-md font-bold text-ink">Listing fee</h2>
           <p className="mt-1 text-ui-xs text-base-dark">
             {s.name} sells off contract, for purchases under an agency's quick-buy limit. Your listings appear in Agora while your listing fee ($150 a year) is current.
           </p>

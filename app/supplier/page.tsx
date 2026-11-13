@@ -56,7 +56,7 @@ function Supplier() {
       <Card className="p-6">
         <div className="flex flex-wrap items-start justify-between gap-6">
           <div className="flex gap-4">
-            <span className="flex h-14 w-14 items-center justify-center rounded-full bg-ink text-xl font-bold text-white">
+            <span className="flex h-14 w-14 items-center justify-center rounded-full bg-primary text-xl font-bold text-white">
               {s.name
                 .split(/\s+/)
                 .filter((w) => /^[A-Za-z]/.test(w))

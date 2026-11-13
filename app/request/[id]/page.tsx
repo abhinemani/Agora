@@ -111,7 +111,7 @@ export default function RequestResults() {
         </Link>
         <div className="mt-4 flex flex-wrap items-start justify-between gap-4">
           <div className="min-w-0">
-            <h1 className="font-heading text-heading-xl font-light leading-tight text-ink">Results for “{request.raw_text}”</h1>
+            <h1 className="font-heading text-heading-xl font-bold leading-tight text-ink">Results for “{request.raw_text}”</h1>
             <p className="mt-1.5 text-sm text-slate" title={request.parse_mode === "llm" ? "Read by Claude" : "Read with offline rules"}>
               {results && !results.no_match ? `${all.length} option${all.length === 1 ? "" : "s"} across ${sources} kind${sources === 1 ? "" : "s"} of contract. ` : ""}
               {p.quantity > 1 ? `${p.quantity} needed` : "One needed"}
@@ -122,12 +122,12 @@ export default function RequestResults() {
           </div>
           <div className="flex shrink-0 flex-wrap items-center gap-2">
             {results && !results.no_match && (
-              <button onClick={() => setWhy(!why)} className="inline-flex items-center rounded-md bg-white px-3 py-2 text-ui-2xs font-bold leading-none text-base-darker shadow-[inset_0_0_0_1px_theme(colors.base.light)] hover:text-primary hover:shadow-[inset_0_0_0_1px_theme(colors.primary.DEFAULT)]">
+              <button onClick={() => setWhy(!why)} className="inline-flex items-center rounded-md bg-white px-3 py-2 text-ui-2xs font-bold leading-none text-base-darker shadow-[inset_0_0_0_1px_theme(colors.base.light)] hover:text-primary hover:shadow-[inset_0_0_0_2px_theme(colors.primary.DEFAULT)]">
                 {why ? "Hide ranking" : "How these are ranked"}
               </button>
             )}
             {results && !results.no_match && <Checkbox checked={verifiedOnly} onChange={setVerifiedOnly} label="Verified suppliers only" />}
-            <button onClick={() => setChanging(!changing)} className="inline-flex items-center rounded-md bg-white px-3 py-2 text-ui-2xs font-bold leading-none text-base-darker shadow-[inset_0_0_0_1px_theme(colors.base.light)] hover:text-primary hover:shadow-[inset_0_0_0_1px_theme(colors.primary.DEFAULT)]">
+            <button onClick={() => setChanging(!changing)} className="inline-flex items-center rounded-md bg-white px-3 py-2 text-ui-2xs font-bold leading-none text-base-darker shadow-[inset_0_0_0_1px_theme(colors.base.light)] hover:text-primary hover:shadow-[inset_0_0_0_2px_theme(colors.primary.DEFAULT)]">
               {changing ? "Cancel" : buyer ? `For ${buyer.name}` : "Set your agency"}
             </button>
           </div>
@@ -377,7 +377,7 @@ function OptionCard({ o, qty, requestId }: { o: ResultOption; qty: number; reque
         </div>
         <div className="flex items-center gap-2 [&>*]:flex-1 [&>*]:justify-center">
           {lo || qr ? (
-            <Link href={href} className="inline-flex items-center rounded-md bg-white px-4 py-2.5 text-ui-xs font-bold leading-none text-primary no-underline shadow-[inset_0_0_0_1px_theme(colors.primary.DEFAULT)] hover:text-primary-dark hover:bg-base-lightest">
+            <Link href={href} className="inline-flex items-center rounded-md bg-white px-4 py-2.5 text-ui-xs font-bold leading-none text-primary no-underline shadow-[inset_0_0_0_2px_theme(colors.primary.DEFAULT)] hover:text-primary-dark hover:shadow-[inset_0_0_0_2px_theme(colors.primary.dark)]">
               View
             </Link>
           ) : (
@@ -390,7 +390,7 @@ function OptionCard({ o, qty, requestId }: { o: ResultOption; qty: number; reque
               <span className="text-[11px] font-semibold text-emerald-800">Quote {quoted} sent</span>
             ) : (
               <button
-                className="inline-flex items-center rounded-md bg-primary px-4 py-2.5 text-ui-xs font-bold leading-none text-white no-underline hover:bg-base-darker active:bg-primary-dark"
+                className="inline-flex items-center rounded-md bg-primary px-4 py-2.5 text-ui-xs font-bold leading-none text-white no-underline hover:bg-primary-dark active:bg-primary-darker"
                 onClick={async () => {
                   setQuoteError(null);
                   try {
@@ -405,7 +405,7 @@ function OptionCard({ o, qty, requestId }: { o: ResultOption; qty: number; reque
               </button>
             )
           ) : (
-            <Link href={`/checkout?listing=${l.id}&qty=${qty}&request=${requestId}`} className="inline-flex items-center rounded-md bg-primary px-4 py-2.5 text-ui-xs font-bold leading-none text-white no-underline hover:bg-base-darker active:bg-primary-dark">
+            <Link href={`/checkout?listing=${l.id}&qty=${qty}&request=${requestId}`} className="inline-flex items-center rounded-md bg-primary px-4 py-2.5 text-ui-xs font-bold leading-none text-white no-underline hover:bg-primary-dark active:bg-primary-darker">
               Buy
             </Link>
           )}

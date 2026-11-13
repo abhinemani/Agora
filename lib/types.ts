@@ -621,6 +621,13 @@ export interface DirectoryGovernment {
   /** "public": a source classifies it as a government. "inferred": the name reads as one. */
   status: "public" | "inferred";
   domain?: string;
+  /** Where the website came from: CISA's .gov registry, or a federal registry's listing. */
+  domain_source?: "gov" | "census" | "nces" | "ipeds";
+  /** Permanent federal IDs: Census of Governments (CENSUS_ID_PID6), NCES district (LEAID), IPEDS college (UNITID). */
+  ids?: { census?: string; nces?: string; ipeds?: string };
+  /** Census of Governments population (general-purpose governments) or school enrollment. */
+  population?: number;
+  enrollment?: number;
   coops: { coop_id: string; evidence: MembershipEvidence; member_id?: string; source_url?: string }[];
   /** Contract routes that aren't co-ops (GSA, Texas DIR, TXMAS…), with the strongest evidence for each. */
   routes: Record<string, MembershipEvidence>;

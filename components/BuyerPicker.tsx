@@ -96,7 +96,7 @@ export function BuyerPicker({ onDone, onClose, compact = false }: { onDone?: (b:
 
           <div className="mt-4 max-w-xl">
             <DirectorySearch
-              label="Or find yours among 72,000 governments"
+              label="Or find yours among 130,000 governments"
               onPick={(g) =>
                 choose({ name: g.name, state: g.state, entity_type: g.entity_type, population: null, domain: g.domain, directory_id: g.id })
               }

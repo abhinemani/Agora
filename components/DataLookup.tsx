@@ -22,7 +22,39 @@ const EXAMPLES: [string, string][] = [
   ["gov_ks_lawrence", "City of Lawrence, KS"],
   ["gov_co_crested-butte", "Town of Crested Butte"],
   ["gov_fl_ocala", "City of Ocala"],
+  ["gov_ny_deruyter-village", "Village of DeRuyter, NY"],
 ];
+
+const WEB_SOURCE = { gov: ".gov registry", census: "Census of Governments", nces: "NCES", ipeds: "IPEDS" } as const;
+
+/** A government's permanent federal IDs, and where its website came from. */
+function FederalIds({ gov }: { gov: DirectoryGovernment }) {
+  const ids = gov.ids ?? {};
+  const items: React.ReactNode[] = [];
+  if (ids.census) items.push(<span key="c">Census of Governments ID {ids.census}</span>);
+  if (ids.nces)
+    items.push(
+      <a key="n" href={`https://nces.ed.gov/ccd/districtsearch/district_detail.asp?ID2=${ids.nces}`} target="_blank" rel="noreferrer" className="text-primary">
+        NCES district {ids.nces} ↗
+      </a>,
+    );
+  if (ids.ipeds)
+    items.push(
+      <a key="u" href={`https://nces.ed.gov/collegenavigator/?id=${ids.ipeds}`} target="_blank" rel="noreferrer" className="text-primary">
+        IPEDS {ids.ipeds} ↗
+      </a>,
+    );
+  return (
+    <div className="mt-2 flex flex-wrap gap-x-3 gap-y-1 text-ui-3xs text-base-dark">
+      {items.length ? items : <span>No federal ID matched yet</span>}
+      {gov.domain && (
+        <a href={`https://${gov.domain}`} target="_blank" rel="noreferrer" className="text-primary">
+          {gov.domain} ↗{gov.domain_source ? <span className="text-base-dark"> (from {WEB_SOURCE[gov.domain_source]})</span> : null}
+        </a>
+      )}
+    </div>
+  );
+}
 
 /** /data: look a government up in the co-op directory, and optionally search as it. */
 export function DataLookup() {
@@ -73,10 +105,12 @@ export function DataLookup() {
                 {ENTITY_LABEL[gov.entity_type]} · {gov.city && gov.city !== gov.name ? `${gov.city}, ` : ""}
                 {stateName(gov.state)}
                 {gov.county ? ` · ${gov.county} County` : ""}
-                {gov.domain ? ` · ${gov.domain}` : ""}
+                {gov.population ? ` · pop. ${gov.population.toLocaleString()}` : ""}
+                {gov.enrollment ? ` · ${gov.enrollment.toLocaleString()} students` : ""}
                 {gov.status === "inferred" && " · public status inferred from its name"}
               </div>
               {gov.aliases.length > 0 && <div className="mt-1 text-ui-3xs text-base-dark">Also published as {gov.aliases.map((a) => `“${a}”`).join(", ")}</div>}
+              <FederalIds gov={gov} />
             </div>
             <Button disabled={busy} onClick={() => searchAs(gov)}>
               Search as {gov.name.length > 28 ? "this agency" : gov.name}

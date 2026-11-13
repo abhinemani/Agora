@@ -1,6 +1,247 @@
 {
  "generated": "2026-11-13",
  "retrieved": "2026-11-13",
+ "federal": {
+  "sources": [
+   {
+    "id": "census",
+    "name": "Census Bureau, Government Units List 2026",
+    "url": "https://www2.census.gov/programs-surveys/gus/datasets/2026/",
+    "records": 92633,
+    "note": "Counties, municipalities, townships, special districts and school districts, each with a CENSUS_ID_PID6"
+   },
+   {
+    "id": "nces",
+    "name": "NCES Common Core of Data, district directory 2024-25",
+    "url": "https://nces.ed.gov/ccd/files.asp",
+    "records": 19270,
+    "note": "Open public school districts, charter districts and service agencies, each with an LEAID"
+   },
+   {
+    "id": "ipeds",
+    "name": "IPEDS institutional characteristics 2024",
+    "url": "https://nces.ed.gov/ipeds/datacenter/DataFiles.aspx",
+    "records": 5994,
+    "note": "Active colleges with a UNITID; 1,975 public"
+   }
+  ],
+  "census_by_type": {
+   "county": 3031,
+   "municipality": 35579,
+   "special_district": 40175,
+   "school_district": 13343,
+   "higher_education": 505
+  },
+  "college_pairs": 390,
+  "school_pairs": {
+   "by_website": 4468,
+   "by_name": 5718,
+   "census_only": 3157,
+   "nces_only": 9084
+  },
+  "matched": 41360,
+  "merged_by_id": 1638,
+  "added": 62810,
+  "confirmed_public": 1416,
+  "private_set_aside": 868,
+  "private_examples": [
+   {
+    "name": "Samford University",
+    "state": "AL",
+    "coops": [
+     "coop_buyboard_national",
+     "coop_eandi"
+    ]
+   },
+   {
+    "name": "St Mary's College of California",
+    "state": "CA",
+    "coops": [
+     "coop_eandi"
+    ]
+   },
+   {
+    "name": "North Park University",
+    "state": "IL",
+    "coops": [
+     "coop_eandi"
+    ]
+   },
+   {
+    "name": "Madonna University",
+    "state": "MI",
+    "coops": [
+     "coop_eandi"
+    ]
+   },
+   {
+    "name": "Manhattan University",
+    "state": "NY",
+    "coops": [
+     "coop_eandi"
+    ]
+   },
+   {
+    "name": "Salus University",
+    "state": "PA",
+    "coops": [
+     "coop_eandi",
+     "coop_costars"
+    ]
+   }
+  ],
+  "governments_with_id": 103300,
+  "roster_governments": 61733,
+  "roster_with_id": 40407,
+  "roster_by_type": {
+   "tribal": {
+    "all": 385,
+    "with_id": 0
+   },
+   "special_district": {
+    "all": 18275,
+    "with_id": 6667
+   },
+   "school_district": {
+    "all": 18357,
+    "with_id": 11381
+   },
+   "county": {
+    "all": 3332,
+    "with_id": 2982
+   },
+   "municipality": {
+    "all": 18938,
+    "with_id": 18001
+   },
+   "higher_education": {
+    "all": 2388,
+    "with_id": 1376
+   },
+   "state_agency": {
+    "all": 58,
+    "with_id": 0
+   }
+  },
+  "unmatched_examples": [
+   {
+    "name": "Akiachak Native Community",
+    "state": "AK",
+    "type": "tribal"
+   },
+   {
+    "name": "Brighton Fire Rescue District",
+    "state": "CO",
+    "type": "special_district"
+   },
+   {
+    "name": "Township of Wade - Jasper County",
+    "state": "IL",
+    "type": "municipality"
+   },
+   {
+    "name": "Van Buren Conservation District",
+    "state": "MI",
+    "type": "special_district"
+   },
+   {
+    "name": "University Hospital",
+    "state": "NJ",
+    "type": "higher_education"
+   },
+   {
+    "name": "Irrigon Community Park and Recreation Maintenance District",
+    "state": "OR",
+    "type": "special_district"
+   },
+   {
+    "name": "Norco Fire Co",
+    "state": "PA",
+    "type": "special_district"
+   },
+   {
+    "name": "City of Gun Barrell",
+    "state": "TX",
+    "type": "municipality"
+   }
+  ],
+  "merge_examples": [
+   {
+    "name": "Borough of Fairbanks North Star",
+    "state": "AK",
+    "merged": [
+     "Fairbanks North Star Borough"
+    ],
+    "id": "census 100208"
+   },
+   {
+    "name": "Hutchinson Public Schools USD 308",
+    "state": "KS",
+    "merged": [
+     "Hutchinson Unified School District 308"
+    ],
+    "id": "census 179607"
+   },
+   {
+    "name": "Freeport Public School District",
+    "state": "NY",
+    "merged": [
+     "Freeport Public Schools"
+    ],
+    "id": "census 181560"
+   },
+   {
+    "name": "Morgan County School District",
+    "state": "TN",
+    "merged": [
+     "Morgan County Schools"
+    ],
+    "id": "census 160480"
+   },
+   {
+    "name": "Carroll County Board of Education",
+    "state": "GA",
+    "merged": [
+     "Carroll County School District"
+    ],
+    "id": "census 210158"
+   },
+   {
+    "name": "Gloucester County Vocational Technical School District",
+    "state": "NJ",
+    "merged": [
+     "Gloucester County Vocational-Technical School"
+    ],
+    "id": "census 117619"
+   },
+   {
+    "name": "Borough of Collingdale",
+    "state": "PA",
+    "merged": [
+     "Collingdale Borough"
+    ],
+    "id": "census 111954"
+   },
+   {
+    "name": "Borough of New Wilmington",
+    "state": "PA",
+    "merged": [
+     "New Wilmington Borough"
+    ],
+    "id": "census 174008"
+   }
+  ],
+  "websites": {
+   "total": 47792,
+   "by_source": {
+    "gov": 14134,
+    "census": 20623,
+    "ipeds": 1838,
+    "nces": 11197
+   },
+   "roster_with_website": 27726
+  }
+ },
  "workbook": {
   "roster_rows": 90469,
   "tabs": [
@@ -86,131 +327,131 @@
   }
  ],
  "directory": {
-  "governments": 71755,
+  "governments": 130373,
   "from_rosters": 64229,
-  "on_a_roster": 64224,
+  "on_a_roster": 61733,
   "by_type": {
-   "tribal": 535,
-   "state_agency": 955,
-   "special_district": 21625,
-   "school_district": 19717,
-   "county": 4322,
-   "municipality": 21247,
-   "higher_education": 3354
+   "tribal": 515,
+   "state_agency": 951,
+   "special_district": 54315,
+   "school_district": 29655,
+   "higher_education": 3202,
+   "county": 4230,
+   "municipality": 37505
   },
-  "inferred": 8012,
-  "with_domain": 14132,
-  "roster_with_domain": 8043,
+  "inferred": 5177,
+  "with_domain": 47792,
+  "roster_with_domain": 27726,
   "dotgov_rows": 15750,
-  "dotgov_matched": 8062,
-  "dotgov_added": 6070
+  "dotgov_matched": 9748,
+  "dotgov_added": 4386
  },
  "overlap": {
   "by_roster_count": {
-   "1": 51366,
-   "2": 9404,
-   "3": 3119,
-   "4+": 335
+   "1": 47777,
+   "2": 10241,
+   "3": 3344,
+   "4+": 371
   },
   "conservative_key_entities": 75467,
   "conservative_key_multi": 11309,
-  "entity_key_multi": 12858,
-  "on_three_or_more": 3464,
+  "entity_key_multi": 13956,
+  "on_three_or_more": 3725,
   "examples": [
    {
-    "name": "Baldwin County Board of Education",
+    "name": "Borough of Fairbanks North Star",
+    "state": "AK",
+    "also": [
+     "Fairbanks North Star Borough"
+    ],
+    "coops": 2
+   },
+   {
+    "name": "Lawrence County Board of Education",
     "state": "AL",
     "also": [
-     "Baldwin County Board of Education (AL)"
-    ],
-    "coops": 2
-   },
-   {
-    "name": "City of El Mirage",
-    "state": "AZ",
-    "also": [
-     "El Mirage, City of"
+     "Lawrence County Board of Education District"
     ],
     "coops": 3
    },
    {
-    "name": "Eastern Arizona College",
+    "name": "Baboquivari Unified School District 40",
     "state": "AZ",
     "also": [
-     "Eastern Arizona College (Graham County Community College)"
+     "Baboquivari USD No.40"
     ],
     "coops": 3
    },
    {
-    "name": "Santa Cruz Valley Unified School District 35",
+    "name": "City of Phoenix",
     "state": "AZ",
     "also": [
-     "Santa Cruz Valley USD No.35"
+     "Phoenix, City of"
+    ],
+    "coops": 3
+   },
+   {
+    "name": "Hackberry School District 3",
+    "state": "AZ",
+    "also": [
+     "Hackberry SD No.3"
     ],
     "coops": 2
    },
    {
-    "name": "Town of Superior",
+    "name": "Sanders Unified School District 18",
     "state": "AZ",
     "also": [
-     "Superior, Town of"
+     "Sanders USD No.18"
     ],
     "coops": 2
    },
    {
-    "name": "Kern County",
+    "name": "Town of Quartzsite",
+    "state": "AZ",
+    "also": [
+     "Quartzsite, Town of"
+    ],
+    "coops": 2
+   },
+   {
+    "name": "Fresno County",
     "state": "CA",
     "also": [
-     "County of Kern"
+     "County of Fresno"
     ],
-    "coops": 2
-   },
-   {
-    "name": "Milford Public Schools",
-    "state": "CT",
-    "also": [
-     "Milford Public Schools (CT)"
-    ],
-    "coops": 2
-   },
-   {
-    "name": "City of Saint Charles",
-    "state": "IL",
-    "also": [
-     "City of St. Charles"
-    ],
-    "coops": 2
+    "coops": 3
    }
   ]
  },
  "coop_counts": {
   "coop_sourcewell": {
    "list": 0,
-   "roster": 48580,
+   "roster": 48455,
    "agency": 7,
    "purchase": 0
   },
   "coop_hgacbuy": {
    "list": 0,
-   "roster": 9688,
+   "roster": 9674,
    "agency": 5,
    "purchase": 0
   },
   "coop_buyboard_national": {
    "list": 0,
-   "roster": 4660,
+   "roster": 4638,
    "agency": 1,
    "purchase": 0
   },
   "coop_eandi": {
    "list": 0,
-   "roster": 7231,
+   "roster": 6400,
    "agency": 3,
    "purchase": 0
   },
   "coop_mohave": {
    "list": 0,
-   "roster": 489,
+   "roster": 488,
    "agency": 0,
    "purchase": 0
   },
@@ -276,13 +517,13 @@
   },
   "coop_costars": {
    "list": 0,
-   "roster": 6857,
+   "roster": 6778,
    "agency": 0,
    "purchase": 0
   },
   "coop_buyboard": {
    "list": 0,
-   "roster": 3371,
+   "roster": 3347,
    "agency": 5,
    "purchase": 0
   },
@@ -300,9 +541,9 @@
   }
  },
  "evidence": {
-  "roster": 64224,
+  "roster": 61733,
   "agency": 12,
-  "purchase": 3619,
+  "purchase": 3581,
   "id_checks": [
    {
     "agency": "Lawrence",
@@ -565,12 +806,13 @@
    "strongest": "roster"
   },
   {
-   "id": "gov_tx_university-of-texas-md-anderson-cancer-center",
+   "id": "gov_tx_university-of-texas-m-d-anderson-cancer-center",
    "name": "University of Texas MD Anderson Cancer Center",
    "state": "TX",
    "type": "higher_education",
    "dir_sales": 32798014,
    "coops": [
+    "coop_hgacbuy",
     "coop_sourcewell",
     "coop_eandi"
    ],
@@ -684,13 +926,15 @@
   },
   {
    "id": "gov_tx_austin-community-college",
-   "name": "Austin Community College",
+   "name": "Austin Community College District",
    "state": "TX",
    "type": "higher_education",
    "dir_sales": 17559554,
    "coops": [
     "coop_hgacbuy",
-    "coop_buyboard"
+    "coop_buyboard",
+    "coop_sourcewell",
+    "coop_eandi"
    ],
    "strongest": "roster"
   },

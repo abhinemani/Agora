@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import { CATEGORY_TONE, CategoryIcon } from "@/components/CategoryIcon";
+import { CategoryIcon } from "@/components/CategoryIcon";
 import { Calendar, Chair, Repeat } from "@/components/icons";
 import { Search } from "@/components/icons";
 import { useStore } from "@/components/store";
@@ -117,22 +117,19 @@ export default function RiverbendMarketplace() {
             See everything
           </Link>
         </div>
-        <div className="mt-4 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-6">
+        <div className="mt-4 grid grid-cols-2 border-l border-t border-base-lighter sm:grid-cols-3 lg:grid-cols-6">
           {CATEGORIES.filter((c) => available.some((l) => l.category === c)).map((c) => {
             const n = available.filter((l) => l.category === c).length;
             return (
               <Link
                 key={c}
                 href={`/browse?cat=${encodeURIComponent(c)}`}
-                className="group flex flex-col justify-between gap-6 rounded-2xl p-4 transition-transform hover:-translate-y-0.5"
-                style={{ background: CATEGORY_TONE[c].bg }}
+                className="group flex flex-col justify-between gap-6 border-b border-r border-base-lighter bg-white p-4 no-underline transition-colors hover:bg-primary-lighter/40"
               >
-                <span className="w-fit rounded-xl bg-white/70 p-1">
-                  <CategoryIcon category={c} size="md" />
-                </span>
+                <CategoryIcon category={c} size="md" />
                 <span className="min-w-0">
-                  <span className="block truncate text-sm font-semibold text-navy">{c}</span>
-                  <span className="block text-xs" style={{ color: CATEGORY_TONE[c].fg }}>
+                  <span className="block truncate text-sm font-semibold text-ink group-hover:text-primary">{c}</span>
+                  <span className="mt-0.5 block font-mono text-[11px] uppercase tracking-[0.12em] text-base-dark">
                     {n.toLocaleString()} items
                   </span>
                 </span>

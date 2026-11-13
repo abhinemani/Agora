@@ -7,6 +7,7 @@ import type { Source, Supplier } from "@/lib/types";
 import us from "@/lib/uswds-theme.json";
 import { useStore } from "./store";
 import { VerifyBadge } from "./Verification";
+import { Mark } from "./blueprint";
 
 export const money = (n: number, cents = true) =>
   n.toLocaleString("en-US", { style: "currency", currency: "USD", minimumFractionDigits: cents ? 2 : 0, maximumFractionDigits: cents ? 2 : 0 });
@@ -183,10 +184,12 @@ export function SectionLabel({ children, right }: { children: React.ReactNode; r
   );
 }
 
+/** Agora's one motion, the mark closing in, shown wherever the app is working. */
 export function Loading({ label = "Loading" }: { label?: string }) {
   return (
-    <div className="py-16 text-center text-ui-xs text-base-dark" role="status">
-      {label}…
+    <div className="flex flex-col items-center gap-3 py-16 text-center text-ui-xs text-base-dark" role="status">
+      <Mark className="h-10 w-10" working />
+      <span>{label}…</span>
     </div>
   );
 }

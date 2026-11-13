@@ -185,10 +185,10 @@ export function BlueprintBackdrop({
 }
 
 /** Corner registration ticks and a dimension line, drawn around the search box. */
-export function DimensionFrame({ label, children }: { label: string; children: React.ReactNode }) {
-  const tick = "pointer-events-none absolute h-3.5 w-3.5 border-[#CFE0F5]";
+export function DimensionFrame({ label, working = false, children }: { label: string; working?: boolean; children: React.ReactNode }) {
+  const tick = "frame-tick pointer-events-none absolute h-3.5 w-3.5 border-[#CFE0F5]";
   return (
-    <div className="relative">
+    <div className={`relative ${working ? "frame-working" : ""}`}>
       <div aria-hidden="true" className="pointer-events-none absolute inset-x-0 -top-[34px] flex h-3 items-center gap-2.5 font-mono text-[11px] tracking-[0.12em] text-[#CFE0F5]">
         <span className="relative h-0 flex-1 border-t border-[#CFE0F5]">
           <span className="absolute -top-1.5 left-0 h-3 border-l border-[#CFE0F5]" />
@@ -198,10 +198,10 @@ export function DimensionFrame({ label, children }: { label: string; children: R
           <span className="absolute -top-1.5 right-0 h-3 border-l border-[#CFE0F5]" />
         </span>
       </div>
-      <span aria-hidden="true" className={`${tick} -left-2.5 -top-2.5 border-l border-t`} />
-      <span aria-hidden="true" className={`${tick} -right-2.5 -top-2.5 border-r border-t`} />
-      <span aria-hidden="true" className={`${tick} -bottom-2.5 -left-2.5 border-b border-l`} />
-      <span aria-hidden="true" className={`${tick} -bottom-2.5 -right-2.5 border-b border-r`} />
+      <span aria-hidden="true" className={`${tick} -left-2.5 -top-2.5 border-l border-t`} style={{ "--dx": "8px", "--dy": "8px" } as React.CSSProperties} />
+      <span aria-hidden="true" className={`${tick} -right-2.5 -top-2.5 border-r border-t`} style={{ "--dx": "-8px", "--dy": "8px" } as React.CSSProperties} />
+      <span aria-hidden="true" className={`${tick} -bottom-2.5 -left-2.5 border-b border-l`} style={{ "--dx": "8px", "--dy": "-8px" } as React.CSSProperties} />
+      <span aria-hidden="true" className={`${tick} -bottom-2.5 -right-2.5 border-b border-r`} style={{ "--dx": "-8px", "--dy": "-8px" } as React.CSSProperties} />
       {children}
     </div>
   );

@@ -51,6 +51,12 @@ No agency is set by default, so search covers every contract. An agency (name, s
 
 When a product sits on a contract the buyer can't use but the same supplier has an open co-op award, it is offered by quote through that award, with the closed contract's price shown only as a reference. Sourcewell discount percentages from the research seed appear only as labeled, unverified notes, never as prices. The four buyer presets are the City of Riverbend (Oregon), Harmon Lake Township (a fictional New Jersey municipality), the City of Cedar Bend (a fictional Iowa city, which reaches Tyler through NASPO) and a New Jersey state department. Contracts past their end date are shown as expired and can't be bought from.
 
+## Co-op contracts link out
+
+Agora doesn't sell through a co-op's contracts. A result on a co-op contract shows **Buy on NASPO ↗** (or Sourcewell, and so on), which opens that contract's own page through a tracked redirect, `/go/[contract]`. Each click is logged with the agency, contract, co-op and request, so Sovra can show every co-op the traffic it sends. This follows the partnerships plan: send traffic first, show co-ops the lift, and only then talk about a share. It also keeps Agora from sitting between a co-op and its members as a reseller would.
+
+A co-op that has agreed can let its members buy inside Agora. Each co-op (`lib/coops.ts`) carries a `buy_in_agora` setting, off by default. In the seed, NASPO ValuePoint and Sourcewell are off because they're real co-ops with no agreement. The fictional WSPC is on, so demo step 1's National Furniture listing can still be bought in Agora. Checkout and quote requests refuse a link-out contract on the server as well as in the UI. Open **Sovra revenue (demo) → Co-op traffic** to see clicks per co-op, whether each co-op shares its member list, any contracts missing a contract-level link, and the switch for each co-op.
+
 ## NASPO ValuePoint
 
 `npm run import:naspo` (`scripts/import-naspo.mjs`) reads one NASPO ValuePoint portfolio from naspovaluepoint.org (its public WordPress API and supplier pages) and writes `seed/catalogs/naspo-citizen-engagement-platforms.json`: each award's master agreement number, award and expiration dates, the states with a participating addendum, and links to the master agreement and price files. It needs network access to www.naspovaluepoint.org and, for documents, its S3 buckets; run Node with `NODE_USE_ENV_PROXY=1` behind a proxy.

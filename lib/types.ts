@@ -143,6 +143,35 @@ export interface Contract {
   relation_note?: string;
   /** Source documents: master agreement, price files, participating addenda. */
   documents?: { label: string; url: string }[];
+  /** The co-op that awarded it (co-op contracts only). */
+  coop_id?: string;
+}
+
+/** A purchasing cooperative. Agora sends buyers to its contract pages rather
+ * than selling through it, so the co-op sees the traffic, unless the co-op has
+ * agreed to let its members buy inside Agora. */
+export interface Coop {
+  id: string;
+  name: string;
+  website: string;
+  /** Whether the co-op shares its member list; no formal relationship without one. */
+  member_list_status: "none" | "partial" | "full";
+  /** Members may check out or request quotes in Agora. Off unless the co-op has agreed. */
+  buy_in_agora: boolean;
+  /** Plain-language status shown to Sovra ops. */
+  note: string;
+}
+
+/** One outbound click to a contract page, logged by the /go redirect. */
+export interface ClickEvent {
+  id: string;
+  contract_id: string;
+  coop_id: string | null;
+  listing_id: string | null;
+  request_id: string | null;
+  buyer_name: string | null;
+  url: string;
+  created_at: string;
 }
 
 export interface ContractDocument {
@@ -366,6 +395,8 @@ export interface Db {
   suppliers: Supplier[];
   reviews: Review[];
   contracts: Contract[];
+  coops: Coop[];
+  clicks: ClickEvent[];
   documents: ContractDocument[];
   extracted: ExtractedItem[];
   listings: Listing[];

@@ -53,6 +53,13 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
     } catch {}
   }, [refresh]);
 
+  // Co-op links open in a new tab and are logged server-side; pick them up on return.
+  useEffect(() => {
+    const onFocus = () => void refresh();
+    window.addEventListener("focus", onFocus);
+    return () => window.removeEventListener("focus", onFocus);
+  }, [refresh]);
+
   const setRole = (r: Role) => {
     setRoleState(r);
     try {

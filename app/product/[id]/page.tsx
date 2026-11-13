@@ -5,11 +5,13 @@ import { useParams, useSearchParams } from "next/navigation";
 import { Suspense, useState } from "react";
 import { BuyerPicker } from "@/components/BuyerPicker";
 import { CategoryIcon } from "@/components/CategoryIcon";
+import { CoopLink } from "@/components/CoopLink";
 import { Alert, Check, File, Lock } from "@/components/icons";
 import { useStore } from "@/components/store";
 import { Badge, Button, Card, ErrorNote, LinkButton, Loading, SourcePill, Stars, SupplierBadges, money } from "@/components/ui";
 import type { Contract, QuoteRequest } from "@/lib/types";
 import { familyOf, routesFor, stateName, type Route } from "@/lib/vehicles";
+import { coopOf, isContractLevelUrl, linksOut } from "@/lib/coops";
 
 const USAGE_UNITS = /^(hr|hour|interaction|transaction|text|postcard|summons|minute|call|signature|device\/day|parcel|user|user\/yr|mo)$/i;
 
@@ -175,10 +177,11 @@ function Product() {
 }
 
 function RouteCard({ r, productId, qty, requestId }: { r: Route; productId: string; qty: number; requestId: string | null }) {
-  const { act } = useStore();
+  const { db, act } = useStore();
   const [quote, setQuote] = useState<QuoteRequest | null>(null);
   const [error, setError] = useState<string | null>(null);
   const c = r.contract;
+  const out = db && (r.action === "buy" || r.action === "quote") && linksOut(db, c) ? coopOf(db, c) : null;
   const v = VERIFICATION[c.verification ?? "demo"];
   const open = r.eligibility.eligible;
 
@@ -218,14 +221,22 @@ function RouteCard({ r, productId, qty, requestId }: { r: Route; productId: stri
           </div>
         </div>
         <div className="flex min-w-[10rem] flex-col items-end gap-2">
-          {r.action === "buy" && r.listing && (
+          {out && (
+            <>
+              <CoopLink contractId={c.id} coop={out.name} hasLink={isContractLevelUrl(c.source_url)} listingId={productId} requestId={requestId} size="md" disabled={!open} />
+              <span className="max-w-[13rem] text-right text-[11px] text-slate">
+                {r.action === "quote" ? "Request your quote" : "Order"} on {out.name}'s contract page.
+              </span>
+            </>
+          )}
+          {!out && r.action === "buy" && r.listing && (
             open ? (
               <LinkButton href={`/checkout?listing=${r.listing.id}&qty=${qty}${requestId ? `&request=${requestId}` : ""}`}>Buy at {money(r.listing.unit_price * qty)}</LinkButton>
             ) : (
               <Button disabled>Not available</Button>
             )
           )}
-          {r.action === "quote" &&
+          {!out && r.action === "quote" &&
             (quote ? (
               <span className="max-w-[12rem] text-right text-xs font-semibold text-emerald-800">
                 Quote request {quote.id} sent. The supplier replies through {c.vehicle}.

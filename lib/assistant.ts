@@ -6,6 +6,7 @@ import { structured } from "./llm";
 import { CATEGORIES } from "./types";
 import type { Buyer, Category, Contract, Db, Listing, ParsedRequest, PeerPurchase, Request, Solicitation, Source, Supplier } from "./types";
 import { checkEligibility, defaultVariant, familyOf, SOURCEWELL_TYLER_NOTES } from "./vehicles";
+import { coopOf, isContractLevelUrl, linksOut } from "./coops";
 
 export const SOURCE_ORDER: Source[] = ["own_contract", "state_contract", "coop_contract", "reseller", "gsa", "no_approval"];
 
@@ -252,6 +253,20 @@ export interface ResultOption {
   /** Set when the listing's own contract is closed to this buyer but the same
    * supplier's co-op award is open: buy there by quote, price shown for reference. */
   quote_route: { contract_id: string; vehicle: string; contract_number: string; reference: string; research_note: string | null } | null;
+  /** Set when this route is bought on the co-op's own contract page, through the tracked redirect. */
+  link_out: LinkOut | null;
+}
+
+export interface LinkOut {
+  contract_id: string;
+  coop: string;
+  /** False when no contract-level link is on file (a data defect). */
+  has_link: boolean;
+}
+
+function linkOutFor(db: Db, c: Contract | undefined): LinkOut | null {
+  if (!c || !linksOut(db, c)) return null;
+  return { contract_id: c.id, coop: coopOf(db, c)?.name ?? c.vehicle ?? c.owner, has_link: isContractLevelUrl(c.source_url) };
 }
 
 export interface Unavailable {
@@ -294,6 +309,7 @@ export interface ContractLead {
   title: string;
   eligible: boolean;
   reason: string;
+  link_out: LinkOut | null;
 }
 
 const contractText = (db: Db, c: Contract) => `${c.title} ${c.vehicle ?? ""} ${db.suppliers.find((s) => s.id === c.supplier_id)?.name ?? ""}`;
@@ -317,6 +333,7 @@ function contractLeads(db: Db, itemTokens: string[], buyer: Buyer | null): Contr
         title: c.title,
         eligible: e.eligible,
         reason: e.reason,
+        link_out: linkOutFor(db, c),
       };
     })
     .sort((a, b) => Number(b.eligible) - Number(a.eligible));
@@ -405,6 +422,7 @@ export function buildResults(db: Db, request: Request): Results {
         vehicle: contractOf(l)?.vehicle ?? null,
         group: l.source,
         quote_route: null,
+        link_out: linkOutFor(db, contractOf(l)),
       };
     };
   const quoteOptionFor = (l: Listing): ResultOption => {
@@ -418,6 +436,7 @@ export function buildResults(db: Db, request: Request): Results {
       vehicle: route.vehicle ?? null,
       contract_number: route.contract_number,
       rule: { text: `Quote via ${route.vehicle} ${route.contract_number} · discount off list`, payment: "po" },
+      link_out: linkOutFor(db, route),
       quote_route: {
         contract_id: route.id,
         vehicle: route.vehicle ?? route.owner,

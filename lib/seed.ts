@@ -1,6 +1,7 @@
 // Seed data for Agora and the City of Riverbend's city marketplace. IDs are stable so the demo
 // script in section 8 of the spec is repeatable after every reset.
 
+import { SEED_COOPS, coopIdForVehicle } from "./coops";
 import type { Category, Db, Listing, Source } from "./types";
 import { fireMonthlyLines } from "./revenue_rules";
 import tylerCatalog from "../seed/catalogs/tyler-technologies-2025-03.json";
@@ -518,6 +519,8 @@ export function seed(): Db {
       { title: "First aid kit, 50-person", supplier: "Patriot Safety & Uniform", date: "2026-09-22", qty: 6, listing_id: "lst_034" },
     ],
     quotes: [],
+    coops: SEED_COOPS.map((c) => ({ ...c })),
+    clicks: [],
     session: { preference_answer: null, spend_dashboard_enabled: true, acting_supplier_id: "sup_riverside", buyer: null },
     counters: { revenue: 0, request: 0, order: 1040, solicitation: 7, contract: 0, listing: 40, doc: 0, item: 0, attention: 0 },
   };
@@ -526,6 +529,7 @@ export function seed(): Db {
   addMaximus(db);
   addCarahsoftLeads(db);
   addNaspoCitizenEngagement(db);
+  for (const c of db.contracts) if (c.source === "coop_contract") c.coop_id ??= coopIdForVehicle(c.vehicle);
   fireMonthlyLines(db);
   return db;
 }

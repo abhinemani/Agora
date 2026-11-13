@@ -15,6 +15,7 @@ import {
 } from "./revenue_rules";
 import type { Buyer, Category, Contract, ContractDocument, ContractHeader, Db, EdgeTier, ExtractedItem, Listing, Request, Role, Solicitation } from "./types";
 import { checkEligibility, STATES } from "./vehicles";
+import { coopOf, isContractLevelUrl, linksOut } from "./coops";
 
 const now = () => new Date().toISOString();
 
@@ -85,6 +86,7 @@ export function requestQuote(args: { listingId: string; contractId: string; quan
   const buyer = db.session.buyer ?? fail("Set your agency first (top right, Your agency) so the supplier knows who's asking.");
   const check = checkEligibility(contract, buyer);
   if (!check.eligible) fail(`${contract.vehicle ?? contract.owner} ${contract.contract_number} isn't open to ${buyer.name}: ${check.reason}.`);
+  if (linksOut(db, contract)) fail(`Quotes on ${contract.vehicle ?? contract.owner} ${contract.contract_number} go through ${coopOf(db, contract)?.name}'s contract page.`);
   const quote = {
     id: nextId(db, "quote", "QR", 4).replace("_", "-"),
     listing_id: listing.id,
@@ -150,6 +152,7 @@ export function placeOrder(args: { listingId: string; quantity: number; requestI
   const contractFor = db.contracts.find((c) => c.id === listing.contract_id);
   const access = checkEligibility(contractFor, db.session.buyer);
   if (!access.eligible) fail(`This contract isn't open to ${db.session.buyer?.name}: ${access.reason}.`);
+  if (linksOut(db, contractFor)) fail(`${contractFor?.vehicle} ${contractFor?.contract_number} is bought on ${coopOf(db, contractFor)?.name}'s own contract page, not in Agora.`);
   const qty = Math.max(1, Math.floor(args.quantity));
   const tier = [...(db.extracted.find((e) => e.id === listing.extracted_item_id)?.tier_pricing ?? [])]
     .sort((a, b) => b.min_qty - a.min_qty)
@@ -565,6 +568,34 @@ export function respondToReview(reviewId: string, text: string) {
   if (!text.trim()) fail("Write a response first.");
   r.response = text.trim();
   return onReviewResponse(db, actingSupplier(db).name, r.id);
+}
+
+// ---------------------------------------------------------------- co-ops
+
+/** Sovra ops: whether a co-op's members may buy inside Agora (only once the co-op agrees). */
+export function setCoopBuyInAgora(coopId: string, on: boolean) {
+  const db = getDb();
+  const coop = db.coops.find((c) => c.id === coopId) ?? fail("Co-op not found");
+  coop.buy_in_agora = on;
+  return coop;
+}
+
+/** Log an outbound click and return where to send the buyer, or null if the contract has no link. */
+export function logClick(args: { contractId: string; listingId?: string | null; requestId?: string | null }) {
+  const db = getDb();
+  const contract = db.contracts.find((c) => c.id === args.contractId);
+  if (!contract?.source_url) return null;
+  db.clicks.unshift({
+    id: nextId(db, "click", "clk", 4),
+    contract_id: contract.id,
+    coop_id: coopOf(db, contract)?.id ?? null,
+    listing_id: args.listingId ?? null,
+    request_id: args.requestId ?? null,
+    buyer_name: db.session.buyer?.name ?? null,
+    url: contract.source_url,
+    created_at: now(),
+  });
+  return { url: contract.source_url, contract_level: isContractLevelUrl(contract.source_url) };
 }
 
 export function reset() {

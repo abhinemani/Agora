@@ -27,6 +27,7 @@ const handlers: Record<string, Handler> = {
   addMarketplace: (b) => A.addMarketplace(b.marketplaceId),
   startApp: (b) => A.startApp(b.appId),
   respondToReview: (b) => A.respondToReview(b.reviewId, b.text),
+  setCoopBuyInAgora: (b) => A.setCoopBuyInAgora(b.coopId, Boolean(b.on)),
   reset: () => {
     A.reset();
     return { ok: true };

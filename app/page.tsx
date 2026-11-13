@@ -2,13 +2,14 @@
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import { BlueprintBackdrop, DimensionFrame } from "@/components/BlueprintBackdrop";
 import { CATEGORY_TONE, CategoryIcon } from "@/components/CategoryIcon";
 import { HeroPreview } from "@/components/HeroPreview";
 import { TwoProducts } from "@/components/TwoProducts";
 import { Arrow, Search } from "@/components/icons";
 import { useStore } from "@/components/store";
-import { ErrorNote, Loading } from "@/components/ui";
+import { ErrorNote, Loading, money } from "@/components/ui";
 import type { Listing, Request } from "@/lib/types";
 import { CATEGORIES } from "@/lib/types";
 
@@ -22,6 +23,7 @@ export default function Home() {
   const [text, setText] = useState("");
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const input = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     if (role !== "buyer") setRole("buyer");
@@ -37,9 +39,14 @@ export default function Home() {
   const suppliers = new Set(db.listings.map((l) => l.supplier_id)).size;
   const products = new Set(db.listings.map((l) => l.family ?? l.id)).size;
   const vehicles = [...new Set(db.contracts.map((c) => c.vehicle).filter((v): v is string => !!v && v !== "Reseller"))];
+  const prices = preview.map((r) => r.listing.unit_price).filter((n) => Number.isFinite(n));
+  const priceRange = prices.length > 1 ? `${money(Math.min(...prices), false)}–${money(Math.max(...prices), false)} each` : undefined;
 
   const submit = async (q: string) => {
-    if (!q.trim()) return;
+    if (!q.trim()) {
+      input.current?.focus();
+      return;
+    }
     setBusy(true);
     setError(null);
     try {
@@ -53,51 +60,73 @@ export default function Home() {
 
   return (
     <div className="pb-8">
-      {/* Hero: one question, one box. */}
-      <section className="px-1 pb-14 pt-12 text-center sm:pt-20">
-        <div className="text-ui-2xs font-bold text-primary">Government buying, simplified</div>
-        <h1 className="mx-auto mt-5 max-w-3xl font-heading text-[clamp(2rem,4.4vw,3rem)] font-bold leading-[1.15] text-ink">What are you looking to buy?</h1>
-        <p className="mx-auto mt-4 max-w-xl text-base leading-relaxed text-slate">
-          Search state and cooperative contracts in one place. Agora shows which ones your agency can use, what they cost, and how to buy.
-        </p>
-        <form
-          className="mx-auto mt-10 flex max-w-3xl items-center gap-2 border border-base-dark bg-white pl-4 focus-within:outline focus-within:outline-4 focus-within:outline-focus"
-          onSubmit={(e) => {
-            e.preventDefault();
-            submit(text);
-          }}
-        >
-          <Search className="h-5 w-5 shrink-0 text-steel" />
-          <input
-            value={text}
-            onChange={(e) => setText(e.target.value)}
-            placeholder="Describe what you need, like “permitting software for a mid-size city”"
-            className="min-w-0 flex-1 !border-0 !px-1 !py-4 !text-body-sm !shadow-none !outline-none !ring-0"
-            aria-label="What are you looking to buy?"
-          />
-          <button
-            type="submit"
-            disabled={busy || !text.trim()}
-            className="inline-flex shrink-0 items-center gap-1.5 self-stretch bg-primary px-5 text-ui-xs font-bold text-white transition hover:bg-primary-dark active:bg-primary-darker disabled:bg-disabled-lighter disabled:text-disabled-dark sm:px-7"
-          >
-            Find solutions <Arrow className="hidden h-4 w-4 sm:block" />
-          </button>
-        </form>
-        <div className="mx-auto mt-5 flex max-w-3xl flex-wrap justify-center gap-x-3 gap-y-1">
-          {EXAMPLES.map((e) => (
-            <button
-              key={e}
-              onClick={() => submit(e)}
-              disabled={busy}
-              className="px-2 py-1 text-ui-2xs text-base-darker underline decoration-base-light underline-offset-4 transition hover:text-ink hover:decoration-ink"
-            >
-              {e}
-            </button>
-          ))}
+      {/* Hero: one question, one box, drawn as a blueprint. Full bleed, out of main's padding. */}
+      <section className="relative -mt-8 mx-[calc(50%-50vw)] overflow-hidden bg-[#0F3D73] px-5 pb-20 pt-16 text-center sm:pt-24 md:pb-32">
+        <BlueprintBackdrop contracts={db.contracts.length} suppliers={suppliers} products={products} vehicles={vehicles.length} priceRange={priceRange} />
+        <div className="relative mx-auto max-w-3xl">
+          <div className="text-ui-2xs font-bold text-[#A8CBF2]">Government buying, simplified</div>
+          <h1 className="mx-auto mt-5 max-w-3xl font-heading text-[clamp(2rem,4.4vw,3.4rem)] font-bold leading-[1.12] text-white">What are you looking to buy?</h1>
+          <p className="mx-auto mt-4 max-w-xl text-base leading-relaxed text-[#D3E3F6]">
+            Search state and cooperative contracts in one place. Agora shows which ones your agency can use, what they cost, and how to buy.
+          </p>
+          <div className="mx-auto mt-14 max-w-3xl">
+            <DimensionFrame label={`FIG. 2 · SEARCH ${db.contracts.length} CONTRACTS`}>
+              <form
+                className="flex flex-col gap-2 bg-white p-1.5 focus-within:outline focus-within:outline-4 focus-within:outline-focus sm:flex-row sm:items-center sm:pl-4"
+                onSubmit={(e) => {
+                  e.preventDefault();
+                  submit(text);
+                }}
+              >
+                <div className="flex min-w-0 flex-1 items-center gap-2 pl-2.5 sm:pl-0">
+                  <Search className="h-5 w-5 shrink-0 text-steel" />
+                  <input
+                    ref={input}
+                    value={text}
+                    onChange={(e) => setText(e.target.value)}
+                    placeholder="Describe what you need, like “permitting software for a mid-size city”"
+                    className="min-w-0 flex-1 !border-0 !px-1 !py-3.5 !text-body-sm !shadow-none !outline-none !ring-0"
+                    aria-label="What are you looking to buy?"
+                  />
+                </div>
+                <button
+                  type="submit"
+                  disabled={busy}
+                  className="inline-flex shrink-0 items-center justify-center gap-1.5 self-stretch bg-[#13294B] px-5 py-3.5 text-ui-xs font-bold text-white transition hover:bg-primary-darker active:bg-black disabled:opacity-70 sm:px-7 sm:py-0"
+                >
+                  {busy ? "Searching…" : "Find solutions"} <Arrow className="hidden h-4 w-4 sm:block" />
+                </button>
+              </form>
+            </DimensionFrame>
+          </div>
+          <div className="mx-auto mt-8 flex max-w-3xl flex-wrap justify-center gap-2.5">
+            {EXAMPLES.map((e) => (
+              <button
+                key={e}
+                onClick={() => submit(e)}
+                disabled={busy}
+                className="rounded-full border border-white/40 bg-white/5 px-3.5 py-1.5 text-ui-2xs text-white transition hover:border-white/80 hover:bg-white/15 disabled:opacity-60"
+              >
+                {e}
+              </button>
+            ))}
+          </div>
+          <p className="mt-5 text-[13px] text-[#BFD5EE]">No setup, forms, or contract number required.</p>
+          <div className="mx-auto mt-3 max-w-xl">
+            <ErrorNote message={error} />
+          </div>
         </div>
-        <p className="mt-4 text-[11px] text-slate">No setup, forms, or contract number required.</p>
-        <div className="mx-auto mt-3 max-w-xl">
-          <ErrorNote message={error} />
+      </section>
+
+      {/* The drawing's legend: what Agora searches. */}
+      <section className="mx-[calc(50%-50vw)] mb-12 border-b border-line bg-white px-5 py-6">
+        <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-center gap-x-7 gap-y-2">
+          <span className="text-sm font-semibold text-ink">Searching {db.contracts.length} contracts from</span>
+          {vehicles.map((v) => (
+            <Link key={v} href="/vehicles" className="text-sm tracking-tight text-slate hover:text-navy">
+              {v}
+            </Link>
+          ))}
         </div>
       </section>
 
@@ -176,14 +205,6 @@ export default function Home() {
         </Link>
       </section>
 
-      <section className="mt-14 flex flex-wrap items-center gap-x-8 gap-y-3 border-t border-line pt-8">
-        <span className="text-sm text-slate">Contracts in Agora</span>
-        {vehicles.map((v) => (
-          <Link key={v} href="/vehicles" className="text-sm font-semibold tracking-tight text-slate/80 hover:text-navy">
-            {v}
-          </Link>
-        ))}
-      </section>
     </div>
   );
 }

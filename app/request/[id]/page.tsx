@@ -4,13 +4,15 @@ import Link from "next/link";
 import { useParams, useSearchParams } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
 import { BuyerPicker } from "@/components/BuyerPicker";
+import { AddToCart } from "@/components/AddToCart";
 import { CoopLink } from "@/components/CoopLink";
 import { CoopSection, FitPill } from "@/components/CoopSection";
+import { RouteStrip } from "@/components/RouteStrip";
 import { ExpiredNote, InviteAdminBanner, NextSteps, OwnContractsCard } from "@/components/ResultExtras";
 import { CategoryIcon } from "@/components/CategoryIcon";
 import { useStore } from "@/components/store";
 import { Lock, People, Plus, Sparkle } from "@/components/icons";
-import { Badge, Button, Card, ErrorNote, Eyebrow, IconCircle, LinkButton, Loading, RevenueTags, SourcePill, Stars, SupplierBadges, money } from "@/components/ui";
+import { Badge, Button, Card, ErrorNote, Eyebrow, IconCircle, LinkButton, Loading, RevenueTags, SOURCE_HEX, SourcePill, Stars, SupplierBadges, money } from "@/components/ui";
 import { goHref } from "@/lib/coops";
 import type { ContractLead, Results, ResultOption, Unavailable } from "@/lib/assistant";
 import { PURCHASE_KINDS, TRANSACTION_FEE_SOURCES } from "@/lib/revenue_rules";
@@ -161,6 +163,7 @@ export default function RequestResults() {
       <ErrorNote message={error} />
       {!needsBuyer && !needsAnswer && !results && !error && <Loading label={buyer ? `Checking every contract ${buyer.name} can use` : "Checking every contract in Agora"} />}
 
+      {results && <RouteStrip results={results} />}
       {results && <InviteAdminBanner requestId={id} />}
       {results && <OwnContractsCard hits={results.own_contracts} agency={results.buyer?.name ?? "Your agency"} />}
 
@@ -177,7 +180,7 @@ export default function RequestResults() {
             </Card>
           )}
 
-          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          <div id="options" className="grid scroll-mt-24 gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {shown.map((o) => (
               <OptionCard key={o.listing.id} o={o} qty={p.quantity} requestId={id} />
             ))}
@@ -291,11 +294,14 @@ function OptionCard({ o, qty, requestId }: { o: ResultOption; qty: number; reque
   const title = tiered ? l.title.replace(/\s*\([^)]*\)\s*$/, "") : l.title;
   const href = `/product/${l.id}?qty=${qty}&request=${requestId}`;
   return (
-    <div className="flex min-h-[290px] flex-col rounded-2xl border border-line bg-white p-[18px] shadow-[0_3px_15px_rgba(19,45,82,0.02)] transition hover:border-[#bbcae8]">
+    <div
+      className="flex min-h-[290px] flex-col rounded-2xl border border-l-[4px] border-line bg-white p-[18px] shadow-[0_3px_15px_rgba(19,45,82,0.02)] transition-colors hover:border-[#bbcae8]"
+      style={{ borderLeftColor: SOURCE_HEX[qr ? o.group : l.source] }}
+    >
       <div className="flex items-start justify-between gap-3">
         <CategoryIcon category={l.category} />
         <div className="flex flex-col items-end gap-1">
-          <SourcePill source={l.source} />
+          <SourcePill source={l.source} contractId={l.contract_id} />
           <div className="flex items-center gap-1.5">
             {o.member === true && db?.session.buyer && <span className="text-[10px] font-semibold text-emerald-700">Your co-op</span>}
             {o.member === false && db?.session.buyer && <span className="text-[10px] font-semibold text-maroon">Join to use</span>}
@@ -350,9 +356,13 @@ function OptionCard({ o, qty, requestId }: { o: ResultOption; qty: number; reque
           <div className="text-[10px] text-slate">{qr ? `Reference price on ${qr.reference}` : qty > 1 ? `${qty} for ${money(total)}` : o.delivery}</div>
         </div>
         <div className="flex shrink-0 items-center gap-1.5">
-          <Link href={href} className="rounded-[9px] border border-[#dbe4f0] bg-white px-3 py-2 text-xs font-bold text-[#385783] hover:border-[#8fa8e8]">
-            View →
-          </Link>
+          {lo || qr ? (
+            <Link href={href} className="rounded-[9px] border border-[#dbe4f0] bg-white px-3 py-2 text-xs font-bold text-[#385783] hover:border-[#8fa8e8]">
+              View
+            </Link>
+          ) : (
+            <AddToCart listingId={l.id} quantity={qty} requestId={requestId} />
+          )}
           {lo ? (
             <CoopLink contractId={lo.contract_id} coop={lo.coop} hasLink={lo.has_link} listingId={l.id} requestId={requestId} />
           ) : qr ? (

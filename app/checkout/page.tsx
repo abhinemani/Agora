@@ -86,7 +86,7 @@ function Checkout() {
               {supplier.name} <SupplierBadges supplier={supplier} />
             </div>
             <div className="mt-2 flex items-center gap-2 text-xs text-slate">
-              <SourcePill source={listing.source} /> {contract?.contract_number} {listing.sku && `· SKU ${listing.sku}`}
+              <SourcePill source={listing.source} contractId={listing.contract_id} /> {contract?.contract_number} {listing.sku && `· SKU ${listing.sku}`}
             </div>
           </div>
           <div className="flex items-center gap-2">

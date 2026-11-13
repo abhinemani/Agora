@@ -3,7 +3,9 @@
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import { Check } from "@/components/icons";
+import { OrderTimeline } from "@/components/OrderTimeline";
 import { useStore } from "@/components/store";
+import { ORDER_STATUS } from "@/lib/orders";
 import { Badge, Button, Card, ErrorNote, IconCircle, LinkButton, Loading, money, sourceLabel } from "@/components/ui";
 
 export default function OrderConfirmation() {
@@ -25,7 +27,7 @@ export default function OrderConfirmation() {
             <Check />
           </IconCircle>
           <div>
-            <div className="text-[11px] font-semibold text-maroon">{order.status === "placed" ? "Order placed" : order.status === "approved" ? "PO approved" : "Sent for approval"}</div>
+            <div className="text-[11px] font-semibold text-maroon">{ORDER_STATUS[order.status].label}</div>
             <h1 className="mt-1 text-3xl font-semibold tracking-tight text-navy">Order {order.id}</h1>
             <p className="mt-1 text-sm text-slate">
               {order.quantity} ×{" "}
@@ -40,7 +42,7 @@ export default function OrderConfirmation() {
           <div className="rounded-md bg-tint p-3">
             <div className="text-xs text-slate">Payment path</div>
             <div className="font-semibold text-navy">
-              {order.payment === "pcard" ? "P-card, charged on shipment" : order.status === "approved" ? "PO approved by Purchasing" : "PO waiting on Marcus Reyes, Purchasing"}
+              {order.payment === "pcard" ? "P-card, charged on shipment" : order.status === "pending_approval" ? "PO waiting on Marcus Reyes, Purchasing" : "PO approved by Purchasing"}
             </div>
           </div>
           <div className="rounded-md bg-tint p-3">
@@ -53,6 +55,8 @@ export default function OrderConfirmation() {
           {contract ? ` ${contract.contract_number} (${contract.owner})` : ""}.
         </p>
       </Card>
+
+      <OrderTimeline orderId={order.id} />
 
       <Card className="p-5">
         <div className="flex items-center justify-between">
@@ -71,7 +75,7 @@ export default function OrderConfirmation() {
               <span className={`font-semibold tabular-nums ${e.amount < 0 ? "text-emerald-700" : "text-navy"}`}>{money(e.amount)}</span>
             </li>
           ))}
-          {!events.length && <li className="text-sm text-slate">No fees on this order (off-contract and not on a P-card).</li>}
+          {!events.length && <li className="text-sm text-slate">{order.events?.length && !db.revenue.some((e) => e.related_id === order.id) && new Date(order.created_at) < new Date(Date.now() - 86_400_000) ? "Placed before this demo session, so no fees were recorded." : "No fees on this order (off-contract and not on a P-card)."}</li>}
         </ul>
       </Card>
 

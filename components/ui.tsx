@@ -2,8 +2,10 @@
 
 import Link from "next/link";
 import { EDGE_TIER, REVENUE_OPTIONS } from "@/lib/revenue_rules";
+import { isTrx, TRX_STATES } from "@/lib/trx";
 import type { Source, Supplier } from "@/lib/types";
 import { useStore } from "./store";
+import { VerifyBadge } from "./Verification";
 
 export const money = (n: number, cents = true) =>
   n.toLocaleString("en-US", { style: "currency", currency: "USD", minimumFractionDigits: cents ? 2 : 0, maximumFractionDigits: cents ? 2 : 0 });
@@ -12,22 +14,35 @@ export const compact = (n: number) =>
   n >= 1_000_000 ? `$${(n / 1_000_000).toFixed(2)}M` : n >= 1000 ? `$${Math.round(n / 1000)}K` : money(n, false);
 
 const SOURCE_STYLE: Record<Source, { label: string; cls: string }> = {
-  own_contract: { label: "Agency contract", cls: "bg-navy" },
-  state_contract: { label: "State contract", cls: "bg-steel" },
-  coop_contract: { label: "Co-op contract", cls: "bg-maroon" },
-  reseller: { label: "Reseller", cls: "bg-slate" },
-  gsa: { label: "GSA schedule", cls: "bg-navy-600" },
-  no_approval: { label: "No approval needed", cls: "bg-emerald-600" },
+  own_contract: { label: "Agency contract", cls: "bg-src-own" },
+  state_contract: { label: "State contract", cls: "bg-src-state" },
+  coop_contract: { label: "Co-op contract", cls: "bg-src-coop" },
+  reseller: { label: "Reseller", cls: "bg-src-other" },
+  gsa: { label: "GSA schedule", cls: "bg-src-other" },
+  no_approval: { label: "No approval needed", cls: "bg-src-small" },
 };
 
-export function SourcePill({ source }: { source: Source }) {
+/** The source palette as hex, for edges and the route strip. Mirrors tailwind's src colors. */
+export const SOURCE_HEX: Record<Source, string> = {
+  own_contract: "#167757",
+  state_contract: "#A86B12",
+  coop_contract: "#6A4BC4",
+  reseller: "#708097",
+  gsa: "#708097",
+  no_approval: "#0E7C86",
+};
+
+/** Where a listing is bought. Pass the contract id so state contracts in TRX states get their label. */
+export function SourcePill({ source, contractId }: { source: Source; contractId?: string | null }) {
   const s = SOURCE_STYLE[source];
+  const { db } = useStore();
+  const trx = source === "state_contract" && contractId ? isTrx(db?.contracts.find((c) => c.id === contractId)) : false;
   return (
     <span className="inline-flex items-center gap-1.5 text-xs text-slate">
       <span className={`h-1.5 w-1.5 rounded-full ${s.cls}`} aria-hidden />
       {s.label}
-      {source === "state_contract" && (
-        <span className="rounded border border-navy/20 px-1 text-[10px] font-bold text-navy" title="A state contract on the TRX program, which Sovra supports">
+      {trx && (
+        <span className="rounded border border-navy/20 px-1 text-[10px] font-bold text-navy" title={`A state contract on the TRX program (${TRX_STATES.join(", ")}), which Sovra supports`}>
           TRX
         </span>
       )}
@@ -70,7 +85,7 @@ export function SupplierBadges({ supplier }: { supplier: Supplier }) {
           {c}
         </Badge>
       ))}
-      {supplier.verified.insurance && supplier.verified.bond && <Badge tone="green">Verified</Badge>}
+      <VerifyBadge supplier={supplier} />
     </span>
   );
 }

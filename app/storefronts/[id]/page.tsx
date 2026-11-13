@@ -6,7 +6,10 @@ import { useState } from "react";
 import { CATEGORY_TONE, CategoryIcon } from "@/components/CategoryIcon";
 import { Check, File, Globe, Lock, Search } from "@/components/icons";
 import { useStore } from "@/components/store";
+import { VerificationList } from "@/components/Verification";
+import { verificationSummary } from "@/lib/verification";
 import { ErrorNote, Loading, SourcePill, Stars, SupplierBadges, money, supplierColor } from "@/components/ui";
+import { Card } from "@/components/ui";
 import type { Contract, Listing } from "@/lib/types";
 import { checkEligibility, defaultVariant, stateName } from "@/lib/vehicles";
 
@@ -175,7 +178,7 @@ export default function SupplierStorefront() {
                   <div className="text-[16px] font-bold leading-snug text-navy group-hover:text-maroon">{nameOf(p)}</div>
                   {p.l.detail && <p className="mt-1 line-clamp-2 text-xs text-slate">{p.l.detail}</p>}
                   <div className="mt-auto flex items-end justify-between pt-4">
-                    <SourcePill source={p.l.source} />
+                    <SourcePill source={p.l.source} contractId={p.l.contract_id} />
                     <span className="text-sm font-extrabold tabular-nums text-navy">
                       {p.tiers > 1 ? "from " : ""}
                       {money(p.from)}
@@ -188,6 +191,18 @@ export default function SupplierStorefront() {
           </div>
         </section>
       )}
+
+      <section id="verification" className="scroll-mt-24">
+        <h2 className="text-xl font-extrabold tracking-tight text-navy">What's been checked</h2>
+        <p className="mt-1 text-sm text-slate">
+          {verificationSummary(s).unchecked
+            ? `Agora hasn't run checks on ${s.name} yet. These are the checks it runs before a supplier shows as verified.`
+            : "Each check, its source and when it was last run."}
+        </p>
+        <Card className="mt-4 px-5 py-2">
+          <VerificationList supplier={s} />
+        </Card>
+      </section>
 
       <section id="ways-to-buy" className="scroll-mt-24">
         <h2 className="text-xl font-extrabold tracking-tight text-navy">Ways to buy from {s.name}</h2>
@@ -241,7 +256,7 @@ export default function SupplierStorefront() {
               <Link key={p.l.id} href={`/product/${p.l.id}`} className="flex flex-col rounded-2xl border border-line bg-white p-4 transition hover:border-[#bbcae8]">
                 <div className="flex items-start justify-between gap-3">
                   <CategoryIcon category={p.l.category} size="sm" />
-                  <SourcePill source={p.l.source} />
+                  <SourcePill source={p.l.source} contractId={p.l.contract_id} />
                 </div>
                 <div className="mt-3 line-clamp-2 text-[15px] font-bold leading-snug text-navy">{nameOf(p)}</div>
                 {p.l.detail && <p className="mt-1 line-clamp-2 text-xs text-slate">{p.l.detail}</p>}
@@ -312,7 +327,7 @@ function ContractCard({ c }: { c: Contract }) {
       <div className="flex flex-wrap items-center gap-2">
         <span className="font-semibold text-navy">{c.vehicle ?? c.owner}</span>
         <span className="font-mono text-xs text-slate">{c.contract_number}</span>
-        <SourcePill source={c.source} />
+        <SourcePill source={c.source} contractId={c.id} />
         {expired && <span className="rounded bg-[#fdecec] px-1.5 py-0.5 text-[10px] font-bold text-[#b42318]">Expired</span>}
       </div>
       <div className="mt-1 text-sm text-navy">{c.title}</div>

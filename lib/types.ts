@@ -88,6 +88,8 @@ export interface Supplier {
   categories: Category[];
   /** A featured storefront's own copy. Absent for a basic storefront. */
   profile?: SupplierProfile;
+  /** The checks behind the Verified badge. Only demo suppliers carry results. */
+  checks?: VerificationCheck[];
   website?: string;
 }
 
@@ -166,13 +168,21 @@ export interface Coop {
   member_list_status: "none" | "partial" | "full";
   /** Where the member list came from. "demo" lists are illustrative, not from the co-op. */
   member_list_source?: "co-op" | "scraped" | "demo";
-  members?: { name: string; domain: string }[];
+  members?: CoopMember[];
+  member_list_updated_at?: string;
   /** How agencies get on it: a membership, or their state signing a participating addendum (NASPO ValuePoint). */
   access?: "membership" | "state_addendum";
   /** Members may check out or request quotes in Agora. Off unless the co-op has agreed. */
   buy_in_agora: boolean;
   /** Plain-language status shown to Sovra ops. */
   note: string;
+}
+
+/** One government on a co-op's member list. Matched to agencies by website, or by name and state. */
+export interface CoopMember {
+  name: string;
+  domain: string;
+  state?: string;
 }
 
 /** An agency's membership in a co-op: detected from a member list, or added by the agency. */
@@ -363,6 +373,8 @@ export interface Request {
   outcome: "ordered" | "solicitation" | "abandoned" | null;
 }
 
+export type OrderStatus = "placed" | "pending_approval" | "approved" | "shipped" | "delivered" | "invoiced" | "reconciled";
+
 export interface Order {
   id: string;
   request_id: string | null;
@@ -370,9 +382,54 @@ export interface Order {
   quantity: number;
   total: number;
   payment: "pcard" | "po";
-  status: "placed" | "pending_approval" | "approved";
+  status: OrderStatus;
   department: string;
   created_at: string;
+  /** Who asked for it, and the cart it came from, if any. */
+  requester?: string;
+  cart_id?: string | null;
+  /** Each step the order has been through, oldest first. */
+  events?: { status: OrderStatus; at: string; note: string }[];
+  /** PO orders: the supplier's invoice, matched against the PO and the receipt. */
+  invoice?: { number: string; amount: number };
+  /** Where finance codes it, e.g. "100-410-6100". */
+  gl_code?: string;
+}
+
+export interface CartLine {
+  listing_id: string;
+  quantity: number;
+  request_id?: string | null;
+}
+
+/** A shopping cart. Built by a requester, optionally handed to someone who can buy,
+ * sent for approval when any supplier's share needs a PO, then checked out into orders. */
+export interface Cart {
+  id: string;
+  agency: string;
+  status: "draft" | "pending" | "approved" | "rejected";
+  lines: CartLine[];
+  created_by: string;
+  /** Who has the cart now: the requester, or whoever it was handed to. */
+  holder: string;
+  handoff?: { from: string; to: string; division: string; ship_to: string; notes: string; at: string };
+  submitted_at?: string;
+  decided_by?: string;
+  decided_at?: string;
+  reject_reason?: string;
+  order_ids: string[];
+  created_at: string;
+  updated_at: string;
+}
+
+/** One check behind a supplier's "Verified" badge. */
+export interface VerificationCheck {
+  id: "sam_registration" | "sam_exclusions" | "section_889" | "insurance" | "bond" | "certification";
+  label: string;
+  status: "pass" | "fail" | "expiring" | "not_checked";
+  detail: string;
+  source: string;
+  checked_at: string | null;
 }
 
 export interface Solicitation {
@@ -478,6 +535,7 @@ export interface Db {
   referrals: Referral[];
   impressions: Impression[];
   agency_settings: AgencySettings[];
+  carts: Cart[];
   invites: Invite[];
   handoffs: RfpHandoff[];
   documents: ContractDocument[];

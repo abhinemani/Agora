@@ -14,11 +14,13 @@ import {
   onMarketplaceAdded,
 } from "./revenue_rules";
 import { CATEGORIES } from "./types";
-import type { Buyer, Category, Contract, ContractDocument, ContractHeader, Db, EdgeTier, ExtractedItem, Listing, Request, Role, Solicitation } from "./types";
-import { checkEligibility, STATES } from "./vehicles";
+import type { Buyer, Cart, Category, Contract, Coop, CoopMember, Order, OrderStatus, ContractDocument, ContractHeader, Db, EdgeTier, ExtractedItem, Listing, Request, Role, Solicitation } from "./types";
+import { BUYER_PRESETS, checkEligibility, STATES } from "./vehicles";
 import { FREE_RFP_LIMIT, settingsFor } from "./agency";
 import { parseRegister } from "./register";
-import { coopOf, detectCoops, isContractLevelUrl, isMember, linksOut, normalizeDomain } from "./coops";
+import { cartAgency, cartGroups, draftCart, glCode, needsApproval, nextStep, PURCHASER, REQUESTER } from "./orders";
+import { coopOf, detectCoops, isContractLevelUrl, isMember, linksOut, memberMatches, normalizeDomain } from "./coops";
+import { parseMemberList } from "./members";
 
 const now = () => new Date().toISOString();
 
@@ -164,31 +166,52 @@ export function getResults(requestId: string) {
 export function placeOrder(args: { listingId: string; quantity: number; requestId?: string | null; department: string }) {
   const db = getDb();
   const listing = db.listings.find((l) => l.id === args.listingId) ?? fail("Listing not found");
+  const qty = Math.max(1, Math.floor(args.quantity));
+  const unit = unitPrice(db, listing, qty);
+  const rule = ruleFor(db, { ...listing, unit_price: unit }, qty);
+  return createOrder(db, { listing, quantity: qty, requestId: args.requestId ?? null, department: args.department, payment: rule.payment, preApproved: false });
+}
+
+function unitPrice(db: Db, listing: Listing, qty: number) {
+  const tier = [...(db.extracted.find((e) => e.id === listing.extracted_item_id)?.tier_pricing ?? [])]
+    .sort((a, b) => b.min_qty - a.min_qty)
+    .find((t) => qty >= t.min_qty);
+  return tier?.unit_price ?? listing.unit_price;
+}
+
+/** Every order, from checkout or a cart, goes through here: same checks, same revenue events. */
+function createOrder(
+  db: Db,
+  args: { listing: Listing; quantity: number; requestId: string | null; department: string; payment: "pcard" | "po"; preApproved: boolean; cartId?: string; requester?: string; note?: string },
+) {
+  const { listing } = args;
   const contractFor = db.contracts.find((c) => c.id === listing.contract_id);
   const access = checkEligibility(contractFor, db.session.buyer);
   if (!access.eligible) fail(`This contract isn't open to ${db.session.buyer?.name}: ${access.reason}.`);
   if (linksOut(db, contractFor)) fail(`${contractFor?.vehicle} ${contractFor?.contract_number} is bought on ${coopOf(db, contractFor)?.name}'s own contract page, not in Agora.`);
-  const qty = Math.max(1, Math.floor(args.quantity));
-  const tier = [...(db.extracted.find((e) => e.id === listing.extracted_item_id)?.tier_pricing ?? [])]
-    .sort((a, b) => b.min_qty - a.min_qty)
-    .find((t) => qty >= t.min_qty);
-  const unit = tier?.unit_price ?? listing.unit_price;
-  const total = Math.round(unit * qty * 100) / 100;
-  const rule = ruleFor(db, { ...listing, unit_price: unit }, qty);
-  if (listing.source === "no_approval" && total >= db.agency.quick_buy_threshold)
-    fail("Off-contract purchases must stay under the quick-buy limit.");
+  const qty = args.quantity;
+  const total = Math.round(unitPrice(db, listing, qty) * qty * 100) / 100;
+  if (listing.source === "no_approval" && total >= db.agency.quick_buy_threshold) fail("Off-contract purchases must stay under the quick-buy limit.");
 
   const n = (db.counters.order = (db.counters.order ?? 0) + 1);
-  const order = {
-    id: `${orderPrefix(db.session.buyer?.name)}-${rule.payment === "po" ? "PO" : "PC"}-${n}`,
-    request_id: args.requestId ?? null,
+  const status: OrderStatus = args.payment === "po" ? (args.preApproved ? "approved" : "pending_approval") : "placed";
+  const order: Order = {
+    id: `${orderPrefix(db.session.buyer?.name)}-${args.payment === "po" ? "PO" : "PC"}-${n}`,
+    request_id: args.requestId,
     listing_id: listing.id,
     quantity: qty,
     total,
-    payment: rule.payment,
-    status: rule.payment === "po" ? ("pending_approval" as const) : ("placed" as const),
+    payment: args.payment,
+    status,
     department: args.department,
     created_at: now(),
+    requester: args.requester ?? REQUESTER,
+    cart_id: args.cartId ?? null,
+    gl_code: glCode(db, args.department),
+    events: [
+      { status: args.payment === "po" ? "pending_approval" : "placed", at: now(), note: args.payment === "po" ? "PO created and sent for approval" : "Ordered on the P-card; charged when it ships" },
+      ...(status === "approved" ? [{ status: "approved" as const, at: now(), note: args.note ?? `PO approved by ${PURCHASER}, Purchasing` }] : []),
+    ],
   };
   db.orders.unshift(order);
   const req = db.requests.find((r) => r.id === args.requestId);
@@ -209,8 +232,161 @@ export function placeOrder(args: { listingId: string; quantity: number; requestI
 export function approveOrder(orderId: string) {
   const db = getDb();
   const o = db.orders.find((o) => o.id === orderId) ?? fail("Order not found");
+  if (o.status !== "pending_approval") fail(`${o.id} isn't waiting on approval.`);
   o.status = "approved";
+  (o.events ??= []).push({ status: "approved", at: now(), note: `PO approved by ${PURCHASER}, Purchasing` });
   return o;
+}
+
+/** Move an order to its next step: shipped, received, invoice matched, reconciled. */
+export function advanceOrder(orderId: string) {
+  const db = getDb();
+  const o = db.orders.find((o) => o.id === orderId) ?? fail("Order not found");
+  const next = nextStep(o) ?? fail(o.status === "pending_approval" ? `${o.id} needs approval first.` : `${o.id} is already reconciled.`);
+  const listing = db.listings.find((l) => l.id === o.listing_id);
+  const supplier = db.suppliers.find((s) => s.id === listing?.supplier_id);
+  const seq = o.id.replace(/\D/g, "");
+  let note = "";
+  if (next.status === "shipped") note = `${supplier?.name ?? "Supplier"} shipped it; tracking 1Z${seq.padStart(6, "0")}4410`;
+  if (next.status === "delivered") note = `Received by ${o.department}`;
+  if (next.status === "invoiced") {
+    o.invoice = { number: `INV-${seq}`, amount: o.total };
+    note = `Invoice INV-${seq} for ${o.total.toLocaleString("en-US", { style: "currency", currency: "USD" })} matches the PO and the receipt`;
+  }
+  if (next.status === "reconciled")
+    note = o.payment === "pcard" ? `Card charge matched to the receipt and coded to ${o.gl_code ?? glCode(db, o.department)}` : `Payment approved and the PO closed, coded to ${o.gl_code ?? glCode(db, o.department)}`;
+  o.status = next.status;
+  (o.events ??= []).push({ status: next.status, at: now(), note });
+  return o;
+}
+
+// ---------------------------------------------------------------- carts
+
+function activeCart(db: Db) {
+  let cart = draftCart(db);
+  if (!cart) {
+    cart = { id: nextId(db, "cart", "cart", 3), agency: cartAgency(db), status: "draft", lines: [], created_by: REQUESTER, holder: REQUESTER, order_ids: [], created_at: now(), updated_at: now() };
+    db.carts.unshift(cart);
+  }
+  return cart;
+}
+
+function cartById(db: Db, id: string) {
+  return db.carts.find((c) => c.id === id) ?? fail("Cart not found");
+}
+
+export function addToCart(args: { listingId: string; quantity: number; requestId?: string | null }) {
+  const db = getDb();
+  const listing = db.listings.find((l) => l.id === args.listingId) ?? fail("Listing not found");
+  const contract = db.contracts.find((c) => c.id === listing.contract_id);
+  const access = checkEligibility(contract, db.session.buyer);
+  if (!access.eligible) fail(`${listing.title} isn't open to ${db.session.buyer?.name}: ${access.reason}.`);
+  if (linksOut(db, contract)) fail(`${listing.title} is bought on ${coopOf(db, contract)?.name}'s own site, so it can't go in the cart.`);
+  const cart = activeCart(db);
+  const qty = Math.max(1, Math.floor(args.quantity || 1));
+  const line = cart.lines.find((l) => l.listing_id === listing.id);
+  if (line) line.quantity += qty;
+  else cart.lines.push({ listing_id: listing.id, quantity: qty, request_id: args.requestId ?? null });
+  cart.updated_at = now();
+  return cart;
+}
+
+export function updateCartLine(args: { listingId: string; quantity: number }) {
+  const db = getDb();
+  const cart = draftCart(db) ?? fail("There's no open cart.");
+  const qty = Math.floor(args.quantity);
+  cart.lines = qty > 0 ? cart.lines.map((l) => (l.listing_id === args.listingId ? { ...l, quantity: qty } : l)) : cart.lines.filter((l) => l.listing_id !== args.listingId);
+  cart.updated_at = now();
+  return cart;
+}
+
+/** Hand the cart to someone who can buy: the person who needs the items is often not the card holder. */
+export function handoffCart(args: { to: string; division: string; shipTo: string; notes?: string }) {
+  const db = getDb();
+  const cart = draftCart(db) ?? fail("There's no open cart.");
+  if (!cart.lines.length) fail("Add something to the cart first.");
+  const to = args.to?.trim() || fail("Say who you're handing the cart to.");
+  if (!args.division?.trim()) fail("Pick the division the purchase is for.");
+  if (!args.shipTo?.trim()) fail("Add where it should be delivered.");
+  cart.handoff = { from: cart.holder, to, division: args.division.trim(), ship_to: args.shipTo.trim(), notes: args.notes?.trim() ?? "", at: now() };
+  cart.holder = to;
+  cart.updated_at = now();
+  return cart;
+}
+
+/** Check out: a cart where any supplier's share needs a PO goes to Purchasing first; otherwise it orders now. */
+export function submitCart() {
+  const db = getDb();
+  const cart = draftCart(db) ?? fail("There's no open cart.");
+  const groups = cartGroups(db, cart);
+  if (!groups.length) fail("Add something to the cart first.");
+  const blocked = groups.find((g) => g.blocked);
+  if (blocked) fail(blocked.blocked!);
+  cart.submitted_at = now();
+  cart.updated_at = now();
+  if (needsApproval(groups)) {
+    cart.status = "pending";
+    return cart;
+  }
+  return placeCart(db, cart, false);
+}
+
+function placeCart(db: Db, cart: Cart, approved: boolean) {
+  const department = cart.handoff?.division ?? db.agency.departments[0].name;
+  for (const g of cartGroups(db, cart))
+    for (const line of g.lines) {
+      const { order } = createOrder(db, {
+        listing: line.listing,
+        quantity: line.quantity,
+        requestId: line.request_id ?? null,
+        department,
+        payment: g.payment,
+        preApproved: approved,
+        cartId: cart.id,
+        requester: cart.created_by,
+        note: `PO approved by ${PURCHASER} with cart ${cart.id}`,
+      });
+      cart.order_ids.push(order.id);
+    }
+  cart.status = "approved";
+  return cart;
+}
+
+export function approveCart(cartId: string) {
+  const db = getDb();
+  const cart = cartById(db, cartId);
+  if (cart.status !== "pending") fail(`Cart ${cart.id} isn't waiting on approval.`);
+  cart.decided_by = PURCHASER;
+  cart.decided_at = now();
+  return placeCart(db, cart, true);
+}
+
+export function rejectCart(args: { cartId: string; reason: string }) {
+  const db = getDb();
+  const cart = cartById(db, args.cartId);
+  if (cart.status !== "pending") fail(`Cart ${cart.id} isn't waiting on approval.`);
+  const reason = args.reason?.trim() || fail("Say why, so the requester can fix it.");
+  Object.assign(cart, { status: "rejected", reject_reason: reason, decided_by: PURCHASER, decided_at: now(), updated_at: now() });
+  return cart;
+}
+
+/** A rejected cart goes back to draft for changes (merged into any cart already open). */
+export function reviseCart(cartId: string) {
+  const db = getDb();
+  const cart = cartById(db, cartId);
+  if (cart.status !== "rejected") fail("Only a rejected cart can be revised.");
+  const open = draftCart(db);
+  if (open && open.id !== cart.id) {
+    for (const l of cart.lines) {
+      const have = open.lines.find((x) => x.listing_id === l.listing_id);
+      if (have) have.quantity += l.quantity;
+      else open.lines.push(l);
+    }
+    db.carts = db.carts.filter((c) => c.id !== cart.id);
+    return open;
+  }
+  Object.assign(cart, { status: "draft", updated_at: now() });
+  return cart;
 }
 
 // ---------------------------------------------------------------- solicitations
@@ -762,6 +938,73 @@ export function askToJoin(args: { contractId: string; requestId?: string | null;
   };
   db.referrals.unshift(referral);
   return referral;
+}
+
+/** Sovra ops uploads a co-op's member list. "replace" swaps the list; "merge" adds to it.
+ * Memberships are then re-detected for every agency Agora knows. */
+export function importMembers(args: { coopId: string; table: unknown[][]; mode: "replace" | "merge"; filename: string }) {
+  const db = getDb();
+  const coop = db.coops.find((c) => c.id === args.coopId) ?? fail("Co-op not found");
+  const parsed = parseMemberList(args.table);
+  const key = (m: CoopMember) => m.domain || `${m.name.toLowerCase()}|${m.state ?? ""}`;
+  const before = coop.members ?? [];
+  if (args.mode === "replace") coop.members = parsed.members;
+  else {
+    const have = new Set(before.map(key));
+    coop.members = [...before, ...parsed.members.filter((m) => !have.has(key(m)))];
+  }
+  coop.member_list_status = args.mode === "replace" ? "full" : coop.member_list_status === "full" ? "full" : "partial";
+  coop.member_list_source = "co-op";
+  coop.member_list_updated_at = now();
+
+  // Re-detect: agencies newly on the list get a detected membership; detected (never
+  // confirmed) memberships for agencies no longer on it are dropped.
+  const agencies = new Map<string, Buyer>();
+  for (const p of BUYER_PRESETS) agencies.set(p.buyer.name, p.buyer);
+  if (db.session.buyer) agencies.set(db.session.buyer.name, db.session.buyer);
+  const matched: string[] = [];
+  for (const buyer of agencies.values()) {
+    const onList = (coop.members ?? []).some((m) => memberMatches(m, buyer));
+    const existing = db.memberships.find((m) => m.agency === buyer.name && m.coop_id === coop.id);
+    if (onList) {
+      matched.push(buyer.name);
+      if (!existing) db.memberships.push({ agency: buyer.name, coop_id: coop.id, source: "detected", confirmed: false });
+    } else if (existing && existing.source === "detected" && !existing.confirmed) {
+      db.memberships = db.memberships.filter((m) => m !== existing);
+    }
+  }
+  return {
+    coop: coop.name,
+    filename: args.filename,
+    mode: args.mode,
+    header_row: parsed.header_row,
+    columns: parsed.columns,
+    imported: parsed.members.length,
+    total: coop.members.length,
+    name_only: parsed.name_only,
+    issues: parsed.issues,
+    matched,
+  };
+}
+
+/** Sovra ops adds a co-op Agora doesn't track yet, so its member list can be uploaded. */
+export function addCoop(args: { name: string; website?: string; access?: "membership" | "state_addendum" }) {
+  const db = getDb();
+  const name = args.name?.trim() ?? "";
+  if (!name) fail("Name the co-op.");
+  if (db.coops.some((c) => c.name.toLowerCase() === name.toLowerCase())) fail(`${name} is already in Agora.`);
+  const coop: Coop = {
+    id: `coop_${name.toLowerCase().replace(/[^a-z0-9]+/g, "_").replace(/^_|_$/g, "")}`,
+    name,
+    website: args.website?.trim() ?? "",
+    member_list_status: "none",
+    access: args.access ?? "membership",
+    buy_in_agora: false,
+    note: "Added by Sovra ops; contracts not ingested yet.",
+    members: [],
+  };
+  db.coops.push(coop);
+  return coop;
 }
 
 /** Log an outbound click and return where to send the buyer, or null if the contract has no link. */

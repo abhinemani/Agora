@@ -241,6 +241,9 @@ function CoopTraffic() {
           );
         })}
       </section>
+      <Link href="/coops" className="block text-xs font-semibold text-maroon hover:underline">
+        Upload or update co-op member lists
+      </Link>
       <section>
         <h3 className="mb-2 text-xs font-semibold text-slate">Recent clicks</h3>
         {db.clicks.length ? (

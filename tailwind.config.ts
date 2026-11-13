@@ -16,9 +16,11 @@ export default {
         line: "#E1E7F1",
         slate: { DEFAULT: "#708097" },
         green: { DEFAULT: "#167757", 50: "#E7F5EF" },
+        // Where a purchase is made, used the same way everywhere: card edges, pills, the route strip.
+        src: { own: "#167757", state: "#A86B12", coop: "#6A4BC4", other: "#708097", small: "#0E7C86" },
       },
       fontFamily: {
-        sans: ["Inter", "ui-sans-serif", "system-ui", "-apple-system", '"Segoe UI"', "sans-serif"],
+        sans: ['"Public Sans"', "ui-sans-serif", "system-ui", "-apple-system", '"Segoe UI"', "sans-serif"],
         mono: ["ui-monospace", "SFMono-Regular", "monospace"],
       },
       boxShadow: { card: "0 1px 2px rgba(20,33,61,0.06), 0 1px 1px rgba(20,33,61,0.04)" },

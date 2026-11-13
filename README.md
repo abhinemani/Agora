@@ -81,7 +81,25 @@ The laptop contracts behind the demo are real master agreements, carried as rese
 
 **Setup questions route to purchasing.** If a requester searches before setup is done, a one-line banner says what's missing and what that means for the results, and offers **Invite purchasing**. The invite shows up on the setup page. No email is sent in the demo.
 
-Results also hide expired contracts by default, behind a one-line "N expired contracts also matched" with a **Show** link. State contracts carry a **TRX** label everywhere they appear.
+Results also hide expired contracts by default, behind a one-line "N expired contracts also matched" with a **Show** link. State contracts in TRX states (New Jersey, Oregon, Arkansas, Hawaii and New York; `TRX_STATES` in `lib/trx.ts`) carry a **TRX** label everywhere they appear, and the ledger books a TRX fee only on those. Other state contracts show an ordinary transaction fee.
+
+## Co-op member lists
+
+**Co-op member lists** (account menu, or **Ledger → Co-op traffic**, at `/coops`) is where Sovra ops keeps each co-op's list of member governments. Upload a CSV or XLSX with one government per row. `lib/members.ts` finds the name, website, email and state columns by their usual headings. A website, or failing that the domain of a contact email, is what Agora matches on. A row with neither still matches by name within the same state. Rows with no name, an unknown state or nothing to match on are skipped and reported. **Add to list** merges the upload into the existing list; **Replace list** swaps the list out entirely.
+
+After every upload, Agora re-runs the lookup for every agency it knows. Newly matched agencies get a detected membership, so the co-op moves to **Co-ops you're on** in their results. A detected membership that nobody confirmed is dropped when its agency no longer appears on the list. The page also adds co-ops Agora doesn't track yet (TIPS, for example). **Try the sample** loads `public/test-contracts/sourcewell-member-list-sample.csv`: eight fictional rows, including one matched by email domain, one by name and state, and two broken on purpose.
+
+## Carts, approvals and orders
+
+Result cards and product pages have **Add to cart**, and the header shows the cart. The **cart** (`/cart`) splits by supplier, and each supplier's share is paid one way: P-card under the $10K quick-buy limit, a PO at or over it. Whoever built the cart can **hand it to someone who can buy**, with a division, a delivery address and notes, because the person who needs something often isn't the card holder. A cart with any PO share goes to Purchasing on **Send for approval**. Otherwise it orders right away. Purchasing approves it from the Procurement home page, which places every order with its POs already approved, or sends it back with a required reason. A sent-back cart can be revised and resubmitted. The cart page's tabs (Cart, Waiting on approval, Ordered, Sent back) keep every cart visible, and a co-op listing that links out can't be added.
+
+Each **order** now runs to reconciled, with a timeline on its page. A P-card order goes placed → shipped → received → charge matched to the receipt. A PO order goes waiting on approval → approved → shipped → received → invoice matched (PO, receipt and invoice agree) → payment approved and the PO closed. Every step records what happened and when, and every order carries a demo GL code for its department. **Procurement → Orders** is the agency-wide table, filterable by person, department, status and payment, with each order's progress, its next step as a button and a CSV export for reconciliation. Riverbend is seeded with four earlier orders at different stages.
+
+**Verification.** Supplier badges now open the checks behind them: SAM.gov registration, the SAM.gov exclusions list, Section 889, certificate of insurance, performance bond and each certification. Every check shows its source and the date it was last run, and expiring or failed checks show as "N checks to review." Storefronts list the checks in full. Only the eight fictional demo suppliers carry results, all labeled as demo data. Real companies (Tyler, Dell and the rest) show every check as not checked yet, because Agora holds no real SAM.gov or insurance results for them.
+
+## Look and feel
+
+The type is Public Sans, the typeface of the U.S. Web Design System that many government sites already use. Color marks where something is bought, the same way everywhere: evergreen for an agency's own contracts, ochre for state contracts, violet for co-ops, slate for resellers and GSA, teal for small purchases (`src` in `tailwind.config.ts`, `SOURCE_HEX` in `components/ui.tsx`). Result cards carry that color on their left edge. Results open with **Where you can buy this**, a strip that counts each route in the order to try it (yours, state, your co-ops, co-ops to join, other) and links to each section.
 
 ## NASPO ValuePoint
 
@@ -126,6 +144,8 @@ The prototype supports section 8 of the spec end to end. Switch roles with the B
 9. **Buyer, co-op match:** set your agency to **Town of Crested Butte, CO** and ask for "laptops for the town hall". Agora detected Sourcewell from the town's website, so CDW and Ideal (fit 70, broad technology scope) sit under **Co-ops you're on**. NASPO's four Computer Equipment awards (fit 100, laptops named in the title) sit under **Co-ops you could join**, and the amber flag points out the better fit. Confirm Sourcewell, then choose **Ask purchasing to get us on this** on Dell 23026. Switch to **Procurement** to see the join request, and open **Ledger → Co-op traffic** for the impressions and the referral.
 10. **Procurement, setup:** open **Setup**, pick **Harmon Lake Township** and choose **Try the sample register**. Five contracts import, three rows are reported with their problems, and the expired janitorial contract is flagged. Switch to **Buyer** and ask for "bulletproof vests for patrol": the township's own body-armor contract comes first.
 11. **Buyer, the free tier:** still as Harmon Lake, ask for "LED retrofit for the ice rink" and choose **RFP Lite → Build it**. Publishing uses the last of the five free RFPs. Build another and the page asks to upgrade, but **Send it over** to Euna, back on the results page, still works.
+12. **Buyer, cart and approval:** as Riverbend, ask for the folding tables again and choose **Add to cart** on Riverside and on National Furniture. In the cart, Riverside's $10,560 is a PO and National's $9,960 is a P-card order. **Hand this cart to someone who can buy**, then **Send for approval**. Switch to **Procurement**: send it back with a reason, then, as the buyer, revise and resubmit, and as Purchasing, **Approve and order**. Open **Orders** and step the new PO through to reconciled.
+13. **Sovra ops, member lists:** open **Co-op member lists**, choose **Try the sample** on Sourcewell, then set your agency to Harmon Lake Township. Sourcewell now shows under its co-ops, matched by the email domain on the list.
 
 ## Where things live
 

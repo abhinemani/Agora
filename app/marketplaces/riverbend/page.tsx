@@ -158,7 +158,7 @@ export default function RiverbendMarketplace() {
                 <div className="line-clamp-2 text-sm font-semibold text-navy">{l.title}</div>
                 <div className="mt-1 text-xs text-slate">{supplierOf(l)}</div>
                 <div className="mt-auto flex items-end justify-between pt-4">
-                  <SourcePill source={l.source} />
+                  <SourcePill source={l.source} contractId={l.contract_id} />
                   <span className="text-base font-semibold tabular-nums text-navy">
                     {money(l.unit_price)}
                     <span className="text-xs font-normal text-slate"> / {l.unit}</span>

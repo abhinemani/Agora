@@ -5,6 +5,7 @@ import { useParams, useSearchParams } from "next/navigation";
 import { Suspense, useState } from "react";
 import { BuyerPicker } from "@/components/BuyerPicker";
 import { CategoryIcon } from "@/components/CategoryIcon";
+import { AddToCart } from "@/components/AddToCart";
 import { CoopLink } from "@/components/CoopLink";
 import { Alert, Check, File, Lock } from "@/components/icons";
 import { useStore } from "@/components/store";
@@ -165,7 +166,10 @@ function Product() {
                 <div className="text-base font-semibold text-navy">Small purchase</div>
                 <div className="mt-1 text-sm text-slate">No contract needed while the total stays under your quick-buy limit. Pay by P-card.</div>
               </div>
-              <LinkButton href={`/checkout?listing=${l.id}&qty=${qty}${requestId ? `&request=${requestId}` : ""}`}>Buy at {money(l.unit_price * qty)}</LinkButton>
+              <div className="flex items-center gap-2">
+                <AddToCart listingId={l.id} quantity={qty} requestId={requestId} size="md" />
+                <LinkButton href={`/checkout?listing=${l.id}&qty=${qty}${requestId ? `&request=${requestId}` : ""}`}>Buy at {money(l.unit_price * qty)}</LinkButton>
+              </div>
             </Card>
           )}
           {routes.map((r) => (
@@ -193,7 +197,7 @@ function RouteCard({ r, productId, qty, requestId }: { r: Route; productId: stri
           <div className="flex flex-wrap items-center gap-2">
             <span className="text-base font-semibold text-navy">{c.vehicle ?? c.owner}</span>
             <span className="font-mono text-xs text-slate">{c.contract_number}</span>
-            <SourcePill source={c.source} />
+            <SourcePill source={c.source} contractId={c.id} />
           </div>
           <div className="mt-0.5 text-xs text-slate">{c.owner}</div>
           <div className={`mt-2 flex items-start gap-1.5 text-sm ${!open ? "text-maroon" : c.verification === "research_lead" ? "text-amber-800" : "text-emerald-800"}`}>
@@ -232,7 +236,10 @@ function RouteCard({ r, productId, qty, requestId }: { r: Route; productId: stri
           )}
           {!out && r.action === "buy" && r.listing && (
             open ? (
-              <LinkButton href={`/checkout?listing=${r.listing.id}&qty=${qty}${requestId ? `&request=${requestId}` : ""}`}>Buy at {money(r.listing.unit_price * qty)}</LinkButton>
+              <div className="flex items-center gap-2">
+                <AddToCart listingId={r.listing.id} quantity={qty} requestId={requestId} size="md" />
+                <LinkButton href={`/checkout?listing=${r.listing.id}&qty=${qty}${requestId ? `&request=${requestId}` : ""}`}>Buy at {money(r.listing.unit_price * qty)}</LinkButton>
+              </div>
             ) : (
               <Button disabled>Not available</Button>
             )

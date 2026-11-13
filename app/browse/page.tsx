@@ -86,7 +86,7 @@ function Browse() {
                     </Link>
                     {l.path && <div className="truncate text-xs text-slate">{l.path}</div>}
                     <div className="mt-1 flex items-center gap-2 text-xs text-slate">
-                      <SourcePill source={l.source} /> {s.name}
+                      <SourcePill source={l.source} contractId={l.contract_id} /> {s.name}
                     </div>
                   </div>
                   <div className="flex items-center gap-3">

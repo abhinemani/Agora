@@ -1,11 +1,12 @@
 "use client";
 
 import Link from "next/link";
+import { cartAgency, draftCart } from "@/lib/orders";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import type { Role } from "@/lib/types";
 import { BuyerPicker } from "./BuyerPicker";
-import { Menu } from "./icons";
+import { Menu, Cart } from "./icons";
 import { useStore } from "./store";
 import { compact } from "./ui";
 
@@ -26,6 +27,7 @@ const NAV: Record<Role, { href: string; label: string }[]> = {
   ],
   procurement: [
     { href: "/procurement", label: "Approvals" },
+    { href: "/procurement/orders", label: "Orders" },
     { href: "/procurement/setup", label: "Setup" },
     { href: "/procurement/spend", label: "Spend" },
     { href: "/solicitations", label: "Solicitations" },
@@ -47,6 +49,9 @@ export function Header() {
   const buyer = db?.session.buyer;
   const menu = useRef<HTMLDivElement>(null);
   const total = db?.revenue.reduce((n, e) => n + e.amount, 0) ?? 0;
+  const cart = db ? draftCart(db) : undefined;
+  const cartCount = cart?.lines.reduce((n, l) => n + 1, 0) ?? 0;
+  const cartWaiting = db ? db.carts.filter((c) => c.agency === cartAgency(db) && c.status === "pending").length : 0;
   const current = ROLES.find((r) => r.id === role)!;
   const isActive = (href: string) => {
     const base = href.split("?")[0];
@@ -87,7 +92,18 @@ export function Header() {
           ))}
         </nav>
 
-        <div ref={menu} className="relative ml-auto shrink-0">
+        <Link
+          href="/cart"
+          className={`relative ml-auto flex shrink-0 items-center gap-1.5 rounded-full border px-3 py-1.5 text-sm font-semibold transition-colors ${cartCount ? "border-navy/20 text-navy hover:border-navy/40" : "border-line text-slate hover:text-navy"}`}
+          aria-label={`Cart, ${cartCount} item${cartCount === 1 ? "" : "s"}${cartWaiting ? `, ${cartWaiting} waiting on approval` : ""}`}
+        >
+          <Cart className="h-4 w-4" />
+          <span className="hidden sm:inline">Cart</span>
+          {cartCount > 0 && <span key={cartCount} className="cart-bump grid h-5 min-w-5 place-items-center rounded-full bg-navy px-1.5 text-[11px] tabular-nums text-white">{cartCount}</span>}
+          {cartWaiting > 0 && <span className="h-2 w-2 rounded-full bg-amber-500" aria-hidden />}
+        </Link>
+
+        <div ref={menu} className="relative shrink-0">
           <button
             onClick={() => setOpen(!open)}
             aria-expanded={open}
@@ -151,6 +167,9 @@ export function Header() {
                 </button>
                 <Link role="menuitem" href="/model" onClick={() => setOpen(false)} className="block px-4 py-2 text-sm text-navy hover:bg-page">
                   How Agora earns
+                </Link>
+                <Link role="menuitem" href="/coops" onClick={() => setOpen(false)} className="block px-4 py-2 text-sm text-navy hover:bg-page">
+                  Co-op member lists
                 </Link>
               </div>
             </div>

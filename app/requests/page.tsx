@@ -2,13 +2,10 @@
 
 import Link from "next/link";
 import { useStore } from "@/components/store";
+import { ORDER_STATUS } from "@/lib/orders";
 import { Badge, Card, Loading, PageTitle, money } from "@/components/ui";
 
-const STATUS: Record<string, { label: string; tone: "green" | "amber" | "navy" }> = {
-  placed: { label: "Placed", tone: "green" },
-  pending_approval: { label: "Waiting on approval", tone: "amber" },
-  approved: { label: "Approved", tone: "green" },
-};
+const STATUS = ORDER_STATUS;
 
 export default function MyRequests() {
   const { db } = useStore();

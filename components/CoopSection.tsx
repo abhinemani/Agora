@@ -28,7 +28,7 @@ export function CoopSection({ section, requestId, onMembershipChange }: { sectio
   const others = section.hits.filter((h) => !h.member);
 
   return (
-    <section className="rounded-2xl border border-line bg-white p-5">
+    <section id="coops" className="scroll-mt-24 rounded-2xl border border-l-[4px] border-line border-l-src-coop bg-white p-5">
       <div className="flex flex-wrap items-end justify-between gap-3">
         <div>
           <h2 className="text-lg font-bold tracking-tight text-navy">Co-op contracts for this</h2>

@@ -5,6 +5,7 @@ import { Upload } from "@/components/icons";
 import { useEffect } from "react";
 import { useStore } from "@/components/store";
 import { goHref } from "@/lib/coops";
+import { CartSummary } from "@/components/CartParts";
 import { Badge, Button, Card, IconCircle, LinkButton, Loading, PageTitle, RevenueTags, SourcePill, money } from "@/components/ui";
 
 export default function ProcurementHome() {
@@ -52,6 +53,19 @@ export default function ProcurementHome() {
         </Card>
       </div>
 
+      {db.carts.some((c) => c.status === "pending") && (
+        <section>
+          <h2 className="mb-2 text-sm font-semibold text-slate">Carts waiting on you ({db.carts.filter((c) => c.status === "pending").length})</h2>
+          <div className="space-y-3">
+            {db.carts
+              .filter((c) => c.status === "pending")
+              .map((c) => (
+                <CartSummary key={c.id} cart={c} approver />
+              ))}
+          </div>
+        </section>
+      )}
+
       {db.referrals.length > 0 && (
         <section>
           <h2 className="mb-2 text-sm font-semibold text-slate">Requests to join a co-op contract ({db.referrals.length})</h2>
@@ -96,7 +110,7 @@ export default function ProcurementHome() {
                 <div>
                   <div className="flex items-center gap-2">
                     <span className="font-semibold text-navy">{o.id}</span>
-                    <SourcePill source={l.source} />
+                    <SourcePill source={l.source} contractId={l.contract_id} />
                   </div>
                   <div className="mt-1 text-sm text-navy">
                     {o.quantity} × {l.title} from {s.name}

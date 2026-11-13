@@ -2,7 +2,9 @@
 // script in section 8 of the spec is repeatable after every reset.
 
 import { SEED_COOPS, coopIdForVehicle } from "./coops";
-import type { Category, Db, Listing, Source } from "./types";
+import { glCode } from "./orders";
+import { demoChecks } from "./verification";
+import type { Category, Db, Listing, Order, OrderStatus, Source } from "./types";
 import { fireMonthlyLines } from "./revenue_rules";
 import tylerCatalog from "../seed/catalogs/tyler-technologies-2025-03.json";
 import tylerNaspo from "../seed/catalogs/tyler-technologies-naspo-ar3764-2026-09.json";
@@ -529,9 +531,24 @@ export function seed(): Db {
     agency_settings: [{ agency: "Harmon Lake Township", plan: "free", rfp_year: new Date().getFullYear(), rfp_used: 4, ad_free: false }],
     invites: [],
     handoffs: [],
+    carts: [],
     session: { preference_answer: null, spend_dashboard_enabled: true, acting_supplier_id: "sup_riverside", buyer: null },
     counters: { revenue: 0, request: 0, order: 1040, solicitation: 7, contract: 0, listing: 40, doc: 0, item: 0, attention: 0 },
   };
+
+  // Demo verification results for the fictional suppliers (real companies show "not checked yet").
+  const VERIFY: Record<string, { samRenewsIn: number; certExpiresIn?: number }> = {
+    sup_riverside: { samRenewsIn: 210, certExpiresIn: 40 },
+    sup_national: { samRenewsIn: 300 },
+    sup_cascade: { samRenewsIn: 180 },
+    sup_cleanline: { samRenewsIn: 150, certExpiresIn: 365 },
+    sup_techsource: { samRenewsIn: 90 },
+    sup_patriot: { samRenewsIn: 240, certExpiresIn: 500 },
+    sup_metromart: { samRenewsIn: 18 },
+    sup_evergreen: { samRenewsIn: 330, certExpiresIn: 280 },
+  };
+  for (const sup of db.suppliers) if (VERIFY[sup.id]) sup.checks = demoChecks(sup, VERIFY[sup.id]);
+  seedOrderHistory(db);
 
   addTylerCatalog(db);
   addMaximus(db);
@@ -985,4 +1002,67 @@ function addComputerEquipment(db: Db) {
     "Research lead (unverified): CDW's August 2026 rate card lists 5% off notebooks and mobile devices.",
   );
   sourcewell("ctr_sw_ideal", "sup_ideal", "121923-IDL", "https://www.idealssi.com/sourcewell/", "Research lead (unverified): computer hardware, software and support; listed maturity February 27, 2028.");
+}
+
+/** A few of Riverbend's earlier orders at different stages, so the oversight table
+ * and reconciliation have something in them before the demo places anything. */
+function seedOrderHistory(db: Db) {
+  const at = (daysAgo: number, hour = 10) => {
+    const d = new Date(Date.now() - daysAgo * 86_400_000);
+    d.setHours(hour, 0, 0, 0);
+    return d.toISOString();
+  };
+  const make = (
+    n: number,
+    listingId: string,
+    quantity: number,
+    department: string,
+    requester: string,
+    payment: "pcard" | "po",
+    steps: [OrderStatus, number, string][],
+  ): Order => {
+    const listing = db.listings.find((l) => l.id === listingId)!;
+    const total = Math.round(listing.unit_price * quantity * 100) / 100;
+    const last = steps[steps.length - 1][0];
+    return {
+      id: `RB-${payment === "po" ? "PO" : "PC"}-${n}`,
+      request_id: null,
+      listing_id: listingId,
+      quantity,
+      total,
+      payment,
+      status: last,
+      department,
+      created_at: at(steps[0][1]),
+      requester,
+      cart_id: null,
+      gl_code: glCode(db, department),
+      events: steps.map(([status, daysAgo, note]) => ({ status, at: at(daysAgo), note })),
+      ...(steps.some(([s]) => s === "invoiced") ? { invoice: { number: `INV-${n}`, amount: total } } : {}),
+    };
+  };
+  db.orders.push(
+    make(1036, "lst_009", 12, "Public Works", "Luis Ortega", "pcard", [
+      ["placed", 9, "Ordered on the P-card; charged when it ships"],
+      ["shipped", 8, "CleanLine Janitorial Supply shipped it"],
+    ]),
+    make(1035, "lst_031", 40, "Police", "Sgt. Amy Cole", "pcard", [
+      ["placed", 16, "Ordered on the P-card; charged when it ships"],
+      ["shipped", 14, "Patriot Safety & Uniform shipped it"],
+      ["delivered", 12, "Received by Police"],
+    ]),
+    make(1034, "lst_002", 60, "Parks and Recreation", "Dana Whitfield", "po", [
+      ["pending_approval", 33, "PO created and sent for approval"],
+      ["approved", 32, "PO approved by Marcus Reyes, Purchasing"],
+      ["shipped", 26, "Riverside Office Supply shipped it"],
+      ["delivered", 24, "Received by Parks and Recreation"],
+      ["invoiced", 21, "Invoice INV-1034 matches the PO and the receipt"],
+    ]),
+    make(1033, "lst_034", 6, "Library", "Priya Nair", "pcard", [
+      ["placed", 52, "Ordered on the P-card; charged when it ships"],
+      ["shipped", 51, "Patriot Safety & Uniform shipped it"],
+      ["delivered", 49, "Received by Library"],
+      ["reconciled", 40, "Card charge matched to the receipt and coded to 100-450-6100"],
+    ]),
+  );
 }

@@ -3,7 +3,7 @@
 // sees the traffic Sovra drives. A co-op that has agreed can switch on buying
 // inside Agora (Coop.buy_in_agora). Pure functions, safe on client and server.
 
-import type { Buyer, Contract, Coop, CoopMembership, Db, Listing } from "./types";
+import type { Buyer, Contract, Coop, CoopMember, CoopMembership, Db, Listing } from "./types";
 
 export function coopOf(db: Pick<Db, "coops">, contract: Contract | undefined | null): Coop | null {
   if (!contract || contract.source !== "coop_contract" || !contract.coop_id) return null;
@@ -46,11 +46,28 @@ export function normalizeDomain(d: string | undefined | null): string {
   return d.trim().toLowerCase().replace(/^[a-z]+:\/\//, "").replace(/^www\./, "").replace(/[/?#].*$/, "");
 }
 
-/** Reverse lookup: which co-ops list this agency's domain as a member. */
-export function detectCoops(db: Pick<Db, "coops">, buyer: Buyer): Coop[] {
+/** "The Town of Crested Butte" → "crested butte": for matching member lists that carry no website. */
+export function normalizeName(n: string | undefined | null): string {
+  return (n ?? "")
+    .toLowerCase()
+    .replace(/&/g, " and ")
+    .replace(/[^a-z0-9 ]/g, " ")
+    .replace(/\b(the|of|city|town|township|village|borough|county|cnty|twp|municipality|district|school|isd|usd)\b/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
+/** Does this member-list entry name this agency? By website first, then by name within the same state. */
+export function memberMatches(m: CoopMember, buyer: Buyer): boolean {
   const domain = normalizeDomain(buyer.domain);
-  if (!domain) return [];
-  return db.coops.filter((c) => (c.members ?? []).some((m) => normalizeDomain(m.domain) === domain));
+  if (domain && normalizeDomain(m.domain) === domain) return true;
+  const name = normalizeName(buyer.name);
+  return Boolean(name && m.state && m.state.toUpperCase() === buyer.state && normalizeName(m.name) === name && normalizeName(m.name) !== "");
+}
+
+/** Reverse lookup: which co-ops list this agency as a member. */
+export function detectCoops(db: Pick<Db, "coops">, buyer: Buyer): Coop[] {
+  return db.coops.filter((c) => (c.members ?? []).some((m) => memberMatches(m, buyer)));
 }
 
 export const membershipsFor = (db: Pick<Db, "memberships">, agency: string | null | undefined): CoopMembership[] =>
@@ -96,9 +113,9 @@ export const SEED_COOPS: Coop[] = [
     member_list_status: "partial",
     member_list_source: "demo",
     members: [
-      { name: "Town of Crested Butte", domain: "townofcrestedbutte.colorado.gov" },
-      { name: "City of Cedar Bend", domain: "cedarbend-ia.example" },
-      { name: "City of Riverbend", domain: "riverbend-or.example" },
+      { name: "Town of Crested Butte", domain: "townofcrestedbutte.colorado.gov", state: "CO" },
+      { name: "City of Cedar Bend", domain: "cedarbend-ia.example", state: "IA" },
+      { name: "City of Riverbend", domain: "riverbend-or.example", state: "OR" },
     ],
     buy_in_agora: false,
     note: "Demo member list for illustration, not from Sourcewell. Contracts are research leads.",
@@ -110,8 +127,8 @@ export const SEED_COOPS: Coop[] = [
     member_list_status: "full",
     member_list_source: "demo",
     members: [
-      { name: "City of Riverbend", domain: "riverbend-or.example" },
-      { name: "Harper County", domain: "harpercounty-or.example" },
+      { name: "City of Riverbend", domain: "riverbend-or.example", state: "OR" },
+      { name: "Harper County", domain: "harpercounty-or.example", state: "OR" },
     ],
     buy_in_agora: true,
     note: "Demo co-op that shares its member list and has agreed to in-Agora buying.",

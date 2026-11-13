@@ -68,7 +68,7 @@ export function HeroPreview({
               <CategoryIcon category={listing.category} size="sm" />
               <div className="min-w-0 flex-1">
                 <div className="truncate text-sm text-navy">{supplier.name}</div>
-                <SourcePill source={listing.source} />
+                <SourcePill source={listing.source} contractId={listing.contract_id} />
               </div>
               <div className="text-right">
                 <div className="text-sm font-semibold tabular-nums text-navy">{money(listing.unit_price, false)}</div>

@@ -1,21 +1,57 @@
 {
-  "source": "@uswds/uswds 3.13.0 default theme",
+  "source": "@uswds/uswds 3.13.0, default theme with Agora's theme settings",
+  "overrides": {
+    "color": {
+      "base-lightest": "gray-warm-5",
+      "base-lighter": "gray-warm-10",
+      "base-light": "gray-warm-30",
+      "base": "gray-warm-50",
+      "base-dark": "gray-warm-60",
+      "base-darker": "gray-warm-70",
+      "base-darkest": "gray-90",
+      "base-ink": "gray-90",
+      "primary-lighter": "gray-warm-5",
+      "primary-light": "gray-warm-30",
+      "primary": "gray-90",
+      "primary-vivid": "gray-90",
+      "primary-dark": "black",
+      "primary-darker": "black"
+    },
+    "font": {
+      "font-role-heading": "sans"
+    },
+    "shape": {
+      "button": "0",
+      "card": "0",
+      "tag": "0",
+      "input": "0"
+    },
+    "weights": {
+      "heading": 300
+    }
+  },
+  "shape": {
+    "button": "0",
+    "card": "0",
+    "tag": "0",
+    "input": "0"
+  },
   "color": {
     "theme": {
-      "base-lightest": "#f0f0f0",
-      "base-lighter": "#dfe1e2",
-      "base-light": "#a9aeb1",
-      "base": "#71767a",
-      "base-dark": "#565c65",
-      "base-darker": "#3d4551",
+      "base-lightest": "#f0f0ec",
+      "base-lighter": "#e6e6e2",
+      "base-light": "#afaea2",
+      "base": "#76766a",
+      "base-dark": "#5d5d52",
+      "base-darker": "#454540",
       "base-darkest": "#1b1b1b",
       "base-ink": "#1b1b1b",
-      "primary-lighter": "#d9e8f6",
-      "primary-light": "#73b3e7",
-      "primary": "#005ea2",
-      "primary-vivid": "#0050d8",
-      "primary-dark": "#1a4480",
-      "primary-darker": "#162e51",
+      "primary-lighter": "#f0f0ec",
+      "primary-light": "#afaea2",
+      "primary": "#1b1b1b",
+      "primary-vivid": "#1b1b1b",
+      "primary-dark": "#000000",
+      "primary-darker": "#000000",
       "secondary-lighter": "#f3e1e4",
       "secondary-light": "#f2938c",
       "secondary": "#d83933",
@@ -179,21 +215,21 @@
       "mono": "roboto-mono"
     },
     "roles": {
-      "heading": "serif",
+      "heading": "sans",
       "body": "sans",
       "ui": "sans"
     },
     "sizes": {
       "heading": {
-        "3xs": "0.7928rem",
-        "2xs": "0.8538rem",
-        "xs": "0.9148rem",
-        "sm": "0.9757rem",
-        "md": "1.0367rem",
-        "lg": "1.3416rem",
-        "xl": "1.9515rem",
-        "2xl": "2.4394rem",
-        "3xl": "2.9272rem"
+        "3xs": "0.8651rem",
+        "2xs": "0.9316rem",
+        "xs": "0.9982rem",
+        "sm": "1.0647rem",
+        "md": "1.1313rem",
+        "lg": "1.464rem",
+        "xl": "2.1294rem",
+        "2xl": "2.6618rem",
+        "3xl": "3.1941rem"
       },
       "body": {
         "3xs": "0.8651rem",
@@ -232,6 +268,7 @@
       "6": 1.75
     },
     "bodyLineHeight": 1.62,
-    "headingLineHeight": 1.2
+    "headingLineHeight": 1.2,
+    "headingWeight": 300
   }
 }

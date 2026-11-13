@@ -10,7 +10,7 @@ export function AddToCart({ listingId, quantity, requestId, size = "sm" }: { lis
   const [error, setError] = useState<string | null>(null);
   const pad = size === "md" ? "px-5 py-3" : "px-4 py-2.5";
   return (
-    <span className="inline-flex flex-col items-end">
+    <span className="inline-flex flex-col items-stretch">
       <button
         type="button"
         disabled={state === "busy"}
@@ -26,7 +26,7 @@ export function AddToCart({ listingId, quantity, requestId, size = "sm" }: { lis
             setState("idle");
           }
         }}
-        className={`rounded-md text-ui-xs font-bold leading-none transition-colors ${pad} ${state === "added" ? "bg-success-lighter text-success-darker shadow-[inset_0_0_0_2px_theme(colors.success.DEFAULT)]" : "bg-white text-primary shadow-[inset_0_0_0_2px_theme(colors.primary.DEFAULT)] hover:text-primary-dark hover:shadow-[inset_0_0_0_2px_theme(colors.primary.dark)]"}`}
+        className={`w-full rounded-md text-ui-xs font-bold leading-none transition-colors ${pad} ${state === "added" ? "bg-success-lighter text-success-darker shadow-[inset_0_0_0_2px_theme(colors.success.DEFAULT)]" : "bg-white text-primary shadow-[inset_0_0_0_1px_theme(colors.primary.DEFAULT)] hover:text-primary-dark hover:bg-base-lightest"}`}
       >
         {state === "added" ? "✓ Added" : "Add to cart"}
       </button>

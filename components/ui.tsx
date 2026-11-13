@@ -92,10 +92,10 @@ export function SupplierBadges({ supplier }: { supplier: Supplier }) {
   );
 }
 
-/** USWDS card container: a 2px base-lighter border with large (8px) corners. */
+/** USWDS card container, in Agora's theme: a hairline base-lighter border, square corners. */
 export function Card({ children, className = "", accent }: { children: React.ReactNode; className?: string; accent?: "rose" | "steel" | "navy" | "maroon" }) {
   void accent; // kept in the signature for callers
-  return <div className={`rounded-lg border-2 border-base-lighter bg-white ${className}`}>{children}</div>;
+  return <div className={`rounded-lg border border-base-lighter bg-white ${className}`}>{children}</div>;
 }
 
 /** Numbered maroon badges naming the revenue options an action triggers, as in the deck. */
@@ -129,10 +129,10 @@ type ButtonVariant = "primary" | "maroon" | "tonal" | "secondary" | "ghost";
  * usa-button--outline; "ghost" is usa-button--unstyled. Medium (4px) corners, bold UI
  * type, darker on hover and darker still when pressed. */
 const BUTTON: Record<ButtonVariant, string> = {
-  primary: "bg-primary px-5 py-3 text-white hover:bg-primary-dark active:bg-primary-darker disabled:bg-disabled-lighter disabled:text-disabled-dark",
-  maroon: "bg-primary px-5 py-3 text-white hover:bg-primary-dark active:bg-primary-darker disabled:bg-disabled-lighter disabled:text-disabled-dark",
-  tonal: "bg-white px-5 py-3 text-primary shadow-[inset_0_0_0_2px_theme(colors.primary.DEFAULT)] hover:text-primary-dark hover:shadow-[inset_0_0_0_2px_theme(colors.primary.dark)] active:text-primary-darker disabled:text-disabled disabled:shadow-[inset_0_0_0_2px_theme(colors.disabled.lighter)]",
-  secondary: "bg-white px-5 py-3 text-primary shadow-[inset_0_0_0_2px_theme(colors.primary.DEFAULT)] hover:text-primary-dark hover:shadow-[inset_0_0_0_2px_theme(colors.primary.dark)] active:text-primary-darker disabled:text-disabled disabled:shadow-[inset_0_0_0_2px_theme(colors.disabled.lighter)]",
+  primary: "bg-primary px-5 py-3 text-white hover:bg-base-darker active:bg-primary-dark disabled:bg-disabled-lighter disabled:text-disabled-dark",
+  maroon: "bg-primary px-5 py-3 text-white hover:bg-base-darker active:bg-primary-dark disabled:bg-disabled-lighter disabled:text-disabled-dark",
+  tonal: "bg-white px-5 py-3 text-primary shadow-[inset_0_0_0_1px_theme(colors.primary.DEFAULT)] hover:text-primary-dark hover:bg-base-lightest active:text-primary-darker disabled:text-disabled disabled:shadow-[inset_0_0_0_2px_theme(colors.disabled.lighter)]",
+  secondary: "bg-white px-5 py-3 text-primary shadow-[inset_0_0_0_1px_theme(colors.primary.DEFAULT)] hover:text-primary-dark hover:bg-base-lightest active:text-primary-darker disabled:text-disabled disabled:shadow-[inset_0_0_0_2px_theme(colors.disabled.lighter)]",
   ghost: "p-0 text-primary underline hover:text-primary-dark active:text-primary-darker disabled:text-disabled",
 };
 const BUTTON_BASE = "inline-flex items-center justify-center gap-2 rounded-md text-ui-xs font-bold leading-none transition-colors disabled:cursor-not-allowed";
@@ -163,7 +163,7 @@ export function PageTitle({ eyebrow, title, children }: { eyebrow?: string; titl
   void eyebrow;
   return (
     <div className="mb-8">
-      <h1 className="font-heading text-heading-xl font-bold text-ink">{title}</h1>
+      <h1 className="font-heading text-heading-xl font-light text-ink">{title}</h1>
       {children && <div className="mt-3 max-w-[68ex] text-body-md text-base-darker">{children}</div>}
     </div>
   );
@@ -177,7 +177,7 @@ export function IconCircle({ children, size = "md" }: { children: React.ReactNod
 export function SectionLabel({ children, right }: { children: React.ReactNode; right?: React.ReactNode }) {
   return (
     <div className="mb-3 flex items-center justify-between gap-3">
-      <h2 className="font-heading text-heading-md font-bold text-ink">{children}</h2>
+      <h2 className="font-heading text-heading-md font-normal text-ink">{children}</h2>
       {right}
     </div>
   );
@@ -203,7 +203,7 @@ export function Alert({ type = "info", heading, children, action, className = ""
   return (
     <div role={type === "error" ? "alert" : "status"} className={`flex flex-wrap items-center justify-between gap-3 border-l-8 px-4 py-3 text-ui-xs text-ink ${ALERT[type]} ${className}`}>
       <div className="min-w-0">
-        {heading && <div className="font-heading text-heading-sm font-bold">{heading}</div>}
+        {heading && <div className="font-heading text-heading-sm font-semibold">{heading}</div>}
         {children}
       </div>
       {action}

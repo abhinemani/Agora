@@ -143,7 +143,7 @@ function CoopCard({ coop }: { coop: Coop }) {
                 role="radio"
                 aria-checked={mode === m}
                 onClick={() => setMode(m)}
-                className={`px-4 py-2 text-ui-2xs font-bold ${i ? "-ml-0.5 rounded-r-md" : "rounded-l-md"} ${mode === m ? "relative z-10 bg-primary text-white" : "bg-white text-primary shadow-[inset_0_0_0_2px_theme(colors.primary.DEFAULT)] hover:text-primary-dark"}`}
+                className={`px-4 py-2 text-ui-2xs font-bold ${i ? "-ml-0.5 rounded-r-md" : "rounded-l-md"} ${mode === m ? "relative z-10 bg-primary text-white" : "bg-white text-primary shadow-[inset_0_0_0_1px_theme(colors.primary.DEFAULT)] hover:text-primary-dark"}`}
               >
                 {label}
               </button>

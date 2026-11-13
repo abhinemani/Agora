@@ -18,7 +18,7 @@ export function OwnContractsCard({ hits, agency }: { hits: OwnHit[]; agency: str
         <span className="grid h-6 w-6 place-items-center rounded-full bg-success-darker text-white">
           <Check className="h-3.5 w-3.5" />
         </span>
-        <h2 id="own-contracts-heading" className="font-heading text-heading-md font-bold text-ink">{agency} already has a contract for this</h2>
+        <h2 id="own-contracts-heading" className="font-heading text-heading-md font-normal text-ink">{agency} already has a contract for this</h2>
       </div>
       <p className="mt-1 text-ui-xs text-base-darker">From your agency's contract register. Buy under it before looking anywhere else.</p>
       <ul className="mt-3 space-y-2">

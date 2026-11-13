@@ -28,7 +28,7 @@ export function CoopSection({ section, requestId, onMembershipChange }: { sectio
   const others = section.hits.filter((h) => !h.member);
 
   return (
-    <section id="coops" className="scroll-mt-24 rounded-xl bg-base-lightest p-5">
+    <section id="coops" className="scroll-mt-24 border-y border-base-lighter bg-white py-6">
       <div className="flex flex-wrap items-end justify-between gap-3">
         <div>
           <h2 className="text-lg font-bold tracking-tight text-navy">Co-op contracts for this</h2>
@@ -148,7 +148,7 @@ function Hit({ h, requestId }: { h: CoopHit; requestId: string }) {
                     setError((e as Error).message);
                   }
                 }}
-                className="inline-flex items-center rounded-md bg-primary px-4 py-2.5 text-ui-xs font-bold leading-none text-white no-underline hover:bg-primary-dark active:bg-primary-darker disabled:bg-disabled-lighter disabled:text-disabled-dark"
+                className="inline-flex items-center rounded-md bg-primary px-4 py-2.5 text-ui-xs font-bold leading-none text-white no-underline hover:bg-base-darker active:bg-primary-dark disabled:bg-disabled-lighter disabled:text-disabled-dark"
               >
                 Ask purchasing to get us on this
               </button>

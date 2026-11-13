@@ -1,8 +1,9 @@
 // Generates Agora's U.S. Web Design System theme from the official @uswds/uswds
 // package: reads USWDS's own SCSS (system color tokens, default theme color
-// settings, type scale, typeface cap heights, line heights) and writes
-// lib/uswds-theme.json, which tailwind.config.ts reads. Nothing is hand-picked
-// except which system colors Agora's five buying routes use.
+// settings, type scale, typeface cap heights, line heights), applies Agora's
+// theme settings (AGORA_THEME, below) the way a USWDS project customizes its
+// theme, and writes lib/uswds-theme.json, which tailwind.config.ts reads. Every
+// value is a USWDS system token.
 // Run: node scripts/uswds-theme.mjs
 
 import { readFileSync, readdirSync, writeFileSync } from "node:fs";
@@ -25,12 +26,38 @@ system["white"] = "#ffffff";
 system["black"] = "#000000";
 const hex = (token) => system[token] ?? (() => { throw new Error(`No USWDS system color ${token}`); })();
 
-// ---- Theme colors: USWDS's default theme settings, resolved to hex
+// ---- Agora's theme settings, layered over USWDS's defaults the way a project's
+// _uswds-theme.scss does. A warm, retail look: ink calls to action on white,
+// warm-gray neutrals, light sans headings, square corners. Status colors and
+// the focus color stay USWDS defaults.
+const AGORA_THEME = {
+  color: {
+    "base-lightest": "gray-warm-5",
+    "base-lighter": "gray-warm-10",
+    "base-light": "gray-warm-30",
+    base: "gray-warm-50",
+    "base-dark": "gray-warm-60",
+    "base-darker": "gray-warm-70",
+    "base-darkest": "gray-90",
+    "base-ink": "gray-90",
+    "primary-lighter": "gray-warm-5",
+    "primary-light": "gray-warm-30",
+    primary: "gray-90",
+    "primary-vivid": "gray-90",
+    "primary-dark": "black",
+    "primary-darker": "black",
+  },
+  font: { "font-role-heading": "sans" },
+  shape: { button: "0", card: "0", tag: "0", input: "0" },
+  weights: { heading: 300 },
+};
+
+// ---- Theme colors: USWDS's default theme settings, then Agora's overrides, resolved to hex
 const settings = read("settings/_settings-color.scss");
 const theme = {};
 for (const [, name, token] of settings.matchAll(/^\$theme-color-([a-z-]+):\s*"([a-z0-9-]+)"\s*!default;/gm)) {
   if (name.endsWith("-family")) continue;
-  theme[name] = hex(token);
+  theme[name] = hex(AGORA_THEME.color[name] ?? token);
 }
 
 // Tailwind steps → USWDS grades, so existing classes like "emerald-50" land on
@@ -59,7 +86,7 @@ const scale = Object.fromEntries([...read("tokens/font/type-scale.scss").matchAl
 const baseCap = Number(read("tokens/font/base-cap-height.scss").match(/\$system-base-cap-height:\s*(\d+)px/)[1]);
 const typefaces = read("tokens/font/typefaces.scss");
 const capHeight = (token) => Number(typefaces.match(new RegExp(`"${token}":\\s*\\(\\s*display-name:[^,]*,\\s*cap-height:\\s*(\\d+)px`))[1]);
-const setting = (name) => typeSettings.match(new RegExp(`^\\$theme-${name}:\\s*"?([a-z0-9-]+)"?\\s*!default;`, "m"))[1];
+const setting = (name) => AGORA_THEME.font[name] ?? typeSettings.match(new RegExp(`^\\$theme-${name}:\\s*"?([a-z0-9-]+)"?\\s*!default;`, "m"))[1];
 const SIZES = ["3xs", "2xs", "xs", "sm", "md", "lg", "xl", "2xl", "3xl"];
 const fonts = { sans: setting("font-type-sans"), serif: setting("font-type-serif"), mono: setting("font-type-mono") };
 const roles = { heading: setting("font-role-heading"), body: setting("font-role-body"), ui: setting("font-role-ui") };
@@ -71,7 +98,9 @@ const lineHeights = Object.fromEntries([...read("tokens/font/line-height.scss").
 const avatars = ["blue", "green-cool", "violet-warm", "cyan", "magenta", "orange-warm", "indigo", "mint-cool", "gold"].map((f) => vividFirst(f, 60));
 
 const out = {
-  source: "@uswds/uswds 3.13.0 default theme",
+  source: "@uswds/uswds 3.13.0, default theme with Agora's theme settings",
+  overrides: AGORA_THEME,
+  shape: AGORA_THEME.shape,
   color: { theme, routes, avatars, ramps: { success: ramp("green-cool"), warning: ramp("gold"), error: ramp("red-warm"), base: ramp("gray-cool"), primary: ramp("blue") }, focus: hex(read("settings/_settings-general.scss").match(/^\$theme-focus-color:\s*"([a-z0-9-]+)"/m)[1]) },
   font: {
     families: { sans: "Source Sans 3", serif: "Merriweather", mono: "Roboto Mono" },
@@ -82,6 +111,7 @@ const out = {
     lineHeights,
     bodyLineHeight: lineHeights[setting("body-line-height")],
     headingLineHeight: lineHeights[setting("heading-line-height")],
+    headingWeight: AGORA_THEME.weights.heading,
   },
 };
 writeFileSync(new URL("../lib/uswds-theme.json", import.meta.url), JSON.stringify(out, null, 2) + "\n");

@@ -79,35 +79,28 @@ export function Header() {
   }, [open]);
 
   return (
-    <header className={`sticky top-0 z-30 border-b border-base-lighter bg-white ${scrolled ? "shadow-1" : ""}`}>
-      <div className="mx-auto flex h-16 max-w-6xl items-stretch gap-3 px-4 sm:gap-8">
-        <Link href={current.home} className="flex items-center gap-2 no-underline" aria-label="Agora home">
-          <span className="grid h-9 w-9 place-items-center rounded-md bg-primary-darker font-heading text-heading-md font-bold text-white">α</span>
-          <span className="hidden font-heading text-heading-md font-bold text-ink sm:block">Agora</span>
+    <header className={`sticky top-0 z-30 bg-white ${scrolled ? "shadow-1" : ""}`}>
+      <div className="bg-ink px-4 py-2 text-center text-ui-3xs text-white">
+        Searching is free for every agency. <span className="hidden sm:inline">Your own contracts come first, then your state's, then your co-ops.</span>
+      </div>
+      <div className="mx-auto grid h-16 max-w-6xl grid-cols-[1fr_auto_1fr] items-center gap-3 px-4">
+        <span aria-hidden />
+        <Link href={current.home} className="font-heading text-heading-lg font-light uppercase tracking-[0.3em] text-ink no-underline" aria-label="Agora home">
+          Agora
         </Link>
 
-        <nav className="flex min-w-0 items-stretch gap-1 overflow-x-auto">
-          {NAV[role].map((n) => (
-            <Link
-              key={n.href}
-              href={n.href}
-              aria-current={isActive(n.href) ? "page" : undefined}
-              className={`flex shrink-0 items-center border-b-4 px-2 pt-1 text-ui-xs font-bold no-underline hover:text-primary sm:px-3 ${isActive(n.href) ? "border-primary text-primary" : "border-transparent text-base-dark"}`}
-            >
-              {n.label}
-            </Link>
-          ))}
-        </nav>
+        <div className="flex items-center justify-end gap-3">
+
 
         <Link
           href="/cart"
-          className="relative ml-auto flex shrink-0 items-center gap-2 px-2 text-ui-xs font-bold text-base-dark no-underline hover:text-primary"
+          className="relative flex shrink-0 items-center gap-2 px-2 text-ui-xs text-ink no-underline hover:underline"
           aria-label={`Cart, ${cartCount} item${cartCount === 1 ? "" : "s"}${cartWaiting ? `, ${cartWaiting} waiting on approval` : ""}`}
         >
           <span className="relative">
             <Cart className="h-6 w-6" />
             {cartCount > 0 && (
-              <span key={cartCount} className="cart-bump absolute -right-2 -top-1.5 grid h-4 min-w-4 place-items-center rounded-full bg-secondary px-1 text-ui-3xs font-bold tabular-nums text-white">
+              <span key={cartCount} className="cart-bump absolute -right-2 -top-1.5 grid h-4 min-w-4 place-items-center rounded-full bg-ink px-1 text-ui-3xs font-bold tabular-nums text-white">
                 {cartCount}
               </span>
             )}
@@ -121,7 +114,7 @@ export function Header() {
             onClick={() => setOpen(!open)}
             aria-expanded={open}
             aria-haspopup="menu"
-            className="flex h-10 items-center gap-2 rounded-md py-1 pl-1 pr-2 text-ui-xs font-bold text-ink shadow-[inset_0_0_0_1px_theme(colors.base.light)] hover:shadow-[inset_0_0_0_1px_theme(colors.base.dark)]"
+            className="flex h-10 items-center gap-2 py-1 pl-1 pr-2 text-ui-xs text-ink hover:underline"
           >
             <span className="relative grid h-8 w-8 place-items-center rounded-sm bg-primary-lighter text-ui-2xs font-bold text-primary-darker">
               {current.initials}
@@ -132,8 +125,8 @@ export function Header() {
           </button>
 
           {open && (
-            <div role="menu" className="absolute right-0 top-full mt-1 w-72 overflow-hidden bg-primary-darker py-2 text-white shadow-3">
-              <div className="px-4 pb-1 pt-2 text-ui-3xs font-bold text-primary-light">View the demo as</div>
+            <div role="menu" className="absolute right-0 top-full mt-1 w-72 overflow-hidden border border-base-lighter bg-white py-2 text-ink shadow-3">
+              <div className="px-4 pb-1 pt-2 text-ui-3xs uppercase tracking-label text-base-dark">View the demo as</div>
               {ROLES.map((r) => (
                 <button
                   key={r.id}
@@ -144,28 +137,28 @@ export function Header() {
                     setOpen(false);
                     router.push(r.home);
                   }}
-                  className={`flex min-h-12 w-full items-center gap-3 px-4 py-2 text-left hover:bg-primary-dark ${role === r.id ? "bg-primary-dark" : ""}`}
+                  className={`flex min-h-12 w-full items-center gap-3 px-4 py-2 text-left hover:bg-base-lightest ${role === r.id ? "bg-base-lightest" : ""}`}
                 >
-                  <span className={`grid h-8 w-8 place-items-center rounded-sm text-ui-2xs font-bold ${role === r.id ? "bg-white text-primary-darker" : "bg-primary-lighter text-primary-darker"}`}>
+                  <span className={`grid h-8 w-8 place-items-center rounded-sm text-ui-2xs font-bold ${role === r.id ? "bg-ink text-white" : "bg-base-lighter text-ink"}`}>
                     {r.initials}
                   </span>
                   <span className="min-w-0">
                     <span className="block text-ui-xs font-bold">{r.label}</span>
-                    <span className="block truncate text-ui-3xs text-base-lighter">{r.person}</span>
+                    <span className="block truncate text-ui-3xs text-base-dark">{r.person}</span>
                   </span>
                 </button>
               ))}
-              <div className="mt-2 border-t border-primary-dark pt-2">
+              <div className="mt-2 border-t border-base-lighter pt-2">
                 <button
                   role="menuitem"
                   onClick={() => {
                     setOpen(false);
                     setPicking(true);
                   }}
-                  className="flex min-h-12 w-full items-center justify-between gap-3 px-4 py-2 text-left text-ui-xs font-bold text-white hover:bg-primary-dark"
+                  className="flex min-h-12 w-full items-center justify-between gap-3 px-4 py-2 text-left text-ui-xs text-ink hover:bg-base-lightest"
                 >
                   Your agency
-                  <span className="truncate text-ui-3xs text-base-lighter">{buyer ? `${buyer.name}, ${buyer.state}` : "Any agency"}</span>
+                  <span className="truncate text-ui-3xs text-base-dark">{buyer ? `${buyer.name}, ${buyer.state}` : "Any agency"}</span>
                 </button>
                 <button
                   role="menuitem"
@@ -173,21 +166,36 @@ export function Header() {
                     setOpen(false);
                     setLedgerOpen(true);
                   }}
-                  className="flex min-h-12 w-full items-center justify-between px-4 py-2 text-ui-xs font-bold text-white hover:bg-primary-dark"
+                  className="flex min-h-12 w-full items-center justify-between px-4 py-2 text-ui-xs text-ink hover:bg-base-lightest"
                 >
                   Sovra revenue
-                  <span className="tabular-nums text-base-lighter">{compact(total)}</span>
+                  <span className="tabular-nums text-base-dark">{compact(total)}</span>
                 </button>
-                <Link role="menuitem" href="/model" onClick={() => setOpen(false)} className="flex min-h-12 items-center px-4 text-ui-xs font-bold text-white no-underline hover:bg-primary-dark">
+                <Link role="menuitem" href="/model" onClick={() => setOpen(false)} className="flex min-h-12 items-center px-4 text-ui-xs text-ink no-underline hover:bg-base-lightest">
                   How Agora earns
                 </Link>
-                <Link role="menuitem" href="/coops" onClick={() => setOpen(false)} className="flex min-h-12 items-center px-4 text-ui-xs font-bold text-white no-underline hover:bg-primary-dark">
+                <Link role="menuitem" href="/coops" onClick={() => setOpen(false)} className="flex min-h-12 items-center px-4 text-ui-xs text-ink no-underline hover:bg-base-lightest">
                   Co-op member lists
                 </Link>
               </div>
             </div>
           )}
         </div>
+        </div>
+      </div>
+      <div className="border-b border-base-lighter">
+        <nav className="mx-auto flex max-w-6xl justify-center gap-2 overflow-x-auto px-4 sm:gap-6" aria-label="Main">
+          {NAV[role].map((n) => (
+            <Link
+              key={n.href}
+              href={n.href}
+              aria-current={isActive(n.href) ? "page" : undefined}
+              className={`shrink-0 border-b-2 px-1 py-3 text-ui-xs no-underline hover:border-ink ${isActive(n.href) ? "border-ink text-ink" : "border-transparent text-base-darker"}`}
+            >
+              {n.label}
+            </Link>
+          ))}
+        </nav>
       </div>
       {picking && (
         <div className="border-t border-line bg-page py-4">

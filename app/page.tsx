@@ -55,13 +55,13 @@ export default function Home() {
     <div className="pb-8">
       {/* Hero: one question, one box. */}
       <section className="px-1 pb-14 pt-12 text-center sm:pt-20">
-        <div className="text-[11px] font-extrabold uppercase text-maroon/80">Government buying, simplified</div>
-        <h1 className="mx-auto mt-4 max-w-3xl text-[clamp(2rem,4.4vw,3rem)] font-extrabold leading-[1.07] text-navy">What are you looking to buy?</h1>
+        <div className="text-ui-3xs uppercase tracking-[0.2em] text-base-dark">Government buying, simplified</div>
+        <h1 className="mx-auto mt-5 max-w-3xl font-heading text-[clamp(2.2rem,5vw,3.6rem)] font-light leading-[1.08] text-ink">What are you looking to buy?</h1>
         <p className="mx-auto mt-4 max-w-xl text-base leading-relaxed text-slate">
           Search state and cooperative contracts in one place. Agora shows which ones your agency can use, what they cost, and how to buy.
         </p>
         <form
-          className="mx-auto mt-8 flex max-w-3xl items-center gap-2 rounded-2xl border border-base-lighter bg-white p-2 pl-4 shadow-2 focus-within:border-maroon/50"
+          className="mx-auto mt-10 flex max-w-3xl items-center gap-2 border border-ink bg-white pl-4 focus-within:outline focus-within:outline-4 focus-within:outline-focus"
           onSubmit={(e) => {
             e.preventDefault();
             submit(text);
@@ -72,24 +72,24 @@ export default function Home() {
             value={text}
             onChange={(e) => setText(e.target.value)}
             placeholder="Describe what you need, like “permitting software for a mid-size city”"
-            className="min-w-0 flex-1 !border-0 !px-1 !py-3 !text-[15px] !shadow-none !outline-none !ring-0"
+            className="min-w-0 flex-1 !border-0 !px-1 !py-4 !text-body-sm !shadow-none !outline-none !ring-0"
             aria-label="What are you looking to buy?"
           />
           <button
             type="submit"
             disabled={busy || !text.trim()}
-            className="inline-flex shrink-0 items-center gap-1.5 rounded-lg bg-maroon px-4 py-3.5 text-sm font-bold text-white transition hover:bg-maroon-600 disabled:opacity-50 sm:px-5"
+            className="inline-flex shrink-0 items-center gap-1.5 self-stretch bg-ink px-5 text-ui-xs uppercase tracking-label text-white transition hover:bg-base-darker disabled:bg-base-dark sm:px-7"
           >
             Find solutions <Arrow className="hidden h-4 w-4 sm:block" />
           </button>
         </form>
-        <div className="mx-auto mt-5 flex max-w-3xl flex-wrap justify-center gap-2">
+        <div className="mx-auto mt-5 flex max-w-3xl flex-wrap justify-center gap-x-3 gap-y-1">
           {EXAMPLES.map((e) => (
             <button
               key={e}
               onClick={() => submit(e)}
               disabled={busy}
-              className="rounded-md bg-white px-3 py-2 text-ui-2xs text-base-darker shadow-[inset_0_0_0_1px_theme(colors.base.light)] transition hover:text-primary hover:shadow-[inset_0_0_0_1px_theme(colors.primary.DEFAULT)]"
+              className="px-2 py-1 text-ui-2xs text-base-darker underline decoration-base-light underline-offset-4 transition hover:text-ink hover:decoration-ink"
             >
               {e}
             </button>

@@ -31,8 +31,8 @@ const ICON: Record<Category, (p: { className?: string }) => React.ReactElement> 
   Other: Box,
 };
 
-/** A tinted tile that stands in for a product photo. */
-export function CategoryIcon({ category, size = "md" }: { category: Category; size?: "sm" | "md" | "lg" | "xl" }) {
+/** A tile that stands in for a product photo: tinted by category, or neutral warm gray for product grids. */
+export function CategoryIcon({ category, size = "md", neutral = false }: { category: Category; size?: "sm" | "md" | "lg" | "xl"; neutral?: boolean }) {
   const Icon = ICON[category] ?? Box;
   const tone = CATEGORY_TONE[category] ?? CATEGORY_TONE.Other;
   const dim = {
@@ -42,7 +42,10 @@ export function CategoryIcon({ category, size = "md" }: { category: Category; si
     xl: "h-full w-full [&>svg]:h-12 [&>svg]:w-12",
   }[size];
   return (
-    <span className={`flex shrink-0 items-center justify-center ${dim}`} style={{ background: tone.bg, color: tone.fg }}>
+    <span
+      className={`flex shrink-0 items-center justify-center ${dim} ${neutral ? "bg-base-lightest text-base-darker [&>svg]:stroke-[1.25]" : ""}`}
+      style={neutral ? undefined : { background: tone.bg, color: tone.fg }}
+    >
       <Icon />
     </span>
   );

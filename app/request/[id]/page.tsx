@@ -99,7 +99,7 @@ export default function RequestResults() {
         </Link>
         <div className="mt-4 flex flex-wrap items-start justify-between gap-4">
           <div className="min-w-0">
-            <h1 className="text-[1.8rem] font-extrabold leading-tight text-navy">Results for “{request.raw_text}”</h1>
+            <h1 className="font-heading text-heading-xl font-light leading-tight text-ink">Results for “{request.raw_text}”</h1>
             <p className="mt-1.5 text-sm text-slate" title={request.parse_mode === "llm" ? "Read by Claude" : "Read with offline rules"}>
               {results && !results.no_match ? `${all.length} option${all.length === 1 ? "" : "s"} across ${sources} kind${sources === 1 ? "" : "s"} of contract. ` : ""}
               {p.quantity > 1 ? `${p.quantity} needed` : "One needed"}
@@ -180,7 +180,7 @@ export default function RequestResults() {
             </Card>
           )}
 
-          <div id="options" className="grid scroll-mt-24 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          <div id="options" className="grid scroll-mt-24 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-3">
             {shown.map((o) => (
               <OptionCard key={o.listing.id} o={o} qty={p.quantity} requestId={id} />
             ))}
@@ -294,29 +294,31 @@ function OptionCard({ o, qty, requestId }: { o: ResultOption; qty: number; reque
   const title = tiered ? l.title.replace(/\s*\([^)]*\)\s*$/, "") : l.title;
   const href = `/product/${l.id}?qty=${qty}&request=${requestId}`;
   return (
-    <div className="flex min-h-[290px] flex-col rounded-lg border-2 border-base-lighter bg-white p-4 transition-shadow hover:shadow-2">
-      <div className="flex items-start justify-between gap-3">
-        <CategoryIcon category={l.category} />
-        <div className="flex flex-col items-end gap-1">
+    <div className="group flex flex-col bg-white">
+      <Link href={href} className="relative grid aspect-[4/3] place-items-center overflow-hidden bg-base-lightest no-underline" aria-label={title}>
+        <span className="h-full w-full transition-transform duration-300 group-hover:scale-[1.03] motion-reduce:transition-none">
+          <CategoryIcon category={l.category} size="xl" neutral />
+        </span>
+        <span className="absolute left-3 top-3">
           <SourcePill source={l.source} contractId={l.contract_id} />
-          <div className="flex items-center gap-1.5">
-            {o.member === true && db?.session.buyer && <span className="text-[10px] font-semibold text-emerald-700">Your co-op</span>}
-            {o.member === false && db?.session.buyer && <span className="text-[10px] font-semibold text-maroon">Join to use</span>}
-            {o.sponsored && <span className="text-[10px] text-slate">Sponsored</span>}
-            <FitPill fit={o.fit} />
-          </div>
-        </div>
-      </div>
-      <div className="mt-4 flex flex-wrap items-center gap-1.5 text-[11px] text-slate">
-        <Link href={`/storefronts/${o.supplier.id}`} className="hover:text-maroon hover:underline">
+        </span>
+        <span className="absolute right-3 top-3 flex items-center gap-1.5">
+          {o.member === true && db?.session.buyer && <span className="bg-white px-1.5 py-0.5 text-ui-3xs text-success-darker">Your co-op</span>}
+          {o.member === false && db?.session.buyer && <span className="bg-white px-1.5 py-0.5 text-ui-3xs text-ink">Join to use</span>}
+          <FitPill fit={o.fit} />
+        </span>
+        {o.sponsored && <span className="absolute bottom-3 left-3 bg-white/90 px-1.5 py-0.5 text-ui-3xs text-base-dark">Sponsored</span>}
+      </Link>
+      <div className="mt-4 flex flex-wrap items-center gap-1.5">
+        <Link href={`/storefronts/${o.supplier.id}`} className="text-ui-3xs uppercase tracking-label text-base-dark no-underline hover:underline">
           {o.supplier.name}
         </Link>
         <SupplierBadges supplier={o.supplier} />
       </div>
-      <Link href={href} className="mt-0.5 text-[17px] font-bold leading-snug text-navy hover:text-maroon">
+      <Link href={href} className="mt-1 text-body-md leading-snug text-ink no-underline hover:underline">
         {title}
       </Link>
-      <p className="mt-1.5 line-clamp-3 text-xs leading-relaxed text-slate">
+      <p className="mt-1 line-clamp-2 text-ui-2xs leading-relaxed text-base-dark">
         {qr
           ? `${qr.reference} isn't open to your agency. Buy through ${qr.vehicle} ${qr.contract_number}: the supplier quotes a discount off list${lo ? `, on ${lo.coop}'s contract page` : ""}.${qr.research_note ? ` ${qr.research_note}.` : ""}`
           : l.detail || [o.vehicle, o.contract_number].filter(Boolean).join(" ") || o.delivery}
@@ -344,17 +346,17 @@ function OptionCard({ o, qty, requestId }: { o: ResultOption; qty: number; reque
         <Stars rating={o.supplier.rating} count={o.supplier.review_count} />
         {!qr && !lo && <RevenueTags options={earnsFor({ ...o, rule })} />}
       </div>
-      <div className="mt-auto flex items-end justify-between gap-2 border-t border-base-lighter pt-3">
+      <div className="mt-auto flex flex-col gap-3 pt-2">
         <div className="min-w-0">
-          <div className={`text-[15px] font-extrabold tabular-nums ${qr ? "text-slate" : "text-navy"}`}>
+          <div className={`text-body-md font-semibold tabular-nums ${qr ? "text-base-dark" : "text-ink"}`}>
             {money(l.unit_price)}
-            <span className="text-[11px] font-medium text-slate"> / {l.unit}</span>
+            <span className="text-ui-3xs font-normal text-base-dark"> / {l.unit}</span>
           </div>
           <div className="text-[10px] text-slate">{qr ? `Reference price on ${qr.reference}` : qty > 1 ? `${qty} for ${money(total)}` : o.delivery}</div>
         </div>
-        <div className="flex shrink-0 items-center gap-1.5">
+        <div className="flex items-center gap-2 [&>*]:flex-1 [&>*]:justify-center">
           {lo || qr ? (
-            <Link href={href} className="inline-flex items-center rounded-md bg-white px-4 py-2.5 text-ui-xs font-bold leading-none text-primary no-underline shadow-[inset_0_0_0_2px_theme(colors.primary.DEFAULT)] hover:text-primary-dark hover:shadow-[inset_0_0_0_2px_theme(colors.primary.dark)]">
+            <Link href={href} className="inline-flex items-center rounded-md bg-white px-4 py-2.5 text-ui-xs font-bold leading-none text-primary no-underline shadow-[inset_0_0_0_1px_theme(colors.primary.DEFAULT)] hover:text-primary-dark hover:bg-base-lightest">
               View
             </Link>
           ) : (
@@ -367,7 +369,7 @@ function OptionCard({ o, qty, requestId }: { o: ResultOption; qty: number; reque
               <span className="text-[11px] font-semibold text-emerald-800">Quote {quoted} sent</span>
             ) : (
               <button
-                className="inline-flex items-center rounded-md bg-primary px-4 py-2.5 text-ui-xs font-bold leading-none text-white no-underline hover:bg-primary-dark active:bg-primary-darker"
+                className="inline-flex items-center rounded-md bg-primary px-4 py-2.5 text-ui-xs font-bold leading-none text-white no-underline hover:bg-base-darker active:bg-primary-dark"
                 onClick={async () => {
                   setQuoteError(null);
                   try {
@@ -382,7 +384,7 @@ function OptionCard({ o, qty, requestId }: { o: ResultOption; qty: number; reque
               </button>
             )
           ) : (
-            <Link href={`/checkout?listing=${l.id}&qty=${qty}&request=${requestId}`} className="inline-flex items-center rounded-md bg-primary px-4 py-2.5 text-ui-xs font-bold leading-none text-white no-underline hover:bg-primary-dark active:bg-primary-darker">
+            <Link href={`/checkout?listing=${l.id}&qty=${qty}&request=${requestId}`} className="inline-flex items-center rounded-md bg-primary px-4 py-2.5 text-ui-xs font-bold leading-none text-white no-underline hover:bg-base-darker active:bg-primary-dark">
               Buy
             </Link>
           )}

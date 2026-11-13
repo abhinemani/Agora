@@ -36,7 +36,7 @@ export function RouteStrip({ results }: { results: Results }) {
   const first = segments.find((s) => s.count > 0 && !s.open);
 
   return (
-    <nav aria-label="Where you can buy this" className="rounded-xl bg-base-lightest px-4 py-3">
+    <nav aria-label="Where you can buy this" className="border-y border-base-lighter bg-white py-4">
       <div className="flex flex-wrap items-baseline justify-between gap-2">
         <h2 className="text-body-md font-bold text-ink">Where you can buy this</h2>
         <p className="text-xs text-slate">{first ? `Start with ${first.label.toLowerCase()}.` : "Nothing on contract yet."} Try routes left to right.</p>
@@ -54,7 +54,7 @@ export function RouteStrip({ results }: { results: Results }) {
                 style={s.open ? { border: `1.5px dashed ${s.color}`, background: "transparent", height: 6 } : { background: s.count ? s.color : us.color.theme["base-lighter"] }}
                 aria-hidden
               />
-              <span className="mt-2 font-heading text-heading-xl font-bold tabular-nums text-ink">{s.count}</span>
+              <span className="mt-2 font-heading text-heading-xl font-light tabular-nums text-ink">{s.count}</span>
               <span className="truncate text-ui-xs font-bold" style={{ color: s.count ? s.color : undefined }}>
                 {s.label}
               </span>

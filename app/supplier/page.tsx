@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Suspense, useEffect, useState } from "react";
+import { SupplierPlans } from "@/components/SupplierPlans";
 import { useStore } from "@/components/store";
 import { Arrow, BadgeCheck, Globe, Lock, Search, Star } from "@/components/icons";
 import { Badge, Button, Card, ErrorNote, Eyebrow, IconCircle, LinkButton, Loading, RevenueTags, SourcePill, Stars, money } from "@/components/ui";
@@ -14,6 +15,7 @@ const TABS = [
   { id: "insights", label: "Insights" },
   { id: "apps", label: "Apps" },
   { id: "reviews", label: "Reviews" },
+  { id: "plans", label: "Plans and placements" },
 ] as const;
 type Tab = (typeof TABS)[number]["id"];
 
@@ -54,7 +56,15 @@ function Supplier() {
       <Card className="p-6">
         <div className="flex flex-wrap items-start justify-between gap-6">
           <div className="flex gap-4">
-            <span className="flex h-14 w-14 items-center justify-center rounded-full bg-maroon text-xl font-bold text-white">RO</span>
+            <span className="flex h-14 w-14 items-center justify-center rounded-full bg-ink text-xl font-bold text-white">
+              {s.name
+                .split(/\s+/)
+                .filter((w) => /^[A-Za-z]/.test(w))
+                .slice(0, 2)
+                .map((w) => w[0])
+                .join("")
+                .toUpperCase()}
+            </span>
             <div>
               <h1 className="text-2xl font-semibold tracking-tight text-navy">{s.name}</h1>
               <div className="text-sm text-slate">
@@ -87,20 +97,29 @@ function Supplier() {
                 ))}
               </div>
             </div>
-            <label className={`flex items-center justify-between gap-3 ${s.edge_tier === "discover" ? "text-steel" : "text-navy"}`}>
-              <span>
-                <span className="font-semibold">Sponsored placement</span>
-                <span className="block text-xs text-slate">{s.edge_tier === "discover" ? "Needs Win or Position" : "$2.00 per buyer impression"}</span>
+            <div className="text-ui-2xs text-ink">
+              <span className="font-bold">Sponsored placements</span>
+              <span className="block text-base-dark">
+                {db.placements.filter((p) => p.supplier_id === s.id).length} active ·{" "}
+                <Link href="/supplier?tab=plans" className="text-ink underline">
+                  Manage
+                </Link>
               </span>
-              <input
-                type="checkbox"
-                aria-label="Sponsored placement"
-                checked={s.sponsored}
-                disabled={s.edge_tier === "discover"}
-                onChange={() => run("setSponsored", { on: !s.sponsored })}
-                className="h-5 w-5 shrink-0 disabled:opacity-40"
-              />
-            </label>
+            </div>
+            {db.suppliers.filter((x) => x.claim?.status === "verified").length > 1 && (
+              <label className="block text-ui-3xs text-base-dark">
+                Viewing as (demo)
+                <select value={s.id} onChange={(e) => run("actAsSupplier", { supplierId: e.target.value })} className="mt-1 block w-full !min-h-0 !py-1 text-ui-2xs">
+                  {db.suppliers
+                    .filter((x) => x.claim?.status === "verified")
+                    .map((x) => (
+                      <option key={x.id} value={x.id}>
+                        {x.name}
+                      </option>
+                    ))}
+                </select>
+              </label>
+            )}
           </div>
         </div>
       </Card>
@@ -128,6 +147,7 @@ function Supplier() {
       {tab === "insights" && <InsightsTab run={run} />}
       {tab === "apps" && <AppsTab run={run} />}
       {tab === "reviews" && <ReviewsTab run={run} />}
+      {tab === "plans" && <SupplierPlans s={s} />}
     </div>
   );
 }

@@ -3,19 +3,24 @@ import { Box, Briefcase, Chair, Cloud, Cone, Laptop, Paper, Shield, Spray, Truck
 
 /** Each category has its own hue: a soft tint behind a saturated icon, at
  * matched lightness so they sit together next to the navy and maroon. */
-export const CATEGORY_TONE: Record<Category, { bg: string; fg: string; deep: string }> = {
-  "Office supplies": { bg: "#FDF1DC", fg: "#B36B00", deep: "#F6D9A6" },
-  Furniture: { bg: "#DDF3EE", fg: "#1D7A69", deep: "#B4E3D8" },
-  Janitorial: { bg: "#E0F0FB", fg: "#1E6FA8", deep: "#B9DBF3" },
-  "IT hardware": { bg: "#E8E7FB", fg: "#4A44B5", deep: "#CBC8F4" },
-  "Software and services": { bg: "#F0E6FB", fg: "#7B3BB9", deep: "#DCC6F4" },
-  "Facilities and MRO": { bg: "#FCE8DD", fg: "#C0501A", deep: "#F5C9B0" },
-  "Fleet and parts": { bg: "#E3EAF5", fg: "#36507E", deep: "#C3D0E6" },
-  "Public works materials": { bg: "#F4F0D6", fg: "#8A7410", deep: "#E6DCA5" },
-  "Safety and uniforms": { bg: "#FBE4E8", fg: "#B3243F", deep: "#F3C0CA" },
-  "Professional services": { bg: "#E2F3E5", fg: "#2E7A3D", deep: "#BCE2C3" },
-  Other: { bg: "#EDF1F7", fg: "#14213D", deep: "#D6DEEA" },
+const HUE: Record<Category, string> = {
+  "Office supplies": "#B36B00",
+  Furniture: "#1D7A69",
+  Janitorial: "#1E6FA8",
+  "IT hardware": "#4A44B5",
+  "Software and services": "#7B3BB9",
+  "Facilities and MRO": "#C0501A",
+  "Fleet and parts": "#36507E",
+  "Public works materials": "#8A7410",
+  "Safety and uniforms": "#B3243F",
+  "Professional services": "#2E7A3D",
+  Other: "#14213D",
 };
+/** Each category's hue mixed into the page surface: a soft tint on white, a deep tone in dark mode. */
+const mix = (hue: string, pct: number, onto: string) => `color-mix(in srgb, ${hue} ${pct}%, rgb(var(--us-${onto})))`;
+export const CATEGORY_TONE: Record<Category, { bg: string; fg: string; deep: string }> = Object.fromEntries(
+  (Object.keys(HUE) as Category[]).map((c) => [c, { bg: mix(HUE[c], 14, "white"), fg: mix(HUE[c], 78, "base-ink"), deep: mix(HUE[c], 32, "white") }]),
+) as Record<Category, { bg: string; fg: string; deep: string }>;
 
 const ICON: Record<Category, (p: { className?: string }) => React.ReactElement> = {
   "Office supplies": Paper,

@@ -90,11 +90,12 @@ export function seed(): Db {
         certifications: [],
         verified: { insurance: true, bond: false },
         // Spec lists National as Discover, but the demo script needs its listing
-        // sponsored, which requires Win or Position. Win keeps both true.
+        // sponsored, which requires Win or Position. Its sponsorship is a placement
+        // (furniture, any state) in db.placements.
         edge_tier: "win",
         rating: 4.2,
         review_count: 118,
-        sponsored: true,
+        sponsored: false,
         categories: ["Furniture"],
       },
       {
@@ -532,8 +533,10 @@ export function seed(): Db {
     invites: [],
     handoffs: [],
     carts: [],
+    // National Furniture's sponsorship, as a targeted placement: furniture, any state.
+    placements: [{ id: "plc_001", supplier_id: "sup_national", category: "Furniture", state: "any", created_at: new Date().toISOString() }],
     session: { preference_answer: null, spend_dashboard_enabled: true, acting_supplier_id: "sup_riverside", buyer: null },
-    counters: { revenue: 0, request: 0, order: 1040, solicitation: 7, contract: 0, listing: 40, doc: 0, item: 0, attention: 0 },
+    counters: { revenue: 0, request: 0, order: 1040, solicitation: 7, contract: 0, listing: 40, doc: 0, item: 0, attention: 0, placement: 1 },
   };
 
   // Demo verification results for the fictional suppliers (real companies show "not checked yet").
@@ -548,6 +551,13 @@ export function seed(): Db {
     sup_evergreen: { samRenewsIn: 330, certExpiresIn: 280 },
   };
   for (const sup of db.suppliers) if (VERIFY[sup.id]) sup.checks = demoChecks(sup, VERIFY[sup.id]);
+  // The fictional suppliers already run their storefronts in the demo, so they're claimed.
+  for (const sup of db.suppliers)
+    if (VERIFY[sup.id]) sup.claim = { name: "Storefront owner (demo)", email: `owner@${sup.id.replace("sup_", "")}.example`, at: new Date().toISOString(), status: "verified" };
+  // Off-contract suppliers pay a listing fee to appear; MetroMart's is current.
+  const feeThrough = new Date(Date.now() + 300 * 86_400_000).toISOString().slice(0, 10);
+  for (const sup of db.suppliers)
+    if (db.listings.some((l) => l.supplier_id === sup.id) && db.listings.filter((l) => l.supplier_id === sup.id).every((l) => l.source === "no_approval")) sup.listing_fee_through = feeThrough;
   seedOrderHistory(db);
 
   addTylerCatalog(db);

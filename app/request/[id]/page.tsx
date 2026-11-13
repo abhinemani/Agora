@@ -12,7 +12,8 @@ import { ExpiredNote, InviteAdminBanner, NextSteps, OwnContractsCard } from "@/c
 import { CategoryIcon } from "@/components/CategoryIcon";
 import { useStore } from "@/components/store";
 import { Lock, People, Plus, Sparkle } from "@/components/icons";
-import { Badge, Button, Card, ErrorNote, Eyebrow, IconCircle, LinkButton, Loading, RevenueTags, SourcePill, Stars, SupplierBadges, money } from "@/components/ui";
+import { Badge, Button, Card, Checkbox, ErrorNote, Eyebrow, IconCircle, LinkButton, Loading, RevenueTags, SourcePill, Stars, SupplierBadges, money } from "@/components/ui";
+import { verificationSummary } from "@/lib/verification";
 import { goHref } from "@/lib/coops";
 import type { ContractLead, Results, ResultOption, Unavailable } from "@/lib/assistant";
 import { PURCHASE_KINDS, TRANSACTION_FEE_SOURCES } from "@/lib/revenue_rules";
@@ -53,6 +54,7 @@ export default function RequestResults() {
   const [showAll, setShowAll] = useState(false);
   const [answered, setAnswered] = useState(false);
   const [why, setWhy] = useState(false);
+  const [verifiedOnly, setVerifiedOnly] = useState(false);
   const [changing, setChanging] = useState(false);
 
   const request = db?.requests.find((r) => r.id === id);
@@ -87,7 +89,17 @@ export default function RequestResults() {
 
   const p = request.parsed;
 
-  const all = results ? results.groups.flatMap((g) => g.options) : [];
+  // "Verified suppliers only": every check run and passed (an expiring certification counts as not passed).
+  const supplierVerified = (sid: string) => {
+    const sup = db.suppliers.find((x) => x.id === sid);
+    if (!sup) return false;
+    const v = verificationSummary(sup);
+    return !v.unchecked && v.problems === 0 && v.checks.every((c) => c.status === "pass" || c.id === "bond");
+  };
+  const everything = results ? results.groups.flatMap((g) => g.options) : [];
+  const all = verifiedOnly ? everything.filter((o) => supplierVerified(o.supplier.id)) : everything;
+  const coops = results && verifiedOnly ? { ...results.coops, hits: results.coops.hits.filter((h) => supplierVerified(h.supplier_id)), better: results.coops.better && supplierVerified(results.coops.better.hit.supplier_id) ? results.coops.better : null } : results?.coops;
+  const hiddenByVerified = results && verifiedOnly ? everything.length - all.length + (results.coops.hits.length - (coops?.hits.length ?? 0)) : 0;
   const shown = showAll ? all : all.slice(0, GRID_LIMIT);
   const sources = results ? results.groups.length : 0;
 
@@ -114,6 +126,7 @@ export default function RequestResults() {
                 {why ? "Hide ranking" : "How these are ranked"}
               </button>
             )}
+            {results && !results.no_match && <Checkbox checked={verifiedOnly} onChange={setVerifiedOnly} label="Verified suppliers only" />}
             <button onClick={() => setChanging(!changing)} className="inline-flex items-center rounded-md bg-white px-3 py-2 text-ui-2xs font-bold leading-none text-base-darker shadow-[inset_0_0_0_1px_theme(colors.base.light)] hover:text-primary hover:shadow-[inset_0_0_0_1px_theme(colors.primary.DEFAULT)]">
               {changing ? "Cancel" : buyer ? `For ${buyer.name}` : "Set your agency"}
             </button>
@@ -185,13 +198,21 @@ export default function RequestResults() {
               <OptionCard key={o.listing.id} o={o} qty={p.quantity} requestId={id} />
             ))}
           </div>
+          {verifiedOnly && hiddenByVerified > 0 && (
+            <p className="text-ui-2xs text-base-dark">
+              {hiddenByVerified} option{hiddenByVerified === 1 ? "" : "s"} from suppliers whose checks aren't all passing {hiddenByVerified === 1 ? "is" : "are"} hidden.{" "}
+              <button onClick={() => setVerifiedOnly(false)} className="text-ink underline">
+                Show everything
+              </button>
+            </p>
+          )}
           {all.length > shown.length && (
             <button onClick={() => setShowAll(true)} className="w-full rounded-xl border border-dashed border-navy/20 py-3 text-sm font-semibold text-navy hover:bg-white">
               Show all {all.length} options
             </button>
           )}
 
-          <CoopSection section={results.coops} requestId={id} onMembershipChange={() => setResults(null)} />
+          <CoopSection section={coops!} requestId={id} onMembershipChange={() => setResults(null)} />
 
           <div className="grid gap-4 md:grid-cols-3">
             {results.peer && <PeerCard peer={results.peer} qty={p.quantity} />}
@@ -212,7 +233,7 @@ export default function RequestResults() {
       )}
 
       {results && results.no_match && showEarn && <KindBanner kind={PURCHASE_KINDS.new_need} />}
-      {results && results.no_match && <CoopSection section={results.coops} requestId={id} onMembershipChange={() => setResults(null)} />}
+      {results && results.no_match && <CoopSection section={coops!} requestId={id} onMembershipChange={() => setResults(null)} />}
       {results && results.no_match && (
         <div className="grid gap-6 lg:grid-cols-3">
           <Card className="p-6 lg:col-span-2">

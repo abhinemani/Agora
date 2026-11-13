@@ -9,11 +9,11 @@ export const REVENUE_OPTIONS: Record<
   { name: string; payer: Payer; rule: string }
 > = {
   1: { name: "City marketplace subscription", payer: "local_government", rule: "$2,000/mo base, credited 25% of options 3 + 9" },
-  2: { name: "Supplier onboarding and listing", payer: "supplier", rule: "$1,500 one-time + $600/yr per contract" },
+  2: { name: "Supplier onboarding and listing", payer: "supplier", rule: "$1,500 one-time + $600/yr per contract; $150/yr listing fee off contract" },
   3: { name: "Transaction fee", payer: "supplier", rule: "1.0% of contract orders" },
   4: { name: "List in more city marketplaces", payer: "supplier", rule: "$400/yr per added city marketplace" },
-  5: { name: "Sponsored placement", payer: "supplier", rule: "$2.00 per results page impression" },
-  6: { name: "Supplier storefront and insights", payer: "supplier", rule: "$350/mo while on Position; review responses" },
+  5: { name: "Sponsored placement", payer: "supplier", rule: "$2.00 per results page impression, targeted by category and state" },
+  6: { name: "Supplier storefront and insights", payer: "supplier", rule: "$350/mo while on Position; profile $500/yr, profile with catalog $1,500/yr" },
   7: { name: "Spend intelligence", payer: "local_government", rule: "$500/mo while dashboard is enabled" },
   8: { name: "Managed sourcing", payer: "local_government", rule: "$1,200 per published solicitation" },
   9: { name: "Embedded payments", payer: "card_network", rule: "1.25% of P-card orders" },
@@ -35,6 +35,9 @@ export const RATES = {
   embeddedPayments: 0.0125,
   appNotionalContract: 2000,
   appReferralShare: 0.15,
+  profilePlanAnnual: 500,
+  profileCatalogAnnual: 1500,
+  listingFeeAnnual: 150,
 };
 
 /** Sources that carry a transaction fee. Co-op and reseller listings pay listing

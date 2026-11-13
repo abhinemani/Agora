@@ -12,8 +12,11 @@ import {
   onSolicitationPublished,
   onSponsoredImpression,
   onMarketplaceAdded,
+  fire,
+  RATES,
 } from "./revenue_rules";
 import { CATEGORIES } from "./types";
+import type { SupplierPlan } from "./types";
 import type { Buyer, Cart, Category, Contract, Coop, CoopMember, Order, OrderStatus, ContractDocument, ContractHeader, Db, EdgeTier, ExtractedItem, Listing, Request, Role, Solicitation } from "./types";
 import { BUYER_PRESETS, checkEligibility, STATES } from "./vehicles";
 import { FREE_RFP_LIMIT, settingsFor } from "./agency";
@@ -21,6 +24,7 @@ import { parseRegister } from "./register";
 import { cartAgency, cartGroups, draftCart, glCode, needsApproval, nextStep, PURCHASER, REQUESTER } from "./orders";
 import { coopOf, detectCoops, isContractLevelUrl, isMember, linksOut, memberMatches, normalizeDomain } from "./coops";
 import { parseMemberList } from "./members";
+import { canSponsor, claimMatchesWebsite, isClaimed, isOffContract, listingFeeCurrent, PLANS } from "./suppliers";
 
 const now = () => new Date().toISOString();
 
@@ -892,6 +896,98 @@ export function handoffRfp(args: { requestId: string; tool: (typeof HANDOFF_TOOL
   db.handoffs.unshift(handoff);
   request.outcome = "solicitation";
   return handoff;
+}
+
+// ---------------------------------------------------------------- supplier revenue
+
+function supplierById(db: Db, id: string) {
+  return db.suppliers.find((s) => s.id === id) ?? fail("Supplier not found");
+}
+
+/** Claim a storefront. A work email on the company's own domain verifies at once; anything else waits for Sovra review. */
+export function claimStorefront(args: { supplierId: string; name: string; email: string }) {
+  const db = getDb();
+  const s = supplierById(db, args.supplierId);
+  if (isClaimed(s)) fail(`${s.name}'s storefront is already claimed.`);
+  const name = args.name?.trim() || fail("Add your name.");
+  const email = args.email?.trim() ?? "";
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) fail("Enter your work email.");
+  s.claim = { name, email, at: now(), status: claimMatchesWebsite(email, s.website) ? "verified" : "pending" };
+  if (s.claim.status === "verified") db.session.acting_supplier_id = s.id;
+  return s.claim;
+}
+
+/** Sovra ops approves a claim that couldn't be verified by email domain. */
+export function approveClaim(supplierId: string) {
+  const db = getDb();
+  const s = supplierById(db, supplierId);
+  if (s.claim?.status !== "pending") fail("There's no claim waiting for review.");
+  s.claim.status = "verified";
+  db.session.acting_supplier_id = s.id;
+  return s.claim;
+}
+
+/** Switch which supplier the supplier views act as (demo). Only claimed storefronts. */
+export function actAsSupplier(supplierId: string) {
+  const db = getDb();
+  const s = supplierById(db, supplierId);
+  if (!isClaimed(s)) fail(`Claim ${s.name}'s storefront first.`);
+  db.session.acting_supplier_id = s.id;
+  return s;
+}
+
+/** Choose a storefront plan. Paid plans bill option 6 for the year. */
+export function setSupplierPlan(args: { supplierId: string; plan: SupplierPlan }) {
+  const db = getDb();
+  const s = supplierById(db, args.supplierId);
+  if (!isClaimed(s)) fail("Claim the storefront before choosing a plan.");
+  if (!PLANS[args.plan]) fail("Pick a plan.");
+  const was = s.plan ?? "basic";
+  s.plan = args.plan;
+  // Upgrades bill the difference for the year; downgrades take effect at renewal (no refund in the demo).
+  const due = Math.max(0, PLANS[args.plan].price - PLANS[was].price);
+  const events = due > 0 ? [fire(db, 6, due, `${PLANS[args.plan].name} plan, one year · ${s.name}`, s.id)] : [];
+  if (s.plan === "basic") db.placements = db.placements.filter((p) => p.supplier_id !== s.id || s.edge_tier !== "discover");
+  return { supplier: s, events };
+}
+
+/** Edit the storefront's own copy (Profile plans and up). */
+export function updateStorefront(args: { supplierId: string; tagline: string; about: string }) {
+  const db = getDb();
+  const s = supplierById(db, args.supplierId);
+  if (!isClaimed(s) || (s.plan ?? "basic") === "basic") fail("Your own description comes with the Profile plan.");
+  s.profile = { ...(s.profile ?? { tagline: "", about: "" }), tagline: args.tagline.trim(), about: args.about.trim() };
+  return s.profile;
+}
+
+/** Add a targeted placement: Sponsored on searches in this category, in one state or anywhere. Billed per impression (option 5). */
+export function addPlacement(args: { supplierId: string; category: Category; state: string }) {
+  const db = getDb();
+  const s = supplierById(db, args.supplierId);
+  if (!canSponsor(s)) fail("Placements come with a paid plan (or Edge Win and up) on a claimed storefront.");
+  if (!CATEGORIES.includes(args.category)) fail("Pick a category.");
+  const state = args.state === "any" ? "any" : (STATES.find(([c]) => c === args.state)?.[0] ?? fail("Pick a state, or anywhere."));
+  if (db.placements.some((p) => p.supplier_id === s.id && p.category === args.category && p.state === state)) fail("You already have that placement.");
+  const placement = { id: nextId(db, "placement", "plc", 3), supplier_id: s.id, category: args.category, state, created_at: now() };
+  db.placements.push(placement);
+  return placement;
+}
+
+export function removePlacement(placementId: string) {
+  const db = getDb();
+  db.placements = db.placements.filter((p) => p.id !== placementId);
+  return { ok: true };
+}
+
+/** An off-contract supplier pays its yearly listing fee (option 2) so its listings appear. */
+export function payListingFee(supplierId: string) {
+  const db = getDb();
+  const s = supplierById(db, supplierId);
+  if (!isOffContract(db, s)) fail(`${s.name} sells on contract, so no listing fee applies.`);
+  const from = listingFeeCurrent(s) ? new Date(`${s.listing_fee_through}T12:00:00Z`) : new Date();
+  s.listing_fee_through = new Date(from.getTime() + 365 * 86_400_000).toISOString().slice(0, 10);
+  const evt = fire(db, 2, RATES.listingFeeAnnual, `Listing fee, one year, off contract · ${s.name}`, s.id);
+  return { supplier: s, events: [evt] };
 }
 
 // ---------------------------------------------------------------- co-ops

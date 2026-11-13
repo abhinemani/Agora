@@ -68,7 +68,7 @@ export function VerifyBadge({ supplier }: { supplier: Supplier }) {
       </button>
       {open && (
         <div className="fixed inset-0 z-50 grid place-items-center p-4" role="dialog" aria-modal="true" aria-label={`${supplier.name} verification`}>
-          <button aria-label="Close" className="absolute inset-0 cursor-default bg-ink/[.32]" onClick={() => setOpen(false)} />
+          <button aria-label="Close" className="absolute inset-0 cursor-default bg-[#000]/50" onClick={() => setOpen(false)} />
           <div className="relative w-full max-w-lg rounded-lg bg-white p-8 shadow-4">
             <div className="flex items-start justify-between gap-3">
               <div>

@@ -118,6 +118,40 @@ Agora is built on the [U.S. Web Design System](https://designsystem.digital.gov/
 
 Agora is not a federal government site, so it does not use the USWDS government banner ("An official website of the United States government") or the identifier. Those are for official government websites only. To pick up a newer USWDS release, update the package and rerun the script.
 
+## Product decisions
+
+These are settled, and the app follows them:
+
+- **The free-plan limit counts RFP Lite only.** Handing a request to Sovra's RFP tool or to the agency's own tool (Euna, OpenGov, Bonfire) never counts toward the five free RFPs a year.
+- **Only suppliers can buy placement.** Co-ops can't pay to rank higher, which keeps them neutral, since competing vendors sell through the same co-ops.
+- **Resellers stay in results, last.** Reseller contracts appear under "Other ways," after the agency's own, state and co-op routes. Civic Marketplace-type channels aren't included.
+- **The demo member lists stay, labeled.** Sourcewell's and WSPC's seeded member lists are marked as demo data. Real lists replace them through **Co-op member lists**.
+
+## Supplier plans, placements and listing fees
+
+Suppliers earn Sovra money in four ways, all in the existing ledger options:
+
+- **Claiming a storefront.** A storefront that Agora built from public contracts has a **Claim this storefront** link. A work email on the company's own website domain verifies the claim at once. Any other email waits for Sovra review, and the storefront shows a demo **Approve claim** button. Once claimed, the supplier views act as that company. A **Viewing as** picker switches between claimed storefronts.
+- **Storefront plans** (option 6): Basic is free. Profile ($500/yr) adds the supplier's own tagline and description and targeted placements. Profile with catalog ($1,500/yr) adds a published catalog and featured product lines. An upgrade bills only the difference for the year.
+- **Targeted placements** (option 5): a supplier picks a category and a state, or anywhere. Its listings show as Sponsored only on searches in that category, for agencies in that state. Billing is still $2.00 per results page shown. Sponsorship can move a listing up within its own kind of contract; it never changes a fit score or which contracts an agency can use. Placements need a claimed storefront and either a paid plan or Edge Win and up. In the seed, National Furniture's sponsorship is a placement for furniture, anywhere.
+- **Listing fees** (option 2): a supplier with no contract at all (small purchases only, like MetroMart) pays $150 a year to appear. Its listings are hidden while the fee has lapsed.
+
+Manage all of this under **Supplier → Plans and placements** (`components/SupplierPlans.tsx`). The rules are in `lib/suppliers.ts`.
+
+## Verified suppliers only
+
+Results have a **Verified suppliers only** checkbox. A supplier counts as verified when its checks have been run and every one passed; an expiring certification counts as not passed. A performance bond isn't required, since most purchases don't need one. The filter applies to both product tiles and co-op contracts, and a line says how many options it hid, with a link to show everything.
+
+## Dark mode
+
+The account menu has **Appearance: System, Light, Dark**. System follows the computer's setting. A saved choice is applied before the page paints, so there's no flash of the wrong theme.
+
+USWDS doesn't define a dark theme, so `scripts/uswds-theme.mjs` builds one. It mirrors each color's grade within its own USWDS family: light surfaces become dark ones, ink becomes light, and borders, status colors and route colors move to the grade that reads on dark. Every dark value is still a USWDS system color. White and black swap too, so text on a filled button stays readable. The script writes every color as a CSS variable with light and dark values (`app/theme.css`), and Tailwind reads the variables. Category tiles mix their hue into the page surface, so they're pastel on white and deep on dark. Avatars, storefront banners, the announcement strip and modal backdrops keep fixed colors in both modes.
+
+## Rehearsing the demo
+
+`npm run build && npm start`, then `npm run rehearse` (or `node scripts/rehearse-demo.cjs <url>` against a deployed copy) walks the demo path below, steps 1 to 13, in a real browser. It reports PASS or FAIL for each step and saves a screenshot of any failure to `rehearsal/`. Run it before a demo.
+
 ## NASPO ValuePoint
 
 `npm run import:naspo` (`scripts/import-naspo.mjs`) reads one NASPO ValuePoint portfolio from naspovaluepoint.org (its public WordPress API and supplier pages) and writes `seed/catalogs/naspo-citizen-engagement-platforms.json`: each award's master agreement number, award and expiration dates, the states with a participating addendum, and links to the master agreement and price files. It needs network access to www.naspovaluepoint.org and, for documents, its S3 buckets; run Node with `NODE_USE_ENV_PROXY=1` behind a proxy.
@@ -163,6 +197,8 @@ The prototype supports section 8 of the spec end to end. Switch roles with the B
 11. **Buyer, the free tier:** still as Harmon Lake, ask for "LED retrofit for the ice rink" and choose **RFP Lite → Build it**. Publishing uses the last of the five free RFPs. Build another and the page asks to upgrade, but **Send it over** to Euna, back on the results page, still works.
 12. **Buyer, cart and approval:** as Riverbend, ask for the folding tables again and choose **Add to cart** on Riverside and on National Furniture. In the cart, Riverside's $10,560 is a PO and National's $9,960 is a P-card order. **Hand this cart to someone who can buy**, then **Send for approval**. Switch to **Procurement**: send it back with a reason, then, as the buyer, revise and resubmit, and as Purchasing, **Approve and order**. Open **Orders** and step the new PO through to reconciled.
 13. **Sovra ops, member lists:** open **Co-op member lists**, choose **Try the sample** on Sourcewell, then set your agency to Harmon Lake Township. Sourcewell now shows under its co-ops, matched by the email domain on the list.
+14. **Supplier, claim and sell:** open **Storefronts → Dell Technologies**, choose **Claim this storefront** and use a `@dell.com` email: the claim verifies at once, and **Plans and placements** opens as Dell. Upgrade to Profile (option 6). Then switch **Viewing as** to TechSource Government Solutions and add a placement for IT hardware in Colorado. As the Town of Crested Butte, "laptops for the town hall" now shows TechSource's laptop as Sponsored. As the City of Cedar Bend (Iowa), it doesn't. (Placements mark product tiles; Dell's NASPO award is quote-only, with no products to mark.)
+15. **Buyer, verified only:** as Riverbend, ask for the folding tables and tick **Verified suppliers only**. Riverside, whose MBE certification is expiring, drops out, and a line says one option is hidden.
 
 ## Where things live
 

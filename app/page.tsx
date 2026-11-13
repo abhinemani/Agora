@@ -55,13 +55,13 @@ export default function Home() {
     <div className="pb-8">
       {/* Hero: one question, one box. */}
       <section className="px-1 pb-14 pt-12 text-center sm:pt-20">
-        <div className="text-ui-3xs uppercase tracking-[0.2em] text-base-dark">Government buying, simplified</div>
-        <h1 className="mx-auto mt-5 max-w-3xl font-heading text-[clamp(2.2rem,5vw,3.6rem)] font-light leading-[1.08] text-ink">What are you looking to buy?</h1>
+        <div className="text-ui-2xs font-bold text-primary">Government buying, simplified</div>
+        <h1 className="mx-auto mt-5 max-w-3xl font-heading text-[clamp(2rem,4.4vw,3rem)] font-bold leading-[1.15] text-ink">What are you looking to buy?</h1>
         <p className="mx-auto mt-4 max-w-xl text-base leading-relaxed text-slate">
           Search state and cooperative contracts in one place. Agora shows which ones your agency can use, what they cost, and how to buy.
         </p>
         <form
-          className="mx-auto mt-10 flex max-w-3xl items-center gap-2 border border-ink bg-white pl-4 focus-within:outline focus-within:outline-4 focus-within:outline-focus"
+          className="mx-auto mt-10 flex max-w-3xl items-center gap-2 border border-base-dark bg-white pl-4 focus-within:outline focus-within:outline-4 focus-within:outline-focus"
           onSubmit={(e) => {
             e.preventDefault();
             submit(text);
@@ -78,7 +78,7 @@ export default function Home() {
           <button
             type="submit"
             disabled={busy || !text.trim()}
-            className="inline-flex shrink-0 items-center gap-1.5 self-stretch bg-ink px-5 text-ui-xs uppercase tracking-label text-white transition hover:bg-base-darker disabled:bg-base-dark sm:px-7"
+            className="inline-flex shrink-0 items-center gap-1.5 self-stretch bg-primary px-5 text-ui-xs font-bold text-white transition hover:bg-primary-dark active:bg-primary-darker disabled:bg-disabled-lighter disabled:text-disabled-dark sm:px-7"
           >
             Find solutions <Arrow className="hidden h-4 w-4 sm:block" />
           </button>

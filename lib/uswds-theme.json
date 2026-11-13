@@ -1,33 +1,16 @@
 {
   "source": "@uswds/uswds 3.13.0, default theme with Agora's theme settings",
   "overrides": {
-    "color": {
-      "base-lightest": "gray-warm-5",
-      "base-lighter": "gray-warm-10",
-      "base-light": "gray-warm-30",
-      "base": "gray-warm-50",
-      "base-dark": "gray-warm-60",
-      "base-darker": "gray-warm-70",
-      "base-darkest": "gray-90",
-      "base-ink": "gray-90",
-      "primary-lighter": "gray-warm-5",
-      "primary-light": "gray-warm-30",
-      "primary": "gray-90",
-      "primary-vivid": "gray-90",
-      "primary-dark": "black",
-      "primary-darker": "black"
-    },
-    "font": {
-      "font-role-heading": "sans"
-    },
+    "color": {},
+    "font": {},
     "shape": {
-      "button": "0",
-      "card": "0",
-      "tag": "0",
+      "button": "4",
+      "card": "8",
+      "tag": "2",
       "input": "0"
     },
     "weights": {
-      "heading": 300
+      "heading": 700
     }
   },
   "palette": {
@@ -195,40 +178,40 @@
   },
   "vars": {
     "base-lightest": {
-      "light": "#f0f0ec",
-      "dark": "#2e2e2a",
-      "token": "gray-warm-5",
-      "darkToken": "gray-warm-80"
+      "light": "#f0f0f0",
+      "dark": "#2e2e2e",
+      "token": "gray-5",
+      "darkToken": "gray-80"
     },
     "base-lighter": {
-      "light": "#e6e6e2",
-      "dark": "#454540",
-      "token": "gray-warm-10",
-      "darkToken": "gray-warm-70"
+      "light": "#dfe1e2",
+      "dark": "#3d4551",
+      "token": "gray-cool-10",
+      "darkToken": "gray-cool-70"
     },
     "base-light": {
-      "light": "#afaea2",
-      "dark": "#76766a",
-      "token": "gray-warm-30",
-      "darkToken": "gray-warm-50"
+      "light": "#a9aeb1",
+      "dark": "#71767a",
+      "token": "gray-cool-30",
+      "darkToken": "gray-cool-50"
     },
     "base": {
-      "light": "#76766a",
-      "dark": "#929285",
-      "token": "gray-warm-50",
-      "darkToken": "gray-warm-40"
+      "light": "#71767a",
+      "dark": "#8d9297",
+      "token": "gray-cool-50",
+      "darkToken": "gray-cool-40"
     },
     "base-dark": {
-      "light": "#5d5d52",
-      "dark": "#afaea2",
-      "token": "gray-warm-60",
-      "darkToken": "gray-warm-30"
+      "light": "#565c65",
+      "dark": "#a9aeb1",
+      "token": "gray-cool-60",
+      "darkToken": "gray-cool-30"
     },
     "base-darker": {
-      "light": "#454540",
-      "dark": "#cac9c0",
-      "token": "gray-warm-70",
-      "darkToken": "gray-warm-20"
+      "light": "#3d4551",
+      "dark": "#c6cace",
+      "token": "gray-cool-70",
+      "darkToken": "gray-cool-20"
     },
     "base-darkest": {
       "light": "#1b1b1b",
@@ -243,40 +226,40 @@
       "darkToken": "gray-5"
     },
     "primary-lighter": {
-      "light": "#f0f0ec",
-      "dark": "#2e2e2a",
-      "token": "gray-warm-5",
-      "darkToken": "gray-warm-80"
+      "light": "#d9e8f6",
+      "dark": "#274863",
+      "token": "blue-10",
+      "darkToken": "blue-70"
     },
     "primary-light": {
-      "light": "#afaea2",
-      "dark": "#76766a",
-      "token": "gray-warm-30",
-      "darkToken": "gray-warm-50"
+      "light": "#73b3e7",
+      "dark": "#2378c3",
+      "token": "blue-30",
+      "darkToken": "blue-50"
     },
     "primary": {
-      "light": "#1b1b1b",
-      "dark": "#f0f0f0",
-      "token": "gray-90",
-      "darkToken": "gray-5"
+      "light": "#005ea2",
+      "dark": "#58b4ff",
+      "token": "blue-60v",
+      "darkToken": "blue-30v"
     },
     "primary-vivid": {
-      "light": "#1b1b1b",
-      "dark": "#f0f0f0",
-      "token": "gray-90",
-      "darkToken": "gray-5"
+      "light": "#0050d8",
+      "dark": "#81aefc",
+      "token": "blue-warm-60v",
+      "darkToken": "blue-warm-30v"
     },
     "primary-dark": {
-      "light": "#000000",
-      "dark": "#ffffff",
-      "token": "black",
-      "darkToken": "white"
+      "light": "#1a4480",
+      "dark": "#adcdff",
+      "token": "blue-warm-70v",
+      "darkToken": "blue-warm-20v"
     },
     "primary-darker": {
-      "light": "#000000",
-      "dark": "#ffffff",
-      "token": "black",
-      "darkToken": "white"
+      "light": "#162e51",
+      "dark": "#d4e5ff",
+      "token": "blue-warm-80v",
+      "darkToken": "blue-warm-10v"
     },
     "secondary-lighter": {
       "light": "#f3e1e4",
@@ -826,27 +809,27 @@
     }
   },
   "shape": {
-    "button": "0",
-    "card": "0",
-    "tag": "0",
+    "button": "4",
+    "card": "8",
+    "tag": "2",
     "input": "0"
   },
   "color": {
     "theme": {
-      "base-lightest": "#f0f0ec",
-      "base-lighter": "#e6e6e2",
-      "base-light": "#afaea2",
-      "base": "#76766a",
-      "base-dark": "#5d5d52",
-      "base-darker": "#454540",
+      "base-lightest": "#f0f0f0",
+      "base-lighter": "#dfe1e2",
+      "base-light": "#a9aeb1",
+      "base": "#71767a",
+      "base-dark": "#565c65",
+      "base-darker": "#3d4551",
       "base-darkest": "#1b1b1b",
       "base-ink": "#1b1b1b",
-      "primary-lighter": "#f0f0ec",
-      "primary-light": "#afaea2",
-      "primary": "#1b1b1b",
-      "primary-vivid": "#1b1b1b",
-      "primary-dark": "#000000",
-      "primary-darker": "#000000",
+      "primary-lighter": "#d9e8f6",
+      "primary-light": "#73b3e7",
+      "primary": "#005ea2",
+      "primary-vivid": "#0050d8",
+      "primary-dark": "#1a4480",
+      "primary-darker": "#162e51",
       "secondary-lighter": "#f3e1e4",
       "secondary-light": "#f2938c",
       "secondary": "#d83933",
@@ -1010,21 +993,21 @@
       "mono": "roboto-mono"
     },
     "roles": {
-      "heading": "sans",
+      "heading": "serif",
       "body": "sans",
       "ui": "sans"
     },
     "sizes": {
       "heading": {
-        "3xs": "0.8651rem",
-        "2xs": "0.9316rem",
-        "xs": "0.9982rem",
-        "sm": "1.0647rem",
-        "md": "1.1313rem",
-        "lg": "1.464rem",
-        "xl": "2.1294rem",
-        "2xl": "2.6618rem",
-        "3xl": "3.1941rem"
+        "3xs": "0.7928rem",
+        "2xs": "0.8538rem",
+        "xs": "0.9148rem",
+        "sm": "0.9757rem",
+        "md": "1.0367rem",
+        "lg": "1.3416rem",
+        "xl": "1.9515rem",
+        "2xl": "2.4394rem",
+        "3xl": "2.9272rem"
       },
       "body": {
         "3xs": "0.8651rem",
@@ -1064,6 +1047,6 @@
     },
     "bodyLineHeight": 1.62,
     "headingLineHeight": 1.2,
-    "headingWeight": 300
+    "headingWeight": 700
   }
 }

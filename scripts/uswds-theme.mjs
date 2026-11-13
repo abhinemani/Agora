@@ -27,29 +27,17 @@ system["black"] = "#000000";
 const hex = (token) => system[token] ?? (() => { throw new Error(`No USWDS system color ${token}`); })();
 
 // ---- Agora's theme settings, layered over USWDS's defaults the way a project's
-// _uswds-theme.scss does. A warm, retail look: ink calls to action on white,
-// warm-gray neutrals, light sans headings, square corners. Status colors and
-// the focus color stay USWDS defaults.
+// _uswds-theme.scss does. Agora keeps USWDS's colors, type and component shapes
+// (blue-60v primary, cool-gray neutrals, Merriweather headings, 4px buttons) and
+// borrows only presentation from editorial retail (image-led product tiles,
+// generous whitespace), which lives in the components, not here. Each setting
+// below changes one USWDS default; leave a key out to keep the default.
 const AGORA_THEME = {
-  color: {
-    "base-lightest": "gray-warm-5",
-    "base-lighter": "gray-warm-10",
-    "base-light": "gray-warm-30",
-    base: "gray-warm-50",
-    "base-dark": "gray-warm-60",
-    "base-darker": "gray-warm-70",
-    "base-darkest": "gray-90",
-    "base-ink": "gray-90",
-    "primary-lighter": "gray-warm-5",
-    "primary-light": "gray-warm-30",
-    primary: "gray-90",
-    "primary-vivid": "gray-90",
-    "primary-dark": "black",
-    "primary-darker": "black",
-  },
-  font: { "font-role-heading": "sans" },
-  shape: { button: "0", card: "0", tag: "0", input: "0" },
-  weights: { heading: 300 },
+  color: {},
+  font: {},
+  // USWDS defaults: buttons "md" (4px), cards "lg" (8px), tags "sm" (2px), square inputs.
+  shape: { button: "4", card: "8", tag: "2", input: "0" },
+  weights: { heading: 700 },
 };
 
 // ---- Theme colors: USWDS's default theme settings, then Agora's overrides, resolved to hex

@@ -53,7 +53,7 @@ export function RouteStrip({ results }: { results: Results }) {
                 style={s.open ? { border: `1.5px dashed ${s.color}`, background: "transparent", height: 6 } : { background: s.count ? s.color : "rgb(var(--us-base-lighter))" }}
                 aria-hidden
               />
-              <span className="mt-2 font-heading text-heading-xl font-light tabular-nums text-ink">{s.count}</span>
+              <span className="mt-2 font-heading text-heading-xl font-bold tabular-nums text-ink">{s.count}</span>
               <span className="truncate text-ui-xs font-bold" style={{ color: s.count ? s.color : undefined }}>
                 {s.label}
               </span>

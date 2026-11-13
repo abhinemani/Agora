@@ -26,7 +26,7 @@ export function AddToCart({ listingId, quantity, requestId, size = "sm" }: { lis
             setState("idle");
           }
         }}
-        className={`w-full rounded-md text-ui-xs font-bold leading-none transition-colors ${pad} ${state === "added" ? "bg-success-lighter text-success-darker shadow-[inset_0_0_0_2px_theme(colors.success.DEFAULT)]" : "bg-white text-primary shadow-[inset_0_0_0_1px_theme(colors.primary.DEFAULT)] hover:text-primary-dark hover:bg-base-lightest"}`}
+        className={`w-full rounded-md text-ui-xs font-bold leading-none transition-colors ${pad} ${state === "added" ? "bg-success-lighter text-success-darker shadow-[inset_0_0_0_2px_theme(colors.success.DEFAULT)]" : "bg-white text-primary shadow-[inset_0_0_0_2px_theme(colors.primary.DEFAULT)] hover:text-primary-dark hover:shadow-[inset_0_0_0_2px_theme(colors.primary.dark)]"}`}
       >
         {state === "added" ? "✓ Added" : "Add to cart"}
       </button>

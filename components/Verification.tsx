@@ -72,7 +72,7 @@ export function VerifyBadge({ supplier }: { supplier: Supplier }) {
           <div className="relative w-full max-w-lg rounded-lg bg-white p-8 shadow-4">
             <div className="flex items-start justify-between gap-3">
               <div>
-                <h2 className="font-heading text-heading-lg font-light text-ink">{supplier.name}</h2>
+                <h2 className="font-heading text-heading-lg font-bold text-ink">{supplier.name}</h2>
                 <div className="mt-1 text-ui-xs text-base-dark">
                   {v.passed} of {v.checks.length} checks passed{v.problems ? `, ${v.problems} to review` : ""}
                 </div>

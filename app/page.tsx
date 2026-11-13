@@ -61,7 +61,7 @@ export default function Home() {
   return (
     <div className="pb-8">
       {/* Hero: one question, one box, drawn as a blueprint. Full bleed, out of main's padding. */}
-      <section className="relative -mt-8 mx-[calc(50%-50vw)] overflow-hidden bg-[#0F3D73] px-5 pb-20 pt-16 text-center sm:pt-24 md:pb-32">
+      <section className="relative -mt-8 mx-[calc(50%-50vw)] overflow-hidden bg-[#0F3D73] px-8 pb-48 pt-16 text-center sm:pt-24 md:px-5 md:pb-32">
         <BlueprintBackdrop contracts={db.contracts.length} suppliers={suppliers} products={products} vehicles={vehicles.length} priceRange={priceRange} />
         <div className="relative mx-auto max-w-3xl">
           <div className="text-ui-2xs font-bold text-[#A8CBF2]">Government buying, simplified</div>

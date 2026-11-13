@@ -1,7 +1,8 @@
 /** The home hero's blueprint: a drafting grid, a civic building in elevation, and a
  * rec-center plan laid out for the worked example. Decorative, but every number on it
  * is real: the title block and dimension labels come from the catalog. The side drawings
- * appear only where the gutters can hold them; narrower screens keep the grid and title block. */
+ * appear only where the gutters can hold them; phones get a sheet border, a small city hall,
+ * and the title block along the bottom. */
 const LINE = "#FFFFFF";
 const MONO = "'Roboto Mono', ui-monospace, monospace";
 
@@ -38,6 +39,33 @@ function DimV({ x, y1, y2 }: { x: number; y1: number; y2: number }) {
   );
 }
 
+/** City hall in elevation, with its dimension lines. */
+function CityHall() {
+  const columns = Array.from({ length: 6 }, (_, i) => 112 + i * 30);
+  return (
+    <>
+      <path d="M30 470 H360" />
+      <rect x="82" y="455" width="216" height="15" />
+      <rect x="92" y="440" width="196" height="15" />
+      <rect x="100" y="430" width="180" height="10" />
+      {columns.map((x) => (
+        <rect key={x} x={x} y="330" width="10" height="100" />
+      ))}
+      <rect x="96" y="315" width="188" height="15" />
+      <path d="M96 315 L190 262 L284 315 Z" />
+      <path d="M126 306 L190 271 L254 306 Z" strokeDasharray="3 3" />
+      <rect x="152" y="222" width="76" height="38" />
+      <path d="M152 222 A38 38 0 0 1 228 222" />
+      <rect x="184" y="172" width="12" height="14" />
+      <path d="M190 172 V160" />
+      <circle cx="190" cy="222" r="58" strokeDasharray="2 5" strokeWidth="0.8" />
+      <path d="M190 140 V490" strokeDasharray="10 4 2 4" strokeWidth="0.8" />
+      <DimV x={56} y1={160} y2={470} />
+      <DimH x1={96} x2={284} y={498} />
+    </>
+  );
+}
+
 export function BlueprintBackdrop({
   contracts,
   suppliers,
@@ -53,7 +81,6 @@ export function BlueprintBackdrop({
   priceRange?: string;
 }) {
   const tables = Array.from({ length: 40 }, (_, i) => ({ x: 1136 + (i % 8) * 30, y: 176 + Math.floor(i / 8) * 38 }));
-  const columns = Array.from({ length: 6 }, (_, i) => 112 + i * 30);
   const ink = { fill: "none", stroke: LINE, strokeWidth: 1.1, fontFamily: MONO, fontSize: 11, letterSpacing: 1.5 } as const;
   return (
     <div aria-hidden="true" className="pointer-events-none absolute inset-0">
@@ -81,13 +108,21 @@ export function BlueprintBackdrop({
         </g>
       </svg>
 
-      {/* Registration marks, pinned to the corners at every width */}
-      <svg viewBox="0 0 40 40" className="absolute left-2.5 top-2.5 h-10 w-10 opacity-[0.55]">
+      {/* On a phone: a sheet border and a small city hall, so it reads as a drawing */}
+      <div className="absolute inset-3 border border-white/25 md:hidden" />
+      <svg viewBox="70 150 290 330" className="absolute bottom-7 left-6 w-[118px] opacity-[0.6] md:hidden">
+        <g {...ink} strokeWidth={1.6}>
+          <CityHall />
+        </g>
+      </svg>
+
+      {/* Registration marks, pinned to the corners where there's room for a full sheet */}
+      <svg viewBox="0 0 40 40" className="absolute left-2.5 top-2.5 hidden h-10 w-10 opacity-[0.55] md:block">
         <g {...ink}>
           <Reg x={20} y={20} />
         </g>
       </svg>
-      <svg viewBox="0 0 40 40" className="absolute right-2.5 top-2.5 h-10 w-10 opacity-[0.55]">
+      <svg viewBox="0 0 40 40" className="absolute right-2.5 top-2.5 hidden h-10 w-10 opacity-[0.55] md:block">
         <g {...ink}>
           <Reg x={20} y={20} />
         </g>
@@ -96,24 +131,7 @@ export function BlueprintBackdrop({
       {/* City hall, east elevation: only where the left gutter has room for it */}
       <svg viewBox="20 150 360 470" className="absolute left-6 top-[110px] hidden w-[280px] opacity-[0.55] min-[1400px]:block">
         <g {...ink}>
-          <path d="M30 470 H360" />
-          <rect x="82" y="455" width="216" height="15" />
-          <rect x="92" y="440" width="196" height="15" />
-          <rect x="100" y="430" width="180" height="10" />
-          {columns.map((x) => (
-            <rect key={x} x={x} y="330" width="10" height="100" />
-          ))}
-          <rect x="96" y="315" width="188" height="15" />
-          <path d="M96 315 L190 262 L284 315 Z" />
-          <path d="M126 306 L190 271 L254 306 Z" strokeDasharray="3 3" />
-          <rect x="152" y="222" width="76" height="38" />
-          <path d="M152 222 A38 38 0 0 1 228 222" />
-          <rect x="184" y="172" width="12" height="14" />
-          <path d="M190 172 V160" />
-          <circle cx="190" cy="222" r="58" strokeDasharray="2 5" strokeWidth="0.8" />
-          <path d="M190 140 V490" strokeDasharray="10 4 2 4" strokeWidth="0.8" />
-          <DimV x={56} y1={160} y2={470} />
-          <DimH x1={96} x2={284} y={498} />
+          <CityHall />
           <text x="82" y="530" fill={LINE} stroke="none">
             CITY HALL · EAST ELEVATION
           </text>
@@ -148,7 +166,7 @@ export function BlueprintBackdrop({
       </svg>
 
       {/* Title block: the catalog's real counts */}
-      <svg viewBox="1124 514 282 90" className="absolute bottom-5 right-6 hidden w-[270px] opacity-[0.55] md:block">
+      <svg viewBox="1124 514 282 90" className="absolute bottom-7 right-6 w-[200px] opacity-[0.7] md:bottom-5 md:w-[270px] md:opacity-[0.55]">
         <g {...ink}>
           <rect x="1130" y="520" width="270" height="78" />
           <path d="M1130 546 H1400 M1130 572 H1400 M1262 520 V598" />

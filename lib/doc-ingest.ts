@@ -6,7 +6,7 @@
 // contract links to which document; then it stores the text Agora already holds (seed/catalog/doctext), which
 // needs no fetching; then it fetches the rest from their publishers, two at a time per host with a pause between
 // requests, price sheets first. Alongside, scanned PDFs (no text layer) are read by Claude (lib/doc-ocr.ts) when an
-// API key is set, three at a time, up to AGORA_OCR_PAGE_LIMIT pages in all (default 150,000; AGORA_OCR=off turns
+// API key is set, six at a time, up to AGORA_OCR_PAGE_LIMIT pages in all (default 150,000; AGORA_OCR=off turns
 // it off). It stops filling the database before the volume runs out (AGORA_DOC_DB_LIMIT_MB, default 4,000).
 // AGORA_DOC_INGEST=off turns all of it off. Server-only.
 
@@ -43,7 +43,7 @@ const PAUSE_MS = Number(process.env.AGORA_DOC_PAUSE_MS ?? 1500);
 /** For a test run: fetch at most this many documents per host. */
 const FETCH_LIMIT = Number(process.env.AGORA_DOC_FETCH_LIMIT ?? Infinity);
 const OCR_PAGE_LIMIT = Number(process.env.AGORA_OCR_PAGE_LIMIT ?? 150_000);
-const OCR_WORKERS = Number(process.env.AGORA_OCR_WORKERS ?? 3);
+const OCR_WORKERS = Number(process.env.AGORA_OCR_WORKERS ?? 6);
 /** Price sheets and price lists first: they're what search most needs. */
 const priority = (label: string) => (/price|pricing|cost|rate|catalog|bid sheet|ps final|offer/i.test(label) ? 0 : /method of operation|terms|contract|agreement|specification|scope/i.test(label) ? 1 : 2);
 
@@ -158,11 +158,14 @@ async function readScans(stillFetching: () => boolean): Promise<void> {
   }
   sc.phase = "waiting";
   const inFlight = new Set<string>();
-  const one = async (url: string, label: string) => {
+  /** Read one scan. Returns true when the model left a run unanswered (a rate limit, an outage), so the worker backs off. */
+  const one = async (url: string, label: string): Promise<boolean> => {
+    let unanswered = false;
     try {
       const { buffer, filename } = await downloadDocument(url, INGEST_MAX_BYTES);
       if (!/\.pdf$/i.test(filename)) throw new Error(`${filename} isn't a PDF`);
       const got = await readScan(buffer, label);
+      unanswered = got.failed_runs > 0;
       if (!got.pages.length) throw new Error(got.failed_runs ? "Claude couldn't read it" : "no page had readable text");
       await storeDocument(url, { pages: got.pages, filename, bytes: buffer.length, via: "scan" });
       sc.read++;
@@ -172,6 +175,7 @@ async function readScans(stillFetching: () => boolean): Promise<void> {
       sc.last_error = (e as Error).message;
       await scanNotRead(url, `read from a scan: ${(e as Error).message}`).catch(() => undefined);
     }
+    return unanswered;
   };
   for (;;) {
     if ((await scanPagesRead()) >= OCR_PAGE_LIMIT) {
@@ -210,8 +214,9 @@ async function readScans(stillFetching: () => boolean): Promise<void> {
         while (next < batch.length) {
           const { url, label } = batch[next++];
           inFlight.add(url);
-          await one(url, label);
+          const backOff = await one(url, label);
           inFlight.delete(url);
+          if (backOff) await sleep(60_000);
         }
       }),
     );

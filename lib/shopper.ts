@@ -7,6 +7,7 @@
 import type { CoopHit, ResultOption, Results } from "./assistant";
 import type { Listing, Request } from "./types";
 import { verificationSummary } from "./verification";
+import { stateLabel, TRX_PROGRAM } from "./trx";
 
 export interface ShopperSelection {
   /** The catalog item being bought, or null for "something else, by quote". */
@@ -210,13 +211,13 @@ export function buildPlan(args: { results: Results; listings: Listing[]; limit: 
             : "Too large for an off-contract purchase.";
     routes.push({ kind: "priced", recommended: payment !== "needs_contract", title, body: `${what}. ${usd(total!)} in all. ${then}`, refs: refNums([`listing:${chosen.listing.id}`]), hits: [] });
   }
-  // NJSTART contracts lead the member hits for New Jersey buyers (lib/trx.ts); say what they are.
+  // TRX state contracts lead the member hits for their state's buyers (lib/trx.ts); say what they are.
   const memberIntro = (hs: CoopHit[]) => {
     const state = hs.filter((h) => h.program === "state");
     const coop = hs.filter((h) => !h.program);
     const are = (n: number) => (n === 1 ? "is" : "are");
     const stateLine = state.length
-      ? `${hitNames(state)} ${are(state.length)} New Jersey state contract${state.length === 1 ? "" : "s"}, open to ${who} through the state's Cooperative Purchasing Program with no bid of its own.`
+      ? `${hitNames(state)} ${are(state.length)} ${stateLabel(state[0].state ?? "")} state contract${state.length === 1 ? "" : "s"}, open to ${who} through the ${TRX_PROGRAM[state[0].state ?? ""]?.coop_program ?? "state's cooperative purchasing program"} with no bid of its own.`
       : "";
     const coopLine = coop.length ? `${who} is on ${coopNames(coop)}. ${hitNames(coop)} ${are(coop.length)} open to you.` : "";
     return [stateLine, coopLine].filter(Boolean).join(" ");

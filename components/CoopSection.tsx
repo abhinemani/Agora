@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useState } from "react";
 import type { CoopHit, CoopSection as Section } from "@/lib/assistant";
 import { goHref } from "@/lib/coops";
+import { stateLabel, TRX_PROGRAM } from "@/lib/trx";
 import { contractHref } from "./ContractBits";
 import { CoopLink } from "./CoopLink";
 import { CoopMemberships } from "./CoopMemberships";
@@ -28,7 +29,7 @@ export function CoopSection({ section, requestId, onMembershipChange, refs, quer
   const { db } = useStore();
   const buyer = db?.session.buyer ?? null;
   if (!section.hits.length) return null;
-  // TRX state contracts (NJSTART) lead, in their own block; the co-op lists hold the rest.
+  // TRX state contracts (NJSTART, Hawaii SPO) lead, in their own block; the co-op lists hold the rest.
   const state = section.hits.filter((h) => h.program === "state");
   const coopHits = section.hits.filter((h) => !h.program);
   const members = coopHits.filter((h) => h.member);
@@ -92,7 +93,7 @@ export function CoopSection({ section, requestId, onMembershipChange, refs, quer
       )}
       {section.catalog && (
         <p className="mt-4 text-[11px] text-slate">
-          Includes contracts from 13 co-ops' public directories{state.length ? " and New Jersey's NJSTART" : ""}, retrieved {new Date(`${section.catalog.retrieved}T12:00:00Z`).toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" })}.{" "}
+          Includes contracts from 13 co-ops' public directories{state.length ? ` and ${[...new Set(state.map((h) => h.coop))].join(" and ")}` : ""}, retrieved {new Date(`${section.catalog.retrieved}T12:00:00Z`).toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" })}.{" "}
           <a href="/data#catalog" className="underline">
             About the co-op catalog
           </a>
@@ -112,42 +113,56 @@ export function CoopSection({ section, requestId, onMembershipChange, refs, quer
   );
 }
 
-/** TRX state contracts for this request: the route Agora prefers, so they sit above every co-op. */
-function StateLane({ hits, total, retrieved, requestId, refs }: { hits: CoopHit[]; total: number; retrieved?: string | null; requestId: string; refs?: Record<string, number> }) {
+/** TRX state contracts for this request: the route Agora prefers, so they sit above every co-op. One block per state. */
+function StateLane({ hits, total, retrieved, requestId, refs }: { hits: CoopHit[]; total: number; retrieved?: Record<string, string>; requestId: string; refs?: Record<string, number> }) {
+  const states = [...new Set(hits.map((h) => h.state ?? ""))];
+  return (
+    <>
+      {states.map((st, i) => (
+        <StateBlock key={st} first={i === 0} state={st} hits={hits.filter((h) => (h.state ?? "") === st)} more={states.length === 1 ? total - hits.length : 0} retrieved={retrieved} requestId={requestId} refs={refs} />
+      ))}
+    </>
+  );
+}
+
+function StateBlock({ first, state, hits, more, retrieved, requestId, refs }: { first: boolean; state: string; hits: CoopHit[]; more: number; retrieved?: Record<string, string>; requestId: string; refs?: Record<string, number> }) {
   const { db } = useStore();
   const buyer = db?.session.buyer ?? null;
-  const program = hits[0]?.coop ?? "NJSTART";
+  const p = TRX_PROGRAM[state];
+  const program = hits[0]?.coop ?? p?.name ?? "the state";
+  const where = stateLabel(state);
+  const date = retrieved?.[program];
   return (
-    <section id="state-contracts" className="scroll-mt-24 border-y-2 border-emerald-200 bg-emerald-50/40 py-6">
+    <section id={first ? "state-contracts" : undefined} className="scroll-mt-24 border-y-2 border-emerald-200 bg-emerald-50/40 py-6">
       <div className="flex flex-wrap items-center gap-2">
-        <h2 className="text-lg font-bold tracking-tight text-navy">New Jersey state contracts for this</h2>
+        <h2 className="text-lg font-bold tracking-tight text-navy">{where} state contracts for this</h2>
         <span title="A state contract on the TRX program, which Sovra supports">
           <Badge tone="green">TRX</Badge>
         </span>
       </div>
       <p className="mt-1 max-w-3xl text-sm text-slate">
         {buyer
-          ? `${buyer.name} can buy on these ${program} contracts through the New Jersey Cooperative Purchasing Program. They come first because they're already competitively bid by the state and carry the lowest fee of any shared contract.`
-          : `${program} contracts are open to New Jersey local governments through the state's Cooperative Purchasing Program. Set your agency to see whether you can use them.`}{" "}
-        Ordering happens on {program}, under the contract number.
+          ? `${buyer.name} can buy on these ${program} contracts through the ${p?.coop_program ?? "state's cooperative purchasing program"}. They come first because they're already competitively bid by the state and carry the lowest fee of any shared contract.`
+          : `${program} contracts are open to ${where} local governments through the ${p?.coop_program ?? "state's cooperative purchasing program"}. Set your agency to see whether you can use them.`}{" "}
+        Ordering happens under the contract number, as {program} sets out.
       </p>
       <ul className="mt-4 grid gap-2 lg:grid-cols-2">
         {hits.map((h) => (
           <Hit key={h.contract_id} h={h} requestId={requestId} refN={refs?.[h.contract_id]} />
         ))}
       </ul>
-      {total > hits.length && (
+      {more > 0 && (
         <p className="mt-2 text-[11px] text-slate">
-          {total - hits.length} more matching {program} contract{total - hits.length === 1 ? "" : "s"}, lower in fit.{" "}
+          {more} more matching {program} contract{more === 1 ? "" : "s"}, lower in fit.{" "}
           <Link href={`/contracts?coop=${encodeURIComponent(program)}`} className="font-semibold underline">
             Browse them in the contract explorer
           </Link>
         </p>
       )}
       <p className="mt-3 text-[11px] text-slate">
-        From {program}'s list of active contracts{retrieved ? `, retrieved ${new Date(`${retrieved}T12:00:00Z`).toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" })}` : ""}. Prices are the state's awarded line items.{" "}
-        <a href="/data#njstart" className="underline">
-          About NJSTART in Agora
+        From {program}&apos;s published contracts{date ? `, retrieved ${new Date(`${date}T12:00:00Z`).toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" })}` : ""}. Prices are the state&apos;s awarded line items.{" "}
+        <a href={`/data#${p?.data_anchor ?? "njstart"}`} className="underline">
+          About {program} in Agora
         </a>
       </p>
     </section>

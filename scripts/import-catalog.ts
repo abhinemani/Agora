@@ -116,13 +116,23 @@ const NJSTART_FILE = join(SRC, "njstart/records.json.gz");
 const njstart = existsSync(NJSTART_FILE)
   ? (JSON.parse(gunzipSync(readFileSync(NJSTART_FILE)).toString("utf8")) as { retrieved: string; suppliers: RawSupplier[]; contracts: RawContract[]; products: RawProduct[]; offerings: RawOffering[]; documents: RawDocument[] })
   : null;
-if (njstart) {
-  rawSuppliers.push(...njstart.suppliers);
-  rawContracts.push(...njstart.contracts);
-  rawProducts.push(...njstart.products);
-  rawOfferings.push(...njstart.offerings);
-  rawDocuments.push(...njstart.documents);
+// Hawaii's State Procurement Office price & vendor lists (npm run import:hawaii), the same way.
+const HAWAII_FILE = join(SRC, "hawaii/records.json.gz");
+const hawaii = existsSync(HAWAII_FILE)
+  ? (JSON.parse(gunzipSync(readFileSync(HAWAII_FILE)).toString("utf8")) as { retrieved: string; suppliers: RawSupplier[]; contracts: RawContract[]; products: RawProduct[]; offerings: RawOffering[]; documents: RawDocument[] })
+  : null;
+/** The state programs folded in, by program name. */
+const STATE_SOURCES = [njstart && { program: "NJSTART", ...njstart }, hawaii && { program: "Hawaii SPO", ...hawaii }].filter(<T,>(x: T | null): x is T => Boolean(x));
+const STATE_PROGRAMS = new Set(["NJSTART", "Hawaii SPO"]);
+for (const src of STATE_SOURCES) {
+  rawSuppliers.push(...src.suppliers);
+  rawContracts.push(...src.contracts);
+  rawProducts.push(...src.products);
+  rawOfferings.push(...src.offerings);
+  rawDocuments.push(...src.documents);
 }
+const stateCount = (k: "suppliers" | "contracts" | "products" | "offerings" | "documents") => STATE_SOURCES.reduce((n, s) => n + s[k].length, 0);
+const hiSummary = existsSync(join(SRC, "hawaii/summary.json")) ? JSON.parse(readFileSync(join(SRC, "hawaii/summary.json"), "utf8")) : null;
 const njSummary = existsSync(join(SRC, "njstart/summary.json")) ? JSON.parse(readFileSync(join(SRC, "njstart/summary.json"), "utf8")) : null;
 
 // ------------------------------------------------------------------ GSA's own data (npm run fetch:gsa)
@@ -202,6 +212,7 @@ const COOP_ID: Record<string, string> = {
   "NASPO ValuePoint": "coop_naspo",
   "GSA MAS": "gsa_mas",
   NJSTART: "state_nj",
+  "Hawaii SPO": "state_hi",
 };
 
 // ------------------------------------------------------------------ suppliers: one record per company
@@ -398,7 +409,7 @@ interface Contract {
   /** One of Agora's categories, from a reviewed classification of the contract's title (or its first SIN). */
   category?: string;
   /** A state contract (NJSTART): whether the state opens it to its local governments, and its solicitation. */
-  state_contract?: { state: string; locals: boolean; solicitation: string | null; type_code: string | null; group: string | null; spent: number | null; more_items: boolean };
+  state_contract?: { state: string; locals: boolean; solicitation: string | null; type_code: string | null; group: string | null; spent: number | null; more_items: boolean; participants?: string[]; islands?: string[] };
   /** NIGP commodity classes (3 digits) and, where the source prints them, item codes ("490-90").
    * "published": from the contract's own records (NJSTART). "reviewed": chosen by the AI review
    * (scripts/cleanup) from the classes NJSTART's records name. */
@@ -467,7 +478,18 @@ function stateContractOf(meta: Record<string, unknown>): Partial<Contract> {
   const sc = meta.state_contract as { state: string; locals: boolean; solicitation: string | null; type_code: string | null; group: string | null } | undefined;
   if (!sc) return {};
   return {
-    state_contract: { state: sc.state, locals: sc.locals, solicitation: sc.solicitation, type_code: sc.type_code, group: sc.group, spent: typeof meta.spent_to_date === "number" ? meta.spent_to_date : null, more_items: meta.line_items_paginated === true },
+    state_contract: {
+      state: sc.state,
+      locals: sc.locals,
+      solicitation: sc.solicitation,
+      type_code: sc.type_code,
+      group: sc.group,
+      spent: typeof meta.spent_to_date === "number" ? meta.spent_to_date : null,
+      more_items: meta.line_items_paginated === true,
+      // Hawaii names its participating jurisdictions: a local must be one of them.
+      ...(Array.isArray(meta.jurisdictions) ? { participants: meta.jurisdictions as string[] } : {}),
+      ...(Array.isArray(meta.islands) && (meta.islands as string[]).length ? { islands: meta.islands as string[] } : {}),
+    },
     ...(typeof meta.category === "string" ? { category: meta.category } : {}),
   };
 }
@@ -663,7 +685,7 @@ const documents = rawDocuments.map((d) => {
   return { id: d.document_id, contract: d.contract_id, coop: d.cooperative, url: d.url, label: d.label, kind: ext === "html" ? "htm" : ext };
 });
 
-const catalog = { version: 1, retrieved: RETRIEVED, ...(njstart ? { state_retrieved: { NJSTART: njstart.retrieved } } : {}), suppliers, contracts, products, offerings, documents };
+const catalog = { version: 1, retrieved: RETRIEVED, state_retrieved: Object.fromEntries(STATE_SOURCES.map((s) => [s.program, s.retrieved])), suppliers, contracts, products, offerings, documents };
 mkdirSync(join(ROOT, "seed/catalog"), { recursive: true });
 writeFileSync(join(ROOT, "seed/catalog/catalog.json.gz"), gzipSync(JSON.stringify(catalog), { level: 9 }));
 
@@ -767,16 +789,16 @@ const perCoop = Object.keys(COOP_ID).map((co) => {
     offerings: offerings.filter((o) => o.coop === co).length,
   };
 });
-const multiCoop = suppliers.filter((s) => s.coops.filter((c) => c !== "GSA MAS" && c !== "NJSTART").length >= 2);
+const multiCoop = suppliers.filter((s) => s.coops.filter((c) => c !== "GSA MAS" && !STATE_PROGRAMS.has(c)).length >= 2);
 const insights = {
   retrieved: RETRIEVED,
-  // The 13 co-ops' capture alone; NJSTART's counts are under njstart.
+  // The 13 co-ops' capture alone; the state programs' counts are under njstart and hawaii.
   source_counts: {
-    suppliers: rawSuppliers.length - (njstart?.suppliers.length ?? 0),
-    contracts: rawContracts.length - (njstart?.contracts.length ?? 0),
-    products: rawProducts.length - (njstart?.products.length ?? 0),
-    offerings: rawOfferings.length - (njstart?.offerings.length ?? 0),
-    documents: rawDocuments.length - (njstart?.documents.length ?? 0),
+    suppliers: rawSuppliers.length - stateCount("suppliers"),
+    contracts: rawContracts.length - stateCount("contracts"),
+    products: rawProducts.length - stateCount("products"),
+    offerings: rawOfferings.length - stateCount("offerings"),
+    documents: rawDocuments.length - stateCount("documents"),
   },
   cleanup: {
     gsa_contracts: contracts.filter((c) => c.coop === "GSA MAS").length,
@@ -813,9 +835,15 @@ const insights = {
     contracts: contracts.length,
     coop_contracts_coded: contracts.filter((c) => !c.state_contract && c.nigp).length,
     coop_contracts: contracts.filter((c) => !c.state_contract).length,
+    state_uncoded: contracts.filter((c) => c.state_contract && !c.nigp).length,
     classes_used: new Set(contracts.flatMap((c) => c.nigp?.classes ?? [])).size,
     priced_offerings_coded: offerings.filter((o) => o.nigp).length,
     top_classes: Object.entries(contracts.reduce<Record<string, number>>((m, c) => { for (const k of c.nigp?.classes ?? []) m[k] = (m[k] ?? 0) + 1; return m; }, {})).sort((a, b) => b[1] - a[1]).slice(0, 12),
+  },
+  hawaii: hiSummary && {
+    ...hiSummary,
+    suppliers_shared_with_coops: suppliers.filter((s) => s.coops.includes("Hawaii SPO") && s.coops.some((c) => c !== "Hawaii SPO")).length,
+    products_on_two_or_more_contracts: Object.values(offerings.filter((o) => o.coop === "Hawaii SPO").reduce<Record<string, Set<string>>>((m, o) => ((m[o.product] ??= new Set()).add(o.contract), m), {})).filter((x) => x.size > 1).length,
   },
   njstart: njSummary && {
     ...njSummary,
@@ -833,7 +861,7 @@ const insights = {
     products: products.length,
     offerings: offerings.length,
     by_status: offerings.reduce<Record<string, number>>((m, o) => ((m[o.status] = (m[o.status] ?? 0) + 1), m), {}),
-    by_status_coops: offerings.filter((o) => o.coop !== "NJSTART").reduce<Record<string, number>>((m, o) => ((m[o.status] = (m[o.status] ?? 0) + 1), m), {}),
+    by_status_coops: offerings.filter((o) => !STATE_PROGRAMS.has(o.coop)).reduce<Record<string, number>>((m, o) => ((m[o.status] = (m[o.status] ?? 0) + 1), m), {}),
     priced_suppliers: [...new Set(offerings.filter((o) => o.status === "published_price").map((o) => o.supplier))].map((id) => suppliers.find((s) => s.id === id)?.name),
     multi_route: Object.values(offerings.reduce<Record<string, Set<string>>>((m, o) => ((m[o.product] ??= new Set()).add(o.contract), m), {})).filter((s) => s.size > 1).length,
   },

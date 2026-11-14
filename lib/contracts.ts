@@ -345,7 +345,7 @@ const longDate = (d: string) => new Date(`${d}T12:00:00Z`).toLocaleDateString("e
 
 /** What an offering's number is, in plain words, by the vintage the importer gave it. */
 function offeringNote(o: CatalogOffering): string {
-  if (o.price != null && /^NJSTART/.test(o.vintage ?? "")) return "Awarded state contract price";
+  if (o.price != null && /^(NJSTART|Hawaii SPO)/.test(o.vintage ?? "")) return "Awarded state contract price";
   if (o.price != null) return /award/i.test(o.vintage ?? "") ? "Awarded bid, base model" : /net price/i.test(o.vintage ?? "") ? "Contract net price" : /base vehicle|cost sheet/i.test(o.vintage ?? "") ? "Base price, before options and delivery" : "Published price";
   if (o.list != null) return "List price, before the contract discount";
   if (o.status === "member_login") return "Price behind the co-op's member login";
@@ -353,16 +353,16 @@ function offeringNote(o: CatalogOffering): string {
   return "Price by quote";
 }
 
-function steps(c: { program: string; number: string; supplier: string; kind: ContractKind; access: AccessStatus; priced: number; in_agora: boolean; hasLink: boolean; state?: { name: string; coop_program: string; solicitation: string | null; locals: boolean } }): string[] {
+function steps(c: { program: string; number: string; supplier: string; kind: ContractKind; access: AccessStatus; priced: number; in_agora: boolean; hasLink: boolean; state?: { code: string; name: string; coop_program: string; solicitation: string | null; locals: boolean } }): string[] {
   const out: string[] = [];
   if (c.access === "closed") return ["This contract isn't open to your agency. Look for the same supplier on another contract below, or ask purchasing whether an addendum or membership would open it."];
   if (c.state && !c.in_agora) {
-    // A New Jersey state contract (NJSTART), bought by a local through the state's cooperative purchasing program.
-    const award = c.state.solicitation ? ` (awarded under ${c.state.solicitation})` : "";
-    if (c.state.locals) out.push(`If your agency hasn't already, register once with the ${c.state.coop_program}. Purchasing will know; there's no per-contract membership.`);
-    out.push(`Buy from ${c.supplier || "the supplier"} under ${c.state.name} ${c.number}${award}. The state already bid it, so a local unit doesn't advertise for bids of its own (New Jersey's Local Public Contracts Law allows purchases on state contracts).`);
-    out.push(c.priced > 0 ? "Check the supplier's quote against the awarded prices below. They're the state's line items; anything not listed is priced from the contract's price sheet." : "Ask the supplier for a quote at the contract's prices; its price sheet is among the documents below.");
-    out.push(`Keep the contract number on the purchase order, and follow the method of operation in the contract's documents for how to place the order.`);
+    // A TRX state contract, bought by a local the way that state's program sets out (lib/trx.ts).
+    const program = TRX_PROGRAM[c.state.code];
+    if (program) out.push(...program.steps({ supplier: c.supplier, number: c.number, solicitation: c.state.solicitation }));
+    else out.push(`Buy from ${c.supplier || "the supplier"} under ${c.state.name} ${c.number}.`);
+    out.push(c.priced > 0 ? "Check the supplier's quote against the awarded prices below. They're the state's line items; anything not listed is priced from the contract's own price list." : "Ask the supplier for a quote at the contract's prices; its price list is among the documents below.");
+    out.push(`Keep the contract number on the purchase order, and follow the ordering instructions in the contract's documents.`);
     return out;
   }
   if (c.access === "join") out.push(`Get on ${c.program} first. Ask purchasing: most co-ops take a short membership form, and some states want a board resolution or an interlocal agreement before the first order.`);
@@ -474,9 +474,9 @@ function catalogDetail(db: Db, c: CatalogContract, itemQuery: string): ContractD
     documents: docs.map((d) => ({ label: d.label, url: d.url, host: host(d.url), readable: readableCatalogDocument(d) })),
     readable: readableDocuments(db, c.id),
     link: c.url ? { href: goHref(c.id), label: `Open on ${program}`, tracked: true } : c.directory ? { href: c.directory, label: `Find ${c.number} in ${possessive(program)} directory`, tracked: false } : null,
-    steps: steps({ program, number: c.number, supplier, kind, access, priced: priced.length, in_agora: false, hasLink, state: c.state_contract ? { name: program, coop_program: TRX_PROGRAM[c.state_contract.state]?.coop_program ?? "state's cooperative purchasing program", solicitation: c.state_contract.solicitation, locals: c.state_contract.locals } : undefined }),
+    steps: steps({ program, number: c.number, supplier, kind, access, priced: priced.length, in_agora: false, hasLink, state: c.state_contract ? { code: c.state_contract.state, name: program, coop_program: TRX_PROGRAM[c.state_contract.state]?.coop_program ?? "state's cooperative purchasing program", solicitation: c.state_contract.solicitation, locals: c.state_contract.locals } : undefined }),
     provenance: c.state_contract
-      ? `From ${possessive(program)} public list of active contracts, retrieved ${longDate(idx.state_retrieved?.[c.coop] ?? idx.retrieved)}. Whether a contract is open to local governments is the state's own "NJ Cooperative Purchasing" flag on the contract.`
+      ? `From ${possessive(program)} public list of active contracts, retrieved ${longDate(idx.state_retrieved?.[c.coop] ?? idx.retrieved)}. ${c.state_contract.participants ? "Who may use it is the contract's own list of participating jurisdictions, read from its price list." : `Whether a contract is open to local governments is the state's own "NJ Cooperative Purchasing" flag on the contract.`}`
       : `From ${possessive(program)} public contract directory, retrieved ${longDate(idx.retrieved)}. Terms and eligibility aren't independently verified.`,
     related: (idx.contractsBySupplier.get(c.supplier) ?? [])
       .filter((x) => x.id !== c.id && !(x.end && x.end < today()))

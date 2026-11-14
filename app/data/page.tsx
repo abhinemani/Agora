@@ -167,6 +167,7 @@ export default function CoopDataPage() {
   const ar = catalogInsights.arkansas;
   const ny = catalogInsights.new_york;
   const epc = catalogInsights.epc;
+  const or = catalogInsights.oregon;
   const f = insights.federal;
   const o = insights.overlap;
   const prospects = insights.prospects.slice(0, 15);
@@ -202,6 +203,7 @@ export default function CoopDataPage() {
             ["#arkansas", "Arkansas"],
             ["#new-york", "New York"],
             ["#empire-procure-connect", "Empire Procure Connect"],
+            ["#oregon", "Oregon"],
             ["#nigp", "NIGP codes"],
             ["#cleanup", "Cleanup"],
             ["#states", "State rules"],
@@ -629,7 +631,7 @@ export default function CoopDataPage() {
         <p className="mt-2 max-w-[72ex] text-ui-xs text-base-dark">
           How the preference works: an NJSTART contract leads when it fits within {TRX_MARGIN} points of the best co-op contract, so a far closer co-op fit still wins. Line
           items are those on each contract&apos;s first summary page; contracts with more pages say so on their own page. The {n(nj.documents)} attached documents (price
-          sheets, terms, methods of operation) are read from NJSTART when someone asks a question of the contract, and each contract&apos;s summary page is held as text. Hawaii, Arkansas and New York are loaded too (below); Oregon is the one TRX state not loaded yet.
+          sheets, terms, methods of operation) are being read into Agora&apos;s document store on the server, so search and contract questions reach their text, and each contract&apos;s summary page is held as text. Hawaii, Arkansas, New York and Oregon are loaded too (below).
         </p>
         <p className="mt-3 text-ui-xs text-base-dark">
           Try it: set your agency to Harmon Lake Township, New Jersey, and search for <Link href="/" className="text-primary">snow plow parts</Link> or road salt, or browse{" "}
@@ -733,6 +735,30 @@ export default function CoopDataPage() {
               political subdivision buy on another&apos;s contract let consistently with New York law, and note that EPC registers each government before it buys. Every
               record prints NIGP codes, kept as published. Item prices aren&apos;t loaded: most records carry $0 placeholder items, and the few priced lines are one-off
               purchase amounts rather than contract prices.
+            </p>
+          </>
+        }
+      />
+
+      <Section
+        id="oregon"
+        title="Oregon: DAS's statewide price agreements on OregonBuys"
+        intro={
+          <>
+            <p>
+              Oregon is the fifth TRX state loaded. The Department of Administrative Services&apos; Procurement Services runs statewide price agreements on OregonBuys, and
+              members of OrCPP, the Oregon Cooperative Procurement Program, may buy from the ones whose page allows cooperative purchasing. Agora read all {n(or.listed)} of
+              Procurement Services&apos; active blankets on {date(or.retrieved)}, one public page each. {n(or.intergovernmental)} are agreements under ORS chapter 190 (among them{" "}
+              {n(or.orcpp_membership_agreements)} OrCPP membership agreements) and are left out, since nobody buys from them. That leaves {n(or.contracts)} price agreements
+              from {n(or.suppliers)} suppliers, {n(or.suppliers_shared_with_coops)} of whom also hold co-op contracts: {n(or.open_to_locals)} are open to OrCPP members and{" "}
+              {n(or.state_only)} are for state agencies only. {n(or.naspo_addenda)} are Oregon&apos;s participating addenda to NASPO ValuePoint master agreements, many of
+              which Oregon leads, so they also appear under NASPO ValuePoint for other states; {n(or.mmcap)} come from MMCAP and {n(or.oregon_forward)} from Oregon Forward.
+            </p>
+            <p>
+              DAS publishes its OrCPP member list ({n(or.orcpp_members)} public bodies), and Agora checks an Oregon buyer against it by name. A buyer the list doesn&apos;t
+              name is told joining is free rather than turned away, since names don&apos;t always match. Every agreement prints NIGP codes, kept as published. OregonBuys
+              pages list $0 placeholder items, so no prices come from them; prices are in the {n(or.attachments)} attached price sheets, amendments and agreements, which
+              the document store reads.
             </p>
           </>
         }

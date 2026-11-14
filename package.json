@@ -20,11 +20,13 @@
     "import:arkansas": "tsx scripts/import-arkansas.ts",
     "import:ny": "tsx scripts/import-ny.ts",
     "import:epc": "tsx scripts/import-epc.ts",
+    "import:oregon": "tsx scripts/import-oregon.ts",
     "import:doctext": "tsx scripts/import-doctext.ts",
     "import:catalog-coops": "tsx scripts/import-catalog.ts",
     "fetch:federal": "NODE_USE_ENV_PROXY=1 tsx scripts/fetch-federal-ids.ts",
     "fetch:gsa": "NODE_USE_ENV_PROXY=1 tsx scripts/fetch-gsa.ts",
     "fetch:rosters": "NODE_USE_ENV_PROXY=1 tsx scripts/fetch-rosters.ts",
+    "fetch:oregon": "NODE_USE_ENV_PROXY=1 tsx scripts/fetch-oregon.ts",
     "import:price-files": "tsx scripts/import-price-files.ts",
     "import:state-rules": "tsx scripts/import-state-rules.ts"
   },

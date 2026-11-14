@@ -10,6 +10,7 @@
 
 import { fitScoreSets, requestTokens, SAME_AS, tokens } from "./assistant";
 import { catalogAccess, catalogIndex, isTrxContract, type CatalogContract, type CatalogOffering } from "./catalog";
+import type { DocumentHit } from "./doc-store";
 import { coopOf, goHref, isContractLevelUrl, onCoopContract } from "./coops";
 import { readableCatalogDocument, readableDocuments } from "./docs";
 import { stateRuleFor, type BuyerStateRule } from "./state-rules";
@@ -56,6 +57,8 @@ export interface ContractRow {
   /** NIGP commodity classes, and whether the source printed them or the review chose them. */
   nigp: string[];
   nigp_source: "published" | "reviewed" | null;
+  /** Its documents mention the query: where, with a few words around it (lib/doc-store.ts). */
+  found_in?: { label: string; page: number; snippet: string };
 }
 
 const today = () => new Date().toISOString().slice(0, 10);
@@ -104,6 +107,8 @@ export interface ExploreOptions {
   readable?: boolean;
   offset?: number;
   limit?: number;
+  /** Contracts whose stored documents contain the query (lib/doc-store.ts), found by the caller. */
+  docHits?: Map<string, DocumentHit>;
 }
 export interface ExploreResult {
   total: number;
@@ -123,7 +128,7 @@ interface Scan {
 }
 
 /** Every current contract as a row, for one buyer and one query. */
-function scan(db: Db, buyer: Buyer | null, q: string): Scan {
+function scan(db: Db, buyer: Buyer | null, q: string, docHits: Map<string, DocumentHit> = new Map()): Scan {
   const idx = catalogIndex();
   const now = today();
   const query = q.trim().toLowerCase();
@@ -143,6 +148,10 @@ function scan(db: Db, buyer: Buyer | null, q: string): Scan {
     for (const w of words) for (const x of [w, ...(SAME_AS[w] ?? [])]) for (const i of idx.cIndex.get(x) ?? []) set.add(i);
     if (numberLike.length >= 3) idx.contracts.forEach((c, i) => c.number.toLowerCase().replace(/\s+/g, "").includes(numberLike) && set.add(i));
     if (nigpQ) idx.contracts.forEach((c, i) => (hasNigp(c) || c.number.includes(nigpQ)) && set.add(i));
+    for (const id of docHits.keys()) {
+      const i = idx.contractIndex.get(id);
+      if (i != null) set.add(i);
+    }
     wanted = set;
   }
   const accessCache = new Map<string, ReturnType<typeof catalogAccess>>();
@@ -153,6 +162,8 @@ function scan(db: Db, buyer: Buyer | null, q: string): Scan {
     if (query) {
       const byNumber = (numberLike.length >= 3 && c.number.toLowerCase().replace(/\s+/g, "").includes(numberLike)) || hasNigp(c) || Boolean(nigpQ && c.number.includes(nigpQ));
       fit = byNumber ? 100 : words.length ? fitScoreSets(words, idx.cTitle[i], idx.cScope[i], idx.cWeights) : 0;
+      // A contract found only through its documents sits below the title matches.
+      if (fit < 50 && docHits.has(c.id)) fit = 50;
       if (fit < 50) continue;
     }
     const k = `${c.coop_id}|${c.states === "any" ? "*" : c.states.join(",")}|${(c.coop_sins ?? []).map((x) => x.code).join(",")}|${c.state_contract ? JSON.stringify([c.state_contract.locals, c.state_contract.participants, c.state_contract.use, c.state_contract.preferred, c.state_contract.owner]) : ""}`;
@@ -183,6 +194,7 @@ function scan(db: Db, buyer: Buyer | null, q: string): Scan {
       readable: docs.some(readableCatalogDocument),
       in_agora: false,
       fit,
+      ...(docHits.has(c.id) ? { found_in: { label: docHits.get(c.id)!.label, page: docHits.get(c.id)!.page, snippet: docHits.get(c.id)!.snippet } } : {}),
     });
   }
 
@@ -233,7 +245,7 @@ const KIND_RANK: Record<ContractKind, number> = { agency: 0, state: 1, coop: 2, 
 /** Search and filter every contract. The agency's own contracts come first, then state, then co-op, as a buyer would check them. */
 export function exploreContracts(db: Db, opts: ExploreOptions = {}): ExploreResult {
   const buyer = db.session.buyer;
-  const { rows, universe } = scan(db, buyer, (opts.q ?? "").slice(0, 120));
+  const { rows, universe } = scan(db, buyer, (opts.q ?? "").slice(0, 120), opts.docHits);
   const toggled = rows.filter((r) => (!opts.usable || r.access === "open") && (!opts.priced || r.priced > 0) && (!opts.readable || r.readable));
   const byKind = toggled.filter((r) => !opts.kind || r.kind === opts.kind);
   const count = <T,>(list: T[], key: (r: T) => string) => list.reduce<Map<string, number>>((m, r) => m.set(key(r), (m.get(key(r)) ?? 0) + 1), new Map());
@@ -346,7 +358,7 @@ const longDate = (d: string) => new Date(`${d}T12:00:00Z`).toLocaleDateString("e
 /** What an offering's number is, in plain words, by the vintage the importer gave it. */
 function offeringNote(o: CatalogOffering): string {
   if (o.price != null && /^NY Preferred Source: Corcraft/.test(o.vintage ?? "")) return "Corcraft price guide price, dock delivered";
-  if (o.price != null && /^(NJSTART|Hawaii SPO|Arkansas OSP|NYS OGS|Empire Procure Connect)/.test(o.vintage ?? "")) return "Awarded state contract price";
+  if (o.price != null && /^(NJSTART|Hawaii SPO|Arkansas OSP|NYS OGS|Empire Procure Connect|OregonBuys)/.test(o.vintage ?? "")) return "Awarded state contract price";
   if (o.price != null) return /award/i.test(o.vintage ?? "") ? "Awarded bid, base model" : /net price/i.test(o.vintage ?? "") ? "Contract net price" : /base vehicle|cost sheet/i.test(o.vintage ?? "") ? "Base price, before options and delivery" : "Published price";
   if (o.list != null) return "List price, before the contract discount";
   if (o.status === "member_login") return "Price behind the co-op's member login";

@@ -14,7 +14,7 @@
   "gsa_open_to_cities": 7132,
   "gsa_sins": 277,
   "gsa_cooperative_sins": 56,
-  "names_title_cased": 12515,
+  "names_title_cased": 12497,
   "merged_by_uei": 0,
   "parts_labelled": 4112,
   "suppliers_merged_by_review": 7,
@@ -31,9 +31,9 @@
   ]
  },
  "suppliers": {
-  "records": 27119,
-  "companies": 24627,
-  "merged_by_name": 2142,
+  "records": 27680,
+  "companies": 24952,
+  "merged_by_name": 2378,
   "merged_by_website": 343,
   "merged_by_uei": 0,
   "with_website": 13939,
@@ -60,6 +60,26 @@
     "contracts": 30
    },
    {
+    "id": "cat_506cc6b39ec0eb5c4cec",
+    "name": "Xerox Corporation",
+    "coops": [
+     "Arkansas OSP",
+     "E&I",
+     "Empire Procure Connect",
+     "GSA MAS",
+     "Hawaii SPO",
+     "NASPO ValuePoint",
+     "NJSTART",
+     "NYS OGS",
+     "OMNIA Partners",
+     "OregonBuys",
+     "PEPPM",
+     "Sourcewell",
+     "TIPS"
+    ],
+    "contracts": 19
+   },
+   {
     "id": "cat_893418876ba75fddd993",
     "name": "Infojini Inc.",
     "coops": [
@@ -79,23 +99,22 @@
     "contracts": 21
    },
    {
-    "id": "cat_506cc6b39ec0eb5c4cec",
-    "name": "Xerox Corporation",
+    "id": "cat_1369ef49157eb75828c2",
+    "name": "Steelcase Inc.",
     "coops": [
      "Arkansas OSP",
+     "BuyBoard",
      "E&I",
-     "Empire Procure Connect",
      "GSA MAS",
      "Hawaii SPO",
      "NASPO ValuePoint",
      "NJSTART",
      "NYS OGS",
      "OMNIA Partners",
-     "PEPPM",
-     "Sourcewell",
-     "TIPS"
+     "OregonBuys",
+     "Sourcewell"
     ],
-    "contracts": 18
+    "contracts": 12
    },
    {
     "id": "cat_af208adcb81b1a525476",
@@ -115,21 +134,54 @@
     "contracts": 20
    },
    {
-    "id": "cat_1369ef49157eb75828c2",
-    "name": "Steelcase Inc.",
+    "id": "cat_0c11c4053dbf3c589550",
+    "name": "The HON Company LLC",
     "coops": [
      "Arkansas OSP",
      "BuyBoard",
-     "E&I",
+     "Empire Procure Connect",
      "GSA MAS",
      "Hawaii SPO",
      "NASPO ValuePoint",
      "NJSTART",
      "NYS OGS",
      "OMNIA Partners",
+     "OregonBuys"
+    ],
+    "contracts": 10
+   },
+   {
+    "id": "cat_5f1d721967eb2067c67b",
+    "name": "Quadient, Inc.",
+    "coops": [
+     "Arkansas OSP",
+     "BuyBoard",
+     "GSA MAS",
+     "Hawaii SPO",
+     "NASPO ValuePoint",
+     "NJSTART",
+     "NYS OGS",
+     "OMNIA Partners",
+     "OregonBuys",
      "Sourcewell"
     ],
-    "contracts": 11
+    "contracts": 9
+   },
+   {
+    "id": "cat_38f685b654efb7facba2",
+    "name": "Carahsoft Technology Corporation",
+    "coops": [
+     "BuyBoard",
+     "E&I",
+     "GSA MAS",
+     "Hawaii SPO",
+     "NASPO ValuePoint",
+     "NJSTART",
+     "OregonBuys",
+     "PEPPM",
+     "TIPS"
+    ],
+    "contracts": 45
    },
    {
     "id": "cat_214328f043ee2ee86bb0",
@@ -148,99 +200,52 @@
     "contracts": 22
    },
    {
-    "id": "cat_13ed7098617bcbe6cb96",
-    "name": "Cogent Infotech Corporation",
-    "coops": [
-     "Choice Partners",
-     "Equalis Group",
-     "GSA MAS",
-     "HGACBuy",
-     "Hawaii SPO",
-     "NASPO ValuePoint",
-     "NPPGov",
-     "NYS OGS",
-     "Sourcewell"
-    ],
-    "contracts": 11
-   },
-   {
-    "id": "cat_0495d8c5535e894464b7",
-    "name": "Fellowes, Inc.",
+    "id": "cat_600cb69888925391fb41",
+    "name": "Guidehouse",
     "coops": [
      "Arkansas OSP",
-     "Equalis Group",
      "GSA MAS",
+     "Hawaii SPO",
      "NASPO ValuePoint",
      "NJSTART",
      "NYS OGS",
      "OMNIA Partners",
-     "Sourcewell",
-     "TIPS"
+     "OregonBuys",
+     "Sourcewell"
     ],
-    "contracts": 9
+    "contracts": 17
    },
    {
-    "id": "cat_4378bc9e3318938ef5fe",
-    "name": "The Sherwin-Williams Company",
+    "id": "cat_612adbb6eda4e52f36c5",
+    "name": "SHI International Corp.",
+    "coops": [
+     "Arkansas OSP",
+     "Empire Procure Connect",
+     "GSA MAS",
+     "Hawaii SPO",
+     "NASPO ValuePoint",
+     "NJSTART",
+     "NYS OGS",
+     "OregonBuys",
+     "Sourcewell"
+    ],
+    "contracts": 13
+   },
+   {
+    "id": "cat_35c5eed038a31882bac8",
+    "name": "Lawson Products, Inc.",
     "coops": [
      "1GPA",
-     "Arkansas OSP",
-     "E&I",
-     "Empire Procure Connect",
+     "BuyBoard",
      "Equalis Group",
-     "NPPGov",
-     "NYS OGS",
+     "GSA MAS",
+     "Hawaii SPO",
+     "NASPO ValuePoint",
      "OMNIA Partners",
-     "Sourcewell"
-    ],
-    "contracts": 9
-   },
-   {
-    "id": "cat_0c11c4053dbf3c589550",
-    "name": "The HON Company LLC",
-    "coops": [
-     "Arkansas OSP",
-     "BuyBoard",
-     "Empire Procure Connect",
-     "GSA MAS",
-     "Hawaii SPO",
-     "NASPO ValuePoint",
-     "NJSTART",
-     "NYS OGS",
-     "OMNIA Partners"
-    ],
-    "contracts": 9
-   },
-   {
-    "id": "cat_5f1d721967eb2067c67b",
-    "name": "Quadient, Inc.",
-    "coops": [
-     "Arkansas OSP",
-     "BuyBoard",
-     "GSA MAS",
-     "Hawaii SPO",
-     "NASPO ValuePoint",
-     "NJSTART",
-     "NYS OGS",
-     "OMNIA Partners",
-     "Sourcewell"
-    ],
-    "contracts": 8
-   },
-   {
-    "id": "cat_38f685b654efb7facba2",
-    "name": "Carahsoft Technology Corporation",
-    "coops": [
-     "BuyBoard",
-     "E&I",
-     "GSA MAS",
-     "Hawaii SPO",
-     "NASPO ValuePoint",
-     "NJSTART",
-     "PEPPM",
+     "OregonBuys",
      "TIPS"
     ],
-    "contracts": 44
+    "contracts": 13
    }
   ],
   "merge_examples": [
@@ -517,42 +522,53 @@
    "expired": 0,
    "with_states": 197,
    "offerings": 0
+  },
+  {
+   "coop": "OregonBuys",
+   "coop_id": "state_or",
+   "contracts": 651,
+   "suppliers": 560,
+   "with_link": 651,
+   "with_end": 651,
+   "expired": 0,
+   "with_states": 651,
+   "offerings": 0
   }
  ],
  "nigp": {
-  "published": 1479,
+  "published": 2130,
   "reviewed": 27698,
   "none": 6317,
-  "contracts": 35494,
+  "contracts": 36145,
   "coop_contracts_coded": 27698,
   "coop_contracts": 31930,
   "state_uncoded": 2085,
-  "classes_used": 164,
+  "classes_used": 180,
   "priced_offerings_coded": 4572,
   "top_classes": [
    [
     "920",
-    8422
+    8461
    ],
    [
     "918",
-    4297
+    4348
    ],
    [
     "208",
-    3100
+    3105
    ],
    [
     "204",
-    2999
+    3006
    ],
    [
     "909",
-    2981
+    2983
    ],
    [
     "209",
-    1750
+    1757
    ],
    [
     "785",
@@ -560,25 +576,83 @@
    ],
    [
     "925",
-    1593
+    1607
    ],
    [
     "680",
-    1533
+    1550
    ],
    [
     "910",
-    1269
+    1289
    ],
    [
     "958",
-    1149
+    1157
    ],
    [
-    "340",
-    1097
+    "915",
+    1117
    ]
   ]
+ },
+ "oregon": {
+  "source": "https://oregonbuys.gov/bso/view/search/external/advancedSearchContractBlanket.xhtml",
+  "scope": "Active blankets of the Department of Administrative Services, Procurement Services (107090)",
+  "retrieved": "2026-11-14",
+  "listed": 1117,
+  "pages_missing": 0,
+  "intergovernmental": 466,
+  "orcpp_membership_agreements": 358,
+  "expired": 0,
+  "contracts": 651,
+  "open_to_locals": 553,
+  "state_only": 98,
+  "flag_missing": 0,
+  "with_nigp": 651,
+  "naspo_addenda": 86,
+  "mmcap": 20,
+  "oregon_forward": 19,
+  "open_ended": 0,
+  "with_prices": 0,
+  "priced_lines": 0,
+  "lines": 996,
+  "dropped": {
+   "no_price": 996,
+   "placeholder": 0,
+   "discount": 0,
+   "percent": 0,
+   "index_markup": 0,
+   "unverified": 0,
+   "no_name": 0
+  },
+  "documents": 5861,
+  "attachments": 5210,
+  "spent_to_date": 542699400,
+  "disciplines": {
+   "Personal Services": 229,
+   "Supplies": 224,
+   "Trade Services": 157,
+   "A and E": 22,
+   "A and E Related Services": 9,
+   "Public Improvement": 8,
+   "Ordinary Construction": 2
+  },
+  "suppliers": 561,
+  "products": 0,
+  "orcpp_members": 987,
+  "orcpp_members_by_type": {
+   "Special": 304,
+   "School": 246,
+   "Non-profit": 172,
+   "City": 168,
+   "County": 50,
+   "Other": 31,
+   "Oregon Forward Contractor": 16
+  },
+  "members_retrieved": "2026-11-14",
+  "note": "Line items are the summary page's; most agreements print $0 placeholders and keep prices in attached price sheets, which are linked, not read.",
+  "suppliers_shared_with_coops": 235
  },
  "epc": {
   "source": "https://empireprocureconnect.info/empire-procure-connect-home",
@@ -644,7 +718,7 @@
   },
   "with_prices": 133,
   "products": 5376,
-  "suppliers_shared_with_coops": 523
+  "suppliers_shared_with_coops": 534
  },
  "arkansas": {
   "source": "https://sas.arkansas.gov/procurement/state-contracts/",
@@ -675,7 +749,7 @@
   ],
   "with_prices": 10,
   "products": 85,
-  "suppliers_shared_with_coops": 139
+  "suppliers_shared_with_coops": 142
  },
  "hawaii": {
   "source": "https://spo.hawaii.gov/for-vendors/contract-awards/price-vendor-lists/",
@@ -752,7 +826,7 @@
   "note": "Line items are the first summary page of each contract; contracts with more item pages are flagged line_items_paginated. Attachments are linked, not downloaded.",
   "nigp_codes": 520,
   "nigp_classes": 150,
-  "suppliers_shared_with_coops": 349,
+  "suppliers_shared_with_coops": 355,
   "offerings": 5810,
   "products_on_two_or_more_contracts": 568
  },
@@ -787,7 +861,7 @@
    "Health Management Systems Inc., THIRD PARTY LIABILITY RECOVERY SERVICES",
    "West Publishing Corporation",
    "LexisNexis Risk Solutions",
-   "Mathtech, Inc.",
+   "Mathtech",
    "The Consultants Consortium Inc.",
    "WM. R. Hill & Co. Inc.",
    "H. Schrier & Co. Inc.",
@@ -893,7 +967,7 @@
    "NTT DATA State Health Consulting, LLC",
    "Informatix Inc",
    "AT&T Enterprises, LLC",
-   "Granite Telecommunications LLC",
+   "Granite Telecommunications",
    "Data Network Solutions",
    "Campbell Foundry Company",
    "Intelligent Traffic Supply Products LLC",
@@ -993,7 +1067,7 @@
    "Double O Landscape Design LLC",
    "Greelco Inc.",
    "Valk Manufacturing Company",
-   "chemung supply corp",
+   "Chemung Supply Corporation",
    "D&W Diesel Inc.",
    "Usinage Pro 24 Inc, DBA Nordik Blades",
    "Continuity Operations Group",
@@ -1101,7 +1175,7 @@
    "The Liberty Consulting Group",
    "Overland Consulting",
    "Daymark Energy Advisors, Inc.",
-   "Periscope Holdings",
+   "Periscope Holdings, Inc.",
    "RR Donnelley",
    "General Traffic Equipment Corp",
    "Flagpoles Inc.",
@@ -1308,7 +1382,7 @@
    "American Aluminum Accessories",
    "Kustom Signals, Inc.",
    "Rockland Custom Products",
-   "Motorola Solutions, Inc.",
+   "Motorola Solutions",
    "Nielsen Fleet Inc.",
    "Siren Tech Police and Emergency Vehicle Upfitting",
    "Peckham Materials Corp.",
@@ -1531,7 +1605,7 @@
    "Ennis-Flint, Inc.",
    "Ozark Materials LLC",
    "The Sherwin-Williams Company",
-   "Potters Industries LLC",
+   "Potters Industries, LLC",
    "Smart Moving & Storage Inc",
    "Metro Relocation Solutions Inc",
    "Liberty Moving & Storage",
@@ -1546,7 +1620,7 @@
    "Dimon & Bacorn Inc",
    "Lincoln Moving & Storage of Buffalo Inc",
    "Corcraft",
-   "BCI Burke",
+   "BCI Burke Company, LLC",
    "Exemplis, LLC",
    "Caldwell Country Chevrolet II LLC",
    "Five Star Chevrolet",
@@ -1567,10 +1641,10 @@
   "multi_route": 5811
  },
  "documents": {
-  "total": 41352,
+  "total": 47213,
   "by_kind": {
    "htm": 11892,
-   "unknown": 22964,
+   "unknown": 28825,
    "pdf": 5516,
    "docx": 7,
    "xlsx": 973
@@ -1584,7 +1658,8 @@
    "Arkansas OSP": 503,
    "NYS OGS": 7036,
    "NY Preferred Source": 54,
-   "Empire Procure Connect": 731
+   "Empire Procure Connect": 731,
+   "OregonBuys": 5861
   }
  },
  "reconcile": {

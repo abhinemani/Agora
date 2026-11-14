@@ -359,6 +359,8 @@ export interface CoopHit {
   state?: string;
   /** A New York preferred source: approved, approved for one agency only, or listed as not approved. */
   preferred?: "approved" | "agency" | "not_approved";
+  /** The contract's documents mention what was asked for: where, with a few words around it (lib/doc-store.ts). */
+  found_in?: { label: string; page: number; snippet: string };
 }
 
 export interface CoopSection {

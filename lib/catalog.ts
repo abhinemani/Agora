@@ -17,6 +17,8 @@ import { join } from "node:path";
 import { gunzipSync } from "node:zlib";
 import { fitScoreSets, requestTokens, SAME_AS, tokens, type CoopHit, type Weights } from "./assistant";
 import { isMember, normalizeDomain } from "./coops";
+import type { DocumentHit } from "./doc-store";
+import { orcppMember } from "./orcpp";
 import { isTrxState, stateContractAccess, TRX_MARGIN } from "./trx";
 import type { Buyer, Db, Supplier as AgoraSupplier } from "./types";
 import { stateName } from "./vehicles";
@@ -120,6 +122,8 @@ interface Index {
   documents: CatalogDocument[];
   supplierById: Map<string, CatalogSupplier>;
   contractById: Map<string, CatalogContract>;
+  /** A contract's position in `contracts`, for the search indexes. */
+  contractIndex: Map<string, number>;
   productById: Map<string, CatalogProduct>;
   offeringById: Map<string, CatalogOffering>;
   offeringsByProduct: Map<string, CatalogOffering[]>;
@@ -208,6 +212,7 @@ function load(): Index {
     ...raw,
     supplierById,
     contractById,
+    contractIndex: new Map(raw.contracts.map((c, i) => [c.id, i])),
     productById,
     offeringById: new Map(raw.offerings.map((o) => [o.id, o])),
     offeringsByProduct,
@@ -235,6 +240,16 @@ export const catalogStateRetrieved = (): Record<string, string> => load().state_
 export type CatalogIndex = Index;
 export const catalogIndex = (): CatalogIndex => load();
 export const catalogDocumentsFor = (contractId: string) => load().documentsByContract.get(contractId) ?? [];
+/** Every document linked to a TRX program's contracts (lib/doc-ingest.ts stores their text). */
+export function catalogTrxDocuments(): { url: string; label: string; contract_id: string; program: string; state: string | null }[] {
+  const idx = load();
+  const out: { url: string; label: string; contract_id: string; program: string; state: string | null }[] = [];
+  for (const c of idx.contracts) {
+    if (!isTrxContract(c) || expired(c)) continue;
+    for (const d of idx.documentsByContract.get(c.id) ?? []) out.push({ url: d.url, label: d.label, contract_id: c.id, program: c.coop, state: c.state_contract?.state ?? null });
+  }
+  return out;
+}
 export const catalogContract = (id: string | null | undefined) => (id ? (load().contractById.get(id) ?? null) : null);
 export const catalogOffering = (id: string | null | undefined) => (id ? (load().offeringById.get(id) ?? null) : null);
 export const catalogSupplierById = (id: string | null | undefined) => (id ? (load().supplierById.get(id) ?? null) : null);
@@ -255,7 +270,7 @@ function candidates(index: Map<string, number[]>, words: string[]): Set<number> 
 export function catalogAccess(db: Db, buyer: Buyer | null, c: CatalogContract): { member: boolean; eligible: boolean; reason: string } {
   const coopName = db.coops.find((x) => x.id === c.coop_id)?.name ?? c.coop;
   const where = c.states === "any" ? "" : c.states.length <= 6 ? c.states.map(stateName).join(", ") : `${c.states.length} states`;
-  if (c.state_contract) return stateContractAccess(c.state_contract, buyer);
+  if (c.state_contract) return stateContractAccess(c.state_contract, buyer, c.state_contract.state === "OR" && buyer ? orcppMember(buyer) : undefined);
   if (c.coop_id === "gsa_mas") {
     // GSA's SIN list says which SINs state and local governments may buy through cooperative purchasing.
     const open = c.coop_sins ?? [];
@@ -303,7 +318,7 @@ export interface CatalogCoopResult {
 
 /** Catalog contracts covering a request, as co-op hits: the best few on the agency's co-ops,
  * the best few it could join, and GSA separately. Contracts Agora already seeds are skipped. */
-export function catalogCoopHits(db: Db, item: string, buyer: Buyer | null, opts: { perSide?: number; gsa?: number; state?: number; minFit?: number; category?: string | null } = {}): CatalogCoopResult {
+export function catalogCoopHits(db: Db, item: string, buyer: Buyer | null, opts: { perSide?: number; gsa?: number; state?: number; minFit?: number; category?: string | null; docHits?: Map<string, DocumentHit> } = {}): CatalogCoopResult {
   const idx = load();
   const itemTokens = requestTokens(item);
   const empty = { hits: [], more_member: 0, more_other: 0, gsa: [], gsa_total: 0, state: [], state_total: 0 };
@@ -319,10 +334,21 @@ export function catalogCoopHits(db: Db, item: string, buyer: Buyer | null, opts:
   };
   const minFit = opts.minFit ?? 60;
   const scored: { c: CatalogContract; fit: number; access: ReturnType<typeof catalogAccess> }[] = [];
-  for (const i of candidates(idx.cIndex, itemTokens)) {
+  // Contracts whose documents contain every word of the request (lib/doc-store.ts) are candidates too. A document
+  // match alone fits in the 60s, by its rank among the matches, so a contract whose title says it still leads.
+  const docHits = opts.docHits ?? new Map<string, DocumentHit>();
+  const docOrder = new Map([...docHits.keys()].map((id, n) => [id, n]));
+  const pool_ = candidates(idx.cIndex, itemTokens);
+  for (const id of docHits.keys()) {
+    const i = idx.contractIndex.get(id);
+    if (i != null) pool_.add(i);
+  }
+  for (const i of pool_) {
     const c = idx.contracts[i];
     if (expired(c) || seeded.has(c.id)) continue;
-    const fit = fitScoreSets(itemTokens, idx.cTitle[i], idx.cScope[i], idx.cWeights);
+    const titleFit = fitScoreSets(itemTokens, idx.cTitle[i], idx.cScope[i], idx.cWeights);
+    const docRank = docOrder.get(c.id);
+    const fit = docRank == null ? titleFit : Math.max(titleFit, Math.max(minFit, 72 - Math.floor(docRank / 4)));
     if (fit < minFit) continue;
     // A request with a clear category ("24 inch monitors" is IT hardware) drops partial matches from other categories.
     if (opts.category && c.category && c.category !== opts.category && fit < 85) continue;
@@ -379,6 +405,7 @@ export function catalogCoopHits(db: Db, item: string, buyer: Buyer | null, opts:
     end: x.c.end,
     directory_url: x.c.directory,
     ...(x.c.state_contract ? { program: "state" as const, trx: isTrxContract(x.c), solicitation: x.c.state_contract.solicitation, state: x.c.state_contract.state, ...(x.c.state_contract.preferred ? { preferred: x.c.state_contract.preferred } : {}) } : {}),
+    ...(docHits.has(x.c.id) ? { found_in: { label: docHits.get(x.c.id)!.label, page: docHits.get(x.c.id)!.page, snippet: docHits.get(x.c.id)!.snippet } } : {}),
   });
   const statePer = opts.state ?? 6;
   return {

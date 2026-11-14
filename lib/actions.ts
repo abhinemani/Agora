@@ -34,6 +34,8 @@ import { paperworkKinds, paperworkTemplate, type PaperworkKind } from "./paperwo
 import { polish } from "./paperwork-ai";
 import { tellPurchasing, tellRequester } from "./notify";
 import { askDocument, contractBrief, readableContracts } from "./docs";
+import { searchDocuments, type DocumentHit } from "./doc-store";
+import { hasDatabase } from "./pg";
 import { diveItems, diveSearch, diveVerdict, offlineDiveFilters, type DiveFilter } from "./dive";
 import { readDiveMessage, writeVerdict } from "./dive-ai";
 import { rate } from "./ai-log";
@@ -153,12 +155,30 @@ export function setPreference(requestId: string, answer: "yes" | "no" | "always_
 
 const impressionsBilled = new Set<string>();
 
+/** Contracts whose stored documents mention a request's item (lib/doc-store.ts), kept a few minutes per item so the
+ * results and the shopper's later steps for the same request agree. Filled by prepareResults before getResults. */
+const docHitCache = ((globalThis as unknown as { __agoraDocHits?: Map<string, { at: number; hits: Map<string, DocumentHit> }> }).__agoraDocHits ??= new Map());
+const docHitKey = (item: string) => item.trim().toLowerCase();
+export async function prepareResults(requestId: string) {
+  const db = getDb();
+  const request = db.requests.find((r) => r.id === requestId);
+  if (!request || !hasDatabase()) return;
+  const key = docHitKey(request.parsed.item);
+  const have = docHitCache.get(key);
+  if (have && Date.now() - have.at < 10 * 60_000) return;
+  const hits = await searchDocuments(request.parsed.item, { limit: 60 });
+  docHitCache.set(key, { at: Date.now(), hits: new Map(hits.map((h) => [h.contract_id, h])) });
+  if (docHitCache.size > 500) docHitCache.delete(docHitCache.keys().next().value!);
+}
+
 export function getResults(requestId: string) {
   const db = getDb();
   const request = db.requests.find((r) => r.id === requestId) ?? fail("Request not found");
   const results = buildResults(db, request);
-  // The co-op catalog: every co-op's public contract directory, beyond the contracts Agora seeds.
-  const cat = catalogCoopHits(db, request.parsed.item, db.session.buyer, { category: request.parsed.category });
+  // The co-op catalog: every co-op's public contract directory, beyond the contracts Agora seeds, plus contracts
+  // whose documents mention the item.
+  const docHits = docHitCache.get(docHitKey(request.parsed.item))?.hits;
+  const cat = catalogCoopHits(db, request.parsed.item, db.session.buyer, { category: request.parsed.category, docHits });
   if (cat.hits.length || cat.gsa.length) {
     const section = finishCoopSection(db, [...results.coops.hits, ...cat.hits], db.session.buyer?.name ?? null);
     results.coops = { ...section, catalog: { retrieved: catalogRetrieved(), more_member: cat.more_member, more_other: cat.more_other, gsa: cat.gsa, gsa_total: cat.gsa_total, state: cat.state, state_total: cat.state_total, state_retrieved: catalogStateRetrieved() } };

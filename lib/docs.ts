@@ -12,14 +12,16 @@ import { join } from "node:path";
 import * as z from "zod/v4";
 import { catalogContract, catalogDocumentsFor, catalogSupplierById, type CatalogDocument } from "./catalog";
 import { discarded, modelOn, pieces, structured } from "./llm";
-import { extractFile } from "./parser";
+import { fetchDocument, readBuffer } from "./doc-fetch";
+import { contractPages, storeDocument, storedPages } from "./doc-store";
+import { hasDatabase } from "./pg";
 import { ungrounded } from "./shopper-ai";
 import type { Db } from "./types";
 
 /** Hosts that publish contract documents as plain files. Sites with bot walls or robots rules against fetching stay off this list.
  * The state programs' hosts were checked November 14, 2026: Arkansas allows all (crawl delay 10 s, and Agora fetches one
  * document when asked); OGS bars only admin, login and search paths; Corcraft publishes no robots.txt; NJSTART and Empire
- * Procure Connect redirect theirs to their vendor's, which bars only /craft. */
+ * Procure Connect redirect theirs to their vendor's, which bars only /craft; so does OregonBuys. */
 const DOCUMENT_HOSTS = new Set([
   "s3.us-east-1.amazonaws.com",
   "s3.us-west-2.amazonaws.com",
@@ -31,8 +33,9 @@ const DOCUMENT_HOSTS = new Set([
   "shop.corcraft.ny.gov",
   "www.njstart.gov",
   "empireprocureconnect.com",
+  "oregonbuys.gov",
 ]);
-/** NJSTART and Empire Procure Connect serve attachments through a download action, not a file path. */
+/** NJSTART, Empire Procure Connect and OregonBuys serve attachments through a download action, not a file path. */
 const isDownload = (u: URL) => /\/bso\/external\/purchaseorder\/poSummary\.sda$/.test(u.pathname) && u.searchParams.get("mode") === "download";
 
 /** Contract documents held as text (npm run import:doctext), keyed by URL: read without fetching. Loaded per program on first use. */
@@ -48,8 +51,6 @@ function textFor(url: string): { label: string; pages: Page[] } | null {
   }
   return heldText.byUrl[url] ?? null;
 }
-const MAX_BYTES = 15 * 1024 * 1024;
-const MAX_PAGES = 600;
 const PRICE_FILES = join(process.cwd(), "seed/catalog/source/price-files");
 
 /** Held text is checked only once the store exists, so a build without it still works. */
@@ -71,7 +72,7 @@ export interface ReadableContract {
   title: string;
   documents: { label: string; held: boolean }[];
 }
-interface Page {
+export interface Page {
   num: number;
   text: string;
 }
@@ -93,6 +94,10 @@ export interface ContractAnswer {
 }
 
 const isFile = (url: string) => /\.(pdf|xlsx|xls|docx|csv)(\?|$)/i.test(url);
+/** May the server fetch this document? A file or download action on one of DOCUMENT_HOSTS. */
+export const fetchable = (url: string) => allowed(url);
+/** Text Agora holds in the repository for this URL (seed/catalog/doctext). */
+export const heldPages = (url: string): Page[] | null => (heldTextReady() ? (textFor(url)?.pages ?? null) : null);
 const allowed = (url: string) => {
   try {
     const u = new URL(url);
@@ -203,59 +208,17 @@ async function pagesOf(doc: Doc): Promise<Page[]> {
     cache.set(doc.id, held.pages);
     return held.pages;
   }
-  let buffer: Buffer;
-  let filename: string;
-  if (doc.path) {
-    buffer = readFileSync(doc.path);
-    filename = doc.path.split("/").pop()!;
-  } else {
-    const controller = new AbortController();
-    const timer = setTimeout(() => controller.abort(), 25_000);
-    try {
-      const res = await fetch(doc.url!, { signal: controller.signal, headers: { "user-agent": "Agora contract reader" } });
-      if (!res.ok) throw new Error(`its publisher answered ${res.status}`);
-      if (Number(res.headers.get("content-length") ?? 0) > MAX_BYTES) throw new Error("it is over 15 MB");
-      buffer = Buffer.from(await res.arrayBuffer());
-      if (buffer.length > MAX_BYTES) throw new Error("it is over 15 MB");
-      let from = new URL(doc.url!);
-      // GSA's "online" page is a redirect stub to the contract's PDF in the same folder.
-      const hop = buffer.length < 4000 ? buffer.toString("utf8").match(/http-equiv=["']?refresh["']?[^>]*url=([^"'>\s]+)/i) : null;
-      if (hop) {
-        const next = new URL(hop[1], from);
-        if (next.host !== from.host || !next.pathname.startsWith("/ref_text/")) throw new Error("it points somewhere Agora doesn't read");
-        const res2 = await fetch(next, { signal: controller.signal, headers: { "user-agent": "Agora contract reader" } });
-        if (!res2.ok) throw new Error(`its publisher answered ${res2.status}`);
-        if (Number(res2.headers.get("content-length") ?? 0) > MAX_BYTES) throw new Error("it is over 15 MB");
-        buffer = Buffer.from(await res2.arrayBuffer());
-        if (buffer.length > MAX_BYTES) throw new Error("it is over 15 MB");
-        from = next;
-      }
-      // A download action names the file in its Content-Disposition header ("Price Sheet.xlsx").
-      const disposed = res.headers.get("content-disposition")?.match(/filename\*?=(?:UTF-8'')?"?([^";]+)"?/i)?.[1];
-      filename = disposed ? decodeURIComponent(disposed) : decodeURIComponent(from.pathname.split("/").pop() || "document.pdf");
-      if (!/\.\w{2,4}$/.test(filename)) filename += buffer.subarray(0, 4).toString("latin1") === "%PDF" ? ".pdf" : buffer.subarray(0, 2).toString("latin1") === "PK" ? ".xlsx" : "";
-    } catch (e) {
-      const m = (e as Error).message;
-      throw new Error((e as Error).name === "AbortError" ? "its publisher took too long" : !m || m === "fetch failed" ? "its publisher couldn't be reached" : m);
-    } finally {
-      clearTimeout(timer);
-    }
-  }
   let pages: Page[];
-  if (/\.pdf$/i.test(filename)) {
-    // Read directly: master agreements and price lists run past the upload reader's 60-page limit.
-    const { PDFParse } = await import("pdf-parse");
-    const parser = new PDFParse({ data: new Uint8Array(buffer) });
-    try {
-      const res = await parser.getText();
-      pages = res.pages.slice(0, MAX_PAGES).map((p) => ({ num: p.num, text: p.text }));
-    } finally {
-      await parser.destroy();
+  if (doc.path) pages = await readBuffer(readFileSync(doc.path), doc.path.split("/").pop()!);
+  else {
+    // Text the server has already stored (lib/doc-ingest.ts), then the publisher; what's fetched is stored for next time.
+    const stored = hasDatabase() ? await storedPages(doc.url!) : null;
+    if (stored) pages = stored;
+    else {
+      const got = await fetchDocument(doc.url!);
+      pages = got.pages;
+      if (hasDatabase()) storeDocument(doc.url!, got).catch((e) => console.error("[docs] couldn't store a document:", (e as Error).message));
     }
-    if (pages.reduce((n, p) => n + p.text.replace(/\s/g, "").length, 0) < 40 * pages.length) throw new Error("it is a scanned document with no text layer");
-  } else {
-    const file = await extractFile({ filename, buffer });
-    pages = file.rows?.length ? [{ num: 1, text: file.rows.map((r) => r.map((c) => String(c ?? "")).join("  ")).join("\n") }] : file.pages;
   }
   cache.set(doc.id, pages);
   return pages;
@@ -317,6 +280,18 @@ export async function askDocument(db: Db, contractId: string, question: string):
       all.push(...chunks(d.label, pages));
     } catch (e) {
       unread.push(`${d.label} couldn't be read: ${(e as Error).message}.`);
+    }
+  }
+  // The rest of the contract's documents, when the server has stored their text: the pages that best match the question.
+  if (hasDatabase()) {
+    const catId = catalogContract(contractId)?.id ?? catalogContract(db.contracts.find((c) => c.id === contractId)?.catalog_id)?.id;
+    const readUrls = new Set(entry.docs.map((d) => d.url).filter(Boolean));
+    const more = catId ? (await contractPages(catId, question, 12)).filter((p) => !readUrls.has(p.url)) : [];
+    const byLabel = new Map<string, Page[]>();
+    for (const p of more) (byLabel.get(p.label) ?? byLabel.set(p.label, []).get(p.label)!).push({ num: p.num, text: p.text });
+    for (const [label, pages] of byLabel) {
+      read.push({ label: `${label} (${pages.length === 1 ? "one page" : `${pages.length} pages`} matched)`, pages: pages.length });
+      all.push(...chunks(label, pages));
     }
   }
   const base = { contract: entry.name, read, unread };

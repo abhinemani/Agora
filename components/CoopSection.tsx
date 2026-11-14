@@ -295,6 +295,12 @@ function Hit({ h, requestId, refN }: { h: CoopHit; requestId: string; refN?: num
             {h.products > 0 && ` · ${h.products} matching product${h.products === 1 ? "" : "s"} in Agora`}
             {h.end && ` · through ${new Date(`${h.end}T12:00:00Z`).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })}`}
           </div>
+          {h.found_in && (
+            <div className="mt-1 text-[11px] text-slate">
+              Found in {h.found_in.label}
+              {h.found_in.page > 1 ? `, page ${h.found_in.page}` : ""}: <span className="italic">&ldquo;{h.found_in.snippet}&rdquo;</span>
+            </div>
+          )}
           {h.note && <div className="mt-1 text-[11px] text-amber-800">{h.note}</div>}
         </div>
         <FitPill fit={h.fit} />

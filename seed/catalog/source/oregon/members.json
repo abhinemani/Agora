@@ -1,0 +1,4941 @@
+{
+ "source_url": "https://www.oregon.gov/das/Procurement/Pages/Orcppmember.aspx",
+ "retrieved": "2026-11-14",
+ "members": [
+  {
+   "name": "Astoria School District",
+   "number": "P00007",
+   "type": "School"
+  },
+  {
+   "name": "Arlington School District",
+   "number": "P11003",
+   "type": "School"
+  },
+  {
+   "name": "Ashland School District JCSD #5",
+   "number": "P15008",
+   "type": "School"
+  },
+  {
+   "name": "Banks School District",
+   "number": "P34004",
+   "type": "School"
+  },
+  {
+   "name": "Baker Charter Schools (Baker Web Academy)",
+   "number": "X01010",
+   "type": "School"
+  },
+  {
+   "name": "Basin Transit Service District",
+   "number": "X18200",
+   "type": "Special"
+  },
+  {
+   "name": "Beaverton School District 48J",
+   "number": "P34048",
+   "type": "School"
+  },
+  {
+   "name": "Bandon, City of",
+   "number": "KB0035",
+   "type": "City"
+  },
+  {
+   "name": "Bay City, City of",
+   "number": "KB2910",
+   "type": "City"
+  },
+  {
+   "name": "Arnold Irrigation District",
+   "number": "R09106",
+   "type": "Special"
+  },
+  {
+   "name": "Astoria, City of",
+   "number": "KA0417",
+   "type": "City"
+  },
+  {
+   "name": "Adair RFPD",
+   "number": "R02102",
+   "type": "Other"
+  },
+  {
+   "name": "Baker County",
+   "number": "C01009",
+   "type": "County"
+  },
+  {
+   "name": "Bandon School District",
+   "number": "P06050",
+   "type": "School"
+  },
+  {
+   "name": "Baker School District J5",
+   "number": "P01005",
+   "type": "School"
+  },
+  {
+   "name": "Alvord-Taylor Independent Living Services",
+   "number": "X20055",
+   "type": "Non-profit"
+  },
+  {
+   "name": "Banks, City of",
+   "number": "KB3413",
+   "type": "City"
+  },
+  {
+   "name": "Albany, City of",
+   "number": "KA0020",
+   "type": "City"
+  },
+  {
+   "name": "Access, Inc.",
+   "number": "X15101",
+   "type": "Oregon Forward Contractor"
+  },
+  {
+   "name": "Alsea School District",
+   "number": "P20003",
+   "type": "School"
+  },
+  {
+   "name": "Assoc. of Oregon Counties",
+   "number": "X00793",
+   "type": "Non-profit"
+  },
+  {
+   "name": "Baker City, City of",
+   "number": "K01000",
+   "type": "City"
+  },
+  {
+   "name": "Amity School District",
+   "number": "P36004",
+   "type": "School"
+  },
+  {
+   "name": "Beaverton, City of",
+   "number": "KB0020",
+   "type": "City"
+  },
+  {
+   "name": "Bend, City of",
+   "number": "KB0010",
+   "type": "City"
+  },
+  {
+   "name": "Benton County",
+   "number": "C02003",
+   "type": "County"
+  },
+  {
+   "name": "Black Butte Ranch RFPD",
+   "number": "R09675",
+   "type": "Special"
+  },
+  {
+   "name": "Burns, City of",
+   "number": "KB1319",
+   "type": "City"
+  },
+  {
+   "name": "Brookings-Harbor School District #17C",
+   "number": "P08017",
+   "type": "School"
+  },
+  {
+   "name": "Bethel School District #52",
+   "number": "P20052",
+   "type": "School"
+  },
+  {
+   "name": "Blodgett-Summit RFPD",
+   "number": "R02707",
+   "type": "Special"
+  },
+  {
+   "name": "Brownsville, City of",
+   "number": "KB2210",
+   "type": "City"
+  },
+  {
+   "name": "Brookings, City of",
+   "number": "KB0819",
+   "type": "City"
+  },
+  {
+   "name": "Burns-Hines School Dist/Harney Co SD #3",
+   "number": "P13001",
+   "type": "School"
+  },
+  {
+   "name": "Black Butte Ranch SPD",
+   "number": "KB1680",
+   "type": "County"
+  },
+  {
+   "name": "Brownsville RFPD",
+   "number": "R22600",
+   "type": "Special"
+  },
+  {
+   "name": "CAPECO",
+   "number": "X30126",
+   "type": "Non-profit"
+  },
+  {
+   "name": "Canby, City of",
+   "number": "KC0004",
+   "type": "City"
+  },
+  {
+   "name": "Bonanza-Langell Valley Vector Control District",
+   "number": "R18005",
+   "type": "Special"
+  },
+  {
+   "name": "B'nai B'rith Mens Camp Association",
+   "number": "X34002",
+   "type": "Non-profit"
+  },
+  {
+   "name": "Bly Water & Sanitary District",
+   "number": "R18006",
+   "type": "Special"
+  },
+  {
+   "name": "Cannon Beach, City of",
+   "number": "KC0400",
+   "type": "City"
+  },
+  {
+   "name": "Camas Valley School District SD #21",
+   "number": "P10021",
+   "type": "School"
+  },
+  {
+   "name": "Bend-LaPine School District",
+   "number": "P09001",
+   "type": "School"
+  },
+  {
+   "name": "Camas Valley Rural Fire District",
+   "number": "R10122",
+   "type": "Special"
+  },
+  {
+   "name": "Blachly School District",
+   "number": "P20010",
+   "type": "School"
+  },
+  {
+   "name": "Butte Falls School District",
+   "number": "P15091",
+   "type": "School"
+  },
+  {
+   "name": "Canby School District",
+   "number": "P03701",
+   "type": "School"
+  },
+  {
+   "name": "Care Partners",
+   "number": "X34009",
+   "type": "Non-profit"
+  },
+  {
+   "name": "Care, Inc. (Tillamook County Comm. Act. Enter)",
+   "number": "X29021",
+   "type": "Non-profit"
+  },
+  {
+   "name": "Carlton Police Department",
+   "number": "KC3620",
+   "type": "City"
+  },
+  {
+   "name": "Central Cascades EMS",
+   "number": "KC1811",
+   "type": "County"
+  },
+  {
+   "name": "Cascade School District #5",
+   "number": "P24705",
+   "type": "School"
+  },
+  {
+   "name": "Central City Concern",
+   "number": "X26054",
+   "type": "Non-profit"
+  },
+  {
+   "name": "Central Oregon Coast Fire & Rescue",
+   "number": "KW2195",
+   "type": "Special"
+  },
+  {
+   "name": "Central Lincoln PUD",
+   "number": "R21365",
+   "type": "Special"
+  },
+  {
+   "name": "Centennial School District 28J",
+   "number": "P26028",
+   "type": "School"
+  },
+  {
+   "name": "Central Oregon Intergovernmental Council",
+   "number": "X09320",
+   "type": "Non-profit"
+  },
+  {
+   "name": "Central School District 13J",
+   "number": "P27005",
+   "type": "School"
+  },
+  {
+   "name": "Central Oregon Community College",
+   "number": "P09801",
+   "type": "School"
+  },
+  {
+   "name": "Charleston RFPD",
+   "number": "R06219",
+   "type": "Special"
+  },
+  {
+   "name": "Chehalem Park & Recreation",
+   "number": "R36220",
+   "type": "Special"
+  },
+  {
+   "name": "Central Linn School District",
+   "number": "P22100",
+   "type": "School"
+  },
+  {
+   "name": "Central Curry School Dist",
+   "number": "P08001",
+   "type": "School"
+  },
+  {
+   "name": "Central Point, City of",
+   "number": "KC1520",
+   "type": "City"
+  },
+  {
+   "name": "Chiloquin Vector Control District",
+   "number": "R18822",
+   "type": "Special"
+  },
+  {
+   "name": "Central Point School District #6",
+   "number": "P15005",
+   "type": "School"
+  },
+  {
+   "name": "City County Insurance",
+   "number": "X24129",
+   "type": "Non-profit"
+  },
+  {
+   "name": "Chemeketa Community College",
+   "number": "P00380",
+   "type": "School"
+  },
+  {
+   "name": "Clackamas County",
+   "number": "C01010",
+   "type": "County"
+  },
+  {
+   "name": "CEOJJ (Central & Eastern OR Juvenile Justice)",
+   "number": "X09016",
+   "type": "Non-profit"
+  },
+  {
+   "name": "Chiloquin‐Agency Lake RFPD",
+   "number": "R18821",
+   "type": "Special"
+  },
+  {
+   "name": "Clackamas County Fire District #1",
+   "number": "KC0321",
+   "type": "Special"
+  },
+  {
+   "name": "Clackamas ESD",
+   "number": "P03950",
+   "type": "School"
+  },
+  {
+   "name": "Clackamas County Children's Commission",
+   "number": "X26937",
+   "type": "Non-profit"
+  },
+  {
+   "name": "Clackamas River Water District",
+   "number": "R03045",
+   "type": "Special"
+  },
+  {
+   "name": "Clackamas Community College",
+   "number": "P03801",
+   "type": "School"
+  },
+  {
+   "name": "Clatskanie PUD",
+   "number": "R05050",
+   "type": "Special"
+  },
+  {
+   "name": "Clackamas Soil and Water Conservation District",
+   "number": "R03047",
+   "type": "Special"
+  },
+  {
+   "name": "Clatskanie, City of",
+   "number": "KC0550",
+   "type": "City"
+  },
+  {
+   "name": "Clatskanie School District",
+   "number": "P05005",
+   "type": "School"
+  },
+  {
+   "name": "Clatsop Community College",
+   "number": "P00350",
+   "type": "School"
+  },
+  {
+   "name": "Clatsop Soil & Water Conservation Dist",
+   "number": "R04100",
+   "type": "Special"
+  },
+  {
+   "name": "Cloverdale RFPD",
+   "number": "R09650",
+   "type": "Special"
+  },
+  {
+   "name": "Clatsop County",
+   "number": "C00040",
+   "type": "County"
+  },
+  {
+   "name": "Clean Water Services (USA)",
+   "number": "X34350",
+   "type": "Non-profit"
+  },
+  {
+   "name": "Coburg Community Charter School",
+   "number": "X20010",
+   "type": "School"
+  },
+  {
+   "name": "Coast Rehabilitation Services",
+   "number": "X02006",
+   "type": "Non-profit"
+  },
+  {
+   "name": "Coburg, City of",
+   "number": "KC2010",
+   "type": "City"
+  },
+  {
+   "name": "Colton RFPD",
+   "number": "R00025",
+   "type": "Special"
+  },
+  {
+   "name": "Columbia 911 Communications District",
+   "number": "C05004",
+   "type": "Special"
+  },
+  {
+   "name": "Columbia Gorge ESD",
+   "number": "P33065",
+   "type": "School"
+  },
+  {
+   "name": "Colton School District #53",
+   "number": "P03053",
+   "type": "School"
+  },
+  {
+   "name": "Columbia River PUD",
+   "number": "R05193",
+   "type": "Special"
+  },
+  {
+   "name": "Condon School District",
+   "number": "P11001",
+   "type": "School"
+  },
+  {
+   "name": "Coburg RFPD",
+   "number": "R20230",
+   "type": "Special"
+  },
+  {
+   "name": "Community Action Team, Inc.",
+   "number": "X05112",
+   "type": "Non-profit"
+  },
+  {
+   "name": "Columbia Gorge Community College",
+   "number": "P33060",
+   "type": "School"
+  },
+  {
+   "name": "Columbia County",
+   "number": "C00055",
+   "type": "County"
+  },
+  {
+   "name": "Community Connection/NE Oregon",
+   "number": "X31351",
+   "type": "Non-profit"
+  },
+  {
+   "name": "Conf. Tribes Coos/Lower Umpqua/Siuslaw",
+   "number": "X06001",
+   "type": "Other"
+  },
+  {
+   "name": "Condon, City of",
+   "number": "K11955",
+   "type": "City"
+  },
+  {
+   "name": "Conf. Tribes Klamath Tribes Community Services",
+   "number": "X18100",
+   "type": "Other"
+  },
+  {
+   "name": "Conf. Tribes of Umatilla",
+   "number": "X30110",
+   "type": "Other"
+  },
+  {
+   "name": "Columbia Soil & Water Conservation District",
+   "number": "R05102",
+   "type": "Special"
+  },
+  {
+   "name": "Conf. Tribes/Siletz",
+   "number": "X21600",
+   "type": "Other"
+  },
+  {
+   "name": "Crisis Chaplaincy Services",
+   "number": "X24146",
+   "type": "Non-profit"
+  },
+  {
+   "name": "Corvallis School District #509J",
+   "number": "P02509",
+   "type": "School"
+  },
+  {
+   "name": "Conf. Tribes of Grande Ronde",
+   "number": "X27200",
+   "type": "Other"
+  },
+  {
+   "name": "Coquille Indian Tribe",
+   "number": "X06100",
+   "type": "Other"
+  },
+  {
+   "name": "Crook County Agricultural Extension Service District",
+   "number": "R07001",
+   "type": "Special"
+  },
+  {
+   "name": "Creswell, City of",
+   "number": "KC0035",
+   "type": "City"
+  },
+  {
+   "name": "Coos Bay/North Bend Water Board",
+   "number": "R06241",
+   "type": "Special"
+  },
+  {
+   "name": "Corvallis, City of",
+   "number": "KC0040",
+   "type": "City"
+  },
+  {
+   "name": "Coos Bay, City of",
+   "number": "KC0624",
+   "type": "City"
+  },
+  {
+   "name": "Coquille, City of",
+   "number": "KC0057",
+   "type": "City"
+  },
+  {
+   "name": "Coos Bay School District #9",
+   "number": "P06009",
+   "type": "School"
+  },
+  {
+   "name": "Creative Supports Inc",
+   "number": "X15015",
+   "type": "Non-profit"
+  },
+  {
+   "name": "Crook County",
+   "number": "C00065",
+   "type": "County"
+  },
+  {
+   "name": "Coquille School District #8",
+   "number": "P06008",
+   "type": "School"
+  },
+  {
+   "name": "Cottage Grove, City of",
+   "number": "KC2030",
+   "type": "City"
+  },
+  {
+   "name": "Curry Public Library District",
+   "number": "R08322",
+   "type": "Special"
+  },
+  {
+   "name": "Curry County Soil & Water Conservation District",
+   "number": "RO8017",
+   "type": "Special"
+  },
+  {
+   "name": "Curry County Public Transit District",
+   "number": "C08009",
+   "type": "Special"
+  },
+  {
+   "name": "David Douglas School District #40",
+   "number": "P26040",
+   "type": "School"
+  },
+  {
+   "name": "Dallas, City of",
+   "number": "KC0060",
+   "type": "City"
+  },
+  {
+   "name": "Coos County Area Transit",
+   "number": "X06301",
+   "type": "Non-profit"
+  },
+  {
+   "name": "Cornelius, City of",
+   "number": "KB0040",
+   "type": "City"
+  },
+  {
+   "name": "Creswell (Lane County SD #40)",
+   "number": "P20040",
+   "type": "School"
+  },
+  {
+   "name": "Dallas School District #2",
+   "number": "P27002",
+   "type": "School"
+  },
+  {
+   "name": "Cornerstone Associates, inc.",
+   "number": "X02027",
+   "type": "Oregon Forward Contractor"
+  },
+  {
+   "name": "Corbett School District #39",
+   "number": "P26039",
+   "type": "School"
+  },
+  {
+   "name": "Dufur School District",
+   "number": "P33030",
+   "type": "School"
+  },
+  {
+   "name": "Douglas County",
+   "number": "C00100",
+   "type": "County"
+  },
+  {
+   "name": "Deschutes County",
+   "number": "C09008",
+   "type": "County"
+  },
+  {
+   "name": "Douglas Education Service District",
+   "number": "P10900",
+   "type": "School"
+  },
+  {
+   "name": "Dexter RFPD",
+   "number": "KD2011",
+   "type": "Special"
+  },
+  {
+   "name": "Crow‐Applegate‐Lorane School District #66",
+   "number": "P20006",
+   "type": "School"
+  },
+  {
+   "name": "Coos County",
+   "number": "C00160",
+   "type": "County"
+  },
+  {
+   "name": "Crook County School District",
+   "number": "P07001",
+   "type": "School"
+  },
+  {
+   "name": "Culver School District #4",
+   "number": "P16001",
+   "type": "School"
+  },
+  {
+   "name": "DePaul Industries",
+   "number": "X26224",
+   "type": "Non-profit"
+  },
+  {
+   "name": "Crystal Springs Water District",
+   "number": "R14734",
+   "type": "Special"
+  },
+  {
+   "name": "Curry County",
+   "number": "C08007",
+   "type": "County"
+  },
+  {
+   "name": "Dayton Public Schools",
+   "number": "P36008",
+   "type": "School"
+  },
+  {
+   "name": "Dufur, City of",
+   "number": "KD3300",
+   "type": "City"
+  },
+  {
+   "name": "East Fork Irrigation District",
+   "number": "R14452",
+   "type": "Special"
+  },
+  {
+   "name": "Eastco Diversified",
+   "number": "X26320",
+   "type": "Oregon Forward Contractor"
+  },
+  {
+   "name": "Eagle Point, City of",
+   "number": "KE1532",
+   "type": "City"
+  },
+  {
+   "name": "Dayton, City of",
+   "number": "KD0040",
+   "type": "City"
+  },
+  {
+   "name": "Eastern Oregon University",
+   "number": "580100",
+   "type": "School"
+  },
+  {
+   "name": "East Umatilla County RFPD",
+   "number": "R30275",
+   "type": "Special"
+  },
+  {
+   "name": "Elsie Vinemaple RFPD",
+   "number": "R04101",
+   "type": "Special"
+  },
+  {
+   "name": "Estacada School Dist #108",
+   "number": "P03108",
+   "type": "School"
+  },
+  {
+   "name": "Enterprise, City of",
+   "number": "KE3220",
+   "type": "City"
+  },
+  {
+   "name": "Emerald PUD (People's Utility District)",
+   "number": "R20551",
+   "type": "Special"
+  },
+  {
+   "name": "Elkton School District",
+   "number": "P10034",
+   "type": "School"
+  },
+  {
+   "name": "East Umatilla County Health District",
+   "number": "X30101",
+   "type": "Non-profit"
+  },
+  {
+   "name": "Depoe Bay Fire District",
+   "number": "R00165",
+   "type": "Special"
+  },
+  {
+   "name": "Eugene Family YMCA",
+   "number": "X20058",
+   "type": "Non-profit"
+  },
+  {
+   "name": "Edwards Center Inc.",
+   "number": "X34800",
+   "type": "Non-profit"
+  },
+  {
+   "name": "East Multnomah Soil & Water Conservation District",
+   "number": "R26001",
+   "type": "Special"
+  },
+  {
+   "name": "Falls City School District #57",
+   "number": "P27057",
+   "type": "School"
+  },
+  {
+   "name": "Family Building Blocks",
+   "number": "X24891",
+   "type": "Non-profit"
+  },
+  {
+   "name": "Fern Ridge School District (Lane County School)",
+   "number": "P20028",
+   "type": "School"
+  },
+  {
+   "name": "Eugene, City of",
+   "number": "KE0010",
+   "type": "City"
+  },
+  {
+   "name": "Falls City, City of",
+   "number": "KF2732",
+   "type": "City"
+  },
+  {
+   "name": "Eugene Water & Electric Board",
+   "number": "P00140",
+   "type": "School"
+  },
+  {
+   "name": "Fossil School District 21J",
+   "number": "P00625",
+   "type": "School"
+  },
+  {
+   "name": "Gilliam County SWCD",
+   "number": "R11000",
+   "type": "Special"
+  },
+  {
+   "name": "Gilliam County",
+   "number": "C01105",
+   "type": "County"
+  },
+  {
+   "name": "Florence, City of",
+   "number": "KF2033",
+   "type": "City"
+  },
+  {
+   "name": "Gervais School District",
+   "number": "P24002",
+   "type": "School"
+  },
+  {
+   "name": "Forest Grove, City of",
+   "number": "KF0010",
+   "type": "City"
+  },
+  {
+   "name": "Exceed Enterprises formerly CCI Enterprises Inc.",
+   "number": "X02005",
+   "type": "Non-profit"
+  },
+  {
+   "name": "Galt Foundation",
+   "number": "X24120",
+   "type": "Oregon Forward Contractor"
+  },
+  {
+   "name": "Gladstone School District #115",
+   "number": "P03001",
+   "type": "School"
+  },
+  {
+   "name": "Garibaldi, Port of",
+   "number": "R29160",
+   "type": "Special"
+  },
+  {
+   "name": "Eugene School District #4J (Lane Co School District)",
+   "number": "P20004",
+   "type": "School"
+  },
+  {
+   "name": "Evans Valley Fire Dist #6",
+   "number": "R15484",
+   "type": "Special"
+  },
+  {
+   "name": "Greater Albany School District #8J",
+   "number": "P22008",
+   "type": "School"
+  },
+  {
+   "name": "Sanitary Division of the Green Area Water & Sanitary Authority",
+   "number": "R10004",
+   "type": "Special"
+  },
+  {
+   "name": "Gresham, City of",
+   "number": "KG0020",
+   "type": "City"
+  },
+  {
+   "name": "George Fox University",
+   "number": "P36960",
+   "type": "Non-profit"
+  },
+  {
+   "name": "Grant County",
+   "number": "C00120",
+   "type": "County"
+  },
+  {
+   "name": "Harney County",
+   "number": "C00130",
+   "type": "County"
+  },
+  {
+   "name": "Gresham‐Barlow School District 10J",
+   "number": "P26016",
+   "type": "School"
+  },
+  {
+   "name": "Grants Pass School Dist. #7",
+   "number": "P17007",
+   "type": "School"
+  },
+  {
+   "name": "Grants Pass, City of",
+   "number": "KG0010",
+   "type": "City"
+  },
+  {
+   "name": "Gladstone, City of",
+   "number": "KG0336",
+   "type": "City"
+  },
+  {
+   "name": "Four Rivers Vector Control",
+   "number": "R09400",
+   "type": "Special"
+  },
+  {
+   "name": "Good Shepherd Health Care System",
+   "number": "R30300",
+   "type": "Non-profit"
+  },
+  {
+   "name": "Garibaldi, City of",
+   "number": "KG2901",
+   "type": "City"
+  },
+  {
+   "name": "Garten Services",
+   "number": "X02014",
+   "type": "Oregon Forward Contractor"
+  },
+  {
+   "name": "Glide RFPD",
+   "number": "X10111",
+   "type": "Special"
+  },
+  {
+   "name": "Grant School District #3 (aka John Day SD #3)",
+   "number": "P12010",
+   "type": "School"
+  },
+  {
+   "name": "Halsey, City of",
+   "number": "KH2220",
+   "type": "City"
+  },
+  {
+   "name": "Grant County Transportation District",
+   "number": "C12004",
+   "type": "Special"
+  },
+  {
+   "name": "Harney District 1J Crane Union High",
+   "number": "P13008",
+   "type": "School"
+  },
+  {
+   "name": "Harney District #4 Crane Elementary",
+   "number": "P13007",
+   "type": "School"
+  },
+  {
+   "name": "Harper School Dist 66",
+   "number": "P23004",
+   "type": "School"
+  },
+  {
+   "name": "Harney Soil & Water Conservation District",
+   "number": "C13006",
+   "type": "Special"
+  },
+  {
+   "name": "Harney Education Service District",
+   "number": "X13102",
+   "type": "School"
+  },
+  {
+   "name": "Harrisburg School District",
+   "number": "P22043",
+   "type": "School"
+  },
+  {
+   "name": "Head Start of Lane County",
+   "number": "X20601",
+   "type": "Non-profit"
+  },
+  {
+   "name": "Hauser Fire Department",
+   "number": "KN0668",
+   "type": "Special"
+  },
+  {
+   "name": "Happy Valley, City of",
+   "number": "KH0300",
+   "type": "City"
+  },
+  {
+   "name": "Heppner, City of",
+   "number": "KH2543",
+   "type": "City"
+  },
+  {
+   "name": "Goshen RFPD",
+   "number": "R20160",
+   "type": "Special"
+  },
+  {
+   "name": "Hermiston, City of",
+   "number": "KH3043",
+   "type": "City"
+  },
+  {
+   "name": "High Desert ESD",
+   "number": "P09003",
+   "type": "School"
+  },
+  {
+   "name": "Harrisburg, City of",
+   "number": "KH2201",
+   "type": "City"
+  },
+  {
+   "name": "Hillsboro School District #1J",
+   "number": "P34002",
+   "type": "School"
+  },
+  {
+   "name": "Hermiston School District",
+   "number": "P30001",
+   "type": "School"
+  },
+  {
+   "name": "Home Forward (Formerly Housing Auth. Of Port.)",
+   "number": "KP2680",
+   "type": "Special"
+  },
+  {
+   "name": "Hood River County School District",
+   "number": "P14001",
+   "type": "School"
+  },
+  {
+   "name": "Hood River County Transportation District",
+   "number": "C14008",
+   "type": "Special"
+  },
+  {
+   "name": "HIV Alliance",
+   "number": "X20011",
+   "type": "Non-profit"
+  },
+  {
+   "name": "Heart of Oregon Corps",
+   "number": "X09004",
+   "type": "Non-profit"
+  },
+  {
+   "name": "Hood River, Port of",
+   "number": "R14210",
+   "type": "Special"
+  },
+  {
+   "name": "Helix School District",
+   "number": "P30004",
+   "type": "School"
+  },
+  {
+   "name": "Hubbard Rural Fire Protection District",
+   "number": "X24038",
+   "type": "Special"
+  },
+  {
+   "name": "Hubbard, City of",
+   "number": "KH0022",
+   "type": "City"
+  },
+  {
+   "name": "Hillsboro, City of",
+   "number": "KH3445",
+   "type": "City"
+  },
+  {
+   "name": "Hood River County",
+   "number": "C14005",
+   "type": "County"
+  },
+  {
+   "name": "Housing Authority of the City of Salem",
+   "number": "KS2401",
+   "type": "City"
+  },
+  {
+   "name": "Union County School District #11",
+   "number": "P31011",
+   "type": "School"
+  },
+  {
+   "name": "Hoodland Fire District #74",
+   "number": "R03457",
+   "type": "Special"
+  },
+  {
+   "name": "Intermountain ESD",
+   "number": "P30950",
+   "type": "School"
+  },
+  {
+   "name": "Illinois Valley Rural Fire Protection District",
+   "number": "R17475",
+   "type": "Special"
+  },
+  {
+   "name": "Independence, City of",
+   "number": "KI2730",
+   "type": "City"
+  },
+  {
+   "name": "J Bar J Boys Ranch",
+   "number": "X00791",
+   "type": "Non-profit"
+  },
+  {
+   "name": "Jackson Co Soil and Water Conservation",
+   "number": "R15101",
+   "type": "Special"
+  },
+  {
+   "name": "Jackson County",
+   "number": "C01140",
+   "type": "County"
+  },
+  {
+   "name": "Eagle Point School District #9",
+   "number": "P15007",
+   "type": "School"
+  },
+  {
+   "name": "Jackson County Fire Dist #3",
+   "number": "R15481",
+   "type": "Special"
+  },
+  {
+   "name": "Jackson County Library District",
+   "number": "X15011",
+   "type": "Special"
+  },
+  {
+   "name": "Junction City, City of",
+   "number": "KJ2020",
+   "type": "City"
+  },
+  {
+   "name": "Kairos Northwest",
+   "number": "X17049",
+   "type": "Non-profit"
+  },
+  {
+   "name": "Josephine County Government",
+   "number": "C17022",
+   "type": "County"
+  },
+  {
+   "name": "Jacksonville Fire Department",
+   "number": "KJ1550",
+   "type": "City"
+  },
+  {
+   "name": "Jackson County Fire Dist #5",
+   "number": "R15483",
+   "type": "Special"
+  },
+  {
+   "name": "Junction City School District #69",
+   "number": "P20007",
+   "type": "School"
+  },
+  {
+   "name": "Jefferson County School District",
+   "number": "P00570",
+   "type": "School"
+  },
+  {
+   "name": "Jefferson School District 14J",
+   "number": "P24014",
+   "type": "School"
+  },
+  {
+   "name": "Jefferson County FD #1",
+   "number": "R00022",
+   "type": "Special"
+  },
+  {
+   "name": "Jackson County Vector Control",
+   "number": "R15482",
+   "type": "Special"
+  },
+  {
+   "name": "Jewell School District",
+   "number": "P04008",
+   "type": "School"
+  },
+  {
+   "name": "Kidco Head Start",
+   "number": "X22012",
+   "type": "Non-profit"
+  },
+  {
+   "name": "Keizer Fire District",
+   "number": "R24081",
+   "type": "Special"
+  },
+  {
+   "name": "Keizer, City of",
+   "number": "KK2410",
+   "type": "City"
+  },
+  {
+   "name": "Kernville‐Gleneden‐Lincoln Beach",
+   "number": "R21279",
+   "type": "Special"
+  },
+  {
+   "name": "Kings Valley Charter School",
+   "number": "X02048",
+   "type": "School"
+  },
+  {
+   "name": "Kids Unlimited of Oregon",
+   "number": "X15301",
+   "type": "School"
+  },
+  {
+   "name": "Klamath Community College",
+   "number": "P18002",
+   "type": "School"
+  },
+  {
+   "name": "Klamath County",
+   "number": "C18018",
+   "type": "County"
+  },
+  {
+   "name": "Klamath County Fire Dist. #1",
+   "number": "C18006",
+   "type": "Special"
+  },
+  {
+   "name": "King City, City of",
+   "number": "KK3410",
+   "type": "City"
+  },
+  {
+   "name": "Klamath County School District",
+   "number": "P00685",
+   "type": "School"
+  },
+  {
+   "name": "Klamath Falls City School District",
+   "number": "P18001",
+   "type": "School"
+  },
+  {
+   "name": "KNOVA Learning",
+   "number": "X26485",
+   "type": "School"
+  },
+  {
+   "name": "Klamath Irrigation District",
+   "number": "R18030",
+   "type": "Special"
+  },
+  {
+   "name": "Klamath Vector Control",
+   "number": "R18526",
+   "type": "Special"
+  },
+  {
+   "name": "Klamath Falls, City of",
+   "number": "KK1820",
+   "type": "City"
+  },
+  {
+   "name": "Klamath Family Head Start",
+   "number": "X18000",
+   "type": "Non-profit"
+  },
+  {
+   "name": "La Pine Fire District",
+   "number": "R09550",
+   "type": "Special"
+  },
+  {
+   "name": "Lake Oswego, City of",
+   "number": "KL0010",
+   "type": "City"
+  },
+  {
+   "name": "Lake Oswego School District #7J",
+   "number": "P03007",
+   "type": "School"
+  },
+  {
+   "name": "Lane Community College",
+   "number": "P00100",
+   "type": "School"
+  },
+  {
+   "name": "Lake County ESD",
+   "number": "P19002",
+   "type": "School"
+  },
+  {
+   "name": "Lake Grove Water District",
+   "number": "R03046",
+   "type": "Special"
+  },
+  {
+   "name": "Lane Regional Air Protection Agency",
+   "number": "R20809",
+   "type": "Non-profit"
+  },
+  {
+   "name": "Lane ESD",
+   "number": "P20002",
+   "type": "School"
+  },
+  {
+   "name": "Lakeview, Town of",
+   "number": "KL1954",
+   "type": "City"
+  },
+  {
+   "name": "Lakeview SWCD",
+   "number": "R19221",
+   "type": "Special"
+  },
+  {
+   "name": "Lane County Fire District #1",
+   "number": "K20100",
+   "type": "Special"
+  },
+  {
+   "name": "Lake County Public Health",
+   "number": "C01197",
+   "type": "County"
+  },
+  {
+   "name": "Lake County School District #7",
+   "number": "P19007",
+   "type": "School"
+  },
+  {
+   "name": "Lane County",
+   "number": "C00200",
+   "type": "County"
+  },
+  {
+   "name": "Lebanon Community School District",
+   "number": "P22016",
+   "type": "School"
+  },
+  {
+   "name": "Homes for Good",
+   "number": "C20006",
+   "type": "Special"
+  },
+  {
+   "name": "La Grande School District",
+   "number": "P31001",
+   "type": "School"
+  },
+  {
+   "name": "Lane Transit District",
+   "number": "R20549",
+   "type": "Special"
+  },
+  {
+   "name": "Langell Valley Irrigation District",
+   "number": "R18549",
+   "type": "Special"
+  },
+  {
+   "name": "Lane Council of Governments",
+   "number": "C20414",
+   "type": "Non-profit"
+  },
+  {
+   "name": "Lebanon, City of",
+   "number": "KL0030",
+   "type": "City"
+  },
+  {
+   "name": "League of Oregon Cities",
+   "number": "KS0010",
+   "type": "Non-profit"
+  },
+  {
+   "name": "Lincoln City, City of",
+   "number": "KL2157",
+   "type": "City"
+  },
+  {
+   "name": "Lincoln County School District",
+   "number": "P21000",
+   "type": "School"
+  },
+  {
+   "name": "Lincoln County",
+   "number": "C01205",
+   "type": "County"
+  },
+  {
+   "name": "Linn County",
+   "number": "C01510",
+   "type": "County"
+  },
+  {
+   "name": "Linn Benton Community College",
+   "number": "P00050",
+   "type": "School"
+  },
+  {
+   "name": "Lebanon Fire District",
+   "number": "R22562",
+   "type": "Special"
+  },
+  {
+   "name": "Linn‐Benton Lincoln ESD",
+   "number": "P22950",
+   "type": "School"
+  },
+  {
+   "name": "Lowell School District #71",
+   "number": "P20011",
+   "type": "School"
+  },
+  {
+   "name": "Living Opportunities",
+   "number": "X02020",
+   "type": "Oregon Forward Contractor"
+  },
+  {
+   "name": "Lowell Rural Fire District",
+   "number": "R20150",
+   "type": "Special"
+  },
+  {
+   "name": "Madras, City of",
+   "number": "KM0005",
+   "type": "City"
+  },
+  {
+   "name": "Malheur County",
+   "number": "C01530",
+   "type": "County"
+  },
+  {
+   "name": "New Narrative",
+   "number": "X26059",
+   "type": "Non-profit"
+  },
+  {
+   "name": "Manzanita, City of",
+   "number": "KM2962",
+   "type": "City"
+  },
+  {
+   "name": "Mapleton School District #32",
+   "number": "P20015",
+   "type": "School"
+  },
+  {
+   "name": "Lyons, City of",
+   "number": "KL0035",
+   "type": "City"
+  },
+  {
+   "name": "Malheur County Child Development Centers",
+   "number": "X23002",
+   "type": "Non-profit"
+  },
+  {
+   "name": "Marion County",
+   "number": "C25102",
+   "type": "County"
+  },
+  {
+   "name": "McKenzie Fire & Rescue",
+   "number": "R20640",
+   "type": "Special"
+  },
+  {
+   "name": "McMinnville Water and Light",
+   "number": "R36112",
+   "type": "Special"
+  },
+  {
+   "name": "Marion County SWCD",
+   "number": "R24186",
+   "type": "Special"
+  },
+  {
+   "name": "Marcola School District 79J",
+   "number": "P20079",
+   "type": "School"
+  },
+  {
+   "name": "Medford School Dist #549C",
+   "number": "P15549",
+   "type": "School"
+  },
+  {
+   "name": "McMinnville School District",
+   "number": "P36040",
+   "type": "School"
+  },
+  {
+   "name": "Marion County Housing Authority",
+   "number": "C24007",
+   "type": "County"
+  },
+  {
+   "name": "Metro Area Communications Commission",
+   "number": "X34950",
+   "type": "Non-profit"
+  },
+  {
+   "name": "Lyons Rural Fire Protection District",
+   "number": "R22176",
+   "type": "Special"
+  },
+  {
+   "name": "Mid‐Columbia Center for Living",
+   "number": "M00046",
+   "type": "Non-profit"
+  },
+  {
+   "name": "McMinnville Fire Department",
+   "number": "KM3613",
+   "type": "Special"
+  },
+  {
+   "name": "METRO",
+   "number": "P00580",
+   "type": "Special"
+  },
+  {
+   "name": "Marie Mills Center, Inc.",
+   "number": "X02021",
+   "type": "Non-profit"
+  },
+  {
+   "name": "Mist‐Birkenfeld Fire District",
+   "number": "R05500",
+   "type": "Special"
+  },
+  {
+   "name": "Medford, City of",
+   "number": "KM1564",
+   "type": "City"
+  },
+  {
+   "name": "Malheur Council on Aging & Comm Services",
+   "number": "X23001",
+   "type": "Non-profit"
+  },
+  {
+   "name": "Molalla River School District",
+   "number": "P03035",
+   "type": "School"
+  },
+  {
+   "name": "Mid‐Columbia Fire & Rescue",
+   "number": "R33120",
+   "type": "Special"
+  },
+  {
+   "name": "Monmouth, City of",
+   "number": "KM0020",
+   "type": "City"
+  },
+  {
+   "name": "Mid‐Willamette Valley Community Action Agency",
+   "number": "P00300",
+   "type": "Non-profit"
+  },
+  {
+   "name": "Morrison Child and Family Services",
+   "number": "C26004",
+   "type": "Non-profit"
+  },
+  {
+   "name": "Molalla RFPD",
+   "number": "R03655",
+   "type": "Special"
+  },
+  {
+   "name": "Milwaukie, City of",
+   "number": "KM0010",
+   "type": "City"
+  },
+  {
+   "name": "Morrow County",
+   "number": "C02470",
+   "type": "County"
+  },
+  {
+   "name": "Morrow County School District #1",
+   "number": "P25001",
+   "type": "School"
+  },
+  {
+   "name": "Monroe RFPD #5",
+   "number": "R02156",
+   "type": "Special"
+  },
+  {
+   "name": "Mt. Angel Fire District",
+   "number": "KM2469",
+   "type": "Special"
+  },
+  {
+   "name": "Morrow County Soil & Water Conserv District",
+   "number": "R25009",
+   "type": "Special"
+  },
+  {
+   "name": "Mt. Angel, City of",
+   "number": "KM2467",
+   "type": "City"
+  },
+  {
+   "name": "Mt. Hood Community College",
+   "number": "P00400",
+   "type": "School"
+  },
+  {
+   "name": "Myrtle Point School District",
+   "number": "P06042",
+   "type": "School"
+  },
+  {
+   "name": "Nehalem, City of",
+   "number": "KN2920",
+   "type": "City"
+  },
+  {
+   "name": "Multnomah County Purchasing",
+   "number": "C01260",
+   "type": "County"
+  },
+  {
+   "name": "Nehalem Bay Wastewater District",
+   "number": "KN2921",
+   "type": "Special"
+  },
+  {
+   "name": "Neah‐Kah‐Nie School District 56",
+   "number": "P29056",
+   "type": "School"
+  },
+  {
+   "name": "Neskowin Regional Water District",
+   "number": "R00301",
+   "type": "Special"
+  },
+  {
+   "name": "Multnomah ESD",
+   "number": "P00260",
+   "type": "School"
+  },
+  {
+   "name": "Nestucca Valley School District #101",
+   "number": "P29704",
+   "type": "School"
+  },
+  {
+   "name": "Newport, Port of",
+   "number": "R21689",
+   "type": "Special"
+  },
+  {
+   "name": "Multnomah County RFPD #14",
+   "number": "R26012",
+   "type": "Special"
+  },
+  {
+   "name": "Newberg School District 29J",
+   "number": "P36001",
+   "type": "School"
+  },
+  {
+   "name": "North Douglas County Fire & EMS",
+   "number": "R10292",
+   "type": "Special"
+  },
+  {
+   "name": "North Bend, City of",
+   "number": "KN0669",
+   "type": "City"
+  },
+  {
+   "name": "North Lincoln Fire and Rescue District #1",
+   "number": "R21697",
+   "type": "Special"
+  },
+  {
+   "name": "North Clackamas School Dist. #12",
+   "number": "P03012",
+   "type": "School"
+  },
+  {
+   "name": "Newberg, City of",
+   "number": "KN0020",
+   "type": "City"
+  },
+  {
+   "name": "North Bend School District",
+   "number": "P06010",
+   "type": "School"
+  },
+  {
+   "name": "North Unit Irrigation",
+   "number": "R16250",
+   "type": "Special"
+  },
+  {
+   "name": "North Wasco School District #21",
+   "number": "P33012",
+   "type": "School"
+  },
+  {
+   "name": "Newport, City of",
+   "number": "KN0010",
+   "type": "City"
+  },
+  {
+   "name": "North Powder School District",
+   "number": "P31002",
+   "type": "School"
+  },
+  {
+   "name": "Nesika Beach‐Ophir Water District",
+   "number": "R08019",
+   "type": "Special"
+  },
+  {
+   "name": "New Day Enterprises",
+   "number": "X37000",
+   "type": "Oregon Forward Contractor"
+  },
+  {
+   "name": "Northern Wasco PUD",
+   "number": "R33123",
+   "type": "Special"
+  },
+  {
+   "name": "Northern Wasco County Parks and Recreation",
+   "number": "R33298",
+   "type": "Special"
+  },
+  {
+   "name": "North Sherman County RFPD",
+   "number": "KN2800",
+   "type": "Special"
+  },
+  {
+   "name": "North Clackamas County Water Commission",
+   "number": "C03005",
+   "type": "Special"
+  },
+  {
+   "name": "North Santiam School District",
+   "number": "P24704",
+   "type": "School"
+  },
+  {
+   "name": "NW Senior & Disability Services",
+   "number": "X24000",
+   "type": "Non-profit"
+  },
+  {
+   "name": "North Marion School District 15",
+   "number": "P24015",
+   "type": "School"
+  },
+  {
+   "name": "Northwest Regional Education Svc Dist",
+   "number": "P34095",
+   "type": "School"
+  },
+  {
+   "name": "Nyssa, City of",
+   "number": "KN2360",
+   "type": "City"
+  },
+  {
+   "name": "Oakridge School District",
+   "number": "P20076",
+   "type": "School"
+  },
+  {
+   "name": "Ontario, City of",
+   "number": "KP0001",
+   "type": "City"
+  },
+  {
+   "name": "Northwest Youth Corps",
+   "number": "X20234",
+   "type": "Non-profit"
+  },
+  {
+   "name": "Ontario School District",
+   "number": "P23063",
+   "type": "School"
+  },
+  {
+   "name": "Oregon Cascades West COG",
+   "number": "R02706",
+   "type": "Non-profit"
+  },
+  {
+   "name": "Oakridge, City of",
+   "number": "KO2011",
+   "type": "City"
+  },
+  {
+   "name": "Options for Southern Oregon, Inc.",
+   "number": "X17101",
+   "type": "Non-profit"
+  },
+  {
+   "name": "Open Meadow Alternative Schools Inc.",
+   "number": "X26014",
+   "type": "Non-profit"
+  },
+  {
+   "name": "Oregon City, City of",
+   "number": "K00310",
+   "type": "City"
+  },
+  {
+   "name": "Opportunity Foundation of Central Oregon",
+   "number": "X02028",
+   "type": "Non-profit"
+  },
+  {
+   "name": "Oregon Child Development Coalition",
+   "number": "X03101",
+   "type": "Non-profit"
+  },
+  {
+   "name": "Oregon City School District #62",
+   "number": "P03062",
+   "type": "School"
+  },
+  {
+   "name": "Oregon Coast Community College",
+   "number": "P21500",
+   "type": "School"
+  },
+  {
+   "name": "Oregon Corrections Enterprises",
+   "number": "971000",
+   "type": "Non-profit"
+  },
+  {
+   "name": "Oregon Connections Academy",
+   "number": "P22952",
+   "type": "School"
+  },
+  {
+   "name": "Oregon Health and Science University",
+   "number": "580700",
+   "type": "Other"
+  },
+  {
+   "name": "Oregon Integrated Supports for the Living",
+   "number": "X24051",
+   "type": "Non-profit"
+  },
+  {
+   "name": "Oregon Resource Association",
+   "number": "X24013",
+   "type": "Non-profit"
+  },
+  {
+   "name": "Oregon Public Broadcasting",
+   "number": "X26010",
+   "type": "Non-profit"
+  },
+  {
+   "name": "Oregon Community Foundation",
+   "number": "X260033",
+   "type": "Non-profit"
+  },
+  {
+   "name": "Oregon Judicial Department",
+   "number": "198000",
+   "type": "Other"
+  },
+  {
+   "name": "Oregon State Lottery",
+   "number": "177000",
+   "type": "Other"
+  },
+  {
+   "name": "Oregon Tourism Commission dba: Travel Oregon",
+   "number": "976000",
+   "type": "Other"
+  },
+  {
+   "name": "Oregon Trail Library District",
+   "number": "R25603",
+   "type": "Special"
+  },
+  {
+   "name": "Oregon State University",
+   "number": "580300",
+   "type": "School"
+  },
+  {
+   "name": "Oregon Trail School District",
+   "number": "P03702",
+   "type": "School"
+  },
+  {
+   "name": "Pearl Buck Center Inc",
+   "number": "X02029",
+   "type": "Oregon Forward Contractor"
+  },
+  {
+   "name": "Philomath, City of",
+   "number": "KN0030",
+   "type": "City"
+  },
+  {
+   "name": "Philomath School District #17J",
+   "number": "P02017",
+   "type": "School"
+  },
+  {
+   "name": "Pendleton, City of",
+   "number": "C10001",
+   "type": "City"
+  },
+  {
+   "name": "Paisley School District #11",
+   "number": "P19011",
+   "type": "School"
+  },
+  {
+   "name": "Pacific University",
+   "number": "P34003",
+   "type": "Non-profit"
+  },
+  {
+   "name": "Pendleton School District #16R",
+   "number": "P30016",
+   "type": "School"
+  },
+  {
+   "name": "Oregon Supported Living Program",
+   "number": "X22025",
+   "type": "Non-profit"
+  },
+  {
+   "name": "Perrydale School Dist",
+   "number": "P27021",
+   "type": "School"
+  },
+  {
+   "name": "Oregon Institute of Technology",
+   "number": "580180",
+   "type": "School"
+  },
+  {
+   "name": "Philomath Fire & Rescue",
+   "number": "KP0211",
+   "type": "Special"
+  },
+  {
+   "name": "Polk County",
+   "number": "P27000",
+   "type": "County"
+  },
+  {
+   "name": "Pleasant Hill RFPD",
+   "number": "R20737",
+   "type": "Special"
+  },
+  {
+   "name": "Polk Soil & Water Conservation District",
+   "number": "R27102",
+   "type": "Special"
+  },
+  {
+   "name": "Phoenix‐Talent School Dist (Jackson Co SD #4)",
+   "number": "P15004",
+   "type": "School"
+  },
+  {
+   "name": "Relay Resources",
+   "number": "X02031",
+   "type": "Oregon Forward Contractor"
+  },
+  {
+   "name": "Pleasant Hill SD #1",
+   "number": "P20001",
+   "type": "School"
+  },
+  {
+   "name": "Partnerships in Community Living, Inc.",
+   "number": "X27080",
+   "type": "Non-profit"
+  },
+  {
+   "name": "Prineville, City of",
+   "number": "KP0773",
+   "type": "City"
+  },
+  {
+   "name": "Prospect School District #59",
+   "number": "P15059",
+   "type": "School"
+  },
+  {
+   "name": "Portland Community College",
+   "number": "P26801",
+   "type": "School"
+  },
+  {
+   "name": "Portland State University",
+   "number": "580900",
+   "type": "School"
+  },
+  {
+   "name": "Portland, Port of",
+   "number": "P00460",
+   "type": "Special"
+  },
+  {
+   "name": "Rainier School District #13",
+   "number": "P05013",
+   "type": "School"
+  },
+  {
+   "name": "Port Orford, City of",
+   "number": "KP0800",
+   "type": "City"
+  },
+  {
+   "name": "Portland Public Schools (Mult. Co SD #1)",
+   "number": "P00210",
+   "type": "School"
+  },
+  {
+   "name": "Rainier, City of",
+   "number": "KR0012",
+   "type": "City"
+  },
+  {
+   "name": "Rainbow Water District",
+   "number": "R20147",
+   "type": "Special"
+  },
+  {
+   "name": "Redmond, City of",
+   "number": "KR0970",
+   "type": "City"
+  },
+  {
+   "name": "Residential Assistance Program",
+   "number": "X09400",
+   "type": "Non-profit"
+  },
+  {
+   "name": "REACH Inc.",
+   "number": "X18750",
+   "type": "Non-profit"
+  },
+  {
+   "name": "Redmond Area Parks & Recreation District",
+   "number": "R09300",
+   "type": "Special"
+  },
+  {
+   "name": "Riddle, City of",
+   "number": "KR1077",
+   "type": "City"
+  },
+  {
+   "name": "Riverdale School District #51J",
+   "number": "P00165",
+   "type": "School"
+  },
+  {
+   "name": "Rimrock Trail Adolescent Treatment Services",
+   "number": "X09003",
+   "type": "Non-profit"
+  },
+  {
+   "name": "Redmond School District",
+   "number": "P09002",
+   "type": "School"
+  },
+  {
+   "name": "Rivergrove Water District",
+   "number": "R03048",
+   "type": "Special"
+  },
+  {
+   "name": "Lifeempowered",
+   "number": "X05100",
+   "type": "Non-profit"
+  },
+  {
+   "name": "Rockaway Beach, City of",
+   "number": "KR2910",
+   "type": "City"
+  },
+  {
+   "name": "River Road Park and Rec",
+   "number": "R20777",
+   "type": "Special"
+  },
+  {
+   "name": "Reynolds School District #7",
+   "number": "P26004",
+   "type": "School"
+  },
+  {
+   "name": "Rockwest Training Co",
+   "number": "X02034",
+   "type": "Oregon Forward Contractor"
+  },
+  {
+   "name": "Renaissance Public Academy",
+   "number": "X03007",
+   "type": "School"
+  },
+  {
+   "name": "Rogue Community College",
+   "number": "P17926",
+   "type": "School"
+  },
+  {
+   "name": "Rogue River School District #35",
+   "number": "P15036",
+   "type": "School"
+  },
+  {
+   "name": "Rogue River Valley Irrigation District",
+   "number": "R15686",
+   "type": "Special"
+  },
+  {
+   "name": "Jackson County Fire District #1",
+   "number": "R15784",
+   "type": "Special"
+  },
+  {
+   "name": "Ride Connection Inc.",
+   "number": "X26159",
+   "type": "Non-profit"
+  },
+  {
+   "name": "Rogue Valley Sewer Services",
+   "number": "R15515",
+   "type": "Special"
+  },
+  {
+   "name": "Rockwood Water PUD",
+   "number": "R03050",
+   "type": "Special"
+  },
+  {
+   "name": "SAIF Corporation",
+   "number": "435000",
+   "type": "Other"
+  },
+  {
+   "name": "Rogue Valley Council of Governments",
+   "number": "X15050",
+   "type": "Non-profit"
+  },
+  {
+   "name": "Roseburg Urban Sanitary Authority",
+   "number": "R10002",
+   "type": "Special"
+  },
+  {
+   "name": "Roseburg Public Schools",
+   "number": "P10100",
+   "type": "School"
+  },
+  {
+   "name": "Rogue Valley Transportation District",
+   "number": "X15200",
+   "type": "Special"
+  },
+  {
+   "name": "Roseburg, City of",
+   "number": "KR1079",
+   "type": "City"
+  },
+  {
+   "name": "Salem, City of",
+   "number": "KS0043",
+   "type": "City"
+  },
+  {
+   "name": "Salem Interfaith Hospitality Network",
+   "number": "X27004",
+   "type": "Non-profit"
+  },
+  {
+   "name": "Salem Area Mass Transit Dist. (Cherriots)",
+   "number": "KS2410",
+   "type": "Special"
+  },
+  {
+   "name": "Santiam Water Control District",
+   "number": "R24202",
+   "type": "Special"
+  },
+  {
+   "name": "Sandy Fire District #72",
+   "number": "R00180",
+   "type": "Special"
+  },
+  {
+   "name": "Salem‐Keizer Schools 24J",
+   "number": "P24024",
+   "type": "School"
+  },
+  {
+   "name": "Sand Ridge Charter School",
+   "number": "X22009",
+   "type": "School"
+  },
+  {
+   "name": "Rufus, City of",
+   "number": "KR2800",
+   "type": "City"
+  },
+  {
+   "name": "Scappoose RFPD",
+   "number": "R05219",
+   "type": "Special"
+  },
+  {
+   "name": "Santiam Canyon School District 129J",
+   "number": "P22007",
+   "type": "School"
+  },
+  {
+   "name": "Scio School District #95c",
+   "number": "P22095",
+   "type": "School"
+  },
+  {
+   "name": "Sauvie Island School",
+   "number": "X26249",
+   "type": "School"
+  },
+  {
+   "name": "Scappoose School District 1J",
+   "number": "P05003",
+   "type": "School"
+  },
+  {
+   "name": "Seal Rock Water District",
+   "number": "R21880",
+   "type": "Special"
+  },
+  {
+   "name": "Seaside School District #10",
+   "number": "P04010",
+   "type": "School"
+  },
+  {
+   "name": "Sheridan Fire District",
+   "number": "R36140",
+   "type": "Special"
+  },
+  {
+   "name": "Seaside, City of",
+   "number": "KS0030",
+   "type": "City"
+  },
+  {
+   "name": "Sheridan AllPrep Academy",
+   "number": "X06002",
+   "type": "School"
+  },
+  {
+   "name": "Sherwood, City of",
+   "number": "KS3487",
+   "type": "City"
+  },
+  {
+   "name": "Sherwood School District #88J",
+   "number": "P34088",
+   "type": "School"
+  },
+  {
+   "name": "Senior Housing Initiatives",
+   "number": "X03048",
+   "type": "Non-profit"
+  },
+  {
+   "name": "Sherman County",
+   "number": "C02800",
+   "type": "County"
+  },
+  {
+   "name": "Siletz Rural Fire Protection District",
+   "number": "R00299",
+   "type": "Special"
+  },
+  {
+   "name": "Shady Cove, City of",
+   "number": "KS1583",
+   "type": "City"
+  },
+  {
+   "name": "Silver Falls School District #41",
+   "number": "P24094",
+   "type": "School"
+  },
+  {
+   "name": "Sheridan School District",
+   "number": "P36048",
+   "type": "School"
+  },
+  {
+   "name": "Shangri‐La Corporation",
+   "number": "X02036",
+   "type": "Oregon Forward Contractor"
+  },
+  {
+   "name": "Silverton Fire District",
+   "number": "KS2430",
+   "type": "Special"
+  },
+  {
+   "name": "Silverton, City of",
+   "number": "KS0050",
+   "type": "City"
+  },
+  {
+   "name": "Siuslaw School District",
+   "number": "P20097",
+   "type": "School"
+  },
+  {
+   "name": "Sisters, City of",
+   "number": "KS0920",
+   "type": "City"
+  },
+  {
+   "name": "South Coast ESD",
+   "number": "P06011",
+   "type": "School"
+  },
+  {
+   "name": "Sisters School District",
+   "number": "P09008",
+   "type": "School"
+  },
+  {
+   "name": "Siuslaw Valley Fire & Rescue",
+   "number": "P20098",
+   "type": "Special"
+  },
+  {
+   "name": "Siuslaw Library District",
+   "number": "R20939",
+   "type": "Special"
+  },
+  {
+   "name": "So Clackamas Transportation Dist",
+   "number": "C03014",
+   "type": "Special"
+  },
+  {
+   "name": "South Lane Fire and Rescue",
+   "number": "C20010",
+   "type": "Special"
+  },
+  {
+   "name": "South Lane School District 45J3",
+   "number": "P20045",
+   "type": "School"
+  },
+  {
+   "name": "Siuslaw, Port of",
+   "number": "X20810",
+   "type": "Special"
+  },
+  {
+   "name": "Southern Oregon Education Serv Dist",
+   "number": "P15003",
+   "type": "School"
+  },
+  {
+   "name": "South Lane Wheels, Inc.",
+   "number": "X20046",
+   "type": "Non-profit"
+  },
+  {
+   "name": "South Wasco County School Dist",
+   "number": "P33031",
+   "type": "School"
+  },
+  {
+   "name": "Springfield School District #19",
+   "number": "P20019",
+   "type": "School"
+  },
+  {
+   "name": "Southern Oregon Aspire Inc.",
+   "number": "X17110",
+   "type": "Non-profit"
+  },
+  {
+   "name": "Emergency Communications of Southern Oregon",
+   "number": "X15022",
+   "type": "Special"
+  },
+  {
+   "name": "St. Helens, City of",
+   "number": "KS0510",
+   "type": "City"
+  },
+  {
+   "name": "Southwestern OR Comm. College",
+   "number": "P00675",
+   "type": "School"
+  },
+  {
+   "name": "St. Helens School District #502",
+   "number": "P05010",
+   "type": "School"
+  },
+  {
+   "name": "The Cottonwood School of Civics and Science",
+   "number": "X26020",
+   "type": "School"
+  },
+  {
+   "name": "Southern Oregon Head Start",
+   "number": "X15025",
+   "type": "Non-profit"
+  },
+  {
+   "name": "St. Helens, Port of",
+   "number": "R05801",
+   "type": "Special"
+  },
+  {
+   "name": "Southern Oregon University",
+   "number": "580400",
+   "type": "School"
+  },
+  {
+   "name": "Springfield Utility Board",
+   "number": "R20806",
+   "type": "City"
+  },
+  {
+   "name": "Springfield, City of",
+   "number": "KS0060",
+   "type": "City"
+  },
+  {
+   "name": "Stanfield School District",
+   "number": "P30061",
+   "type": "School"
+  },
+  {
+   "name": "Stanfield, City of",
+   "number": "KS3087",
+   "type": "City"
+  },
+  {
+   "name": "St. Mary's Home for Boys",
+   "number": "X34150",
+   "type": "Non-profit"
+  },
+  {
+   "name": "Stayton Fire District",
+   "number": "R22875",
+   "type": "Special"
+  },
+  {
+   "name": "Suburban East Salem Water District",
+   "number": "KS2415",
+   "type": "Special"
+  },
+  {
+   "name": "Sunrise Enterprises of Roseburg, Inc.",
+   "number": "X02039",
+   "type": "Oregon Forward Contractor"
+  },
+  {
+   "name": "Stayton, City of",
+   "number": "KS0110",
+   "type": "City"
+  },
+  {
+   "name": "Sunriver Police Dept",
+   "number": "KS0930",
+   "type": "City"
+  },
+  {
+   "name": "Sunrise Water Authority",
+   "number": "R03005",
+   "type": "Special"
+  },
+  {
+   "name": "Sunset Empire Parks & Recreation District",
+   "number": "X04104",
+   "type": "Special"
+  },
+  {
+   "name": "Sutherlin School District",
+   "number": "P10004",
+   "type": "School"
+  },
+  {
+   "name": "Sutherlin, City of",
+   "number": "KS1089",
+   "type": "City"
+  },
+  {
+   "name": "Sweet Home School District",
+   "number": "P22055",
+   "type": "School"
+  },
+  {
+   "name": "SW Polk Rural Fire District",
+   "number": "R27050",
+   "type": "Special"
+  },
+  {
+   "name": "The Lighthouse School (North Bend School)",
+   "number": "X06012",
+   "type": "School"
+  },
+  {
+   "name": "Sweet Home, City of",
+   "number": "KS0088",
+   "type": "City"
+  },
+  {
+   "name": "Talent Irrigation District",
+   "number": "X00915",
+   "type": "Special"
+  },
+  {
+   "name": "The Valley School of Southern Oregon",
+   "number": "X15302",
+   "type": "School"
+  },
+  {
+   "name": "The Dalles, City of",
+   "number": "KT0011",
+   "type": "City"
+  },
+  {
+   "name": "The Children's Learning Center",
+   "number": "X16107",
+   "type": "Non-profit"
+  },
+  {
+   "name": "Sweet Home Fire & Ambulance",
+   "number": "K22000",
+   "type": "Special"
+  },
+  {
+   "name": "Tillamook Bay, Port of",
+   "number": "R29138",
+   "type": "Special"
+  },
+  {
+   "name": "Tigard, City of",
+   "number": "KT3491",
+   "type": "City"
+  },
+  {
+   "name": "Tillamook County Soil and Water Conservation District",
+   "number": "R29139",
+   "type": "Special"
+  },
+  {
+   "name": "Tillamook School District #9",
+   "number": "P29009",
+   "type": "School"
+  },
+  {
+   "name": "Tillamook County Government",
+   "number": "C00290",
+   "type": "County"
+  },
+  {
+   "name": "The Village School (Eugene Village School)",
+   "number": "X20057",
+   "type": "School"
+  },
+  {
+   "name": "The Next Door, Inc.",
+   "number": "X14300",
+   "type": "Non-profit"
+  },
+  {
+   "name": "Three Rivers School District",
+   "number": "P17004",
+   "type": "School"
+  },
+  {
+   "name": "Tigard‐Tualatin School District #23J",
+   "number": "P34023",
+   "type": "School"
+  },
+  {
+   "name": "Tillamook County Transportation",
+   "number": "C29010",
+   "type": "County"
+  },
+  {
+   "name": "Oregon Travel Information Council",
+   "number": "733000",
+   "type": "Other"
+  },
+  {
+   "name": "Trillium Charter School",
+   "number": "X26024",
+   "type": "School"
+  },
+  {
+   "name": "Tillamook, City of",
+   "number": "KT2990",
+   "type": "City"
+  },
+  {
+   "name": "Toledo, Port of",
+   "number": "R21918",
+   "type": "Special"
+  },
+  {
+   "name": "Treasure Valley Community College",
+   "number": "P23002",
+   "type": "School"
+  },
+  {
+   "name": "Tillamook County Emergency Comm. Dist.",
+   "number": "C29004",
+   "type": "County"
+  },
+  {
+   "name": "Tri‐Met",
+   "number": "X26810",
+   "type": "Special"
+  },
+  {
+   "name": "Tualatin Valley Fire and Rescue",
+   "number": "R34142",
+   "type": "Special"
+  },
+  {
+   "name": "Troutdale, City of",
+   "number": "KT2690",
+   "type": "City"
+  },
+  {
+   "name": "Turner, City of",
+   "number": "KT2412",
+   "type": "City"
+  },
+  {
+   "name": "Tualatin, City of",
+   "number": "KT3410",
+   "type": "City"
+  },
+  {
+   "name": "Tualatin Hills Park & Recreation District",
+   "number": "KT3420",
+   "type": "Special"
+  },
+  {
+   "name": "Umatilla‐Morrow Head Start, Inc.",
+   "number": "X30013",
+   "type": "Non-profit"
+  },
+  {
+   "name": "Union County",
+   "number": "C31002",
+   "type": "County"
+  },
+  {
+   "name": "Umpqua Community College",
+   "number": "P00590",
+   "type": "School"
+  },
+  {
+   "name": "United Community Action Network",
+   "number": "X10005",
+   "type": "Non-profit"
+  },
+  {
+   "name": "Umatilla County",
+   "number": "C30006",
+   "type": "County"
+  },
+  {
+   "name": "United Way of the Columbia Willamette",
+   "number": "X26989",
+   "type": "Non-profit"
+  },
+  {
+   "name": "University of Oregon",
+   "number": "580501",
+   "type": "School"
+  },
+  {
+   "name": "Union, City of",
+   "number": "KU3193",
+   "type": "City"
+  },
+  {
+   "name": "Vernonia, City of",
+   "number": "KV0005",
+   "type": "City"
+  },
+  {
+   "name": "Wallowa County Health Care District",
+   "number": "C32009",
+   "type": "Special"
+  },
+  {
+   "name": "Warrenton‐Hammond School Dist",
+   "number": "P04030",
+   "type": "School"
+  },
+  {
+   "name": "Warrenton, City of",
+   "number": "KW0490",
+   "type": "City"
+  },
+  {
+   "name": "Wasco County Government",
+   "number": "C00330",
+   "type": "County"
+  },
+  {
+   "name": "Vernonia Rural Fire District",
+   "number": "KV0593",
+   "type": "Special"
+  },
+  {
+   "name": "Washington County",
+   "number": "C03342",
+   "type": "County"
+  },
+  {
+   "name": "Washington County Consolidated Communications Agency",
+   "number": "C34003",
+   "type": "Special"
+  },
+  {
+   "name": "West Linn Wilsonville School District",
+   "number": "P03003",
+   "type": "School"
+  },
+  {
+   "name": "University of Portland",
+   "number": "P26941",
+   "type": "Non-profit"
+  },
+  {
+   "name": "Washington County Fire District #2",
+   "number": "R34103",
+   "type": "Special"
+  },
+  {
+   "name": "Upper Deschutes Watershed Council",
+   "number": "X09034",
+   "type": "Non-profit"
+  },
+  {
+   "name": "West Linn, City of",
+   "number": "KW0397",
+   "type": "City"
+  },
+  {
+   "name": "West Multnomah Soil & Water Conservation District",
+   "number": "R26007",
+   "type": "Special"
+  },
+  {
+   "name": "Western Oregon University",
+   "number": "580200",
+   "type": "School"
+  },
+  {
+   "name": "West Valley Fire District",
+   "number": "R36388",
+   "type": "Special"
+  },
+  {
+   "name": "Wheeler Soil & Water Conservation District",
+   "number": "R35100",
+   "type": "Special"
+  },
+  {
+   "name": "Wheeler, City of",
+   "number": "KW2901",
+   "type": "City"
+  },
+  {
+   "name": "Wheeler County",
+   "number": "C35002",
+   "type": "County"
+  },
+  {
+   "name": "Weston, City of",
+   "number": "KW3010",
+   "type": "City"
+  },
+  {
+   "name": "Western Lane Ambulance District",
+   "number": "X06110",
+   "type": "Special"
+  },
+  {
+   "name": "West Valley Housing Authority",
+   "number": "C27006",
+   "type": "Special"
+  },
+  {
+   "name": "Wheeler County Community Transportation",
+   "number": "C35001",
+   "type": "County"
+  },
+  {
+   "name": "Willamalane Park & Rec. District",
+   "number": "R20810",
+   "type": "Special"
+  },
+  {
+   "name": "Willamette ESD",
+   "number": "P27003",
+   "type": "School"
+  },
+  {
+   "name": "Willamette University",
+   "number": "P24025",
+   "type": "Non-profit"
+  },
+  {
+   "name": "Winston, City of",
+   "number": "KW1090",
+   "type": "City"
+  },
+  {
+   "name": "Wilsonville, City of",
+   "number": "KW0030",
+   "type": "City"
+  },
+  {
+   "name": "Willamina, City of",
+   "number": "KW3698",
+   "type": "City"
+  },
+  {
+   "name": "Winston‐Dillard School District",
+   "number": "P10103",
+   "type": "School"
+  },
+  {
+   "name": "Woodburn, City of",
+   "number": "KW0010",
+   "type": "City"
+  },
+  {
+   "name": "Yachats RFPD",
+   "number": "R21216",
+   "type": "Special"
+  },
+  {
+   "name": "Yamhill - Carlton School Based Health Center",
+   "number": "X36403",
+   "type": "Non-profit"
+  },
+  {
+   "name": "Woodburn School District",
+   "number": "P24103",
+   "type": "School"
+  },
+  {
+   "name": "Wy'East Fire District ‐ (Odell Rural Fire District & Pine Grove RFPD Merged)",
+   "number": "R14744",
+   "type": "Special"
+  },
+  {
+   "name": "Yoncalla, City of",
+   "number": "KY1010",
+   "type": "City"
+  },
+  {
+   "name": "Senior Housing Initiatives ‐ Wheatfields Senior Living",
+   "number": null,
+   "type": "Non-profit"
+  },
+  {
+   "name": "Senior Housing Initiatives ‐ Elk Meadows Assisted Living",
+   "number": null,
+   "type": "Non-profit"
+  },
+  {
+   "name": "Youth Progress Association",
+   "number": "X40025",
+   "type": "Non-profit"
+  },
+  {
+   "name": "Senior Housing Initiatives ‐ Seaview Senior Living",
+   "number": null,
+   "type": "Non-profit"
+  },
+  {
+   "name": "Xerces Society, The",
+   "number": "X26026",
+   "type": "Non-profit"
+  },
+  {
+   "name": "Yamhill County Head Start",
+   "number": "X36007",
+   "type": "Non-profit"
+  },
+  {
+   "name": "Yoncalla School District #32",
+   "number": "P10032",
+   "type": "School"
+  },
+  {
+   "name": "Oakridge, City of ‐ Oakridge Fire Department",
+   "number": null,
+   "type": "City"
+  },
+  {
+   "name": "Metro ‐ Information Services",
+   "number": null,
+   "type": "Special"
+  },
+  {
+   "name": "Metro ‐ Convention Center",
+   "number": null,
+   "type": "Special"
+  },
+  {
+   "name": "Yamhill - Carlton School District #1",
+   "number": "P36701",
+   "type": "School"
+  },
+  {
+   "name": "Metro ‐ Communications",
+   "number": null,
+   "type": "Special"
+  },
+  {
+   "name": "Metro ‐ Council",
+   "number": null,
+   "type": "Special"
+  },
+  {
+   "name": "Yamhill County Government",
+   "number": "C00360",
+   "type": "County"
+  },
+  {
+   "name": "Paisley Public Charter School",
+   "number": null,
+   "type": "School"
+  },
+  {
+   "name": "Metro ‐ Human Services",
+   "number": null,
+   "type": "Special"
+  },
+  {
+   "name": "Metro ‐ Finance & Regulatory Services",
+   "number": null,
+   "type": "Special"
+  },
+  {
+   "name": "Metro ‐ Office of Metro Attorney",
+   "number": null,
+   "type": "Special"
+  },
+  {
+   "name": "Metro ‐ Office of the Auditor",
+   "number": null,
+   "type": "Special"
+  },
+  {
+   "name": "Metro ‐ Office of the Chief Operating Officer",
+   "number": null,
+   "type": "Special"
+  },
+  {
+   "name": "Metro ‐ Parks & Environmental Services",
+   "number": null,
+   "type": "Special"
+  },
+  {
+   "name": "Metro ‐ Planning & Development",
+   "number": null,
+   "type": "Special"
+  },
+  {
+   "name": "Metro ‐ Oregon Zoo",
+   "number": null,
+   "type": "Special"
+  },
+  {
+   "name": "Metro ‐ Portland's Center for the Arts",
+   "number": null,
+   "type": "Special"
+  },
+  {
+   "name": "West Umatilla Mosquito Control District",
+   "number": "R30278",
+   "type": "Other"
+  },
+  {
+   "name": "Metro ‐ Sustainability Center",
+   "number": null,
+   "type": "Special"
+  },
+  {
+   "name": "Metro ‐ Research Center",
+   "number": null,
+   "type": "Special"
+  },
+  {
+   "name": "Metro ‐ Portland Expo Center",
+   "number": null,
+   "type": "Special"
+  },
+  {
+   "name": "Portland, City of",
+   "number": "KP0042",
+   "type": "City"
+  },
+  {
+   "name": "Four Rivers Community School, Inc.",
+   "number": "P23007",
+   "type": "School"
+  },
+  {
+   "name": "Luckiamute Domestic Water Cooperative",
+   "number": "R27352",
+   "type": "Non-profit"
+  },
+  {
+   "name": "Halsey-Shedd RFPD",
+   "number": "R22175",
+   "type": "Special"
+  },
+  {
+   "name": "Mohawk Valley RFPD",
+   "number": "R20142",
+   "type": "Special"
+  },
+  {
+   "name": "Ashland, City of",
+   "number": "KA0010",
+   "type": "City"
+  },
+  {
+   "name": "Canby Utility",
+   "number": "R03102",
+   "type": "Special"
+  },
+  {
+   "name": "Wasco County Soil & Water Conservation District",
+   "number": "R33119",
+   "type": "Other"
+  },
+  {
+   "name": "Albertina Kerr Centers YFS (Youth and Family Services)",
+   "number": "X26163",
+   "type": "Non-profit"
+  },
+  {
+   "name": "Forest Grove School District #15",
+   "number": "P34010",
+   "type": "School"
+  },
+  {
+   "name": "Douglas Resident Training Facility",
+   "number": "X10100",
+   "type": "Non-profit"
+  },
+  {
+   "name": "Deschutes Public Library District",
+   "number": "C09017",
+   "type": "Special"
+  },
+  {
+   "name": "Catholic Community Services Foundation",
+   "number": "X24331",
+   "type": "Non-profit"
+  },
+  {
+   "name": "Eagle Charter School",
+   "number": "X24002",
+   "type": "School"
+  },
+  {
+   "name": "Early Learning Hub, Inc.",
+   "number": "X24904",
+   "type": "Non-profit"
+  },
+  {
+   "name": "Jefferson County",
+   "number": "C01155",
+   "type": "County"
+  },
+  {
+   "name": "Netarts-Oceanside Rural Fire Protection District",
+   "number": "R29417",
+   "type": "Special"
+  },
+  {
+   "name": "Gold Beach, City of",
+   "number": "KG0005",
+   "type": "City"
+  },
+  {
+   "name": "North Plains, City of",
+   "number": "KN3469",
+   "type": "City"
+  },
+  {
+   "name": "Lowell, City of",
+   "number": "KL3655",
+   "type": "City"
+  },
+  {
+   "name": "South Umpqua School District 19",
+   "number": "P10019",
+   "type": "School"
+  },
+  {
+   "name": "Toledo, City of",
+   "number": "KT0010",
+   "type": "City"
+  },
+  {
+   "name": "The Family Center",
+   "number": "X20814",
+   "type": "Non-profit"
+  },
+  {
+   "name": "MV Advancements (FKA Mid-Valley Rehabilitation)",
+   "number": "X02024",
+   "type": "Oregon Forward Contractor"
+  },
+  {
+   "name": "St. Paul RFPD",
+   "number": "R24189",
+   "type": "Special"
+  },
+  {
+   "name": "Clackamas 800 Radio Group",
+   "number": "R26631",
+   "type": "Special"
+  },
+  {
+   "name": "Parkrose School District #3",
+   "number": "P26603",
+   "type": "School"
+  },
+  {
+   "name": "South Coast Business Employment Corp",
+   "number": "X06302",
+   "type": "Non-profit"
+  },
+  {
+   "name": "Deschutes County Fair & Expo",
+   "number": "C09021",
+   "type": "County"
+  },
+  {
+   "name": "Clackamas County Vector Control District",
+   "number": "C03007",
+   "type": "Special"
+  },
+  {
+   "name": "Oregon Community College Association",
+   "number": "X24042",
+   "type": "Non-profit"
+  },
+  {
+   "name": "Crescent Rural Fire Protection District",
+   "number": "R18901",
+   "type": "Special"
+  },
+  {
+   "name": "Pacific States Marine Fisheries Commission",
+   "number": "R26003",
+   "type": "Other"
+  },
+  {
+   "name": "Bonanza, Town of",
+   "number": "KB1810",
+   "type": "City"
+  },
+  {
+   "name": "Tualatin Valley Water District",
+   "number": "R34750",
+   "type": "Special"
+  },
+  {
+   "name": "Bushnell University",
+   "number": "X20816",
+   "type": "Non-profit"
+  },
+  {
+   "name": "Elkton Rural Fire Protection District",
+   "number": "KE1000",
+   "type": "Special"
+  },
+  {
+   "name": "NeighborWorks Umpqua",
+   "number": "X10573",
+   "type": "Non-profit"
+  },
+  {
+   "name": "Tualatin Soil & Water Conservation District",
+   "number": "R34140",
+   "type": "Special"
+  },
+  {
+   "name": "Farmers Irrigation District",
+   "number": "R14451",
+   "type": "Special"
+  },
+  {
+   "name": "Native American Rehabilitation Assoc. of the NW, Inc.",
+   "number": "X26021",
+   "type": "Non-profit"
+  },
+  {
+   "name": "OETC, Organization for Educational Technology & Curriculum",
+   "number": "X24037",
+   "type": "Non-profit"
+  },
+  {
+   "name": "Montessori School of Beaverton",
+   "number": "X26985",
+   "type": "Non-profit"
+  },
+  {
+   "name": "Eastern Oregon Alcoholism Foundation",
+   "number": "X30001",
+   "type": "Non-profit"
+  },
+  {
+   "name": "Chemult Rural Protection Fire District (Chemult RPFD)",
+   "number": "R18007",
+   "type": "Special"
+  },
+  {
+   "name": "Millersburg, City of",
+   "number": "KM3615",
+   "type": "City"
+  },
+  {
+   "name": "Umatilla-Morrow Radio & Data District",
+   "number": "C30009",
+   "type": "Special"
+  },
+  {
+   "name": "Cat Adoption Team",
+   "number": "X34956",
+   "type": "Non-profit"
+  },
+  {
+   "name": "Scio Fire District",
+   "number": "R22876",
+   "type": "Special"
+  },
+  {
+   "name": "Sunset Empire Transportation District",
+   "number": "X04133",
+   "type": "Special"
+  },
+  {
+   "name": "Luckiamute Valley Charter Schools",
+   "number": "P27007",
+   "type": "Non-profit"
+  },
+  {
+   "name": "Legislative Assembly",
+   "number": "155000",
+   "type": "Other"
+  },
+  {
+   "name": "Scappoose, City of",
+   "number": "KS0070",
+   "type": "City"
+  },
+  {
+   "name": "Camp Morrow",
+   "number": "X33158",
+   "type": "Non-profit"
+  },
+  {
+   "name": "Depoe Bay, City of",
+   "number": "KD0050",
+   "type": "City"
+  },
+  {
+   "name": "Hood River Parks and Recreation",
+   "number": "R14016",
+   "type": "Special"
+  },
+  {
+   "name": "Hamlet RFPD",
+   "number": "R04211",
+   "type": "Special"
+  },
+  {
+   "name": "Oregon State Fair Council",
+   "number": "X24894",
+   "type": "Non-profit"
+  },
+  {
+   "name": "Mapleton Fire Department",
+   "number": "R20942",
+   "type": "Special"
+  },
+  {
+   "name": "Oregon Museum for Science and Industry (OMSI)",
+   "number": "X26011",
+   "type": "Non-profit"
+  },
+  {
+   "name": "Parrott Creek Child & Family Services",
+   "number": "X03105",
+   "type": "Non-profit"
+  },
+  {
+   "name": "Phoenix Urban Renewal Agency",
+   "number": "R15102",
+   "type": "Special"
+  },
+  {
+   "name": "Raphael House of Portland",
+   "number": "X26979",
+   "type": "Non-profit"
+  },
+  {
+   "name": "Klamath Crisis Center",
+   "number": "X18752",
+   "type": "Non-profit"
+  },
+  {
+   "name": "Mt. Vernon, City of",
+   "number": "KM1297",
+   "type": "City"
+  },
+  {
+   "name": "Oak Lodge Water Services District",
+   "number": "R03224",
+   "type": "Special"
+  },
+  {
+   "name": "Rogue River, City of",
+   "number": "KR0020",
+   "type": "City"
+  },
+  {
+   "name": "Glendale School District #77",
+   "number": "P10077",
+   "type": "School"
+  },
+  {
+   "name": "Bend Parks & Recreation District",
+   "number": "R09145",
+   "type": "Special"
+  },
+  {
+   "name": "Hood River, City of",
+   "number": "KH0020",
+   "type": "City"
+  },
+  {
+   "name": "Helix RFPD",
+   "number": "R30962",
+   "type": "Special"
+  },
+  {
+   "name": "Klamath County Road Department",
+   "number": "C01180",
+   "type": "County"
+  },
+  {
+   "name": "Looking Glass Community Services",
+   "number": "M20001",
+   "type": "Non-profit"
+  },
+  {
+   "name": "Marion County School District #45 (St. Paul District)",
+   "number": "P24045",
+   "type": "School"
+  },
+  {
+   "name": "Milton-Freewater Unified School District #7",
+   "number": "P30003",
+   "type": "School"
+  },
+  {
+   "name": "Molalla, City of",
+   "number": "KM0366",
+   "type": "City"
+  },
+  {
+   "name": "Tillamook County Government-District Attorney",
+   "number": "C29020",
+   "type": "County"
+  },
+  {
+   "name": "Mill City, City of",
+   "number": "KM2465",
+   "type": "City"
+  },
+  {
+   "name": "Reed College",
+   "number": "X26984",
+   "type": "Non-profit"
+  },
+  {
+   "name": "Sumner RFPD",
+   "number": "R06127",
+   "type": "Special"
+  },
+  {
+   "name": "Tillamook County Government-Health Department",
+   "number": "C29007",
+   "type": "County"
+  },
+  {
+   "name": "Tillamook County Government-Parks Department",
+   "number": "C29001",
+   "type": "County"
+  },
+  {
+   "name": "Grant County Education Service District",
+   "number": "P12001",
+   "type": "School"
+  },
+  {
+   "name": "Tillamook County Government-Information Services",
+   "number": "C29003",
+   "type": "County"
+  },
+  {
+   "name": "Tillamook County Government-Public Works",
+   "number": "C29014",
+   "type": "County"
+  },
+  {
+   "name": "Woodburn Rural Fire Protection District #6",
+   "number": "R24080",
+   "type": "Special"
+  },
+  {
+   "name": "Waldport, City of",
+   "number": "KW2194",
+   "type": "City"
+  },
+  {
+   "name": "Coos Soil and Water Conservation District",
+   "number": "R06128",
+   "type": "Special"
+  },
+  {
+   "name": "Chenowith Water PUD",
+   "number": "R33121",
+   "type": "Special"
+  },
+  {
+   "name": "Lake County Library District",
+   "number": "C19005",
+   "type": "Special"
+  },
+  {
+   "name": "Oregon School Boards Association",
+   "number": "X24050",
+   "type": "Non-profit"
+  },
+  {
+   "name": "Dallas Community School",
+   "number": "X27202",
+   "type": "Non-profit"
+  },
+  {
+   "name": "Chemawa Indian School (DOI/BIE)",
+   "number": "P24974",
+   "type": "School"
+  },
+  {
+   "name": "Monroe, City of",
+   "number": "KM0060",
+   "type": "City"
+  },
+  {
+   "name": "Wiard Memorial Park District",
+   "number": "R18543",
+   "type": "Special"
+  },
+  {
+   "name": "Donald, City of",
+   "number": "KD2401",
+   "type": "City"
+  },
+  {
+   "name": "Tangent Rural Fire Protection District",
+   "number": "R22190",
+   "type": "Special"
+  },
+  {
+   "name": "Necanicum Watershed Council",
+   "number": "R40118",
+   "type": "Special"
+  },
+  {
+   "name": "Sherman County Soil and Water Conservation District",
+   "number": "R28138",
+   "type": "Special"
+  },
+  {
+   "name": "First Baptist Church of Medford",
+   "number": "X25303",
+   "type": "Non-profit"
+  },
+  {
+   "name": "Malheur Educational Service District",
+   "number": "P23950",
+   "type": "School"
+  },
+  {
+   "name": "Adelante Mujeres",
+   "number": "X34958",
+   "type": "Non-profit"
+  },
+  {
+   "name": "Sandy, City of",
+   "number": "KS0382",
+   "type": "City"
+  },
+  {
+   "name": "Boardman Park and Recreation District",
+   "number": "KB2517",
+   "type": "Special"
+  },
+  {
+   "name": "Reedsport School District #105",
+   "number": "P10105",
+   "type": "School"
+  },
+  {
+   "name": "Three Sisters Irrigation District",
+   "number": "R09670",
+   "type": "Special"
+  },
+  {
+   "name": "Marion Area Multi Agency Emergency Communication Center (METCOM 911)",
+   "number": "C24011",
+   "type": "Special"
+  },
+  {
+   "name": "Bay Area Enterprises, Inc",
+   "number": "X06305",
+   "type": "Oregon Forward Contractor"
+  },
+  {
+   "name": "Lincoln County Library District",
+   "number": "C21021",
+   "type": "Special"
+  },
+  {
+   "name": "Grant County Emergency Communications Agency",
+   "number": "C12009",
+   "type": "Special"
+  },
+  {
+   "name": "Slipstream Dream",
+   "number": "X03107",
+   "type": "Non-profit"
+  },
+  {
+   "name": "Willamina School District 30J",
+   "number": "P36030",
+   "type": "School"
+  },
+  {
+   "name": "McKenzie School District #68",
+   "number": "P20099",
+   "type": "School"
+  },
+  {
+   "name": "Scotts Mills, City of",
+   "number": "KS2484",
+   "type": "City"
+  },
+  {
+   "name": "Star of Hope Activity Center, Inc.",
+   "number": "X06111",
+   "type": "Non-profit"
+  },
+  {
+   "name": "Vernonia School District #47J",
+   "number": "P05047",
+   "type": "School"
+  },
+  {
+   "name": "Yachats, City of",
+   "number": "KY0010",
+   "type": "City"
+  },
+  {
+   "name": "Howard Street Charter School",
+   "number": "X24152",
+   "type": "School"
+  },
+  {
+   "name": "Cannon Beach RFPD",
+   "number": "KC0402",
+   "type": "Special"
+  },
+  {
+   "name": "Cave Junction, City of",
+   "number": "KC0055",
+   "type": "City"
+  },
+  {
+   "name": "Astoria, Port of",
+   "number": "R04117",
+   "type": "Special"
+  },
+  {
+   "name": "Young Mens Christian Association of Medford",
+   "number": "X15308",
+   "type": "Non-profit"
+  },
+  {
+   "name": "Sublimity Fire District",
+   "number": "R24893",
+   "type": "Special"
+  },
+  {
+   "name": "Millington Fire District",
+   "number": "KC0625",
+   "type": "Special"
+  },
+  {
+   "name": "Williams Rural Fire Protection District",
+   "number": "R17944",
+   "type": "Special"
+  },
+  {
+   "name": "Oregon Patient Safety Commission",
+   "number": "978000",
+   "type": "Other"
+  },
+  {
+   "name": "Hacienda Community Development Corp.",
+   "number": "X26972",
+   "type": "Non-profit"
+  },
+  {
+   "name": "St. Paul, City of",
+   "number": "KS2420",
+   "type": "City"
+  },
+  {
+   "name": "Center for Human Development Inc.",
+   "number": "C31044",
+   "type": "Non-profit"
+  },
+  {
+   "name": "Deschutes Soil & Water Conservation District",
+   "number": "R09105",
+   "type": "Special"
+  },
+  {
+   "name": "Unit School Inc.",
+   "number": "X20821",
+   "type": "Non-profit"
+  },
+  {
+   "name": "River's Edge Academy Charter School",
+   "number": "X15309",
+   "type": "Non-profit"
+  },
+  {
+   "name": "Umatilla, City of",
+   "number": "KU3094",
+   "type": "City"
+  },
+  {
+   "name": "Port of Coos Bay",
+   "number": "R06244",
+   "type": "Special"
+  },
+  {
+   "name": "Monroe School District",
+   "number": "P02701",
+   "type": "School"
+  },
+  {
+   "name": "North Morrow Vector Control District",
+   "number": "R25100",
+   "type": "Special"
+  },
+  {
+   "name": "Upper McKenzie RFPD",
+   "number": "R20943",
+   "type": "Special"
+  },
+  {
+   "name": "Ashwood School District",
+   "number": "P16002",
+   "type": "School"
+  },
+  {
+   "name": "Suntex School District",
+   "number": "P13010",
+   "type": "School"
+  },
+  {
+   "name": "Port of Brookings-Harbor",
+   "number": "R08018",
+   "type": "Special"
+  },
+  {
+   "name": "Butte Falls, City of",
+   "number": "KB1519",
+   "type": "City"
+  },
+  {
+   "name": "Clackamas County Housing Authority",
+   "number": "C03343",
+   "type": "Special"
+  },
+  {
+   "name": "Wallowa County Road Department",
+   "number": "C32014",
+   "type": "County"
+  },
+  {
+   "name": "Canby Fire District #62",
+   "number": "R03103",
+   "type": "Special"
+  },
+  {
+   "name": "Juniper Flat Rural Fire District",
+   "number": "R33772",
+   "type": "Special"
+  },
+  {
+   "name": "City of La Grande Fire Department",
+   "number": "R00170",
+   "type": "Special"
+  },
+  {
+   "name": "AntFarm",
+   "number": "X03109",
+   "type": "Non-profit"
+  },
+  {
+   "name": "Pine Eagle School District",
+   "number": "P06061",
+   "type": "School"
+  },
+  {
+   "name": "Redmond Fire and Rescue",
+   "number": "KR0972",
+   "type": "Special"
+  },
+  {
+   "name": "Wallowa Lake Irrigation District",
+   "number": "R32103",
+   "type": "Special"
+  },
+  {
+   "name": "North Fork John Day Watershed",
+   "number": "R12100",
+   "type": "Non-profit"
+  },
+  {
+   "name": "Sunny Wolf Charter School",
+   "number": "P17008",
+   "type": "School"
+  },
+  {
+   "name": "North Bay Fire District",
+   "number": "R06247",
+   "type": "Special"
+  },
+  {
+   "name": "Explore Washington Park",
+   "number": "X26950",
+   "type": "Non-profit"
+  },
+  {
+   "name": "Umatilla County Soil & Water Conservation District",
+   "number": "R30274",
+   "type": "Special"
+  },
+  {
+   "name": "Southern Oregon Regional Brokerage",
+   "number": "X10574",
+   "type": "Non-profit"
+  },
+  {
+   "name": "Corbett Water District",
+   "number": "R26006",
+   "type": "Special"
+  },
+  {
+   "name": "Adams, City of",
+   "number": "KU3051",
+   "type": "City"
+  },
+  {
+   "name": "Banks Fire District #13",
+   "number": "R34926",
+   "type": "Special"
+  },
+  {
+   "name": "Blue Mountain Community College",
+   "number": "P00420",
+   "type": "School"
+  },
+  {
+   "name": "Dundee, City of",
+   "number": "KD3610",
+   "type": "City"
+  },
+  {
+   "name": "City of Lakeside",
+   "number": "KL0601",
+   "type": "City"
+  },
+  {
+   "name": "Umpqua Public Transportation District",
+   "number": "KU1000",
+   "type": "Special"
+  },
+  {
+   "name": "Sheridan, City of",
+   "number": "KS0055",
+   "type": "City"
+  },
+  {
+   "name": "North Gilliam County Health District",
+   "number": "C11014",
+   "type": "Special"
+  },
+  {
+   "name": "Oakland, City of",
+   "number": "K01070",
+   "type": "City"
+  },
+  {
+   "name": "Wood Village, City of",
+   "number": "KW2600",
+   "type": "City"
+  },
+  {
+   "name": "Housing Authority of Yamhill County",
+   "number": "C36036",
+   "type": "Special"
+  },
+  {
+   "name": "Personalized Learning Inc. dba Redmond Proficiency Academy",
+   "number": "X09008",
+   "type": "Non-profit"
+  },
+  {
+   "name": "Netarts Water District",
+   "number": "R29104",
+   "type": "Special"
+  },
+  {
+   "name": "Camp Fire Columbia",
+   "number": "X26811",
+   "type": "Non-profit"
+  },
+  {
+   "name": "La Grande Parks and Recreation",
+   "number": "R31205",
+   "type": "Special"
+  },
+  {
+   "name": "Sherman County School District",
+   "number": "P28003",
+   "type": "School"
+  },
+  {
+   "name": "Gearhart Fire Department",
+   "number": "R04213",
+   "type": "Special"
+  },
+  {
+   "name": "Gaston School District",
+   "number": "P34001",
+   "type": "School"
+  },
+  {
+   "name": "Mt. Angel School District 91",
+   "number": "P24091",
+   "type": "School"
+  },
+  {
+   "name": "Pilot Rock School District 2R",
+   "number": "P30017",
+   "type": "School"
+  },
+  {
+   "name": "Wallowa School District #12",
+   "number": "P32012",
+   "type": "School"
+  },
+  {
+   "name": "Pathway Enterprises",
+   "number": "M15003",
+   "type": "Oregon Forward Contractor"
+  },
+  {
+   "name": "Adrian School District",
+   "number": "P23010",
+   "type": "School"
+  },
+  {
+   "name": "Athena West School District",
+   "number": "P30007",
+   "type": "School"
+  },
+  {
+   "name": "Network Charter School",
+   "number": "X20824",
+   "type": "School"
+  },
+  {
+   "name": "St. Paul Parochial School",
+   "number": "X24933",
+   "type": "School"
+  },
+  {
+   "name": "Yamhill Soil and Water Conservation District",
+   "number": "R36400",
+   "type": "Special"
+  },
+  {
+   "name": "Phoenix Charter School",
+   "number": "X10575",
+   "type": "School"
+  },
+  {
+   "name": "Echo, City of",
+   "number": "KE0005",
+   "type": "City"
+  },
+  {
+   "name": "Annex School District #29",
+   "number": "P23951",
+   "type": "School"
+  },
+  {
+   "name": "Ridgeline Montessori Public Charter School",
+   "number": "X20825",
+   "type": "School"
+  },
+  {
+   "name": "Oregon Fiber Partnership (Link Oregon)",
+   "number": "X26807",
+   "type": "Non-profit"
+  },
+  {
+   "name": "North Lake School District #14",
+   "number": "P19014",
+   "type": "School"
+  },
+  {
+   "name": "Jacksonville, City of",
+   "number": "KJ1548",
+   "type": "City"
+  },
+  {
+   "name": "Harrisburg Fire and Rescue",
+   "number": "X22013",
+   "type": "Special"
+  },
+  {
+   "name": "Sauvie Island Fire District",
+   "number": "R26630",
+   "type": "Special"
+  },
+  {
+   "name": "Oregon Board of Licensed Social Workers",
+   "number": "124000",
+   "type": "Other"
+  },
+  {
+   "name": "Eagle Point Irrigation District",
+   "number": "R15100",
+   "type": "Special"
+  },
+  {
+   "name": "Turner Rural Fire Protection District",
+   "number": "R24926",
+   "type": "Special"
+  },
+  {
+   "name": "Monitor Rural Fire Protection District",
+   "number": "R24894",
+   "type": "Special"
+  },
+  {
+   "name": "Beaverton Arts Foundation dba Patricia Reser Center for the Arts",
+   "number": "X34963",
+   "type": "Non-profit"
+  },
+  {
+   "name": "Beaverton Urban Redevelopment Agency",
+   "number": "X34965",
+   "type": "Other"
+  },
+  {
+   "name": "FOOD for Lane County",
+   "number": "X20048",
+   "type": "Non-profit"
+  },
+  {
+   "name": "Monument School District 8",
+   "number": "P12011",
+   "type": "School"
+  },
+  {
+   "name": "Burnt River School District",
+   "number": "P01030",
+   "type": "School"
+  },
+  {
+   "name": "Riddle School District",
+   "number": "P10070",
+   "type": "School"
+  },
+  {
+   "name": "Northwest Regional Re-entry Center",
+   "number": "X26812",
+   "type": "Non-profit"
+  },
+  {
+   "name": "Westport-Wauna RFPD (Rural Fire Protection District)",
+   "number": "R04215",
+   "type": "Special"
+  },
+  {
+   "name": "Estacada Public Library",
+   "number": "X03111",
+   "type": "Other"
+  },
+  {
+   "name": "Eola Hills Charter School",
+   "number": "X27201",
+   "type": "School"
+  },
+  {
+   "name": "Nestucca, Neskowin & Sand Lake Watersheds Council",
+   "number": "X29066",
+   "type": "Special"
+  },
+  {
+   "name": "Mental Health Association of Oregon",
+   "number": "X26813",
+   "type": "Non-profit"
+  },
+  {
+   "name": "Umatilla School District 6",
+   "number": "P30006",
+   "type": "School"
+  },
+  {
+   "name": "Ione School District",
+   "number": "P25002",
+   "type": "School"
+  },
+  {
+   "name": "Mannahouse Church",
+   "number": "X26814",
+   "type": "Non-profit"
+  },
+  {
+   "name": "Huntington, City of",
+   "number": "KH0023",
+   "type": "City"
+  },
+  {
+   "name": "Mid-Columbia Economic Development District",
+   "number": "X33157",
+   "type": "Special"
+  },
+  {
+   "name": "Tenas Illahee Child Care Center",
+   "number": "X21602",
+   "type": "Other"
+  },
+  {
+   "name": "Hoskins-Kings Valley RFPD",
+   "number": "R02709",
+   "type": "Special"
+  },
+  {
+   "name": "Cascade Locks, City of",
+   "number": "KC1421",
+   "type": "City"
+  },
+  {
+   "name": "Frontier Charter Academy",
+   "number": "X41007",
+   "type": "School"
+  },
+  {
+   "name": "Scappoose Public Library District",
+   "number": "X05108",
+   "type": "Special"
+  },
+  {
+   "name": "Deschutes County 9-1-1",
+   "number": "C09001",
+   "type": "Other"
+  },
+  {
+   "name": "Southwest Lincoln County Water PUD",
+   "number": "R21919",
+   "type": "Special"
+  },
+  {
+   "name": "Bonanza Ambulance Service",
+   "number": "X18754",
+   "type": "Non-profit"
+  },
+  {
+   "name": "Silver Lake Rural Fire Protection District",
+   "number": "R19223",
+   "type": "Special"
+  },
+  {
+   "name": "CareOregon, Inc",
+   "number": "X26083",
+   "type": "Non-profit"
+  },
+  {
+   "name": "Pacific City Joint Water Sanitary Authority",
+   "number": "R29401",
+   "type": "Special"
+  },
+  {
+   "name": "Canyonville South Umpqua Fire District",
+   "number": "R10005",
+   "type": "Special"
+  },
+  {
+   "name": "Oakland Rural Fire Protection District",
+   "number": "R10677",
+   "type": "Special"
+  },
+  {
+   "name": "Mitchell School District",
+   "number": "P00620",
+   "type": "School"
+  },
+  {
+   "name": "City of Maupin",
+   "number": "KM3301",
+   "type": "City"
+  },
+  {
+   "name": "Oakland School District",
+   "number": "P10001",
+   "type": "School"
+  },
+  {
+   "name": "Vale School District #84",
+   "number": "P23006",
+   "type": "School"
+  },
+  {
+   "name": "Community Access Services II, Inc.",
+   "number": "X34000",
+   "type": "Non-profit"
+  },
+  {
+   "name": "City of Joseph",
+   "number": "KJ3249",
+   "type": "City"
+  },
+  {
+   "name": "Siuslaw SWCD",
+   "number": "R20148",
+   "type": "Special"
+  },
+  {
+   "name": "Olney Walluski Fire & Rescue",
+   "number": "R04216",
+   "type": "Special"
+  },
+  {
+   "name": "City of Talent",
+   "number": "KT1590",
+   "type": "City"
+  },
+  {
+   "name": "Cascade AIDS Project",
+   "number": "X26815",
+   "type": "Non-profit"
+  },
+  {
+   "name": "Nyssa School District",
+   "number": "P23005",
+   "type": "School"
+  },
+  {
+   "name": "Lexington, Town of",
+   "number": "KL2502",
+   "type": "City"
+  },
+  {
+   "name": "Northwest Oregon Housing Authority",
+   "number": "R04999",
+   "type": "Non-profit"
+  },
+  {
+   "name": "Lewis and Clark RFPD",
+   "number": "R04217",
+   "type": "Special"
+  },
+  {
+   "name": "Westland Irrigation District",
+   "number": "R30301",
+   "type": "Special"
+  },
+  {
+   "name": "The Pathfinder Network",
+   "number": "X26816",
+   "type": "Non-profit"
+  },
+  {
+   "name": "Douglas County Fire District No. 2",
+   "number": "C10003",
+   "type": "Special"
+  },
+  {
+   "name": "Aurora Rural Fire Protection District",
+   "number": "KA2410",
+   "type": "Special"
+  },
+  {
+   "name": "Black Community of Portland",
+   "number": "X26967",
+   "type": "Non-profit"
+  },
+  {
+   "name": "City of La Pine",
+   "number": "KL0901",
+   "type": "City"
+  },
+  {
+   "name": "Bridgeway Recovery Services Inc.",
+   "number": "X24903",
+   "type": "Non-profit"
+  },
+  {
+   "name": "Jefferson Soil and Water Conservation District",
+   "number": "R09010",
+   "type": "Special"
+  },
+  {
+   "name": "Umpqua Homes",
+   "number": "X10117",
+   "type": "Non-profit"
+  },
+  {
+   "name": "Green Springs RFD",
+   "number": "R15786",
+   "type": "Special"
+  },
+  {
+   "name": "O’Brien Memorial Library",
+   "number": "X20946",
+   "type": "Non-profit"
+  },
+  {
+   "name": "Dayville, City of",
+   "number": "C12010",
+   "type": "City"
+  },
+  {
+   "name": "Peace Mentors",
+   "number": "X22746",
+   "type": "Non-profit"
+  },
+  {
+   "name": "West Extension Irrigation District",
+   "number": "R25604",
+   "type": "Special"
+  },
+  {
+   "name": "City of Powers",
+   "number": "KP0674",
+   "type": "City"
+  },
+  {
+   "name": "Langlois Rural Fire Protection District",
+   "number": "R08297",
+   "type": "Special"
+  },
+  {
+   "name": "Joseph School District",
+   "number": "P32006",
+   "type": "School"
+  },
+  {
+   "name": "Sublimity, City of",
+   "number": "KS0089",
+   "type": "City"
+  },
+  {
+   "name": "Oregon Nonprofit Hospice Alliance",
+   "number": "Q10001",
+   "type": "Non-profit"
+  },
+  {
+   "name": "Oregon Virtual Academy",
+   "number": "X09509",
+   "type": "School"
+  },
+  {
+   "name": "Heppner Cemetery Maintenance District",
+   "number": "Q10002",
+   "type": "Special"
+  },
+  {
+   "name": "Tillamook Fire District",
+   "number": "R29917",
+   "type": "Special"
+  },
+  {
+   "name": "Myrtle Creek, City of",
+   "number": "KM0030",
+   "type": "City"
+  },
+  {
+   "name": "Rocky Point Fire & EMS",
+   "number": "Q10003",
+   "type": "Special"
+  },
+  {
+   "name": "Metro East Web Academy",
+   "number": "Q10004",
+   "type": "School"
+  },
+  {
+   "name": "Lumina Hospice and Palliative Care",
+   "number": "Q10005",
+   "type": "Non-profit"
+  },
+  {
+   "name": "Klamath Hospice Inc.",
+   "number": "Q10006",
+   "type": "Non-profit"
+  },
+  {
+   "name": "Marion County Fire District #1",
+   "number": "R00190",
+   "type": "Special"
+  },
+  {
+   "name": "Nehalem Bay Fire & Rescue District",
+   "number": "Q10008",
+   "type": "Special"
+  },
+  {
+   "name": "City of Veneta",
+   "number": "KV2002",
+   "type": "City"
+  },
+  {
+   "name": "Crooked River Ranch Rural Fire Protection District",
+   "number": "KC0910",
+   "type": "Special"
+  },
+  {
+   "name": "Straub Outdoors",
+   "number": "X24910",
+   "type": "Non-profit"
+  },
+  {
+   "name": "Oregon Dairy Products Commission",
+   "number": "617000",
+   "type": "Other"
+  },
+  {
+   "name": "Horizon Project Inc",
+   "number": "X30151",
+   "type": "Non-profit"
+  },
+  {
+   "name": "South Harney School District 33",
+   "number": "P13006",
+   "type": "School"
+  },
+  {
+   "name": "Eddyville Charter School",
+   "number": "X10000",
+   "type": "School"
+  },
+  {
+   "name": "All Good Northwest",
+   "number": "Q1009",
+   "type": "Non-profit"
+  },
+  {
+   "name": "Douglas County SWCD",
+   "number": "R10670",
+   "type": "Special"
+  },
+  {
+   "name": "Valley Inquiry Charter School",
+   "number": "X20012",
+   "type": "School"
+  },
+  {
+   "name": "Lorane Rural Fire Protection District",
+   "number": "Q10010",
+   "type": "Special"
+  },
+  {
+   "name": "Tenmile Rural Fire Protection District",
+   "number": "KT1010",
+   "type": "Special"
+  },
+  {
+   "name": "Mid-Willamette Valley Council of Governments",
+   "number": "R24190",
+   "type": "Non-profit"
+  },
+  {
+   "name": "Morrow County Health District",
+   "number": "C25005",
+   "type": "Special"
+  },
+  {
+   "name": "Southern Oregon Regional Economic Development, Inc.",
+   "number": "R20001",
+   "type": "Special"
+  },
+  {
+   "name": "North County Recreation District",
+   "number": "Q10013",
+   "type": "Special"
+  },
+  {
+   "name": "City of Milton Free-Water",
+   "number": "KM3066",
+   "type": "City"
+  },
+  {
+   "name": "City View Charter School",
+   "number": "Q10014",
+   "type": "School"
+  },
+  {
+   "name": "Adapt Integrated Health",
+   "number": "Q1015",
+   "type": "Non-profit"
+  },
+  {
+   "name": "Clackamas Middle School",
+   "number": "Q10016",
+   "type": "School"
+  },
+  {
+   "name": "Keizer Heritage Foundation",
+   "number": "Q10017",
+   "type": "Non-profit"
+  },
+  {
+   "name": "Addictions Recovery Center Inc",
+   "number": "Q10019",
+   "type": "Non-profit"
+  },
+  {
+   "name": "City of Malin",
+   "number": "X0025",
+   "type": "City"
+  },
+  {
+   "name": "Medford Irrigation District",
+   "number": "Q10026",
+   "type": "Special"
+  },
+  {
+   "name": "Oasis Center of Rogue Valley",
+   "number": "Q10018",
+   "type": "Other"
+  },
+  {
+   "name": "Sisters Park & Recreation District",
+   "number": "Q10021",
+   "type": "Special"
+  },
+  {
+   "name": "Nestucca Rural Fire Protection District",
+   "number": "R29489",
+   "type": "Special"
+  },
+  {
+   "name": "R.E.A.P.",
+   "number": "Q10023",
+   "type": "Other"
+  },
+  {
+   "name": "Pinehurst School District",
+   "number": "P15094",
+   "type": "School"
+  },
+  {
+   "name": "City of McMinville",
+   "number": "KM3612",
+   "type": "City"
+  },
+  {
+   "name": "Wallawo County Sheriffs Dept",
+   "number": "Q10024",
+   "type": "County"
+  },
+  {
+   "name": "Klamath 911 Emergency Communications District",
+   "number": "X18007",
+   "type": "Special"
+  },
+  {
+   "name": "South Suburban Sanitary District",
+   "number": "X18300",
+   "type": "Special"
+  },
+  {
+   "name": "City of Ione",
+   "number": "K12500",
+   "type": "City"
+  },
+  {
+   "name": "Regis St. Mary Catholic School",
+   "number": "Q10027",
+   "type": "School"
+  },
+  {
+   "name": "Columbia Slough Watershed Council",
+   "number": "Q10029",
+   "type": "Other"
+  },
+  {
+   "name": "Eastern Oregon Workforce Board",
+   "number": "Q10030",
+   "type": "Other"
+  },
+  {
+   "name": "Tillamook PUD",
+   "number": "R29217",
+   "type": "Special"
+  },
+  {
+   "name": "Boys & Girls Clubs of Emerald Valley",
+   "number": "Q10034",
+   "type": "Non-profit"
+  },
+  {
+   "name": "New Carlton Fire District",
+   "number": "Q10035",
+   "type": "Special"
+  },
+  {
+   "name": "Silver Falls Library District",
+   "number": "Q10036",
+   "type": "Special"
+  },
+  {
+   "name": "Lake Creek Fire and Rescue",
+   "number": "Q10037",
+   "type": "Special"
+  },
+  {
+   "name": "West Slope Water District",
+   "number": "Q10039",
+   "type": "Special"
+  },
+  {
+   "name": "City of Detroit",
+   "number": "Q10041",
+   "type": "City"
+  },
+  {
+   "name": "Sunriver Service District",
+   "number": "Q10042",
+   "type": "Special"
+  },
+  {
+   "name": "Oregon State Bar",
+   "number": "Q10043",
+   "type": "Other"
+  },
+  {
+   "name": "Family Tree Relief Nursery",
+   "number": "Q10047",
+   "type": "Non-profit"
+  },
+  {
+   "name": "Junction City Rural Fire Protection District",
+   "number": "Q10053",
+   "type": "Special"
+  },
+  {
+   "name": "Bradley Angle",
+   "number": "Q10055",
+   "type": "Non-profit"
+  },
+  {
+   "name": "Community Pathways Inc",
+   "number": "Q10058",
+   "type": "Non-profit"
+  },
+  {
+   "name": "AGE+",
+   "number": "Q10057",
+   "type": "Non-profit"
+  },
+  {
+   "name": "Catholic Charities",
+   "number": "Q10051",
+   "type": "Non-profit"
+  },
+  {
+   "name": "Coalition for Racial and Educational Justice",
+   "number": "Q10062",
+   "type": "Non-profit"
+  },
+  {
+   "name": "Energy Trust of Oregon",
+   "number": "X50015",
+   "type": "Non-profit"
+  },
+  {
+   "name": "City of Gold Hill",
+   "number": "Q10038",
+   "type": "City"
+  },
+  {
+   "name": "Tumalo Basin Sewer District",
+   "number": "Q10063",
+   "type": "Special"
+  },
+  {
+   "name": "Deschutes River Conservancy",
+   "number": "Q10064",
+   "type": "Non-profit"
+  },
+  {
+   "name": "South Fork Water Board",
+   "number": "Q10065",
+   "type": "Special"
+  },
+  {
+   "name": "Lone Pine Irrigation District",
+   "number": "Q10066",
+   "type": "Special"
+  },
+  {
+   "name": "Community Services Consortium",
+   "number": "Q10067",
+   "type": "Other"
+  },
+  {
+   "name": "City of Culver",
+   "number": "Q10068",
+   "type": "City"
+  },
+  {
+   "name": "Siuslaw Valley Charter School (dba Whitmore Classical Academy)",
+   "number": "Q10069",
+   "type": "School"
+  },
+  {
+   "name": "North Douglas School District #22",
+   "number": "Q10070",
+   "type": "School"
+  },
+  {
+   "name": "Habitat for Humanity Portland/Metro East",
+   "number": "Q10060",
+   "type": "Non-profit"
+  },
+  {
+   "name": "Klamath Drainage District",
+   "number": "Q10072",
+   "type": "Special"
+  },
+  {
+   "name": "Twin Rock Sanitary District",
+   "number": "Q10071",
+   "type": "Special"
+  },
+  {
+   "name": "Friends of Josephine County- Children's Advocacy",
+   "number": "Q10074",
+   "type": "Non-profit"
+  },
+  {
+   "name": "Umatilla Rural Fire Protection District 7-405",
+   "number": "Q10076",
+   "type": "Special"
+  },
+  {
+   "name": "Mercy Flights, Inc",
+   "number": "Q10073",
+   "type": "Non-profit"
+  },
+  {
+   "name": "Aumsville RFPD",
+   "number": "Q10077",
+   "type": "Special"
+  },
+  {
+   "name": "Port of Port Orford",
+   "number": "Q10078",
+   "type": "Special"
+  },
+  {
+   "name": "Prairie City, City of",
+   "number": "Q10080",
+   "type": "City"
+  },
+  {
+   "name": "High Desert Park and Recreation District",
+   "number": "Q10079",
+   "type": "Special"
+  },
+  {
+   "name": "Alano Club of Portland, Oregon",
+   "number": "Q10081",
+   "type": "Non-profit"
+  },
+  {
+   "name": "Clackamas Web Academy",
+   "number": "Q10085",
+   "type": "School"
+  },
+  {
+   "name": "Myrtle Point, City of",
+   "number": "Q10082",
+   "type": "City"
+  },
+  {
+   "name": "Urban Flood Safety & Water Quality District",
+   "number": "Q10054",
+   "type": "Special"
+  },
+  {
+   "name": "Applegate Valley Rural Fire Protection District",
+   "number": "Q10087",
+   "type": "Special"
+  },
+  {
+   "name": "Community Counseling Solutions",
+   "number": "Q10084",
+   "type": "Non-profit"
+  },
+  {
+   "name": "Klamath Tribal Health and Family Services",
+   "number": "Q10089",
+   "type": "Other"
+  },
+  {
+   "name": "TVW, Inc",
+   "number": "Q10075",
+   "type": "Oregon Forward Contractor"
+  },
+  {
+   "name": "The Dalles, Port of",
+   "number": "Q10086",
+   "type": "Special"
+  },
+  {
+   "name": "Continuum Behavioral Health & Recovery Services",
+   "number": "Q10088",
+   "type": "Non-profit"
+  },
+  {
+   "name": "Swisshome-Deadwood RFPD",
+   "number": "Q10094",
+   "type": "Special"
+  },
+  {
+   "name": "Boys and Girls Aid",
+   "number": "Q10093",
+   "type": "Non-profit"
+  },
+  {
+   "name": "Arch Cape Domestic Water Supply District",
+   "number": "Q10095",
+   "type": "Special"
+  },
+  {
+   "name": "Arch Cape Sanitary District",
+   "number": "Q10096",
+   "type": "Special"
+  },
+  {
+   "name": "Lake Oswego School District (CCSD J7)",
+   "number": "Q10097",
+   "type": "School"
+  },
+  {
+   "name": "Tumalo Irrigation District",
+   "number": "Q10099",
+   "type": "Special"
+  },
+  {
+   "name": "South County Health District",
+   "number": "Q10101",
+   "type": "Special"
+  },
+  {
+   "name": "Max’s Mission",
+   "number": "Q10100",
+   "type": "Non-profit"
+  },
+  {
+   "name": "Ontario Recreation District",
+   "number": "Q10102",
+   "type": "Special"
+  },
+  {
+   "name": "Harney District Hospital",
+   "number": "Q10303",
+   "type": "Special"
+  },
+  {
+   "name": "City of Fairview",
+   "number": "Q10106",
+   "type": "City"
+  },
+  {
+   "name": "Northwest Human Services",
+   "number": "X24291",
+   "type": "Non-profit"
+  },
+  {
+   "name": "Frontier Regional 911",
+   "number": "Q10105",
+   "type": "Special"
+  },
+  {
+   "name": "Fair Oaks RFPD",
+   "number": "Q10104",
+   "type": "Special"
+  },
+  {
+   "name": "Paisley, City of",
+   "number": "Q10107",
+   "type": "City"
+  },
+  {
+   "name": "Douglas County School District #12",
+   "number": "10108",
+   "type": "School"
+  }
+ ]
+}

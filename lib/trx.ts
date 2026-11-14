@@ -6,8 +6,9 @@
 // state's cooperative purchasing program, with the lowest fee of any shared contract.
 // Loaded so far: New Jersey from NJSTART (scripts/import-njstart.ts), Hawaii from the State
 // Procurement Office's price & vendor lists (scripts/import-hawaii.ts) and Arkansas from the
-// Office of State Procurement's directory (scripts/import-arkansas.ts) and New York from the
-// Office of General Services' centralized contracts (scripts/import-ny.ts). Oregon isn't loaded yet.
+// Office of State Procurement's directory (scripts/import-arkansas.ts), New York from the
+// Office of General Services' centralized contracts (scripts/import-ny.ts) and Oregon from the statewide
+// price agreements DAS Procurement Services runs on OregonBuys (scripts/import-oregon.ts).
 
 import type { Buyer, Contract } from "./types";
 
@@ -84,6 +85,16 @@ export const TRX_PROGRAM: Record<string, TrxProgram> = {
       `Follow the award's "How to Use" document and order from ${c.supplier || "the contractor"} under contract ${c.number}${c.solicitation ? ` (${c.solicitation})` : ""} on your own purchase order.`,
     ],
   },
+  OR: {
+    name: "OregonBuys",
+    coop_program: "Oregon Cooperative Procurement Program (OrCPP)",
+    portal: "https://oregonbuys.gov",
+    data_anchor: "oregon",
+    steps: (c) => [
+      "Members of OrCPP, the Oregon Cooperative Procurement Program, may buy from DAS's statewide price agreements that allow cooperative purchasing; ORS 279A.205 and 279A.215 let a public body use another's contract this way. Joining OrCPP is free: an Oregon public body signs DAS's intergovernmental agreement once.",
+      `Read the price agreement's attachments for authorized use and pricing, then order from ${c.supplier || "the contractor"} under OregonBuys ${c.number}${c.solicitation ? ` (solicitation ${c.solicitation})` : ""} on your own purchase order.`,
+    ],
+  },
   HI: {
     name: "Hawaii SPO",
     coop_program: "State Procurement Office's price & vendor list contracts",
@@ -135,8 +146,10 @@ function listed(participants: string[], buyer: Buyer): boolean {
   return mine.size > 0 && participants.some((p) => [...words(p)].filter((w) => mine.has(w)).length >= Math.min(2, mine.size));
 }
 
-/** Who may buy on a state contract: the state's own agencies always; its local governments when the state opens it to them. */
-export function stateContractAccess(sc: StateContractFields, buyer: Buyer | null): { member: boolean; eligible: boolean; reason: string } {
+/** Who may buy on a state contract: the state's own agencies always; its local governments when the state opens it to them.
+ * `orcpp` is, for an Oregon buyer, the OrCPP member DAS's list names for it (null when the list doesn't name it); the
+ * caller looks it up server-side (lib/orcpp.ts). */
+export function stateContractAccess(sc: StateContractFields, buyer: Buyer | null, orcpp?: string | null): { member: boolean; eligible: boolean; reason: string } {
   const where = stateLabel(sc.state);
   const program = TRX_PROGRAM[sc.state]?.coop_program ?? "the state's cooperative purchasing program";
   const counties = sc.participants ? HI_COUNTIES.filter(([, re]) => sc.participants!.some((p) => re.test(p))).map(([n]) => n) : [];
@@ -155,7 +168,9 @@ export function stateContractAccess(sc: StateContractFields, buyer: Buyer | null
         ? `Open to ${where} political subdivisions; the award's use of contracts: "${sc.use}"`
         : `For "${sc.use}" only, per the award`
       : sc.locals
-        ? `Open to ${where} local governments through the ${program}`
+        ? sc.state === "OR"
+          ? "Open to OrCPP members: Oregon public bodies that join DAS's cooperative procurement program, free"
+          : `Open to ${where} local governments through the ${program}`
         : `For ${where} state agencies only; not open to cooperative purchasing`;
   if (sc.owner) {
     const where2 = stateLabel(sc.state);
@@ -175,6 +190,11 @@ export function stateContractAccess(sc: StateContractFields, buyer: Buyer | null
     return { member: false, eligible: false, reason: counties.length ? `${buyer.name} isn't among its participating jurisdictions (${list(counties)} ${counties.length === 1 ? "is" : "are"})` : `for ${where} state agencies only; no county participates` };
   }
   if (!sc.locals) return { member: false, eligible: false, reason: sc.use ? `for "${sc.use}" only, per the award` : `for ${where} state agencies only; the state hasn't opened it to cooperative purchasing` };
+  // Oregon: OrCPP members may use it. DAS's list is matched by name, so a buyer it doesn't name is told how to join, not turned away.
+  if (sc.state === "OR")
+    return orcpp
+      ? { member: true, eligible: true, reason: `Open to OrCPP members; DAS lists ${orcpp} as one` }
+      : { member: false, eligible: true, reason: `Open to OrCPP members; DAS's member list doesn't name ${buyer.name}, and joining is free` };
   return { member: true, eligible: true, reason: open };
 }
 

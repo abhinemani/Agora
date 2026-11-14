@@ -1,4 +1,9 @@
 {
+ "oregon": {
+  "documents": 651,
+  "pages": 651,
+  "bytes": 1875286
+ },
  "hawaii": {
   "documents": 107,
   "pages": 1320,

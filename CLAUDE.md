@@ -23,8 +23,9 @@ Run `rehearse` against a production build: `npm run build`, then `npx next start
 - `/api/state` sends the `Db` to the browser, cut to what the visitor's agency may see (`app/api/state/route.ts`). A new collection that holds an agency's or a person's records needs a line there. Large datasets stay server-only and are read lazily: the co-op directory (`lib/directory.ts`), the co-op catalog (`lib/catalog.ts`) and state rules (`lib/state-rules.ts`). Results carry only the slice a page needs. Never import those modules or their JSON into a `"use client"` component.
 - The results page (`app/request/[id]/page.tsx`) reads as a record: the request as fields, one recommended route (`components/Shopper.tsx`), every priced option in one table (`components/results/OptionsTable.tsx`), then the other sources folded (`components/results/Fold.tsx`). Its copy is formal and third-person: no "your shopper", no "I". Keep new text on it that way.
 - Contract uploads are read in the background: `/api/contracts/parse` answers with a job id and the page polls for the result (`lib/parse-jobs.ts`).
+- TRX documents' text lives in Postgres (`lib/doc-store.ts`), filled on the server by `lib/doc-ingest.ts` from `instrumentation.ts`; fetching and reading a document is `lib/doc-fetch.ts`. Search results, the explorer and Ask a contract use it when `DATABASE_URL` is set; without it they work as before. Watch `/api/docs/status` after a deploy. Its 5 GB volume is the limit (ingest stops at 4,000 MB).
 - A helper used by both a server page and a client component can't live in a `"use client"` file (see `components/StateRuleBits.tsx`).
-- TRX state contracts (`lib/trx.ts`) are the preferred route: NJSTART, Hawaii SPO, Arkansas OSP, NYS OGS (with New York's preferred sources) and Empire Procure Connect contracts lead results for their own state's buyers. Keep that preference when changing search or ranking.
+- TRX state contracts (`lib/trx.ts`) are the preferred route: NJSTART, Hawaii SPO, Arkansas OSP, NYS OGS (with New York's preferred sources), Empire Procure Connect and OregonBuys contracts lead results for their own state's buyers. Keep that preference when changing search or ranking.
 - The UI uses USWDS-based Tailwind tokens (`tailwind.config.ts`). The theme has `error-*`, `warning-*` and `success-*` colors, plus emerald and amber; it has no `red-*`.
 
 ## Changing a prompt or a check
@@ -39,15 +40,16 @@ The log holds what people typed. Keep it server-only, and keep the recent-calls 
 
 Generated data is committed so builds need no network. Re-run the importers after changing a source file or a review decision, in this order:
 
-1. `npm run fetch:federal`, `fetch:gsa`, `fetch:rosters` download sources (these need network access to their hosts).
+1. `npm run fetch:federal`, `fetch:gsa`, `fetch:rosters` download sources (these need network access to their hosts). `npm run fetch:oregon` downloads OregonBuys' DAS price agreements, each agreement's page (about an hour, one page at a time) and the OrCPP member list into a gitignored cache.
 2. `npm run import:coops` builds the co-op directory (`seed/coops/directory.json.gz`, `insights.json`).
 3. `npm run import:price-files` reads item price files into `seed/catalog/price-rows.json`. PDFs need `pdftotext` (poppler-utils). SitOnIt's 43 MB book is downloaded into a gitignored cache when missing.
 4. `npm run import:njstart` rebuilds NJSTART's records from `seed/catalog/source/njstart/` (pass the unzipped folder of a new NJSTART export to read it in first).
    `npm run import:hawaii` rebuilds Hawaii's records from `seed/catalog/source/hawaii/` (a new download goes through `--read`, a review, then `--collect`; see the README).
    `npm run import:arkansas` rebuilds Arkansas's records from `seed/catalog/source/arkansas/` (a new download goes through `--read`, a review, `--collect` and `--prices`; see the README).
-   `npm run import:doctext -- --hawaii <dir> --arkansas <dir> --ny <dir> --njstart <dir> --epc <dir>` rebuilds the held document text from the programs' collections.
+   `npm run import:doctext -- --hawaii <dir> --arkansas <dir> --ny <dir> --njstart <dir> --epc <dir> --oregon seed/catalog/source/oregon/cache` rebuilds the held document text from the programs' collections (any subset; the others' text is kept).
    `npm run import:epc` rebuilds Empire Procure Connect's records from `seed/catalog/source/epc/` (a new download goes through `--read`).
    `npm run import:ny` rebuilds New York's records from `seed/catalog/source/ny/` (a new download goes through `--read`).
+   `npm run import:oregon` rebuilds Oregon's records from `seed/catalog/source/oregon/` (after `fetch:oregon`, pass `--read`).
 5. `npm run import:catalog-coops` builds the co-op catalog (`seed/catalog/catalog.json.gz`) and attaches the price rows.
 6. `npm run import:state-rules` builds `lib/state-rules.json` from `seed/states/source/`.
 

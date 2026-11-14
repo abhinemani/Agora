@@ -33,4 +33,4 @@ export const POST = withSession(async (req: Request) => {
     console.error(err);
     return NextResponse.json({ error: "Could not read that file." }, { status: 500 });
   }
-});
+}, { account: "upload a contract register" });

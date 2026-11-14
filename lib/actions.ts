@@ -4,7 +4,7 @@
 import { buildResults, estimateTotal, finishCoopSection, findSimilarSolicitation, mentionsPreference, parseRequest, ruleFor } from "./assistant";
 import { catalogContract, catalogCoopHits, catalogOffering, catalogProducts, catalogRetrieved, catalogSupplierById, materializeSupplier } from "./catalog";
 import { stateRuleFor } from "./state-rules";
-import { getDb, nextId, resetDb } from "./db";
+import { currentScope, getDb, nextId, resetDb } from "./db";
 import { dedupe, extractFile, findSupplier, parseContract, type InputFile } from "./parser";
 import {
   onAppStarted,
@@ -61,6 +61,7 @@ export async function createRequest(text: string) {
     preference_answer: null,
     created_at: now(),
     outcome: null,
+    owner: currentScope()?.user?.id ?? (currentScope()?.visitor ? `v:${currentScope()!.visitor}` : undefined),
   };
 
   // Preference policies are on file only for the home agency.

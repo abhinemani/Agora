@@ -29,7 +29,17 @@ npm run dev        # http://localhost:3000
 
 Everything works offline. To have Claude (`claude-sonnet-5-5`) parse requests and structure uploaded contracts, copy `.env.example` to `.env` and set `ANTHROPIC_API_KEY`. Without a key, a keyword matcher and a regex-and-table contract parser take over, and the header shows an "Offline parsing" tag. Any API failure falls back the same way.
 
-State lives in memory on the server, with one exception: the agency a visitor is buying for is kept in their own browser, in a cookie (`lib/session.ts`), so two people using the site at once each see their own agency. Every route binds that agency to the request, which is what `db.session.buyer` reads (`lib/db.ts`). The home page has a **Select your agency** control under the search box. **Reset demo** (in the revenue ledger) reseeds everything with stable IDs, so the demo script below is repeatable.
+State is kept in memory while the app runs and, when `DATABASE_URL` is set, saved to Postgres so a restart or redeploy doesn't lose it (see **Accounts and saved data** below). Without `DATABASE_URL`, which is how local runs and the rehearsal work, it stays in memory only. The home page has a **Select your agency** control under the search box.
+
+## Accounts and saved data
+
+**What needs an account.** Anyone can search, set their agency, see the buying plan, and use the product dive, the quote check and Ask a contract. An account is needed for anything that keeps a record for a person or an agency: the cart, checkout and orders, quote requests, paperwork drafts, asking purchasing about a co-op, solicitations, the purchasing pages, the supplier side and uploads. The check is on the server: `/api/act` lists the open actions and answers 401 for the rest, and the upload routes do the same (`withSession` in `lib/session.ts`). In the browser, a step that needs an account opens the sign-in dialog and then carries on with what the person was doing; account-only pages show a sign-in panel instead (`components/Account.tsx`).
+
+**Accounts.** Email and password (`lib/auth.ts`, `/api/auth`). Passwords are stored as salted scrypt hashes and session tokens as SHA-256 hashes, so neither can be read back. The session is an HttpOnly cookie that lasts 30 days. Five wrong passwords for one email pause sign-in for ten minutes. An account has a name, an email, what the person does (buyer, purchasing or supplier, which sets the side of Agora they start on) and their agency. There is no email verification or password reset yet, because Agora doesn't send email, and the account's role doesn't restrict what a signed-in person can open: the **View the demo as** switcher still works for everyone.
+
+**Who sees what.** Three things come from the visitor's browser as cookies and are bound to each request: their agency, their account, and an id for the browser. A person's agency is theirs alone; with an account it is saved and follows them to another browser. Searches belong to whoever made them, and searches made before signing in move to the account. Carts and orders are still kept per agency, so two people at the same agency share them.
+
+**Saved data.** The store is still the in-memory `Db` every action changes. With `DATABASE_URL` set, `lib/persist.ts` saves the difference between that `Db` and a fresh seed after each change (new and changed records, removed ids and their order, one row per collection in `app_state`) and applies it on top of the seed at start. A change to the seed therefore still reaches the site, except where someone has since edited the same record. Users and sessions have their own tables (`lib/pg.ts`). **Reset demo** needs an account and clears the saved state for everyone; it leaves accounts alone.
 
 ## How it earns
 
@@ -285,6 +295,7 @@ The prototype supports section 8 of the spec end to end. Switch roles with the B
 | `lib/seed.ts` | Agency, 8 suppliers, 40 listings across all six sources, solicitations, peers, reviews |
 | `lib/assistant.ts` | Request parsing, matching, ranking, threshold and payment rules, "How these are ranked" |
 | `lib/shopper.ts`, `lib/shopper-ai.ts`, `components/Shopper.tsx` | The personal shopper: the rule-based buying plan and purchase file, Claude's wording and answers with their grounding check, and the two-step panel on the results page |
+| `lib/auth.ts`, `lib/session.ts`, `lib/persist.ts`, `lib/pg.ts`, `components/Account.tsx` | Accounts and sessions, what each request knows about who is asking, saving the store to Postgres, and the sign-in dialog and account gate |
 | `lib/dive.ts`, `lib/dive-ai.ts`, `app/dive/` | The product dive: the shortlist, the questions built from it, the comparison, and Claude's reading of typed messages |
 | `lib/quote-check.ts`, `app/quote-check/`, `app/api/quote-check/` | Check a quote: reading its lines and comparing them with the price files by part number |
 | `lib/docs.ts`, `app/ask/` | Ask a contract: reading held and published contract documents, finding passages, and checking quotes |

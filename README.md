@@ -48,7 +48,7 @@ State is kept in memory while the app runs and, when `DATABASE_URL` is set, save
 
 **Site admin** (`/admin`, **Site admin** in the account menu for admins). Four tabs, all served by `/api/admin`, which answers only admins:
 
-- **Overview.** Account counts (confirmed, seen and new this week, admins, suspended), which services this server has (saved state, AI, email, root admins), the shared demo's activity with **Reset the demo**, and the document store's progress.
+- **Overview.** Account counts (confirmed, seen and new this week, admins, suspended), which services this server has (saved state, AI, email, root admins), the shared demo's activity with **Reset the demo**, and the document store's progress. The store's counts are read once per visit and only on this tab (`?view=docs`), because their queries share the database's five connections with the background ingest.
 - **People.** Every account, newest first, searchable by name, email or agency, with its role, agency, status and when it was last seen (written at most every five minutes). An admin can change a role, confirm an address or send a confirmation link, send a password-reset link, sign the account out everywhere, make or remove an admin, suspend or restore it, and delete it (typing its email to confirm). A suspended account can't sign in and its sessions stop working at once. Admins must have a confirmed address.
 - **Supplier claims.** Claims waiting for review, oldest first, with **Approve** and **Reject**. Rejecting returns the storefront to unclaimed.
 - **Activity.** The 25 latest admin actions with who made them, from `/admin` and from the reset and approve buttons elsewhere (`lib/admin-log.ts`, the `admin_log` table).

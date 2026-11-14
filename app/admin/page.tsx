@@ -25,9 +25,9 @@ interface Overview {
   config: { database: boolean; ai: boolean; email: boolean; root_admins: number };
   site: { requests: number; orders: number; carts: number; quotes: number; suppliers: number; claimed: number };
   claims: Claim[];
-  docs: { texts: number; pages: number; linked_urls: number; contracts: number; database_mb: number | null; ingest: { phase: string; queued: number; done: number; stopped_reason: string | null } } | null;
   log: AdminEntry[];
 }
+type Docs = { texts: number; pages: number; linked_urls: number; contracts: number; database_mb: number | null; ingest: { phase: string; queued: number; done: number; stopped_reason: string | null } } | null;
 
 const TABS = [
   ["overview", "Overview"],
@@ -79,7 +79,7 @@ function Tag({ tone, children }: { tone: "admin" | "warn" | "off" | "plain"; chi
 
 // ---------------------------------------------------------------- overview
 
-function OverviewTab({ o, onReset, go }: { o: Overview; onReset: () => Promise<void>; go: (t: Tab) => void }) {
+function OverviewTab({ o, docs, onReset, go }: { o: Overview; docs: Docs | undefined; onReset: () => Promise<void>; go: (t: Tab) => void }) {
   const [confirming, setConfirming] = useState(false);
   const [busy, setBusy] = useState(false);
   const a = o.accounts;
@@ -172,25 +172,36 @@ function OverviewTab({ o, onReset, go }: { o: Overview; onReset: () => Promise<v
 
       <section className="space-y-3">
         <h2 className="font-heading text-heading-md font-bold text-ink">Document store</h2>
-        {o.docs ? (
+        {docs === undefined ? (
+          <p className="text-ui-xs text-base-darker">Reading the counts…</p>
+        ) : docs ? (
           <>
             <dl className="grid grid-cols-2 border border-base-light bg-white sm:grid-cols-4 [&>*:not(:first-child)]:border-l [&>*]:border-base-light">
-              <Stat k="Documents read" v={n(o.docs.texts)} note={`of ${n(o.docs.linked_urls)} linked`} />
-              <Stat k="Pages" v={n(o.docs.pages)} />
-              <Stat k="Contracts" v={n(o.docs.contracts)} />
-              <Stat k="Database" v={o.docs.database_mb == null ? "–" : `${n(o.docs.database_mb)} MB`} />
+              <Stat k="Documents read" v={n(docs.texts)} note={`of ${n(docs.linked_urls)} linked`} />
+              <Stat k="Pages" v={n(docs.pages)} />
+              <Stat k="Contracts" v={n(docs.contracts)} />
+              <Stat k="Database" v={docs.database_mb == null ? "–" : `${n(docs.database_mb)} MB`} />
             </dl>
             <p className="text-ui-xs text-base-darker">
-              Background reading: {o.docs.ingest.phase}
-              {o.docs.ingest.queued ? `, ${n(o.docs.ingest.done)} of ${n(o.docs.ingest.queued)} fetched` : ""}
-              {o.docs.ingest.stopped_reason ? `. Stopped: ${o.docs.ingest.stopped_reason}` : ""}.{" "}
+              Background reading: {docs.ingest.phase}
+              {docs.ingest.queued ? `, ${n(docs.ingest.done)} of ${n(docs.ingest.queued)} fetched` : ""}
+              {docs.ingest.stopped_reason ? `. Stopped: ${docs.ingest.stopped_reason}` : ""}.{" "}
               <a href="/api/docs/status" className="font-bold text-primary hover:text-primary-dark">
                 Full status →
               </a>
             </p>
           </>
         ) : (
-          <p className="text-ui-xs text-base-darker">No database on this server, so documents are read from the held text as before.</p>
+          <p className="text-ui-xs text-base-darker">
+            {o.config.database ? (
+              <>
+                The counts couldn't be read just now.{" "}
+                <a href="/api/docs/status" className="font-bold text-primary hover:text-primary-dark">Full status →</a>
+              </>
+            ) : (
+              "No database on this server, so documents are read from the held text as before."
+            )}
+          </p>
         )}
       </section>
 
@@ -494,11 +505,21 @@ export default function AdminPage() {
   useEffect(() => {
     if (user?.admin) void load();
   }, [user?.admin, user?.id, load]);
-  // Each tab change re-reads the overview, so counts and the log stay current.
+  // Each tab change re-reads the overview (accounts, claims and the log: light queries), so they stay current.
   useEffect(() => {
     if (user?.admin && o) void load();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [tab]);
+
+  // The document store's counts are read once per visit, and only if the Overview is opened: those queries share
+  // the database connections with the background document ingest, so the page never repeats them on its own.
+  const [docs, setDocs] = useState<Docs | undefined>(undefined);
+  const askedDocs = useRef(false);
+  useEffect(() => {
+    if (!user?.admin || tab !== "overview" || askedDocs.current) return;
+    askedDocs.current = true;
+    call<Docs>("GET", "?view=docs").then(setDocs, () => setDocs(null));
+  }, [user?.admin, tab]);
 
   const flash = (msg: string) => {
     setNote(msg);
@@ -560,6 +581,7 @@ export default function AdminPage() {
       ) : tab === "overview" ? (
         <OverviewTab
           o={o}
+          docs={docs}
           go={go}
           onReset={async () => {
             try {

@@ -1,6 +1,9 @@
 // The admin pages' data and operations. Only admins (lib/admin.ts) get past the first line.
 //
-//   GET  ?view=overview              counts, configuration, claims waiting, document store, recent admin actions
+//   GET  ?view=overview              counts, configuration, claims waiting, recent admin actions
+//   GET  ?view=docs                  the document store's counts. Asked for separately and rarely: its queries share the
+//                                    connection pool (5) with the background ingest (lib/doc-ingest.ts), so the overview
+//                                    doesn't run them
 //   GET  ?view=accounts&q=&offset=   accounts, newest first
 //   POST { op, ... }                 one change; each is written to the admin log (lib/admin-log.ts)
 
@@ -25,7 +28,7 @@ const me = () => currentScope()?.user ?? null;
 
 async function overview() {
   const db = getDb();
-  const [accounts, docs, log] = await Promise.all([accountCounts(), docStoreStatus().catch(() => null), recentAdminLog(25)]);
+  const [accounts, log] = await Promise.all([accountCounts(), recentAdminLog(25)]);
   const claimed = db.suppliers.filter((s) => s.claim);
   return {
     accounts,
@@ -47,7 +50,6 @@ async function overview() {
       .filter((s) => s.claim!.status === "pending")
       .map((s) => ({ supplier_id: s.id, supplier: s.name, website: s.website ?? null, name: s.claim!.name, email: s.claim!.email, at: s.claim!.at }))
       .sort((a, b) => a.at.localeCompare(b.at)),
-    docs: docs ? { ...docs, ingest: ingestState() } : null,
     log,
   };
 }
@@ -63,7 +65,12 @@ export const GET = withSession(
     if (!isAdmin(me())) return forbidden();
     const url = new URL(req.url);
     try {
-      return NextResponse.json({ result: url.searchParams.get("view") === "accounts" ? await accounts(url) : await overview() });
+      const view = url.searchParams.get("view");
+      if (view === "docs") {
+        const store = await docStoreStatus().catch(() => null);
+        return NextResponse.json({ result: store ? { ...store, ingest: ingestState() } : null });
+      }
+      return NextResponse.json({ result: view === "accounts" ? await accounts(url) : await overview() });
     } catch (e) {
       console.error("[admin]", e);
       return NextResponse.json({ error: "The admin data couldn't be read. Try again." }, { status: 500 });

@@ -20,7 +20,15 @@
   "suppliers_merged_by_review": 7,
   "contracts_categorized": 30860,
   "products_renamed_by_review": 223,
-  "canon_rows_added": 109
+  "canon_rows_added": 109,
+  "price_file_rows": 458,
+  "price_file_offerings": 376,
+  "price_file_unmatched": [
+   "BuyBoard 724-23: Donalson CDJR, LLC",
+   "BuyBoard 724-23: Rockdale Country Ford",
+   "BuyBoard 724-23: Randall Reed's Prestige Ford",
+   "BuyBoard 724-23: Silsbee Toyota"
+  ]
  },
  "suppliers": {
   "records": 24094,
@@ -310,7 +318,7 @@
    "with_end": 2451,
    "expired": 0,
    "with_states": 2441,
-   "offerings": 0
+   "offerings": 370
   },
   {
    "coop": "HGACBuy",
@@ -398,7 +406,7 @@
    "with_end": 519,
    "expired": 9,
    "with_states": 468,
-   "offerings": 0
+   "offerings": 6
   },
   {
    "coop": "GSA MAS",
@@ -413,18 +421,33 @@
   }
  ],
  "products": {
-  "products": 34619,
-  "offerings": 39503,
+  "products": 34763,
+  "offerings": 39879,
   "by_status": {
    "quote": 1509,
    "published_discount": 8102,
    "member_login": 26291,
-   "published_price": 3601
+   "published_price": 3977
   },
   "priced_suppliers": [
-   "Canon U.S.A., Inc."
+   "Canon U.S.A., Inc.",
+   "Caldwell Country Chevrolet II LLC",
+   "Five Star Chevrolet",
+   "The Sewell Family of Companies, Inc.",
+   "Parkway Chevrolet, Inc.",
+   "Gunn Chevrolet LTD",
+   "Silsbee Ford, Inc.",
+   "Grapevine DCJ, LLC",
+   "CZAR Companies LLC dba Cameron Country CDJR",
+   "Chrysler Jeep Dodge City of McKinney",
+   "Austin Mac Haik Ford Lincoln, LTD dba Mac Haik Ford Lincoln",
+   "Sam Pack's Five Star Ford",
+   "Rush Truck Centers of Texas, LP",
+   "Chastang Enterprises Houston LLC dba Chastang Ford",
+   "LHD Partners, LP dba Longhorn Harley-Davidson",
+   "Endera Motors, LLC"
   ],
-  "multi_route": 4786
+  "multi_route": 4904
  },
  "documents": {
   "total": 12602,

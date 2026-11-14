@@ -17,6 +17,7 @@
 process.env.AGORA_SKIP_CATALOG_CORRECTIONS = "1";
 
 import { existsSync, readFileSync, writeFileSync, mkdirSync } from "node:fs";
+import { createHash } from "node:crypto";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { gunzipSync, gzipSync } from "node:zlib";
@@ -526,6 +527,76 @@ let canonAdded = 0;
     }
 }
 
+// Item prices read from co-op price files (scripts/import-price-files.ts): award reports and
+// cost sheets. Each row joins the catalog contract with its co-op and number whose supplier
+// is the same company, matched on the words of the name ("5 Star Chevrolet" is "Five Star
+// Chevrolet"); a row whose company can't be told apart from another stays out.
+const priceFileStats = { rows: 0, attached: 0, unmatched: [] as string[] };
+{
+  const file = join(ROOT, "seed/catalog/price-rows.json");
+  const priceRows: { coop: string; number: string; supplier: string; product: string; maker: string | null; price: number; unit: string; basis: string; vintage: string; file: string; source_url: string; page: number }[] = existsSync(file) ? JSON.parse(readFileSync(file, "utf8")) : [];
+  const NUM: Record<string, string> = { "1": "one", "2": "two", "3": "three", "4": "four", "5": "five", "6": "six", "7": "seven" };
+  const STOP = new Set(["llc", "inc", "ltd", "lp", "co", "corp", "company", "companies", "dba", "the", "of", "and", "ii", "iii", "family", "enterprises", "group", "motors", "motor"]);
+  // Car makes say which franchise a dealer is: Silsbee Ford and Silsbee Toyota are two companies.
+  const MAKES = new Set(["ford", "lincoln", "chevrolet", "chevy", "gmc", "buick", "cadillac", "toyota", "nissan", "honda", "dodge", "chrysler", "jeep", "ram", "cdjr", "dcj", "kia", "hyundai", "subaru"]);
+  const words = (s: string) =>
+    s
+      .toLowerCase()
+      .replace(/[^a-z0-9 ]+/g, " ")
+      .split(/\s+/)
+      .map((w) => NUM[w] ?? w)
+      .map((w) => (w === "cjdr" ? "cdjr" : w === "mack" ? "mac" : w.length > 3 ? w.replace(/s$/, "") : w))
+      .filter((w) => w.length > 1 && !STOP.has(w));
+  const nameById = new Map(suppliers.map((s) => [s.id, [s.name, ...s.aliases]]));
+  /** How alike two company names are: shared distinctive words over all of them; 0 when their car makes differ. */
+  const alike = (x: string, y: string) => {
+    const a = words(x), b = words(y);
+    const ma = a.filter((w) => MAKES.has(w)), mb = b.filter((w) => MAKES.has(w));
+    if (ma.length && mb.length && !ma.some((w) => mb.includes(w))) return 0;
+    const na = new Set(a.filter((w) => !MAKES.has(w))), nb = new Set(b.filter((w) => !MAKES.has(w)));
+    const shared = [...na].filter((w) => nb.has(w)).length;
+    return shared / (new Set([...na, ...nb]).size || 1);
+  };
+  const score = (name: string, names: string[]) => Math.max(...names.map((n) => alike(name, n)));
+  const productIds = new Map<string, string>();
+  priceFileStats.rows = priceRows.length;
+  for (const r of priceRows) {
+    const pool = contracts.filter((c) => c.coop === r.coop && c.number === r.number);
+    const ranked = pool.map((c) => ({ c, s: score(r.supplier, nameById.get(c.supplier) ?? []) })).sort((a, b) => b.s - a.s);
+    const best = ranked[0];
+    const tie = ranked.find((x) => x.c.supplier !== best?.c.supplier && x.s === best?.s);
+    if (!best || best.s < 0.6 || tie) {
+      priceFileStats.unmatched.push(`${r.coop} ${r.number}: ${r.supplier}`);
+      continue;
+    }
+    const pkey = r.product.toLowerCase();
+    let pid = productIds.get(pkey);
+    if (!pid) {
+      pid = `prd_pf_${createHash("sha1").update(pkey).digest("hex").slice(0, 16)}`;
+      productIds.set(pkey, pid);
+      products.push({ id: pid, name: r.product, maker: r.maker, mpn: null, review: false });
+    }
+    offerings.push({
+      id: `off_pf_${createHash("sha1").update(`${r.file}|${r.page}|${r.supplier}|${r.product}`).digest("hex").slice(0, 16)}`,
+      product: pid,
+      supplier: best.c.supplier,
+      contract: best.c.id,
+      coop: r.coop,
+      sku: null,
+      price: r.price,
+      list: null,
+      discount: null,
+      unit: r.unit,
+      status: "published_price",
+      vintage: r.vintage,
+      url: r.source_url,
+      category: `${r.basis === "awarded_bid" ? "Awarded bid" : "Base price"}, page ${r.page} of the price file`,
+    });
+    priceFileStats.attached++;
+  }
+  priceFileStats.unmatched = [...new Set(priceFileStats.unmatched)];
+}
+
 // ------------------------------------------------------------------ documents: the price-list reader's queue
 
 const documents = rawDocuments.map((d) => {
@@ -655,6 +726,9 @@ const insights = {
     contracts_categorized: categorized,
     products_renamed_by_review: renamedByReview,
     canon_rows_added: canonAdded,
+    price_file_rows: priceFileStats.rows,
+    price_file_offerings: priceFileStats.attached,
+    price_file_unmatched: priceFileStats.unmatched,
   },
   suppliers: {
     records: rawSuppliers.length,

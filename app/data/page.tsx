@@ -629,7 +629,7 @@ export default function CoopDataPage() {
         <p className="mt-2 max-w-[72ex] text-ui-xs text-base-dark">
           How the preference works: an NJSTART contract leads when it fits within {TRX_MARGIN} points of the best co-op contract, so a far closer co-op fit still wins. Line
           items are those on each contract&apos;s first summary page; contracts with more pages say so on their own page. The {n(nj.documents)} attached documents (price
-          sheets, terms, methods of operation) are linked, not read yet. Hawaii, Arkansas and New York are loaded too (below); Oregon is the one TRX state not loaded yet.
+          sheets, terms, methods of operation) are read from NJSTART when someone asks a question of the contract, and each contract&apos;s summary page is held as text. Hawaii, Arkansas and New York are loaded too (below); Oregon is the one TRX state not loaded yet.
         </p>
         <p className="mt-3 text-ui-xs text-base-dark">
           Try it: set your agency to Harmon Lake Township, New Jersey, and search for <Link href="/" className="text-primary">snow plow parts</Link> or road salt, or browse{" "}

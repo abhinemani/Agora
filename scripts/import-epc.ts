@@ -164,6 +164,7 @@ for (const r of src.contracts) {
       line_items_paginated: false,
     },
   });
+  documents.push({ document_id: `doc_epc_${hash(`${id}|summary`)}`, cooperative: COOP, url: r.url, label: "Empire Procure Connect contract summary page", contract_id: id });
   for (const a of r.attachments) documents.push({ document_id: `doc_epc_${hash(`${id}|${a.url}`)}`, cooperative: COOP, url: a.url, label: a.label || "Contract document", contract_id: id });
 }
 writeFileSync(join(OUT, "records.json.gz"), gzipSync(JSON.stringify({ retrieved: src.retrieved, suppliers: [...suppliers.values()], contracts, products: [], offerings: [], documents }), { level: 9 }));

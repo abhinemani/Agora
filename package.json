@@ -20,6 +20,7 @@
     "import:arkansas": "tsx scripts/import-arkansas.ts",
     "import:ny": "tsx scripts/import-ny.ts",
     "import:epc": "tsx scripts/import-epc.ts",
+    "import:doctext": "tsx scripts/import-doctext.ts",
     "import:catalog-coops": "tsx scripts/import-catalog.ts",
     "fetch:federal": "NODE_USE_ENV_PROXY=1 tsx scripts/fetch-federal-ids.ts",
     "fetch:gsa": "NODE_USE_ENV_PROXY=1 tsx scripts/fetch-gsa.ts",

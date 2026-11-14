@@ -424,6 +424,8 @@ for (const a of attachments) {
   seenDoc.add(k);
   documents.push({ document_id: `doc_nj_${hash(k)}`, cooperative: COOP, url: a.file_url, label: a.attachment_name.replace(/\s+/g, " ").trim() || "Contract document", contract_id: c.contract_id });
 }
+// Each contract's own summary page (header, terms, items), held as text (npm run import:doctext).
+for (const c of contracts) documents.push({ document_id: `doc_nj_${hash(`${c.contract_id}|summary`)}`, cooperative: COOP, url: c.contract_url, label: "NJSTART contract summary page", contract_id: c.contract_id });
 stats.documents = documents.length;
 
 // ------------------------------------------------------------------ write

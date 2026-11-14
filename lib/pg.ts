@@ -57,7 +57,20 @@ export function schema(): Promise<void> {
          made_at timestamptz not null,
          data jsonb not null
        );
-       create index if not exists ai_log_made_at on ai_log(made_at desc);`,
+       create index if not exists ai_log_made_at on ai_log(made_at desc);
+       alter table users add column if not exists is_admin boolean not null default false;
+       alter table users add column if not exists disabled_at timestamptz;
+       alter table users add column if not exists last_seen_at timestamptz;
+       create table if not exists admin_log (
+         id bigserial primary key,
+         made_at timestamptz not null default now(),
+         actor_id text,
+         actor_email text not null,
+         action text not null,
+         target text,
+         detail text
+       );
+       create index if not exists admin_log_made_at on admin_log(made_at desc);`,
     )
     .then(() => undefined));
 }

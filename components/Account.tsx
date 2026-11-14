@@ -175,6 +175,7 @@ const ACCOUNT_PATHS: [RegExp, string][] = [
   [/^\/contracts\/upload/, "upload a contract"],
   [/^\/solicitations/, "work on solicitations"],
   [/^\/coops/, "manage co-op member lists"],
+  [/^\/admin/, "manage the site"],
 ];
 
 /** Shows a sign-in panel in place of an account-only page. */

@@ -6,6 +6,8 @@ import * as A from "@/lib/actions";
 import { currentScope } from "@/lib/db";
 import { needsAccount } from "@/lib/session";
 import { isAdmin } from "@/lib/admin";
+import { logAdmin } from "@/lib/admin-log";
+import { getDb } from "@/lib/db";
 
 export const dynamic = "force-dynamic";
 
@@ -103,7 +105,9 @@ export const POST = withSession(async (req: Request) => {
   if (!OPEN.has(body.action) && !currentScope()?.user) return needsAccount(WHY.find(([re]) => re.test(body.action))?.[1] ?? "do that");
   if (ADMIN.has(body.action) && !isAdmin(currentScope()?.user)) return NextResponse.json({ error: "Only a Sovra admin can do that on the live site." }, { status: 403 });
   try {
-    return NextResponse.json({ result: await handler(body) });
+    const result = await handler(body);
+    if (ADMIN.has(body.action)) await logAdmin(currentScope()?.user, body.action === "reset" ? "Reset the demo" : "Approved a supplier claim", body.action === "approveClaim" ? (getDb().suppliers.find((x) => x.id === body.supplierId)?.name ?? body.supplierId) : null);
+    return NextResponse.json({ result });
   } catch (err) {
     const status = err instanceof A.ActionError ? 400 : 500;
     if (status === 500) console.error(err);

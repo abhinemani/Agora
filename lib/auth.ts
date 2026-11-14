@@ -18,9 +18,15 @@ export interface User {
   agency: Buyer | null;
   /** They opened a link sent to this address, so it is theirs. Notices go only to confirmed addresses. */
   verified: boolean;
+  /** Another admin made them one in the admin pages (lib/admin.ts also counts AGORA_ADMIN_EMAILS). */
+  granted_admin: boolean;
+  /** An admin suspended the account: it can't sign in, and its sessions no longer count. */
+  disabled: boolean;
 }
 interface Stored extends User {
   password_hash: string;
+  created_at?: string;
+  last_seen_at?: string | null;
 }
 
 export class AuthError extends Error {}
@@ -39,10 +45,11 @@ mem.tokens ??= new Map();
 
 export type TokenKind = "verify" | "reset";
 const TOKEN_MINUTES: Record<TokenKind, number> = { verify: 60 * 24 * 3, reset: 60 };
-const COLUMNS = "id, email, name, role, agency, email_verified_at is not null as verified";
+const COLUMNS = "id, email, name, role, agency, email_verified_at is not null as verified, is_admin as granted_admin, disabled_at is not null as disabled";
+const U_COLUMNS = "u.id, u.email, u.name, u.role, u.agency, u.email_verified_at is not null as verified, u.is_admin as granted_admin, u.disabled_at is not null as disabled";
 
 const sha = (s: string) => createHash("sha256").update(s).digest("hex");
-const publicUser = ({ password_hash: _hash, ...u }: Stored): User => u;
+const publicUser = (u: Stored): User => ({ id: u.id, email: u.email, name: u.name, role: u.role, agency: u.agency, verified: u.verified, granted_admin: Boolean(u.granted_admin), disabled: Boolean(u.disabled) });
 
 function hashPassword(password: string, salt = randomBytes(16).toString("hex")): Promise<string> {
   return new Promise((resolve, reject) => scrypt(password, salt, 64, (err, key) => (err ? reject(err) : resolve(`scrypt$${salt}$${key.toString("hex")}`))));
@@ -84,7 +91,7 @@ export async function signUp(args: { email: unknown; password: unknown; name: un
   if (password.length < 10) throw new AuthError("Use a password of at least 10 characters.");
   if (password.length > 200) throw new AuthError("That password is too long.");
   if (await byEmail(email)) throw new AuthError("There's already an account for that email. Sign in instead.");
-  const user: Stored = { id: `usr_${randomBytes(9).toString("hex")}`, email, name, role, agency: args.agency, verified: false, password_hash: await hashPassword(password) };
+  const user: Stored = { id: `usr_${randomBytes(9).toString("hex")}`, email, name, role, agency: args.agency, verified: false, granted_admin: false, disabled: false, password_hash: await hashPassword(password), created_at: new Date().toISOString(), last_seen_at: null };
   const p = pool();
   if (!p) mem.users.set(user.id, user);
   else {
@@ -108,6 +115,7 @@ export async function signIn(args: { email: unknown; password: unknown }): Promi
     throw new AuthError("That email and password don't match an account.");
   }
   failures.delete(email);
+  if (user.disabled) throw new AuthError("This account has been suspended. Write to the Agora team if you think that's a mistake.");
   return publicUser(user);
 }
 
@@ -147,11 +155,16 @@ export async function userForToken(token: string | null): Promise<User | null> {
     const s = mem.sessions.get(sha(token));
     if (!s || s.expires < Date.now()) return null;
     const u = mem.users.get(s.user_id);
-    return u ? publicUser(u) : null;
+    if (!u || u.disabled) return null;
+    u.last_seen_at = new Date().toISOString();
+    return publicUser(u);
   }
   await schema();
-  const r = await p.query(`select ${COLUMNS.replace(/\b(id|email|name|role|agency|email_verified_at)\b/g, "u.$1")} from sessions s join users u on u.id = s.user_id where s.token_hash = $1 and s.expires_at > now()`, [sha(token)]);
-  return (r.rows[0] as User | undefined) ?? null;
+  const r = await p.query(`select ${U_COLUMNS} from sessions s join users u on u.id = s.user_id where s.token_hash = $1 and s.expires_at > now() and u.disabled_at is null`, [sha(token)]);
+  const user = (r.rows[0] as User | undefined) ?? null;
+  // When each person was last here, for the admin pages. Written at most every five minutes, and never in the request's way.
+  if (user) void p.query("update users set last_seen_at = now() where id = $1 and (last_seen_at is null or last_seen_at < now() - interval '5 minutes')", [user.id]).catch(() => undefined);
+  return user;
 }
 
 /** Save the agency a signed-in person chose, so it follows them to other browsers. */
@@ -254,8 +267,8 @@ export async function resetPassword(token: unknown, password: unknown): Promise<
 /** People with confirmed addresses at an agency, by what they do. For approval notices. */
 export async function staffAt(agency: string, role: AccountRole): Promise<User[]> {
   const p = pool();
-  if (!p) return [...mem.users.values()].filter((u) => u.role === role && u.verified && u.agency?.name === agency).map(publicUser);
-  const r = await p.query(`select ${COLUMNS} from users where role = $1 and email_verified_at is not null and agency->>'name' = $2 limit 25`, [role, agency]);
+  if (!p) return [...mem.users.values()].filter((u) => u.role === role && u.verified && !u.disabled && u.agency?.name === agency).map(publicUser);
+  const r = await p.query(`select ${COLUMNS} from users where role = $1 and email_verified_at is not null and disabled_at is null and agency->>'name' = $2 limit 25`, [role, agency]);
   return r.rows as User[];
 }
 
@@ -266,4 +279,148 @@ export function mayEmail(email: string) {
   if (recent.length >= 3) return false;
   sent.set(email, [...recent, Date.now()]);
   return true;
+}
+
+// ---------------------------------------------------------------- the admin pages
+
+export interface AccountRow extends User {
+  created_at: string | null;
+  last_seen_at: string | null;
+  /** Browsers signed in to the account now. */
+  sessions: number;
+}
+
+export interface AccountCounts {
+  total: number;
+  verified: number;
+  granted_admin: number;
+  disabled: number;
+  new_7d: number;
+  seen_7d: number;
+  by_role: Record<string, number>;
+}
+
+const WEEK = 7 * 86_400_000;
+
+/** Every account, newest first, matched on name, email or agency. For admins only: the caller checks. */
+export async function listAccounts(opts: { q?: string; limit?: number; offset?: number } = {}): Promise<{ rows: AccountRow[]; total: number }> {
+  const q = String(opts.q ?? "").trim().toLowerCase().slice(0, 120);
+  const limit = Math.min(Math.max(Number(opts.limit) || 50, 1), 200);
+  const offset = Math.max(Number(opts.offset) || 0, 0);
+  const p = pool();
+  if (!p) {
+    const live = new Map<string, number>();
+    for (const s of mem.sessions.values()) if (s.expires > Date.now()) live.set(s.user_id, (live.get(s.user_id) ?? 0) + 1);
+    const all = [...mem.users.values()]
+      .filter((u) => !q || [u.email, u.name, u.agency?.name ?? ""].some((f) => f.toLowerCase().includes(q)))
+      .sort((a, b) => (b.created_at ?? "").localeCompare(a.created_at ?? ""));
+    return { total: all.length, rows: all.slice(offset, offset + limit).map((u) => ({ ...publicUser(u), created_at: u.created_at ?? null, last_seen_at: u.last_seen_at ?? null, sessions: live.get(u.id) ?? 0 })) };
+  }
+  await schema();
+  const where = q ? "where lower(email) like $1 or lower(name) like $1 or lower(coalesce(agency->>'name', '')) like $1" : "";
+  const args = q ? [`%${q.replace(/[%_\\]/g, (c) => `\\${c}`)}%`] : [];
+  const [rows, total] = await Promise.all([
+    p.query(
+      `select ${COLUMNS}, created_at, last_seen_at, (select count(*)::int from sessions s where s.user_id = users.id and s.expires_at > now()) sessions
+         from users ${where} order by created_at desc limit ${limit} offset ${offset}`,
+      args,
+    ),
+    p.query<{ n: string }>(`select count(*) n from users ${where}`, args),
+  ]);
+  return {
+    total: Number(total.rows[0].n),
+    rows: rows.rows.map((r) => ({ ...r, created_at: r.created_at ? new Date(r.created_at).toISOString() : null, last_seen_at: r.last_seen_at ? new Date(r.last_seen_at).toISOString() : null })) as AccountRow[],
+  };
+}
+
+/** Counts for the admin overview. */
+export async function accountCounts(): Promise<AccountCounts> {
+  const p = pool();
+  if (!p) {
+    const all = [...mem.users.values()];
+    const since = Date.now() - WEEK;
+    const by_role: Record<string, number> = {};
+    for (const u of all) by_role[u.role] = (by_role[u.role] ?? 0) + 1;
+    return {
+      total: all.length,
+      verified: all.filter((u) => u.verified).length,
+      granted_admin: all.filter((u) => u.granted_admin).length,
+      disabled: all.filter((u) => u.disabled).length,
+      new_7d: all.filter((u) => u.created_at && Date.parse(u.created_at) > since).length,
+      seen_7d: all.filter((u) => u.last_seen_at && Date.parse(u.last_seen_at) > since).length,
+      by_role,
+    };
+  }
+  await schema();
+  const [c, roles] = await Promise.all([
+    p.query(
+      `select count(*)::int total, count(email_verified_at)::int verified, count(*) filter (where is_admin)::int granted_admin, count(disabled_at)::int disabled,
+              count(*) filter (where created_at > now() - interval '7 days')::int new_7d, count(*) filter (where last_seen_at > now() - interval '7 days')::int seen_7d
+         from users`,
+    ),
+    p.query<{ role: string; n: number }>(`select role, count(*)::int n from users group by role`),
+  ]);
+  return { ...(c.rows[0] as Omit<AccountCounts, "by_role">), by_role: Object.fromEntries(roles.rows.map((r) => [r.role, r.n])) };
+}
+
+export interface AccountChange {
+  role?: AccountRole;
+  verified?: boolean;
+  granted_admin?: boolean;
+  disabled?: boolean;
+}
+
+/** Change an account from the admin pages. Suspending it also signs it out everywhere. */
+export async function changeAccount(id: string, change: AccountChange): Promise<User> {
+  if (change.role !== undefined && !ROLES.includes(change.role)) throw new AuthError("That isn't a role Agora knows.");
+  const p = pool();
+  if (!p) {
+    const u = mem.users.get(id);
+    if (!u) throw new AuthError("That account no longer exists.");
+    if (change.role !== undefined) u.role = change.role;
+    if (change.verified !== undefined) u.verified = change.verified;
+    if (change.granted_admin !== undefined) u.granted_admin = change.granted_admin;
+    if (change.disabled !== undefined) u.disabled = change.disabled;
+  } else {
+    const sets: string[] = [];
+    const args: unknown[] = [id];
+    const put = (sql: string, v?: unknown) => {
+      if (v !== undefined) args.push(v);
+      sets.push(sql.replace("?", `$${args.length}`));
+    };
+    if (change.role !== undefined) put("role = ?", change.role);
+    if (change.verified !== undefined) put(change.verified ? "email_verified_at = coalesce(email_verified_at, now())" : "email_verified_at = null");
+    if (change.granted_admin !== undefined) put("is_admin = ?", change.granted_admin);
+    if (change.disabled !== undefined) put(change.disabled ? "disabled_at = coalesce(disabled_at, now())" : "disabled_at = null");
+    if (sets.length) {
+      const r = await p.query(`update users set ${sets.join(", ")} where id = $1`, args);
+      if (!r.rowCount) throw new AuthError("That account no longer exists.");
+    }
+  }
+  if (change.disabled) await endAllSessions(id);
+  return (await userById(id)) ?? Promise.reject(new AuthError("That account no longer exists."));
+}
+
+/** Sign an account out of every browser. Returns how many sessions ended. */
+export async function endAllSessions(userId: string): Promise<number> {
+  const p = pool();
+  if (!p) {
+    let n = 0;
+    for (const [k, v] of mem.sessions) if (v.user_id === userId) n += Number(mem.sessions.delete(k));
+    return n;
+  }
+  return (await p.query("delete from sessions where user_id = $1", [userId])).rowCount ?? 0;
+}
+
+/** Remove an account for good from the admin pages, with its sessions and email links. */
+export async function removeAccount(userId: string) {
+  const p = pool();
+  if (!p) {
+    if (!mem.users.delete(userId)) throw new AuthError("That account no longer exists.");
+    await endAllSessions(userId);
+    for (const [k, v] of mem.tokens) if (v.user_id === userId) mem.tokens.delete(k);
+  } else {
+    const r = await p.query("delete from users where id = $1", [userId]);
+    if (!r.rowCount) throw new AuthError("That account no longer exists.");
+  }
 }

@@ -1370,6 +1370,16 @@ export function approveClaim(supplierId: string) {
   return s.claim;
 }
 
+/** Sovra ops turns down a claim it couldn't confirm: the storefront goes back to unclaimed, and anyone may claim it again. */
+export function rejectClaim(supplierId: string) {
+  const db = getDb();
+  const s = supplierById(db, supplierId);
+  if (s.claim?.status !== "pending") fail("There's no claim waiting for review.");
+  const claim = s.claim;
+  delete s.claim;
+  return claim;
+}
+
 /** Switch which supplier the supplier views act as. Only claimed storefronts: a demo storefront, or one this account claimed (an admin may act as any). */
 export function actAsSupplier(supplierId: string) {
   const db = getDb();

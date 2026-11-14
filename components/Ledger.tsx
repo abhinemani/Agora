@@ -16,7 +16,7 @@ const PAYER_LABEL: Record<Payer, string> = {
 };
 
 export function Ledger() {
-  const { db, ledgerOpen, setLedgerOpen, act, showEarn, setShowEarn, llm } = useStore();
+  const { db, ledgerOpen, setLedgerOpen, act, showEarn, setShowEarn, llm, user } = useStore();
   const [resetting, setResetting] = useState(false);
   const [view, setView] = useState<"events" | "totals" | "coops">("events");
   if (!ledgerOpen || !db) return null;
@@ -157,6 +157,7 @@ export function Ledger() {
               Placeholder pricing. {llm ? "Requests and contracts are read by Claude." : "Offline parsing: no API key is set."}
             </div>
           </div>
+          {user?.admin && (
           <Button
             variant="secondary"
             disabled={resetting}
@@ -170,6 +171,7 @@ export function Ledger() {
           >
             {resetting ? "Resetting…" : "Reset demo"}
           </Button>
+          )}
         </div>
       </aside>
     </div>
@@ -180,7 +182,7 @@ const LIST_STATUS = { none: "No member list", partial: "Partial member list", fu
 
 /** Sovra ops: outbound clicks per co-op, and whether each co-op's members may buy in Agora. */
 function CoopTraffic() {
-  const { db, act } = useStore();
+  const { db, ops, act } = useStore();
   const [busy, setBusy] = useState<string | null>(null);
   if (!db) return null;
   const contractById = new Map(db.contracts.map((c) => [c.id, c]));
@@ -192,9 +194,9 @@ function CoopTraffic() {
       <section className="space-y-3">
         {db.coops.map((coop) => {
           const contracts = db.contracts.filter((c) => c.coop_id === coop.id);
-          const clicks = db.clicks.filter((k) => k.coop_id === coop.id);
-          const shown = db.impressions.filter((i) => i.coop_id === coop.id).length;
-          const referred = db.referrals.filter((r) => r.coop_id === coop.id).length;
+          const traffic = ops?.by_coop[coop.id];
+          const shown = traffic?.shown ?? 0;
+          const referred = traffic?.referred ?? 0;
           const missing = contracts.filter((c) => !isContractLevelUrl(c.source_url)).length;
           return (
             <div key={coop.id} className="rounded-lg border border-line p-3">
@@ -213,7 +215,7 @@ function CoopTraffic() {
                   {(
                     [
                       [shown, "shown"],
-                      [clicks.length, "clicks"],
+                      [traffic?.clicks ?? 0, "clicks"],
                       [referred, "join asks"],
                     ] as const
                   ).map(([n, label]) => (
@@ -245,9 +247,9 @@ function CoopTraffic() {
       </Link>
       <section>
         <h3 className="mb-2 text-xs font-semibold text-slate">Recent clicks</h3>
-        {db.clicks.length ? (
+        {(ops?.recent_clicks.length ?? 0) ? (
           <ul className="divide-y divide-navy/5 text-xs">
-            {db.clicks.slice(0, 20).map((k) => {
+            {(ops?.recent_clicks ?? []).map((k) => {
               const c = contractById.get(k.contract_id);
               return (
                 <li key={k.id} className="flex justify-between gap-3 py-2">

@@ -5,6 +5,7 @@ import { buildResults, estimateTotal, finishCoopSection, findSimilarSolicitation
 import { catalogContract, catalogCoopHits, catalogOffering, catalogProducts, catalogRetrieved, catalogStateRetrieved, catalogSupplierById, materializeSupplier } from "./catalog";
 import { stateRuleFor } from "./state-rules";
 import { currentScope, getDb, nextId, resetDb } from "./db";
+import { isAdmin } from "./admin";
 import { dedupe, extractFile, findSupplier, parseContract, type InputFile } from "./parser";
 import {
   onAppStarted,
@@ -41,7 +42,7 @@ import { rate } from "./ai-log";
 
 const EVIDENCE_RANK = { list: 0, roster: 1, agency: 2, purchase: 3 } as const;
 const rankEvidence = (e: keyof typeof EVIDENCE_RANK | undefined) => EVIDENCE_RANK[e ?? "list"];
-import { canSponsor, claimMatchesWebsite, isClaimed, isOffContract, listingFeeCurrent, PLANS } from "./suppliers";
+import { canSponsor, claimMatchesWebsite, isClaimed, isOffContract, mayActAs, listingFeeCurrent, PLANS } from "./suppliers";
 
 const now = () => new Date().toISOString();
 
@@ -1178,7 +1179,8 @@ export function claimStorefront(args: { supplierId: string; name: string; email:
   const name = args.name?.trim() || fail("Add your name.");
   const email = args.email?.trim() ?? "";
   if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) fail("Enter your work email.");
-  s.claim = { name, email, at: now(), status: claimMatchesWebsite(email, s.website) ? "verified" : "pending" };
+  const user_id = currentScope()?.user?.id;
+  s.claim = { name, email, ...(user_id ? { user_id } : {}), at: now(), status: claimMatchesWebsite(email, s.website) ? "verified" : "pending" };
   if (s.claim.status === "verified") db.session.acting_supplier_id = s.id;
   return s.claim;
 }
@@ -1193,11 +1195,12 @@ export function approveClaim(supplierId: string) {
   return s.claim;
 }
 
-/** Switch which supplier the supplier views act as (demo). Only claimed storefronts. */
+/** Switch which supplier the supplier views act as. Only claimed storefronts: a demo storefront, or one this account claimed (an admin may act as any). */
 export function actAsSupplier(supplierId: string) {
   const db = getDb();
   const s = supplierById(db, supplierId);
   if (!isClaimed(s)) fail(`Claim ${s.name}'s storefront first.`);
+  if (!mayActAs(s, currentScope()?.user, isAdmin(currentScope()?.user))) fail(`${s.name}'s storefront was claimed by another account.`);
   db.session.acting_supplier_id = s.id;
   return s;
 }

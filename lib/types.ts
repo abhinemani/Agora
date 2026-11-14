@@ -469,6 +469,8 @@ export type SupplierPlan = "basic" | "profile" | "profile_catalog";
 export interface SupplierClaim {
   name: string;
   email: string;
+  /** The account that made the claim. Absent on the fictional suppliers' seeded demo claims. */
+  user_id?: string;
   at: string;
   /** "verified" when the email's domain matches the company's website; otherwise it waits for Sovra review. */
   status: "verified" | "pending";
@@ -583,6 +585,13 @@ export interface PartnerApp {
   partner: string;
   blurb: string;
   started: boolean;
+}
+
+/** Sovra ops traffic, counted on the server so the browser never receives other agencies' clicks, impressions or referrals (app/api/state). */
+export interface OpsSummary {
+  by_coop: Record<string, { clicks: number; shown: number; referred: number }>;
+  /** The latest outbound clicks. Another agency's name is replaced with "Another agency". */
+  recent_clicks: ClickEvent[];
 }
 
 export interface Db {

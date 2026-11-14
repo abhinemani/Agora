@@ -1,7 +1,7 @@
 "use client";
 
 import { createContext, useCallback, useContext, useEffect, useRef, useState } from "react";
-import type { Db, Role } from "@/lib/types";
+import type { Db, OpsSummary, Role } from "@/lib/types";
 
 export interface Account {
   id: string;
@@ -10,10 +10,14 @@ export interface Account {
   role: Role;
   /** They've confirmed their email address. */
   verified: boolean;
+  /** They may reset the demo and approve supplier claims (lib/admin.ts). */
+  admin?: boolean;
 }
 
 interface Store {
   db: Db | null;
+  /** Sovra ops traffic per co-op, counted on the server. */
+  ops: OpsSummary | null;
   llm: boolean;
   /** The signed-in account, or null. Searching and the shopper's tools work without one. */
   user: Account | null;
@@ -63,6 +67,7 @@ export async function post<T>(url: string, body: unknown): Promise<T> {
 
 export function StoreProvider({ children }: { children: React.ReactNode }) {
   const [db, setDb] = useState<Db | null>(null);
+  const [ops, setOps] = useState<OpsSummary | null>(null);
   const [llm, setLlm] = useState(false);
   const [user, setUser] = useState<Account | null>(null);
   const [prompt, setPrompt] = useState<AuthPrompt | null>(null);
@@ -76,6 +81,7 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
     const res = await fetch("/api/state", { cache: "no-store" });
     const json = await res.json();
     setDb(json.db);
+    setOps(json.ops ?? null);
     setLlm(json.llm);
     setUser(json.user ?? null);
     setSeen((s) => (s === null ? json.db.revenue.length : s));
@@ -167,7 +173,7 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
   const fresh = db && seen !== null ? Math.max(0, db.revenue.length - seen) : 0;
 
   return (
-    <Ctx.Provider value={{ db, llm, user, askToSignIn, signOut, role, setRole, refresh, act, ledgerOpen, setLedgerOpen, fresh, showEarn, setShowEarn }}>
+    <Ctx.Provider value={{ db, ops, llm, user, askToSignIn, signOut, role, setRole, refresh, act, ledgerOpen, setLedgerOpen, fresh, showEarn, setShowEarn }}>
       <AuthCtx.Provider value={{ prompt, finish }}>{children}</AuthCtx.Provider>
     </Ctx.Provider>
   );

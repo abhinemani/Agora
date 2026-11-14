@@ -18,7 +18,7 @@
 // the directory and Agora's member-list matching can't disagree.
 
 import { gunzipSync, gzipSync } from "node:zlib";
-import { existsSync, readFileSync, writeFileSync, mkdirSync } from "node:fs";
+import { existsSync, readFileSync, readdirSync, writeFileSync, mkdirSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import * as XLSX from "xlsx";
@@ -203,7 +203,7 @@ const live = (e: Entity) => {
   while (e.mergedInto) e = e.mergedInto;
   return e;
 };
-const ROSTER_SOURCES = new Set(["Sourcewell", "HGACBuy", "BuyBoard National", "BuyBoard Texas", "Mohave", "E&I", "COSTARS"]);
+const ROSTER_SOURCES = new Set(["Sourcewell", "HGACBuy", "BuyBoard National", "BuyBoard Texas", "Mohave", "E&I", "COSTARS", "Choice Partners", "1GPA"]);
 const slug = (s: string) => s.replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "").slice(0, 60);
 
 function entityFor(name: string, state: string, from: string, label = "", status: Status = "public"): Entity | null {
@@ -291,8 +291,18 @@ let rawRows = 0;
 const conservativeKeys = new Map<string, Set<string>>();
 const rosterIds = new Map<string, Map<string, string>>(); // entity id → coop id → account id
 
-for (const tab of ROSTER_TABS) {
-  for (const r of table(tab, "Organization as published")) {
+/** Rosters published in the open beyond the workbook (scripts/fetch-rosters.ts), in the workbook's columns. */
+const ROSTER_CSV_DIR = join(ROOT, "seed/coops/source/rosters");
+const extraRosters: Record<string, unknown>[] = [];
+if (existsSync(ROSTER_CSV_DIR))
+  for (const f of readdirSync(ROSTER_CSV_DIR).filter((f) => f.endsWith(".csv")).sort()) {
+    const wbx = XLSX.read(readFileSync(join(ROSTER_CSV_DIR, f), "utf8"), { type: "string", raw: true });
+    extraRosters.push(...XLSX.utils.sheet_to_json<Record<string, unknown>>(wbx.Sheets[wbx.SheetNames[0]], { defval: "" }));
+  }
+const publishedRosterRows = [...ROSTER_TABS.flatMap((tab) => table(tab, "Organization as published")), ...extraRosters];
+
+{
+  for (const r of publishedRosterRows) {
     const name = str(r["Organization as published"]);
     const state = str(r["State"]).toUpperCase();
     const program = str(r["Program"]);
@@ -1137,6 +1147,27 @@ const coverage = table("Program Coverage", "Program").map((r) => ({
   next: str(r["Scope and next public step"]),
   url: str(r["Primary source URL"]),
 }));
+// Rosters fetched after the workbook was made replace their program's "selected relationships" line.
+const EXTRA_ROSTER_NOTES: Record<string, { evidence: string; next: string; url: string }> = {
+  "Choice Partners": {
+    evidence: "Public member table: name, entity type and state",
+    next: "Non-profits and private schools set aside; members whose type isn't given are kept only when the name reads as government.",
+    url: "https://www.choicepartners.org/view-members/",
+  },
+  "1GPA": {
+    evidence: "Published membership workbook, last modified August 16, 2023",
+    next: "A historical snapshot: a listed member may have left since. Ask 1GPA for a current list.",
+    url: "https://www.1gpa.org",
+  },
+};
+for (const [program, note] of Object.entries(EXTRA_ROSTER_NOTES)) {
+  const st = programStats[program];
+  if (!st) continue;
+  const line = { program, status: "Roster imported", records: st.raw, ...note };
+  const i = coverage.findIndex((c) => c.program === program);
+  if (i >= 0) coverage[i] = line;
+  else coverage.push(line);
+}
 
 // How far the federal IDs reach, for the /data page.
 const withId = rows.filter((r) => r.g);

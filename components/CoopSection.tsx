@@ -9,6 +9,7 @@ import { CoopMemberships } from "./CoopMemberships";
 import { StateRuleNote } from "./StateRuleNote";
 import { useStore } from "./store";
 import { Badge, ErrorNote, Alert } from "./ui";
+import { RefTag } from "./blueprint";
 
 /** 0–100 fit, colored by strength. */
 export function FitPill({ fit }: { fit: number }) {
@@ -21,7 +22,8 @@ export function FitPill({ fit }: { fit: number }) {
 }
 
 /** Co-op contracts for the request: the co-ops the agency belongs to, then the ones it could join. */
-export function CoopSection({ section, requestId, onMembershipChange }: { section: Section; requestId: string; onMembershipChange: () => void }) {
+/** `refs` maps a contract id to the reference number the personal shopper cites it by. */
+export function CoopSection({ section, requestId, onMembershipChange, refs }: { section: Section; requestId: string; onMembershipChange: () => void; refs?: Record<string, number> }) {
   const { db } = useStore();
   const buyer = db?.session.buyer ?? null;
   if (!section.hits.length) return null;
@@ -56,12 +58,12 @@ export function CoopSection({ section, requestId, onMembershipChange }: { sectio
 
       {buyer ? (
         <div className="mt-4 grid gap-5 lg:grid-cols-2">
-          <HitList title="Co-ops you're on" empty={section.memberships_known ? "None of your co-ops has a contract for this." : "No memberships on file yet. Add the co-ops you belong to above."} hits={members} requestId={requestId} more={section.catalog?.more_member} />
-          <HitList title="Co-ops you could join" empty="Every co-op with a contract for this is one you're on." hits={others} requestId={requestId} more={section.catalog?.more_other} />
+          <HitList title="Co-ops you're on" empty={section.memberships_known ? "None of your co-ops has a contract for this." : "No memberships on file yet. Add the co-ops you belong to above."} hits={members} requestId={requestId} refs={refs} more={section.catalog?.more_member} />
+          <HitList title="Co-ops you could join" empty="Every co-op with a contract for this is one you're on." hits={others} requestId={requestId} refs={refs} more={section.catalog?.more_other} />
         </div>
       ) : (
         <div className="mt-4">
-          <HitList title={`${section.hits.length} co-op contract${section.hits.length === 1 ? "" : "s"}`} empty="" hits={section.hits} requestId={requestId} more={(section.catalog?.more_member ?? 0) + (section.catalog?.more_other ?? 0)} />
+          <HitList title={`${section.hits.length} co-op contract${section.hits.length === 1 ? "" : "s"}`} empty="" hits={section.hits} requestId={requestId} refs={refs} more={(section.catalog?.more_member ?? 0) + (section.catalog?.more_other ?? 0)} />
         </div>
       )}
 
@@ -76,7 +78,7 @@ export function CoopSection({ section, requestId, onMembershipChange }: { sectio
           </p>
           <ul className="grid gap-2 lg:grid-cols-2">
             {section.catalog.gsa.map((h) => (
-              <Hit key={h.contract_id} h={h} requestId={requestId} />
+              <Hit key={h.contract_id} h={h} requestId={requestId} refN={refs?.[h.contract_id]} />
             ))}
           </ul>
         </div>
@@ -108,7 +110,7 @@ function DirectoryLink({ h, quiet }: { h: CoopHit; quiet?: boolean }) {
   );
 }
 
-function HitList({ title, empty, hits, requestId, more = 0 }: { title: string; empty: string; hits: CoopHit[]; requestId: string; more?: number }) {
+function HitList({ title, empty, hits, requestId, more = 0, refs }: { title: string; empty: string; hits: CoopHit[]; requestId: string; more?: number; refs?: Record<string, number> }) {
   const [all, setAll] = useState(false);
   const shown = all ? hits : hits.slice(0, 4);
   return (
@@ -119,7 +121,7 @@ function HitList({ title, empty, hits, requestId, more = 0 }: { title: string; e
       {!hits.length && <p className="text-xs text-slate">{empty}</p>}
       <ul className="space-y-2">
         {shown.map((h) => (
-          <Hit key={h.contract_id} h={h} requestId={requestId} />
+          <Hit key={h.contract_id} h={h} requestId={requestId} refN={refs?.[h.contract_id]} />
         ))}
       </ul>
       {hits.length > shown.length && (
@@ -136,7 +138,7 @@ function HitList({ title, empty, hits, requestId, more = 0 }: { title: string; e
   );
 }
 
-function Hit({ h, requestId }: { h: CoopHit; requestId: string }) {
+function Hit({ h, requestId, refN }: { h: CoopHit; requestId: string; refN?: number }) {
   const { db, act } = useStore();
   const [sent, setSent] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -148,6 +150,7 @@ function Hit({ h, requestId }: { h: CoopHit; requestId: string }) {
       <div className="flex items-start justify-between gap-3">
         <div className="min-w-0">
           <div className="flex flex-wrap items-center gap-1.5">
+            {refN !== undefined && <RefTag n={refN} />}
             <span className="text-sm font-semibold text-navy">{h.coop}</span>
             <span className="font-mono text-[11px] text-slate">{h.contract_number}</span>
             {buyer && !h.member && h.coop_id !== "gsa_mas" && <Badge tone="maroon">Join to use</Badge>}

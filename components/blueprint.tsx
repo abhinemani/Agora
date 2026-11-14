@@ -53,3 +53,8 @@ export function Annotation({ fig, children, className = "text-primary" }: { fig?
     </div>
   );
 }
+
+/** A numbered source tag. The shopper cites results by these numbers, and each cited result carries the same tag. */
+export function RefTag({ n, className = "" }: { n: number; className?: string }) {
+  return <span className={`inline-flex shrink-0 whitespace-nowrap border border-primary-light bg-white px-1.5 py-px font-mono text-[11px] uppercase tracking-[0.14em] text-primary ${className}`}>Ref {n}</span>;
+}

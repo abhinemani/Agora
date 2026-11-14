@@ -27,6 +27,8 @@ import { cartAgency, cartGroups, draftCart, glCode, needsApproval, nextStep, PUR
 import { coopOf, detectCoops, isContractLevelUrl, isMember, linksOut, memberMatches, normalizeDomain } from "./coops";
 import { parseMemberList } from "./members";
 import { findGovernment } from "./directory";
+import { buildPlan, defaultSelection, shopperAddOns, shopperCandidates, type ShopperSelection } from "./shopper";
+import { answerQuestion, writeBrief, type ShopperTurn } from "./shopper-ai";
 
 const EVIDENCE_RANK = { list: 0, roster: 1, agency: 2, purchase: 3 } as const;
 const rankEvidence = (e: keyof typeof EVIDENCE_RANK | undefined) => EVIDENCE_RANK[e ?? "list"];
@@ -193,6 +195,58 @@ export function getResults(requestId: string) {
     });
   }
   return results;
+}
+
+// ---------------------------------------------------------------- personal shopper
+
+/** The requester confirms what they're buying: a catalog item (or "by quote"), how many, and any add-ons. */
+export function confirmItems(args: { requestId: string; listingId: string | null; quantity: number; addOns?: { listingId: string; quantity: number }[] }) {
+  const db = getDb();
+  const request = db.requests.find((r) => r.id === args.requestId) ?? fail("Request not found");
+  const quantity = Math.floor(Number(args.quantity));
+  if (!Number.isFinite(quantity) || quantity < 1 || quantity > 100_000) fail("Enter how many you need.");
+  const results = getResults(request.id);
+  // Only items the rules already offered this buyer can be confirmed.
+  const chosen = args.listingId ? (shopperCandidates(results).find((o) => o.listing.id === args.listingId) ?? fail("That item isn't one of the options open to you.")) : undefined;
+  const allowed = new Set(shopperAddOns(db.listings, results, chosen).map((l) => l.id));
+  const add_ons = (args.addOns ?? [])
+    .filter((a) => allowed.has(a.listingId))
+    .map((a) => ({ listing_id: a.listingId, quantity: Math.max(1, Math.floor(Number(a.quantity) || 1)) }));
+  request.parsed = { ...request.parsed, quantity, est_total: estimateTotal(db, request.parsed.item, quantity) };
+  request.shopper = { listing_id: chosen?.listing.id ?? null, add_ons, confirmed_at: now() };
+  return request;
+}
+
+/** Reopen the confirm step. */
+export function editItems(requestId: string) {
+  const db = getDb();
+  const request = db.requests.find((r) => r.id === requestId) ?? fail("Request not found");
+  delete request.shopper;
+  return request;
+}
+
+function shopperContext(requestId: string) {
+  const db = getDb();
+  const request = db.requests.find((r) => r.id === requestId) ?? fail("Request not found");
+  const results = getResults(request.id);
+  const selection: ShopperSelection = defaultSelection(results, request);
+  const plan = buildPlan({ results, listings: db.listings, limit: db.agency.quick_buy_threshold, agencyName: db.agency.name, selection });
+  return { db, results, plan };
+}
+
+/** The plan in the shopper's words. Null means "keep the rule-based wording": no key, a failure, or an answer that didn't check out. */
+export async function shopperBrief(requestId: string) {
+  const { db, results, plan } = shopperContext(requestId);
+  return writeBrief(db, results, plan);
+}
+
+/** A question about this purchase. Read-only: it never changes anything. */
+export async function askShopper(args: { requestId: string; question: string; history?: ShopperTurn[] }) {
+  const question = String(args.question ?? "").trim().slice(0, 500);
+  if (!question) fail("Type a question first.");
+  const { db, results, plan } = shopperContext(args.requestId);
+  const history = (Array.isArray(args.history) ? args.history : []).slice(-4).map((t) => ({ question: String(t.question).slice(0, 500), answer: (Array.isArray(t.answer) ? t.answer : []).map((a) => String(a).slice(0, 1500)) }));
+  return answerQuestion(db, results, plan, question, history);
 }
 
 export function placeOrder(args: { listingId: string; quantity: number; requestId?: string | null; department: string }) {

@@ -80,3 +80,27 @@ button:focus-visible {
 @media (prefers-reduced-motion: reduce) {
   .frame-working .frame-tick { animation: none; }
 }
+
+/* Blueprint accent: a plain light-blue line along the top of the header. */
+.bp-ruler {
+  height: 4px;
+  background: #73b3e7;
+}
+
+/* A drafting grid under the header that fades to the page by 380px. It sits behind the
+ * top of every page's content; the home hero covers it with its own blueprint. */
+.bp-fade {
+  height: 380px;
+  margin-bottom: -380px;
+  pointer-events: none;
+  background-image:
+    linear-gradient(to bottom, rgb(var(--us-white) / 0) 0, rgb(var(--us-white) / 0.6) 180px, rgb(var(--us-white)) 380px),
+    linear-gradient(rgb(var(--us-primary) / 0.11) 1px, transparent 1px),
+    linear-gradient(90deg, rgb(var(--us-primary) / 0.11) 1px, transparent 1px),
+    linear-gradient(rgb(var(--us-primary) / 0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgb(var(--us-primary) / 0.05) 1px, transparent 1px),
+    linear-gradient(to bottom, rgb(var(--us-primary-lighter) / 0.45), rgb(var(--us-white)) 380px);
+  background-size: 100% 100%, 80px 80px, 80px 80px, 16px 16px, 16px 16px, 100% 100%;
+  background-repeat: no-repeat, repeat, repeat, repeat, repeat, no-repeat;
+  background-position: 0 0, -1px -1px, -1px -1px, -1px -1px, -1px -1px, 0 0;
+}

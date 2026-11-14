@@ -35,7 +35,7 @@ export function RouteStrip({ results }: { results: Results }) {
   const first = segments.find((s) => s.count > 0 && !s.open);
 
   return (
-    <nav aria-label="Where you can buy this" className="border-y border-base-lighter bg-white py-4">
+    <nav aria-label="Where you can buy this" className="border-y border-base-lighter py-4">
       <div className="flex flex-wrap items-baseline justify-between gap-2">
         <h2 className="text-body-md font-bold text-ink">Where you can buy this</h2>
         <p className="text-xs text-slate">{first ? `Start with ${first.label.toLowerCase()}.` : "Nothing on contract yet."} Try routes left to right.</p>

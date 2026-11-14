@@ -27,6 +27,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body className="min-h-screen overflow-x-clip antialiased">
         <StoreProvider>
           <Header />
+          <div aria-hidden className="bp-fade" />
           <main className="mx-auto max-w-6xl px-4 py-8">{children}</main>
           <SiteFooter />
           <Ledger />

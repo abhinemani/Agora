@@ -129,6 +129,14 @@ export function reasonKind(reason: string): string {
   if (/^reference /.test(reason)) return "Cited a reference that doesn't exist";
   if (/^dropped /.test(reason)) return "Dropped a contract number, part number or blank from the draft";
   if (/^API error/.test(reason)) return "The call to the model failed";
+  // Contract briefs name each dropped field ("field pricing: the quote isn't in passage 8 word for word; field term: …"). Count the first by its kind.
+  const field = reason.match(/^field \w+: ([^;]*)/)?.[1];
+  if (field) {
+    if (/which doesn't exist/.test(field)) return "A brief field cited a passage that doesn't exist";
+    if (/word for word/.test(field)) return "A brief field's quote isn't in its passage word for word";
+    if (/too short/.test(field)) return "A brief field's quote was too short to check";
+    if (/summary/.test(field)) return "A brief field's summary stated a figure the passages don't hold, or was empty";
+  }
   return reason;
 }
 

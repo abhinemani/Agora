@@ -20,6 +20,9 @@ export function claimMatchesWebsite(email: string, website: string | undefined):
 
 export const isClaimed = (s: Supplier) => s.claim?.status === "verified";
 
+/** Whether an account may run a claimed storefront: the fictional suppliers' demo storefronts are open to any account, a real claim only to the account that made it, and an admin may run any. `admin` comes from the server (lib/admin.ts), since the browser can't tell. */
+export const mayActAs = (s: Supplier, user: { id: string } | null | undefined, admin: boolean) => Boolean(user) && (admin || !s.claim?.user_id || s.claim.user_id === user!.id);
+
 /** Placements need a verified claim and either a paid plan or an Edge tier above Discover. */
 export const canSponsor = (s: Supplier) => isClaimed(s) && ((s.plan ?? "basic") !== "basic" || s.edge_tier !== "discover");
 

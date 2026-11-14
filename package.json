@@ -16,6 +16,7 @@
     "import:coops": "tsx scripts/import-coop-data.ts",
     "import:njstart": "tsx scripts/import-njstart.ts",
     "import:hawaii": "tsx scripts/import-hawaii.ts",
+    "import:arkansas": "tsx scripts/import-arkansas.ts",
     "import:catalog-coops": "tsx scripts/import-catalog.ts",
     "fetch:federal": "NODE_USE_ENV_PROXY=1 tsx scripts/fetch-federal-ids.ts",
     "fetch:gsa": "NODE_USE_ENV_PROXY=1 tsx scripts/fetch-gsa.ts",

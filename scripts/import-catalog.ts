@@ -121,9 +121,15 @@ const HAWAII_FILE = join(SRC, "hawaii/records.json.gz");
 const hawaii = existsSync(HAWAII_FILE)
   ? (JSON.parse(gunzipSync(readFileSync(HAWAII_FILE)).toString("utf8")) as { retrieved: string; suppliers: RawSupplier[]; contracts: RawContract[]; products: RawProduct[]; offerings: RawOffering[]; documents: RawDocument[] })
   : null;
+// Arkansas's Office of State Procurement directory (npm run import:arkansas), the same way.
+const ARKANSAS_FILE = join(SRC, "arkansas/records.json.gz");
+const arkansas = existsSync(ARKANSAS_FILE)
+  ? (JSON.parse(gunzipSync(readFileSync(ARKANSAS_FILE)).toString("utf8")) as { retrieved: string; suppliers: RawSupplier[]; contracts: RawContract[]; products: RawProduct[]; offerings: RawOffering[]; documents: RawDocument[] })
+  : null;
 /** The state programs folded in, by program name. */
-const STATE_SOURCES = [njstart && { program: "NJSTART", ...njstart }, hawaii && { program: "Hawaii SPO", ...hawaii }].filter(<T,>(x: T | null): x is T => Boolean(x));
-const STATE_PROGRAMS = new Set(["NJSTART", "Hawaii SPO"]);
+const STATE_SOURCES = [njstart && { program: "NJSTART", ...njstart }, hawaii && { program: "Hawaii SPO", ...hawaii }, arkansas && { program: "Arkansas OSP", ...arkansas }].filter(<T,>(x: T | null): x is T => Boolean(x));
+const STATE_PROGRAMS = new Set(["NJSTART", "Hawaii SPO", "Arkansas OSP"]);
+const arSummary = existsSync(join(SRC, "arkansas/summary.json")) ? JSON.parse(readFileSync(join(SRC, "arkansas/summary.json"), "utf8")) : null;
 for (const src of STATE_SOURCES) {
   rawSuppliers.push(...src.suppliers);
   rawContracts.push(...src.contracts);
@@ -213,6 +219,7 @@ const COOP_ID: Record<string, string> = {
   "GSA MAS": "gsa_mas",
   NJSTART: "state_nj",
   "Hawaii SPO": "state_hi",
+  "Arkansas OSP": "state_ar",
 };
 
 // ------------------------------------------------------------------ suppliers: one record per company
@@ -839,6 +846,10 @@ const insights = {
     classes_used: new Set(contracts.flatMap((c) => c.nigp?.classes ?? [])).size,
     priced_offerings_coded: offerings.filter((o) => o.nigp).length,
     top_classes: Object.entries(contracts.reduce<Record<string, number>>((m, c) => { for (const k of c.nigp?.classes ?? []) m[k] = (m[k] ?? 0) + 1; return m; }, {})).sort((a, b) => b[1] - a[1]).slice(0, 12),
+  },
+  arkansas: arSummary && {
+    ...arSummary,
+    suppliers_shared_with_coops: suppliers.filter((s) => s.coops.includes("Arkansas OSP") && s.coops.some((c) => c !== "Arkansas OSP")).length,
   },
   hawaii: hiSummary && {
     ...hiSummary,

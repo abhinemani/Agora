@@ -528,7 +528,7 @@ export default function CoopDataPage() {
           head={["Co-op", "Contracts", "Own page", "End date", "Products"]}
           right={[1, 2, 3, 4]}
           rows={catalogInsights.per_coop
-            .filter((c) => c.contracts && c.coop !== "NJSTART" && c.coop !== "Hawaii SPO")
+            .filter((c) => c.contracts && c.coop !== "NJSTART" && c.coop !== "Hawaii SPO" && c.coop !== "Arkansas OSP")
             .sort((a, b) => b.contracts - a.contracts)
             .map((c) => [
               <span key="c" className="font-bold">

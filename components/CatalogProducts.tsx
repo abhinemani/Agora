@@ -121,7 +121,7 @@ function ProductCard({ h, requestId }: { h: CatalogProductHit; requestId: string
           All {h.routes.length} contracts
         </button>
       )}
-      {vintage && <p className="mt-2 text-[11px] text-slate">{/^(NJSTART|Hawaii SPO)/.test(vintage) ? `${vintage}.` : `Prices from the ${vintage} price file.`}</p>}
+      {vintage && <p className="mt-2 text-[11px] text-slate">{/^(NJSTART|Hawaii SPO|Arkansas OSP)/.test(vintage) ? `${vintage}.` : `Prices from the ${vintage} price file.`}</p>}
     </li>
   );
 }

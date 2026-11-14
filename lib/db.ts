@@ -6,6 +6,7 @@
 // `db.session.buyer` reads the agency of whoever made the request.
 
 import { AsyncLocalStorage } from "node:async_hooks";
+import { apiKey } from "./api-key";
 import { seed } from "./seed";
 import type { Buyer, Db } from "./types";
 
@@ -76,4 +77,4 @@ export function nextId(db: Db, kind: string, prefix: string, pad = 3): string {
   return `${prefix}_${String(db.counters[kind]).padStart(pad, "0")}`;
 }
 
-export const hasApiKey = () => Boolean(process.env.ANTHROPIC_API_KEY);
+export const hasApiKey = () => Boolean(apiKey());

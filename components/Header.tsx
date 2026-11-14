@@ -101,10 +101,8 @@ export function Header() {
 
   return (
     <header className={`sticky top-0 z-30 border-b border-base-lighter bg-white ${scrolled ? "shadow-1" : ""}`}>
-      <div className="bg-[#162e51] px-4 py-1.5 text-center text-ui-3xs text-[#fff]">
-        Searching is free for every agency. <span className="hidden sm:inline">Your own contracts come first, then your state's, then your co-ops.</span>
-      </div>
-      <div className="mx-auto flex h-16 max-w-6xl items-stretch gap-4 px-4 sm:gap-8">
+      <div aria-hidden className="bp-ruler" />
+      <div className="mx-auto flex h-16 max-w-6xl md:h-20 items-stretch gap-4 px-4 sm:gap-8">
         <Link href={current.home} className="flex items-center no-underline" aria-label="Agora home">
           <Logo />
         </Link>

@@ -1,5 +1,5 @@
 {
-  "saved": "2026-11-14T16:48:49.016Z",
+  "saved": "2026-11-14T17:12:17.337Z",
   "model": "claude-sonnet-5-5",
   "prompts": {
     "request_parse": "cebcf585",
@@ -38,11 +38,11 @@
     "contract-brief.guard.exact-quote": "pass",
     "contract-brief.guard.misquote": "pass",
     "contract-brief.guard.nothing-found": "pass",
-    "contract-brief.live.award-report": "fail",
+    "contract-brief.live.award-report": "pass",
     "contract-brief.live.cost-sheet": "pass",
     "contract-parse.guard.invented-price": "pass",
     "contract-parse.guard.printed-price": "pass",
-    "contract-parse.live.furniture": "fail",
+    "contract-parse.live.furniture": "pass",
     "dive-read.guard.kept": "pass",
     "dive-read.guard.unknown-word": "pass",
     "dive-read.guard.unstated-price": "pass",

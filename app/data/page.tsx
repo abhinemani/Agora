@@ -194,6 +194,7 @@ export default function CoopDataPage() {
             ["#evidence", "How we know"],
             ["#catalog", "Co-op catalog"],
             ["#njstart", "NJSTART"],
+            ["#nigp", "NIGP codes"],
             ["#cleanup", "Cleanup"],
             ["#states", "State rules"],
             ["#prospects", "Prospects"],
@@ -627,6 +628,31 @@ export default function CoopDataPage() {
           <Link href="/contracts?coop=NJSTART" className="text-primary">every NJSTART contract</Link>.
         </p>
       </Section>
+
+      <Section
+        id="nigp"
+        title="Commodity codes (NIGP)"
+        intro={
+          <>
+            <p>
+              Purchasing offices file what they buy under NIGP commodity codes, so Agora tags contracts with them too. {n(catalogInsights.nigp.published + catalogInsights.nigp.reviewed)} of{" "}
+              {n(catalogInsights.nigp.contracts)} contracts carry at least one. NJSTART prints codes on its line items, so its {n(catalogInsights.nigp.published)} coded contracts
+              and {n(catalogInsights.nigp.priced_offerings_coded)} prices carry the state&apos;s own codes. No co-op publishes codes, so the other{" "}
+              {n(catalogInsights.nigp.reviewed)} took classes from the AI review: each co-op contract title and GSA SIN was offered the {n(nj.nigp_classes)} classes NJSTART&apos;s
+              records name, with their descriptions, and the reviewer chose up to three or none. Only high- and medium-confidence answers are applied, and contract pages say
+              which codes were printed and which were reviewed.
+            </p>
+            <p>
+              Agora holds no licensed NIGP codebook, so it can name only the {n(nj.nigp_codes)} codes those public records use. Contracts whose goods fall outside those
+              classes stay uncoded rather than forced into a near miss. Search the contract explorer by a code or class, such as{" "}
+              <Link href="/contracts?q=765" className="text-primary">
+                765
+              </Link>{" "}
+              (road and highway equipment).
+            </p>
+          </>
+        }
+      />
 
       <Section
         id="cleanup"

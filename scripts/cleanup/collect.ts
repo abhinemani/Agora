@@ -76,7 +76,7 @@ function collect(task: string, check: (item: Item, a: any) => any | null) {
     out[id] = v;
     s.kept++;
     s[v.confidence as "high"]++;
-    if (v.pick || v.merge?.length || v.price != null) {
+    if (v.pick || v.merge?.length || v.price != null || v.classes?.length) {
       s.picked++;
       if (v.confidence === "low") s.low_picked++;
     }

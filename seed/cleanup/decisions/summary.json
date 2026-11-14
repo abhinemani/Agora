@@ -70,5 +70,17 @@
   "low": 75,
   "picked": 292,
   "low_picked": 69
+ },
+ "nigp": {
+  "items": 2909,
+  "answered": 2909,
+  "kept": 2909,
+  "invalid": 0,
+  "missing": 0,
+  "high": 1378,
+  "medium": 1132,
+  "low": 399,
+  "picked": 2726,
+  "low_picked": 347
  }
 }

@@ -819,6 +819,12 @@ const insights = {
   },
   njstart: njSummary && {
     ...njSummary,
+    ...(() => {
+      const f = join(SRC, "njstart/nigp.json");
+      if (!existsSync(f)) return {};
+      const nb = JSON.parse(readFileSync(f, "utf8")) as { codes: Record<string, unknown>; classes: Record<string, unknown> };
+      return { nigp_codes: Object.keys(nb.codes).length, nigp_classes: Object.keys(nb.classes).length };
+    })(),
     suppliers_shared_with_coops: suppliers.filter((s) => s.coops.includes("NJSTART") && s.coops.some((c) => c !== "NJSTART")).length,
     offerings: offerings.filter((o) => o.coop === "NJSTART").length,
     products_on_two_or_more_contracts: Object.values(offerings.filter((o) => o.coop === "NJSTART").reduce<Record<string, Set<string>>>((m, o) => ((m[o.product] ??= new Set()).add(o.contract), m), {})).filter((x) => x.size > 1).length,

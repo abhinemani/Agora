@@ -438,61 +438,61 @@
  ],
  "nigp": {
   "published": 1282,
-  "reviewed": 0,
-  "none": 32085,
+  "reviewed": 27698,
+  "none": 4387,
   "contracts": 33367,
-  "coop_contracts_coded": 0,
+  "coop_contracts_coded": 27698,
   "coop_contracts": 31930,
-  "classes_used": 149,
+  "classes_used": 150,
   "priced_offerings_coded": 4572,
   "top_classes": [
    [
-    "968",
-    125
-   ],
-   [
-    "928",
-    88
-   ],
-   [
     "920",
-    51
-   ],
-   [
-    "915",
-    50
+    8422
    ],
    [
     "918",
-    48
+    4293
    ],
    [
-    "946",
-    42
+    "208",
+    3091
    ],
    [
-    "055",
-    41
+    "204",
+    2993
    ],
    [
-    "060",
-    39
+    "909",
+    2979
    ],
    [
-    "405",
-    37
+    "209",
+    1750
    ],
    [
-    "650",
-    32
+    "785",
+    1630
    ],
    [
-    "929",
-    32
+    "925",
+    1593
    ],
    [
-    "072",
-    32
+    "680",
+    1533
+   ],
+   [
+    "910",
+    1267
+   ],
+   [
+    "958",
+    1145
+   ],
+   [
+    "340",
+    1097
    ]
   ]
  },
@@ -534,6 +534,8 @@
   "suppliers": 1120,
   "products": 3439,
   "note": "Line items are the first summary page of each contract; contracts with more item pages are flagged line_items_paginated. Attachments are linked, not downloaded.",
+  "nigp_codes": 520,
+  "nigp_classes": 150,
   "suppliers_shared_with_coops": 307,
   "offerings": 5810,
   "products_on_two_or_more_contracts": 568

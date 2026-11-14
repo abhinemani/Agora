@@ -5,12 +5,16 @@
 // restart: documents already stored, or tried and not worth retrying yet, are skipped. First it records which
 // contract links to which document; then it stores the text Agora already holds (seed/catalog/doctext), which
 // needs no fetching; then it fetches the rest from their publishers, two at a time per host with a pause between
-// requests, price sheets first. It stops filling the database before the volume runs out
-// (AGORA_DOC_DB_LIMIT_MB, default 4,000 of Railway's 5,000). AGORA_DOC_INGEST=off turns it off. Server-only.
+// requests, price sheets first. Alongside, scanned PDFs (no text layer) are read by Claude (lib/doc-ocr.ts) when an
+// API key is set, three at a time, up to AGORA_OCR_PAGE_LIMIT pages in all (default 150,000; AGORA_OCR=off turns
+// it off). It stops filling the database before the volume runs out (AGORA_DOC_DB_LIMIT_MB, default 4,000).
+// AGORA_DOC_INGEST=off turns all of it off. Server-only.
 
 import { catalogTrxDocuments } from "./catalog";
-import { databaseMb, docSchema, linkDocuments, settledUrls, storeDocument } from "./doc-store";
-import { fetchDocument } from "./doc-fetch";
+import { databaseMb, docSchema, linkDocuments, scanNotRead, scanPagesRead, scansToRead, settledUrls, storeDocument } from "./doc-store";
+import { downloadDocument, fetchDocument, INGEST_MAX_BYTES } from "./doc-fetch";
+import { readScan } from "./doc-ocr";
+import { modelOn } from "./llm";
 import { fetchable, heldPages } from "./docs";
 import { hasDatabase } from "./pg";
 
@@ -25,9 +29,10 @@ interface IngestState {
   by_host: Record<string, { queued: number; done: number }>;
   stopped_reason: string | null;
   last_error: string | null;
+  scans: { phase: "off" | "waiting" | "reading" | "done" | "stopped"; read: number; pages: number; not_read: number; last_error: string | null; stopped_reason: string | null };
 }
 const g = globalThis as unknown as { __agoraIngest?: IngestState };
-const state: IngestState = (g.__agoraIngest ??= { started: false, phase: "off", started_at: null, queued: 0, done: 0, stored: 0, not_read: {}, by_host: {}, stopped_reason: null, last_error: null });
+const state: IngestState = (g.__agoraIngest ??= { started: false, phase: "off", started_at: null, queued: 0, done: 0, stored: 0, not_read: {}, by_host: {}, stopped_reason: null, last_error: null, scans: { phase: "off", read: 0, pages: 0, not_read: 0, last_error: null, stopped_reason: null } });
 
 export const ingestState = (): IngestState => state;
 
@@ -37,6 +42,8 @@ const PER_HOST = Number(process.env.AGORA_DOC_PER_HOST ?? 2);
 const PAUSE_MS = Number(process.env.AGORA_DOC_PAUSE_MS ?? 1500);
 /** For a test run: fetch at most this many documents per host. */
 const FETCH_LIMIT = Number(process.env.AGORA_DOC_FETCH_LIMIT ?? Infinity);
+const OCR_PAGE_LIMIT = Number(process.env.AGORA_OCR_PAGE_LIMIT ?? 150_000);
+const OCR_WORKERS = Number(process.env.AGORA_OCR_WORKERS ?? 3);
 /** Price sheets and price lists first: they're what search most needs. */
 const priority = (label: string) => (/price|pricing|cost|rate|catalog|bid sheet|ps final|offer/i.test(label) ? 0 : /method of operation|terms|contract|agreement|specification|scope/i.test(label) ? 1 : 2);
 
@@ -88,6 +95,14 @@ async function run(): Promise<void> {
   }
   if (await tooBig()) return;
 
+  // Scans, read by Claude as they turn up, while the fetching goes on.
+  let fetching = true;
+  const scans = readScans(() => fetching).catch((e) => {
+    state.scans.phase = "stopped";
+    state.scans.stopped_reason = (e as Error).message;
+    console.error("[ingest] scan reading stopped:", (e as Error).message);
+  });
+
   // The rest, from their publishers.
   state.phase = "fetching";
   const byHost = new Map<string, string[]>();
@@ -105,14 +120,15 @@ async function run(): Promise<void> {
       const url = urls.shift();
       if (!url) return;
       try {
-        const got = await fetchDocument(url);
+        const got = await fetchDocument(url, INGEST_MAX_BYTES);
         await storeDocument(url, got);
         state.stored++;
       } catch (e) {
-        const status = ((e as { status?: string }).status ?? "failed") as "scan" | "unsupported" | "too_large" | "failed";
+        const err = e as Error & { status?: string; filename?: string; bytes?: number };
+        const status = (err.status ?? "failed") as "scan" | "unsupported" | "too_large" | "failed";
         state.not_read[status] = (state.not_read[status] ?? 0) + 1;
-        state.last_error = `${host}: ${(e as Error).message}`;
-        await storeDocument(url, { status, detail: (e as Error).message }).catch(() => undefined);
+        state.last_error = `${host}: ${err.message}`;
+        await storeDocument(url, { status, detail: err.message, filename: err.filename, bytes: err.bytes }).catch(() => undefined);
       }
       state.done++;
       state.by_host[host].done++;
@@ -124,8 +140,81 @@ async function run(): Promise<void> {
     }
   };
   await Promise.all([...byHost].flatMap(([host, urls]) => Array.from({ length: PER_HOST }, () => worker(host, urls))));
+  fetching = false;
   if (!stop) {
     state.phase = "done";
-    console.log(`[ingest] done: ${state.stored} stored, not read: ${JSON.stringify(state.not_read)}`);
+    console.log(`[ingest] done fetching: ${state.stored} stored, not read: ${JSON.stringify(state.not_read)}`);
+  }
+  await scans;
+}
+
+/** Read scanned documents with Claude until none are left and fetching has finished (or a limit is reached). */
+async function readScans(stillFetching: () => boolean): Promise<void> {
+  const sc = state.scans;
+  if (process.env.AGORA_OCR === "off" || !modelOn()) {
+    sc.phase = "off";
+    sc.stopped_reason = process.env.AGORA_OCR === "off" ? "turned off (AGORA_OCR=off)" : "no API key";
+    return;
+  }
+  sc.phase = "waiting";
+  const inFlight = new Set<string>();
+  const one = async (url: string, label: string) => {
+    try {
+      const { buffer, filename } = await downloadDocument(url, INGEST_MAX_BYTES);
+      if (!/\.pdf$/i.test(filename)) throw new Error(`${filename} isn't a PDF`);
+      const got = await readScan(buffer, label);
+      if (!got.pages.length) throw new Error(got.failed_runs ? "Claude couldn't read it" : "no page had readable text");
+      await storeDocument(url, { pages: got.pages, filename, bytes: buffer.length, via: "scan" });
+      sc.read++;
+      sc.pages += got.page_count;
+    } catch (e) {
+      sc.not_read++;
+      sc.last_error = (e as Error).message;
+      await scanNotRead(url, `read from a scan: ${(e as Error).message}`).catch(() => undefined);
+    }
+  };
+  for (;;) {
+    if ((await scanPagesRead()) >= OCR_PAGE_LIMIT) {
+      sc.phase = "stopped";
+      sc.stopped_reason = `reached ${OCR_PAGE_LIMIT.toLocaleString()} scanned pages (AGORA_OCR_PAGE_LIMIT)`;
+      return;
+    }
+    if (await tooBig()) {
+      sc.phase = "stopped";
+      sc.stopped_reason = state.stopped_reason;
+      return;
+    }
+    const batch = (await scansToRead(OCR_WORKERS * 4)).filter((x) => !inFlight.has(x.url));
+    if (!batch.length) {
+      if (!stillFetching()) {
+        sc.phase = "done";
+        console.log(`[ingest] scans done: ${sc.read} read (${sc.pages} pages), ${sc.not_read} not read`);
+        return;
+      }
+      sc.phase = "waiting";
+      await sleep(60_000);
+      continue;
+    }
+    // A safeguard: if the first ten scans all fail, something is wrong with the request, not the scans. Stop rather than spend.
+    if (sc.read === 0 && sc.not_read >= 10) {
+      sc.phase = "stopped";
+      sc.stopped_reason = `the first ${sc.not_read} scans all failed (last: ${sc.last_error})`;
+      console.error(`[ingest] scan reading stopped: ${sc.stopped_reason}`);
+      return;
+    }
+    sc.phase = "reading";
+    // A small pool: at most OCR_WORKERS documents at once.
+    let next = 0;
+    await Promise.all(
+      Array.from({ length: Math.min(OCR_WORKERS, batch.length) }, async () => {
+        while (next < batch.length) {
+          const { url, label } = batch[next++];
+          inFlight.add(url);
+          await one(url, label);
+          inFlight.delete(url);
+        }
+      }),
+    );
+    if (sc.read && sc.read % 25 === 0) console.log(`[ingest] ${sc.read} scans read (${sc.pages} pages)`);
   }
 }

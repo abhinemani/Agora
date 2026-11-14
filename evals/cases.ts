@@ -28,11 +28,14 @@ import type { ContractAnswer, ContractBrief } from "../lib/docs";
 import type { Paperwork } from "../lib/paperwork";
 import { extractFile, parseContract, UPLOAD_DIR, type ExtractedFile } from "../lib/parser";
 import { checkQuote, sampleQuote, type QuoteLine, type QuoteReport } from "../lib/quote-check";
+import { readScan, type ScanReading } from "../lib/doc-ocr";
 import type { ShopperText } from "../lib/shopper-ai";
 
 // ------------------------------------------------------------------ fixtures
 
 const ENDERA = "file:naspo-204521-endera-attachment-d.xlsx";
+/** A two-page scanned amendment with no text layer (built for the scan cases; see the cases). */
+const scanSample = () => readFileSync(join(process.cwd(), "evals/fixtures/scan-sample.pdf"));
 const BUYBOARD = "file:buyboard-724-23-award-report.pdf";
 
 export interface Fixtures {
@@ -727,6 +730,50 @@ export const CASES: Case[] = [
       is<{ items: { sku: string | null; unit_price: number | null }[] }>("NWS-2215 at $52.40", (v) => v.items.some((i) => /NWS-2215/.test(i.sku ?? "") && i.unit_price === 52.4)),
       is<{ items: { sku: string | null; status: string }[] }>("NWS-2910 (TBD) not given a price", (v) => !v.items.some((i) => /NWS-2910/.test(i.sku ?? "") && i.status === "pending")),
       is<{ items: { unit_price: number | null; status: string }[] }>("no floor machine priced at either end of its range", (v) => !v.items.some((i) => i.status === "pending" && (i.unit_price === 1850 || i.unit_price === 3400))),
+    ],
+  },
+
+  // ---- Reading a scanned document
+  // evals/fixtures/scan-sample.pdf: two image-only pages (no text layer). Page 1 is Amendment No. 2 to Riverbend's
+  // RB-2026-031 with a three-line price table (folding table $189.00, stacking chair $64.50, table cart $412.75);
+  // page 2 is a signature line.
+  {
+    id: "scan-text.guard.clean",
+    task: "scan_text",
+    title: "A transcription with every page sent, once each, is kept",
+    canned: { pages: [{ page: 1, text: "AMENDMENT No. 2 TO PRICE AGREEMENT RB-2026-031\n1 | Folding table, 6 ft, blow-molded | Each | $189.00", legible: true }, { page: 2, text: "", legible: false }] },
+    run: () => readScan(scanSample(), "Amendment No. 2"),
+    expect: [outcome("kept"), is<ScanReading>("page 1 kept, the blank signature page left out", (v) => v.pages.length === 1 && v.pages[0].num === 1)],
+  },
+  {
+    id: "scan-text.guard.page-not-sent",
+    task: "scan_text",
+    title: "A page number the file doesn't have is dropped, and the rest kept",
+    canned: { pages: [{ page: 1, text: "AMENDMENT No. 2 TO PRICE AGREEMENT RB-2026-031", legible: true }, { page: 2, text: "", legible: false }, { page: 7, text: "Price schedule continued", legible: true }] },
+    run: () => readScan(scanSample(), "Amendment No. 2"),
+    expect: [outcome("partial"), because(/page 7 isn't one of the 2 pages sent/), is<ScanReading>("only page 1", (v) => v.pages.length === 1 && v.pages[0].num === 1)],
+  },
+  {
+    id: "scan-text.guard.page-missing",
+    task: "scan_text",
+    title: "A run with a page that never came back is kept only in part",
+    canned: { pages: [{ page: 1, text: "AMENDMENT No. 2 TO PRICE AGREEMENT RB-2026-031", legible: true }] },
+    run: () => readScan(scanSample(), "Amendment No. 2"),
+    expect: [outcome("partial"), because(/1 of the 2 pages didn't come back/), pieces(1, 2)],
+  },
+  {
+    id: "scan-text.live.price-table",
+    task: "scan_text",
+    title: "Transcribes a scanned price table with its prices exactly as printed",
+    run: () => readScan(scanSample(), "Amendment No. 2"),
+    expect: [
+      survived,
+      says(/RB-2026-031/),
+      says(/Folding table/i),
+      says(/\$?189\.00/),
+      says(/\$?64\.50/),
+      says(/\$?412\.75/),
+      is<ScanReading>("page 1 read, with no page numbered outside the file", (v) => v.pages.some((p) => p.num === 1) && v.pages.every((p) => p.num >= 1 && p.num <= 2)),
     ],
   },
 ];

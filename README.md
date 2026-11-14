@@ -29,7 +29,7 @@ npm run dev        # http://localhost:3000
 
 Everything works offline. To have Claude (`claude-sonnet-5-5`) parse requests and structure uploaded contracts, copy `.env.example` to `.env` and set `ANTHROPIC_API_KEY`. Without a key, a keyword matcher and a regex-and-table contract parser take over, and the header shows an "Offline parsing" tag. Any API failure falls back the same way.
 
-State lives in memory on the server. **Reset demo** (in the revenue ledger) reseeds everything with stable IDs, so the demo script below is repeatable.
+State lives in memory on the server, with one exception: the agency a visitor is buying for is kept in their own browser, in a cookie (`lib/session.ts`), so two people using the site at once each see their own agency. Every route binds that agency to the request, which is what `db.session.buyer` reads (`lib/db.ts`). The home page has a **Select your agency** control under the search box. **Reset demo** (in the revenue ledger) reseeds everything with stable IDs, so the demo script below is repeatable.
 
 ## How it earns
 

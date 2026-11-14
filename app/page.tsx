@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { BlueprintBackdrop, DimensionFrame } from "@/components/BlueprintBackdrop";
+import { BuyerPicker } from "@/components/BuyerPicker";
 import { Annotation } from "@/components/blueprint";
 import { CategoryIcon } from "@/components/CategoryIcon";
 import { HeroPreview } from "@/components/HeroPreview";
@@ -23,6 +24,7 @@ export default function Home() {
   const router = useRouter();
   const [text, setText] = useState("");
   const [busy, setBusy] = useState(false);
+  const [picking, setPicking] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const input = useRef<HTMLInputElement>(null);
 
@@ -112,7 +114,30 @@ export default function Home() {
               </button>
             ))}
           </div>
-          <p className="mt-5 text-[13px] text-[#BFD5EE]">No setup, forms, or contract number required.</p>
+          {/* Who's buying: optional, kept in this browser, and it decides which contracts show as usable. */}
+          <div className="mx-auto mt-7 flex max-w-3xl flex-wrap items-center justify-center gap-x-3 gap-y-2 text-[13px] text-[#D3E3F6]">
+            {db.session.buyer ? (
+              <span>
+                Showing what <strong className="font-bold text-[#fff]">{db.session.buyer.name}, {db.session.buyer.state}</strong> can buy.
+              </span>
+            ) : (
+              <span>Searching every contract. Select your agency to see only what you can buy.</span>
+            )}
+            <button
+              type="button"
+              onClick={() => setPicking(!picking)}
+              aria-expanded={picking}
+              className="inline-flex min-h-[44px] items-center border border-[rgba(255,255,255,0.6)] px-3.5 text-ui-2xs font-bold text-[#fff] hover:bg-[rgba(255,255,255,0.15)]"
+            >
+              {picking ? "Close" : db.session.buyer ? "Change agency" : "Select your agency"}
+            </button>
+          </div>
+          {picking && (
+            <div className="mx-auto mt-4 max-w-3xl text-left">
+              <BuyerPicker compact onDone={() => setPicking(false)} onClose={() => setPicking(false)} />
+            </div>
+          )}
+          <p className="mt-4 text-[13px] text-[#BFD5EE]">No sign-in or contract number required. Your agency is remembered in this browser.</p>
           <div className="mx-auto mt-3 max-w-xl">
             <ErrorNote message={error} />
           </div>

@@ -3,12 +3,13 @@
 // Agora's own suppliers. The catalog itself stays on the server (lib/catalog.ts).
 
 import { NextResponse } from "next/server";
+import { withSession } from "@/lib/session";
 import { getDb } from "@/lib/db";
 import { catalogStorefront, catalogSupplierFor, searchCatalogSuppliers } from "@/lib/catalog";
 
 export const dynamic = "force-dynamic";
 
-export function GET(req: Request) {
+export const GET = withSession((req: Request) => {
   const url = new URL(req.url);
   const db = getDb();
   const id = url.searchParams.get("id");
@@ -24,4 +25,4 @@ export function GET(req: Request) {
   }
   const q = (url.searchParams.get("q") ?? "").slice(0, 80);
   return NextResponse.json({ results: searchCatalogSuppliers(q, 12) });
-}
+});

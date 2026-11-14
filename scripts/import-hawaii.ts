@@ -272,7 +272,8 @@ for (const a of extracted.families) {
       category_labels: [list.subject, ...(source !== "Hawaii / other" ? [`${source} participating addendum`] : [])],
       regions_as_published: ["Hawaii"],
       contract_url: list.url,
-      lead_agency: "State of Hawaii, State Procurement Office",
+      // The SPO awards most lists; the E26 food-service lists, for one, are the Department of Education's.
+      lead_agency: a.kind === "spo_award" ? "State of Hawaii, State Procurement Office" : a.kind === "cooperative_addendum" ? `State of Hawaii participating addendum to ${source}` : "State of Hawaii",
       source_metadata: {
         state_contract: {
           state: "HI",
@@ -302,7 +303,7 @@ for (const a of extracted.families) {
       const pid = `prd_hi_${hash(`${p.item}|${p.product ?? ""}`.toLowerCase())}`;
       if (!products.has(pid)) products.set(pid, { product_id: pid, product_name: p.product ? `${p.item}: ${p.product}`.slice(0, 180) : p.item.slice(0, 180), manufacturer: null, manufacturer_sku: null, record_type: "awarded_line_item", title_conflict_requires_review: false });
       offerings.push({
-        offering_id: `off_hi_${hash(`${id}|${p.line}|${p.island ?? ""}`)}`,
+        offering_id: `off_hi_${hash(`${id}|${p.line}|${p.island ?? ""}|${p.item}|${p.price}`)}`,
         product_id: pid,
         supplier_id: supplierFor(c.name),
         contract_id: id,
@@ -315,7 +316,8 @@ for (const a of extracted.families) {
         pricing_status: "published_price",
         unit_of_measure: p.unit,
         source_metadata: {
-          document_vintage: `Hawaii SPO awarded price${p.island ? `, ${p.island}` : ""}, price list ${a.family}${a.expires ? ` (expires ${a.expires})` : ""}; read ${today}`,
+          // A rate the list prints as a ceiling is the most an agency pays, and says so.
+          document_vintage: `Hawaii SPO awarded ${/ceiling|not.to.exceed/i.test(`${p.item} ${p.line} ${title}`) ? "ceiling rate" : "price"}${p.island ? `, ${p.island}` : ""}, price list ${a.family}${a.expires ? ` (expires ${a.expires})` : ""}; read ${today}`,
           category_as_published: `${title}: awarded price, SPO price list ${a.family}`,
           basis: "awarded_bid",
           line: p.line,

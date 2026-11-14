@@ -82,14 +82,14 @@ const handlers: Record<string, Handler> = {
   },
 };
 
-// What anyone can do without an account: search, set an agency, and use the shopper's tools.
-const OPEN = new Set(["createRequest", "setPreference", "setBuyer", "clearBuyer", "getResults", "judgeResultProducts", "confirmItems", "confirmPick", "editItems", "shopperBrief", "askShopper", "dive", "diveCompare", "contractsToAsk", "askContract", "briefContract", "rateAnswer"]);
+// What anyone can do without an account: search, set an agency, and everything public that uses the AI (the buying plan and
+// its questions, paperwork drafts, the product dive, Ask a contract and the brief). None of these keeps a record for a person.
+const OPEN = new Set(["createRequest", "setPreference", "setBuyer", "clearBuyer", "getResults", "judgeResultProducts", "confirmItems", "confirmPick", "editItems", "shopperBrief", "askShopper", "draftPaperwork", "dive", "diveCompare", "contractsToAsk", "askContract", "briefContract", "rateAnswer"]);
 // Everything else needs a signed-in person. The phrase finishes "Sign in or create a free account to ...".
 const WHY: [RegExp, string][] = [
   [/cart/i, "use the cart"],
   [/order/i, "place and track orders"],
   [/quote/i, "request a quote"],
-  [/paperwork/i, "draft paperwork"],
   [/join|invite|membership|coop/i, "work with purchasing on co-ops"],
   [/solicitation|award|renewal|rfp/i, "build a solicitation"],
   [/reset/i, "reset the demo"],

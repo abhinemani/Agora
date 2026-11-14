@@ -18,7 +18,7 @@
 // the directory and Agora's member-list matching can't disagree.
 
 import { gunzipSync, gzipSync } from "node:zlib";
-import { readFileSync, writeFileSync, mkdirSync } from "node:fs";
+import { existsSync, readFileSync, writeFileSync, mkdirSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import * as XLSX from "xlsx";
@@ -168,6 +168,8 @@ interface Entity {
   webs: Map<string, "census" | "nces" | "ipeds">;
   /** IPEDS says it's a private college: set aside. */
   private: boolean;
+  /** A county office (sheriff, district attorney, clerk) that is part of its county's government. */
+  parent?: Entity;
   /** Set when this entity was folded into another. */
   mergedInto?: Entity;
 }
@@ -420,6 +422,32 @@ for (const m of dirMerged.values()) {
 // match the same ID are one government, whatever their names. Fetched by
 // scripts/fetch-federal-ids.ts.
 
+// AI-reviewed decisions (seed/cleanup/decisions, written by scripts/cleanup): a model picked
+// among real candidates, with a confidence and a reason. Only high and medium confidence apply.
+interface Decision {
+  pick: string | null;
+  confidence: "high" | "medium" | "low";
+  reason: string;
+}
+function decisions(name: string): Record<string, Decision> {
+  const path = join(ROOT, "seed/cleanup/decisions", `${name}.json`);
+  if (!existsSync(path)) return {};
+  const all = JSON.parse(readFileSync(path, "utf8")) as Record<string, Decision>;
+  return Object.fromEntries(Object.entries(all).filter(([, d]) => d.pick && d.confidence !== "low"));
+}
+const schoolDecisions = decisions("school-pairs");
+const govDecisions = decisions("gov-match");
+const cleanupTasks: Record<string, unknown[]> = { "school-pairs": [], "gov-match": [] };
+/** Words two names share, for ranking candidates the model then chooses among. */
+const nameWords = (n: string) => new Set(entityKey(n).split(" ").filter((w) => w.length > 1 && !/^(of|and|the|city|town|village|county|township|borough|district|school|schools|public|isd|usd|csd|sd)$/.test(w)));
+function similarity(a: string[], b: string[]): number {
+  const A = new Set(a.flatMap((n) => [...nameWords(n)]));
+  const B = new Set(b.flatMap((n) => [...nameWords(n)]));
+  if (!A.size || !B.size) return 0;
+  const both = [...A].filter((w) => B.has(w)).length;
+  return both / (A.size + B.size - both);
+}
+
 /** A whole CSV file, quoted fields and embedded newlines included. */
 function parseCsvText(text: string): Record<string, string>[] {
   const out: string[][] = [];
@@ -628,6 +656,38 @@ for (const u of census) {
   if (twin) pairedNces.add(twin);
   groups.push({ units: twin ? [u, twin] : [u], type: "school_district", state: u.state });
 }
+// Census districts the rules couldn't pair: apply reviewed pairings, then list what's left for review.
+const ncesById = new Map(nces.map((u) => [u.id, u]));
+let pairedByReview = 0;
+for (const g of groups) {
+  if (g.type !== "school_district" || g.units.length !== 1 || g.units[0].kind !== "census") continue;
+  const pick = schoolDecisions[g.units[0].id]?.pick;
+  const twin = pick ? ncesById.get(pick.replace(/^nces:/, "")) : undefined;
+  if (twin && !pairedNces.has(twin) && twin.state === g.state) {
+    g.units.push(twin);
+    pairedNces.add(twin);
+    pairedByReview++;
+  }
+}
+{
+  const freeByState = new Map<string, FedUnit[]>();
+  for (const u of nces) if (!pairedNces.has(u) && !/charter/i.test(u.detail)) (freeByState.get(u.state) ?? freeByState.set(u.state, []).get(u.state)!).push(u);
+  for (const g of groups) {
+    if (g.type !== "school_district" || g.units.length !== 1 || g.units[0].kind !== "census") continue;
+    const u = g.units[0];
+    const cands = (freeByState.get(u.state) ?? [])
+      .map((n) => ({ n, s: similarity([u.name], [n.name]) + (n.city && n.city === u.city ? 0.2 : 0) }))
+      .filter((x) => x.s >= 0.25)
+      .sort((a, b) => b.s - a.s)
+      .slice(0, 4);
+    if (cands.length)
+      cleanupTasks["school-pairs"].push({
+        id: u.id,
+        census: { name: u.name, state: u.state, city: u.city, county: u.county, enrollment: u.enrollment ?? null, website: u.domain || null },
+        candidates: cands.map(({ n }) => ({ id: `nces:${n.id}`, name: n.name, city: n.city, website: n.domain || null, kind: n.detail })),
+      });
+  }
+}
 for (const u of nces) if (!pairedNces.has(u)) groups.push({ units: [u], type: "school_district", state: u.state });
 
 // Community-college districts are in the Census school sheet; pair each with its public IPEDS college.
@@ -722,10 +782,15 @@ let fedMatched = 0;
 let fedMerged = 0;
 const idMerges: { name: string; state: string; merged: string[]; id: string }[] = [];
 const wasInferred = new Set<Entity>([...entities.values()].filter((e) => e.status === "inferred"));
+const groupById = new Map<string, Group>();
+for (const g of groups) for (const u of g.units) groupById.set(`${u.kind}:${u.id}`, g);
+let matchedByReview = 0;
 for (const e of [...entities.values()]) {
   if (e.mergedInto) continue;
-  const g = groupFor(e);
+  const reviewed = govDecisions[e.id]?.pick ? groupById.get(govDecisions[e.id].pick!) : undefined;
+  const g = groupFor(e) ?? reviewed;
   if (!g) continue;
+  if (reviewed === g && !groupFor(e)) matchedByReview++;
   const have = owner.get(g);
   if (have) {
     const a = live(have);
@@ -767,6 +832,100 @@ for (const g of groups) {
 /** Each usable federal website, and the government that holds it. */
 const domainOwner = new Map<string, Entity>();
 for (const [g, e] of owner) for (const u of g.units) if (usableDomain(u.domain)) domainOwner.set(u.domain, live(e));
+
+// County offices -----------------------------------------------------------------
+//
+// Rosters list a county's sheriff, district attorney or clerk as members in their own right,
+// but they're departments of the county government, not separate governments the Census
+// counts. Point each at its county, which carries the federal ID.
+
+const COUNTY_OFFICE =
+  /^(?:the\s+)?(.+?\s(?:county|parish))\b[\s,'-]*(?:'s\s+)?(sheriff(?:'?s)?(?: office| department)?|district attorney(?:'?s)?(?: office)?|state'?s attorney(?:'?s)?(?: office)?|prosecut(?:or|ing attorney)(?:'?s)?(?: office)?|public defender(?:'?s)?(?: office)?|clerk(?: of courts?)?(?:'?s)?(?: office)?|probation(?: department)?|adult probation(?: department)?|juvenile (?:probation|justice|court|detention)(?: department| center)?|treasurer(?:'?s)?(?: office)?|assessor(?:'?s)?(?: office)?|auditor(?:'?s)?(?: office)?|recorder(?:'?s)?(?: office)?|coroner(?:'?s)?(?: office)?|medical examiner(?:'?s)?(?: office)?|jail|detention center|corrections(?: department)?|health department|public health(?: department)?|emergency management(?: agency| department)?|board of (?:county )?commissioners|commission(?:ers)?|fiscal court|board of supervisors|road (?:department|commission)|highway department|engineer(?:'?s)? office|parks(?: and recreation)?(?: department)?|elections?(?: office| board| commission)?|board of elections|human services|social services|department of [a-z ]+|ems|fleet services|information technology|it department|facilities|purchasing(?: department)?)\s*$/i;
+let countyOffices = 0;
+let countyGoverning = 0;
+for (const e of [...entities.values()]) {
+  if (e.mergedInto || e.fed.census || e.fed.nces || e.fed.ipeds) continue;
+  for (const n of e.names.keys()) {
+    const m = n.trim().match(COUNTY_OFFICE);
+    if (!m) continue;
+    const county = lookup(`${e.state}|${entityKey(m[1])}`);
+    if (county && county !== e && county.fed.census) {
+      // The commission or board of supervisors is the county government itself: one record, not two.
+      if (/commission|board of (county )?commissioners|board of supervisors|fiscal court/i.test(m[2])) {
+        mergeInto(live(county), e);
+        countyGoverning++;
+      } else {
+        e.parent = live(county);
+        e.types.set("county", (e.types.get("county") ?? 0) + 50);
+        countyOffices++;
+      }
+      break;
+    }
+  }
+}
+
+// Roster governments still without a federal ID: their best federal candidates, for review.
+{
+  const ownerOf = new Map<Group, Entity>();
+  for (const [g, e] of owner) ownerOf.set(g, live(e));
+  const byWord = new Map<string, Group[]>();
+  for (const g of groups)
+    for (const w of new Set(g.units.flatMap((u) => [...nameWords(u.name)]))) {
+      const k = `${g.state}|${w}`;
+      (byWord.get(k) ?? byWord.set(k, []).get(k)!).push(g);
+    }
+  for (const e of entities.values()) {
+    if (e.mergedInto || e.parent || e.fed.census || e.fed.nces || e.fed.ipeds || !e.coops.size) continue;
+    const names = [...e.names.keys()];
+    const words = new Set(names.flatMap((n) => [...nameWords(n)]));
+    // Candidates share at least one word that isn't common in the state.
+    const pool = new Set<Group>();
+    for (const w of words) {
+      const hit = byWord.get(`${e.state}|${w}`) ?? [];
+      if (hit.length <= 400) for (const g of hit) pool.add(g);
+    }
+    const county = countyOf(e);
+    const cands = [...pool]
+      .map((g) => ({
+        g,
+        s:
+          similarity(names, g.units.map((u) => u.name)) +
+          (county && g.units.some((u) => countyKey(u.county) === county) ? 0.15 : 0) +
+          (e.city && g.units.some((u) => u.city.toLowerCase() === e.city.toLowerCase()) ? 0.1 : 0) +
+          (compatible(e, g) ? 0.05 : 0),
+      }))
+      .filter((x) => x.s >= 0.35)
+      .sort((a, b) => b.s - a.s)
+      .slice(0, 4);
+    if (!cands.length) continue;
+    // Certain "none" answers aren't worth a review: no registry covers tribes, and a single campus isn't a district.
+    const all = names.join(" ");
+    if (typeOf(e) === "tribal") continue;
+    if (/\b(elementary|middle|high|junior high|intermediate|primary|academy|montessori|preschool|early learning|campus)\b/i.test(all) && !/district|schools|board|isd|usd/i.test(all)) continue;
+    // Special districts only when the best candidate is close: many are volunteer fire companies or nonprofits.
+    if (typeOf(e) === "special_district" && cands[0].s < 0.7) continue;
+    cleanupTasks["gov-match"].push({
+      id: e.id,
+      score: Math.round(cands[0].s * 100) / 100,
+      entry: { names: names.slice(0, 4), state: e.state, city: e.city || null, county: e.county || null, type: typeOf(e), source_labels: [...e.labels].slice(0, 2), coops: e.coops.size },
+      candidates: cands.map(({ g }) => {
+        const u = g.units.find((x) => x.kind === "census") ?? g.units[0];
+        const held = ownerOf.get(g);
+        return {
+          id: `${u.kind}:${u.id}`,
+          name: u.name,
+          type: g.type,
+          city: u.city || null,
+          county: u.county || null,
+          also: g.units.filter((x) => x !== u).map((x) => `${x.kind}: ${x.name}`),
+          already_in_directory_as: held ? [...held.names.entries()].sort((a, b) => b[1] - a[1])[0][0] : null,
+        };
+      }),
+    });
+  }
+}
+mkdirSync(join(ROOT, "seed/cleanup/tasks"), { recursive: true });
+for (const [name, rows] of Object.entries(cleanupTasks)) writeFileSync(join(ROOT, "seed/cleanup/tasks", `${name}.jsonl`), rows.map((r) => JSON.stringify(r)).join("\n") + "\n");
 
 // 6. .gov domains -----------------------------------------------------------------
 
@@ -869,6 +1028,7 @@ const rows = [...entities.values()].filter((e) => !e.private).map((e) => {
       e.fed.census || e.fed.nces || e.fed.ipeds
         ? { c: e.fed.census?.id, n: e.fed.nces?.id, u: e.fed.ipeds?.id }
         : undefined,
+    pt: e.parent ? { i: live(e.parent).id, n: display(live(e.parent)) } : undefined,
     pop: e.fed.census?.population,
     enr: e.fed.census?.enrollment,
     p: [...e.coops.values()],
@@ -1000,6 +1160,11 @@ const federal = {
   school_pairs: { by_website: pairedByDomain, by_name: pairedByName, census_only: census.filter((u) => u.type === "school_district").length - pairedByDomain - pairedByName, nces_only: nces.length - pairedNces.size },
   matched: fedMatched,
   merged_by_id: fedMerged,
+  county_offices: countyOffices,
+  reviewed_school_pairs: pairedByReview,
+  reviewed_matches: matchedByReview,
+  review_tasks: Object.fromEntries(Object.entries(cleanupTasks).map(([k, v]) => [k, v.length])),
+  county_governing_bodies_merged: countyGoverning,
   added: fedAdded,
   confirmed_public: confirmedPublic,
   private_set_aside: privateSetAside.length,

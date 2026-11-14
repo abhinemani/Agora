@@ -69,8 +69,8 @@ export function CoopSection({ section, requestId, onMembershipChange }: { sectio
             Federal schedule (GSA MAS) <span className="font-normal">({section.catalog.gsa_total})</span>
           </h3>
           <p className="mb-2 mt-0.5 max-w-2xl text-[11px] text-slate">
-            GSA isn't a co-op. State and local governments may buy from some schedules through GSA cooperative purchasing; the flag below doesn't settle which SINs your agency
-            can use, so check the SIN before ordering.
+            GSA isn't a co-op. State and local governments may buy only the SINs GSA opens to cooperative purchasing; each card says which of its SINs those are, and
+            contracts with none are marked not open.
           </p>
           <ul className="grid gap-2 lg:grid-cols-2">
             {section.catalog.gsa.map((h) => (

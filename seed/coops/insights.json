@@ -41,6 +41,14 @@
   },
   "matched": 41360,
   "merged_by_id": 1638,
+  "county_offices": 262,
+  "reviewed_school_pairs": 0,
+  "reviewed_matches": 0,
+  "review_tasks": {
+   "school-pairs": 2979,
+   "gov-match": 11279
+  },
+  "county_governing_bodies_merged": 190,
   "added": 62810,
   "confirmed_public": 1416,
   "private_set_aside": 868,
@@ -91,24 +99,24 @@
    }
   ],
   "governments_with_id": 103300,
-  "roster_governments": 61733,
-  "roster_with_id": 40407,
+  "roster_governments": 61547,
+  "roster_with_id": 40411,
   "roster_by_type": {
    "tribal": {
     "all": 385,
     "with_id": 0
    },
    "special_district": {
-    "all": 18275,
+    "all": 17959,
     "with_id": 6667
    },
    "school_district": {
-    "all": 18357,
+    "all": 18355,
     "with_id": 11381
    },
    "county": {
-    "all": 3332,
-    "with_id": 2982
+    "all": 3464,
+    "with_id": 2986
    },
    "municipality": {
     "all": 18938,
@@ -130,39 +138,39 @@
     "type": "tribal"
    },
    {
-    "name": "Brighton Fire Rescue District",
+    "name": "Cimarron Hills Fire Department",
     "state": "CO",
     "type": "special_district"
    },
    {
-    "name": "Township of Wade - Jasper County",
+    "name": "Village of Romeoville Parks and Recreation Department",
     "state": "IL",
     "type": "municipality"
    },
    {
-    "name": "Van Buren Conservation District",
-    "state": "MI",
-    "type": "special_district"
+    "name": "Clinton Township",
+    "state": "MN",
+    "type": "municipality"
    },
    {
-    "name": "University Hospital",
-    "state": "NJ",
-    "type": "higher_education"
+    "name": "Cloudcroft Municipal School District",
+    "state": "NM",
+    "type": "school_district"
    },
    {
-    "name": "Irrigon Community Park and Recreation Maintenance District",
+    "name": "North Lincoln Fire and Rescue 1",
     "state": "OR",
     "type": "special_district"
    },
    {
-    "name": "Norco Fire Co",
+    "name": "North Middleton Township Police Department",
     "state": "PA",
     "type": "special_district"
    },
    {
-    "name": "City of Gun Barrell",
+    "name": "College Mound Special Utility District",
     "state": "TX",
-    "type": "municipality"
+    "type": "higher_education"
    }
   ],
   "merge_examples": [
@@ -232,14 +240,14 @@
    }
   ],
   "websites": {
-   "total": 47792,
+   "total": 47757,
    "by_source": {
-    "gov": 14134,
-    "census": 20623,
+    "gov": 14133,
+    "census": 20589,
     "ipeds": 1838,
     "nces": 11197
    },
-   "roster_with_website": 27726
+   "roster_with_website": 27694
   }
  },
  "workbook": {
@@ -327,36 +335,36 @@
   }
  ],
  "directory": {
-  "governments": 130373,
+  "governments": 130183,
   "from_rosters": 64229,
-  "on_a_roster": 61733,
+  "on_a_roster": 61547,
   "by_type": {
    "tribal": 515,
-   "state_agency": 951,
-   "special_district": 54315,
-   "school_district": 29655,
+   "state_agency": 950,
+   "special_district": 53906,
+   "school_district": 29652,
    "higher_education": 3202,
-   "county": 4230,
+   "county": 4453,
    "municipality": 37505
   },
-  "inferred": 5177,
-  "with_domain": 47792,
-  "roster_with_domain": 27726,
+  "inferred": 5168,
+  "with_domain": 47757,
+  "roster_with_domain": 27694,
   "dotgov_rows": 15750,
-  "dotgov_matched": 9748,
+  "dotgov_matched": 9747,
   "dotgov_added": 4386
  },
  "overlap": {
   "by_roster_count": {
-   "1": 47777,
-   "2": 10241,
-   "3": 3344,
-   "4+": 371
+   "1": 47551,
+   "2": 10245,
+   "3": 3378,
+   "4+": 373
   },
   "conservative_key_entities": 75467,
   "conservative_key_multi": 11309,
-  "entity_key_multi": 13956,
-  "on_three_or_more": 3725,
+  "entity_key_multi": 13996,
+  "on_three_or_more": 3761,
   "examples": [
    {
     "name": "Borough of Fairbanks North Star",
@@ -367,58 +375,58 @@
     "coops": 2
    },
    {
-    "name": "Lawrence County Board of Education",
+    "name": "Fort Payne City School District",
     "state": "AL",
     "also": [
-     "Lawrence County Board of Education District"
-    ],
-    "coops": 3
-   },
-   {
-    "name": "Baboquivari Unified School District 40",
-    "state": "AZ",
-    "also": [
-     "Baboquivari USD No.40"
-    ],
-    "coops": 3
-   },
-   {
-    "name": "City of Phoenix",
-    "state": "AZ",
-    "also": [
-     "Phoenix, City of"
-    ],
-    "coops": 3
-   },
-   {
-    "name": "Hackberry School District 3",
-    "state": "AZ",
-    "also": [
-     "Hackberry SD No.3"
+     "Fort Payne City Board of Education"
     ],
     "coops": 2
    },
    {
-    "name": "Sanders Unified School District 18",
+    "name": "Walker County Board of Education",
+    "state": "AL",
+    "also": [
+     "Walker County Schools"
+    ],
+    "coops": 3
+   },
+   {
+    "name": "City of Buckeye",
     "state": "AZ",
     "also": [
-     "Sanders USD No.18"
+     "Buckeye, City of"
+    ],
+    "coops": 4
+   },
+   {
+    "name": "City of Winslow",
+    "state": "AZ",
+    "also": [
+     "Winslow, City of"
+    ],
+    "coops": 3
+   },
+   {
+    "name": "Morenci Unified School District 18",
+    "state": "AZ",
+    "also": [
+     "Morenci USD No.18"
     ],
     "coops": 2
    },
    {
-    "name": "Town of Quartzsite",
+    "name": "Town of Clarkdale",
     "state": "AZ",
     "also": [
-     "Quartzsite, Town of"
+     "Clarkdale, Town of"
     ],
     "coops": 2
    },
    {
-    "name": "Fresno County",
-    "state": "CA",
+    "name": "Winslow Unified School District 1",
+    "state": "AZ",
     "also": [
-     "County of Fresno"
+     "Winslow USD No.1"
     ],
     "coops": 3
    }
@@ -427,19 +435,19 @@
  "coop_counts": {
   "coop_sourcewell": {
    "list": 0,
-   "roster": 48455,
+   "roster": 48353,
    "agency": 7,
    "purchase": 0
   },
   "coop_hgacbuy": {
    "list": 0,
-   "roster": 9674,
+   "roster": 9671,
    "agency": 5,
    "purchase": 0
   },
   "coop_buyboard_national": {
    "list": 0,
-   "roster": 4638,
+   "roster": 4635,
    "agency": 1,
    "purchase": 0
   },
@@ -541,7 +549,7 @@
   }
  },
  "evidence": {
-  "roster": 61733,
+  "roster": 61547,
   "agency": 12,
   "purchase": 3581,
   "id_checks": [

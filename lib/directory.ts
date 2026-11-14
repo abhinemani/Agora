@@ -29,6 +29,8 @@ interface Row {
   g?: { c?: string; n?: string; u?: string };
   pop?: number;
   enr?: number;
+  /** The county this office belongs to. */
+  pt?: { i: string; n: string };
   p: { c: string; e: MembershipEvidence; m?: string; u?: string }[];
   r?: Record<string, MembershipEvidence>;
   x?: { sales: number; lines: number; first: string; last: string };
@@ -84,6 +86,7 @@ function toGovernment(r: Row): DirectoryGovernment {
     domain: r.d,
     domain_source: r.w,
     ids: r.g ? { census: r.g.c, nces: r.g.n, ipeds: r.g.u } : undefined,
+    parent: r.pt ? { id: r.pt.i, name: r.pt.n } : undefined,
     population: r.pop,
     enrollment: r.enr,
     coops: r.p.map((p) => ({ coop_id: p.c, evidence: p.e, member_id: p.m, source_url: p.u })).sort((a, b) => RANK[b.evidence] - RANK[a.evidence]),

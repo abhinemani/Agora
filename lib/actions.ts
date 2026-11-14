@@ -146,7 +146,7 @@ export function getResults(requestId: string) {
   const request = db.requests.find((r) => r.id === requestId) ?? fail("Request not found");
   const results = buildResults(db, request);
   // The co-op catalog: every co-op's public contract directory, beyond the contracts Agora seeds.
-  const cat = catalogCoopHits(db, request.parsed.item, db.session.buyer);
+  const cat = catalogCoopHits(db, request.parsed.item, db.session.buyer, { category: request.parsed.category });
   if (cat.hits.length || cat.gsa.length) {
     const section = finishCoopSection(db, [...results.coops.hits, ...cat.hits], db.session.buyer?.name ?? null);
     results.coops = { ...section, catalog: { retrieved: catalogRetrieved(), more_member: cat.more_member, more_other: cat.more_other, gsa: cat.gsa, gsa_total: cat.gsa_total } };

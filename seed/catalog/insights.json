@@ -7,11 +7,27 @@
   "offerings": 39394,
   "documents": 12602
  },
+ "cleanup": {
+  "gsa_contracts": 12473,
+  "gsa_described": 12442,
+  "gsa_with_end": 12473,
+  "gsa_open_to_cities": 7132,
+  "gsa_sins": 277,
+  "gsa_cooperative_sins": 56,
+  "names_title_cased": 11661,
+  "merged_by_uei": 0,
+  "parts_labelled": 4132,
+  "suppliers_merged_by_review": 0,
+  "contracts_categorized": 0,
+  "products_renamed_by_review": 0,
+  "canon_rows_added": 0
+ },
  "suppliers": {
   "records": 24094,
   "companies": 22785,
   "merged_by_name": 966,
   "merged_by_website": 343,
+  "merged_by_uei": 0,
   "with_website": 13937,
   "on_two_or_more_coops": 1504,
   "most_coops": [
@@ -390,9 +406,9 @@
    "contracts": 12473,
    "suppliers": 11944,
    "with_link": 12473,
-   "with_end": 0,
+   "with_end": 12473,
    "expired": 0,
-   "with_states": 0,
+   "with_states": 12473,
    "offerings": 0
   }
  ],

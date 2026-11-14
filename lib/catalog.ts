@@ -42,6 +42,10 @@ export interface CatalogContract {
   directory: string | null;
   sins: string[];
   renewal: string | null;
+  /** GSA SINs open to state and local governments through cooperative purchasing (GSA's SIN list). */
+  coop_sins?: { code: string; title: string }[];
+  /** One of Agora's categories, from a reviewed classification of the title. */
+  category?: string;
 }
 export interface CatalogProduct {
   id: string;
@@ -209,12 +213,20 @@ function candidates(index: Map<string, number[]>, words: string[]): Set<number> 
 export function catalogAccess(db: Db, buyer: Buyer | null, c: CatalogContract): { member: boolean; eligible: boolean; reason: string } {
   const coopName = db.coops.find((x) => x.id === c.coop_id)?.name ?? c.coop;
   const where = c.states === "any" ? "" : c.states.length <= 6 ? c.states.map(stateName).join(", ") : `${c.states.length} states`;
-  if (c.coop_id === "gsa_mas")
+  if (c.coop_id === "gsa_mas") {
+    // GSA's SIN list says which SINs state and local governments may buy through cooperative purchasing.
+    const open = c.coop_sins ?? [];
     return {
       member: false,
-      eligible: true,
-      reason: `GSA Schedule open to state and local governments through cooperative purchasing for eligible SINs${c.sins.length ? ` (this one lists ${c.sins.slice(0, 3).join(", ")})` : ""}; check the SIN before ordering`,
+      eligible: open.length > 0,
+      reason: open.length
+        ? `Open to state and local governments through GSA cooperative purchasing for ${open
+            .slice(0, 2)
+            .map((x) => `${x.title} (${x.code})`)
+            .join(" and ")}${open.length > 2 ? ` and ${open.length - 2} more` : ""}; order only those SINs`
+        : "none of this contract's SINs is open to state and local governments through GSA cooperative purchasing",
     };
+  }
   if (c.coop_id === "coop_naspo") {
     const states = c.states === "any" ? null : c.states;
     const open = !buyer || !states || !states.length || states.includes(buyer.state);
@@ -245,7 +257,7 @@ export interface CatalogCoopResult {
 
 /** Catalog contracts covering a request, as co-op hits: the best few on the agency's co-ops,
  * the best few it could join, and GSA separately. Contracts Agora already seeds are skipped. */
-export function catalogCoopHits(db: Db, item: string, buyer: Buyer | null, opts: { perSide?: number; gsa?: number; minFit?: number } = {}): CatalogCoopResult {
+export function catalogCoopHits(db: Db, item: string, buyer: Buyer | null, opts: { perSide?: number; gsa?: number; minFit?: number; category?: string | null } = {}): CatalogCoopResult {
   const idx = load();
   const itemTokens = requestTokens(item);
   const empty = { hits: [], more_member: 0, more_other: 0, gsa: [], gsa_total: 0 };
@@ -254,7 +266,7 @@ export function catalogCoopHits(db: Db, item: string, buyer: Buyer | null, opts:
   // Access depends only on the co-op and the states, so work it out once per combination.
   const accessCache = new Map<string, ReturnType<typeof catalogAccess>>();
   const access = (c: CatalogContract) => {
-    const k = `${c.coop_id}|${c.states === "any" ? "*" : c.states.join(",")}|${c.sins.slice(0, 3).join(",")}`;
+    const k = `${c.coop_id}|${c.states === "any" ? "*" : c.states.join(",")}|${(c.coop_sins ?? []).map((x) => x.code).join(",")}`;
     let a = accessCache.get(k);
     if (!a) accessCache.set(k, (a = catalogAccess(db, buyer, c)));
     return a;
@@ -266,11 +278,14 @@ export function catalogCoopHits(db: Db, item: string, buyer: Buyer | null, opts:
     if (expired(c) || seeded.has(c.id)) continue;
     const fit = fitScoreSets(itemTokens, idx.cTitle[i], idx.cScope[i], idx.cWeights);
     if (fit < minFit) continue;
+    // A request with a clear category ("24 inch monitors" is IT hardware) drops partial matches from other categories.
+    if (opts.category && c.category && c.category !== opts.category && fit < 85) continue;
     scored.push({ c, fit, access: access(c) });
   }
   // One card per supplier per co-op: TIPS lists some suppliers on a dozen overlapping awards.
   const best = new Map<string, (typeof scored)[number]>();
-  const rank = (x: (typeof scored)[number]) => x.fit * 10 + (x.c.url ? 3 : 0) + (x.c.end ? 1 : 0) + (x.access.eligible ? 5 : 0);
+  const rank = (x: (typeof scored)[number]) =>
+    x.fit * 10 + (x.c.url ? 3 : 0) + (x.c.end ? 1 : 0) + (x.access.eligible ? 5 : 0) + (opts.category && x.c.category === opts.category ? 8 : 0);
   for (const x of scored) {
     const k = `${x.c.coop}|${x.c.supplier}`;
     const have = best.get(k);

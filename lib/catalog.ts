@@ -1,6 +1,9 @@
 // The co-op catalog: 31,930 supplier contracts, 22,778 suppliers, 34,619 products
 // and 12,602 price documents from 13 co-ops' public directories, captured November
 // 13, 2026 and built into seed/catalog/catalog.json.gz by scripts/import-catalog.ts.
+// It also holds NJSTART, New Jersey's state contracts (scripts/import-njstart.ts):
+// 1,437 contracts and 5,810 awarded prices, as the state program "NJSTART" with a
+// state_contract field. They are the TRX route Agora prefers for New Jersey buyers.
 // Server only. Search, the co-op section, product routes, storefronts and the
 // price-list queue ask it for the few records they need.
 //
@@ -14,6 +17,7 @@ import { join } from "node:path";
 import { gunzipSync } from "node:zlib";
 import { fitScoreSets, requestTokens, SAME_AS, tokens, type CoopHit, type Weights } from "./assistant";
 import { isMember, normalizeDomain } from "./coops";
+import { isTrxState, stateContractAccess, TRX_MARGIN } from "./trx";
 import type { Buyer, Db, Supplier as AgoraSupplier } from "./types";
 import { stateName } from "./vehicles";
 
@@ -46,7 +50,11 @@ export interface CatalogContract {
   coop_sins?: { code: string; title: string }[];
   /** One of Agora's categories, from a reviewed classification of the title. */
   category?: string;
+  /** A state contract (NJSTART), not a co-op's: who may use it and the solicitation it came from. */
+  state_contract?: { state: string; locals: boolean; solicitation: string | null; type_code: string | null; group: string | null; spent: number | null; more_items: boolean };
 }
+/** A state program in a TRX state: the route Agora prefers for that state's buyers (lib/trx.ts). */
+export const isTrxContract = (c: Pick<CatalogContract, "state_contract"> | null | undefined) => Boolean(c?.state_contract && isTrxState(c.state_contract.state));
 export interface CatalogProduct {
   id: string;
   name: string;
@@ -81,6 +89,7 @@ export interface CatalogDocument {
 
 interface Index {
   retrieved: string;
+  state_retrieved?: Record<string, string>;
   suppliers: CatalogSupplier[];
   contracts: CatalogContract[];
   products: CatalogProduct[];
@@ -137,7 +146,7 @@ function load(): Index {
   if (g.__agoraCatalog) return g.__agoraCatalog;
   const raw = JSON.parse(gunzipSync(readFileSync(join(process.cwd(), "seed/catalog/catalog.json.gz"))).toString("utf8")) as Pick<
     Index,
-    "retrieved" | "suppliers" | "contracts" | "products" | "offerings" | "documents"
+    "retrieved" | "state_retrieved" | "suppliers" | "contracts" | "products" | "offerings" | "documents"
   >;
   const supplierById = new Map(raw.suppliers.map((s) => [s.id, s]));
   const offeringsByProduct = new Map<string, CatalogOffering[]>();
@@ -197,6 +206,8 @@ function load(): Index {
 }
 
 export const catalogRetrieved = () => load().retrieved;
+/** When NJSTART's contract list was read (scripts/import-njstart.ts). */
+export const catalogStateRetrieved = (): string | null => load().state_retrieved?.NJSTART ?? null;
 /** The whole index, for the contract explorer and contract pages (lib/contracts.ts). Server only. */
 export type CatalogIndex = Index;
 export const catalogIndex = (): CatalogIndex => load();
@@ -221,6 +232,7 @@ function candidates(index: Map<string, number[]>, words: string[]): Set<number> 
 export function catalogAccess(db: Db, buyer: Buyer | null, c: CatalogContract): { member: boolean; eligible: boolean; reason: string } {
   const coopName = db.coops.find((x) => x.id === c.coop_id)?.name ?? c.coop;
   const where = c.states === "any" ? "" : c.states.length <= 6 ? c.states.map(stateName).join(", ") : `${c.states.length} states`;
+  if (c.state_contract) return stateContractAccess(c.state_contract, buyer);
   if (c.coop_id === "gsa_mas") {
     // GSA's SIN list says which SINs state and local governments may buy through cooperative purchasing.
     const open = c.coop_sins ?? [];
@@ -261,20 +273,23 @@ export interface CatalogCoopResult {
   more_other: number;
   gsa: CoopHit[];
   gsa_total: number;
+  /** State contracts in a TRX state (NJSTART) the buyer may use, best first; they also lead `hits`. */
+  state: CoopHit[];
+  state_total: number;
 }
 
 /** Catalog contracts covering a request, as co-op hits: the best few on the agency's co-ops,
  * the best few it could join, and GSA separately. Contracts Agora already seeds are skipped. */
-export function catalogCoopHits(db: Db, item: string, buyer: Buyer | null, opts: { perSide?: number; gsa?: number; minFit?: number; category?: string | null } = {}): CatalogCoopResult {
+export function catalogCoopHits(db: Db, item: string, buyer: Buyer | null, opts: { perSide?: number; gsa?: number; state?: number; minFit?: number; category?: string | null } = {}): CatalogCoopResult {
   const idx = load();
   const itemTokens = requestTokens(item);
-  const empty = { hits: [], more_member: 0, more_other: 0, gsa: [], gsa_total: 0 };
+  const empty = { hits: [], more_member: 0, more_other: 0, gsa: [], gsa_total: 0, state: [], state_total: 0 };
   if (!itemTokens.length) return empty;
   const seeded = new Set(db.contracts.map((c) => c.catalog_id).filter(Boolean));
   // Access depends only on the co-op and the states, so work it out once per combination.
   const accessCache = new Map<string, ReturnType<typeof catalogAccess>>();
   const access = (c: CatalogContract) => {
-    const k = `${c.coop_id}|${c.states === "any" ? "*" : c.states.join(",")}|${(c.coop_sins ?? []).map((x) => x.code).join(",")}`;
+    const k = `${c.coop_id}|${c.states === "any" ? "*" : c.states.join(",")}|${(c.coop_sins ?? []).map((x) => x.code).join(",")}|${c.state_contract?.locals ?? ""}`;
     let a = accessCache.get(k);
     if (!a) accessCache.set(k, (a = catalogAccess(db, buyer, c)));
     return a;
@@ -288,12 +303,21 @@ export function catalogCoopHits(db: Db, item: string, buyer: Buyer | null, opts:
     if (fit < minFit) continue;
     // A request with a clear category ("24 inch monitors" is IT hardware) drops partial matches from other categories.
     if (opts.category && c.category && c.category !== opts.category && fit < 85) continue;
-    scored.push({ c, fit, access: access(c) });
+    const a = access(c);
+    // Another state's contracts are noise for this buyer, as are a state's own-agency contracts for its locals.
+    if (c.state_contract && buyer && !a.eligible) continue;
+    scored.push({ c, fit, access: a });
   }
   // One card per supplier per co-op: TIPS lists some suppliers on a dozen overlapping awards.
   const best = new Map<string, (typeof scored)[number]>();
+  // Item prices on file break ties: a buyer can check a quote against them.
+  const pricedOn = (c: CatalogContract) => (idx.offeringsByContract.get(c.id) ?? []).filter((o) => o.price != null).length;
+  /** Priced items on the contract whose names share a word with the request: "N matching products in Agora". */
+  const asked = new Set(itemTokens.flatMap((w) => [w, ...(SAME_AS[w] ?? [])]));
+  const matchingPriced = (c: CatalogContract) =>
+    (idx.offeringsByContract.get(c.id) ?? []).filter((o) => o.price != null && tokens(idx.productById.get(o.product)?.name ?? "").some((w) => asked.has(w))).length;
   const rank = (x: (typeof scored)[number]) =>
-    x.fit * 10 + (x.c.url ? 3 : 0) + (x.c.end ? 1 : 0) + (x.access.eligible ? 5 : 0) + (opts.category && x.c.category === opts.category ? 8 : 0);
+    x.fit * 10 + (x.c.url ? 3 : 0) + (x.c.end ? 1 : 0) + (x.access.eligible ? 5 : 0) + (opts.category && x.c.category === opts.category ? 8 : 0) + (pricedOn(x.c) ? 4 : 0);
   for (const x of scored) {
     const k = `${x.c.coop}|${x.c.supplier}`;
     const have = best.get(k);
@@ -301,7 +325,12 @@ export function catalogCoopHits(db: Db, item: string, buyer: Buyer | null, opts:
   }
   const all = [...best.values()].sort((a, b) => rank(b) - rank(a));
   const gsa = all.filter((x) => x.c.coop_id === "gsa_mas");
-  const coops = all.filter((x) => x.c.coop_id !== "gsa_mas" && x.c.coop_id);
+  // TRX state contracts get their own lane, ahead of every co-op, for the buyers they're open to (with no
+  // agency set, the ones open to local governments). The preference settles close calls: a state contract
+  // leads when it fits within TRX_MARGIN of the best co-op contract, and a much closer co-op fit still wins.
+  const bestCoop = Math.max(0, ...all.filter((x) => !x.c.state_contract && x.c.coop_id !== "gsa_mas" && x.access.eligible).map((x) => x.fit));
+  const state = all.filter((x) => isTrxContract(x.c) && (buyer ? x.access.eligible : x.c.state_contract!.locals) && x.fit >= bestCoop - TRX_MARGIN);
+  const coops = all.filter((x) => x.c.coop_id !== "gsa_mas" && x.c.coop_id && !x.c.state_contract);
   const member = coops.filter((x) => x.access.member);
   const other = coops.filter((x) => !x.access.member);
   const per = opts.perSide ?? 8;
@@ -320,17 +349,21 @@ export function catalogCoopHits(db: Db, item: string, buyer: Buyer | null, opts:
     note: x.c.end ? null : "End date not published in the co-op's directory.",
     verification: "research_lead",
     link_out: { contract_id: x.c.id, coop: x.c.coop, has_link: Boolean(x.c.url) },
-    products: 0,
+    products: matchingPriced(x.c),
     source: "catalog",
     end: x.c.end,
     directory_url: x.c.directory,
+    ...(x.c.state_contract ? { program: "state" as const, trx: isTrxContract(x.c), solicitation: x.c.state_contract.solicitation } : {}),
   });
+  const statePer = opts.state ?? 6;
   return {
-    hits: [...member.slice(0, per), ...other.slice(0, per)].map(toHit),
+    hits: [...state.slice(0, statePer), ...member.slice(0, per), ...other.slice(0, per)].map(toHit),
     more_member: Math.max(0, member.length - per),
     more_other: Math.max(0, other.length - per),
     gsa: gsa.slice(0, opts.gsa ?? 4).map(toHit),
     gsa_total: gsa.length,
+    state: state.slice(0, statePer).map(toHit),
+    state_total: state.length,
   };
 }
 
@@ -353,6 +386,8 @@ export interface CatalogRoute {
   member: boolean;
   eligible: boolean;
   reason: string;
+  /** On a TRX state contract (NJSTART): the route Agora prefers for that state's buyers. */
+  trx: boolean;
 }
 export interface CatalogProductHit {
   product_id: string;
@@ -392,6 +427,9 @@ export function catalogProducts(db: Db, item: string, buyer: Buyer | null, limit
         const c = idx.contractById.get(o.contract);
         if (!c || expired(c)) return null;
         const a = catalogAccess(db, buyer, c);
+        // Another state's contract, or a state-agency-only one for a local, isn't a route for this buyer.
+        // With no agency set, show what a local government could use, as the state lane does.
+        if (c.state_contract && (buyer ? !a.eligible : !c.state_contract.locals)) return null;
         return {
           offering_id: o.id,
           coop: db.coops.find((x) => x.id === c.coop_id)?.name ?? c.coop,
@@ -406,11 +444,13 @@ export function catalogProducts(db: Db, item: string, buyer: Buyer | null, limit
           status: o.status,
           vintage: o.vintage,
           unit: o.unit,
+          trx: isTrxContract(c),
           ...a,
         } satisfies CatalogRoute;
       })
       .filter((r): r is CatalogRoute => Boolean(r))
-      .sort((a, b) => Number(b.member) - Number(a.member) || Number(b.eligible) - Number(a.eligible) || (a.price ?? Infinity) - (b.price ?? Infinity));
+      // Routes the buyer can use first, a TRX state contract ahead of a co-op among them, then by price.
+      .sort((a, b) => Number(b.member) - Number(a.member) || Number(b.eligible) - Number(a.eligible) || Number(b.trx && b.eligible) - Number(a.trx && a.eligible) || (a.price ?? Infinity) - (b.price ?? Infinity));
     return { product_id: p.id, name: p.name, maker: p.maker, mpn: p.mpn, fit, review: p.review, routes, coverage: cover.get(i) ?? 0 };
   };
   const priced = (h: CatalogProductHit) => (h.routes.some((r) => r.price != null) ? 2 : h.routes.some((r) => r.discount != null) ? 1 : 0);

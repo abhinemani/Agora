@@ -665,6 +665,7 @@ function addTylerCatalog(db: Db) {
     pricing_basis: "published_price",
     master_agreement: "NASPO ValuePoint AR3764",
     adopts: "ctr_tyler_naspo",
+    catalog_id: "con_nj_26-TELE-114629",
     relation_note:
       "New Jersey's participating addendum M4027 to NASPO AR3764. Its price file has the same products at the same prices as the NASPO catalog (203 of 204 rows match).",
     eligibility: { states: ["NJ"], note: "New Jersey state agencies and local public entities" },
@@ -790,6 +791,7 @@ function addMaximus(db: Db) {
     verification: "source_document",
     pricing_basis: "published_price",
     master_agreement: "NASPO ValuePoint AR3758",
+    catalog_id: "con_nj_26-TELE-115813",
     relation_note: "New Jersey's adoption of NASPO ValuePoint AR3758, per the NJSTART price schedule.",
     eligibility: { states: ["NJ"], note: "New Jersey state agencies and local public entities" },
   });

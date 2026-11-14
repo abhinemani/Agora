@@ -6,7 +6,7 @@ import { Suspense, useEffect, useState } from "react";
 import { BuyerPicker } from "@/components/BuyerPicker";
 import { AccessTag, contractHref, shortDate } from "@/components/ContractBits";
 import { useStore } from "@/components/store";
-import { Checkbox, ErrorNote, Loading, PageTitle } from "@/components/ui";
+import { Badge, Checkbox, ErrorNote, Loading, PageTitle } from "@/components/ui";
 import type { ContractKind, ContractRow, ExploreResult } from "@/lib/contracts";
 
 const KIND: Record<ContractKind, string> = { agency: "Your agency's", state: "State", coop: "Co-op", reseller: "Reseller", federal: "Federal (GSA)" };
@@ -25,8 +25,8 @@ function Explorer() {
   const params = useSearchParams();
   const [q, setQ] = useState(params.get("q") ?? "");
   const [typed, setTyped] = useState(q);
-  const [kind, setKind] = useState<ContractKind | "">("");
-  const [coop, setCoop] = useState("");
+  const [kind, setKind] = useState<ContractKind | "">((params.get("kind") as ContractKind | null) ?? "");
+  const [coop, setCoop] = useState(params.get("coop") ?? "");
   const [category, setCategory] = useState("");
   const [usable, setUsable] = useState(false);
   const [priced, setPriced] = useState(false);
@@ -253,6 +253,11 @@ function Row({ r }: { r: ContractRow }) {
         <div className="min-w-0">
           <div className="flex flex-wrap items-center gap-x-2 gap-y-0.5 text-ui-2xs text-base-darker">
             <span className="font-bold text-ink">{r.program}</span>
+            {r.trx && (
+              <span title="A state contract on the TRX program, which Sovra supports. Listed first for that state's buyers.">
+                <Badge tone="green">TRX</Badge>
+              </span>
+            )}
             <span className="font-mono">{r.number}</span>
             {r.category && <span>· {r.category}</span>}
           </div>

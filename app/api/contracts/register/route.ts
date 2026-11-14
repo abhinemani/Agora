@@ -4,6 +4,7 @@
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
 import { NextResponse } from "next/server";
+import { withSession } from "@/lib/session";
 import { ActionError, importRegister } from "@/lib/actions";
 import { extractFile, ParseError, type InputFile } from "@/lib/parser";
 import { RegisterError } from "@/lib/register";
@@ -12,7 +13,7 @@ export const dynamic = "force-dynamic";
 
 const SAMPLE_REGISTER = "harmon-lake-contract-register.csv";
 
-export async function POST(req: Request) {
+export const POST = withSession(async (req: Request) => {
   try {
     let file: InputFile | null = null;
     if (req.headers.get("content-type")?.includes("application/json")) {
@@ -32,4 +33,4 @@ export async function POST(req: Request) {
     console.error(err);
     return NextResponse.json({ error: "Could not read that file." }, { status: 500 });
   }
-}
+}, { account: "upload a contract register" });

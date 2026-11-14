@@ -4,6 +4,7 @@
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
 import { NextResponse } from "next/server";
+import { withSession } from "@/lib/session";
 import { ActionError, importMembers } from "@/lib/actions";
 import { MemberListError } from "@/lib/members";
 import { extractFile, ParseError, type InputFile } from "@/lib/parser";
@@ -12,7 +13,7 @@ export const dynamic = "force-dynamic";
 
 const SAMPLE = "sourcewell-member-list-sample.csv";
 
-export async function POST(req: Request) {
+export const POST = withSession(async (req: Request) => {
   try {
     let file: InputFile | null = null;
     let coopId = "";
@@ -38,4 +39,4 @@ export async function POST(req: Request) {
     console.error(err);
     return NextResponse.json({ error: "Could not read that file." }, { status: 500 });
   }
-}
+}, { account: "upload a member list" });

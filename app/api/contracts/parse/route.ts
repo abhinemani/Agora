@@ -4,6 +4,7 @@
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
 import { NextResponse } from "next/server";
+import { withSession } from "@/lib/session";
 import { ActionError, parseUpload } from "@/lib/actions";
 import { ParseError, type InputFile } from "@/lib/parser";
 import { catalogDocument } from "@/lib/catalog";
@@ -14,7 +15,7 @@ import type { Role } from "@/lib/types";
 export const dynamic = "force-dynamic";
 export const maxDuration = 120;
 
-export async function POST(req: Request) {
+export const POST = withSession(async (req: Request) => {
   let documentId: string | null = null;
   try {
     let files: InputFile[] = [];
@@ -53,4 +54,4 @@ export async function POST(req: Request) {
     console.error(err);
     return NextResponse.json({ error: "Could not read that file." }, { status: 500 });
   }
-}
+}, { account: "upload a contract" });

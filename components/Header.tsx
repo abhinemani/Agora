@@ -43,7 +43,7 @@ const NAV: Record<Role, { href: string; label: string }[]> = {
 };
 
 export function Header() {
-  const { db, role, setRole, setLedgerOpen, fresh } = useStore();
+  const { db, role, setRole, setLedgerOpen, fresh, user, askToSignIn, signOut } = useStore();
   const router = useRouter();
   const path = usePathname();
   const [open, setOpen] = useState(false);
@@ -120,6 +120,11 @@ export function Header() {
           ))}
         </nav>
         <div className="ml-auto flex items-center gap-1 sm:gap-3">
+          {db && !user && (
+            <button type="button" onClick={() => askToSignIn()} className="min-h-[40px] shrink-0 px-2 text-ui-xs font-bold text-primary hover:text-primary-dark">
+              Sign in
+            </button>
+          )}
 
 
         <Link
@@ -156,6 +161,38 @@ export function Header() {
 
           {open && (
             <div role="menu" className="absolute right-0 top-full mt-1 w-72 overflow-hidden border border-base-lighter bg-white py-2 text-ink shadow-3">
+              <div className="mb-2 border-b border-base-lighter px-4 pb-3 pt-2">
+                {user ? (
+                  <>
+                    <div className="text-ui-xs font-bold">{user.name}</div>
+                    <div className="truncate text-ui-3xs text-base-dark">{user.email}</div>
+                    <button
+                      role="menuitem"
+                      onClick={() => {
+                        setOpen(false);
+                        void signOut();
+                      }}
+                      className="mt-1 min-h-[36px] text-ui-xs font-bold text-primary hover:text-primary-dark"
+                    >
+                      Sign out
+                    </button>
+                  </>
+                ) : (
+                  <>
+                    <div className="text-ui-3xs text-base-dark">Searching is open to everyone. An account keeps your carts and orders.</div>
+                    <button
+                      role="menuitem"
+                      onClick={() => {
+                        setOpen(false);
+                        askToSignIn();
+                      }}
+                      className="mt-1 min-h-[36px] text-ui-xs font-bold text-primary hover:text-primary-dark"
+                    >
+                      Sign in or create an account
+                    </button>
+                  </>
+                )}
+              </div>
               <div className="px-4 pb-1 pt-2 text-ui-3xs uppercase tracking-label text-base-dark">View the demo as</div>
               {ROLES.map((r) => (
                 <button

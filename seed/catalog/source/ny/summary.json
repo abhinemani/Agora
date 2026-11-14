@@ -15,7 +15,7 @@
  "certified": 392,
  "preferred": {
   "providers": 3,
-  "contracts": 41,
+  "contracts": 42,
   "offerings": 667,
   "by_section": {
    "A": 560,
@@ -23,10 +23,12 @@
    "C": 3,
    "D": 68,
    "E": 9
-  }
+  },
+  "corcraft_prices": 1146,
+  "corcraft_on_approved_records": 994
  },
  "suppliers": 1313,
- "priced_lines": 5735,
+ "priced_lines": 6881,
  "prices": {
   "rule": 3036,
   "reviewed": 2699,
@@ -37,6 +39,6 @@
    "index_adjusted": 723
   }
  },
- "with_prices": 132,
- "products": 4233
+ "with_prices": 133,
+ "products": 5376
 }

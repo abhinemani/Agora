@@ -31,7 +31,7 @@ Run `rehearse` against a production build: `npm run build`, then `npx next start
 
 Every model call goes through `structured()` in `lib/llm.ts` with a `task` name, and its caller reports what became of the output with `kept()`, `partly()`, `discarded()` or `pieces()`. That is what `/quality` counts, so a new call site needs both. Text the model wrote carries a `log_id` to the page, which shows `<Feedback id={...} />` under it.
 
-Before changing a prompt, a schema or a check, run `npm run eval` with `ANTHROPIC_API_KEY` set, make the change, and run it again. Nothing that passed before may fail. Add a case to `evals/cases.ts` for whatever the change was meant to fix, then save the new baseline with `npm run eval -- --save` and commit `evals/baseline.json`. Without a key only the guard cases run: they test the checks, not the prompts.
+Before changing a prompt, a schema or a check, run `npm run eval` with `ANTHROPIC_API_KEY` set, make the change, and run it again. Nothing that passed before may fail. Add a case to `evals/cases.ts` for whatever the change was meant to fix, then save the new baseline with `npm run eval -- --save` and commit `evals/baseline.json`. Without a key only the guard cases run: they test the checks, not the prompts. In a Claude Code cloud session, `ANTHROPIC_API_KEY` never reaches the shell (the session reserves it), so the environment must set the key as `AGORA_ANTHROPIC_API_KEY`; `lib/api-key.ts` reads either name.
 
 The log holds what people typed. Keep it server-only, and keep the recent-calls list on `/quality` behind a signed-in account.
 

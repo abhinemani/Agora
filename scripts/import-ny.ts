@@ -197,6 +197,71 @@ if (process.argv[2] === "--prices") {
   process.exit(0);
 }
 
+// --corcraft <folder>: Corcraft's Price & Specification Guide (184 pages) for review agents. Each priced
+// item is matched to the Corcraft category the OGS preferred-source list approves (or none), so a price
+// lands on the approved record it belongs to, and the rest on a record marked not on the list.
+if (process.argv[2] === "--corcraft") {
+  const dir = resolve(process.argv[3]);
+  const text = readFileSync(join(dir, "document_text/0306_Price_Guide.txt"), "utf8").split("\n");
+  const ps = JSON.parse(readFileSync(join(OUT, "preferred.json"), "utf8")) as { offerings: { section: string; category: string; name: string; providers: string[] }[] };
+  const cats = new Map<string, string[]>();
+  for (const o of ps.offerings) if (o.providers.includes("Corcraft")) (cats.get(`${o.section}|${o.category}`) ?? cats.set(`${o.section}|${o.category}`, []).get(`${o.section}|${o.category}`)!).push(o.name);
+  const N = 3;
+  const SH = join(ROOT, "seed/cleanup/shards");
+  mkdirSync(SH, { recursive: true });
+  writeFileSync(join(SH, "corcraft-categories.json"), JSON.stringify(Object.fromEntries([...cats].map(([k, v]) => [k, v.slice(0, 12)])), null, 1));
+  // Split at blank lines near each third, so no item is cut in two.
+  let start = 0;
+  for (let i = 1; i <= N; i++) {
+    let end = i === N ? text.length : Math.floor((text.length * i) / N);
+    while (end < text.length && text[end].trim()) end++;
+    const f = join(SH, `corcraft-${String(i).padStart(2, "0")}.txt`);
+    writeFileSync(f, text.slice(start, end).map((l, j) => `L${start + j + 1}: ${l}`).join("\n"));
+    start = end;
+  }
+  console.log(`Corcraft guide: ${text.length} lines in ${N} shards; ${cats.size} Corcraft categories on the OGS list.`);
+  process.exit(0);
+}
+
+// --collect-corcraft: keep a price when its line is in the guide (by number), prints the price and the item
+// code or words, and its category is one offered or none.
+if (process.argv[2] === "--collect-corcraft") {
+  const dir = resolve(process.argv[3]);
+  const lines = readFileSync(join(dir, "document_text/0306_Price_Guide.txt"), "utf8").split("\n");
+  const SH = join(ROOT, "seed/cleanup/shards");
+  const cats = new Set(Object.keys(JSON.parse(readFileSync(join(SH, "corcraft-categories.json"), "utf8"))));
+  const numbersIn = (line: string) => new Set((line.match(/\d[\d,]*(\.\d+)?/g) ?? []).map((n) => Number(n.replace(/,/g, ""))));
+  const code = (x: unknown) => String(x ?? "").replace(/[\s_*-]+/g, "").toUpperCase();
+  // The guide prints Corcraft's order phone on some price rows; phone numbers aren't kept.
+  const noPhones = (x: string) => x.replace(/\(?\b\d{3}\)?[\s.-]*\d{3}-\d{4}\b/g, "[phone]");
+  const rows: Record<string, unknown>[] = [];
+  const stats = { prices: 0, dropped: { not_found: 0, no_words: 0, bad_category: 0, zero: 0 }, matched_category: 0 };
+  for (let i = 1; i <= 3; i++) {
+    const f = join(ROOT, "seed/cleanup/out", `corcraft-${String(i).padStart(2, "0")}.json`);
+    if (!existsSync(f)) continue;
+    for (const p of (JSON.parse(readFileSync(f, "utf8")) as { prices: Record<string, unknown>[] }).prices) {
+      const n = Number(p.line_number), price = Number(p.price);
+      const line = lines[n - 1] ?? "";
+      let why: keyof typeof stats.dropped | null = null;
+      if (!(price > 0)) why = "zero";
+      else if (!numbersIn(line).has(price)) why = "not_found";
+      // Words on the line or the one above, or the item's own code printed on the line ("S11_ _P_ _000000_  215.00").
+      else if (!/[A-Za-z]{3,}/.test(line) && !/[A-Za-z]{3,}/.test(lines[n - 2] ?? "") && !(code(p.code).length >= 3 && code(line).includes(code(p.code)))) why = "no_words";
+      else if (p.category != null && !cats.has(String(p.category))) why = "bad_category";
+      if (why) {
+        stats.dropped[why]++;
+        continue;
+      }
+      stats.prices++;
+      if (p.category) stats.matched_category++;
+      rows.push({ section: String(p.section ?? "").slice(0, 80), item: String(p.item).slice(0, 180), code: p.code ? String(p.code).slice(0, 40) : null, price, unit: p.unit ?? "each", category: p.category ?? null, line: noPhones(line).replace(/\s+/g, " ").trim().slice(0, 300), line_number: n });
+    }
+  }
+  writeFileSync(join(OUT, "corcraft-prices.json"), JSON.stringify({ source: "https://shop.corcraft.ny.gov/corcraftassets/Brochures/Price_Guide.pdf", edition: "Price & Specification Guide, prices effective October 2023 (revised September 10, 2026)", basis: "dock delivered price", checked: stats, rows }, null, 1) + "\n");
+  console.log(stats);
+  process.exit(0);
+}
+
 // --collect-prices: keep each reviewed price only when its line is in the document's text, prints the
 // price and words, belongs to a contract on that award, and carries no personal detail.
 if (process.argv[2] === "--collect-prices") {
@@ -411,6 +476,62 @@ if (existsSync(join(OUT, "preferred.json"))) {
       });
       preferredStats.offerings++;
     }
+  }
+  // Corcraft's price guide: each checked price on the approved Corcraft record for its category, or on one
+  // record for catalog items the OGS list doesn't name (never presented as approved).
+  if (existsSync(join(OUT, "corcraft-prices.json"))) {
+    const cc = JSON.parse(readFileSync(join(OUT, "corcraft-prices.json"), "utf8")) as { source: string; edition: string; rows: { section: string; item: string; code: string | null; price: number; unit: string; category: string | null; line: string; line_number: number }[] };
+    const corcraft = ps.providers.find((x) => x.name === "Corcraft");
+    const sid = `sup_nyps_${hash("corcraft")}`;
+    const offList = `con_nyps_${hash("Corcraft|catalog|not on list", 12)}`;
+    if (cc.rows.some((r) => !r.category) && !contracts.some((c) => c.contract_id === offList)) {
+      contracts.push({
+        contract_id: offList,
+        cooperative: PS_PROGRAM,
+        contract_number: `${corcraft?.vendor_id ? `Vendor ${corcraft.vendor_id} · ` : ""}Price guide`,
+        supplier_id: sid,
+        supplier_name: "Corcraft",
+        title: "Corcraft catalog items not on the preferred-source list",
+        start_date: null,
+        end_date: null,
+        category_labels: [...new Set(cc.rows.filter((r) => !r.category).map((r) => r.section))].slice(0, 30),
+        regions_as_published: ["New York"],
+        contract_url: cc.source,
+        lead_agency: "Corcraft (NYS Department of Corrections and Community Supervision, Division of Industries)",
+        source_metadata: {
+          state_contract: { state: "NY", locals: true, solicitation: "Corcraft price guide", type_code: "not on the OGS preferred-source list", group: "Preferred source" },
+          preferred: "not_approved",
+          line_items_paginated: false,
+        },
+      });
+      preferredStats.contracts++;
+    }
+    let priced = 0, onList = 0;
+    for (const r of cc.rows) {
+      const cid = r.category ? `con_nyps_${hash(`Corcraft|${r.category}`, 12)}` : offList;
+      if (!contracts.some((c) => c.contract_id === cid)) continue;
+      const name = `${r.item}${r.code ? ` (${r.code})` : ""}`.slice(0, 180);
+      const pid = `prd_cc_${hash(`${r.code ?? ""}|${r.item}`.toLowerCase())}`;
+      if (!products.has(pid)) products.set(pid, { product_id: pid, product_name: name, manufacturer: "Corcraft", manufacturer_sku: r.code, record_type: "awarded_line_item", title_conflict_requires_review: false });
+      offerings.push({
+        offering_id: `off_cc_${hash(`${cid}|${r.line_number}|${r.price}|${r.item}`)}`,
+        product_id: pid,
+        supplier_id: sid,
+        contract_id: cid,
+        cooperative: PS_PROGRAM,
+        product_name: name,
+        vendor_sku: r.code,
+        source_url: cc.source,
+        fixed_price: r.price,
+        discount_percent: null,
+        pricing_status: "published_price",
+        unit_of_measure: r.unit,
+        source_metadata: { document_vintage: `NY Preferred Source: Corcraft dock delivered price, ${cc.edition}`, category_as_published: `${r.section} (Corcraft price guide)`, basis: "published_price", line: r.line },
+      });
+      priced++;
+      if (r.category) onList++;
+    }
+    Object.assign(preferredStats, { corcraft_prices: priced, corcraft_on_approved_records: onList });
   }
 }
 

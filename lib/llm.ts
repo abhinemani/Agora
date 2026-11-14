@@ -10,13 +10,15 @@ import Anthropic from "@anthropic-ai/sdk";
 import { zodOutputFormat } from "@anthropic-ai/sdk/helpers/zod";
 import type * as z from "zod/v4";
 import { fingerprint, record, type Outcome, type Task } from "./ai-log";
+import { apiKey } from "./api-key";
 
 export const MODEL = "claude-sonnet-5-5";
 
 let client: Anthropic | null = null;
 function getClient() {
-  if (!process.env.ANTHROPIC_API_KEY) return null;
-  client ??= new Anthropic({ maxRetries: 1 });
+  const key = apiKey();
+  if (!key) return null;
+  client ??= new Anthropic({ apiKey: key, maxRetries: 1 });
   return client;
 }
 
@@ -25,7 +27,7 @@ export type Stub = ((call: { task: Task; system: string; user: string }) => unkn
 let stub: Stub = null;
 export const stubModel = (s: Stub) => void (stub = s);
 /** Whether a model will answer: a stub when one is set, otherwise the API key. */
-export const modelOn = () => (stub ? stub !== "off" : Boolean(process.env.ANTHROPIC_API_KEY));
+export const modelOn = () => (stub ? stub !== "off" : Boolean(apiKey()));
 
 interface Pending {
   task: Task;

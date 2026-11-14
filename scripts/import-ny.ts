@@ -298,7 +298,7 @@ for (const r of src.contracts) {
 }
 
 // Prices: award 23452's net prices read by rule, and the other price files' prices kept by --collect-prices.
-const BASIS: Record<string, string> = { net_price: "contract net price (list less the contract discount)", contract_price: "awarded contract price", ceiling: "ceiling rate (the most an agency pays)", index_adjusted: "price set by the award's monthly index adjustment" };
+const BASIS: Record<string, string> = { net_price: "contract net price (list less the contract discount)", contract_price: "awarded contract price", ceiling: "ceiling rate (the most an agency pays)", index_adjusted: "base price, before the award's monthly index adjustment" };
 const products = new Map<string, Record<string, unknown>>();
 const offerings: Record<string, unknown>[] = [];
 const priceStats = { rule: 0, reviewed: 0, by_basis: {} as Record<string, number> };
@@ -325,7 +325,8 @@ for (const [file, key] of [["prices-rule.json", "rule"], ["prices-reviewed.json"
       product_name: name,
       vendor_sku: r.sku ?? null,
       source_url: (r.url as string) ?? (c.contract_url as string),
-      fixed_price: r.price,
+      // Spreadsheets print floating-point noise (93.64999999999999); the check matched it exactly, the record keeps it rounded.
+      fixed_price: Math.round(Number(r.price) * 10000) / 10000,
       discount_percent: null,
       pricing_status: "published_price",
       unit_of_measure: r.unit ?? null,

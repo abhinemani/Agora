@@ -38,7 +38,7 @@ export const NY_PREFERRED_STEPS = (c: { supplier: string; approval: "approved" |
         c.approval === "agency"
           ? "The OGS list approves this offering as a preferred source for one state agency; for everyone else it's optional."
           : `New York's preferred sources come first: under State Finance Law § 162, public buyers take items the OGS list approves from ${c.supplier} before any contract, when the item meets the need in form, function and utility.`,
-        `Order from ${c.supplier} through its catalog, or ask it for a price. The list publishes no prices.`,
+        `Order from ${c.supplier} through its catalog, or ask it for a price. The OGS list publishes no prices; any shown here are from the provider's own price guide.`,
       ];
 
 /** Each loaded TRX state's purchasing program, as buyers know it, and how a local buys on it. */

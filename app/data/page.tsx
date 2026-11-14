@@ -670,7 +670,7 @@ export default function CoopDataPage() {
               Arkansas is the third TRX state loaded. The Office of State Procurement lists {n(ar.listings)} statewide contracts, most of them the state&apos;s participating
               addenda to NASPO ValuePoint, Sourcewell, OMNIA Partners and MMCAP contracts. A listing often groups several vendors, so review agents split each into supplier
               contracts, and a check kept only vendor names, agreement numbers, co-op links and quotes found in the listing&apos;s own text: {n(ar.checked.vendors)} vendors,
-              none dropped. Two process servers who contract as individuals are left out. That leaves {n(ar.contracts)} supplier contracts from {n(ar.suppliers)} suppliers,{" "}
+              none dropped, including two process servers who contract as individuals and get storefronts like any contract holder. That gives {n(ar.contracts)} supplier contracts from {n(ar.suppliers)} suppliers,{" "}
               {n(ar.suppliers_shared_with_coops)} of whom also hold co-op contracts.
             </p>
             <p>
@@ -706,7 +706,10 @@ export default function CoopDataPage() {
               New York&apos;s preferred sources come before any contract. Under State Finance Law § 162, public buyers take the items the OGS list approves from Corcraft,
               NYSID or NIBNY first, when an item meets the need. The September 2026 list&apos;s {n(ny.preferred.offerings)} offering-and-provider pairs are in Agora as{" "}
               {n(ny.preferred.contracts)} preferred-source records, with each approval category kept: approved items lead New York results, items approved for one agency
-              are marked optional for others, and the 12 the list marks not approved never lead. The list publishes no prices.
+              are marked optional for others, and the 12 the list marks not approved never lead. The list publishes no prices, but Corcraft&apos;s Price &amp;
+              Specification Guide does: {n(ny.preferred.corcraft_prices)} dock-delivered prices, read by review agents and each checked on its printed line, of which{" "}
+              {n(ny.preferred.corcraft_on_approved_records)} sit on the approved Corcraft category they belong to (office furniture, tables, textiles, janitorial and more).
+              The rest are catalog items the list doesn&apos;t name, kept on a record marked not on the list.
             </p>
           </>
         }

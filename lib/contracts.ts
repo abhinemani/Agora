@@ -345,6 +345,7 @@ const longDate = (d: string) => new Date(`${d}T12:00:00Z`).toLocaleDateString("e
 
 /** What an offering's number is, in plain words, by the vintage the importer gave it. */
 function offeringNote(o: CatalogOffering): string {
+  if (o.price != null && /^NY Preferred Source: Corcraft/.test(o.vintage ?? "")) return "Corcraft price guide price, dock delivered";
   if (o.price != null && /^(NJSTART|Hawaii SPO|Arkansas OSP|NYS OGS|Empire Procure Connect)/.test(o.vintage ?? "")) return "Awarded state contract price";
   if (o.price != null) return /award/i.test(o.vintage ?? "") ? "Awarded bid, base model" : /net price/i.test(o.vintage ?? "") ? "Contract net price" : /base vehicle|cost sheet/i.test(o.vintage ?? "") ? "Base price, before options and delivery" : "Published price";
   if (o.list != null) return "List price, before the contract discount";
@@ -393,7 +394,10 @@ function catalogDetail(db: Db, c: CatalogContract, itemQuery: string): ContractD
   const n = (x: number, word: string) => `${x.toLocaleString("en-US")} ${word}${x === 1 ? "" : "s"}`;
   let headline: string;
   let detail: string;
-  if (priced.length && c.state_contract) {
+  if (priced.length && c.state_contract?.preferred) {
+    headline = `${n(priced.length, "price")} from the provider's price guide`;
+    detail = `${supplier || "The provider"}'s own published prices (for Corcraft, the Price & Specification Guide, dock delivered), not a bid award. Confirm the current price with ${supplier || "the provider"} before you order.`;
+  } else if (priced.length && c.state_contract) {
     headline = `${n(priced.length, "awarded price")} on file`;
     detail = `The state's awarded line items for this contract, read from ${program}${c.start && c.end ? ` (contract term ${longDate(c.start)} to ${longDate(c.end)})` : ""}. Confirm the current price and any annual adjustment with the supplier.${c.state_contract.more_items ? ` ${program} lists more items than Agora has loaded; the rest are on the contract's page.` : ""}`;
   } else if (priced.length) {

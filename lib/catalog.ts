@@ -65,6 +65,10 @@ export interface CatalogContract {
     islands?: string[];
     /** Who may use it, in the award's words (New York's "Use of Contracts"). */
     use?: string;
+    /** A New York preferred source (State Finance Law § 162): approved, approved for one agency, or listed as not approved. */
+    preferred?: "approved" | "agency" | "not_approved";
+    /** The county that let it (Empire Procure Connect): it may always use it; others only when open. */
+    owner?: string;
   };
   /** NIGP commodity classes and item codes: "published" from the contract's own records (NJSTART),
    * "reviewed" when the AI review chose the classes (lib/nigp.ts). */
@@ -308,7 +312,7 @@ export function catalogCoopHits(db: Db, item: string, buyer: Buyer | null, opts:
   // Access depends only on the co-op and the states, so work it out once per combination.
   const accessCache = new Map<string, ReturnType<typeof catalogAccess>>();
   const access = (c: CatalogContract) => {
-    const k = `${c.coop_id}|${c.states === "any" ? "*" : c.states.join(",")}|${(c.coop_sins ?? []).map((x) => x.code).join(",")}|${c.state_contract?.locals ?? ""}`;
+    const k = `${c.coop_id}|${c.states === "any" ? "*" : c.states.join(",")}|${(c.coop_sins ?? []).map((x) => x.code).join(",")}|${c.state_contract ? JSON.stringify([c.state_contract.locals, c.state_contract.participants, c.state_contract.use, c.state_contract.preferred, c.state_contract.owner]) : ""}`;
     let a = accessCache.get(k);
     if (!a) accessCache.set(k, (a = catalogAccess(db, buyer, c)));
     return a;
@@ -336,7 +340,9 @@ export function catalogCoopHits(db: Db, item: string, buyer: Buyer | null, opts:
   const matchingPriced = (c: CatalogContract) =>
     (idx.offeringsByContract.get(c.id) ?? []).filter((o) => o.price != null && tokens(idx.productById.get(o.product)?.name ?? "").some((w) => asked.has(w))).length;
   const rank = (x: (typeof scored)[number]) =>
-    x.fit * 10 + (x.c.url ? 3 : 0) + (x.c.end ? 1 : 0) + (x.access.eligible ? 5 : 0) + (opts.category && x.c.category === opts.category ? 8 : 0) + (pricedOn(x.c) ? 4 : 0);
+    x.fit * 10 + (x.c.url ? 3 : 0) + (x.c.end ? 1 : 0) + (x.access.eligible ? 5 : 0) + (opts.category && x.c.category === opts.category ? 8 : 0) + (pricedOn(x.c) ? 4 : 0) +
+    // New York law puts an approved preferred source ahead of a contract; a listed-but-not-approved one goes last.
+    (x.c.state_contract?.preferred === "approved" ? 60 : x.c.state_contract?.preferred === "not_approved" ? -60 : 0);
   for (const x of scored) {
     const k = `${x.c.coop}|${x.c.supplier}`;
     const have = best.get(k);
@@ -365,14 +371,14 @@ export function catalogCoopHits(db: Db, item: string, buyer: Buyer | null, opts:
     member: x.access.member,
     eligible: x.access.eligible,
     reason: x.access.reason,
-    note: x.c.end ? null : "End date not published in the co-op's directory.",
+    note: x.c.end || x.c.state_contract?.preferred ? null : "End date not published in the co-op's directory.",
     verification: "research_lead",
     link_out: { contract_id: x.c.id, coop: x.c.coop, has_link: Boolean(x.c.url) },
     products: matchingPriced(x.c),
     source: "catalog",
     end: x.c.end,
     directory_url: x.c.directory,
-    ...(x.c.state_contract ? { program: "state" as const, trx: isTrxContract(x.c), solicitation: x.c.state_contract.solicitation, state: x.c.state_contract.state } : {}),
+    ...(x.c.state_contract ? { program: "state" as const, trx: isTrxContract(x.c), solicitation: x.c.state_contract.solicitation, state: x.c.state_contract.state, ...(x.c.state_contract.preferred ? { preferred: x.c.state_contract.preferred } : {}) } : {}),
   });
   const statePer = opts.state ?? 6;
   return {

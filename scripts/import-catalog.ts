@@ -132,9 +132,15 @@ const newYork = existsSync(NY_FILE)
   ? (JSON.parse(gunzipSync(readFileSync(NY_FILE)).toString("utf8")) as { retrieved: string; suppliers: RawSupplier[]; contracts: RawContract[]; products: RawProduct[]; offerings: RawOffering[]; documents: RawDocument[] })
   : null;
 const nySummary = existsSync(join(SRC, "ny/summary.json")) ? JSON.parse(readFileSync(join(SRC, "ny/summary.json"), "utf8")) : null;
+// Empire Procure Connect, New York counties' cooperative (npm run import:epc), the same way.
+const EPC_FILE = join(SRC, "epc/records.json.gz");
+const epc = existsSync(EPC_FILE)
+  ? (JSON.parse(gunzipSync(readFileSync(EPC_FILE)).toString("utf8")) as { retrieved: string; suppliers: RawSupplier[]; contracts: RawContract[]; products: RawProduct[]; offerings: RawOffering[]; documents: RawDocument[] })
+  : null;
+const epcSummary = existsSync(join(SRC, "epc/summary.json")) ? JSON.parse(readFileSync(join(SRC, "epc/summary.json"), "utf8")) : null;
 /** The state programs folded in, by program name. */
-const STATE_SOURCES = [njstart && { program: "NJSTART", ...njstart }, hawaii && { program: "Hawaii SPO", ...hawaii }, arkansas && { program: "Arkansas OSP", ...arkansas }, newYork && { program: "NYS OGS", ...newYork }].filter(<T,>(x: T | null): x is T => Boolean(x));
-const STATE_PROGRAMS = new Set(["NJSTART", "Hawaii SPO", "Arkansas OSP", "NYS OGS"]);
+const STATE_SOURCES = [njstart && { program: "NJSTART", ...njstart }, hawaii && { program: "Hawaii SPO", ...hawaii }, arkansas && { program: "Arkansas OSP", ...arkansas }, newYork && { program: "NYS OGS", ...newYork }, epc && { program: "Empire Procure Connect", ...epc }].filter(<T,>(x: T | null): x is T => Boolean(x));
+const STATE_PROGRAMS = new Set(["NJSTART", "Hawaii SPO", "Arkansas OSP", "NYS OGS", "NY Preferred Source", "Empire Procure Connect"]);
 const arSummary = existsSync(join(SRC, "arkansas/summary.json")) ? JSON.parse(readFileSync(join(SRC, "arkansas/summary.json"), "utf8")) : null;
 for (const src of STATE_SOURCES) {
   rawSuppliers.push(...src.suppliers);
@@ -227,6 +233,8 @@ const COOP_ID: Record<string, string> = {
   "Hawaii SPO": "state_hi",
   "Arkansas OSP": "state_ar",
   "NYS OGS": "state_ny",
+  "NY Preferred Source": "state_ny_ps",
+  "Empire Procure Connect": "trx_epc",
 };
 
 // ------------------------------------------------------------------ suppliers: one record per company
@@ -423,7 +431,7 @@ interface Contract {
   /** One of Agora's categories, from a reviewed classification of the contract's title (or its first SIN). */
   category?: string;
   /** A state contract (NJSTART): whether the state opens it to its local governments, and its solicitation. */
-  state_contract?: { state: string; locals: boolean; solicitation: string | null; type_code: string | null; group: string | null; spent: number | null; more_items: boolean; participants?: string[]; islands?: string[]; use?: string };
+  state_contract?: { state: string; locals: boolean; solicitation: string | null; type_code: string | null; group: string | null; spent: number | null; more_items: boolean; participants?: string[]; islands?: string[]; use?: string; preferred?: "approved" | "agency" | "not_approved"; owner?: string };
   /** NIGP commodity classes (3 digits) and, where the source prints them, item codes ("490-90").
    * "published": from the contract's own records (NJSTART). "reviewed": chosen by the AI review
    * (scripts/cleanup) from the classes NJSTART's records name. */
@@ -503,6 +511,9 @@ function stateContractOf(meta: Record<string, unknown>): Partial<Contract> {
       // Hawaii names its participating jurisdictions: a local must be one of them.
       ...(Array.isArray(meta.jurisdictions) ? { participants: meta.jurisdictions as string[] } : {}),
       ...(typeof meta.use_of_contracts === "string" ? { use: meta.use_of_contracts } : {}),
+      // New York's preferred sources: whether the list approves this offering, for one agency, or not at all.
+      ...(typeof meta.preferred === "string" ? { preferred: meta.preferred as "approved" | "agency" | "not_approved" } : {}),
+      ...(typeof meta.owner === "string" ? { owner: meta.owner } : {}),
       ...(Array.isArray(meta.islands) && (meta.islands as string[]).length ? { islands: meta.islands as string[] } : {}),
     },
     ...(typeof meta.category === "string" ? { category: meta.category } : {}),
@@ -512,7 +523,8 @@ function stateContractOf(meta: Record<string, unknown>): Partial<Contract> {
 // classes the review chose for its title (GSA contracts: for their SINs, in SIN order).
 const nigpStats = { published: 0, reviewed: 0, none: 0 };
 {
-  const njCodes = new Map((njstart?.contracts ?? []).map((c) => [c.contract_id, ((c.source_metadata ?? {}).nigp as string[] | undefined) ?? []]));
+  // Published codes from any state source that prints them (NJSTART, Empire Procure Connect).
+  const njCodes = new Map(STATE_SOURCES.flatMap((s) => s.contracts).map((c) => [c.contract_id, ((c.source_metadata ?? {}).nigp as string[] | undefined) ?? []]));
   for (const c of contracts) {
     if (c.state_contract) {
       const codes = njCodes.get(c.id) ?? [];
@@ -854,6 +866,10 @@ const insights = {
     classes_used: new Set(contracts.flatMap((c) => c.nigp?.classes ?? [])).size,
     priced_offerings_coded: offerings.filter((o) => o.nigp).length,
     top_classes: Object.entries(contracts.reduce<Record<string, number>>((m, c) => { for (const k of c.nigp?.classes ?? []) m[k] = (m[k] ?? 0) + 1; return m; }, {})).sort((a, b) => b[1] - a[1]).slice(0, 12),
+  },
+  epc: epcSummary && {
+    ...epcSummary,
+    suppliers_shared_with_coops: suppliers.filter((s) => s.coops.includes("Empire Procure Connect") && s.coops.some((c) => c !== "Empire Procure Connect")).length,
   },
   new_york: nySummary && {
     ...nySummary,

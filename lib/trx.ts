@@ -16,6 +16,31 @@ export const TRX_STATES = ["NJ", "OR", "AR", "HI", "NY"] as const;
 /** How far below the best co-op fit (0–100) a TRX state contract may be and still lead the results. */
 export const TRX_MARGIN = 15;
 
+/** Programs that aren't a state's own office but are TRX programs in that state, by program name. */
+export const TRX_PROGRAM_BY_NAME: Record<string, TrxProgram> = {
+  "Empire Procure Connect": {
+    name: "Empire Procure Connect",
+    coop_program: "Empire Procure Connect, the county cooperative run with the Empire State Cooperative Procurement Alliance",
+    portal: "https://empireprocureconnect.info/empire-procure-connect-home",
+    data_anchor: "empire-procure-connect",
+    steps: (c) => [
+      `A county let this contract on Empire Procure Connect${c.solicitation ? ` (${c.solicitation})` : ""} and opened it to other governments. New York's General Municipal Law § 103(16) lets a political subdivision buy on another's contract when it was let in a way consistent with New York law. Read the executed contract and its available regions before the first order.`,
+      "Register on Empire Procure Connect, which approves each government before it buys, then order from the supplier under the contract number on your own purchase order. Check New York's preferred sources first for items they're approved to supply.",
+    ],
+  },
+};
+
+/** How a New York buyer uses a preferred source (Corcraft, NYSID, NIBNY), which comes before an OGS contract. */
+export const NY_PREFERRED_STEPS = (c: { supplier: string; approval: "approved" | "agency" | "not_approved" }) =>
+  c.approval === "not_approved"
+    ? [`The OGS list names this offering but doesn't approve it as a preferred-source item. You may buy it from ${c.supplier} as an ordinary purchase, under your usual rules.`]
+    : [
+        c.approval === "agency"
+          ? "The OGS list approves this offering as a preferred source for one state agency; for everyone else it's optional."
+          : `New York's preferred sources come first: under State Finance Law § 162, public buyers take items the OGS list approves from ${c.supplier} before any contract, when the item meets the need in form, function and utility.`,
+        `Order from ${c.supplier} through its catalog, or ask it for a price. The list publishes no prices.`,
+      ];
+
 /** Each loaded TRX state's purchasing program, as buyers know it, and how a local buys on it. */
 export interface TrxProgram {
   /** The program name on cards and buttons. */
@@ -86,6 +111,11 @@ export interface StateContractFields {
   participants?: string[];
   /** Who may use it, in the award's own words (New York's "Use of Contracts"). */
   use?: string | null;
+  /** A New York preferred source rather than a contract (State Finance Law § 162). */
+  preferred?: "approved" | "agency" | "not_approved";
+  /** The government that let it (an Empire Procure Connect county). It may always use its own contract;
+   * others only when it's open to cooperative purchasing, and a state agency only then too. */
+  owner?: string;
 }
 export const isTrxState = (state: string | null | undefined) => Boolean(state && (TRX_STATES as readonly string[]).includes(state));
 
@@ -110,7 +140,13 @@ export function stateContractAccess(sc: StateContractFields, buyer: Buyer | null
   const where = stateLabel(sc.state);
   const program = TRX_PROGRAM[sc.state]?.coop_program ?? "the state's cooperative purchasing program";
   const counties = sc.participants ? HI_COUNTIES.filter(([, re]) => sc.participants!.some((p) => re.test(p))).map(([n]) => n) : [];
-  const open = sc.participants
+  const open = sc.preferred
+    ? sc.preferred === "approved"
+      ? `Open to ${where} public buyers, who take it before any contract under State Finance Law § 162`
+      : sc.preferred === "agency"
+        ? "Approved as a preferred source for one state agency; optional for everyone else"
+        : "Listed but not approved as a preferred source; an ordinary purchase"
+    : sc.participants
     ? counties.length
       ? `Open to the jurisdictions it lists, including ${list(counties.map((c) => (c === "Honolulu" ? "Honolulu" : c === "Hawaii County" ? "Hawaii County" : `${c} County`)))}`
       : `For ${where} state agencies only; no county is a participating jurisdiction`
@@ -121,6 +157,16 @@ export function stateContractAccess(sc: StateContractFields, buyer: Buyer | null
       : sc.locals
         ? `Open to ${where} local governments through the ${program}`
         : `For ${where} state agencies only; not open to cooperative purchasing`;
+  if (sc.owner) {
+    const where2 = stateLabel(sc.state);
+    const mine = buyer && buyer.state === sc.state && listed([sc.owner], buyer);
+    if (mine) return { member: true, eligible: true, reason: `${sc.owner}'s own contract` };
+    if (!sc.locals) return { member: false, eligible: !buyer, reason: `${sc.owner}'s own contract; not open to cooperative purchasing` };
+    const scope = sc.use && !/^statewide\b/i.test(sc.use) ? `; available to: "${sc.use}"` : "";
+    if (!buyer) return { member: false, eligible: true, reason: `Let by ${sc.owner} and open to other ${where2} governments through Empire Procure Connect${scope}` };
+    if (buyer.state !== sc.state) return { member: false, eligible: false, reason: `a ${where2} county contract, for ${where2} public entities` };
+    return { member: true, eligible: true, reason: `Let by ${sc.owner} and open to other ${where2} governments through Empire Procure Connect${scope}` };
+  }
   if (!buyer) return { member: false, eligible: true, reason: open };
   if (buyer.state !== sc.state) return { member: false, eligible: false, reason: `a ${where} state contract, for ${where} public entities` };
   if (buyer.entity_type === "state_agency") return { member: true, eligible: true, reason: `Open to ${where} state agencies` };

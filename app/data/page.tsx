@@ -166,6 +166,7 @@ export default function CoopDataPage() {
   const hi = catalogInsights.hawaii;
   const ar = catalogInsights.arkansas;
   const ny = catalogInsights.new_york;
+  const epc = catalogInsights.epc;
   const f = insights.federal;
   const o = insights.overlap;
   const prospects = insights.prospects.slice(0, 15);
@@ -200,6 +201,7 @@ export default function CoopDataPage() {
             ["#hawaii", "Hawaii"],
             ["#arkansas", "Arkansas"],
             ["#new-york", "New York"],
+            ["#empire-procure-connect", "Empire Procure Connect"],
             ["#nigp", "NIGP codes"],
             ["#cleanup", "Cleanup"],
             ["#states", "State rules"],
@@ -532,7 +534,7 @@ export default function CoopDataPage() {
           head={["Co-op", "Contracts", "Own page", "End date", "Products"]}
           right={[1, 2, 3, 4]}
           rows={catalogInsights.per_coop
-            .filter((c) => c.contracts && c.coop !== "NJSTART" && c.coop !== "Hawaii SPO" && c.coop !== "Arkansas OSP" && c.coop !== "NYS OGS")
+            .filter((c) => c.contracts && c.coop !== "NJSTART" && c.coop !== "Hawaii SPO" && c.coop !== "Arkansas OSP" && c.coop !== "NYS OGS" && c.coop !== "NY Preferred Source" && c.coop !== "Empire Procure Connect")
             .sort((a, b) => b.contracts - a.contracts)
             .map((c) => [
               <span key="c" className="font-bold">
@@ -694,9 +696,40 @@ export default function CoopDataPage() {
               {n(ny.use_unstated)} contracts sit on awards whose page doesn&apos;t say, and are treated as open, as OGS contracts generally are to authorized users.
             </p>
             <p>
-              {n(ny.certified)} contracts carry a small business, minority-owned, women-owned or service-disabled veteran-owned certification, kept as published. Item
-              prices aren&apos;t loaded yet: they are in the awards&apos; price files. New York&apos;s preferred sources (Corcraft, NYSID and NIBNY), which a buyer checks before a
-              contract for the items they&apos;re approved to supply, are in the download but not yet in Agora.
+              {n(ny.certified)} contracts carry a small business, minority-owned, women-owned or service-disabled veteran-owned certification, kept as published. Prices
+              come from the awards&apos; price files: {n(ny.priced_lines)} on {n(ny.with_prices)} contracts. The crash mitigation award&apos;s workbook was read by rule
+              ({n(ny.prices.rule)} net prices, list less the discount, with the list shown); review agents read the rest ({n(ny.prices.reviewed)} prices, every one found on its
+              row or line). Each is labelled for what it is: contract price, net price, ceiling rate, or a base price before the award&apos;s monthly fuel or index adjustment
+              (salt, deicers, milk).
+            </p>
+            <p>
+              New York&apos;s preferred sources come before any contract. Under State Finance Law § 162, public buyers take the items the OGS list approves from Corcraft,
+              NYSID or NIBNY first, when an item meets the need. The September 2026 list&apos;s {n(ny.preferred.offerings)} offering-and-provider pairs are in Agora as{" "}
+              {n(ny.preferred.contracts)} preferred-source records, with each approval category kept: approved items lead New York results, items approved for one agency
+              are marked optional for others, and the 12 the list marks not approved never lead. The list publishes no prices.
+            </p>
+          </>
+        }
+      />
+
+      <Section
+        id="empire-procure-connect"
+        title="Empire Procure Connect: New York counties' cooperative"
+        intro={
+          <>
+            <p>
+              Empire Procure Connect is a TRX program that isn&apos;t a state. New York counties (today Chemung, Rockland and Ulster) bid contracts on its portal, run with
+              the Empire State Cooperative Procurement Alliance, and mark each one open to other governments or kept for their own use. Agora holds all {n(epc.contracts)}{" "}
+              active portal records, read {date(epc.retrieved)}, from {n(epc.suppliers)} suppliers ({n(epc.suppliers_shared_with_coops)} also hold co-op contracts):{" "}
+              {n(epc.open)} are open to cooperative purchasing and {n(epc.county_only)} are a county&apos;s own, shown only to that county. {n(epc.on_list)} are on EPC&apos;s
+              published marketplace list for {epc.list_period}, which gives each one&apos;s available regions; {n(epc.region_limited)} are limited to named regions, and their
+              cards quote the limit.
+            </p>
+            <p>
+              Open EPC contracts join New York&apos;s TRX lane beside OGS contracts and preferred sources. Their pages cite General Municipal Law § 103(16), which lets a
+              political subdivision buy on another&apos;s contract let consistently with New York law, and note that EPC registers each government before it buys. Every
+              record prints NIGP codes, kept as published. Item prices aren&apos;t loaded: most records carry $0 placeholder items, and the few priced lines are one-off
+              purchase amounts rather than contract prices.
             </p>
           </>
         }

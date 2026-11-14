@@ -21,7 +21,7 @@ Run `rehearse` against a production build: `npm run build`, then `npx next start
 - Every route that reads or changes the store is wrapped in `withSession()` (`lib/session.ts`), which binds the visitor's agency and account to the request. A new action is account-only unless it is added to `OPEN` in `app/api/act/route.ts`.
 - `/api/state` sends the whole `Db` to the browser. Large datasets therefore stay server-only and are read lazily: the co-op directory (`lib/directory.ts`), the co-op catalog (`lib/catalog.ts`) and state rules (`lib/state-rules.ts`). Results carry only the slice a page needs. Never import those modules or their JSON into a `"use client"` component.
 - A helper used by both a server page and a client component can't live in a `"use client"` file (see `components/StateRuleBits.tsx`).
-- TRX state contracts (`lib/trx.ts`) are the preferred route: NJSTART, Hawaii SPO, Arkansas OSP and NYS OGS contracts lead results for their own state's buyers. Keep that preference when changing search or ranking.
+- TRX state contracts (`lib/trx.ts`) are the preferred route: NJSTART, Hawaii SPO, Arkansas OSP, NYS OGS (with New York's preferred sources) and Empire Procure Connect contracts lead results for their own state's buyers. Keep that preference when changing search or ranking.
 - The UI uses USWDS-based Tailwind tokens (`tailwind.config.ts`). The theme has `error-*`, `warning-*` and `success-*` colors, plus emerald and amber; it has no `red-*`.
 
 ## Changing a prompt or a check
@@ -42,6 +42,7 @@ Generated data is committed so builds need no network. Re-run the importers afte
 4. `npm run import:njstart` rebuilds NJSTART's records from `seed/catalog/source/njstart/` (pass the unzipped folder of a new NJSTART export to read it in first).
    `npm run import:hawaii` rebuilds Hawaii's records from `seed/catalog/source/hawaii/` (a new download goes through `--read`, a review, then `--collect`; see the README).
    `npm run import:arkansas` rebuilds Arkansas's records from `seed/catalog/source/arkansas/` (a new download goes through `--read`, a review, `--collect` and `--prices`; see the README).
+   `npm run import:epc` rebuilds Empire Procure Connect's records from `seed/catalog/source/epc/` (a new download goes through `--read`).
    `npm run import:ny` rebuilds New York's records from `seed/catalog/source/ny/` (a new download goes through `--read`).
 5. `npm run import:catalog-coops` builds the co-op catalog (`seed/catalog/catalog.json.gz`) and attaches the price rows.
 6. `npm run import:state-rules` builds `lib/state-rules.json` from `seed/states/source/`.

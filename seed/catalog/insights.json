@@ -14,7 +14,7 @@
   "gsa_open_to_cities": 7132,
   "gsa_sins": 277,
   "gsa_cooperative_sins": 56,
-  "names_title_cased": 12516,
+  "names_title_cased": 12515,
   "merged_by_uei": 0,
   "parts_labelled": 4112,
   "suppliers_merged_by_review": 7,
@@ -31,12 +31,12 @@
   ]
  },
  "suppliers": {
-  "records": 26957,
-  "companies": 24517,
-  "merged_by_name": 2090,
+  "records": 27117,
+  "companies": 24625,
+  "merged_by_name": 2142,
   "merged_by_website": 343,
   "merged_by_uei": 0,
-  "with_website": 13936,
+  "with_website": 13939,
   "on_two_or_more_coops": 1502,
   "most_coops": [
    {
@@ -45,6 +45,7 @@
     "coops": [
      "Choice Partners",
      "E&I",
+     "Empire Procure Connect",
      "Equalis Group",
      "GSA MAS",
      "HGACBuy",
@@ -56,7 +57,7 @@
      "Sourcewell",
      "TIPS"
     ],
-    "contracts": 29
+    "contracts": 30
    },
    {
     "id": "cat_893418876ba75fddd993",
@@ -83,6 +84,7 @@
     "coops": [
      "Arkansas OSP",
      "E&I",
+     "Empire Procure Connect",
      "GSA MAS",
      "Hawaii SPO",
      "NASPO ValuePoint",
@@ -93,7 +95,7 @@
      "Sourcewell",
      "TIPS"
     ],
-    "contracts": 16
+    "contracts": 18
    },
    {
     "id": "cat_af208adcb81b1a525476",
@@ -178,6 +180,38 @@
     "contracts": 9
    },
    {
+    "id": "cat_4378bc9e3318938ef5fe",
+    "name": "The Sherwin-Williams Company",
+    "coops": [
+     "1GPA",
+     "Arkansas OSP",
+     "E&I",
+     "Empire Procure Connect",
+     "Equalis Group",
+     "NPPGov",
+     "NYS OGS",
+     "OMNIA Partners",
+     "Sourcewell"
+    ],
+    "contracts": 9
+   },
+   {
+    "id": "cat_0c11c4053dbf3c589550",
+    "name": "The HON Company LLC",
+    "coops": [
+     "Arkansas OSP",
+     "BuyBoard",
+     "Empire Procure Connect",
+     "GSA MAS",
+     "Hawaii SPO",
+     "NASPO ValuePoint",
+     "NJSTART",
+     "NYS OGS",
+     "OMNIA Partners"
+    ],
+    "contracts": 9
+   },
+   {
     "id": "cat_5f1d721967eb2067c67b",
     "name": "Quadient, Inc.",
     "coops": [
@@ -207,36 +241,6 @@
      "TIPS"
     ],
     "contracts": 44
-   },
-   {
-    "id": "cat_019cf5414cb30b87f973",
-    "name": "CDW Government LLC",
-    "coops": [
-     "1GPA",
-     "Choice Partners",
-     "GSA MAS",
-     "Hawaii SPO",
-     "NJSTART",
-     "NYS OGS",
-     "PEPPM",
-     "TIPS"
-    ],
-    "contracts": 34
-   },
-   {
-    "id": "cat_9cd35a0ecc2e3cd5be1d",
-    "name": "School Specialty LLC",
-    "coops": [
-     "1GPA",
-     "BuyBoard",
-     "Choice Partners",
-     "Equalis Group",
-     "NJSTART",
-     "NPPGov",
-     "NYS OGS",
-     "OMNIA Partners"
-    ],
-    "contracts": 24
    }
   ],
   "merge_examples": [
@@ -490,18 +494,40 @@
    "with_end": 1411,
    "expired": 0,
    "with_states": 1411,
+   "offerings": 5735
+  },
+  {
+   "coop": "NY Preferred Source",
+   "coop_id": "state_ny_ps",
+   "contracts": 41,
+   "suppliers": 3,
+   "with_link": 0,
+   "with_end": 0,
+   "expired": 0,
+   "with_states": 41,
+   "offerings": 667
+  },
+  {
+   "coop": "Empire Procure Connect",
+   "coop_id": "trx_epc",
+   "contracts": 197,
+   "suppliers": 155,
+   "with_link": 197,
+   "with_end": 197,
+   "expired": 0,
+   "with_states": 197,
    "offerings": 0
   }
  ],
  "nigp": {
-  "published": 1282,
+  "published": 1479,
   "reviewed": 27698,
-  "none": 6273,
-  "contracts": 35253,
+  "none": 6314,
+  "contracts": 35491,
   "coop_contracts_coded": 27698,
   "coop_contracts": 31930,
-  "state_uncoded": 2041,
-  "classes_used": 150,
+  "state_uncoded": 2082,
+  "classes_used": 164,
   "priced_offerings_coded": 4572,
   "top_classes": [
    [
@@ -510,19 +536,19 @@
    ],
    [
     "918",
-    4293
+    4297
    ],
    [
     "208",
-    3091
+    3100
    ],
    [
     "204",
-    2993
+    2999
    ],
    [
     "909",
-    2979
+    2981
    ],
    [
     "209",
@@ -530,7 +556,7 @@
    ],
    [
     "785",
-    1630
+    1632
    ],
    [
     "925",
@@ -542,17 +568,38 @@
    ],
    [
     "910",
-    1267
+    1269
    ],
    [
     "958",
-    1145
+    1149
    ],
    [
     "340",
     1097
    ]
   ]
+ },
+ "epc": {
+  "source": "https://empireprocureconnect.info/empire-procure-connect-home",
+  "list_url": "https://empireprocureconnect.info/hubfs/Empire%20Procure%20Connect/Contract%20Lists/2026%201105_EPC%20Contract%20List.pdf?hsLang=en",
+  "list_period": "November 2026",
+  "retrieved": "2026-11-14",
+  "contracts": 197,
+  "open": 109,
+  "county_only": 88,
+  "on_list": 51,
+  "region_limited": 3,
+  "with_nigp": 197,
+  "by_county": {
+   "County of Rockland": 28,
+   "County of Chemung": 158,
+   "County of Ulster": 11
+  },
+  "suppliers": 157,
+  "documents": 534,
+  "priced_lines": 0,
+  "suppliers_shared_with_coops": 50
  },
  "new_york": {
   "source": "https://ogs.ny.gov/procurement/ogs-centralized-contracts-list",
@@ -569,9 +616,33 @@
    "Technology": 347
   },
   "certified": 392,
-  "suppliers": 1310,
-  "priced_lines": 0,
-  "suppliers_shared_with_coops": 511
+  "preferred": {
+   "providers": 3,
+   "contracts": 41,
+   "offerings": 667,
+   "by_section": {
+    "A": 560,
+    "B": 27,
+    "C": 3,
+    "D": 68,
+    "E": 9
+   }
+  },
+  "suppliers": 1313,
+  "priced_lines": 5735,
+  "prices": {
+   "rule": 3036,
+   "reviewed": 2699,
+   "by_basis": {
+    "net_price": 3036,
+    "contract_price": 1580,
+    "ceiling": 396,
+    "index_adjusted": 723
+   }
+  },
+  "with_prices": 132,
+  "products": 4233,
+  "suppliers_shared_with_coops": 523
  },
  "arkansas": {
   "source": "https://sas.arkansas.gov/procurement/state-contracts/",
@@ -679,18 +750,18 @@
   "note": "Line items are the first summary page of each contract; contracts with more item pages are flagged line_items_paginated. Attachments are linked, not downloaded.",
   "nigp_codes": 520,
   "nigp_classes": 150,
-  "suppliers_shared_with_coops": 343,
+  "suppliers_shared_with_coops": 349,
   "offerings": 5810,
   "products_on_two_or_more_contracts": 568
  },
  "products": {
-  "products": 51548,
-  "offerings": 59490,
+  "products": 55781,
+  "offerings": 65892,
   "by_status": {
-   "quote": 1509,
+   "quote": 2176,
    "published_discount": 8102,
    "member_login": 26291,
-   "published_price": 23588
+   "published_price": 29323
   },
   "by_status_coops": {
    "quote": 1509,
@@ -920,7 +991,7 @@
    "Double O Landscape Design LLC",
    "Greelco Inc.",
    "Valk Manufacturing Company",
-   "Chemung Supply Corporation",
+   "chemung supply corp",
    "D&W Diesel Inc.",
    "Usinage Pro 24 Inc, DBA Nordik Blades",
    "Continuity Operations Group",
@@ -1061,7 +1132,7 @@
    "DebrisTech, LLC",
    "Seaboard Asphalt Products Company",
    "Walter R. Earle - Burlington, Inc.",
-   "W.B. Mason",
+   "WB Mason",
    "Fletcher Flying Service Inc.",
    "Hudson Motors Partnership",
    "Shimadzu Scientific",
@@ -1227,7 +1298,7 @@
    "1075 Emergency Lighting",
    "Island Tech Services",
    "Emergency Accessories & Installations",
-   "Elite Emergency Lights LLC",
+   "Elite Emergency Lights",
    "Municipal Equipment",
    "Whelen Engineer",
    "Troy Products",
@@ -1390,6 +1461,88 @@
    "Mark McLarty Ford",
    "Red River Ford",
    "Superior Auto Mall",
+   "Actus Manufacturing Inc Dba Addco Acquisition LLC",
+   "Eberl Iron Works, Inc.",
+   "Elderlee Inc",
+   "Systems Roadways Inc",
+   "TrafFix Devices",
+   "Work Zone Equipment Ny Inc",
+   "Matthews Bus Alliance Inc",
+   "Fenton Mobility Products Inc",
+   "Coach and Equipment Bus Sales, Inc.",
+   "Model 1 Commercial Vehicles, Inc",
+   "Accenture, LLP",
+   "Berry Dunn Mcneil & Parker LLC Dba Berrydunn",
+   "The Boston Consulting Group, Inc.",
+   "Eagle Hill Consulting, LLC",
+   "Integris Performance Advisors",
+   "LOGIC20/20 Inc",
+   "McKinsey & Company",
+   "Southwest Airlines",
+   "American Airlines Inc",
+   "All States Construction Inc Dba Gorman Construction",
+   "Da-Lee Group Inc Dba Calcium Chloride Sales",
+   "Innovative Municipal Products (US) Inc Dba Innovative Surface Solutions",
+   "Aden Mining & Materials Inc",
+   "Morton Salt Inc.",
+   "Dynasty Chemical Corp",
+   "American Rock Salt Co LLC",
+   "Atlantic Salt Inc",
+   "Cargill Incorporated - Deicing Solutions",
+   "Apalachee LLC",
+   "Bimbo Bakeries USA",
+   "Dreamland Security Services Inc",
+   "Iss Action",
+   "Simaren Corp Dba Wisdom Protective Services",
+   "Universal Protection Services LLC Dba Allied Universal Security SVCS",
+   "SJR Security Consultants",
+   "Strategic Security Corp",
+   "Alcohol Countermeasure Systems Inc",
+   "Cmi Inc",
+   "Intoximeters Inc",
+   "Draeger Inc",
+   "Guth Laboratories Inc",
+   "Kubricky-Jointa Lime LLC",
+   "Barrett Paving Materials Inc",
+   "Peckham Road Corp",
+   "Callanan Industries Inc",
+   "Heidelberg Materials Northeast LLC",
+   "Northern Asphalt LLC",
+   "Seneca Stone Corporation",
+   "Suit-Kote Corportation",
+   "Amherst Paving Inc",
+   "Dolomite Products Company Inc",
+   "Spallina Materials Inc",
+   "Keeler Construction Co Inc",
+   "Villager Construction Inc",
+   "Concrete Applied Technologies Corp Dba Catco",
+   "Occhino Corp",
+   "D&H Paving LLC",
+   "Dalrymple Gravel & Contracting Co., Inc.",
+   "D&H Excavating Inc",
+   "Noel J Brunell & Son Inc",
+   "Luck Bros Inc",
+   "Cobleskill Stone Products Inc",
+   "Broome Bituminous Products Inc",
+   "Hudson Valley Fresh Dairy LLC",
+   "Upstate Niagara Cooperative Inc",
+   "Ennis-Flint, Inc.",
+   "Ozark Materials LLC",
+   "The Sherwin-Williams Company",
+   "Potters Industries LLC",
+   "Smart Moving & Storage Inc",
+   "Metro Relocation Solutions Inc",
+   "Liberty Moving & Storage",
+   "Movin Solution Inc",
+   "Sunrise Office Services",
+   "Santiego Worldwide Inc",
+   "Arnoff Moving and Storage Inc",
+   "Champion Moving and Storage Inc",
+   "Dons Moving & Storage Inc",
+   "Greater Syracuse Moving and Storage Co Inc",
+   "Naglee Moving & Storage Inc",
+   "Dimon & Bacorn Inc",
+   "Lincoln Moving & Storage of Buffalo Inc",
    "BCI Burke",
    "Exemplis, LLC",
    "Caldwell Country Chevrolet II LLC",
@@ -1408,13 +1561,13 @@
    "LHD Partners, LP dba Longhorn Harley-Davidson",
    "Endera Motors, LLC"
   ],
-  "multi_route": 5585
+  "multi_route": 5810
  },
  "documents": {
-  "total": 33501,
+  "total": 34076,
   "by_kind": {
    "htm": 11892,
-   "unknown": 20755,
+   "unknown": 21330,
    "pdf": 727,
    "docx": 7,
    "xlsx": 120
@@ -1426,7 +1579,9 @@
    "NJSTART": 18635,
    "Hawaii SPO": 354,
    "Arkansas OSP": 499,
-   "NYS OGS": 1411
+   "NYS OGS": 1411,
+   "NY Preferred Source": 41,
+   "Empire Procure Connect": 534
   }
  },
  "reconcile": {

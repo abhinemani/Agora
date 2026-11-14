@@ -603,6 +603,6 @@ export const CASES: Case[] = [
     task: "contract_parse",
     title: "Reads the sample furniture contract: every price it returns is printed in the document",
     run: readContract,
-    expect: [outcome("kept"), is<{ mode: string; items: { status: string }[]; header: { contract_number: string } }>("priced rows and the contract number", (v) => v.mode === "llm" && v.items.filter((i) => i.status === "pending").length >= 3 && /RB-2024-117/.test(v.header.contract_number))],
+    expect: [outcome("kept"), is<{ mode: string; items: { status: string }[]; header: { contract_number: string } }>("priced rows and the contract number", (v) => v.mode === "llm" && v.items.filter((i) => i.status === "pending").length >= 3 && /RB-2026-031/.test(v.header.contract_number))],
   },
 ];

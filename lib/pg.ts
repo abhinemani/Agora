@@ -44,7 +44,13 @@ export function schema(): Promise<void> {
          key text primary key,
          value jsonb not null,
          updated_at timestamptz not null default now()
-       );`,
+       );
+       create table if not exists ai_log (
+         id text primary key,
+         made_at timestamptz not null,
+         data jsonb not null
+       );
+       create index if not exists ai_log_made_at on ai_log(made_at desc);`,
     )
     .then(() => undefined));
 }

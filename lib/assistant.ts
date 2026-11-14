@@ -2,7 +2,7 @@
 // listings from every source, rank them, and apply the agency's buying rules.
 
 import * as z from "zod/v4";
-import { structured } from "./llm";
+import { kept, structured } from "./llm";
 import { CATEGORIES } from "./types";
 import type { Buyer, Category, Contract, Db, Listing, ParsedRequest, PeerPurchase, Request, Solicitation, Source, Supplier } from "./types";
 import type { CatalogProductHit } from "./catalog";
@@ -215,6 +215,8 @@ const ParsedSchema = z.object({
 export async function parseRequest(text: string, db: Db): Promise<{ parsed: Omit<ParsedRequest, "est_total">; mode: "llm" | "offline" }> {
   const depts = db.agency.departments.map((d) => d.name);
   const llm = await structured({
+    task: "request_parse",
+    about: text,
     system:
       `You parse purchase requests from staff at ${db.agency.name}, a local government. ` +
       `Departments: ${depts.join(", ")}. Pick the department the request implies; default to ${depts[0]}. ` +
@@ -225,6 +227,8 @@ export async function parseRequest(text: string, db: Db): Promise<{ parsed: Omit
     timeoutMs: 20_000,
   });
   if (llm) {
+    // Nothing to check against: the reading is taken as given, and the confirm step lets the buyer correct it.
+    kept(llm, JSON.stringify(llm));
     return {
       mode: "llm",
       parsed: {

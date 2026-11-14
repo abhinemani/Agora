@@ -213,3 +213,15 @@ export const Close = (p: P) => (
     <path d="M6 6l12 12M18 6 6 18" />
   </Svg>
 );
+export const ThumbUp = (p: P) => (
+  <Svg {...p}>
+    <path d="M7 10.5v9.5H4.5a1 1 0 0 1-1-1v-7.5a1 1 0 0 1 1-1H7Z" />
+    <path d="M7 10.5 11 3.5a2.2 2.2 0 0 1 2.6 2.6l-.8 3.4h5.4a2 2 0 0 1 2 2.4l-1.2 6.4a2 2 0 0 1-2 1.7H7" />
+  </Svg>
+);
+export const ThumbDown = (p: P) => (
+  <Svg {...p}>
+    <path d="M7 13.5V4H4.5a1 1 0 0 0-1 1v7.5a1 1 0 0 0 1 1H7Z" />
+    <path d="M7 13.5 11 20.5a2.2 2.2 0 0 0 2.6-2.6l-.8-3.4h5.4a2 2 0 0 0 2-2.4L19 5.7A2 2 0 0 0 17 4H7" />
+  </Svg>
+);

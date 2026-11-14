@@ -4,7 +4,7 @@
 // number it uses must be in what the buyer wrote or in the product data.
 
 import * as z from "zod/v4";
-import { structured } from "./llm";
+import { discarded, kept, pieces, structured } from "./llm";
 import { ungrounded, type ShopperText } from "./shopper-ai";
 import type { DiveFilter, DiveItem, DiveState, DiveVerdict } from "./dive";
 
@@ -23,6 +23,8 @@ const numbersIn = (text: string) => [...text.matchAll(/([\d,]+(?:\.\d+)?)\s*(k|t
 /** What the buyer typed, as filters. Null when the model is unavailable; the caller falls back to offline rules. */
 export async function readDiveMessage(text: string, state: DiveState): Promise<{ filters: DiveFilter[]; reply: string } | null> {
   const out = await structured({
+    task: "dive_read",
+    about: text,
     system:
       `You help a government employee narrow a shortlist of products. They typed a message. Turn it into filters.\n` +
       `Only use words from WORDS and makers from MAKERS, spelled exactly as given; these are the only things the shortlist can be narrowed by. ` +
@@ -46,6 +48,10 @@ export async function readDiveMessage(text: string, state: DiveState): Promise<{
   const reply = out.reply.trim();
   // The reply is shown as written, so it gets the same check: no figure that isn't in the message or the shortlist.
   const bad = ungrounded(reply, [], { message_numbers: said, range: state.price_range, matched: state.matched }, []);
+  // Everything the model asked for, against what survived: words and makers not on the shortlist, prices the buyer didn't state, a reply with a stray figure.
+  const asked = out.include_words.length + out.exclude_words.length + (out.maker ? 1 : 0) + (out.min_price !== null ? 1 : 0) + (out.max_price !== null ? 1 : 0) + (reply ? 1 : 0);
+  const passed = filters.reduce((n, f) => n + (f.kind === "usable" ? 0 : f.kind === "price" ? (f.min !== undefined ? 1 : 0) + (f.max !== undefined ? 1 : 0) : 1), 0) + (reply && !bad ? 1 : 0);
+  pieces(out, JSON.stringify(out), passed, asked, bad ?? "Asked for a word, maker or price that isn't on the shortlist or in the message");
   return { filters, reply: bad ? "" : reply };
 }
 
@@ -75,6 +81,8 @@ export async function writeVerdict(need: string, items: DiveItem[], verdict: Div
     rule_based_read: { headline: verdict.headline, points: verdict.points.map((p) => p.replace(/\*\*/g, "")) },
   };
   const out = await structured({
+    task: "dive_verdict",
+    about: `${need}: ${items.map((i) => i.name).join(" / ")}`,
     system:
       `You are "your personal shopper" in Agora, a procurement marketplace for local governments. A government employee is comparing products. Work only from the FACTS.\n` +
       `- Never recommend a product the agency can't buy today over one it can, and never decide eligibility yourself: it is in the facts.\n` +
@@ -89,10 +97,11 @@ export async function writeVerdict(need: string, items: DiveItem[], verdict: Div
   });
   if (!out) return null;
   const paragraphs = out.paragraphs.map((p) => p.trim()).filter(Boolean).slice(0, 2);
-  const why = ungrounded([out.headline, ...paragraphs].join("\n"), [], facts, []);
+  const text = [out.headline, ...paragraphs].join("\n");
+  const why = ungrounded(text, [], facts, []);
   if (why || !paragraphs.length || !out.headline.trim()) {
-    if (why) console.warn("[dive] verdict discarded:", why);
+    discarded(out, why ?? "The answer was empty", text);
     return null;
   }
-  return { headline: out.headline.trim(), paragraphs, refs: [] };
+  return { headline: out.headline.trim(), paragraphs, refs: [], log_id: kept(out, text) };
 }

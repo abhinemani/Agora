@@ -32,9 +32,13 @@ Everything below is merged to `main` and deployed on Railway. Each batch passed 
 
 **Contracts as records.** `/contracts` searches all 31,942 contracts (the co-op catalog's plus Agora's own), and every contract has a page at `/contracts/<id>` with access for the buyer's agency, how to buy under it, what it covers, the pricing on file, its documents, a six-field brief and questions answered from the documents. Result cards, storefronts and the own-contract card link to it. The brief's AI path was not exercised in the build session, which had no API key; the passage fallback was.
 
+**Measuring the AI.** Every model call is logged with what became of it (kept, kept in part, discarded, failed), each AI answer has a thumbs up or down, `/quality` reports both by job and by prompt version, and `npm run eval` runs a fixed test set of 54 cases against a saved baseline. The README's **Knowing whether the AI is right** section is the reference. The log, the thumbs and the page were checked end to end against a stand-in model server; the 29 guard cases pass.
+
 ## Waiting on the user
 
-Nothing right now. Burke's price list and 1GPA's roster arrived as manual downloads and are loaded. They're saved in the repo (`seed/catalog/source/price-files/` and `seed/coops/source/rosters/`), so rebuilds don't need them again.
+**The live half of the test set has never run.** The build session had no API key, so `evals/baseline.json` covers only the 29 guard cases. Run `npm run eval -- --save` once with `ANTHROPIC_API_KEY` set, read any failures (a failing live case may be a wrong expectation rather than a wrong answer), and commit the baseline. Until then the prompts themselves are unmeasured.
+
+Otherwise nothing. Burke's price list and 1GPA's roster arrived as manual downloads and are loaded. They're saved in the repo (`seed/catalog/source/price-files/` and `seed/coops/source/rosters/`), so rebuilds don't need them again.
 
 ## Decisions made
 
@@ -57,6 +61,7 @@ Nothing right now. Burke's price list and 1GPA's roster arrived as manual downlo
 
 8. **More readable documents.** The contract brief reads about 11,900 contracts' documents, nearly all GSA. Sourcewell's 881 price-file links, NASPO's master agreements and HGACBuy's zip bundles would widen it; HGACBuy needs an unzip step.
 9. **Compare two contracts.** The brief's six fields are the same for every contract, so a side-by-side view is a small step.
+11. **Use the measurements.** Once the log has a few hundred calls, read `/quality` for the jobs with the lowest kept-whole share and the most thumbs down, and turn the worst examples into test cases before changing a prompt. The recent-calls list is open to any signed-in person; move it behind a role when roles exist. The thumbs cover only what the model wrote, not the rule-based fallbacks.
 10. **A rehearsal step for contracts.** The explorer and contract page are checked by hand, not by `npm run rehearse`.
 
 ## Watch out for

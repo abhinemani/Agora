@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { Mark, TickFrame } from "@/components/blueprint";
+import { Feedback } from "@/components/Feedback";
 import { ShopperTabs } from "@/components/ShopperTabs";
 import { post, useStore } from "@/components/store";
 import { ErrorNote } from "@/components/ui";
@@ -158,6 +159,7 @@ export default function AskContract() {
                               </figcaption>
                             </figure>
                           ))}
+                          <Feedback id={t.result?.log_id} />
                         </div>
                       </div>
                     </div>

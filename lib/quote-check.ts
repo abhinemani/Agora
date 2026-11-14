@@ -7,7 +7,7 @@
 import { existsSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 import * as z from "zod/v4";
-import { structured } from "./llm";
+import { pieces, structured } from "./llm";
 import type { Db } from "./types";
 
 interface PriceRow {
@@ -52,6 +52,8 @@ export interface CheckedLine extends QuoteLine {
 
 export interface QuoteReport {
   read_by: "llm" | "rules";
+  /** The model call that read the lines, so a thumbs up or down can be recorded against it. */
+  log_id?: string;
   lines: CheckedLine[];
   /** Lines the reader found but couldn't keep, with the reason. */
   dropped: string[];
@@ -133,8 +135,10 @@ const Schema = z.object({
   ),
 });
 
-async function readByModel(text: string): Promise<{ lines: QuoteLine[]; dropped: string[] } | null> {
+async function readByModel(text: string): Promise<{ lines: QuoteLine[]; dropped: string[]; log_id?: string } | null> {
   const out = await structured({
+    task: "quote_read",
+    about: `A quote of ${text.length.toLocaleString("en-US")} characters`,
     system:
       "You read a vendor's price quote and list its priced line items. Copy part numbers and unit prices exactly as printed. " +
       "Skip subtotals, totals, tax and freight. Don't compute or correct anything; if a line has no unit price, leave it out.",
@@ -155,7 +159,8 @@ async function readByModel(text: string): Promise<{ lines: QuoteLine[]; dropped:
     else if (l.part_number && !flat.includes(norm(l.part_number))) dropped.push(`${label}: the part number read isn't printed in the quote`);
     else lines.push({ part_number: l.part_number?.trim() || null, description: l.description.trim().slice(0, 120), quantity: Math.max(1, Math.round(l.quantity) || 1), unit_price: l.unit_price });
   }
-  return { lines, dropped };
+  const log_id = pieces(out, `${out.lines.length} line${out.lines.length === 1 ? "" : "s"} read. ${dropped.join("; ")}`.trim(), lines.length, out.lines.length, "Read a price or part number that isn't printed in the quote");
+  return { lines, dropped, log_id };
 }
 
 const KIND: Record<PriceRow["basis"], string> = {
@@ -216,7 +221,7 @@ export async function checkQuote(db: Db, text: string): Promise<QuoteReport> {
   ]
     .filter(Boolean)
     .join(" ");
-  return { read_by: model ? "llm" : "rules", lines: checked, dropped, quoted_total, checked: matched.length, over: over.length, over_amount, not_found, headline, summary };
+  return { read_by: model ? "llm" : "rules", ...(model?.log_id ? { log_id: model.log_id } : {}), lines: checked, dropped, quoted_total, checked: matched.length, over: over.length, over_amount, not_found, headline, summary };
 }
 
 /** A sample quote built from real rows of a loaded price file, with one line marked up and one part Agora doesn't hold. */

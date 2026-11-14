@@ -1,5 +1,6 @@
 "use client";
 
+import { Feedback } from "@/components/Feedback";
 import { useRef, useState } from "react";
 import { ShopperTabs } from "@/components/ShopperTabs";
 import { useStore } from "@/components/store";
@@ -129,6 +130,7 @@ export default function QuoteCheck() {
                     </div>
                   ))}
                 </dl>
+                <Feedback key={report.log_id} id={report.log_id} className="mt-4" />
               </div>
 
               {report.lines.map((l, i) => (

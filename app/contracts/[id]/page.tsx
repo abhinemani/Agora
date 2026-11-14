@@ -1,5 +1,6 @@
 "use client";
 
+import { Feedback } from "@/components/Feedback";
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -440,6 +441,7 @@ function Documents({ c }: { c: ContractDetail }) {
                   Read: {brief.read.map((r) => `${r.label} (${r.pages} page${r.pages === 1 ? "" : "s"})`).join("; ")}. A reading of the document, not legal advice. Contact details are left out.
                 </p>
               )}
+              <Feedback id={brief.log_id} className="pb-3" />
             </div>
           )}
 
@@ -458,6 +460,7 @@ function Documents({ c }: { c: ContractDetail }) {
                 {(t.result?.answer?.quotes.length ? t.result.answer.quotes : (t.result?.passages ?? [])).slice(0, 3).map((q, j) => (
                   <Quote key={j} p={{ ...q, text: q.text.length > 600 ? `${q.text.slice(0, 600)}…` : q.text }} />
                 ))}
+                <Feedback id={t.result?.log_id} className="mt-2" />
               </div>
             ))}
             {busy === "ask" && <p className="mt-3 text-ui-xs text-base-dark">Reading the document for that.</p>}

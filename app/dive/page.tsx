@@ -1,5 +1,6 @@
 "use client";
 
+import { Feedback } from "@/components/Feedback";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { BestFit, Mark, TickFrame } from "@/components/blueprint";
@@ -320,6 +321,7 @@ export default function Dive() {
                             <Rich text={p} />
                           </p>
                         ))}
+                    <Feedback key={compare.written?.log_id} id={compare.written?.log_id} />
                   </div>
                   <div className="mt-4 overflow-x-auto px-5 pb-5">
                     <table className="w-full min-w-[520px] border-collapse text-left text-sm">

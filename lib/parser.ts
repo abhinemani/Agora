@@ -6,7 +6,7 @@ import { createHash } from "node:crypto";
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 import * as z from "zod/v4";
-import { structured } from "./llm";
+import { modelOn, pieces, structured } from "./llm";
 import { tokens } from "./assistant";
 import { CATEGORIES } from "./types";
 import type { Category, ContractHeader, ContractSource, Db, ExtractedItem, Supplier, TierPrice } from "./types";
@@ -451,7 +451,7 @@ async function llmParse(files: ExtractedFile[]) {
     .map((f) => `=== FILE: ${f.filename} (${f.kind}) ===\n` + f.pages.map((p) => `--- page ${p.num} ---\n${p.text}`).join("\n"))
     .join("\n\n");
   if (doc.length > 180_000) return null; // chunking beyond this is out of prototype scope
-  return structured({ system: SYSTEM, user: doc, schema: LlmSchema, maxTokens: 32000, timeoutMs: 90_000, effort: "low" });
+  return structured({ task: "contract_parse", about: files.map((f) => f.filename).join(", "), system: SYSTEM, user: doc, schema: LlmSchema, maxTokens: 32000, timeoutMs: 90_000, effort: "low" });
 }
 
 // ---------------------------------------------------------------- orchestration
@@ -469,7 +469,7 @@ const PARSER_VERSION = 2;
 
 export async function parseContract(files: ExtractedFile[]): Promise<ParseOutput> {
   // The reader's version is part of the key, so improving the reader re-reads files it read before.
-  const key = files.map((f) => f.hash).sort().join("-") + (process.env.ANTHROPIC_API_KEY ? "-llm" : "-offline") + `-v${PARSER_VERSION}`;
+  const key = files.map((f) => f.hash).sort().join("-") + (modelOn() ? "-llm" : "-offline") + `-v${PARSER_VERSION}`;
   const cached = join(cacheDir(), `${key}.json`);
   if (existsSync(cached)) return JSON.parse(readFileSync(cached, "utf8"));
 
@@ -520,6 +520,10 @@ export async function parseContract(files: ExtractedFile[]): Promise<ParseOutput
       },
       items: [...llm.items.map((i) => toDraft(i, false)), ...llm.unresolved.map((i) => toDraft(i, true))],
     };
+    // The check here is the price: one the model returned that isn't in the document is blanked and the row sent to review.
+    const priced = llm.items.filter((i) => i.unit_price !== null);
+    const seen = priced.filter((i) => amountAppears(allText, i.unit_price!)).length;
+    pieces(llm, `${llm.items.length} priced rows, ${llm.unresolved.length} unresolved`, seen, priced.length, "Read a price that isn't in the document");
   }
 
   out ??= { mode: "offline", header: heuristicHeader(files), items: heuristicItems(files, fallbackCat) };

@@ -352,6 +352,8 @@ export interface CoopSection {
   better: { hit: CoopHit; than: CoopHit | null } | null;
   /** The co-op catalog's share of the section: what's shown, what else matched, and the GSA lane. */
   catalog?: { retrieved: string; more_member: number; more_other: number; gsa: CoopHit[]; gsa_total: number };
+  /** What the buyer's state law says about using co-op contracts (lib/state-rules.ts). */
+  state_rule?: import("./state-rules").BuyerStateRule | null;
 }
 
 export interface LinkOut {

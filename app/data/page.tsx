@@ -2,6 +2,7 @@
 // uses it, what to be careful about and what's still missing. Every number here
 // comes from seed/coops/insights.json, written by scripts/import-coop-data.ts.
 
+import { StateRulesTable } from "@/components/StateRulesTable";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { DataLookup } from "@/components/DataLookup";
@@ -191,6 +192,7 @@ export default function CoopDataPage() {
             ["#evidence", "How we know"],
             ["#catalog", "Co-op catalog"],
             ["#cleanup", "Cleanup"],
+            ["#states", "State rules"],
             ["#prospects", "Prospects"],
             ["#cautions", "Cautions"],
             ["#needs", "What we still need"],
@@ -616,6 +618,27 @@ export default function CoopDataPage() {
             ])}
           />
         )}
+      </Section>
+
+      <Section
+        id="states"
+        title="State rules: who may use a co-op contract"
+        intro={
+          <>
+            <p>
+              Whether a city or school district may buy off a national co-op contract is a question of state law, and no two states answer it on the same terms. Agora&apos;s
+              50-state research (November 13, 2026) records, for each state, the authority for local governments and for school districts, any state-approved list, the
+              conditions (board action, what the lead contract must be), what&apos;s excluded, and the purchasing thresholds.
+            </p>
+            <p>
+              Three conditions recur: a competitively bid lead contract awarded by a public agency, a written agreement or governing-body resolution, and an exclusion for
+              construction. Only Alabama and Mississippi run true approval lists. Results show the buyer&apos;s own state beside the co-op contracts, and warn when a request
+              looks like construction in a state that restricts it. Flags mark points read on third-party sites or secondary sources: leads to confirm, not settled law.
+            </p>
+          </>
+        }
+      >
+        <StateRulesTable />
       </Section>
 
       <Section

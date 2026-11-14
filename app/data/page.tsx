@@ -10,6 +10,8 @@ import { SEED_COOPS } from "@/lib/coops";
 import { ENTITY_LABEL } from "@/lib/vehicles";
 import type { EntityType } from "@/lib/types";
 import insights from "@/seed/coops/insights.json";
+import catalogInsights from "@/seed/catalog/insights.json";
+import catalogReconcile from "@/seed/catalog/reconcile.json";
 
 export const metadata: Metadata = {
   title: "Co-op data · Agora",
@@ -109,8 +111,8 @@ const NEEDS = [
   },
   {
     title: "What's on each co-op's contracts",
-    body: "This data says who belongs to which co-op. \"Co-ops you could join\" only means something when Agora can show what those co-ops' contracts cover. That takes contract lists, scopes, end dates and price files for Sourcewell, OMNIA, TIPS and the rest. Their contract directories are public.",
-    status: "Next",
+    body: `Started: the co-op catalog now brings ${catalogInsights.source_counts.contracts.toLocaleString()} contracts from 13 co-ops into search (see "The co-op catalog" above). Still missing: contract pages for TIPS, BuyBoard and 1GPA, end dates for GSA, Choice Partners, PEPPM and NPPGov, and price files for nearly every co-op but Canon on Sourcewell.`,
+    status: "Started",
   },
   {
     title: "Spend by category",
@@ -128,6 +130,23 @@ const NEEDS = [
     status: "Process",
   },
 ];
+
+/** One line per correction, in plain words: "End date Jun 30, 2027", "34 participating states". */
+function describe(c: (typeof catalogReconcile.corrections)[number]): string {
+  if (c.field === "end") return `End date ${date(c.catalog)}`;
+  if (c.field === "start") return `Start date ${date(c.catalog)}`;
+  if (c.field === "contract_number") return `Number ${c.agora} → ${c.catalog}`;
+  if (c.field === "source_url") return "Link to the co-op's page for this contract";
+  const states = c.catalog.split(", ");
+  return c.action === "flag" ? `States: ${c.note.replace(/ Agora keeps the list it read from NASPO directly\.$/, "")}` : `${states.length} participating states`;
+}
+const reconcileRows = Object.values(
+  catalogReconcile.corrections.reduce<Record<string, { label: string; applied: string[]; flagged: string[] }>>((m, c) => {
+    const r = (m[c.contract_id] ??= { label: c.label.replace(/^NASPO ValuePoint /, "NASPO ").replace(/ \((.+)\)$/, " · $1"), applied: [], flagged: [] });
+    (c.action === "apply" ? r.applied : r.flagged).push(describe(c));
+    return m;
+  }, {}),
+);
 
 export default function CoopDataPage() {
   const d = insights.directory;
@@ -160,6 +179,7 @@ export default function CoopDataPage() {
             ["#uses", "How Agora uses it"],
             ["#lookup", "Look up an agency"],
             ["#evidence", "How we know"],
+            ["#catalog", "Co-op catalog"],
             ["#prospects", "Prospects"],
             ["#cautions", "Cautions"],
             ["#needs", "What we still need"],
@@ -459,6 +479,89 @@ export default function CoopDataPage() {
             ])}
           />
         </div>
+      </Section>
+
+      <Section
+        id="catalog"
+        title="The co-op catalog: what's on each co-op's contracts"
+        intro={
+          <>
+            <p>
+              Memberships say which co-ops an agency is on. The co-op catalog says what those co-ops have under contract. It&apos;s a capture of 13 co-ops&apos; public contract
+              directories, supplier lists, product tables and price files, retrieved {date(catalogInsights.retrieved)}:{" "}
+              {n(catalogInsights.source_counts.contracts)} supplier contracts, {n(catalogInsights.source_counts.products)} products and{" "}
+              {n(catalogInsights.source_counts.documents)} links to price documents.
+            </p>
+            <p>
+              Agora uses it in four places. Search adds the best-fitting catalog contracts to the co-op section, split by the agency&apos;s memberships, with GSA in its own lane.
+              Product search shows catalog items with every contract that sells them. Every supplier on a co-op contract gets a storefront ready to claim. And the price-list
+              queue sends the linked documents through Agora&apos;s contract reader. Nothing in the catalog is buyable in Agora: orders happen on the co-op&apos;s site.
+            </p>
+            <p>
+              The capture listed suppliers by exact name, so &quot;CDW-G&quot; and &quot;CDWG&quot; were two companies. Agora merges records whose names match once legal
+              suffixes are dropped, or that share a website: {n(catalogInsights.suppliers.records)} records became {n(catalogInsights.suppliers.companies)} companies, and{" "}
+              {n(catalogInsights.suppliers.on_two_or_more_coops)} of them hold contracts on two or more co-ops.
+            </p>
+          </>
+        }
+      >
+        <Table
+          head={["Co-op", "Contracts", "Own page", "End date", "Products"]}
+          right={[1, 2, 3, 4]}
+          rows={catalogInsights.per_coop
+            .filter((c) => c.contracts)
+            .sort((a, b) => b.contracts - a.contracts)
+            .map((c) => [
+              <span key="c" className="font-bold">
+                {c.coop}
+              </span>,
+              n(c.contracts),
+              pct(c.with_link, c.contracts),
+              pct(c.with_end, c.contracts),
+              c.offerings ? n(c.offerings) : "—",
+            ])}
+        />
+        <p className="mt-2 text-ui-xs text-base-dark">
+          &quot;Own page&quot; is the share of contracts with a link to that contract on the co-op&apos;s site. TIPS, BuyBoard and 1GPA link every contract to one directory
+          page, so Agora sends buyers there with the contract number to look up. Contracts without an end date can&apos;t be hidden when they expire, so their cards say the
+          date isn&apos;t published.
+        </p>
+
+        <h3 className="mt-8 text-ui-md font-bold text-ink">What the catalog corrected in Agora</h3>
+        <p className="mt-1 max-w-[72ex] text-body-sm text-base-darker">
+          {n(catalogInsights.reconcile.confirmed)} of Agora&apos;s seeded co-op contracts turned up in the catalog. Where the co-op&apos;s own directory filled a gap, Agora
+          applied it: {n(catalogInsights.reconcile.applied)} fixes, including end dates for the Sourcewell technology contracts, NASPO&apos;s participating states for the
+          computer awards, and Dell&apos;s NASPO number, which is 23004 in NASPO&apos;s index, not the 23026 on Dell&apos;s posted document. Where the two disagree and Agora
+          read NASPO directly, Agora keeps its own and flags the difference ({n(catalogInsights.reconcile.flagged)}).
+        </p>
+        <div className="mt-3">
+          <Table
+            head={["Contract", "Applied", "Flagged for review"]}
+            rows={reconcileRows.map((r) => [
+              <span key="l" className="font-bold">
+                {r.label}
+              </span>,
+              <span key="a">{r.applied.join(" · ") || "—"}</span>,
+              <span key="f" className="text-base-dark">
+                {r.flagged.join(" · ") || "—"}
+              </span>,
+            ])}
+          />
+        </div>
+
+        <h3 className="mt-8 text-ui-md font-bold text-ink">Products and prices</h3>
+        <p className="mt-1 max-w-[72ex] text-body-sm text-base-darker">
+          Products are concentrated in three places. Canon&apos;s Sourcewell price file gives {n(catalogInsights.products.by_status.published_price ?? 0)} rows a real price
+          (April 2026, with list price and discount). HGACBuy publishes {n(catalogInsights.products.by_status.published_discount ?? 0)} discounts without the base prices to
+          apply them to. PEPPM lists {n(catalogInsights.products.by_status.member_login ?? 0)} technology items whose prices sit behind a member login.{" "}
+          {n(catalogInsights.products.multi_route)} products are sold on two or more contracts, which is where &quot;every way to buy it&quot; earns its keep. Agora shows a
+          discount as a discount and a blank price as unknown, never as a price.
+        </p>
+        <p className="mt-3 text-ui-xs text-base-dark">
+          Try it: search for <Link href="/" className="text-primary">playground equipment</Link> as the Town of Crested Butte, browse{" "}
+          <Link href="/storefronts" className="text-primary">every supplier on a co-op contract</Link>, or open the{" "}
+          <Link href="/coops/price-lists" className="text-primary">price-list queue</Link>.
+        </p>
       </Section>
 
       <Section

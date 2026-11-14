@@ -1,0 +1,627 @@
+{
+ "retrieved": "2026-11-13",
+ "confirmations": [
+  {
+   "contract_id": "ctr_tyler_naspo",
+   "label": "NASPO ValuePoint AR3764 (Tyler Technologies)",
+   "catalog_contract": "con_71da308bad0278b61624"
+  },
+  {
+   "contract_id": "ctr_tyler_sourcewell",
+   "label": "Sourcewell 060624-TTI (Tyler Technologies)",
+   "catalog_contract": "con_e8cf81961d31ba056428"
+  },
+  {
+   "contract_id": "ctr_naspo_ar3751",
+   "label": "NASPO ValuePoint AR3751 (Citibot)",
+   "catalog_contract": "con_bf02be3f536adc7a7230"
+  },
+  {
+   "contract_id": "ctr_naspo_ar3752",
+   "label": "NASPO ValuePoint AR3752 (CitizenLab)",
+   "catalog_contract": "con_43b8575760acab64a4e1"
+  },
+  {
+   "contract_id": "ctr_naspo_ar3753",
+   "label": "NASPO ValuePoint AR3753 (CoreSphere)",
+   "catalog_contract": "con_e505c5cdd5e96dc1ce5e"
+  },
+  {
+   "contract_id": "ctr_naspo_ar3757",
+   "label": "NASPO ValuePoint AR3757 (Indigov)",
+   "catalog_contract": "con_af6e3990a5cb449ca2e6"
+  },
+  {
+   "contract_id": "ctr_naspo_ar3758",
+   "label": "NASPO ValuePoint AR3758 (Maximus US Services)",
+   "catalog_contract": "con_c2ef308694491fa968df"
+  },
+  {
+   "contract_id": "ctr_naspo_ar3759",
+   "label": "NASPO ValuePoint AR3759 (Medallia)",
+   "catalog_contract": "con_080860e788c4f1080a60"
+  },
+  {
+   "contract_id": "ctr_naspo_ar3760",
+   "label": "NASPO ValuePoint AR3760 (Merit International)",
+   "catalog_contract": "con_47de7246c0b2c9af7032"
+  },
+  {
+   "contract_id": "ctr_naspo_ar3761",
+   "label": "NASPO ValuePoint AR3761 (PayIt)",
+   "catalog_contract": "con_1396bd4df0da30fa751d"
+  },
+  {
+   "contract_id": "ctr_naspo_ar3762",
+   "label": "NASPO ValuePoint AR3762 (SAMBUQ)",
+   "catalog_contract": "con_7361715e93aff12a420c"
+  },
+  {
+   "contract_id": "ctr_naspo_ce_dell",
+   "label": "NASPO ValuePoint 23026 (Dell Technologies)",
+   "catalog_contract": "con_5f5af78eb1b7be26157e"
+  },
+  {
+   "contract_id": "ctr_naspo_ce_hp",
+   "label": "NASPO ValuePoint 23011 (HP Inc.)",
+   "catalog_contract": "con_03f2397dd07d4586a0a4"
+  },
+  {
+   "contract_id": "ctr_naspo_ce_lenovo",
+   "label": "NASPO ValuePoint 23013 (Lenovo)",
+   "catalog_contract": "con_d36e2973e91e3423754e"
+  },
+  {
+   "contract_id": "ctr_naspo_ce_apple",
+   "label": "NASPO ValuePoint 23003 (Apple)",
+   "catalog_contract": "con_909fd7be911bb2f338c2"
+  },
+  {
+   "contract_id": "ctr_sw_cdw",
+   "label": "Sourcewell 121923-CDW (CDW Government)",
+   "catalog_contract": "con_99e161f7dd0cce04116a"
+  },
+  {
+   "contract_id": "ctr_sw_ideal",
+   "label": "Sourcewell 121923-IDL (Ideal System Solutions)",
+   "catalog_contract": "con_a67ade5edd0b0e64cb50"
+  },
+  {
+   "contract_id": "ctr_naspo_parks_bci_burke_co_llc",
+   "label": "NASPO ValuePoint PO-10700-00015859 (BCI Burke)",
+   "catalog_contract": "con_e38e7cb035e9cbed5227"
+  },
+  {
+   "contract_id": "ctr_naspo_parks_landscape_structures_inc",
+   "label": "NASPO ValuePoint PO-10700-00015855 (Landscape Structures)",
+   "catalog_contract": "con_22c62fe7d3be7c945c4c"
+  },
+  {
+   "contract_id": "ctr_naspo_parks_mrc_inc",
+   "label": "NASPO ValuePoint PO-10700-00015856 (MRC)",
+   "catalog_contract": "con_817736651cdc0c2b4226"
+  },
+  {
+   "contract_id": "ctr_naspo_parks_northwest_playground_equipment_inc",
+   "label": "NASPO ValuePoint PO-10700-00015852 (Northwest Playground Equipment)",
+   "catalog_contract": "con_2ba7f68235b1e91c4631"
+  },
+  {
+   "contract_id": "ctr_naspo_parks_playcore_wisconsin_inc",
+   "label": "NASPO ValuePoint PO-10700-00015861 (GameTime)",
+   "catalog_contract": "con_374f5b46a914a2135aac"
+  },
+  {
+   "contract_id": "ctr_naspo_parks_playcraft_systems_llc",
+   "label": "NASPO ValuePoint PO-10700-00015858 (Playcraft Systems)",
+   "catalog_contract": "con_6022e5cd1ed783a73492"
+  },
+  {
+   "contract_id": "ctr_naspo_parks_playpower_inc",
+   "label": "NASPO ValuePoint PO-10700-00015853 (PlayPower)",
+   "catalog_contract": "con_8b1c7adbd67b73b76dbc"
+  },
+  {
+   "contract_id": "ctr_naspo_parks_ps_commercial_play_llc",
+   "label": "NASPO ValuePoint PO-10700-00015857 (Play & Park Structures)",
+   "catalog_contract": "con_23dc2f866675d99ea507"
+  },
+  {
+   "contract_id": "ctr_naspo_parks_superior_international_industries_inc",
+   "label": "NASPO ValuePoint PO-10700-00015854 (Superior Recreational Products)",
+   "catalog_contract": "con_d162852a0e40c73e958f"
+  }
+ ],
+ "corrections": [
+  {
+   "contract_id": "ctr_tyler_sourcewell",
+   "label": "Sourcewell 060624-TTI (Tyler Technologies)",
+   "field": "end",
+   "agora": "(none)",
+   "catalog": "2028-10-25",
+   "action": "apply",
+   "note": "End date from the co-op's contract list.",
+   "catalog_contract": "con_e8cf81961d31ba056428"
+  },
+  {
+   "contract_id": "ctr_naspo_ar3751",
+   "label": "NASPO ValuePoint AR3751 (Citibot)",
+   "field": "states",
+   "agora": "NM",
+   "catalog": "CA, NM",
+   "action": "flag",
+   "note": "Catalog adds CA. Agora keeps the list it read from NASPO directly.",
+   "catalog_contract": "con_bf02be3f536adc7a7230"
+  },
+  {
+   "contract_id": "ctr_naspo_ce_dell",
+   "label": "NASPO ValuePoint 23026 (Dell Technologies)",
+   "field": "contract_number",
+   "agora": "23026",
+   "catalog": "23004",
+   "action": "apply",
+   "note": "NASPO ValuePoint's own supplier index lists Dell Technologies' Computer Equipment award as 23004.",
+   "catalog_contract": "con_5f5af78eb1b7be26157e"
+  },
+  {
+   "contract_id": "ctr_naspo_ce_dell",
+   "label": "NASPO ValuePoint 23026 (Dell Technologies)",
+   "field": "end",
+   "agora": "(none)",
+   "catalog": "2027-06-30",
+   "action": "apply",
+   "note": "End date from the co-op's contract list.",
+   "catalog_contract": "con_5f5af78eb1b7be26157e"
+  },
+  {
+   "contract_id": "ctr_naspo_ce_dell",
+   "label": "NASPO ValuePoint 23026 (Dell Technologies)",
+   "field": "start",
+   "agora": "(none)",
+   "catalog": "2023-07-14",
+   "action": "apply",
+   "note": "Start date from the co-op's contract list.",
+   "catalog_contract": "con_5f5af78eb1b7be26157e"
+  },
+  {
+   "contract_id": "ctr_naspo_ce_dell",
+   "label": "NASPO ValuePoint 23026 (Dell Technologies)",
+   "field": "states",
+   "agora": "any state",
+   "catalog": "AK, AR, AZ, CA, CO, CT, DC, DE, FL, HI, IA, ID, IN, KS, KY, LA, ME, MN, MO, MT, ND, NE, NH, NJ, NM, NV, RI, SC, SD, TN, UT, WA, WI, WY",
+   "action": "apply",
+   "note": "NASPO ValuePoint lists the states with a participating addendum.",
+   "catalog_contract": "con_5f5af78eb1b7be26157e"
+  },
+  {
+   "contract_id": "ctr_naspo_ce_dell",
+   "label": "NASPO ValuePoint 23026 (Dell Technologies)",
+   "field": "source_url",
+   "agora": "https://www.delltechnologies.com/asset/en-us/solutions/oem-solutions/legal-pricing/dell-naspo-master-agreement-23026.pdf",
+   "catalog": "https://www.naspovaluepoint.org/suppliers/dell-marketing-lp-2/",
+   "action": "apply",
+   "note": "The co-op's page for this contract, in place of a link shared by several contracts.",
+   "catalog_contract": "con_5f5af78eb1b7be26157e"
+  },
+  {
+   "contract_id": "ctr_naspo_ce_hp",
+   "label": "NASPO ValuePoint 23011 (HP Inc.)",
+   "field": "end",
+   "agora": "(none)",
+   "catalog": "2028-06-30",
+   "action": "apply",
+   "note": "End date from the co-op's contract list.",
+   "catalog_contract": "con_03f2397dd07d4586a0a4"
+  },
+  {
+   "contract_id": "ctr_naspo_ce_hp",
+   "label": "NASPO ValuePoint 23011 (HP Inc.)",
+   "field": "start",
+   "agora": "(none)",
+   "catalog": "2023-07-01",
+   "action": "apply",
+   "note": "Start date from the co-op's contract list.",
+   "catalog_contract": "con_03f2397dd07d4586a0a4"
+  },
+  {
+   "contract_id": "ctr_naspo_ce_hp",
+   "label": "NASPO ValuePoint 23011 (HP Inc.)",
+   "field": "states",
+   "agora": "any state",
+   "catalog": "AK, AR, AZ, CA, CO, CT, DE, FL, HI, IA, ID, IL, KS, KY, LA, ME, MI, MN, MO, MT, ND, NE, NH, NJ, NM, NV, RI, SC, SD, TN, UT, VT, WA, WI, WY",
+   "action": "apply",
+   "note": "NASPO ValuePoint lists the states with a participating addendum.",
+   "catalog_contract": "con_03f2397dd07d4586a0a4"
+  },
+  {
+   "contract_id": "ctr_naspo_ce_hp",
+   "label": "NASPO ValuePoint 23011 (HP Inc.)",
+   "field": "source_url",
+   "agora": "https://spo.hawaii.gov/wp-content/uploads/2026/Vendor-List-24-03-Change-No.-21-NASPO-Computer-Equipment-Desktop-Laptops-Tablets-Servers-Storage-including-Related-Peripherals-Services-07-23-2026-2remediated.pdf",
+   "catalog": "https://www.naspovaluepoint.org/suppliers/hp-inc/",
+   "action": "apply",
+   "note": "The co-op's page for this contract, in place of a link shared by several contracts.",
+   "catalog_contract": "con_03f2397dd07d4586a0a4"
+  },
+  {
+   "contract_id": "ctr_naspo_ce_lenovo",
+   "label": "NASPO ValuePoint 23013 (Lenovo)",
+   "field": "end",
+   "agora": "(none)",
+   "catalog": "2027-06-30",
+   "action": "apply",
+   "note": "End date from the co-op's contract list.",
+   "catalog_contract": "con_d36e2973e91e3423754e"
+  },
+  {
+   "contract_id": "ctr_naspo_ce_lenovo",
+   "label": "NASPO ValuePoint 23013 (Lenovo)",
+   "field": "start",
+   "agora": "(none)",
+   "catalog": "2023-10-10",
+   "action": "apply",
+   "note": "Start date from the co-op's contract list.",
+   "catalog_contract": "con_d36e2973e91e3423754e"
+  },
+  {
+   "contract_id": "ctr_naspo_ce_lenovo",
+   "label": "NASPO ValuePoint 23013 (Lenovo)",
+   "field": "states",
+   "agora": "any state",
+   "catalog": "AK, AR, AZ, CA, CO, CT, DE, HI, IA, ID, KS, KY, LA, ME, MN, MO, MT, ND, NE, NH, NJ, NM, NV, RI, SC, TN, UT, VT, WA, WI, WY",
+   "action": "apply",
+   "note": "NASPO ValuePoint lists the states with a participating addendum.",
+   "catalog_contract": "con_d36e2973e91e3423754e"
+  },
+  {
+   "contract_id": "ctr_naspo_ce_lenovo",
+   "label": "NASPO ValuePoint 23013 (Lenovo)",
+   "field": "source_url",
+   "agora": "https://spo.hawaii.gov/wp-content/uploads/2026/Vendor-List-24-03-Change-No.-21-NASPO-Computer-Equipment-Desktop-Laptops-Tablets-Servers-Storage-including-Related-Peripherals-Services-07-23-2026-2remediated.pdf",
+   "catalog": "https://www.naspovaluepoint.org/suppliers/lenovo-united-states-inc/",
+   "action": "apply",
+   "note": "The co-op's page for this contract, in place of a link shared by several contracts.",
+   "catalog_contract": "con_d36e2973e91e3423754e"
+  },
+  {
+   "contract_id": "ctr_naspo_ce_apple",
+   "label": "NASPO ValuePoint 23003 (Apple)",
+   "field": "end",
+   "agora": "(none)",
+   "catalog": "2027-06-30",
+   "action": "apply",
+   "note": "End date from the co-op's contract list.",
+   "catalog_contract": "con_909fd7be911bb2f338c2"
+  },
+  {
+   "contract_id": "ctr_naspo_ce_apple",
+   "label": "NASPO ValuePoint 23003 (Apple)",
+   "field": "start",
+   "agora": "(none)",
+   "catalog": "2023-07-01",
+   "action": "apply",
+   "note": "Start date from the co-op's contract list.",
+   "catalog_contract": "con_909fd7be911bb2f338c2"
+  },
+  {
+   "contract_id": "ctr_naspo_ce_apple",
+   "label": "NASPO ValuePoint 23003 (Apple)",
+   "field": "states",
+   "agora": "any state",
+   "catalog": "AK, AR, AZ, DC, DE, GA, HI, IA, ID, KS, KY, LA, MN, MT, NC, ND, NE, NH, NM, NV, OK, SC, SD, TN, UT, WA, WI",
+   "action": "apply",
+   "note": "NASPO ValuePoint lists the states with a participating addendum.",
+   "catalog_contract": "con_909fd7be911bb2f338c2"
+  },
+  {
+   "contract_id": "ctr_naspo_ce_apple",
+   "label": "NASPO ValuePoint 23003 (Apple)",
+   "field": "source_url",
+   "agora": "https://spo.hawaii.gov/wp-content/uploads/2026/Vendor-List-24-03-Change-No.-21-NASPO-Computer-Equipment-Desktop-Laptops-Tablets-Servers-Storage-including-Related-Peripherals-Services-07-23-2026-2remediated.pdf",
+   "catalog": "https://www.naspovaluepoint.org/suppliers/apple-inc/",
+   "action": "apply",
+   "note": "The co-op's page for this contract, in place of a link shared by several contracts.",
+   "catalog_contract": "con_909fd7be911bb2f338c2"
+  },
+  {
+   "contract_id": "ctr_sw_cdw",
+   "label": "Sourcewell 121923-CDW (CDW Government)",
+   "field": "end",
+   "agora": "(none)",
+   "catalog": "2029-02-27",
+   "action": "apply",
+   "note": "End date from the co-op's contract list.",
+   "catalog_contract": "con_99e161f7dd0cce04116a"
+  },
+  {
+   "contract_id": "ctr_sw_ideal",
+   "label": "Sourcewell 121923-IDL (Ideal System Solutions)",
+   "field": "end",
+   "agora": "(none)",
+   "catalog": "2028-02-27",
+   "action": "apply",
+   "note": "End date from the co-op's contract list.",
+   "catalog_contract": "con_a67ade5edd0b0e64cb50"
+  },
+  {
+   "contract_id": "ctr_naspo_parks_bci_burke_co_llc",
+   "label": "NASPO ValuePoint PO-10700-00015859 (BCI Burke)",
+   "field": "end",
+   "agora": "(none)",
+   "catalog": "2027-12-31",
+   "action": "apply",
+   "note": "End date from the co-op's contract list.",
+   "catalog_contract": "con_e38e7cb035e9cbed5227"
+  },
+  {
+   "contract_id": "ctr_naspo_parks_bci_burke_co_llc",
+   "label": "NASPO ValuePoint PO-10700-00015859 (BCI Burke)",
+   "field": "start",
+   "agora": "(none)",
+   "catalog": "2023-02-01",
+   "action": "apply",
+   "note": "Start date from the co-op's contract list.",
+   "catalog_contract": "con_e38e7cb035e9cbed5227"
+  },
+  {
+   "contract_id": "ctr_naspo_parks_bci_burke_co_llc",
+   "label": "NASPO ValuePoint PO-10700-00015859 (BCI Burke)",
+   "field": "source_url",
+   "agora": "https://www.naspovaluepoint.org/portfolios/parks-recreation-equipment-installation/",
+   "catalog": "https://www.naspovaluepoint.org/suppliers/bci-burke-co-llc/",
+   "action": "apply",
+   "note": "The co-op's page for this contract, in place of a link shared by several contracts.",
+   "catalog_contract": "con_e38e7cb035e9cbed5227"
+  },
+  {
+   "contract_id": "ctr_naspo_parks_landscape_structures_inc",
+   "label": "NASPO ValuePoint PO-10700-00015855 (Landscape Structures)",
+   "field": "end",
+   "agora": "(none)",
+   "catalog": "2027-12-31",
+   "action": "apply",
+   "note": "End date from the co-op's contract list.",
+   "catalog_contract": "con_22c62fe7d3be7c945c4c"
+  },
+  {
+   "contract_id": "ctr_naspo_parks_landscape_structures_inc",
+   "label": "NASPO ValuePoint PO-10700-00015855 (Landscape Structures)",
+   "field": "start",
+   "agora": "(none)",
+   "catalog": "2023-01-31",
+   "action": "apply",
+   "note": "Start date from the co-op's contract list.",
+   "catalog_contract": "con_22c62fe7d3be7c945c4c"
+  },
+  {
+   "contract_id": "ctr_naspo_parks_landscape_structures_inc",
+   "label": "NASPO ValuePoint PO-10700-00015855 (Landscape Structures)",
+   "field": "source_url",
+   "agora": "https://www.naspovaluepoint.org/portfolios/parks-recreation-equipment-installation/",
+   "catalog": "https://www.naspovaluepoint.org/suppliers/landscape-structures-inc/",
+   "action": "apply",
+   "note": "The co-op's page for this contract, in place of a link shared by several contracts.",
+   "catalog_contract": "con_22c62fe7d3be7c945c4c"
+  },
+  {
+   "contract_id": "ctr_naspo_parks_mrc_inc",
+   "label": "NASPO ValuePoint PO-10700-00015856 (MRC)",
+   "field": "end",
+   "agora": "(none)",
+   "catalog": "2027-12-31",
+   "action": "apply",
+   "note": "End date from the co-op's contract list.",
+   "catalog_contract": "con_817736651cdc0c2b4226"
+  },
+  {
+   "contract_id": "ctr_naspo_parks_mrc_inc",
+   "label": "NASPO ValuePoint PO-10700-00015856 (MRC)",
+   "field": "start",
+   "agora": "(none)",
+   "catalog": "2023-01-01",
+   "action": "apply",
+   "note": "Start date from the co-op's contract list.",
+   "catalog_contract": "con_817736651cdc0c2b4226"
+  },
+  {
+   "contract_id": "ctr_naspo_parks_mrc_inc",
+   "label": "NASPO ValuePoint PO-10700-00015856 (MRC)",
+   "field": "source_url",
+   "agora": "https://www.naspovaluepoint.org/portfolios/parks-recreation-equipment-installation/",
+   "catalog": "https://www.naspovaluepoint.org/suppliers/mrc-inc/",
+   "action": "apply",
+   "note": "The co-op's page for this contract, in place of a link shared by several contracts.",
+   "catalog_contract": "con_817736651cdc0c2b4226"
+  },
+  {
+   "contract_id": "ctr_naspo_parks_northwest_playground_equipment_inc",
+   "label": "NASPO ValuePoint PO-10700-00015852 (Northwest Playground Equipment)",
+   "field": "end",
+   "agora": "(none)",
+   "catalog": "2027-12-31",
+   "action": "apply",
+   "note": "End date from the co-op's contract list.",
+   "catalog_contract": "con_2ba7f68235b1e91c4631"
+  },
+  {
+   "contract_id": "ctr_naspo_parks_northwest_playground_equipment_inc",
+   "label": "NASPO ValuePoint PO-10700-00015852 (Northwest Playground Equipment)",
+   "field": "start",
+   "agora": "(none)",
+   "catalog": "2023-01-01",
+   "action": "apply",
+   "note": "Start date from the co-op's contract list.",
+   "catalog_contract": "con_2ba7f68235b1e91c4631"
+  },
+  {
+   "contract_id": "ctr_naspo_parks_northwest_playground_equipment_inc",
+   "label": "NASPO ValuePoint PO-10700-00015852 (Northwest Playground Equipment)",
+   "field": "source_url",
+   "agora": "https://www.naspovaluepoint.org/portfolios/parks-recreation-equipment-installation/",
+   "catalog": "https://www.naspovaluepoint.org/suppliers/northwest-playground-equipment-inc/",
+   "action": "apply",
+   "note": "The co-op's page for this contract, in place of a link shared by several contracts.",
+   "catalog_contract": "con_2ba7f68235b1e91c4631"
+  },
+  {
+   "contract_id": "ctr_naspo_parks_playcore_wisconsin_inc",
+   "label": "NASPO ValuePoint PO-10700-00015861 (GameTime)",
+   "field": "end",
+   "agora": "(none)",
+   "catalog": "2027-12-31",
+   "action": "apply",
+   "note": "End date from the co-op's contract list.",
+   "catalog_contract": "con_374f5b46a914a2135aac"
+  },
+  {
+   "contract_id": "ctr_naspo_parks_playcore_wisconsin_inc",
+   "label": "NASPO ValuePoint PO-10700-00015861 (GameTime)",
+   "field": "start",
+   "agora": "(none)",
+   "catalog": "2023-04-26",
+   "action": "apply",
+   "note": "Start date from the co-op's contract list.",
+   "catalog_contract": "con_374f5b46a914a2135aac"
+  },
+  {
+   "contract_id": "ctr_naspo_parks_playcore_wisconsin_inc",
+   "label": "NASPO ValuePoint PO-10700-00015861 (GameTime)",
+   "field": "source_url",
+   "agora": "https://www.naspovaluepoint.org/portfolios/parks-recreation-equipment-installation/",
+   "catalog": "https://www.naspovaluepoint.org/suppliers/playcore-wisconsin-inc-dba-gametime/",
+   "action": "apply",
+   "note": "The co-op's page for this contract, in place of a link shared by several contracts.",
+   "catalog_contract": "con_374f5b46a914a2135aac"
+  },
+  {
+   "contract_id": "ctr_naspo_parks_playcraft_systems_llc",
+   "label": "NASPO ValuePoint PO-10700-00015858 (Playcraft Systems)",
+   "field": "end",
+   "agora": "(none)",
+   "catalog": "2027-12-31",
+   "action": "apply",
+   "note": "End date from the co-op's contract list.",
+   "catalog_contract": "con_6022e5cd1ed783a73492"
+  },
+  {
+   "contract_id": "ctr_naspo_parks_playcraft_systems_llc",
+   "label": "NASPO ValuePoint PO-10700-00015858 (Playcraft Systems)",
+   "field": "start",
+   "agora": "(none)",
+   "catalog": "2023-02-09",
+   "action": "apply",
+   "note": "Start date from the co-op's contract list.",
+   "catalog_contract": "con_6022e5cd1ed783a73492"
+  },
+  {
+   "contract_id": "ctr_naspo_parks_playcraft_systems_llc",
+   "label": "NASPO ValuePoint PO-10700-00015858 (Playcraft Systems)",
+   "field": "source_url",
+   "agora": "https://www.naspovaluepoint.org/portfolios/parks-recreation-equipment-installation/",
+   "catalog": "https://www.naspovaluepoint.org/suppliers/playcraft-systems-llc/",
+   "action": "apply",
+   "note": "The co-op's page for this contract, in place of a link shared by several contracts.",
+   "catalog_contract": "con_6022e5cd1ed783a73492"
+  },
+  {
+   "contract_id": "ctr_naspo_parks_playpower_inc",
+   "label": "NASPO ValuePoint PO-10700-00015853 (PlayPower)",
+   "field": "end",
+   "agora": "(none)",
+   "catalog": "2027-12-31",
+   "action": "apply",
+   "note": "End date from the co-op's contract list.",
+   "catalog_contract": "con_8b1c7adbd67b73b76dbc"
+  },
+  {
+   "contract_id": "ctr_naspo_parks_playpower_inc",
+   "label": "NASPO ValuePoint PO-10700-00015853 (PlayPower)",
+   "field": "start",
+   "agora": "(none)",
+   "catalog": "2023-02-07",
+   "action": "apply",
+   "note": "Start date from the co-op's contract list.",
+   "catalog_contract": "con_8b1c7adbd67b73b76dbc"
+  },
+  {
+   "contract_id": "ctr_naspo_parks_playpower_inc",
+   "label": "NASPO ValuePoint PO-10700-00015853 (PlayPower)",
+   "field": "source_url",
+   "agora": "https://www.naspovaluepoint.org/portfolios/parks-recreation-equipment-installation/",
+   "catalog": "https://www.naspovaluepoint.org/suppliers/playpower-inc/",
+   "action": "apply",
+   "note": "The co-op's page for this contract, in place of a link shared by several contracts.",
+   "catalog_contract": "con_8b1c7adbd67b73b76dbc"
+  },
+  {
+   "contract_id": "ctr_naspo_parks_ps_commercial_play_llc",
+   "label": "NASPO ValuePoint PO-10700-00015857 (Play & Park Structures)",
+   "field": "end",
+   "agora": "(none)",
+   "catalog": "2027-12-31",
+   "action": "apply",
+   "note": "End date from the co-op's contract list.",
+   "catalog_contract": "con_23dc2f866675d99ea507"
+  },
+  {
+   "contract_id": "ctr_naspo_parks_ps_commercial_play_llc",
+   "label": "NASPO ValuePoint PO-10700-00015857 (Play & Park Structures)",
+   "field": "start",
+   "agora": "(none)",
+   "catalog": "2023-01-01",
+   "action": "apply",
+   "note": "Start date from the co-op's contract list.",
+   "catalog_contract": "con_23dc2f866675d99ea507"
+  },
+  {
+   "contract_id": "ctr_naspo_parks_ps_commercial_play_llc",
+   "label": "NASPO ValuePoint PO-10700-00015857 (Play & Park Structures)",
+   "field": "source_url",
+   "agora": "https://www.naspovaluepoint.org/portfolios/parks-recreation-equipment-installation/",
+   "catalog": "https://www.naspovaluepoint.org/suppliers/ps-commercial-play-llc-dba-play-park-structures/",
+   "action": "apply",
+   "note": "The co-op's page for this contract, in place of a link shared by several contracts.",
+   "catalog_contract": "con_23dc2f866675d99ea507"
+  },
+  {
+   "contract_id": "ctr_naspo_parks_superior_international_industries_inc",
+   "label": "NASPO ValuePoint PO-10700-00015854 (Superior Recreational Products)",
+   "field": "end",
+   "agora": "(none)",
+   "catalog": "2027-12-31",
+   "action": "apply",
+   "note": "End date from the co-op's contract list.",
+   "catalog_contract": "con_d162852a0e40c73e958f"
+  },
+  {
+   "contract_id": "ctr_naspo_parks_superior_international_industries_inc",
+   "label": "NASPO ValuePoint PO-10700-00015854 (Superior Recreational Products)",
+   "field": "start",
+   "agora": "(none)",
+   "catalog": "2023-05-19",
+   "action": "apply",
+   "note": "Start date from the co-op's contract list.",
+   "catalog_contract": "con_d162852a0e40c73e958f"
+  },
+  {
+   "contract_id": "ctr_naspo_parks_superior_international_industries_inc",
+   "label": "NASPO ValuePoint PO-10700-00015854 (Superior Recreational Products)",
+   "field": "states",
+   "agora": "CA, IA, KS, MO, NM, OR, SC, SD, UT, WA",
+   "catalog": "CA, IA, KS, MO, NM, NY, OR, SC, SD, UT, WA",
+   "action": "flag",
+   "note": "Catalog adds NY. Agora keeps the list it read from NASPO directly.",
+   "catalog_contract": "con_d162852a0e40c73e958f"
+  },
+  {
+   "contract_id": "ctr_naspo_parks_superior_international_industries_inc",
+   "label": "NASPO ValuePoint PO-10700-00015854 (Superior Recreational Products)",
+   "field": "source_url",
+   "agora": "https://www.naspovaluepoint.org/portfolios/parks-recreation-equipment-installation/",
+   "catalog": "https://www.naspovaluepoint.org/suppliers/superior-international-industries-inc-dba-superior-recreational-products/",
+   "action": "apply",
+   "note": "The co-op's page for this contract, in place of a link shared by several contracts.",
+   "catalog_contract": "con_d162852a0e40c73e958f"
+  }
+ ]
+}

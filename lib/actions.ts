@@ -1,7 +1,8 @@
 // Every state change in the demo goes through here, so revenue events fire in
 // exactly one place per action.
 
-import { buildResults, estimateTotal, findSimilarSolicitation, mentionsPreference, parseRequest, ruleFor } from "./assistant";
+import { buildResults, estimateTotal, finishCoopSection, findSimilarSolicitation, mentionsPreference, parseRequest, ruleFor } from "./assistant";
+import { catalogContract, catalogCoopHits, catalogOffering, catalogProducts, catalogRetrieved, catalogSupplierById, materializeSupplier } from "./catalog";
 import { getDb, nextId, resetDb } from "./db";
 import { dedupe, extractFile, findSupplier, parseContract, type InputFile } from "./parser";
 import {
@@ -144,6 +145,14 @@ export function getResults(requestId: string) {
   const db = getDb();
   const request = db.requests.find((r) => r.id === requestId) ?? fail("Request not found");
   const results = buildResults(db, request);
+  // The co-op catalog: every co-op's public contract directory, beyond the contracts Agora seeds.
+  const cat = catalogCoopHits(db, request.parsed.item, db.session.buyer);
+  if (cat.hits.length || cat.gsa.length) {
+    const section = finishCoopSection(db, [...results.coops.hits, ...cat.hits], db.session.buyer?.name ?? null);
+    results.coops = { ...section, catalog: { retrieved: catalogRetrieved(), more_member: cat.more_member, more_other: cat.more_other, gsa: cat.gsa, gsa_total: cat.gsa_total } };
+  }
+  const products = catalogProducts(db, request.parsed.item, db.session.buyer);
+  if (products.hits.length) results.catalog_products = { ...products, retrieved: catalogRetrieved() };
 
   // Option 5: one impression per sponsoring supplier per results page. Keyed on
   // the request so re-renders and refreshes don't bill twice.
@@ -520,11 +529,17 @@ export function listAward(solicitationId: string) {
 
 // ---------------------------------------------------------------- contract upload
 
-export async function parseUpload(files: InputFile[], role: Role) {
+/** Read uploaded contract files. A hint (from the co-op catalog, for a queued price list) fills
+ * header fields the reader couldn't find, such as the supplier a GSA catalog page belongs to. */
+export async function parseUpload(files: InputFile[], role: Role, hint?: Partial<ContractHeader>) {
   const db = getDb();
   const started = Date.now();
   const extracted = await Promise.all(files.map(extractFile));
-  const out = await parseContract(extracted);
+  const parsed = await parseContract(extracted);
+  const header = { ...parsed.header };
+  for (const [k, v] of Object.entries(hint ?? {}) as [keyof ContractHeader, never][])
+    if (v && (!header[k] || (k === "title" && header.title === "Untitled contract"))) header[k] = v;
+  const out = { ...parsed, header };
 
   const docs: ContractDocument[] = extracted.map((f) => ({
     id: nextId(db, "doc", "doc"),
@@ -922,8 +937,15 @@ function supplierById(db: Db, id: string) {
 }
 
 /** Claim a storefront. A work email on the company's own domain verifies at once; anything else waits for Sovra review. */
+/** Bring a co-op catalog supplier into Agora, so its storefront can be claimed and managed. */
+export function adoptCatalogSupplier(id: string) {
+  const db = getDb();
+  return materializeSupplier(db, id) ?? fail("That supplier isn't in the co-op catalog.");
+}
+
 export function claimStorefront(args: { supplierId: string; name: string; email: string }) {
   const db = getDb();
+  if (args.supplierId.startsWith("cat_")) materializeSupplier(db, args.supplierId);
   const s = supplierById(db, args.supplierId);
   if (isClaimed(s)) fail(`${s.name}'s storefront is already claimed.`);
   const name = args.name?.trim() || fail("Add your name.");
@@ -1034,8 +1056,10 @@ export function setMembership(args: { coopId: string; op: "confirm" | "add" | "r
 export function askToJoin(args: { contractId: string; requestId?: string | null; fit?: number }) {
   const db = getDb();
   const agency = db.session.buyer?.name ?? fail("Set your agency first, so purchasing knows who's asking.");
-  const contract = db.contracts.find((c) => c.id === args.contractId) ?? fail("Contract not found");
-  const coop = coopOf(db, contract) ?? fail("That isn't a co-op contract.");
+  const seeded = db.contracts.find((c) => c.id === args.contractId);
+  const cat = seeded ? null : catalogContract(args.contractId);
+  const contract = seeded ?? (cat ? { id: cat.id, title: cat.title, contract_number: cat.number } : fail("Contract not found"));
+  const coop = (seeded ? coopOf(db, seeded) : db.coops.find((c) => c.id === cat?.coop_id)) ?? fail("That isn't a co-op contract.");
   const request = db.requests.find((r) => r.id === args.requestId);
   const dupe = db.referrals.find((r) => r.agency === agency && r.contract_id === contract.id && r.request_id === (request?.id ?? null));
   if (dupe) return dupe;
@@ -1048,6 +1072,7 @@ export function askToJoin(args: { contractId: string; requestId?: string | null;
     need: request?.raw_text ?? contract.title,
     fit: Math.round(args.fit ?? 0),
     created_at: now(),
+    ...(cat ? { contract_number: cat.number, supplier: catalogSupplierById(cat.supplier)?.name, has_link: Boolean(cat.url) } : {}),
   };
   db.referrals.unshift(referral);
   return referral;
@@ -1122,10 +1147,28 @@ export function addCoop(args: { name: string; website?: string; access?: "member
 }
 
 /** Log an outbound click and return where to send the buyer, or null if the contract has no link. */
-export function logClick(args: { contractId: string; listingId?: string | null; requestId?: string | null }) {
+export function logClick(args: { contractId: string; listingId?: string | null; requestId?: string | null; offeringId?: string | null }) {
   const db = getDb();
   const contract = db.contracts.find((c) => c.id === args.contractId);
-  if (!contract?.source_url) return null;
+  if (!contract) {
+    // A co-op catalog contract (or one of its products): logged the same way, sent to the co-op's page.
+    const cat = catalogContract(args.contractId);
+    const offering = catalogOffering(args.offeringId);
+    const url = offering && offering.contract === cat?.id ? offering.url : cat?.url;
+    if (!cat || !url) return null;
+    db.clicks.unshift({
+      id: nextId(db, "click", "clk", 4),
+      contract_id: cat.id,
+      coop_id: cat.coop_id || null,
+      listing_id: args.offeringId ?? null,
+      request_id: args.requestId ?? null,
+      buyer_name: db.session.buyer?.name ?? null,
+      url,
+      created_at: now(),
+    });
+    return { url, contract_level: true };
+  }
+  if (!contract.source_url) return null;
   db.clicks.unshift({
     id: nextId(db, "click", "clk", 4),
     contract_id: contract.id,

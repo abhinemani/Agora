@@ -1,0 +1,431 @@
+{
+ "retrieved": "2026-11-13",
+ "source_counts": {
+  "suppliers": 24094,
+  "contracts": 31930,
+  "products": 34510,
+  "offerings": 39394,
+  "documents": 12602
+ },
+ "suppliers": {
+  "records": 24094,
+  "companies": 22785,
+  "merged_by_name": 966,
+  "merged_by_website": 343,
+  "with_website": 13937,
+  "on_two_or_more_coops": 1504,
+  "most_coops": [
+   {
+    "id": "cat_19ab651278e93c73f19b",
+    "name": "22nd Century Technologies Inc",
+    "coops": [
+     "Choice Partners",
+     "E&I",
+     "Equalis Group",
+     "GSA MAS",
+     "HGACBuy",
+     "NASPO ValuePoint",
+     "OMNIA Partners",
+     "Sourcewell",
+     "TIPS"
+    ],
+    "contracts": 23
+   },
+   {
+    "id": "cat_893418876ba75fddd993",
+    "name": "Infojini",
+    "coops": [
+     "1GPA",
+     "Choice Partners",
+     "E&I",
+     "Equalis Group",
+     "HGACBuy",
+     "NASPO ValuePoint",
+     "OMNIA Partners",
+     "Sourcewell",
+     "TIPS"
+    ],
+    "contracts": 16
+   },
+   {
+    "id": "cat_8e20f8f70d834637ff5a",
+    "name": "New Tech Solutions Inc",
+    "coops": [
+     "BuyBoard",
+     "Choice Partners",
+     "E&I",
+     "Equalis Group",
+     "GSA MAS",
+     "NASPO ValuePoint",
+     "OMNIA Partners",
+     "TIPS"
+    ],
+    "contracts": 11
+   },
+   {
+    "id": "cat_0160f61b377640b33e94",
+    "name": "Ameresco Inc.",
+    "coops": [
+     "1GPA",
+     "BuyBoard",
+     "Equalis Group",
+     "GSA MAS",
+     "OMNIA Partners",
+     "Sourcewell",
+     "TIPS"
+    ],
+    "contracts": 22
+   },
+   {
+    "id": "cat_026c3bd4be5b91f30582",
+    "name": "Emergent, LLC",
+    "coops": [
+     "E&I",
+     "Equalis Group",
+     "GSA MAS",
+     "NASPO ValuePoint",
+     "OMNIA Partners",
+     "PEPPM",
+     "Sourcewell"
+    ],
+    "contracts": 22
+   },
+   {
+    "id": "cat_214328f043ee2ee86bb0",
+    "name": "Lakeshore Learning Materials LLC",
+    "coops": [
+     "1GPA",
+     "BuyBoard",
+     "Choice Partners",
+     "Equalis Group",
+     "GSA MAS",
+     "NPPGov",
+     "TIPS"
+    ],
+    "contracts": 19
+   },
+   {
+    "id": "cat_98d1d1e978ed679e67be",
+    "name": "School Health Corporation",
+    "coops": [
+     "1GPA",
+     "BuyBoard",
+     "Choice Partners",
+     "Equalis Group",
+     "OMNIA Partners",
+     "Sourcewell",
+     "TIPS"
+    ],
+    "contracts": 16
+   },
+   {
+    "id": "cat_af208adcb81b1a525476",
+    "name": "Kaplan Early Learning Company",
+    "coops": [
+     "1GPA",
+     "BuyBoard",
+     "Choice Partners",
+     "Equalis Group",
+     "NPPGov",
+     "OMNIA Partners",
+     "TIPS"
+    ],
+    "contracts": 16
+   },
+   {
+    "id": "cat_59c1de0763e8bdc6be96",
+    "name": "Honeywell",
+    "coops": [
+     "1GPA",
+     "E&I",
+     "Equalis Group",
+     "HGACBuy",
+     "NPPGov",
+     "OMNIA Partners",
+     "Sourcewell"
+    ],
+    "contracts": 11
+   },
+   {
+    "id": "cat_506cc6b39ec0eb5c4cec",
+    "name": "Xerox Corporation",
+    "coops": [
+     "E&I",
+     "GSA MAS",
+     "NASPO ValuePoint",
+     "OMNIA Partners",
+     "PEPPM",
+     "Sourcewell",
+     "TIPS"
+    ],
+    "contracts": 10
+   },
+   {
+    "id": "cat_13ed7098617bcbe6cb96",
+    "name": "Cogent Infotech Corp.",
+    "coops": [
+     "Choice Partners",
+     "Equalis Group",
+     "GSA MAS",
+     "HGACBuy",
+     "NASPO ValuePoint",
+     "NPPGov",
+     "Sourcewell"
+    ],
+    "contracts": 9
+   },
+   {
+    "id": "cat_574060bfc9606be03437",
+    "name": "Tryfacta Inc",
+    "coops": [
+     "1GPA",
+     "Choice Partners",
+     "Equalis Group",
+     "HGACBuy",
+     "NPPGov",
+     "Sourcewell",
+     "TIPS"
+    ],
+    "contracts": 9
+   }
+  ],
+  "merge_examples": [
+   {
+    "name": "22nd Century Technologies Inc",
+    "aliases": [
+     "22nd Century Technologies",
+     "22nd Century Technologies, Inc.",
+     "22ND CENTURY TECHNOLOGIES, INC."
+    ]
+   },
+   {
+    "name": "Ameresco Inc.",
+    "aliases": [
+     "Ameresco",
+     "Ameresco, Inc.",
+     "AMERESCO FEDERAL SOLUTIONS, INC."
+    ]
+   },
+   {
+    "name": "AmTab Manufacturing Corporation",
+    "aliases": [
+     "AmTab Manufacturing",
+     "AmTab",
+     "AMTAB MANUFACTURING CORPORATION"
+    ]
+   },
+   {
+    "name": "Auctions International Inc",
+    "aliases": [
+     "Auctions International",
+     "Auctions International, Inc."
+    ]
+   },
+   {
+    "name": "Axon Enterprise, Inc.",
+    "aliases": [
+     "Axon Enterprise",
+     "Axon"
+    ]
+   },
+   {
+    "name": "Bandit Industries",
+    "aliases": [
+     "Bandit Industries, Inc",
+     "Bandit Industries Inc."
+    ]
+   },
+   {
+    "name": "BCI Burke",
+    "aliases": [
+     "BCI Burke Company, LLC",
+     "BCI Burke Co., LLC"
+    ]
+   },
+   {
+    "name": "Bentley Mills",
+    "aliases": [
+     "Bentley Mills Inc",
+     "BENTLEY MILLS INC"
+    ]
+   }
+  ]
+ },
+ "per_coop": [
+  {
+   "coop": "Sourcewell",
+   "coop_id": "coop_sourcewell",
+   "contracts": 1099,
+   "suppliers": 961,
+   "with_link": 1099,
+   "with_end": 1099,
+   "expired": 0,
+   "with_states": 0,
+   "offerings": 3492
+  },
+  {
+   "coop": "TIPS",
+   "coop_id": "coop_tips",
+   "contracts": 10434,
+   "suppliers": 6329,
+   "with_link": 0,
+   "with_end": 6332,
+   "expired": 26,
+   "with_states": 0,
+   "offerings": 0
+  },
+  {
+   "coop": "OMNIA Partners",
+   "coop_id": "coop_omnia",
+   "contracts": 695,
+   "suppliers": 548,
+   "with_link": 652,
+   "with_end": 695,
+   "expired": 0,
+   "with_states": 0,
+   "offerings": 0
+  },
+  {
+   "coop": "BuyBoard",
+   "coop_id": "coop_buyboard",
+   "contracts": 2451,
+   "suppliers": 1989,
+   "with_link": 0,
+   "with_end": 2451,
+   "expired": 0,
+   "with_states": 2441,
+   "offerings": 0
+  },
+  {
+   "coop": "HGACBuy",
+   "coop_id": "coop_hgacbuy",
+   "contracts": 1367,
+   "suppliers": 1194,
+   "with_link": 40,
+   "with_end": 913,
+   "expired": 0,
+   "with_states": 0,
+   "offerings": 9611
+  },
+  {
+   "coop": "E&I",
+   "coop_id": "coop_eandi",
+   "contracts": 263,
+   "suppliers": 259,
+   "with_link": 263,
+   "with_end": 263,
+   "expired": 0,
+   "with_states": 0,
+   "offerings": 0
+  },
+  {
+   "coop": "Equalis Group",
+   "coop_id": "coop_equalis",
+   "contracts": 376,
+   "suppliers": 329,
+   "with_link": 376,
+   "with_end": 376,
+   "expired": 2,
+   "with_states": 358,
+   "offerings": 0
+  },
+  {
+   "coop": "1GPA",
+   "coop_id": "coop_1gpa",
+   "contracts": 535,
+   "suppliers": 463,
+   "with_link": 0,
+   "with_end": 535,
+   "expired": 0,
+   "with_states": 259,
+   "offerings": 0
+  },
+  {
+   "coop": "Choice Partners",
+   "coop_id": "coop_choice",
+   "contracts": 836,
+   "suppliers": 664,
+   "with_link": 836,
+   "with_end": 0,
+   "expired": 0,
+   "with_states": 712,
+   "offerings": 0
+  },
+  {
+   "coop": "NPPGov",
+   "coop_id": "coop_nppgov",
+   "contracts": 254,
+   "suppliers": 254,
+   "with_link": 254,
+   "with_end": 0,
+   "expired": 0,
+   "with_states": 0,
+   "offerings": 0
+  },
+  {
+   "coop": "PEPPM",
+   "coop_id": "coop_peppm",
+   "contracts": 628,
+   "suppliers": 215,
+   "with_link": 628,
+   "with_end": 0,
+   "expired": 0,
+   "with_states": 0,
+   "offerings": 26291
+  },
+  {
+   "coop": "NASPO ValuePoint",
+   "coop_id": "coop_naspo",
+   "contracts": 519,
+   "suppliers": 439,
+   "with_link": 519,
+   "with_end": 519,
+   "expired": 9,
+   "with_states": 468,
+   "offerings": 0
+  },
+  {
+   "coop": "GSA MAS",
+   "coop_id": "gsa_mas",
+   "contracts": 12473,
+   "suppliers": 11944,
+   "with_link": 12473,
+   "with_end": 0,
+   "expired": 0,
+   "with_states": 0,
+   "offerings": 0
+  }
+ ],
+ "products": {
+  "products": 34510,
+  "offerings": 39394,
+  "by_status": {
+   "quote": 1509,
+   "published_discount": 8102,
+   "member_login": 26291,
+   "published_price": 3492
+  },
+  "priced_suppliers": [
+   "Canon U.S.A., Inc."
+  ],
+  "multi_route": 4786
+ },
+ "documents": {
+  "total": 12602,
+  "by_kind": {
+   "htm": 11892,
+   "unknown": 709,
+   "pdf": 1
+  },
+  "by_coop": {
+   "GSA MAS": 11892,
+   "HGACBuy": 709,
+   "Sourcewell": 1
+  }
+ },
+ "reconcile": {
+  "confirmed": 26,
+  "applied": 47,
+  "flagged": 2
+ }
+}

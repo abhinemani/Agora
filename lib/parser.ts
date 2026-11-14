@@ -38,7 +38,43 @@ const MIME: Record<string, string> = {
   docx: "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
   xlsx: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
   csv: "text/csv",
+  htm: "text/html",
+  html: "text/html",
 };
+
+/** HTML to text with each table row on one line and its cells spaced apart, the way PDF rows read. */
+function htmlToText(html: string): string {
+  return html
+    .replace(/<t([dh])[^>]*>([\s\S]*?)<\/t\1>/gi, (_m, _t, inner: string) => inner.replace(/<[^>]+>/g, " ").replace(/\s+/g, " ").trim() + "  ")
+    .replace(/<\/(tr|p|h\d|li|div)>/gi, "\n")
+    .replace(/<br\s*\/?>/gi, "\n")
+    .replace(/<[^>]+>/g, "")
+    .replace(/&nbsp;/g, " ")
+    .replace(/&amp;/g, "&")
+    .replace(/&lt;/g, "<")
+    .replace(/&gt;/g, ">")
+    .replace(/&quot;/g, '"')
+    .replace(/&#39;/g, "'")
+    .replace(/&#36;/g, "$")
+    .split("\n")
+    .map((l) => l.trim())
+    .filter(Boolean)
+    .join("\n");
+}
+
+/** Every table row in an HTML page, as cells. Clean money cells ("$1,024.17") become numbers, as a spreadsheet would store them. */
+function htmlTableRows(html: string): unknown[][] {
+  const cell = (s: string) => htmlToText(s).replace(/\n/g, " ").trim();
+  const rows: unknown[][] = [];
+  for (const tr of html.match(/<tr\b[\s\S]*?<\/tr>/gi) ?? []) {
+    const cells = (tr.match(/<t[dh]\b[\s\S]*?<\/t[dh]>/gi) ?? []).map((c) => {
+      const v = cell(c);
+      return /^\$\s?[\d,]+(\.\d{1,2})?$/.test(v) ? parseFloat(v.replace(/[$,\s]/g, "")) : v;
+    });
+    if (cells.filter((c) => String(c).trim()).length >= 2) rows.push(cells);
+  }
+  return rows;
+}
 
 export async function extractFile(file: InputFile): Promise<ExtractedFile> {
   const ext = file.filename.toLowerCase().split(".").pop() ?? "";
@@ -67,20 +103,16 @@ export async function extractFile(file: InputFile): Promise<ExtractedFile> {
     // Go through HTML so table rows stay on one line, the way PDF rows read.
     const mammoth = await import("mammoth");
     const { value: html } = await mammoth.convertToHtml({ buffer: file.buffer });
-    const text = html
-      .replace(/<t([dh])[^>]*>([\s\S]*?)<\/t\1>/g, (_m, _t, inner: string) => inner.replace(/<[^>]+>/g, " ").replace(/\s+/g, " ").trim() + "  ")
-      .replace(/<\/(tr|p|h\d|li)>/g, "\n")
-      .replace(/<br\s*\/?>/g, "\n")
-      .replace(/<[^>]+>/g, "")
-      .replace(/&amp;/g, "&")
-      .replace(/&lt;/g, "<")
-      .replace(/&gt;/g, ">")
-      .replace(/&quot;/g, '"')
-      .replace(/&#39;/g, "'")
-      .split("\n")
-      .map((l) => l.trim())
-      .filter(Boolean)
-      .join("\n");
+    return { ...base, kind: "docx", pages: [{ num: 1, text: htmlToText(html) }], page_count: 1 };
+  }
+  if (ext === "htm" || ext === "html") {
+    // Web price lists (GSA Advantage catalog pages): drop scripts and styles, keep table rows on one line.
+    const html = file.buffer.toString("utf8").replace(/<(script|style|noscript|head)\b[\s\S]*?<\/\1>/gi, " ");
+    const text = htmlToText(html);
+    if (text.replace(/\s/g, "").length < 200) throw new ParseError(`${file.filename} has almost no text. The page may need a login or JavaScript to show its prices.`);
+    // A price table reads best as spreadsheet rows: header detection finds the SKU, description and price columns.
+    const rows = htmlTableRows(html);
+    if (rows.length >= 2) return { ...base, kind: "sheet", pages: [{ num: 1, text }], rows, page_count: 1 };
     return { ...base, kind: "docx", pages: [{ num: 1, text }], page_count: 1 };
   }
   if (ext === "xlsx" || ext === "xls" || ext === "csv") {
@@ -94,7 +126,7 @@ export async function extractFile(file: InputFile): Promise<ExtractedFile> {
     });
     return { ...base, kind: "sheet", pages, rows, page_count: pages.length };
   }
-  throw new ParseError(`${file.filename}: unsupported file type. Use PDF, DOCX, XLSX or CSV.`);
+  throw new ParseError(`${file.filename}: unsupported file type. Use PDF, DOCX, XLSX, CSV or an HTML price page.`);
 }
 
 // ---------------------------------------------------------------- shared helpers
@@ -150,7 +182,8 @@ function inferSource(owner: string): ContractSource {
 // ---------------------------------------------------------------- offline heuristic
 
 function heuristicHeader(files: ExtractedFile[]): ContractHeader {
-  const text = files.filter((f) => f.kind !== "sheet").map((f) => f.pages.map((p) => p.text).join("\n")).join("\n");
+  // Web price pages are read as rows for their tables, but their text carries the header.
+  const text = files.filter((f) => f.kind !== "sheet" || /\.html?$/i.test(f.filename)).map((f) => f.pages.map((p) => p.text).join("\n")).join("\n");
   const grab = (re: RegExp) => text.match(re)?.[1]?.trim() ?? "";
   const lines = text.split("\n").map((l) => l.trim()).filter(Boolean);
 
@@ -174,7 +207,10 @@ function heuristicHeader(files: ExtractedFile[]): ContractHeader {
 
   return {
     supplier_name: grab(/^(?:Contractor|Supplier|Vendor)\s*:\s*([^,\n]+)/im).replace(/,?\s*Inc\.?$/, ""),
-    contract_number: grab(/(?:Contract|Agreement|Price Agreement)\s*(?:No\.?|Number|#)\s*:?\s*([A-Z0-9][A-Z0-9-]+)/i),
+    contract_number:
+      grab(/(?:Contract|Agreement|Price Agreement)\s*(?:No\.?|Number|#)\s*:?\s*([A-Z0-9][A-Z0-9-]+)/i) ||
+      // GSA schedule numbers, as GSA Advantage price pages print them.
+      grab(/\b(GS-\d{2}[A-Z]-[0-9A-Z]{3,6}|47Q[A-Z0-9]{8,12})\b/),
     owner: owner.replace(/,\s*Oregon$/, ""),
     source: inferSource(owner),
     title: title || "Untitled contract",
@@ -322,11 +358,11 @@ function proseItems(s: string, page: number, file: string, fallbackCat: Category
 
 function sheetItems(f: ExtractedFile, fallbackCat: Category): DraftItem[] {
   const rows = f.rows ?? [];
-  const headerIdx = rows.findIndex((r) => r.some((c) => /sku|item/i.test(String(c))) && r.some((c) => /price/i.test(String(c))));
+  const headerIdx = rows.findIndex((r) => r.some((c) => /sku|item|part|model|catalog/i.test(String(c))) && r.some((c) => /price/i.test(String(c))));
   if (headerIdx < 0) return [];
   const header = rows[headerIdx].map((c) => String(c));
   const col = (re: RegExp, not?: RegExp) => header.findIndex((h) => re.test(h) && !(not && not.test(h)));
-  const cSku = col(/sku|item\s*(no|#|number)/i);
+  const cSku = col(/sku|item\s*(no|#|number)|part\s*(no\.?|#|number)|^part$|model|catalog\s*(no\.?|#|number)/i);
   const cDesc = col(/desc|product|name/i);
   const cUnit = col(/uom|unit|pack/i, /price/i);
   const cPrice = col(/price/i, /volume|tier|\d+\+/i);
@@ -428,8 +464,12 @@ export interface ParseOutput {
 
 const cacheDir = () => join(UPLOAD_DIR, "parsed");
 
+/** Bump when the reader changes what it finds. v2: HTML price pages, part and model number columns. */
+const PARSER_VERSION = 2;
+
 export async function parseContract(files: ExtractedFile[]): Promise<ParseOutput> {
-  const key = files.map((f) => f.hash).sort().join("-") + (process.env.ANTHROPIC_API_KEY ? "-llm" : "-offline");
+  // The reader's version is part of the key, so improving the reader re-reads files it read before.
+  const key = files.map((f) => f.hash).sort().join("-") + (process.env.ANTHROPIC_API_KEY ? "-llm" : "-offline") + `-v${PARSER_VERSION}`;
   const cached = join(cacheDir(), `${key}.json`);
   if (existsSync(cached)) return JSON.parse(readFileSync(cached, "utf8"));
 

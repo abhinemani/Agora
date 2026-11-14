@@ -6,6 +6,7 @@ import { useCallback, useEffect, useState } from "react";
 import { BuyerPicker } from "@/components/BuyerPicker";
 import { AddToCart } from "@/components/AddToCart";
 import { CoopLink } from "@/components/CoopLink";
+import { CatalogProducts } from "@/components/CatalogProducts";
 import { CoopSection, FitPill } from "@/components/CoopSection";
 import { RouteStrip } from "@/components/RouteStrip";
 import { ExpiredNote, InviteAdminBanner, NextSteps, OwnContractsCard } from "@/components/ResultExtras";
@@ -216,6 +217,7 @@ export default function RequestResults() {
           )}
 
           <CoopSection section={coops!} requestId={id} onMembershipChange={() => setResults(null)} />
+          <CatalogProducts data={results.catalog_products} requestId={id} />
 
           <div className="grid gap-4 md:grid-cols-3">
             {results.peer && <PeerCard peer={results.peer} qty={p.quantity} />}
@@ -237,6 +239,11 @@ export default function RequestResults() {
 
       {results && results.no_match && showEarn && <KindBanner kind={PURCHASE_KINDS.new_need} />}
       {results && results.no_match && <CoopSection section={coops!} requestId={id} onMembershipChange={() => setResults(null)} />}
+      {results && results.no_match && (
+        <div className="mt-8">
+          <CatalogProducts data={results.catalog_products} requestId={id} />
+        </div>
+      )}
       {results && results.no_match && (
         <div className="grid gap-6 lg:grid-cols-3">
           <Card className="p-6 lg:col-span-2">

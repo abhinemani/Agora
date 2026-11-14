@@ -7,6 +7,7 @@ import { CategoryIcon } from "@/components/CategoryIcon";
 import { Check, File, Globe, Lock, Search } from "@/components/icons";
 import { useStore } from "@/components/store";
 import { ClaimStorefront } from "@/components/ClaimStorefront";
+import { CatalogStorefrontPage, CoopRoutes } from "@/components/CoopRoutes";
 import { VerificationList } from "@/components/Verification";
 import { verificationSummary } from "@/lib/verification";
 import { ErrorNote, Loading, SourcePill, Stars, SupplierBadges, money, supplierColor } from "@/components/ui";
@@ -31,7 +32,7 @@ export default function SupplierStorefront() {
   const [shown, setShown] = useState(PAGE);
   if (!db) return <Loading />;
   const s = db.suppliers.find((x) => x.id === id);
-  if (!s) return <ErrorNote message="No storefront for that supplier." />;
+  if (!s) return id.startsWith("cat_") ? <CatalogStorefrontPage id={id} /> : <ErrorNote message="No storefront for that supplier." />;
 
   const buyer = db.session.buyer;
   const contracts = db.contracts.filter((c) => c.supplier_id === s.id);
@@ -219,6 +220,8 @@ export default function SupplierStorefront() {
           {!contracts.length && <p className="text-sm text-slate">No contracts on file; small purchases only.</p>}
         </div>
       </section>
+
+      <CoopRoutes supplierId={s.id} name={s.name} />
 
       {products.length > 0 && (
         <section id="catalog" className="scroll-mt-24">

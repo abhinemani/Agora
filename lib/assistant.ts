@@ -5,6 +5,7 @@ import * as z from "zod/v4";
 import { structured } from "./llm";
 import { CATEGORIES } from "./types";
 import type { Buyer, Category, Contract, Db, Listing, ParsedRequest, PeerPurchase, Request, Solicitation, Source, Supplier } from "./types";
+import type { CatalogProductHit } from "./catalog";
 import { checkEligibility, defaultVariant, familyOf, SOURCEWELL_TYLER_NOTES } from "./vehicles";
 import { settingsFor } from "./agency";
 import { canSponsor, listingVisible, sponsoredFor } from "./suppliers";
@@ -56,7 +57,7 @@ export function tokens(text: string): string[] {
     .map((w) => stem(singular(w)));
 }
 
-type Weights = Map<string, number>;
+export type Weights = Map<string, number>;
 
 function score(itemTokens: string[], title: string, weights?: Weights) {
   const t = new Set(tokens(title));
@@ -109,7 +110,7 @@ function bestMatches<T>(itemTokens: string[], rows: T[], titleOf: (r: T) => stri
 }
 
 /** Words catalogs use interchangeably; a contract naming either covers the other. */
-const SAME_AS: Record<string, string[]> = { laptop: ["notebook"], notebook: ["laptop"], pc: ["computer"], computer: ["pc"] };
+export const SAME_AS: Record<string, string[]> = { laptop: ["notebook"], notebook: ["laptop"], pc: ["computer"], computer: ["pc"] };
 
 /** Fit score, 0 to 100: how much of the request a contract or product covers.
  * Words named in its title count fully; words found only in its wider scope
@@ -117,11 +118,26 @@ const SAME_AS: Record<string, string[]> = { laptop: ["notebook"], notebook: ["la
  * squarely than one built for it ("desktops, laptops, tablets"). Rarer words
  * weigh more. Sponsorship never enters this score. */
 export function fitScore(itemTokens: string[], title: string, scope: string, weights: Weights): number {
+  return fitScoreSets(itemTokens, new Set(tokens(title)), new Set(tokens(scope)), weights);
+}
+
+/** The same score from words already tokenized, for indexes that tokenize once (lib/catalog.ts). */
+const rarestCache = new WeakMap<Weights, number>();
+/** The weight of the rarest word: what a word the catalog never uses counts for. Cached, since catalogs are large. */
+function rarestOf(weights: Weights): number {
+  let r = rarestCache.get(weights);
+  if (r === undefined) {
+    r = 1;
+    for (const v of weights.values()) if (v > r) r = v;
+    rarestCache.set(weights, r);
+  }
+  return r;
+}
+
+export function fitScoreSets(itemTokens: string[], inTitle: Set<string>, inScope: Set<string>, weights: Weights): number {
   if (!itemTokens.length) return 0;
-  const inTitle = new Set(tokens(title));
-  const inScope = new Set(tokens(scope));
   const has = (set: Set<string>, w: string) => set.has(w) || (SAME_AS[w] ?? []).some((x) => set.has(x));
-  const rarest = Math.max(1, ...weights.values());
+  const rarest = rarestOf(weights);
   let asked = 0;
   let got = 0;
   for (const w of new Set(itemTokens)) {
@@ -321,6 +337,11 @@ export interface CoopHit {
   link_out: LinkOut | null;
   /** Products Agora holds for this contract that match the request. */
   products: number;
+  /** "catalog": from the co-op catalog (lib/catalog.ts), a co-op's own contract directory. */
+  source?: "catalog";
+  end?: string | null;
+  /** The co-op's directory page, when it publishes no page per contract. */
+  directory_url?: string | null;
 }
 
 export interface CoopSection {
@@ -329,6 +350,8 @@ export interface CoopSection {
   memberships_known: boolean;
   /** A co-op the agency isn't on fits better than every co-op it is on. */
   better: { hit: CoopHit; than: CoopHit | null } | null;
+  /** The co-op catalog's share of the section: what's shown, what else matched, and the GSA lane. */
+  catalog?: { retrieved: string; more_member: number; more_other: number; gsa: CoopHit[]; gsa_total: number };
 }
 
 export interface LinkOut {
@@ -378,6 +401,8 @@ export interface Results {
   own_contracts: OwnHit[];
   /** Matching contracts past their end date, hidden unless the buyer asks. */
   expired: Unavailable[];
+  /** Products in the co-op catalog that match, each with every contract that sells it (lib/catalog.ts). */
+  catalog_products?: { hits: CatalogProductHit[]; total: number; retrieved: string };
 }
 
 export interface ContractLead {
@@ -451,6 +476,11 @@ function coopSection(db: Db, itemTokens: string[], buyer: Buyer | null, matched:
       products: new Set(products.map((l) => l.family ?? l.id)).size,
     });
   }
+  return finishCoopSection(db, hits, agency);
+}
+
+/** Order co-op hits (the agency's co-ops first, then open ones, then by fit) and flag a better fit elsewhere. */
+export function finishCoopSection(db: Db, hits: CoopHit[], agency: string | null): CoopSection {
   hits.sort((a, b) => Number(b.member) - Number(a.member) || Number(b.eligible) - Number(a.eligible) || b.fit - a.fit || a.coop.localeCompare(b.coop));
   const memberships_known = membershipsFor(db, agency).length > 0 || hits.some((h) => h.member);
   const bestMember = hits.filter((h) => h.member && h.eligible).sort((a, b) => b.fit - a.fit)[0] ?? null;
@@ -531,6 +561,8 @@ const SYNONYMS: [RegExp, string][] = [
   [/computer[- ]aided dispatch/gi, "CAD"],
 ];
 const expand = (item: string) => SYNONYMS.reduce((t, [re, to]) => t.replace(re, to), item);
+/** The words a request is matched on, synonyms spelled out ("CAD" → "computer aided dispatch"). */
+export const requestTokens = (item: string) => tokens(expand(item));
 
 export function buildResults(db: Db, request: Request): Results {
   const { parsed } = request;

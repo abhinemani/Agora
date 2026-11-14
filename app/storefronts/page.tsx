@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { CatalogSupplierSearch } from "@/components/CoopRoutes";
 import { TwoProducts } from "@/components/TwoProducts";
 import { useStore } from "@/components/store";
 import { Loading, Stars, SupplierBadges, supplierColor } from "@/components/ui";
@@ -57,6 +58,8 @@ export default function Storefronts() {
           </Link>
         ))}
       </section>
+
+      <CatalogSupplierSearch />
 
       <TwoProducts />
     </div>

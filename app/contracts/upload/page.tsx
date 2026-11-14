@@ -39,7 +39,10 @@ export default function UploadPage() {
 }
 
 function Upload() {
-  const as = (useSearchParams().get("as") as Role) ?? "supplier";
+  const params = useSearchParams();
+  const as = (params.get("as") as Role) ?? "supplier";
+  // From the price-list queue: a co-op catalog document to fetch and read.
+  const documentId = params.get("document");
   const { db, refresh, role, setRole } = useStore();
   const [phase, setPhase] = useState<"pick" | "parsing" | "review" | "done">("pick");
   const [tick, setTick] = useState(0);
@@ -64,7 +67,7 @@ function Upload() {
     return () => clearInterval(t);
   }, [phase]);
 
-  const start = async (body: { sample: string } | FileList) => {
+  const start = async (body: { sample: string } | { document: string } | FileList) => {
     setPhase("parsing");
     setTick(0);
     setError(null);
@@ -94,6 +97,14 @@ function Upload() {
       setPhase("pick");
     }
   };
+
+  const started = useRef(false);
+  useEffect(() => {
+    if (documentId && !started.current) {
+      started.current = true;
+      start({ document: documentId });
+    }
+  }, [documentId]); // eslint-disable-line react-hooks/exhaustive-deps
 
   if (!db) return <Loading />;
 

@@ -1,0 +1,127 @@
+{
+  "project": "Agora",
+  "schema_version": "1.0",
+  "retrieved_at": "2026-11-13",
+  "counts": {
+    "suppliers": 24094,
+    "contracts": 31930,
+    "products": 34510,
+    "offerings": 39394,
+    "documents": 12602,
+    "marketplace_import_rows": 39394,
+    "fixed_price_offerings": 3492,
+    "supplier_identity_review_groups": 796,
+    "SKU_title_conflict_groups": 360
+  },
+  "cooperatives": [
+    "1GPA",
+    "BuyBoard",
+    "Choice Partners",
+    "E&I",
+    "Equalis Group",
+    "GSA MAS",
+    "HGACBuy",
+    "NASPO ValuePoint",
+    "NPPGov",
+    "OMNIA Partners",
+    "PEPPM",
+    "Sourcewell",
+    "TIPS"
+  ],
+  "record_levels": {
+    "contracts": "Supplier-specific contract scope; not a SKU or product",
+    "products": "Published model/SKU/service/bundle/option names",
+    "offerings": "Product + supplier + contract + source pricing context"
+  },
+  "import_default": "request_quote; eligibility_review_required; never assume current price, stock, or buyer eligibility",
+  "products_complete_across_coops": false,
+  "schema_join_keys": [
+    "suppliers.supplier_id = contracts.supplier_id = offerings.supplier_id",
+    "products.product_id = offerings.product_id",
+    "contracts.contract_id = offerings.contract_id"
+  ],
+  "source_metadata_and_terms": "Public-source snapshots. Sources and published dates retained. No accounts, inquiries or member-only prices used.",
+  "per_cooperative": {
+    "1GPA": {
+      "supplier_records": 464,
+      "contract_scope_records": 535,
+      "product_offerings": 0,
+      "fixed_price_offerings": 0
+    },
+    "BuyBoard": {
+      "supplier_records": 2019,
+      "contract_scope_records": 2451,
+      "product_offerings": 0,
+      "fixed_price_offerings": 0
+    },
+    "Choice Partners": {
+      "supplier_records": 671,
+      "contract_scope_records": 836,
+      "product_offerings": 0,
+      "fixed_price_offerings": 0
+    },
+    "E&I": {
+      "supplier_records": 259,
+      "contract_scope_records": 263,
+      "product_offerings": 0,
+      "fixed_price_offerings": 0
+    },
+    "Equalis Group": {
+      "supplier_records": 330,
+      "contract_scope_records": 376,
+      "product_offerings": 0,
+      "fixed_price_offerings": 0
+    },
+    "GSA MAS": {
+      "supplier_records": 12157,
+      "contract_scope_records": 12473,
+      "product_offerings": 0,
+      "fixed_price_offerings": 0
+    },
+    "HGACBuy": {
+      "supplier_records": 1275,
+      "contract_scope_records": 1367,
+      "product_offerings": 9611,
+      "fixed_price_offerings": 0
+    },
+    "NASPO ValuePoint": {
+      "supplier_records": 440,
+      "contract_scope_records": 519,
+      "product_offerings": 0,
+      "fixed_price_offerings": 0
+    },
+    "NPPGov": {
+      "supplier_records": 254,
+      "contract_scope_records": 254,
+      "product_offerings": 0,
+      "fixed_price_offerings": 0
+    },
+    "OMNIA Partners": {
+      "supplier_records": 657,
+      "contract_scope_records": 695,
+      "product_offerings": 0,
+      "fixed_price_offerings": 0
+    },
+    "PEPPM": {
+      "supplier_records": 216,
+      "contract_scope_records": 628,
+      "product_offerings": 26291,
+      "fixed_price_offerings": 0
+    },
+    "Sourcewell": {
+      "supplier_records": 964,
+      "contract_scope_records": 1099,
+      "product_offerings": 3492,
+      "fixed_price_offerings": 3492
+    },
+    "TIPS": {
+      "supplier_records": 6332,
+      "contract_scope_records": 10434,
+      "product_offerings": 0,
+      "fixed_price_offerings": 0
+    }
+  },
+  "product_identity": "Same normalized manufacturer + same case-normalized MPN is grouped; differing titles are flagged. Other models/options use source listing IDs. Do not merge generic titles across vendors.",
+  "supplier_identity": "Conservative normalized names. Similar names, parent companies and subsidiaries are not automatically combined.",
+  "validation_status": "Passed unique-ID, foreign-key, price, discount, source-program, request-quote, member-price exclusion and source-control checks."
+}

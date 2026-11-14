@@ -54,19 +54,59 @@ export function CoopSection({ section, requestId, onMembershipChange }: { sectio
 
       {buyer ? (
         <div className="mt-4 grid gap-5 lg:grid-cols-2">
-          <HitList title="Co-ops you're on" empty={section.memberships_known ? "None of your co-ops has a contract for this." : "No memberships on file yet. Add the co-ops you belong to above."} hits={members} requestId={requestId} />
-          <HitList title="Co-ops you could join" empty="Every co-op with a contract for this is one you're on." hits={others} requestId={requestId} />
+          <HitList title="Co-ops you're on" empty={section.memberships_known ? "None of your co-ops has a contract for this." : "No memberships on file yet. Add the co-ops you belong to above."} hits={members} requestId={requestId} more={section.catalog?.more_member} />
+          <HitList title="Co-ops you could join" empty="Every co-op with a contract for this is one you're on." hits={others} requestId={requestId} more={section.catalog?.more_other} />
         </div>
       ) : (
         <div className="mt-4">
-          <HitList title={`${section.hits.length} co-op contract${section.hits.length === 1 ? "" : "s"}`} empty="" hits={section.hits} requestId={requestId} />
+          <HitList title={`${section.hits.length} co-op contract${section.hits.length === 1 ? "" : "s"}`} empty="" hits={section.hits} requestId={requestId} more={(section.catalog?.more_member ?? 0) + (section.catalog?.more_other ?? 0)} />
         </div>
+      )}
+
+      {section.catalog && section.catalog.gsa.length > 0 && (
+        <div className="mt-6 border-t border-base-lighter pt-4">
+          <h3 className="text-xs font-semibold text-slate">
+            Federal schedule (GSA MAS) <span className="font-normal">({section.catalog.gsa_total})</span>
+          </h3>
+          <p className="mb-2 mt-0.5 max-w-2xl text-[11px] text-slate">
+            GSA isn't a co-op. State and local governments may buy from some schedules through GSA cooperative purchasing; the flag below doesn't settle which SINs your agency
+            can use, so check the SIN before ordering.
+          </p>
+          <ul className="grid gap-2 lg:grid-cols-2">
+            {section.catalog.gsa.map((h) => (
+              <Hit key={h.contract_id} h={h} requestId={requestId} />
+            ))}
+          </ul>
+        </div>
+      )}
+      {section.catalog && (
+        <p className="mt-4 text-[11px] text-slate">
+          Includes contracts from 13 co-ops' public directories, retrieved {new Date(`${section.catalog.retrieved}T12:00:00Z`).toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" })}.{" "}
+          <a href="/data#catalog" className="underline">
+            About the co-op catalog
+          </a>
+        </p>
       )}
     </section>
   );
 }
 
-function HitList({ title, empty, hits, requestId }: { title: string; empty: string; hits: CoopHit[]; requestId: string }) {
+/** The co-op publishes no page per contract: send the buyer to its directory with the number to look up. */
+function DirectoryLink({ h, quiet }: { h: CoopHit; quiet?: boolean }) {
+  return (
+    <a
+      href={h.directory_url ?? undefined}
+      target="_blank"
+      rel="noreferrer"
+      title={`${h.coop} doesn't publish a page per contract. Search its directory for ${h.contract_number}.`}
+      className={quiet ? "text-xs font-semibold text-primary hover:underline" : "inline-flex items-center rounded-md border-2 border-primary px-4 py-2 text-ui-xs font-bold leading-none text-primary no-underline hover:bg-primary-lighter"}
+    >
+      Find {h.contract_number} on {h.coop} ↗
+    </a>
+  );
+}
+
+function HitList({ title, empty, hits, requestId, more = 0 }: { title: string; empty: string; hits: CoopHit[]; requestId: string; more?: number }) {
   const [all, setAll] = useState(false);
   const shown = all ? hits : hits.slice(0, 4);
   return (
@@ -84,6 +124,11 @@ function HitList({ title, empty, hits, requestId }: { title: string; empty: stri
         <button onClick={() => setAll(true)} className="mt-2 text-xs font-semibold text-maroon hover:underline">
           Show all {hits.length}
         </button>
+      )}
+      {more > 0 && (all || hits.length <= 4) && (
+        <p className="mt-2 text-[11px] text-slate">
+          {more} more matching contract{more === 1 ? "" : "s"} in the co-op catalog, lower in fit. Narrow the request to see them.
+        </p>
       )}
     </div>
   );
@@ -103,8 +148,14 @@ function Hit({ h, requestId }: { h: CoopHit; requestId: string }) {
           <div className="flex flex-wrap items-center gap-1.5">
             <span className="text-sm font-semibold text-navy">{h.coop}</span>
             <span className="font-mono text-[11px] text-slate">{h.contract_number}</span>
-            {buyer && !h.member && <Badge tone="maroon">Join to use</Badge>}
-            {h.verification === "research_lead" && <Badge tone="amber">Research lead</Badge>}
+            {buyer && !h.member && h.coop_id !== "gsa_mas" && <Badge tone="maroon">Join to use</Badge>}
+            {h.source === "catalog" ? (
+              <span title={`From ${h.coop}'s public contract directory. Terms and eligibility aren't independently verified.`}>
+                <Badge tone="neutral">Co-op directory</Badge>
+              </span>
+            ) : (
+              h.verification === "research_lead" && <Badge tone="amber">Research lead</Badge>
+            )}
           </div>
           <div className="mt-0.5 text-xs text-navy">
             <Link href={`/storefronts/${h.supplier_id}`} className="hover:text-maroon hover:underline">
@@ -115,24 +166,29 @@ function Hit({ h, requestId }: { h: CoopHit; requestId: string }) {
           <div className={`mt-1 text-[11px] ${h.eligible ? "text-slate" : "text-maroon"}`}>
             {h.eligible ? h.reason : `Not open to you: ${h.reason}`}
             {h.products > 0 && ` · ${h.products} matching product${h.products === 1 ? "" : "s"} in Agora`}
+            {h.end && ` · through ${new Date(`${h.end}T12:00:00Z`).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })}`}
           </div>
           {h.note && <div className="mt-1 text-[11px] text-amber-800">{h.note}</div>}
         </div>
         <FitPill fit={h.fit} />
       </div>
       <div className="mt-2 flex flex-wrap items-center justify-end gap-2">
-        {h.member || !buyer ? (
-          h.link_out ? (
+        {h.member || !buyer || h.coop_id === "gsa_mas" ? (
+          h.link_out && !h.link_out.has_link && h.directory_url ? (
+            <DirectoryLink h={h} />
+          ) : h.link_out ? (
             <CoopLink contractId={h.contract_id} coop={h.coop} hasLink={h.link_out.has_link} requestId={requestId} disabled={!h.eligible} />
           ) : (
             <span className="text-[11px] text-slate">Buy in Agora from the results above</span>
           )
         ) : (
           <>
-            {h.link_out?.has_link && (
+            {h.link_out?.has_link ? (
               <a href={goHref(h.contract_id, { request: requestId })} target="_blank" rel="noreferrer" className="text-xs font-semibold text-primary hover:underline">
                 View contract ↗
               </a>
+            ) : (
+              h.directory_url && <DirectoryLink h={h} quiet />
             )}
             {asked ? (
               <span className="text-xs font-semibold text-emerald-800">Sent to purchasing</span>

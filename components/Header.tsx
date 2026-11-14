@@ -20,6 +20,7 @@ const ROLES: { id: Role; label: string; person: string; initials: string; home: 
 const NAV: Record<Role, { href: string; label: string }[]> = {
   buyer: [
     { href: "/", label: "Search" },
+    { href: "/dive", label: "Shopper" },
     { href: "/browse", label: "Browse" },
     { href: "/storefronts", label: "Storefronts" },
     { href: "/vehicles", label: "Contracts" },

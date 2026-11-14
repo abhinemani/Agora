@@ -1,1 +1,74 @@
-{}
+{
+ "gov-match": {
+  "items": 11276,
+  "answered": 2400,
+  "kept": 2400,
+  "invalid": 0,
+  "missing": 8876,
+  "high": 2070,
+  "medium": 308,
+  "low": 22,
+  "picked": 1540,
+  "low_picked": 14
+ },
+ "school-pairs": {
+  "items": 2979,
+  "answered": 0,
+  "kept": 0,
+  "invalid": 0,
+  "missing": 2979,
+  "high": 0,
+  "medium": 0,
+  "low": 0,
+  "picked": 0,
+  "low_picked": 0
+ },
+ "supplier-merge": {
+  "items": 13,
+  "answered": 0,
+  "kept": 0,
+  "invalid": 0,
+  "missing": 13,
+  "high": 0,
+  "medium": 0,
+  "low": 0,
+  "picked": 0,
+  "low_picked": 0
+ },
+ "category": {
+  "items": 2909,
+  "answered": 0,
+  "kept": 0,
+  "invalid": 0,
+  "missing": 2909,
+  "high": 0,
+  "medium": 0,
+  "low": 0,
+  "picked": 0,
+  "low_picked": 0
+ },
+ "canon-rows": {
+  "items": 230,
+  "answered": 0,
+  "kept": 0,
+  "invalid": 0,
+  "missing": 230,
+  "high": 0,
+  "medium": 0,
+  "low": 0,
+  "picked": 0,
+  "low_picked": 0
+ },
+ "product-name": {
+  "items": 360,
+  "answered": 0,
+  "kept": 0,
+  "invalid": 0,
+  "missing": 360,
+  "high": 0,
+  "medium": 0,
+  "low": 0,
+  "picked": 0,
+  "low_picked": 0
+ }
+}

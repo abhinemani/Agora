@@ -1,6 +1,7 @@
 // Single dispatch route for demo actions: POST { action, ...args }.
 
 import { NextResponse } from "next/server";
+import { withSession } from "@/lib/session";
 import * as A from "@/lib/actions";
 
 export const dynamic = "force-dynamic";
@@ -63,11 +64,13 @@ const handlers: Record<string, Handler> = {
   setCoopBuyInAgora: (b) => A.setCoopBuyInAgora(b.coopId, Boolean(b.on)),
   reset: () => {
     A.reset();
+    // A reset also forgets this visitor's agency, so the demo starts clean.
+    A.clearBuyer();
     return { ok: true };
   },
 };
 
-export async function POST(req: Request) {
+export const POST = withSession(async (req: Request) => {
   const body = await req.json().catch(() => ({}));
   const handler = handlers[body?.action];
   if (!handler) return NextResponse.json({ error: `Unknown action: ${body?.action}` }, { status: 400 });
@@ -78,4 +81,4 @@ export async function POST(req: Request) {
     if (status === 500) console.error(err);
     return NextResponse.json({ error: err instanceof Error ? err.message : String(err) }, { status });
   }
-}
+});

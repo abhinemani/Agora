@@ -6,8 +6,8 @@
 // state's cooperative purchasing program, with the lowest fee of any shared contract.
 // Loaded so far: New Jersey from NJSTART (scripts/import-njstart.ts), Hawaii from the State
 // Procurement Office's price & vendor lists (scripts/import-hawaii.ts) and Arkansas from the
-// Office of State Procurement's directory (scripts/import-arkansas.ts). Oregon and New York
-// aren't loaded yet.
+// Office of State Procurement's directory (scripts/import-arkansas.ts) and New York from the
+// Office of General Services' centralized contracts (scripts/import-ny.ts). Oregon isn't loaded yet.
 
 import type { Buyer, Contract } from "./types";
 
@@ -49,6 +49,16 @@ export const TRX_PROGRAM: Record<string, TrxProgram> = {
       `Order from ${c.supplier || "the vendor"} citing ${c.number}${c.solicitation ? ` (${c.solicitation})` : ""} on your own purchase order. Your agency is billed for, and responsible for, its own orders.`,
     ],
   },
+  NY: {
+    name: "NYS OGS",
+    coop_program: "Office of General Services' centralized contracts",
+    portal: "https://ogs.ny.gov/procurement/ogs-centralized-contracts-list",
+    data_anchor: "new-york",
+    steps: (c) => [
+      "New York's General Municipal Law § 104 lets a political subdivision buy from OGS centralized contracts without a bid of its own, where the award's \"Use of Contracts\" includes political subdivisions or non-state agencies. Check New York's preferred sources (Corcraft, NYSID, NIBNY) first for items they're approved to supply.",
+      `Follow the award's "How to Use" document and order from ${c.supplier || "the contractor"} under contract ${c.number}${c.solicitation ? ` (${c.solicitation})` : ""} on your own purchase order.`,
+    ],
+  },
   HI: {
     name: "Hawaii SPO",
     coop_program: "State Procurement Office's price & vendor list contracts",
@@ -74,6 +84,8 @@ export interface StateContractFields {
   locals: boolean;
   /** The governments a contract names as participants (Hawaii); when given, a local must be one of them. */
   participants?: string[];
+  /** Who may use it, in the award's own words (New York's "Use of Contracts"). */
+  use?: string | null;
 }
 export const isTrxState = (state: string | null | undefined) => Boolean(state && (TRX_STATES as readonly string[]).includes(state));
 
@@ -102,9 +114,13 @@ export function stateContractAccess(sc: StateContractFields, buyer: Buyer | null
     ? counties.length
       ? `Open to the jurisdictions it lists, including ${list(counties.map((c) => (c === "Honolulu" ? "Honolulu" : c === "Hawaii County" ? "Hawaii County" : `${c} County`)))}`
       : `For ${where} state agencies only; no county is a participating jurisdiction`
-    : sc.locals
-      ? `Open to ${where} local governments through the ${program}`
-      : `For ${where} state agencies only; not open to cooperative purchasing`;
+    : sc.use
+      ? sc.locals
+        ? `Open to ${where} political subdivisions; the award's use of contracts: "${sc.use}"`
+        : `For "${sc.use}" only, per the award`
+      : sc.locals
+        ? `Open to ${where} local governments through the ${program}`
+        : `For ${where} state agencies only; not open to cooperative purchasing`;
   if (!buyer) return { member: false, eligible: true, reason: open };
   if (buyer.state !== sc.state) return { member: false, eligible: false, reason: `a ${where} state contract, for ${where} public entities` };
   if (buyer.entity_type === "state_agency") return { member: true, eligible: true, reason: `Open to ${where} state agencies` };
@@ -112,7 +128,7 @@ export function stateContractAccess(sc: StateContractFields, buyer: Buyer | null
     if (listed(sc.participants, buyer)) return { member: true, eligible: true, reason: `the jurisdictions on its list, including ${buyer.name}` };
     return { member: false, eligible: false, reason: counties.length ? `${buyer.name} isn't among its participating jurisdictions (${list(counties)} ${counties.length === 1 ? "is" : "are"})` : `for ${where} state agencies only; no county participates` };
   }
-  if (!sc.locals) return { member: false, eligible: false, reason: `for ${where} state agencies only; the state hasn't opened it to cooperative purchasing` };
+  if (!sc.locals) return { member: false, eligible: false, reason: sc.use ? `for "${sc.use}" only, per the award` : `for ${where} state agencies only; the state hasn't opened it to cooperative purchasing` };
   return { member: true, eligible: true, reason: open };
 }
 

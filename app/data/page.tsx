@@ -165,6 +165,7 @@ export default function CoopDataPage() {
   const nj = catalogInsights.njstart;
   const hi = catalogInsights.hawaii;
   const ar = catalogInsights.arkansas;
+  const ny = catalogInsights.new_york;
   const f = insights.federal;
   const o = insights.overlap;
   const prospects = insights.prospects.slice(0, 15);
@@ -198,6 +199,7 @@ export default function CoopDataPage() {
             ["#njstart", "NJSTART"],
             ["#hawaii", "Hawaii"],
             ["#arkansas", "Arkansas"],
+            ["#new-york", "New York"],
             ["#nigp", "NIGP codes"],
             ["#cleanup", "Cleanup"],
             ["#states", "State rules"],
@@ -530,7 +532,7 @@ export default function CoopDataPage() {
           head={["Co-op", "Contracts", "Own page", "End date", "Products"]}
           right={[1, 2, 3, 4]}
           rows={catalogInsights.per_coop
-            .filter((c) => c.contracts && c.coop !== "NJSTART" && c.coop !== "Hawaii SPO" && c.coop !== "Arkansas OSP")
+            .filter((c) => c.contracts && c.coop !== "NJSTART" && c.coop !== "Hawaii SPO" && c.coop !== "Arkansas OSP" && c.coop !== "NYS OGS")
             .sort((a, b) => b.contracts - a.contracts)
             .map((c) => [
               <span key="c" className="font-bold">
@@ -625,7 +627,7 @@ export default function CoopDataPage() {
         <p className="mt-2 max-w-[72ex] text-ui-xs text-base-dark">
           How the preference works: an NJSTART contract leads when it fits within {TRX_MARGIN} points of the best co-op contract, so a far closer co-op fit still wins. Line
           items are those on each contract&apos;s first summary page; contracts with more pages say so on their own page. The {n(nj.documents)} attached documents (price
-          sheets, terms, methods of operation) are linked, not read yet. Hawaii and Arkansas are loaded too (below); Oregon and New York are TRX states whose contracts aren&apos;t loaded yet.
+          sheets, terms, methods of operation) are linked, not read yet. Hawaii, Arkansas and New York are loaded too (below); Oregon is the one TRX state not loaded yet.
         </p>
         <p className="mt-3 text-ui-xs text-base-dark">
           Try it: set your agency to Harmon Lake Township, New Jersey, and search for <Link href="/" className="text-primary">snow plow parts</Link> or road salt, or browse{" "}
@@ -674,6 +676,27 @@ export default function CoopDataPage() {
               districts unless its own text says otherwise. {n(ar.state_only)} does, in a quoted sentence (DocuSign&apos;s pricing is for state agencies only). The state&apos;s
               vehicle and school bus price sheets give {n(ar.priced_lines)} base prices on {n(ar.with_prices)} contracts, labelled as awarded bids for the base vehicle before
               options and delivery; two prices from a dealer not on the listing stay out.
+            </p>
+          </>
+        }
+      />
+
+      <Section
+        id="new-york"
+        title="New York: the Office of General Services' centralized contracts"
+        intro={
+          <>
+            <p>
+              New York is the fourth TRX state loaded. OGS&apos;s monthly master report (dated {date(ny.master_report_date)}) lists {n(ny.contracts)} statewide supplier
+              contracts under {n(ny.awards)} awards, from {n(ny.suppliers)} suppliers, {n(ny.suppliers_shared_with_coops)} of whom also hold co-op contracts. Each award&apos;s
+              page says who may use it, and Agora quotes that wording on every contract: {n(ny.open_to_locals)} contracts are on awards open to political subdivisions or
+              non-state agencies, and {n(ny.state_only)} are on awards for state agencies only (envelopes, legislative printing, two DOT projects, Albany-area agencies).{" "}
+              {n(ny.use_unstated)} contracts sit on awards whose page doesn&apos;t say, and are treated as open, as OGS contracts generally are to authorized users.
+            </p>
+            <p>
+              {n(ny.certified)} contracts carry a small business, minority-owned, women-owned or service-disabled veteran-owned certification, kept as published. Item
+              prices aren&apos;t loaded yet: they are in the awards&apos; price files. New York&apos;s preferred sources (Corcraft, NYSID and NIBNY), which a buyer checks before a
+              contract for the items they&apos;re approved to supply, are in the download but not yet in Agora.
             </p>
           </>
         }

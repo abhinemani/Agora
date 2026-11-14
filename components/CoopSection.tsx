@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useState } from "react";
 import type { CoopHit, CoopSection as Section } from "@/lib/assistant";
 import { goHref } from "@/lib/coops";
-import { stateLabel, TRX_PROGRAM } from "@/lib/trx";
+import { stateLabel, TRX_PROGRAM, TRX_PROGRAM_BY_NAME } from "@/lib/trx";
 import { contractHref } from "./ContractBits";
 import { CoopLink } from "./CoopLink";
 import { CoopMemberships } from "./CoopMemberships";
@@ -129,22 +129,26 @@ function StateBlock({ first, state, hits, more, retrieved, requestId, refs }: { 
   const { db } = useStore();
   const buyer = db?.session.buyer ?? null;
   const p = TRX_PROGRAM[state];
-  // The program's own name (a New York lane can mix OGS contracts and preferred sources).
-  const program = p?.name ?? hits[0]?.coop ?? "the state";
+  // A lane can mix programs (New York: OGS, Empire Procure Connect, preferred sources): name the ones present.
+  const programs = [...new Set(hits.filter((h) => !h.preferred).map((h) => h.coop))];
+  const program = programs.length === 1 ? programs[0] : programs.length ? `${programs.slice(0, -1).join(", ")} and ${programs[programs.length - 1]}` : (p?.name ?? "the state");
+  const through = programs.length === 1 && programs[0] === p?.name ? ` through the ${p.coop_program}` : "";
   const preferredFirst = hits.some((h) => h.preferred === "approved");
   const where = stateLabel(state);
-  const date = retrieved?.[program];
+  const date = retrieved?.[programs[0] ?? p?.name ?? ""];
   return (
     <section id={first ? "state-contracts" : undefined} className="scroll-mt-24 border-y-2 border-emerald-200 bg-emerald-50/40 py-6">
       <div className="flex flex-wrap items-center gap-2">
-        <h2 className="text-lg font-bold tracking-tight text-navy">{where} state contracts for this</h2>
+        <h2 className="text-lg font-bold tracking-tight text-navy">
+          {where} {hits.every((h) => TRX_PROGRAM_BY_NAME[h.coop]) ? "county" : hits.some((h) => TRX_PROGRAM_BY_NAME[h.coop]) ? "state and county" : "state"} contracts for this
+        </h2>
         <span title="A state contract on the TRX program, which Sovra supports">
           <Badge tone="green">TRX</Badge>
         </span>
       </div>
       <p className="mt-1 max-w-3xl text-sm text-slate">
         {buyer
-          ? `${buyer.name} can buy on these ${program} contracts through the ${p?.coop_program ?? "state's cooperative purchasing program"}. They come first because they're already competitively bid by the state and carry the lowest fee of any shared contract.`
+          ? `${buyer.name} can buy on these ${program} contracts${through}. They come first because they're already competitively bid by government and carry the lowest fee of any shared contract.`
           : `${program} contracts are open to ${where} local governments through the ${p?.coop_program ?? "state's cooperative purchasing program"}. Set your agency to see whether you can use them.`}{" "}
         Ordering happens under the contract number, as {program} sets out.
         {preferredFirst &&
@@ -245,7 +249,10 @@ function Hit({ h, requestId, refN }: { h: CoopHit; requestId: string; refN?: num
               </span>
             ) : h.program === "state" ? (
               <span title={`A ${h.coop} state contract${h.solicitation ? `, awarded under ${h.solicitation}` : ""}. Read from the state's public contract list.`}>
-                <Badge tone="neutral">State contract{h.solicitation ? ` · ${h.solicitation}` : ""}</Badge>
+                <Badge tone="neutral">
+                  {TRX_PROGRAM_BY_NAME[h.coop] ? "County contract" : "State contract"}
+                  {h.solicitation ? ` · ${h.solicitation}` : ""}
+                </Badge>
               </span>
             ) : h.source === "catalog" ? (
               <span title={`From ${h.coop}'s public contract directory. Terms and eligibility aren't independently verified.`}>

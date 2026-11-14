@@ -67,6 +67,8 @@ export interface CatalogContract {
     use?: string;
     /** A New York preferred source (State Finance Law § 162): approved, approved for one agency, or listed as not approved. */
     preferred?: "approved" | "agency" | "not_approved";
+    /** The county that let it (Empire Procure Connect): it may always use it; others only when open. */
+    owner?: string;
   };
   /** NIGP commodity classes and item codes: "published" from the contract's own records (NJSTART),
    * "reviewed" when the AI review chose the classes (lib/nigp.ts). */
@@ -310,7 +312,7 @@ export function catalogCoopHits(db: Db, item: string, buyer: Buyer | null, opts:
   // Access depends only on the co-op and the states, so work it out once per combination.
   const accessCache = new Map<string, ReturnType<typeof catalogAccess>>();
   const access = (c: CatalogContract) => {
-    const k = `${c.coop_id}|${c.states === "any" ? "*" : c.states.join(",")}|${(c.coop_sins ?? []).map((x) => x.code).join(",")}|${c.state_contract?.locals ?? ""}`;
+    const k = `${c.coop_id}|${c.states === "any" ? "*" : c.states.join(",")}|${(c.coop_sins ?? []).map((x) => x.code).join(",")}|${c.state_contract ? JSON.stringify([c.state_contract.locals, c.state_contract.participants, c.state_contract.use, c.state_contract.preferred, c.state_contract.owner]) : ""}`;
     let a = accessCache.get(k);
     if (!a) accessCache.set(k, (a = catalogAccess(db, buyer, c)));
     return a;

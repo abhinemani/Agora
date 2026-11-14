@@ -17,17 +17,24 @@ for (const f of readdirSync(join(ROOT, "seed/cleanup/shards")).filter((f) => f.e
   }
 
 // A fixed, evenly spaced sample, so two runs of the audit show the same rows.
+const nigpClasses: Record<string, string[]> = (() => {
+  try {
+    return JSON.parse(readFileSync(join(ROOT, "seed/cleanup/shards/nigp-classes.json"), "utf8"));
+  } catch {
+    return {};
+  }
+})();
 const sample = <T,>(xs: T[], n: number) => (xs.length <= n ? xs : Array.from({ length: n }, (_, i) => xs[Math.floor((i * xs.length) / n)]));
 
-for (const task of ["gov-match", "school-pairs", "supplier-merge", "category", "canon-rows", "product-name"]) {
+for (const task of ["gov-match", "school-pairs", "supplier-merge", "category", "canon-rows", "product-name", "nigp"]) {
   let d: Record<string, any> = {};
   try {
     d = JSON.parse(readFileSync(join(ROOT, "seed/cleanup/decisions", `${task}.json`), "utf8"));
   } catch {
     continue;
   }
-  const applied = Object.entries(d).filter(([, v]) => v.confidence !== "low" && (v.pick || v.merge?.length || v.price != null));
-  const nulls = Object.entries(d).filter(([, v]) => v.pick === null);
+  const applied = Object.entries(d).filter(([, v]) => v.confidence !== "low" && (v.pick || v.merge?.length || v.price != null || v.classes?.length));
+  const nulls = Object.entries(d).filter(([, v]) => v.pick === null || (Array.isArray(v.classes) && !v.classes.length));
   console.log(`\n=== ${task}: ${applied.length} applied, ${nulls.length} answered "none"`);
   for (const [id, v] of sample(applied, N)) {
     const it = items.get(`${task}|${id}`) ?? {};
@@ -41,6 +48,7 @@ for (const task of ["gov-match", "school-pairs", "supplier-merge", "category", "
       const names = new Map((it.suppliers ?? []).map((s: any) => [s.id, s.name]));
       console.log(`  ${v.merge.map((set: string[]) => set.map((x) => names.get(x)).join(" = ")).join(" | ")}  [${v.confidence}] ${v.reason}`);
     } else if (task === "category") console.log(`  ${it.title?.slice(0, 70)}  →  ${v.pick}  [${v.confidence}]`);
+    else if (task === "nigp") console.log(`  ${it.title?.slice(0, 60)}  →  ${v.classes.map((c: string) => `${c} ${(nigpClasses[c]?.[0] ?? "").replace(/^\d{3}-\d{2}\s+/, "").slice(0, 28)}`).join(" | ")}  [${v.confidence}]`);
     else if (task === "canon-rows") console.log(`  ${it.line?.slice(0, 80)}  →  ${v.name} | ${v.price} ${v.unit ?? ""}  [${v.confidence}]`);
     else console.log(`  ${it.variants?.slice(0, 2).join(" / ").slice(0, 80)}  →  ${v.pick}  [${v.confidence}]`);
   }

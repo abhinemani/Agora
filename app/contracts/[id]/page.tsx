@@ -196,7 +196,7 @@ function Fact({ k, v }: { k: string; v: React.ReactNode }) {
 
 function Covers({ c }: { c: ContractDetail }) {
   const [all, setAll] = useState(false);
-  if (!c.covers.length && !c.sins.length) return null;
+  if (!c.covers.length && !c.sins.length && !c.nigp) return null;
   const covers = all ? c.covers : c.covers.slice(0, 6);
   return (
     <section aria-labelledby="covers">
@@ -225,6 +225,26 @@ function Covers({ c }: { c: ContractDetail }) {
                 <span className="font-mono font-bold">{s.code}</span>
                 {s.title ? ` ${s.title}` : ""}
                 {s.open ? " · open to you" : " · federal only"}
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
+      {c.nigp && (
+        <div className="mt-4">
+          <h3 className="text-ui-xs font-bold text-ink">Commodity codes (NIGP)</h3>
+          <p className="mt-0.5 max-w-[75ch] text-ui-2xs text-base-darker">
+            {c.nigp.source === "published"
+              ? `As ${c.program} prints them on the contract's line items.`
+              : "Classes chosen by Agora's AI review from the NIGP classes in New Jersey's public records; the program doesn't publish codes. Check before relying on them."}
+          </p>
+          <ul className="mt-2 flex flex-wrap gap-1.5">
+            {(c.nigp.codes.length ? c.nigp.codes : c.nigp.classes).map((x) => (
+              <li key={x.code}>
+                <Link href={`/contracts?q=${encodeURIComponent(x.code)}`} className="inline-block rounded-sm bg-base-lighter px-2 py-1 text-ui-3xs text-base-darker no-underline hover:bg-primary-lighter" title="Every contract with this code">
+                  <span className="font-mono font-bold">{x.code}</span>
+                  {x.label ? ` ${x.label}` : ""}
+                </Link>
               </li>
             ))}
           </ul>

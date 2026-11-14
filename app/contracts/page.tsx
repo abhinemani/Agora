@@ -136,7 +136,7 @@ function Explorer() {
         <label htmlFor="contract-search" className="sr-only">
           Search contracts
         </label>
-        <input id="contract-search" type="search" value={typed} onChange={(e) => setTyped(e.target.value)} placeholder="What it covers, a supplier, or a contract number: fire apparatus, Dell, 724-23" className="min-w-0 flex-1" />
+        <input id="contract-search" type="search" value={typed} onChange={(e) => setTyped(e.target.value)} placeholder="What it covers, a supplier, a contract number or a NIGP code: fire apparatus, Dell, 724-23, 765" className="min-w-0 flex-1" />
         <button type="submit" className="inline-flex items-center rounded-md bg-primary px-5 text-ui-xs font-bold text-white hover:bg-primary-dark">
           Search
         </button>
@@ -260,6 +260,12 @@ function Row({ r }: { r: ContractRow }) {
             )}
             <span className="font-mono">{r.number}</span>
             {r.category && <span>· {r.category}</span>}
+            {r.nigp.length > 0 && (
+              <span className="font-mono" title={r.nigp_source === "published" ? "NIGP classes printed on the contract" : "NIGP classes from Agora's AI review"}>
+                · NIGP {r.nigp.slice(0, 3).join(", ")}
+                {r.nigp_source === "reviewed" ? "*" : ""}
+              </span>
+            )}
           </div>
           <div className="mt-0.5 text-body-sm font-semibold leading-snug text-ink group-hover:underline">{r.title}</div>
           <div className="mt-0.5 text-ui-2xs text-base-darker">

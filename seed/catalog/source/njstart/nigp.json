@@ -1,0 +1,3878 @@
+{
+ "source": "NIGP codes and descriptions as printed on NJSTART's public contract pages",
+ "retrieved": "2026-11-14",
+ "codes": {
+  "015-39": {
+   "description": "Paper, Chemicals, and Supplies, Coated or Treated Paper Type Copying Machines, (See 305-39 for Diazo Process Copy Machines",
+   "lines": 26,
+   "contracts": 18
+  },
+  "020-00": {
+   "description": "AGRICULTURAL EQUIPMENT, IMPLEMENTS, AND ACCESSORIES (SEE CLASS 022 FOR PARTS)",
+   "lines": 25,
+   "contracts": 9
+  },
+  "020-61": {
+   "description": "Loaders, Tractor Mounted, Farm",
+   "lines": 7,
+   "contracts": 3
+  },
+  "020-65": {
+   "description": "Mower, Steep Slope Type with Cutter Head on Telescoping Boom: Flail, Rotary, or Sickle Bar Cutter Heads, For Mounting on Tractors or Trucks (See Class 515 for Lawn Type Mowers)",
+   "lines": 14,
+   "contracts": 6
+  },
+  "020-89": {
+   "description": "Tractors, Farm, Wheel Type",
+   "lines": 2,
+   "contracts": 1
+  },
+  "022-04": {
+   "description": "Brush Chipper, Cutter and Saw Parts",
+   "lines": 4,
+   "contracts": 4
+  },
+  "031-67": {
+   "description": "HVAC Equipment, Accessories and Supplies (Not Otherwise Classified)",
+   "lines": 3,
+   "contracts": 3
+  },
+  "035-04": {
+   "description": "Aircraft Avionics, (Not Otherwise Classified): Navigation Instruments, Transponders, Global Positioning Systems, etc.",
+   "lines": 1,
+   "contracts": 1
+  },
+  "035-20": {
+   "description": "Airplanes",
+   "lines": 20,
+   "contracts": 2
+  },
+  "035-35": {
+   "description": "Engines and Parts, Helicopter",
+   "lines": 5,
+   "contracts": 2
+  },
+  "035-75": {
+   "description": "Parts (Except Engine), Helicopter",
+   "lines": 2,
+   "contracts": 1
+  },
+  "035-81": {
+   "description": "Sweepers, Runway (See 765-77 for Street Sweepers)",
+   "lines": 3,
+   "contracts": 1
+  },
+  "040-00": {
+   "description": "ANIMALS, BIRDS, MARINE LIFE, INSECTS AND POULTRY, LIVE, INCLUDING ACCESSORY ITEMS",
+   "lines": 1,
+   "contracts": 1
+  },
+  "055-13": {
+   "description": "Car Seats for Infants",
+   "lines": 18,
+   "contracts": 2
+  },
+  "055-32": {
+   "description": "Gauges, Automotive, Including Speedometers",
+   "lines": 1,
+   "contracts": 1
+  },
+  "055-78": {
+   "description": "Seats, Including Parts and Accessories, Automotive",
+   "lines": 4,
+   "contracts": 4
+  },
+  "055-79": {
+   "description": "Sirens, Horns and Back-up Alarms, Automotive",
+   "lines": 49,
+   "contracts": 15
+  },
+  "055-90": {
+   "description": "Wheelchair Lift and Accessories, Vehicle-Mounted",
+   "lines": 22,
+   "contracts": 20
+  },
+  "060-00": {
+   "description": "AUTOMOTIVE AND TRAILER EQUIPMENT AND PARTS",
+   "lines": 2,
+   "contracts": 2
+  },
+  "060-09": {
+   "description": "Batteries and Charging Stations For Electric Automobiles, Including Recycled Types",
+   "lines": 28,
+   "contracts": 3
+  },
+  "060-57": {
+   "description": "Glass and Supplies: Door, Windshield, etc., Automotive",
+   "lines": 40,
+   "contracts": 4
+  },
+  "060-66": {
+   "description": "Parts and Accessories, Automotive, Miscellaneous (Not Otherwise Classified)",
+   "lines": 152,
+   "contracts": 29
+  },
+  "060-70": {
+   "description": "Replacement Parts for Chrysler (Mopar)",
+   "lines": 1,
+   "contracts": 1
+  },
+  "060-74": {
+   "description": "Replacement Parts for other than Chrysler, Ford, General Motors, and International Harvester",
+   "lines": 3,
+   "contracts": 1
+  },
+  "060-94": {
+   "description": "Transmissions, Standard and Automatic, Including Clutch Assemblies and Parts",
+   "lines": 2,
+   "contracts": 2
+  },
+  "060-97": {
+   "description": "Windshield Wiper and Washer Assemblies, and Parts, Including Windshield Washer Fluid",
+   "lines": 3,
+   "contracts": 3
+  },
+  "065-05": {
+   "description": "Aerial Ladders and Towers, Including Buckets for Personnel",
+   "lines": 8,
+   "contracts": 4
+  },
+  "065-30": {
+   "description": "Dump Bodies, Hoist Subframes, etc.",
+   "lines": 2,
+   "contracts": 2
+  },
+  "065-67": {
+   "description": "Platform Bodies, Including Elevating Type",
+   "lines": 8,
+   "contracts": 1
+  },
+  "065-88": {
+   "description": "Trailer Bodies and Parts, Including Access Steps and Ladders",
+   "lines": 3,
+   "contracts": 2
+  },
+  "071-03": {
+   "description": "Ambulances and Rescue Vehicles (See 072-30 for Fire Protection and Crash Rescue Trucks)",
+   "lines": 4,
+   "contracts": 2
+  },
+  "071-04": {
+   "description": "Automobiles",
+   "lines": 14,
+   "contracts": 2
+  },
+  "071-05": {
+   "description": "Automobiles, Police and Security Equipped",
+   "lines": 23,
+   "contracts": 5
+  },
+  "071-80": {
+   "description": "SUV Type Vehicles, Including Carryalls",
+   "lines": 33,
+   "contracts": 9
+  },
+  "071-90": {
+   "description": "Vans, Cargo",
+   "lines": 38,
+   "contracts": 5
+  },
+  "071-92": {
+   "description": "Vans, Passenger, Regular and Handicapped Equipped",
+   "lines": 23,
+   "contracts": 3
+  },
+  "072-00": {
+   "description": "TRUCKS, INCLUDING, DIESEL, GASOLINE, ELECTRIC, HYBRID, AND ALTERNATIVE FUEL UNITS",
+   "lines": 34,
+   "contracts": 10
+  },
+  "072-01": {
+   "description": "Class 1 Trucks (6,000 lb. GVWR or less)",
+   "lines": 30,
+   "contracts": 4
+  },
+  "072-02": {
+   "description": "Class 2 Trucks (6,001 - 10,000 lb. GVWR)",
+   "lines": 36,
+   "contracts": 5
+  },
+  "072-03": {
+   "description": "Class 3 Trucks (10,001 - 14,000 lb. GVWR)",
+   "lines": 33,
+   "contracts": 4
+  },
+  "072-04": {
+   "description": "Class 4 Trucks (14,001 - 16,000 lb. GVWR)",
+   "lines": 18,
+   "contracts": 2
+  },
+  "072-05": {
+   "description": "Class 5 Trucks (16,001 - 19,500 lb. GVWR)",
+   "lines": 29,
+   "contracts": 4
+  },
+  "072-06": {
+   "description": "Class 6 Trucks (19,501 - 26,000 lb. GVWR)",
+   "lines": 19,
+   "contracts": 2
+  },
+  "072-08": {
+   "description": "Class 8 Trucks (33,001 lb. GVWR and Over)",
+   "lines": 12,
+   "contracts": 2
+  },
+  "073-08": {
+   "description": "Trailers, With Enclosed Refrigeration Unit",
+   "lines": 1,
+   "contracts": 1
+  },
+  "073-10": {
+   "description": "Trailers, Semi, Enclosed",
+   "lines": 1,
+   "contracts": 1
+  },
+  "075-44": {
+   "description": "Lifts and Hoists, Floor Type: Electric, Hydraulic, or Pneumatic",
+   "lines": 15,
+   "contracts": 5
+  },
+  "105-60": {
+   "description": "Roller and Needle Bearings and Parts, Straight",
+   "lines": 2,
+   "contracts": 2
+  },
+  "120-83": {
+   "description": "Scuba and Skin Diving Equipment",
+   "lines": 1,
+   "contracts": 1
+  },
+  "150-55": {
+   "description": "Doors, Overhead, Garage, etc. (See Class 450 for Hardware)",
+   "lines": 27,
+   "contracts": 4
+  },
+  "155-40": {
+   "description": "Gazebos, Kiosks, Including Informational Type and Pavilions",
+   "lines": 5,
+   "contracts": 4
+  },
+  "155-48": {
+   "description": "Lifeguard, Umpire and Referee Stands",
+   "lines": 1,
+   "contracts": 1
+  },
+  "155-70": {
+   "description": "Portable Toilets",
+   "lines": 9,
+   "contracts": 1
+  },
+  "155-85": {
+   "description": "Structures, Shade, Fabric Covered, Patio Areas, Play Areas, etc.",
+   "lines": 28,
+   "contracts": 14
+  },
+  "175-42": {
+   "description": "Glassware, Laboratory, Stock Only",
+   "lines": 1,
+   "contracts": 1
+  },
+  "192-46": {
+   "description": "Ice and Snow Removal Chemicals (See 775-45 for Road Salt)",
+   "lines": 27,
+   "contracts": 3
+  },
+  "193-84": {
+   "description": "Radioimmunoassay Kits",
+   "lines": 1,
+   "contracts": 1
+  },
+  "200-19": {
+   "description": "Disposable Clothing (See Class 475 for Hospital Type)",
+   "lines": 2,
+   "contracts": 1
+  },
+  "200-38": {
+   "description": "Insulated Clothing",
+   "lines": 1,
+   "contracts": 1
+  },
+  "200-49": {
+   "description": "Inmate Clothing",
+   "lines": 1,
+   "contracts": 1
+  },
+  "200-85": {
+   "description": "Uniforms, Blended Fabric",
+   "lines": 86,
+   "contracts": 11
+  },
+  "201-65": {
+   "description": "Rainwear: Raincoats, Hats, Slicker Suits, Storm Suits, Umbrellas, etc.",
+   "lines": 10,
+   "contracts": 4
+  },
+  "204-00": {
+   "description": "COMPUTER HARDWARE AND PERIPHERALS FOR MICROCOMPUTERS",
+   "lines": 14,
+   "contracts": 14
+  },
+  "204-22": {
+   "description": "Computer Kiosk: Informational, Touchscreen or Keyboard Input",
+   "lines": 1,
+   "contracts": 1
+  },
+  "204-46": {
+   "description": "Imaging Systems, Microcomputer: Digital Imaging Network (DIN), Technology, and Digital Imaging Communications in Medicine (DICOM)",
+   "lines": 11,
+   "contracts": 2
+  },
+  "204-64": {
+   "description": "Network Components: Adapter Cards, Bridges, Connectors, Expansion Modules/Ports, Firewall Devices, Hubs, Line Drivers, MSAUs, Routers, Switches, Transceivers, etc.",
+   "lines": 1,
+   "contracts": 1
+  },
+  "204-96": {
+   "description": "Workstations: SPARC, RISC, etc., For Use With CAD and CAM, etc.",
+   "lines": 9,
+   "contracts": 1
+  },
+  "206-54": {
+   "description": "Geographic Information Systems (GIS)",
+   "lines": 29,
+   "contracts": 15
+  },
+  "206-64": {
+   "description": "Network Components: Adapter Cards, Bridges, Connectors, Expansion Modules and Ports, Hubs, Line Drivers, MSAUs, Routers, Switches, Transceivers, etc.",
+   "lines": 30,
+   "contracts": 5
+  },
+  "208-11": {
+   "description": "Application Software, (Not Otherwise Classified), Microcomputer",
+   "lines": 6,
+   "contracts": 1
+  },
+  "208-32": {
+   "description": "Customer Relationship Management Software (CRM), Microcomputer",
+   "lines": 1,
+   "contracts": 1
+  },
+  "208-80": {
+   "description": "Software, Microcomputer (Not Otherwise Classified)",
+   "lines": 21,
+   "contracts": 4
+  },
+  "208-88": {
+   "description": "Software, Monitoring, Microcomputer",
+   "lines": 13,
+   "contracts": 13
+  },
+  "209-13": {
+   "description": "Application Software, Servers",
+   "lines": 10,
+   "contracts": 1
+  },
+  "209-49": {
+   "description": "Geographic Information System (GIS) Software, Mainframes and Servers",
+   "lines": 1,
+   "contracts": 1
+  },
+  "209-54": {
+   "description": "Internet, Web Site and Mobile Application Software, Mainframes and Servers",
+   "lines": 2,
+   "contracts": 1
+  },
+  "209-72": {
+   "description": "Procurement Software, Mainframes and Servers",
+   "lines": 10,
+   "contracts": 1
+  },
+  "210-07": {
+   "description": "Basins, Catch, Including Part and Accessories",
+   "lines": 1,
+   "contracts": 1
+  },
+  "210-14": {
+   "description": "Bollard Post, Steel, Removable",
+   "lines": 5,
+   "contracts": 4
+  },
+  "232-41": {
+   "description": "Kits and Supplies: Crafts, Miscellaneous",
+   "lines": 2,
+   "contracts": 2
+  },
+  "255-20": {
+   "description": "Cigarette Stamp, Numbered",
+   "lines": 1,
+   "contracts": 1
+  },
+  "257-72": {
+   "description": "Rescue and Search Equipment, CBRNE",
+   "lines": 19,
+   "contracts": 10
+  },
+  "269-36": {
+   "description": "Diagnostic Agents",
+   "lines": 10,
+   "contracts": 1
+  },
+  "269-72": {
+   "description": "Miscellaneous Drugs and Pharmaceuticals (Not Otherwise Classified)",
+   "lines": 1,
+   "contracts": 1
+  },
+  "271-28": {
+   "description": "Diets, Complete, Liquid; and Liquid Food Supplements, Oral and Tube Fed",
+   "lines": 8,
+   "contracts": 2
+  },
+  "280-00": {
+   "description": "ELECTRICAL CABLE AND WIRE, NOT ELECTRONIC",
+   "lines": 3,
+   "contracts": 2
+  },
+  "280-29": {
+   "description": "Communication and Telecommunication Cable and Wire, Including Fiber Cable",
+   "lines": 4,
+   "contracts": 3
+  },
+  "285-00": {
+   "description": "ELECTRICAL EQUIPMENT AND SUPPLIES, EXCEPT CABLE AND WIRE",
+   "lines": 32,
+   "contracts": 5
+  },
+  "285-02": {
+   "description": "Analyzer, Electric Power Demand",
+   "lines": 2,
+   "contracts": 1
+  },
+  "285-10": {
+   "description": "Cable Accessories: Clamps, Clasps, Clips, Closures, Reels, Splices, Wrappings, etc.",
+   "lines": 3,
+   "contracts": 2
+  },
+  "285-50": {
+   "description": "Lamps, Fluorescent, Incandescent, Mercury Vapor, Quartz, Sodium Vapor. LED and Compact (CFL)",
+   "lines": 4,
+   "contracts": 4
+  },
+  "285-76": {
+   "description": "Street and Highway Lighting Luminaires, Accessories and Parts",
+   "lines": 1,
+   "contracts": 1
+  },
+  "285-80": {
+   "description": "Street Light Poles and Standards",
+   "lines": 3,
+   "contracts": 1
+  },
+  "285-95": {
+   "description": "Wiring Devices: Adapters, Caps, Connectors, Extension Cords, Fluorescent and HP Starters, Outlets, Plates and Covers, Plugs, Receptacles, Safety Cord Lock, Switches, Terminals, etc. (Incl. Recycled Electrical Products, Supplies)",
+   "lines": 4,
+   "contracts": 3
+  },
+  "287-96": {
+   "description": "Wire and Cable, Electronic: Audio, Coaxial, Hook-Up, Lead-In, etc.",
+   "lines": 2,
+   "contracts": 1
+  },
+  "290-82": {
+   "description": "Solar Energy Systems, Complete",
+   "lines": 1,
+   "contracts": 1
+  },
+  "295-70": {
+   "description": "Elevators, Passenger",
+   "lines": 3,
+   "contracts": 3
+  },
+  "310-30": {
+   "description": "Envelopes, Plain, Stock Sizes",
+   "lines": 10,
+   "contracts": 1
+  },
+  "320-36": {
+   "description": "Fasteners (Not Otherwise Classified)",
+   "lines": 3,
+   "contracts": 3
+  },
+  "325-28": {
+   "description": "Fish Food, Including Live",
+   "lines": 9,
+   "contracts": 1
+  },
+  "330-13": {
+   "description": "Fencing, Chain Link, Including Fabric, Gates, Panels, Posts and Fittings",
+   "lines": 20,
+   "contracts": 2
+  },
+  "340-00": {
+   "description": "FIRE PROTECTION EQUIPMENT AND SUPPLIES",
+   "lines": 105,
+   "contracts": 26
+  },
+  "340-07": {
+   "description": "Breathing Equipment for Firemen, Including Mobile Air Filler Stations",
+   "lines": 6,
+   "contracts": 6
+  },
+  "340-16": {
+   "description": "Fire Alarm Systems, Power Sirens, and Controls",
+   "lines": 4,
+   "contracts": 2
+  },
+  "340-34": {
+   "description": "Fire Protection Clothing: Turnout Coats, Bunker Pants, Hoods, Gloves, etc., (See 345-56 for Fire Helmets)",
+   "lines": 47,
+   "contracts": 17
+  },
+  "340-72": {
+   "description": "Rescue Equipment, Supplies and Accessories Including Confined Space Hard Line Communications Systems, Rescue Nets, Power Extractors (Jaws of Life), Rope and Life Harnesses, etc.",
+   "lines": 4,
+   "contracts": 3
+  },
+  "345-48": {
+   "description": "Gloves, Safety: Electrician's, Lineman's, etc., Including Sleeves",
+   "lines": 2,
+   "contracts": 2
+  },
+  "345-56": {
+   "description": "Hats and Helmets, Safety, Including Fire Helmets",
+   "lines": 15,
+   "contracts": 13
+  },
+  "350-30": {
+   "description": "Flag Poles, All Types",
+   "lines": 8,
+   "contracts": 5
+  },
+  "360-10": {
+   "description": "Carpets and Rugs: Cotton, Synthetic, Wool, etc.",
+   "lines": 2,
+   "contracts": 2
+  },
+  "360-20": {
+   "description": "Floor Covering, Seamless, All Types",
+   "lines": 2,
+   "contracts": 2
+  },
+  "360-22": {
+   "description": "Installation Supplies: Adhesive Edge Strip, Seam Tape, Tack Strips, etc.",
+   "lines": 3,
+   "contracts": 2
+  },
+  "360-89": {
+   "description": "Tools and Equipment, Floor Installation",
+   "lines": 2,
+   "contracts": 2
+  },
+  "370-15": {
+   "description": "Cutters and Shredders",
+   "lines": 7,
+   "contracts": 7
+  },
+  "375-15": {
+   "description": "Bread, Rolls, etc., Including Brown and Serve Items",
+   "lines": 4,
+   "contracts": 2
+  },
+  "380-75": {
+   "description": "Milk, All Types",
+   "lines": 20,
+   "contracts": 2
+  },
+  "385-30": {
+   "description": "Eggs and Egg Mixes",
+   "lines": 3,
+   "contracts": 1
+  },
+  "385-42": {
+   "description": "Entrees, Meat, Including Beef and Pork",
+   "lines": 12,
+   "contracts": 6
+  },
+  "385-44": {
+   "description": "Entrees, Poultry",
+   "lines": 21,
+   "contracts": 8
+  },
+  "385-47": {
+   "description": "Entrees, Specialty, Including Corn Dogs, Lasagna, Macaroni/Cheese, Mexican Food, Pasta, etc.",
+   "lines": 16,
+   "contracts": 4
+  },
+  "385-48": {
+   "description": "Fruits, Frozen",
+   "lines": 6,
+   "contracts": 3
+  },
+  "385-54": {
+   "description": "Juices",
+   "lines": 6,
+   "contracts": 1
+  },
+  "385-56": {
+   "description": "Pancakes, Waffles and French Toast",
+   "lines": 4,
+   "contracts": 3
+  },
+  "385-57": {
+   "description": "Pizzas",
+   "lines": 1,
+   "contracts": 1
+  },
+  "385-67": {
+   "description": "Seafood, Frozen, Not Entrees",
+   "lines": 5,
+   "contracts": 1
+  },
+  "385-96": {
+   "description": "Vegetables, Frozen",
+   "lines": 19,
+   "contracts": 3
+  },
+  "390-21": {
+   "description": "Eggs, Fresh",
+   "lines": 1,
+   "contracts": 1
+  },
+  "390-28": {
+   "description": "Fruits, Fresh",
+   "lines": 19,
+   "contracts": 4
+  },
+  "390-49": {
+   "description": "Meat: Cured, Fresh, and Frozen",
+   "lines": 4,
+   "contracts": 4
+  },
+  "390-84": {
+   "description": "Vegetables, Fresh",
+   "lines": 17,
+   "contracts": 4
+  },
+  "390-91": {
+   "description": "Water, Bottled, Drinking, Including Distilled, Mineral, Sparkling and Spring",
+   "lines": 1,
+   "contracts": 1
+  },
+  "393-00": {
+   "description": "FOODS: STAPLE GROCERY AND GROCER'S MISCELLANEOUS ITEMS",
+   "lines": 21,
+   "contracts": 5
+  },
+  "393-34": {
+   "description": "Candy, Confectionery and Marshmallows, Including After Dinner Mints or Savories",
+   "lines": 1,
+   "contracts": 1
+  },
+  "393-35": {
+   "description": "Cereals, Ready-to-Eat",
+   "lines": 6,
+   "contracts": 1
+  },
+  "393-36": {
+   "description": "Cereals, Uncooked",
+   "lines": 3,
+   "contracts": 1
+  },
+  "393-41": {
+   "description": "Coffee, Whole Bean and Ground",
+   "lines": 2,
+   "contracts": 1
+  },
+  "393-42": {
+   "description": "Cornstarch, Cooking",
+   "lines": 1,
+   "contracts": 1
+  },
+  "393-46": {
+   "description": "Desserts: Packaged, Canned, and Mixes, Including Cake Mixes, Gelatins, Icings, Pie Fillings, etc.)",
+   "lines": 9,
+   "contracts": 1
+  },
+  "393-48": {
+   "description": "Dressings, Condiments, Sauces, and Gravies",
+   "lines": 25,
+   "contracts": 8
+  },
+  "393-51": {
+   "description": "Flour and Flour Binder",
+   "lines": 2,
+   "contracts": 2
+  },
+  "393-54": {
+   "description": "Fruits, Canned, Processed and Preserved, Including Fruit Sauces and Puree and Non GMO",
+   "lines": 1,
+   "contracts": 1
+  },
+  "393-59": {
+   "description": "Jams, Jellies, and Preserves",
+   "lines": 2,
+   "contracts": 2
+  },
+  "393-60": {
+   "description": "Juices, Fruit and Vegetable, Not Frozen",
+   "lines": 4,
+   "contracts": 1
+  },
+  "393-61": {
+   "description": "Pasta, Including Macaroni, Noodles, and Spaghetti",
+   "lines": 1,
+   "contracts": 1
+  },
+  "393-68": {
+   "description": "Peanut Butter and Other Nut Butter",
+   "lines": 2,
+   "contracts": 2
+  },
+  "393-69": {
+   "description": "Pickles, Relishes, and Olives, Including Pickled Foods",
+   "lines": 2,
+   "contracts": 1
+  },
+  "393-72": {
+   "description": "Rice",
+   "lines": 1,
+   "contracts": 1
+  },
+  "393-75": {
+   "description": "Shortening and Oil, Vegetable, Cooking Oil, Including Shortening Filter Powder",
+   "lines": 2,
+   "contracts": 1
+  },
+  "393-77": {
+   "description": "Soft Drinks",
+   "lines": 7,
+   "contracts": 1
+  },
+  "393-78": {
+   "description": "Soup, Soup Base, and Entree Mixes, Canned and Dehydrated (Incl. Bouillon)",
+   "lines": 5,
+   "contracts": 1
+  },
+  "393-80": {
+   "description": "Spices, Herbs, Seasonings, Starches, Including Seasoned Salt and Pepper",
+   "lines": 7,
+   "contracts": 3
+  },
+  "393-81": {
+   "description": "Sugar and Sweeteners",
+   "lines": 5,
+   "contracts": 4
+  },
+  "393-82": {
+   "description": "Syrups and Molasses, Except Fountain",
+   "lines": 1,
+   "contracts": 1
+  },
+  "393-84": {
+   "description": "Tea (Not Instant)",
+   "lines": 2,
+   "contracts": 1
+  },
+  "393-86": {
+   "description": "Vegetables, Canned, Processed and Preserved, Including Canned Salads, Sauces and Puree",
+   "lines": 4,
+   "contracts": 3
+  },
+  "393-87": {
+   "description": "Vegetables, Dried, Beans, Peas, etc.",
+   "lines": 2,
+   "contracts": 1
+  },
+  "393-88": {
+   "description": "Vinegar",
+   "lines": 2,
+   "contracts": 2
+  },
+  "395-15": {
+   "description": "Binders and Documentation Folders For Continuous Forms, Including Self-Mailers",
+   "lines": 3,
+   "contracts": 1
+  },
+  "395-70": {
+   "description": "Snap-Out Forms, Carbon Interleaved",
+   "lines": 4,
+   "contracts": 1
+  },
+  "400-35": {
+   "description": "Castings, Gray Iron",
+   "lines": 10,
+   "contracts": 1
+  },
+  "405-00": {
+   "description": "FUEL, OIL, GREASE AND LUBRICANTS",
+   "lines": 7,
+   "contracts": 3
+  },
+  "405-02": {
+   "description": "Alternative Fuels (Not Otherwise Classified)",
+   "lines": 91,
+   "contracts": 10
+  },
+  "405-03": {
+   "description": "Butane and Propane, Including Liquefied Petroleum Gas",
+   "lines": 9,
+   "contracts": 1
+  },
+  "405-12": {
+   "description": "Fuel Oil, Heating (Use 405-02 for Biodiesel)",
+   "lines": 74,
+   "contracts": 10
+  },
+  "405-13": {
+   "description": "Gas, Natural, Including Compressed Natural Gas (CNG)",
+   "lines": 20,
+   "contracts": 2
+  },
+  "405-15": {
+   "description": "Gasoline, Automotive",
+   "lines": 76,
+   "contracts": 10
+  },
+  "405-24": {
+   "description": "Grease, Lubrication Type",
+   "lines": 2,
+   "contracts": 1
+  },
+  "405-36": {
+   "description": "Oil, Automotive Transmission",
+   "lines": 1,
+   "contracts": 1
+  },
+  "405-49": {
+   "description": "Oil, Gear",
+   "lines": 1,
+   "contracts": 1
+  },
+  "405-51": {
+   "description": "Oil and Fluid, Hydraulic",
+   "lines": 1,
+   "contracts": 1
+  },
+  "405-82": {
+   "description": "Oil, Two-Cycle Engine",
+   "lines": 6,
+   "contracts": 2
+  },
+  "410-34": {
+   "description": "Furniture, Hospital, Not Specialized",
+   "lines": 5,
+   "contracts": 5
+  },
+  "420-04": {
+   "description": "Auditorium, Stadium, Team Seating Furniture and Bleachers",
+   "lines": 15,
+   "contracts": 9
+  },
+  "420-16": {
+   "description": "Dormitory Furniture, Metal: Wardrobes, Beds, Bunkbeds, Desks, etc.",
+   "lines": 2,
+   "contracts": 2
+  },
+  "420-44": {
+   "description": "Institutional Furniture, All Types",
+   "lines": 3,
+   "contracts": 2
+  },
+  "425-00": {
+   "description": "FURNITURE: OFFICE",
+   "lines": 8,
+   "contracts": 5
+  },
+  "425-03": {
+   "description": "Bookcases and Bookshelves, Metal and Wood",
+   "lines": 27,
+   "contracts": 24
+  },
+  "425-06": {
+   "description": "Chairs, Metal",
+   "lines": 23,
+   "contracts": 23
+  },
+  "425-18": {
+   "description": "Data Processing Office Furniture, Wood, (See Item 87 For Not Storage Cabinets)",
+   "lines": 1,
+   "contracts": 1
+  },
+  "425-20": {
+   "description": "Desks and Tables, Metal",
+   "lines": 24,
+   "contracts": 24
+  },
+  "425-40": {
+   "description": "Filing Cabinets, Metal: Card, Jumbo, Lateral, Legal, and Letter",
+   "lines": 24,
+   "contracts": 24
+  },
+  "425-42": {
+   "description": "Filing Systems, Mobile, High Density, Electrical and Mechanical",
+   "lines": 22,
+   "contracts": 22
+  },
+  "425-80": {
+   "description": "Shelving, Metal, Not Library or Shop",
+   "lines": 1,
+   "contracts": 1
+  },
+  "425-94": {
+   "description": "Work Stations, Modular, Systems Furniture",
+   "lines": 96,
+   "contracts": 28
+  },
+  "430-48": {
+   "description": "Medical Gases, Anesthesia and Respiration Therapy: Carbon Dioxide, Cyclopropane, Nitrous Oxide, Pure Oxygen, etc.",
+   "lines": 18,
+   "contracts": 2
+  },
+  "435-00": {
+   "description": "GERMICIDES, CLEANERS, AND RELATED SANITATION PRODUCTS FOR HEALTH CARE PERSONNEL",
+   "lines": 3,
+   "contracts": 3
+  },
+  "445-00": {
+   "description": "HAND TOOLS, POWERED AND NON-POWERED, INCLUDING ACCESSORIES AND SUPPLIES",
+   "lines": 3,
+   "contracts": 3
+  },
+  "445-39": {
+   "description": "Hand Tools (Not Otherwise Classified)",
+   "lines": 3,
+   "contracts": 3
+  },
+  "450-06": {
+   "description": "Batteries, Dry Cell, Except Communications Radio and Electronic",
+   "lines": 3,
+   "contracts": 3
+  },
+  "450-41": {
+   "description": "Hardware and Related Items (Not Otherwise Classified)",
+   "lines": 5,
+   "contracts": 5
+  },
+  "450-55": {
+   "description": "Locks, Key Blanks, and Locksmith Tools, Including Time Locks",
+   "lines": 35,
+   "contracts": 5
+  },
+  "460-45": {
+   "description": "Hydraulic Hoses and Fittings (See 285-30 for Dielectric Hose and Fittings)",
+   "lines": 5,
+   "contracts": 4
+  },
+  "465-48": {
+   "description": "Hospital and Surgical Equipment and Accessories (Not Otherwise Classified)",
+   "lines": 14,
+   "contracts": 6
+  },
+  "475-54": {
+   "description": "Medical Documentation Forms, Charts, Labels, etc.",
+   "lines": 1,
+   "contracts": 1
+  },
+  "485-65": {
+   "description": "Janitorial Equipment and Supplies (Not Otherwise Classified)",
+   "lines": 1,
+   "contracts": 1
+  },
+  "485-80": {
+   "description": "Sand Urns, Filling Materials, Smoking Stands, Wall Mounted Ashtrays, and Cuspidors",
+   "lines": 22,
+   "contracts": 11
+  },
+  "485-94": {
+   "description": "Waste Receptacles and Dust Pans",
+   "lines": 2,
+   "contracts": 2
+  },
+  "490-43": {
+   "description": "Laboratory and Scientific Equipment and Supplies (Not Otherwise Classified)",
+   "lines": 92,
+   "contracts": 21
+  },
+  "490-90": {
+   "description": "Testing Instruments, Laboratory, (Not Otherwise Classified)",
+   "lines": 2,
+   "contracts": 1
+  },
+  "493-00": {
+   "description": "LABORATORY EQUIPMENT, ACCESSORIES, AND SUPPLIES: BIOCHEMISTRY, CHEMISTRY, ENVIRONMENTAL SCIENCE, ETC.",
+   "lines": 9,
+   "contracts": 8
+  },
+  "493-04": {
+   "description": "Air Quality Monitoring Equipment and Accessories, Laboratory, Including Ozone Type",
+   "lines": 25,
+   "contracts": 8
+  },
+  "493-96": {
+   "description": "Water Quality Monitoring Equipment, Laboratory: BOD Analyzers, Turbidimeters, Well Samplers, etc.",
+   "lines": 12,
+   "contracts": 3
+  },
+  "515-10": {
+   "description": "Edgers, Trimmers, and Weed Cutters",
+   "lines": 2,
+   "contracts": 2
+  },
+  "515-15": {
+   "description": "Engines, Motors, and Parts, For Lawn Equipment",
+   "lines": 5,
+   "contracts": 3
+  },
+  "515-45": {
+   "description": "Lawn Mowers, Power, Heavy Duty, Rotary Type, Including Self-Propelled Types, (See Class 020 For Highway Type)",
+   "lines": 8,
+   "contracts": 2
+  },
+  "525-00": {
+   "description": "LIBRARY AND ARCHIVAL EQUIPMENT, MACHINES, AND SUPPLIES",
+   "lines": 4,
+   "contracts": 3
+  },
+  "525-80": {
+   "description": "Library Supplies, Miscellaneous",
+   "lines": 12,
+   "contracts": 7
+  },
+  "545-65": {
+   "description": "Salt Brine Production Equipment",
+   "lines": 17,
+   "contracts": 2
+  },
+  "550-20": {
+   "description": "Flares and Fuses",
+   "lines": 1,
+   "contracts": 1
+  },
+  "550-31": {
+   "description": "Markers, Traffic, Concrete",
+   "lines": 1,
+   "contracts": 1
+  },
+  "550-41": {
+   "description": "Posts, Flexible, For Delineator Markers",
+   "lines": 9,
+   "contracts": 1
+  },
+  "550-42": {
+   "description": "Safety Barriers, Traffic, Mobile: Energy Absorption Systems, Impact Attenuators, Crash Barriers, etc.",
+   "lines": 18,
+   "contracts": 2
+  },
+  "550-44": {
+   "description": "Sheeting, Reflectorized, For License Plates",
+   "lines": 1,
+   "contracts": 1
+  },
+  "550-45": {
+   "description": "Sheeting, Reflectorized, General, (See 801-49 for Reflective Sign Material)",
+   "lines": 10,
+   "contracts": 2
+  },
+  "550-80": {
+   "description": "Traffic Controls and Equipment, Electric Systems",
+   "lines": 19,
+   "contracts": 3
+  },
+  "550-85": {
+   "description": "Traffic Signal Poles, Standards, and Brackets",
+   "lines": 51,
+   "contracts": 7
+  },
+  "550-89": {
+   "description": "Traffic Signals and Equipment, Electric Parts",
+   "lines": 27,
+   "contracts": 3
+  },
+  "550-96": {
+   "description": "Warning Lights, Flashers, and Flashing Arrow Boards (See Class 285-76 for Streetlights and Standards)",
+   "lines": 1,
+   "contracts": 1
+  },
+  "557-62": {
+   "description": "Signage, Advertising Type, Interior and Exterior",
+   "lines": 5,
+   "contracts": 1
+  },
+  "560-00": {
+   "description": "MATERIAL HANDLING, CONVEYORS, STORAGE EQUIPMENT AND ACCESSORIES",
+   "lines": 7,
+   "contracts": 1
+  },
+  "560-78": {
+   "description": "Trucks, Pallet, Hand Operated and Powered",
+   "lines": 4,
+   "contracts": 1
+  },
+  "560-83": {
+   "description": "Warehouse Equipment, Including Parts and Accessories, (Not Otherwise Classified)",
+   "lines": 3,
+   "contracts": 3
+  },
+  "570-96": {
+   "description": "Recycled Metals and Related Items",
+   "lines": 7,
+   "contracts": 1
+  },
+  "578-76": {
+   "description": "Robots, Educational, Scientific Applications, etc.",
+   "lines": 2,
+   "contracts": 1
+  },
+  "590-00": {
+   "description": "NOTIONS AND RELATED SEWING ACCESSORIES AND SUPPLIES",
+   "lines": 3,
+   "contracts": 3
+  },
+  "595-40": {
+   "description": "Nursery, Greenhouse and Floral Supplies: Labels, Planters, Pots, Tags, Trellises, etc.",
+   "lines": 1,
+   "contracts": 1
+  },
+  "600-00": {
+   "description": "OFFICE MACHINES, EQUIPMENT, AND ACCESSORIES",
+   "lines": 7,
+   "contracts": 7
+  },
+  "600-38": {
+   "description": "Copy Machines, Bond, Plain Paper Type Including Parts and Accessories",
+   "lines": 73,
+   "contracts": 19
+  },
+  "600-59": {
+   "description": "Duplicating Machines and Accessories, Spirit Type",
+   "lines": 1,
+   "contracts": 1
+  },
+  "600-72": {
+   "description": "Multi-Function Office Machines, Combination of Fax-Copier-Scanner-Printer, etc.",
+   "lines": 26,
+   "contracts": 13
+  },
+  "615-33": {
+   "description": "Desk Accessories: Alphabetizers, Cash Boxes, Desk Files, File Card Cabinets, Letter Sorters, Message Racks, etc. (See 620-10 for Desk Sets)",
+   "lines": 2,
+   "contracts": 2
+  },
+  "640-00": {
+   "description": "PAPER AND PLASTIC PRODUCTS, DISPOSABLE",
+   "lines": 8,
+   "contracts": 3
+  },
+  "640-27": {
+   "description": "Foil Containers and Bags",
+   "lines": 1,
+   "contracts": 1
+  },
+  "640-50": {
+   "description": "Paper Products: Cups, Doilies, Napkins, Plates, Straws, Facial Tissues, Other Than Hospital",
+   "lines": 3,
+   "contracts": 3
+  },
+  "640-60": {
+   "description": "Plastic and Styrofoam Products: Cups, Forks, Plastic Coated Dishes, Plastic Food Wrap, Cooking Bags, Sandwich Bags, Spoons, Straws, Doilies, etc.",
+   "lines": 14,
+   "contracts": 3
+  },
+  "640-80": {
+   "description": "Waxed Paper, Aluminum Foil and Cellophane",
+   "lines": 1,
+   "contracts": 1
+  },
+  "645-21": {
+   "description": "Bond Paper, Including Recycled",
+   "lines": 6,
+   "contracts": 1
+  },
+  "650-06": {
+   "description": "Benches, Park, Including Bus Stop Benches",
+   "lines": 34,
+   "contracts": 18
+  },
+  "650-10": {
+   "description": "Bicycle Racks",
+   "lines": 12,
+   "contracts": 10
+  },
+  "650-18": {
+   "description": "Combination Sets, Playground",
+   "lines": 17,
+   "contracts": 6
+  },
+  "650-23": {
+   "description": "Golf Course Maintenance Tools and Equipment (See Class 515 For Lawn Mowers)",
+   "lines": 1,
+   "contracts": 1
+  },
+  "650-24": {
+   "description": "Grill and Park Stoves, Outdoor",
+   "lines": 4,
+   "contracts": 4
+  },
+  "650-38": {
+   "description": "Playground Equipment, (Not Otherwise Classified), (See 420-04 for Bleachers)",
+   "lines": 37,
+   "contracts": 24
+  },
+  "650-50": {
+   "description": "Safety Surfaces, Playground",
+   "lines": 11,
+   "contracts": 6
+  },
+  "650-62": {
+   "description": "Sports Field Maintenance Equipment",
+   "lines": 18,
+   "contracts": 8
+  },
+  "650-75": {
+   "description": "Water Park Equipment: Slides, Splash Pads, Aqua Climb",
+   "lines": 6,
+   "contracts": 4
+  },
+  "650-78": {
+   "description": "Umbrellas, Lawn and Picnic Type",
+   "lines": 2,
+   "contracts": 2
+  },
+  "652-29": {
+   "description": "Cosmetics and Skin Care: Colognes, Creams, Lipsticks, Lotions, Perfumes, Powders, Soaps w/Lotion, Suncreeen, etc.",
+   "lines": 10,
+   "contracts": 1
+  },
+  "655-40": {
+   "description": "Cameras, Video, Portable, Body and Dash Cams",
+   "lines": 18,
+   "contracts": 5
+  },
+  "655-41": {
+   "description": "Chemicals, Photographic",
+   "lines": 1,
+   "contracts": 1
+  },
+  "665-24": {
+   "description": "Bags and Liners, Plastic: Garbage Can Liners, Janitor Cart Liners, Linen Hamper Liners, Litter Bags, Polyethylene Bags, etc., Including Biodegradable",
+   "lines": 8,
+   "contracts": 3
+  },
+  "665-83": {
+   "description": "Stretch Film and Wrapping Equipment",
+   "lines": 1,
+   "contracts": 1
+  },
+  "670-00": {
+   "description": "PLUMBING EQUIPMENT, FIXTURES, AND SUPPLIES",
+   "lines": 30,
+   "contracts": 3
+  },
+  "670-57": {
+   "description": "Plumbing Equipment, Accessories and Supplies (Not Otherwise Classified)",
+   "lines": 3,
+   "contracts": 3
+  },
+  "675-00": {
+   "description": "PESTICIDES AND CHEMICALS: AGRICULTURAL AND INDUSTRIAL",
+   "lines": 5,
+   "contracts": 1
+  },
+  "675-54": {
+   "description": "Pesticides",
+   "lines": 26,
+   "contracts": 4
+  },
+  "680-02": {
+   "description": "Access Control Systems and Security Systems",
+   "lines": 4,
+   "contracts": 4
+  },
+  "680-04": {
+   "description": "Ammunition",
+   "lines": 8,
+   "contracts": 2
+  },
+  "680-08": {
+   "description": "Police Protection Equipment, Body Armor and Riot Shields and Supplies",
+   "lines": 5,
+   "contracts": 5
+  },
+  "680-12": {
+   "description": "Belts, Cases, Holsters, Scabbards, etc.",
+   "lines": 6,
+   "contracts": 5
+  },
+  "680-24": {
+   "description": "Breath Alcohol Testing Instruments and Supplies",
+   "lines": 1,
+   "contracts": 1
+  },
+  "680-41": {
+   "description": "Crime Detection Equipment and Supplies",
+   "lines": 36,
+   "contracts": 6
+  },
+  "680-50": {
+   "description": "Guns, Nonlethal, Including Stun, Taser Weapons, (See 680-54 for EMD Weapons)",
+   "lines": 6,
+   "contracts": 3
+  },
+  "680-52": {
+   "description": "Guns, Pistols, Rifles, and Shotguns, Including Parts and Accessories, (See 680-86 for Scopes)",
+   "lines": 37,
+   "contracts": 7
+  },
+  "680-71": {
+   "description": "Inmate Tracking Devices, Electronic, Wrist and Leg Bands, etc.",
+   "lines": 1,
+   "contracts": 1
+  },
+  "680-77": {
+   "description": "Radar Instruments, Traffic Enforcement Type (Including Laser Speed Measuring, Ranging Devices, Radar Instruments Equipped w/Cameras and Lidar Equipment (Laser)",
+   "lines": 13,
+   "contracts": 2
+  },
+  "690-34": {
+   "description": "Converters and Inverters, Power",
+   "lines": 1,
+   "contracts": 1
+  },
+  "720-36": {
+   "description": "Hydraulic Pumps, Hand and Motor Driven",
+   "lines": 5,
+   "contracts": 4
+  },
+  "725-55": {
+   "description": "Telephone Equipment and Piece Parts (Not Lines or Otherwise Classified) (EFFECTIVE 3-1-07 THIS CLASS-ITEM INACTIVATED FOR NEW USE, REFER TO 839-85)",
+   "lines": 3,
+   "contracts": 2
+  },
+  "725-56": {
+   "description": "Telephone Systems (2-60 Stations), Electronic Key and 1A2 (EFFECTIVE 3-1-07 THIS CLASS-ITEM INACTIVATED FOR NEW USE, REFER TO 839-87)",
+   "lines": 1,
+   "contracts": 1
+  },
+  "725-95": {
+   "description": "Recycled Communications Equipment (Including Batteries, Radios, Telephones, Telecommunication Equipment, etc.) (EFFECTIVE 3-1-07 THIS CLASS-ITEM INACTIVATED FOR NEW USE, REFER TO 726-80)",
+   "lines": 1,
+   "contracts": 1
+  },
+  "726-00": {
+   "description": "RADIO COMMUNICATION EQUIPMENT AND ANTENNAS, INCLUDING PARTS AND ACCESSORIES",
+   "lines": 31,
+   "contracts": 12
+  },
+  "726-51": {
+   "description": "Global Positioning Systems, Satellite, Global Information Systems, Including GPS Receivers and Transmitters",
+   "lines": 2,
+   "contracts": 2
+  },
+  "745-14": {
+   "description": "Asphaltic Concrete, Cold Laid",
+   "lines": 13,
+   "contracts": 2
+  },
+  "745-56": {
+   "description": "Joint Sealants: Asphalt, Elastomeric Materials, Glass Filament, Impervious Membranes, Plastic, Rubber, Silicones, Water Stops, etc.",
+   "lines": 4,
+   "contracts": 1
+  },
+  "755-35": {
+   "description": "Asphalt Pavers, Towed Type",
+   "lines": 3,
+   "contracts": 1
+  },
+  "755-40": {
+   "description": "Asphalt Tools: Buckets, Cutters, Lutes, Pouring Pots, Rakes, etc.",
+   "lines": 3,
+   "contracts": 1
+  },
+  "755-80": {
+   "description": "Concrete and Mortar Mixers",
+   "lines": 4,
+   "contracts": 3
+  },
+  "760-00": {
+   "description": "ROAD AND HIGHWAY EQUIPMENT: EARTH HANDLING, GRADING, MOVING, PACKING, ETC.",
+   "lines": 21,
+   "contracts": 7
+  },
+  "760-06": {
+   "description": "Blades and Edges: Dozer, Grader, Scraper, Snow Plow, etc.",
+   "lines": 29,
+   "contracts": 4
+  },
+  "760-44": {
+   "description": "Loaders, Front End, Crawler Tractors",
+   "lines": 2,
+   "contracts": 1
+  },
+  "760-50": {
+   "description": "Loaders, Front End, Wheel Type Tractors",
+   "lines": 6,
+   "contracts": 3
+  },
+  "760-84": {
+   "description": "Scrapers",
+   "lines": 1,
+   "contracts": 1
+  },
+  "765-00": {
+   "description": "ROAD AND HIGHWAY EQUIPMENT (EXCEPT EQUIPMENT IN CLASSES 755 AND 760)",
+   "lines": 12,
+   "contracts": 4
+  },
+  "765-09": {
+   "description": "Cranes, Backhoe and Dragline",
+   "lines": 17,
+   "contracts": 3
+  },
+  "765-61": {
+   "description": "Snow Plows and/or Snow Wings, Vehicle Mounted",
+   "lines": 36,
+   "contracts": 12
+  },
+  "765-66": {
+   "description": "Spreaders, Truck Mounted, For Aggregates, Ice Control Materials, Seal Coatings, etc.",
+   "lines": 1,
+   "contracts": 1
+  },
+  "765-75": {
+   "description": "Sweeper Accessories: Broom Fibers, Extension Brooms, Strips, Wire, Road Magnets, etc.",
+   "lines": 10,
+   "contracts": 3
+  },
+  "765-77": {
+   "description": "Sweepers, Drag Brooms, etc. Including Parts and Accessories (See Class 365 for Warehouse Power Brooms and 035-81 for Runway Sweepers)",
+   "lines": 1,
+   "contracts": 1
+  },
+  "765-88": {
+   "description": "Vacuum Trucks",
+   "lines": 16,
+   "contracts": 3
+  },
+  "775-45": {
+   "description": "Road Maintenance Salt (See Class 192 for Ice Removal Chemicals)",
+   "lines": 17,
+   "contracts": 2
+  },
+  "785-15": {
+   "description": "Blackboards, Chalkboards and Dry Erase Boards",
+   "lines": 15,
+   "contracts": 10
+  },
+  "785-45": {
+   "description": "Drawing/Art Supplies, Schoolroom: Colored Pencils, Compasses, Construction Paper, Drawing Paper, Pencil/Pen Pouches, Protractors, etc.",
+   "lines": 3,
+   "contracts": 3
+  },
+  "785-53": {
+   "description": "Educational Games and Toys, All Types (See 037-84; 208-47; 209-48; and 805-51 for other type games) Incl. Assembly Kits",
+   "lines": 3,
+   "contracts": 1
+  },
+  "785-70": {
+   "description": "Instructional Aids: Courses, Lesson Plans, Prepared, Programs, Ancillary Materials, DVDs, etc. (See Class 715 for Textbooks)",
+   "lines": 30,
+   "contracts": 16
+  },
+  "785-83": {
+   "description": "Presentation Systems Equipment, Including Presentation Boards and Multi-Image Devices",
+   "lines": 20,
+   "contracts": 12
+  },
+  "800-86": {
+   "description": "Shoes and Boots, Work, Men's",
+   "lines": 6,
+   "contracts": 6
+  },
+  "800-88": {
+   "description": "Shoes and Boots, Work, Women's",
+   "lines": 3,
+   "contracts": 3
+  },
+  "801-09": {
+   "description": "Blanks, Sign, Metal (See 801-71, 89, and 97 for other Sign Blanks)",
+   "lines": 10,
+   "contracts": 1
+  },
+  "801-60": {
+   "description": "Signs: Construction, Including Roll-Up Type Message Signs",
+   "lines": 22,
+   "contracts": 3
+  },
+  "801-83": {
+   "description": "Signs, Metal, Not Blanks",
+   "lines": 1,
+   "contracts": 1
+  },
+  "803-82": {
+   "description": "Studio Monitors, Broadcasting and Recording",
+   "lines": 1,
+   "contracts": 1
+  },
+  "805-00": {
+   "description": "SPORTING GOODS, ATHLETIC EQUIPMENT AND ATHLETIC FACILITY EQUIPMENT",
+   "lines": 7,
+   "contracts": 2
+  },
+  "805-21": {
+   "description": "Badminton Equipment",
+   "lines": 7,
+   "contracts": 2
+  },
+  "805-24": {
+   "description": "Baseball Equipment",
+   "lines": 7,
+   "contracts": 2
+  },
+  "805-30": {
+   "description": "Basketball Equipment, Including Backboards and Backstops",
+   "lines": 2,
+   "contracts": 1
+  },
+  "805-42": {
+   "description": "Boxing and Wrestling Equipment: Gloves, Platforms, Rings, Striking Bags, Training Bags, etc.",
+   "lines": 1,
+   "contracts": 1
+  },
+  "805-48": {
+   "description": "Football Equipment",
+   "lines": 1,
+   "contracts": 1
+  },
+  "805-58": {
+   "description": "LaCrosse Equipment and Accessories",
+   "lines": 1,
+   "contracts": 1
+  },
+  "805-61": {
+   "description": "Hockey Equipment, Ice and Field",
+   "lines": 2,
+   "contracts": 2
+  },
+  "805-66": {
+   "description": "Soccer Equipment",
+   "lines": 1,
+   "contracts": 1
+  },
+  "805-81": {
+   "description": "Track and Field Equipment",
+   "lines": 1,
+   "contracts": 1
+  },
+  "805-94": {
+   "description": "Weight Lifting Equipment and Accessories",
+   "lines": 9,
+   "contracts": 1
+  },
+  "830-69": {
+   "description": "Steel Tanks, Storage Type: Fuel, Gasoline, and Wetted Salt",
+   "lines": 133,
+   "contracts": 14
+  },
+  "838-45": {
+   "description": "Emergency Radio/Telephone Systems, 411, 911 etc., Dispatch",
+   "lines": 3,
+   "contracts": 1
+  },
+  "840-20": {
+   "description": "Broadcast Equipment,Television",
+   "lines": 1,
+   "contracts": 1
+  },
+  "850-12": {
+   "description": "Blankets, Bedding, All Types",
+   "lines": 1,
+   "contracts": 1
+  },
+  "863-05": {
+   "description": "Tires and Tubes, Passenger Vehicles",
+   "lines": 2,
+   "contracts": 2
+  },
+  "863-06": {
+   "description": "Tires and Tubes, Motorcycle",
+   "lines": 1,
+   "contracts": 1
+  },
+  "863-07": {
+   "description": "Tires and Tubes, Light Trucks",
+   "lines": 2,
+   "contracts": 2
+  },
+  "863-10": {
+   "description": "Tires and Tubes, Medium Truck and Bus",
+   "lines": 2,
+   "contracts": 2
+  },
+  "863-15": {
+   "description": "Tires and Tubes, Off-Road Equipment",
+   "lines": 2,
+   "contracts": 2
+  },
+  "863-20": {
+   "description": "Tires and Tubes, Farm Tractor and Implement",
+   "lines": 2,
+   "contracts": 1
+  },
+  "863-25": {
+   "description": "Tires and Tubes, Industrial",
+   "lines": 2,
+   "contracts": 2
+  },
+  "863-30": {
+   "description": "Tires and Tubes, Misc. (Not Otherwise Classified)",
+   "lines": 6,
+   "contracts": 2
+  },
+  "883-80": {
+   "description": "Telephone Switching (PBX) Systems",
+   "lines": 2,
+   "contracts": 2
+  },
+  "890-95": {
+   "description": "Recycled Water Supply, Groundwater and Sewage Treatment Equipment, Including Parts and Accessories",
+   "lines": 9,
+   "contracts": 1
+  },
+  "905-16": {
+   "description": "Airplanes, Helicopters and Accessories Maintenance and Repair Services",
+   "lines": 12,
+   "contracts": 2
+  },
+  "909-60": {
+   "description": "Maintenance and Repair, Industrial Building",
+   "lines": 10,
+   "contracts": 1
+  },
+  "910-13": {
+   "description": "Elevator Installation, Maintenance, Repair and Inspection Services",
+   "lines": 4,
+   "contracts": 3
+  },
+  "910-20": {
+   "description": "Escalator and Moving Walkway, Installation, Maintenance and Repair Services",
+   "lines": 1,
+   "contracts": 1
+  },
+  "910-27": {
+   "description": "Garbage and Trash Removal, Disposal and or Treatment Services",
+   "lines": 28,
+   "contracts": 5
+  },
+  "910-36": {
+   "description": "Heating, Air Conditioning, and Ventilation Maintenance, Repair and Installation Services",
+   "lines": 54,
+   "contracts": 6
+  },
+  "910-39": {
+   "description": "Janitorial and Custodial Services",
+   "lines": 10,
+   "contracts": 1
+  },
+  "910-48": {
+   "description": "Locksmith Services",
+   "lines": 18,
+   "contracts": 2
+  },
+  "910-59": {
+   "description": "Pest Control Services: Termite Inspection and Control, Bird Proofing, Animal Trapping, Rodent Control, Exterminating and Fumigation",
+   "lines": 20,
+   "contracts": 2
+  },
+  "913-71": {
+   "description": "Maintenance and Repair, Highway and Roads, Including Removal of Asphalt, Concrete, Bitumens, etc.",
+   "lines": 24,
+   "contracts": 8
+  },
+  "913-94": {
+   "description": "Paving and Resurfacing, Alley and Parking Lot",
+   "lines": 18,
+   "contracts": 2
+  },
+  "913-95": {
+   "description": "Paving and Resurfacing, Highway and Road",
+   "lines": 9,
+   "contracts": 1
+  },
+  "915-03": {
+   "description": "Advertising and Public Relations, Including Skywriting",
+   "lines": 44,
+   "contracts": 18
+  },
+  "915-04": {
+   "description": "Advertising Services, Outdoor Billboard, etc.",
+   "lines": 2,
+   "contracts": 2
+  },
+  "915-15": {
+   "description": "Broadcasting Services, Television",
+   "lines": 1,
+   "contracts": 1
+  },
+  "915-58": {
+   "description": "Mailing Services: Addressing, Collating, Packaging, Sorting and Delivery",
+   "lines": 8,
+   "contracts": 2
+  },
+  "915-75": {
+   "description": "Telephone Services, Cellular",
+   "lines": 12,
+   "contracts": 3
+  },
+  "915-77": {
+   "description": "Telephone Services, Long Distance and Local, Including 800, Telex, Watts Services, and Offender Telephone Systems",
+   "lines": 37,
+   "contracts": 6
+  },
+  "915-79": {
+   "description": "Telecommunication Services (Not Otherwise Classified)",
+   "lines": 43,
+   "contracts": 9
+  },
+  "915-82": {
+   "description": "Video Production Services",
+   "lines": 1,
+   "contracts": 1
+  },
+  "915-96": {
+   "description": "Web Page Design, Management and Maintenance Services",
+   "lines": 12,
+   "contracts": 2
+  },
+  "915-97": {
+   "description": "Wiring Services, Data and Voice",
+   "lines": 7,
+   "contracts": 7
+  },
+  "917-35": {
+   "description": "Contracted Services, Travel, Hotel",
+   "lines": 1,
+   "contracts": 1
+  },
+  "918-00": {
+   "description": "CONSULTING SERVICES",
+   "lines": 68,
+   "contracts": 14
+  },
+  "918-03": {
+   "description": "Alcohol and Drug Abuse Consulting",
+   "lines": 7,
+   "contracts": 1
+  },
+  "918-04": {
+   "description": "Accounting, Auditing, Budget Consulting",
+   "lines": 26,
+   "contracts": 3
+  },
+  "918-20": {
+   "description": "Business Consulting, Small",
+   "lines": 5,
+   "contracts": 1
+  },
+  "918-32": {
+   "description": "Consulting Services (Not Otherwise Classified)",
+   "lines": 36,
+   "contracts": 8
+  },
+  "918-38": {
+   "description": "Education and Training Consulting",
+   "lines": 1,
+   "contracts": 1
+  },
+  "918-40": {
+   "description": "Employee Benefits Consulting",
+   "lines": 9,
+   "contracts": 1
+  },
+  "918-54": {
+   "description": "Furnishings Consulting",
+   "lines": 2,
+   "contracts": 2
+  },
+  "918-69": {
+   "description": "Insurance Consulting",
+   "lines": 27,
+   "contracts": 4
+  },
+  "918-71": {
+   "description": "IT Consulting, (Not Otherwise Classified)",
+   "lines": 1,
+   "contracts": 1
+  },
+  "918-75": {
+   "description": "Management Consulting",
+   "lines": 10,
+   "contracts": 1
+  },
+  "918-81": {
+   "description": "Natural Disasters, Fire, Flood, Wind, Quakes, Consulting",
+   "lines": 15,
+   "contracts": 3
+  },
+  "918-90": {
+   "description": "Strategic Planning and Consulting",
+   "lines": 7,
+   "contracts": 2
+  },
+  "918-93": {
+   "description": "Security and Safety Consulting",
+   "lines": 7,
+   "contracts": 1
+  },
+  "918-95": {
+   "description": "Telecommunications Consulting",
+   "lines": 11,
+   "contracts": 2
+  },
+  "918-97": {
+   "description": "Utilities: Gas, Water, Electric Consulting",
+   "lines": 32,
+   "contracts": 4
+  },
+  "920-00": {
+   "description": "DATA PROCESSING, COMPUTER, PROGRAMMING, AND SOFTWARE SERVICES",
+   "lines": 29,
+   "contracts": 9
+  },
+  "920-02": {
+   "description": "Access Services, Data",
+   "lines": 24,
+   "contracts": 4
+  },
+  "920-03": {
+   "description": "Application Service Provider (ASP), Web Based Hosted",
+   "lines": 34,
+   "contracts": 6
+  },
+  "920-05": {
+   "description": "Application, Infrastructure, Hosting and Cloud Computing Services, Vendor Hosted and Internally Hosted",
+   "lines": 3,
+   "contracts": 3
+  },
+  "920-13": {
+   "description": "Advanced Authentication System Software Services, Including Maintenance and Repair",
+   "lines": 2,
+   "contracts": 1
+  },
+  "920-14": {
+   "description": "Applications Software, Mainframes and Servers",
+   "lines": 2,
+   "contracts": 2
+  },
+  "920-17": {
+   "description": "Electronic Forms Services",
+   "lines": 4,
+   "contracts": 1
+  },
+  "920-21": {
+   "description": "Data Entry Services",
+   "lines": 9,
+   "contracts": 1
+  },
+  "920-22": {
+   "description": "Data Preparation and Processing Services, Including Bates Coding",
+   "lines": 5,
+   "contracts": 3
+  },
+  "920-38": {
+   "description": "Optical Scanning Services",
+   "lines": 1,
+   "contracts": 1
+  },
+  "920-39": {
+   "description": "Processing System Services, Data (Not Otherwise Classified)",
+   "lines": 32,
+   "contracts": 4
+  },
+  "920-40": {
+   "description": "Programming Services, Computer, Including Mobile Device Applications",
+   "lines": 2,
+   "contracts": 2
+  },
+  "920-45": {
+   "description": "Software Maintenance and Support Services",
+   "lines": 24,
+   "contracts": 3
+  },
+  "920-46": {
+   "description": "Software Updating and Upgrading Services",
+   "lines": 5,
+   "contracts": 2
+  },
+  "920-47": {
+   "description": "Support Services, Computer, Includes Computer Warranties",
+   "lines": 6,
+   "contracts": 1
+  },
+  "920-64": {
+   "description": "System Implementation and Engineering Services",
+   "lines": 29,
+   "contracts": 3
+  },
+  "920-65": {
+   "description": "System Requirements Quality Assurance Review",
+   "lines": 75,
+   "contracts": 15
+  },
+  "920-91": {
+   "description": "Training, Computer Based, Software Supported",
+   "lines": 1,
+   "contracts": 1
+  },
+  "924-18": {
+   "description": "Educational Services, Alternative",
+   "lines": 10,
+   "contracts": 1
+  },
+  "924-20": {
+   "description": "Examination and Testing Services",
+   "lines": 38,
+   "contracts": 5
+  },
+  "925-35": {
+   "description": "Environmental Engineering",
+   "lines": 24,
+   "contracts": 6
+  },
+  "925-77": {
+   "description": "Pollution Control Engineering",
+   "lines": 7,
+   "contracts": 1
+  },
+  "925-79": {
+   "description": "Railroad; Rapid Transit; Monorail Engineering",
+   "lines": 6,
+   "contracts": 1
+  },
+  "925-95": {
+   "description": "Utilities, Gas, Steam, Electric Engineering",
+   "lines": 40,
+   "contracts": 4
+  },
+  "926-00": {
+   "description": "ENVIRONMENTAL AND ECOLOGICAL SERVICES",
+   "lines": 3,
+   "contracts": 1
+  },
+  "926-29": {
+   "description": "Contaminated Groundwater Services, Including Discharge Pipe Installation",
+   "lines": 20,
+   "contracts": 2
+  },
+  "926-77": {
+   "description": "Recycling Services",
+   "lines": 8,
+   "contracts": 2
+  },
+  "926-78": {
+   "description": "Remediation Services, Environmental, Including Rehabilitation Services Hazardous Waste and Mold Remediation",
+   "lines": 70,
+   "contracts": 11
+  },
+  "926-83": {
+   "description": "Site Assessment, Environmental",
+   "lines": 9,
+   "contracts": 3
+  },
+  "928-00": {
+   "description": "EQUIPMENT MAINTENANCE AND REPAIR SERVICES FOR AUTOMOBILES, TRUCKS, TRAILERS, TRANSIT BUSES AND OTHER VEHICLES",
+   "lines": 14,
+   "contracts": 14
+  },
+  "928-04": {
+   "description": "Accessories Maintenance and Repair, (Not Otherwise Classified)",
+   "lines": 34,
+   "contracts": 24
+  },
+  "928-15": {
+   "description": "Automobile and Other Passenger Vehicles Maintenance and Repair (Not Otherwise Classified)",
+   "lines": 66,
+   "contracts": 24
+  },
+  "928-19": {
+   "description": "Body and Frame Work, Including Undercoating",
+   "lines": 147,
+   "contracts": 26
+  },
+  "928-24": {
+   "description": "Buses, School and Mass Transit Maintenance and Repair",
+   "lines": 1,
+   "contracts": 1
+  },
+  "928-27": {
+   "description": "Communications Systems, Vehicle Maintenance and Repair, Including Installation and Removal Services",
+   "lines": 3,
+   "contracts": 1
+  },
+  "928-30": {
+   "description": "Cooling, Heating, and Ventilating System, A/C System, Hoses, Water Pump, Radiator, Heater and Accessories, Ventilation, etc. Maintenance and Repair",
+   "lines": 4,
+   "contracts": 4
+  },
+  "928-47": {
+   "description": "General Maintenance and Repair, Vehicle (Not Otherwise Classified), Including Oil Changes, Lubrication, Guaranteed Maintenance Programs, etc. (See 928-88 for Tune-Ups)",
+   "lines": 21,
+   "contracts": 18
+  },
+  "928-49": {
+   "description": "Hydraulics Pump, Hydraulic Motor, Valves, Gauges, etc. Maintenance and Repair",
+   "lines": 10,
+   "contracts": 7
+  },
+  "928-67": {
+   "description": "Road Services, Vehicle, Including Mobile Repair Services",
+   "lines": 20,
+   "contracts": 13
+  },
+  "928-86": {
+   "description": "Truck and Van Maintenance and Repair (Not Otherwise Classified)",
+   "lines": 3,
+   "contracts": 2
+  },
+  "928-87": {
+   "description": "Truck Maintenance and Repair, Heavy",
+   "lines": 7,
+   "contracts": 7
+  },
+  "928-92": {
+   "description": "Vehicle Inspection and Testing Services, Emissions, etc.",
+   "lines": 1,
+   "contracts": 1
+  },
+  "928-93": {
+   "description": "Washing, Waxing, Polishing, Steam Cleaning, Disinfecting, Decal Removal, etc.",
+   "lines": 85,
+   "contracts": 11
+  },
+  "929-43": {
+   "description": "Hydraulics, Pump, Hydraulic Motor, Valves, Gauges, etc. Maintenance and Repair",
+   "lines": 17,
+   "contracts": 17
+  },
+  "929-47": {
+   "description": "Lifts and Hoists Maintenance and Repair",
+   "lines": 35,
+   "contracts": 25
+  },
+  "929-58": {
+   "description": "Material Handling Equipment Maintenance and Repair",
+   "lines": 8,
+   "contracts": 1
+  },
+  "929-70": {
+   "description": "Snow Plow and Blower Maintenance and Repair",
+   "lines": 28,
+   "contracts": 26
+  },
+  "936-33": {
+   "description": "Fire Protection Equipment and Systems Including Fire Hydrants, Fire Sprinkler Systems, Smoke Detectors, Jaws of Life, Fire Protection Material Treatment, Firestop and Fire Barriers, etc.Inspection, Maintenance and Repair",
+   "lines": 1,
+   "contracts": 1
+  },
+  "936-39": {
+   "description": "Generators, Portable and Stationary, Including Parts and Accessories Maintenance and Repair",
+   "lines": 53,
+   "contracts": 7
+  },
+  "936-73": {
+   "description": "Security and Access Systems Maintenance and Repair",
+   "lines": 45,
+   "contracts": 5
+  },
+  "936-84": {
+   "description": "Towers, Radio/Radar, etc., Maintenance and Repair, Including Painting",
+   "lines": 3,
+   "contracts": 2
+  },
+  "936-94": {
+   "description": "Weather Forecasting Equipment Maintenance and Repair",
+   "lines": 2,
+   "contracts": 1
+  },
+  "938-81": {
+   "description": "Scientific Equipment Maintenance and Repair",
+   "lines": 1,
+   "contracts": 1
+  },
+  "939-52": {
+   "description": "Mailing Machines and Equipment Maintenance and Repair",
+   "lines": 80,
+   "contracts": 10
+  },
+  "939-60": {
+   "description": "Office Machines and Mechanical Aids, Small, Maintenance and Repair",
+   "lines": 4,
+   "contracts": 4
+  },
+  "939-72": {
+   "description": "Radio, Telecommunications, Telephone Equipment, Including 911 Systems and Facsimile Transceivers, Maintenance and Repair",
+   "lines": 4,
+   "contracts": 2
+  },
+  "940-86": {
+   "description": "Tower Maintenance and Repair",
+   "lines": 8,
+   "contracts": 1
+  },
+  "944-38": {
+   "description": "Crop Farming (Not Otherwise Classified)",
+   "lines": 3,
+   "contracts": 1
+  },
+  "944-54": {
+   "description": "Miscellaneous Farming Services",
+   "lines": 10,
+   "contracts": 2
+  },
+  "945-00": {
+   "description": "FISHING, HUNTING, TRAPPING, GAME PROPAGATION, AND RELATED SERVICES",
+   "lines": 8,
+   "contracts": 1
+  },
+  "946-10": {
+   "description": "Accounting and Billing Services, Including Payroll Services, 3rd Party Reimbursement for Medicare, Medicaid, Private Insurance, etc.",
+   "lines": 17,
+   "contracts": 2
+  },
+  "946-12": {
+   "description": "Actuarial Services and Retirement Planning",
+   "lines": 9,
+   "contracts": 1
+  },
+  "946-15": {
+   "description": "Appraisal Services, Real Estate",
+   "lines": 125,
+   "contracts": 17
+  },
+  "946-20": {
+   "description": "Audit Services",
+   "lines": 67,
+   "contracts": 10
+  },
+  "946-33": {
+   "description": "Collection Services, Financial Debt",
+   "lines": 18,
+   "contracts": 2
+  },
+  "946-35": {
+   "description": "Credit Card, Charge Card Services",
+   "lines": 12,
+   "contracts": 2
+  },
+  "946-54": {
+   "description": "Installment and Lease Purchase Financing",
+   "lines": 1,
+   "contracts": 1
+  },
+  "946-56": {
+   "description": "Investment Management Services",
+   "lines": 62,
+   "contracts": 7
+  },
+  "947-41": {
+   "description": "Firefighting Services, Forestry",
+   "lines": 18,
+   "contracts": 2
+  },
+  "948-07": {
+   "description": "Administration Services, Health",
+   "lines": 29,
+   "contracts": 4
+  },
+  "948-37": {
+   "description": "Experimental Medical Services",
+   "lines": 10,
+   "contracts": 1
+  },
+  "948-43": {
+   "description": "Health Information Services",
+   "lines": 21,
+   "contracts": 3
+  },
+  "948-46": {
+   "description": "Hospital Services, Inpatient and Outpatient",
+   "lines": 18,
+   "contracts": 4
+  },
+  "948-48": {
+   "description": "Health Care Services (Not Otherwise Classified)",
+   "lines": 7,
+   "contracts": 2
+  },
+  "948-72": {
+   "description": "Pharmaceutical Services",
+   "lines": 15,
+   "contracts": 2
+  },
+  "948-74": {
+   "description": "Professional Medical Services: Physicians, Pharmacists, and All Specialties",
+   "lines": 12,
+   "contracts": 2
+  },
+  "948-76": {
+   "description": "Psychologists, Psychological and Psychiatric Services, Including Behavioral Management Services",
+   "lines": 8,
+   "contracts": 1
+  },
+  "948-86": {
+   "description": "Therapy and Rehabilitation Services",
+   "lines": 8,
+   "contracts": 1
+  },
+  "948-93": {
+   "description": "Waste Disposal Services, Medical",
+   "lines": 9,
+   "contracts": 1
+  },
+  "952-00": {
+   "description": "HUMAN SERVICES",
+   "lines": 5,
+   "contracts": 1
+  },
+  "952-05": {
+   "description": "Alcohol and Drug Detoxification, Including Rehabilitation)",
+   "lines": 3,
+   "contracts": 1
+  },
+  "952-07": {
+   "description": "Alcohol and Drug Testing Services",
+   "lines": 19,
+   "contracts": 3
+  },
+  "952-15": {
+   "description": "Case Management",
+   "lines": 1,
+   "contracts": 1
+  },
+  "952-20": {
+   "description": "Correctional Services",
+   "lines": 15,
+   "contracts": 2
+  },
+  "952-77": {
+   "description": "Research and Evaluation, Human Services, Including Productivity Audits",
+   "lines": 19,
+   "contracts": 7
+  },
+  "952-90": {
+   "description": "Training and Instruction Services, Clients, Not Staff",
+   "lines": 8,
+   "contracts": 2
+  },
+  "952-94": {
+   "description": "Transportation Services: Elderly, Handicapped, Incapacitated, Prisoners, Juries, Students. Etc.",
+   "lines": 10,
+   "contracts": 1
+  },
+  "953-52": {
+   "description": "Insurance and Insurance Services (Not Otherwise Classified)",
+   "lines": 4,
+   "contracts": 1
+  },
+  "954-05": {
+   "description": "Laundry and Linen Service, (Not Otherwise Classified)",
+   "lines": 8,
+   "contracts": 1
+  },
+  "956-35": {
+   "description": "Internet Database Subscriptions",
+   "lines": 10,
+   "contracts": 1
+  },
+  "956-70": {
+   "description": "Research Services, Other Than Business",
+   "lines": 8,
+   "contracts": 2
+  },
+  "958-15": {
+   "description": "Building and Facilities Management Services",
+   "lines": 48,
+   "contracts": 5
+  },
+  "958-39": {
+   "description": "Financial Management Services",
+   "lines": 10,
+   "contracts": 1
+  },
+  "958-41": {
+   "description": "Fleet Management Services",
+   "lines": 7,
+   "contracts": 1
+  },
+  "958-45": {
+   "description": "Forestry Management Services, Including Inventory, Monitoring, Extension, Pest Control, etc.",
+   "lines": 16,
+   "contracts": 3
+  },
+  "958-50": {
+   "description": "Fuel Management Services",
+   "lines": 1,
+   "contracts": 1
+  },
+  "958-58": {
+   "description": "Hospital Management Services",
+   "lines": 1,
+   "contracts": 1
+  },
+  "958-61": {
+   "description": "Insurance and Risk Management Services",
+   "lines": 4,
+   "contracts": 1
+  },
+  "958-66": {
+   "description": "Lottery Management Services",
+   "lines": 1,
+   "contracts": 1
+  },
+  "958-77": {
+   "description": "Project Management Services",
+   "lines": 5,
+   "contracts": 1
+  },
+  "958-82": {
+   "description": "Records Management Services, Including Document Management Services and Technology Integration",
+   "lines": 13,
+   "contracts": 2
+  },
+  "958-85": {
+   "description": "Soil and Land Management Services, Including Testing, Protection, Preparation, Planning, etc.",
+   "lines": 4,
+   "contracts": 2
+  },
+  "958-96": {
+   "description": "Waste Management Services",
+   "lines": 38,
+   "contracts": 4
+  },
+  "961-05": {
+   "description": "Arbitration, Mediation, and Alternative Dispute Resolution Services",
+   "lines": 5,
+   "contracts": 1
+  },
+  "961-13": {
+   "description": "Chartering Services for Aircraft, Boats, Buses, and other Transportation",
+   "lines": 8,
+   "contracts": 1
+  },
+  "961-16": {
+   "description": "Claims Processing Services",
+   "lines": 40,
+   "contracts": 4
+  },
+  "961-24": {
+   "description": "Court Reporting Services, Including Electronic",
+   "lines": 45,
+   "contracts": 5
+  },
+  "961-38": {
+   "description": "Food Preparation Services, Including Food Canning Services",
+   "lines": 10,
+   "contracts": 1
+  },
+  "961-45": {
+   "description": "Inspection and Certification Services",
+   "lines": 9,
+   "contracts": 1
+  },
+  "961-46": {
+   "description": "Interpreter Services, Foreign Language, Hearing Impaired, etc., (See Item 17 for Interpreter Services - Electronically Assisted)",
+   "lines": 12,
+   "contracts": 8
+  },
+  "961-50": {
+   "description": "Legal Services Including Depositions and Expert Witness Testimony",
+   "lines": 18,
+   "contracts": 2
+  },
+  "961-56": {
+   "description": "Program and Project Development and Management Services",
+   "lines": 3,
+   "contracts": 1
+  },
+  "961-64": {
+   "description": "Satellite Global Positioning System Information Services (GPS)",
+   "lines": 2,
+   "contracts": 2
+  },
+  "961-75": {
+   "description": "Translation Services, All Languages",
+   "lines": 19,
+   "contracts": 10
+  },
+  "962-09": {
+   "description": "Auctioneering Services, Including On-line Auctions",
+   "lines": 16,
+   "contracts": 2
+  },
+  "962-14": {
+   "description": "Blue Printing Services: Blue Prints, Blue Line, Large Engineering",
+   "lines": 10,
+   "contracts": 1
+  },
+  "962-24": {
+   "description": "Courier/Delivery Services, Including Air Courier Services)",
+   "lines": 19,
+   "contracts": 3
+  },
+  "962-25": {
+   "description": "Disposal and Removal, Dead Animals",
+   "lines": 2,
+   "contracts": 2
+  },
+  "962-27": {
+   "description": "Document Shredding Services",
+   "lines": 5,
+   "contracts": 1
+  },
+  "962-46": {
+   "description": "Installation and Removal Services (Not Otherwise Classified)",
+   "lines": 9,
+   "contracts": 1
+  },
+  "962-56": {
+   "description": "Moving Services",
+   "lines": 41,
+   "contracts": 5
+  },
+  "962-58": {
+   "description": "Professional Services (Not Otherwise Classified)",
+   "lines": 66,
+   "contracts": 9
+  },
+  "962-69": {
+   "description": "Personnel Services, Temporary",
+   "lines": 7,
+   "contracts": 2
+  },
+  "962-70": {
+   "description": "Removal and Pickup of Dead Bodies",
+   "lines": 18,
+   "contracts": 2
+  },
+  "962-91": {
+   "description": "Utility Locator Service, Underground",
+   "lines": 4,
+   "contracts": 1
+  },
+  "963-91": {
+   "description": "Warranties",
+   "lines": 1,
+   "contracts": 1
+  },
+  "966-07": {
+   "description": "Business Cards Printing",
+   "lines": 1,
+   "contracts": 1
+  },
+  "966-22": {
+   "description": "Decal Printing",
+   "lines": 18,
+   "contracts": 2
+  },
+  "966-36": {
+   "description": "Forms Printing, Not Continuous",
+   "lines": 10,
+   "contracts": 1
+  },
+  "966-62": {
+   "description": "Offset Printing, Booklets, Saddle Stitch Binding (Quan. Under 100,000): Books and Magazines",
+   "lines": 8,
+   "contracts": 1
+  },
+  "967-17": {
+   "description": "Assembly Line Services",
+   "lines": 10,
+   "contracts": 1
+  },
+  "967-31": {
+   "description": "Classroom and Educational Furnishings and Equipment, Manufacturing Services",
+   "lines": 3,
+   "contracts": 3
+  },
+  "968-36": {
+   "description": "Dust Control Watering",
+   "lines": 2,
+   "contracts": 1
+  },
+  "968-71": {
+   "description": "Solid or Liquid Waste Disposal, Including Management Services. (See 926-45 for Hazardous Waste Disposal)",
+   "lines": 10,
+   "contracts": 1
+  },
+  "968-72": {
+   "description": "Snow and Ice Removal Services",
+   "lines": 547,
+   "contracts": 94
+  },
+  "968-90": {
+   "description": "Vehicle Towing and Storage",
+   "lines": 143,
+   "contracts": 25
+  },
+  "968-96": {
+   "description": "Water and Wastewater Treatment Services",
+   "lines": 36,
+   "contracts": 4
+  },
+  "971-70": {
+   "description": "Storage Space Rental or Lease",
+   "lines": 20,
+   "contracts": 2
+  },
+  "971-91": {
+   "description": "Warehouse Rental or Lease",
+   "lines": 10,
+   "contracts": 1
+  },
+  "975-11": {
+   "description": "Airplanes, Gliders, Helicopters, and Accessories Rental or Lease",
+   "lines": 9,
+   "contracts": 1
+  },
+  "975-14": {
+   "description": "Automobiles and Other Passenger Vehicles, Including Emergency Type Rental or Lease",
+   "lines": 1,
+   "contracts": 1
+  },
+  "975-36": {
+   "description": "Forestry Equipment Rental or Lease",
+   "lines": 10,
+   "contracts": 3
+  },
+  "975-86": {
+   "description": "Truck and Van, Including Fire and Garbage Trucks Rental or Lease",
+   "lines": 18,
+   "contracts": 2
+  },
+  "979-81": {
+   "description": "Testing and Training Apparatus, Instruments, and Machines Rental or Lease",
+   "lines": 1,
+   "contracts": 1
+  },
+  "981-00": {
+   "description": "RENTAL OR LEASE OF GENERAL EQUIPMENT (HVAC, ATHLETIC, FIRE AND POLICE PROTECTION, ETC.)",
+   "lines": 4,
+   "contracts": 4
+  },
+  "985-54": {
+   "description": "Mailing Equipment Including Postage Meter Rental or Lease",
+   "lines": 10,
+   "contracts": 10
+  },
+  "988-36": {
+   "description": "Grounds Maintenance: Mowing, Edging, Plant, Not Tree Trimming, etc.",
+   "lines": 17,
+   "contracts": 7
+  },
+  "988-52": {
+   "description": "Landscaping, Including Design, Fertilizing, Planting, etc., Not Grounds Maintenance or Tree Trimming Services",
+   "lines": 19,
+   "contracts": 2
+  },
+  "988-88": {
+   "description": "Tree Trimming and Pruning Services",
+   "lines": 63,
+   "contracts": 7
+  },
+  "990-29": {
+   "description": "Disaster Preparedness and Emergency Planning Services",
+   "lines": 80,
+   "contracts": 9
+  },
+  "990-30": {
+   "description": "Disaster Relief Services",
+   "lines": 8,
+   "contracts": 2
+  },
+  "990-41": {
+   "description": "Fingerprinting Services",
+   "lines": 8,
+   "contracts": 1
+  },
+  "990-46": {
+   "description": "Guard and Security Services",
+   "lines": 3,
+   "contracts": 2
+  },
+  "992-65": {
+   "description": "Pressure Testing Services, Fuel Tanks, Pressure Tanks, etc.",
+   "lines": 10,
+   "contracts": 1
+  }
+ },
+ "classes": {
+  "105": {
+   "items": [
+    "105-60 Roller and Needle Bearings and Parts, Straight"
+   ],
+   "contracts": 2
+  },
+  "120": {
+   "items": [
+    "120-83 Scuba and Skin Diving Equipment"
+   ],
+   "contracts": 1
+  },
+  "150": {
+   "items": [
+    "150-55 Doors, Overhead, Garage, etc. (See Class 450 for Hardware)"
+   ],
+   "contracts": 4
+  },
+  "155": {
+   "items": [
+    "155-40 Gazebos, Kiosks, Including Informational Type and Pavilions",
+    "155-48 Lifeguard, Umpire and Referee Stands",
+    "155-70 Portable Toilets",
+    "155-85 Structures, Shade, Fabric Covered, Patio Areas, Play Areas, etc."
+   ],
+   "contracts": 18
+  },
+  "175": {
+   "items": [
+    "175-42 Glassware, Laboratory, Stock Only"
+   ],
+   "contracts": 1
+  },
+  "192": {
+   "items": [
+    "192-46 Ice and Snow Removal Chemicals (See 775-45 for Road Salt)"
+   ],
+   "contracts": 3
+  },
+  "193": {
+   "items": [
+    "193-84 Radioimmunoassay Kits"
+   ],
+   "contracts": 1
+  },
+  "200": {
+   "items": [
+    "200-19 Disposable Clothing (See Class 475 for Hospital Type)",
+    "200-38 Insulated Clothing",
+    "200-49 Inmate Clothing",
+    "200-85 Uniforms, Blended Fabric"
+   ],
+   "contracts": 14
+  },
+  "201": {
+   "items": [
+    "201-65 Rainwear: Raincoats, Hats, Slicker Suits, Storm Suits, Umbrellas, etc."
+   ],
+   "contracts": 4
+  },
+  "204": {
+   "items": [
+    "204-00 COMPUTER HARDWARE AND PERIPHERALS FOR MICROCOMPUTERS",
+    "204-22 Computer Kiosk: Informational, Touchscreen or Keyboard Input",
+    "204-46 Imaging Systems, Microcomputer: Digital Imaging Network (DIN), Technology, and Digital Imaging Communications in Medicine (DICOM)",
+    "204-64 Network Components: Adapter Cards, Bridges, Connectors, Expansion Modules/Ports, Firewall Devices, Hubs, Line Drivers, MSAUs, Routers, Switches, Transceivers, etc.",
+    "204-96 Workstations: SPARC, RISC, etc., For Use With CAD and CAM, etc."
+   ],
+   "contracts": 17
+  },
+  "206": {
+   "items": [
+    "206-54 Geographic Information Systems (GIS)",
+    "206-64 Network Components: Adapter Cards, Bridges, Connectors, Expansion Modules and Ports, Hubs, Line Drivers, MSAUs, Routers, Switches, Transceivers, etc."
+   ],
+   "contracts": 20
+  },
+  "208": {
+   "items": [
+    "208-11 Application Software, (Not Otherwise Classified), Microcomputer",
+    "208-32 Customer Relationship Management Software (CRM), Microcomputer",
+    "208-80 Software, Microcomputer (Not Otherwise Classified)",
+    "208-88 Software, Monitoring, Microcomputer"
+   ],
+   "contracts": 19
+  },
+  "209": {
+   "items": [
+    "209-13 Application Software, Servers",
+    "209-49 Geographic Information System (GIS) Software, Mainframes and Servers",
+    "209-54 Internet, Web Site and Mobile Application Software, Mainframes and Servers",
+    "209-72 Procurement Software, Mainframes and Servers"
+   ],
+   "contracts": 4
+  },
+  "210": {
+   "items": [
+    "210-07 Basins, Catch, Including Part and Accessories",
+    "210-14 Bollard Post, Steel, Removable"
+   ],
+   "contracts": 5
+  },
+  "232": {
+   "items": [
+    "232-41 Kits and Supplies: Crafts, Miscellaneous"
+   ],
+   "contracts": 2
+  },
+  "255": {
+   "items": [
+    "255-20 Cigarette Stamp, Numbered"
+   ],
+   "contracts": 1
+  },
+  "257": {
+   "items": [
+    "257-72 Rescue and Search Equipment, CBRNE"
+   ],
+   "contracts": 10
+  },
+  "269": {
+   "items": [
+    "269-36 Diagnostic Agents",
+    "269-72 Miscellaneous Drugs and Pharmaceuticals (Not Otherwise Classified)"
+   ],
+   "contracts": 2
+  },
+  "271": {
+   "items": [
+    "271-28 Diets, Complete, Liquid; and Liquid Food Supplements, Oral and Tube Fed"
+   ],
+   "contracts": 2
+  },
+  "280": {
+   "items": [
+    "280-00 ELECTRICAL CABLE AND WIRE, NOT ELECTRONIC",
+    "280-29 Communication and Telecommunication Cable and Wire, Including Fiber Cable"
+   ],
+   "contracts": 3
+  },
+  "285": {
+   "items": [
+    "285-00 ELECTRICAL EQUIPMENT AND SUPPLIES, EXCEPT CABLE AND WIRE",
+    "285-02 Analyzer, Electric Power Demand",
+    "285-10 Cable Accessories: Clamps, Clasps, Clips, Closures, Reels, Splices, Wrappings, etc.",
+    "285-50 Lamps, Fluorescent, Incandescent, Mercury Vapor, Quartz, Sodium Vapor. LED and Compact (CFL)",
+    "285-76 Street and Highway Lighting Luminaires, Accessories and Parts",
+    "285-80 Street Light Poles and Standards",
+    "285-95 Wiring Devices: Adapters, Caps, Connectors, Extension Cords, Fluorescent and HP Starters, Outlets, Plates and Covers, Plugs, Receptacles, Safety Cord Lock, Switches, Terminals, etc. (Incl. Recycled Electrical Products, Supplies)"
+   ],
+   "contracts": 12
+  },
+  "287": {
+   "items": [
+    "287-96 Wire and Cable, Electronic: Audio, Coaxial, Hook-Up, Lead-In, etc."
+   ],
+   "contracts": 1
+  },
+  "290": {
+   "items": [
+    "290-82 Solar Energy Systems, Complete"
+   ],
+   "contracts": 1
+  },
+  "295": {
+   "items": [
+    "295-70 Elevators, Passenger"
+   ],
+   "contracts": 3
+  },
+  "310": {
+   "items": [
+    "310-30 Envelopes, Plain, Stock Sizes"
+   ],
+   "contracts": 1
+  },
+  "320": {
+   "items": [
+    "320-36 Fasteners (Not Otherwise Classified)"
+   ],
+   "contracts": 3
+  },
+  "325": {
+   "items": [
+    "325-28 Fish Food, Including Live"
+   ],
+   "contracts": 1
+  },
+  "330": {
+   "items": [
+    "330-13 Fencing, Chain Link, Including Fabric, Gates, Panels, Posts and Fittings"
+   ],
+   "contracts": 2
+  },
+  "340": {
+   "items": [
+    "340-00 FIRE PROTECTION EQUIPMENT AND SUPPLIES",
+    "340-07 Breathing Equipment for Firemen, Including Mobile Air Filler Stations",
+    "340-16 Fire Alarm Systems, Power Sirens, and Controls",
+    "340-34 Fire Protection Clothing: Turnout Coats, Bunker Pants, Hoods, Gloves, etc., (See 345-56 for Fire Helmets)",
+    "340-72 Rescue Equipment, Supplies and Accessories Including Confined Space Hard Line Communications Systems, Rescue Nets, Power Extractors (Jaws of Life), Rope and Life Harnesses, etc."
+   ],
+   "contracts": 29
+  },
+  "345": {
+   "items": [
+    "345-48 Gloves, Safety: Electrician's, Lineman's, etc., Including Sleeves",
+    "345-56 Hats and Helmets, Safety, Including Fire Helmets"
+   ],
+   "contracts": 14
+  },
+  "350": {
+   "items": [
+    "350-30 Flag Poles, All Types"
+   ],
+   "contracts": 5
+  },
+  "360": {
+   "items": [
+    "360-10 Carpets and Rugs: Cotton, Synthetic, Wool, etc.",
+    "360-20 Floor Covering, Seamless, All Types",
+    "360-22 Installation Supplies: Adhesive Edge Strip, Seam Tape, Tack Strips, etc.",
+    "360-89 Tools and Equipment, Floor Installation"
+   ],
+   "contracts": 2
+  },
+  "370": {
+   "items": [
+    "370-15 Cutters and Shredders"
+   ],
+   "contracts": 7
+  },
+  "375": {
+   "items": [
+    "375-15 Bread, Rolls, etc., Including Brown and Serve Items"
+   ],
+   "contracts": 2
+  },
+  "380": {
+   "items": [
+    "380-75 Milk, All Types"
+   ],
+   "contracts": 2
+  },
+  "385": {
+   "items": [
+    "385-30 Eggs and Egg Mixes",
+    "385-42 Entrees, Meat, Including Beef and Pork",
+    "385-44 Entrees, Poultry",
+    "385-47 Entrees, Specialty, Including Corn Dogs, Lasagna, Macaroni/Cheese, Mexican Food, Pasta, etc.",
+    "385-48 Fruits, Frozen",
+    "385-54 Juices",
+    "385-56 Pancakes, Waffles and French Toast",
+    "385-57 Pizzas",
+    "385-67 Seafood, Frozen, Not Entrees",
+    "385-96 Vegetables, Frozen"
+   ],
+   "contracts": 21
+  },
+  "390": {
+   "items": [
+    "390-21 Eggs, Fresh",
+    "390-28 Fruits, Fresh",
+    "390-49 Meat: Cured, Fresh, and Frozen",
+    "390-84 Vegetables, Fresh",
+    "390-91 Water, Bottled, Drinking, Including Distilled, Mineral, Sparkling and Spring"
+   ],
+   "contracts": 10
+  },
+  "393": {
+   "items": [
+    "393-00 FOODS: STAPLE GROCERY AND GROCER'S MISCELLANEOUS ITEMS",
+    "393-34 Candy, Confectionery and Marshmallows, Including After Dinner Mints or Savories",
+    "393-35 Cereals, Ready-to-Eat",
+    "393-36 Cereals, Uncooked",
+    "393-41 Coffee, Whole Bean and Ground",
+    "393-42 Cornstarch, Cooking",
+    "393-46 Desserts: Packaged, Canned, and Mixes, Including Cake Mixes, Gelatins, Icings, Pie Fillings, etc.)",
+    "393-48 Dressings, Condiments, Sauces, and Gravies",
+    "393-51 Flour and Flour Binder",
+    "393-54 Fruits, Canned, Processed and Preserved, Including Fruit Sauces and Puree and Non GMO",
+    "393-59 Jams, Jellies, and Preserves",
+    "393-60 Juices, Fruit and Vegetable, Not Frozen",
+    "393-61 Pasta, Including Macaroni, Noodles, and Spaghetti",
+    "393-68 Peanut Butter and Other Nut Butter",
+    "393-69 Pickles, Relishes, and Olives, Including Pickled Foods",
+    "393-72 Rice",
+    "393-75 Shortening and Oil, Vegetable, Cooking Oil, Including Shortening Filter Powder",
+    "393-77 Soft Drinks",
+    "393-78 Soup, Soup Base, and Entree Mixes, Canned and Dehydrated (Incl. Bouillon)",
+    "393-80 Spices, Herbs, Seasonings, Starches, Including Seasoned Salt and Pepper",
+    "393-81 Sugar and Sweeteners",
+    "393-82 Syrups and Molasses, Except Fountain",
+    "393-84 Tea (Not Instant)",
+    "393-86 Vegetables, Canned, Processed and Preserved, Including Canned Salads, Sauces and Puree",
+    "393-87 Vegetables, Dried, Beans, Peas, etc.",
+    "393-88 Vinegar"
+   ],
+   "contracts": 24
+  },
+  "395": {
+   "items": [
+    "395-15 Binders and Documentation Folders For Continuous Forms, Including Self-Mailers",
+    "395-70 Snap-Out Forms, Carbon Interleaved"
+   ],
+   "contracts": 2
+  },
+  "400": {
+   "items": [
+    "400-35 Castings, Gray Iron"
+   ],
+   "contracts": 1
+  },
+  "405": {
+   "items": [
+    "405-00 FUEL, OIL, GREASE AND LUBRICANTS",
+    "405-02 Alternative Fuels (Not Otherwise Classified)",
+    "405-03 Butane and Propane, Including Liquefied Petroleum Gas",
+    "405-12 Fuel Oil, Heating (Use 405-02 for Biodiesel)",
+    "405-13 Gas, Natural, Including Compressed Natural Gas (CNG)",
+    "405-15 Gasoline, Automotive",
+    "405-24 Grease, Lubrication Type",
+    "405-36 Oil, Automotive Transmission",
+    "405-49 Oil, Gear",
+    "405-51 Oil and Fluid, Hydraulic",
+    "405-82 Oil, Two-Cycle Engine"
+   ],
+   "contracts": 37
+  },
+  "410": {
+   "items": [
+    "410-34 Furniture, Hospital, Not Specialized"
+   ],
+   "contracts": 5
+  },
+  "420": {
+   "items": [
+    "420-04 Auditorium, Stadium, Team Seating Furniture and Bleachers",
+    "420-16 Dormitory Furniture, Metal: Wardrobes, Beds, Bunkbeds, Desks, etc.",
+    "420-44 Institutional Furniture, All Types"
+   ],
+   "contracts": 13
+  },
+  "425": {
+   "items": [
+    "425-00 FURNITURE: OFFICE",
+    "425-03 Bookcases and Bookshelves, Metal and Wood",
+    "425-06 Chairs, Metal",
+    "425-18 Data Processing Office Furniture, Wood, (See Item 87 For Not Storage Cabinets)",
+    "425-20 Desks and Tables, Metal",
+    "425-40 Filing Cabinets, Metal: Card, Jumbo, Lateral, Legal, and Letter",
+    "425-42 Filing Systems, Mobile, High Density, Electrical and Mechanical",
+    "425-80 Shelving, Metal, Not Library or Shop",
+    "425-94 Work Stations, Modular, Systems Furniture"
+   ],
+   "contracts": 30
+  },
+  "430": {
+   "items": [
+    "430-48 Medical Gases, Anesthesia and Respiration Therapy: Carbon Dioxide, Cyclopropane, Nitrous Oxide, Pure Oxygen, etc."
+   ],
+   "contracts": 2
+  },
+  "435": {
+   "items": [
+    "435-00 GERMICIDES, CLEANERS, AND RELATED SANITATION PRODUCTS FOR HEALTH CARE PERSONNEL"
+   ],
+   "contracts": 3
+  },
+  "445": {
+   "items": [
+    "445-00 HAND TOOLS, POWERED AND NON-POWERED, INCLUDING ACCESSORIES AND SUPPLIES",
+    "445-39 Hand Tools (Not Otherwise Classified)"
+   ],
+   "contracts": 3
+  },
+  "450": {
+   "items": [
+    "450-06 Batteries, Dry Cell, Except Communications Radio and Electronic",
+    "450-41 Hardware and Related Items (Not Otherwise Classified)",
+    "450-55 Locks, Key Blanks, and Locksmith Tools, Including Time Locks"
+   ],
+   "contracts": 13
+  },
+  "460": {
+   "items": [
+    "460-45 Hydraulic Hoses and Fittings (See 285-30 for Dielectric Hose and Fittings)"
+   ],
+   "contracts": 4
+  },
+  "465": {
+   "items": [
+    "465-48 Hospital and Surgical Equipment and Accessories (Not Otherwise Classified)"
+   ],
+   "contracts": 6
+  },
+  "475": {
+   "items": [
+    "475-54 Medical Documentation Forms, Charts, Labels, etc."
+   ],
+   "contracts": 1
+  },
+  "485": {
+   "items": [
+    "485-65 Janitorial Equipment and Supplies (Not Otherwise Classified)",
+    "485-80 Sand Urns, Filling Materials, Smoking Stands, Wall Mounted Ashtrays, and Cuspidors",
+    "485-94 Waste Receptacles and Dust Pans"
+   ],
+   "contracts": 13
+  },
+  "490": {
+   "items": [
+    "490-43 Laboratory and Scientific Equipment and Supplies (Not Otherwise Classified)",
+    "490-90 Testing Instruments, Laboratory, (Not Otherwise Classified)"
+   ],
+   "contracts": 22
+  },
+  "493": {
+   "items": [
+    "493-00 LABORATORY EQUIPMENT, ACCESSORIES, AND SUPPLIES: BIOCHEMISTRY, CHEMISTRY, ENVIRONMENTAL SCIENCE, ETC.",
+    "493-04 Air Quality Monitoring Equipment and Accessories, Laboratory, Including Ozone Type",
+    "493-96 Water Quality Monitoring Equipment, Laboratory: BOD Analyzers, Turbidimeters, Well Samplers, etc."
+   ],
+   "contracts": 10
+  },
+  "515": {
+   "items": [
+    "515-10 Edgers, Trimmers, and Weed Cutters",
+    "515-15 Engines, Motors, and Parts, For Lawn Equipment",
+    "515-45 Lawn Mowers, Power, Heavy Duty, Rotary Type, Including Self-Propelled Types, (See Class 020 For Highway Type)"
+   ],
+   "contracts": 7
+  },
+  "525": {
+   "items": [
+    "525-00 LIBRARY AND ARCHIVAL EQUIPMENT, MACHINES, AND SUPPLIES",
+    "525-80 Library Supplies, Miscellaneous"
+   ],
+   "contracts": 10
+  },
+  "545": {
+   "items": [
+    "545-65 Salt Brine Production Equipment"
+   ],
+   "contracts": 2
+  },
+  "550": {
+   "items": [
+    "550-20 Flares and Fuses",
+    "550-31 Markers, Traffic, Concrete",
+    "550-41 Posts, Flexible, For Delineator Markers",
+    "550-42 Safety Barriers, Traffic, Mobile: Energy Absorption Systems, Impact Attenuators, Crash Barriers, etc.",
+    "550-44 Sheeting, Reflectorized, For License Plates",
+    "550-45 Sheeting, Reflectorized, General, (See 801-49 for Reflective Sign Material)",
+    "550-80 Traffic Controls and Equipment, Electric Systems",
+    "550-85 Traffic Signal Poles, Standards, and Brackets",
+    "550-89 Traffic Signals and Equipment, Electric Parts",
+    "550-96 Warning Lights, Flashers, and Flashing Arrow Boards (See Class 285-76 for Streetlights and Standards)"
+   ],
+   "contracts": 20
+  },
+  "557": {
+   "items": [
+    "557-62 Signage, Advertising Type, Interior and Exterior"
+   ],
+   "contracts": 1
+  },
+  "560": {
+   "items": [
+    "560-00 MATERIAL HANDLING, CONVEYORS, STORAGE EQUIPMENT AND ACCESSORIES",
+    "560-78 Trucks, Pallet, Hand Operated and Powered",
+    "560-83 Warehouse Equipment, Including Parts and Accessories, (Not Otherwise Classified)"
+   ],
+   "contracts": 5
+  },
+  "570": {
+   "items": [
+    "570-96 Recycled Metals and Related Items"
+   ],
+   "contracts": 1
+  },
+  "578": {
+   "items": [
+    "578-76 Robots, Educational, Scientific Applications, etc."
+   ],
+   "contracts": 1
+  },
+  "590": {
+   "items": [
+    "590-00 NOTIONS AND RELATED SEWING ACCESSORIES AND SUPPLIES"
+   ],
+   "contracts": 3
+  },
+  "595": {
+   "items": [
+    "595-40 Nursery, Greenhouse and Floral Supplies: Labels, Planters, Pots, Tags, Trellises, etc."
+   ],
+   "contracts": 1
+  },
+  "600": {
+   "items": [
+    "600-00 OFFICE MACHINES, EQUIPMENT, AND ACCESSORIES",
+    "600-38 Copy Machines, Bond, Plain Paper Type Including Parts and Accessories",
+    "600-59 Duplicating Machines and Accessories, Spirit Type",
+    "600-72 Multi-Function Office Machines, Combination of Fax-Copier-Scanner-Printer, etc."
+   ],
+   "contracts": 19
+  },
+  "615": {
+   "items": [
+    "615-33 Desk Accessories: Alphabetizers, Cash Boxes, Desk Files, File Card Cabinets, Letter Sorters, Message Racks, etc. (See 620-10 for Desk Sets)"
+   ],
+   "contracts": 2
+  },
+  "640": {
+   "items": [
+    "640-00 PAPER AND PLASTIC PRODUCTS, DISPOSABLE",
+    "640-27 Foil Containers and Bags",
+    "640-50 Paper Products: Cups, Doilies, Napkins, Plates, Straws, Facial Tissues, Other Than Hospital",
+    "640-60 Plastic and Styrofoam Products: Cups, Forks, Plastic Coated Dishes, Plastic Food Wrap, Cooking Bags, Sandwich Bags, Spoons, Straws, Doilies, etc.",
+    "640-80 Waxed Paper, Aluminum Foil and Cellophane"
+   ],
+   "contracts": 6
+  },
+  "645": {
+   "items": [
+    "645-21 Bond Paper, Including Recycled"
+   ],
+   "contracts": 1
+  },
+  "650": {
+   "items": [
+    "650-06 Benches, Park, Including Bus Stop Benches",
+    "650-10 Bicycle Racks",
+    "650-18 Combination Sets, Playground",
+    "650-23 Golf Course Maintenance Tools and Equipment (See Class 515 For Lawn Mowers)",
+    "650-24 Grill and Park Stoves, Outdoor",
+    "650-38 Playground Equipment, (Not Otherwise Classified), (See 420-04 for Bleachers)",
+    "650-50 Safety Surfaces, Playground",
+    "650-62 Sports Field Maintenance Equipment",
+    "650-75 Water Park Equipment: Slides, Splash Pads, Aqua Climb",
+    "650-78 Umbrellas, Lawn and Picnic Type"
+   ],
+   "contracts": 32
+  },
+  "652": {
+   "items": [
+    "652-29 Cosmetics and Skin Care: Colognes, Creams, Lipsticks, Lotions, Perfumes, Powders, Soaps w/Lotion, Suncreeen, etc."
+   ],
+   "contracts": 1
+  },
+  "655": {
+   "items": [
+    "655-40 Cameras, Video, Portable, Body and Dash Cams",
+    "655-41 Chemicals, Photographic"
+   ],
+   "contracts": 5
+  },
+  "665": {
+   "items": [
+    "665-24 Bags and Liners, Plastic: Garbage Can Liners, Janitor Cart Liners, Linen Hamper Liners, Litter Bags, Polyethylene Bags, etc., Including Biodegradable",
+    "665-83 Stretch Film and Wrapping Equipment"
+   ],
+   "contracts": 4
+  },
+  "670": {
+   "items": [
+    "670-00 PLUMBING EQUIPMENT, FIXTURES, AND SUPPLIES",
+    "670-57 Plumbing Equipment, Accessories and Supplies (Not Otherwise Classified)"
+   ],
+   "contracts": 6
+  },
+  "675": {
+   "items": [
+    "675-00 PESTICIDES AND CHEMICALS: AGRICULTURAL AND INDUSTRIAL",
+    "675-54 Pesticides"
+   ],
+   "contracts": 5
+  },
+  "680": {
+   "items": [
+    "680-02 Access Control Systems and Security Systems",
+    "680-04 Ammunition",
+    "680-08 Police Protection Equipment, Body Armor and Riot Shields and Supplies",
+    "680-12 Belts, Cases, Holsters, Scabbards, etc.",
+    "680-24 Breath Alcohol Testing Instruments and Supplies",
+    "680-41 Crime Detection Equipment and Supplies",
+    "680-50 Guns, Nonlethal, Including Stun, Taser Weapons, (See 680-54 for EMD Weapons)",
+    "680-52 Guns, Pistols, Rifles, and Shotguns, Including Parts and Accessories, (See 680-86 for Scopes)",
+    "680-71 Inmate Tracking Devices, Electronic, Wrist and Leg Bands, etc.",
+    "680-77 Radar Instruments, Traffic Enforcement Type (Including Laser Speed Measuring, Ranging Devices, Radar Instruments Equipped w/Cameras and Lidar Equipment (Laser)"
+   ],
+   "contracts": 27
+  },
+  "690": {
+   "items": [
+    "690-34 Converters and Inverters, Power"
+   ],
+   "contracts": 1
+  },
+  "720": {
+   "items": [
+    "720-36 Hydraulic Pumps, Hand and Motor Driven"
+   ],
+   "contracts": 4
+  },
+  "725": {
+   "items": [
+    "725-55 Telephone Equipment and Piece Parts (Not Lines or Otherwise Classified) (EFFECTIVE 3-1-07 THIS CLASS-ITEM INACTIVATED FOR NEW USE, REFER TO 839-85)",
+    "725-56 Telephone Systems (2-60 Stations), Electronic Key and 1A2 (EFFECTIVE 3-1-07 THIS CLASS-ITEM INACTIVATED FOR NEW USE, REFER TO 839-87)",
+    "725-95 Recycled Communications Equipment (Including Batteries, Radios, Telephones, Telecommunication Equipment, etc.) (EFFECTIVE 3-1-07 THIS CLASS-ITEM INACTIVATED FOR NEW USE, REFER TO 726-80)"
+   ],
+   "contracts": 2
+  },
+  "726": {
+   "items": [
+    "726-00 RADIO COMMUNICATION EQUIPMENT AND ANTENNAS, INCLUDING PARTS AND ACCESSORIES",
+    "726-51 Global Positioning Systems, Satellite, Global Information Systems, Including GPS Receivers and Transmitters"
+   ],
+   "contracts": 14
+  },
+  "745": {
+   "items": [
+    "745-14 Asphaltic Concrete, Cold Laid",
+    "745-56 Joint Sealants: Asphalt, Elastomeric Materials, Glass Filament, Impervious Membranes, Plastic, Rubber, Silicones, Water Stops, etc."
+   ],
+   "contracts": 3
+  },
+  "755": {
+   "items": [
+    "755-35 Asphalt Pavers, Towed Type",
+    "755-40 Asphalt Tools: Buckets, Cutters, Lutes, Pouring Pots, Rakes, etc.",
+    "755-80 Concrete and Mortar Mixers"
+   ],
+   "contracts": 5
+  },
+  "760": {
+   "items": [
+    "760-00 ROAD AND HIGHWAY EQUIPMENT: EARTH HANDLING, GRADING, MOVING, PACKING, ETC.",
+    "760-06 Blades and Edges: Dozer, Grader, Scraper, Snow Plow, etc.",
+    "760-44 Loaders, Front End, Crawler Tractors",
+    "760-50 Loaders, Front End, Wheel Type Tractors",
+    "760-84 Scrapers"
+   ],
+   "contracts": 16
+  },
+  "765": {
+   "items": [
+    "765-00 ROAD AND HIGHWAY EQUIPMENT (EXCEPT EQUIPMENT IN CLASSES 755 AND 760)",
+    "765-09 Cranes, Backhoe and Dragline",
+    "765-61 Snow Plows and/or Snow Wings, Vehicle Mounted",
+    "765-66 Spreaders, Truck Mounted, For Aggregates, Ice Control Materials, Seal Coatings, etc.",
+    "765-75 Sweeper Accessories: Broom Fibers, Extension Brooms, Strips, Wire, Road Magnets, etc.",
+    "765-77 Sweepers, Drag Brooms, etc. Including Parts and Accessories (See Class 365 for Warehouse Power Brooms and 035-81 for Runway Sweepers)",
+    "765-88 Vacuum Trucks"
+   ],
+   "contracts": 25
+  },
+  "775": {
+   "items": [
+    "775-45 Road Maintenance Salt (See Class 192 for Ice Removal Chemicals)"
+   ],
+   "contracts": 2
+  },
+  "785": {
+   "items": [
+    "785-15 Blackboards, Chalkboards and Dry Erase Boards",
+    "785-45 Drawing/Art Supplies, Schoolroom: Colored Pencils, Compasses, Construction Paper, Drawing Paper, Pencil/Pen Pouches, Protractors, etc.",
+    "785-53 Educational Games and Toys, All Types (See 037-84; 208-47; 209-48; and 805-51 for other type games) Incl. Assembly Kits",
+    "785-70 Instructional Aids: Courses, Lesson Plans, Prepared, Programs, Ancillary Materials, DVDs, etc. (See Class 715 for Textbooks)",
+    "785-83 Presentation Systems Equipment, Including Presentation Boards and Multi-Image Devices"
+   ],
+   "contracts": 18
+  },
+  "800": {
+   "items": [
+    "800-86 Shoes and Boots, Work, Men's",
+    "800-88 Shoes and Boots, Work, Women's"
+   ],
+   "contracts": 6
+  },
+  "801": {
+   "items": [
+    "801-09 Blanks, Sign, Metal (See 801-71, 89, and 97 for other Sign Blanks)",
+    "801-60 Signs: Construction, Including Roll-Up Type Message Signs",
+    "801-83 Signs, Metal, Not Blanks"
+   ],
+   "contracts": 5
+  },
+  "803": {
+   "items": [
+    "803-82 Studio Monitors, Broadcasting and Recording"
+   ],
+   "contracts": 1
+  },
+  "805": {
+   "items": [
+    "805-00 SPORTING GOODS, ATHLETIC EQUIPMENT AND ATHLETIC FACILITY EQUIPMENT",
+    "805-21 Badminton Equipment",
+    "805-24 Baseball Equipment",
+    "805-30 Basketball Equipment, Including Backboards and Backstops",
+    "805-42 Boxing and Wrestling Equipment: Gloves, Platforms, Rings, Striking Bags, Training Bags, etc.",
+    "805-48 Football Equipment",
+    "805-58 LaCrosse Equipment and Accessories",
+    "805-61 Hockey Equipment, Ice and Field",
+    "805-66 Soccer Equipment",
+    "805-81 Track and Field Equipment",
+    "805-94 Weight Lifting Equipment and Accessories"
+   ],
+   "contracts": 5
+  },
+  "830": {
+   "items": [
+    "830-69 Steel Tanks, Storage Type: Fuel, Gasoline, and Wetted Salt"
+   ],
+   "contracts": 14
+  },
+  "838": {
+   "items": [
+    "838-45 Emergency Radio/Telephone Systems, 411, 911 etc., Dispatch"
+   ],
+   "contracts": 1
+  },
+  "840": {
+   "items": [
+    "840-20 Broadcast Equipment,Television"
+   ],
+   "contracts": 1
+  },
+  "850": {
+   "items": [
+    "850-12 Blankets, Bedding, All Types"
+   ],
+   "contracts": 1
+  },
+  "863": {
+   "items": [
+    "863-05 Tires and Tubes, Passenger Vehicles",
+    "863-06 Tires and Tubes, Motorcycle",
+    "863-07 Tires and Tubes, Light Trucks",
+    "863-10 Tires and Tubes, Medium Truck and Bus",
+    "863-15 Tires and Tubes, Off-Road Equipment",
+    "863-20 Tires and Tubes, Farm Tractor and Implement",
+    "863-25 Tires and Tubes, Industrial",
+    "863-30 Tires and Tubes, Misc. (Not Otherwise Classified)"
+   ],
+   "contracts": 2
+  },
+  "883": {
+   "items": [
+    "883-80 Telephone Switching (PBX) Systems"
+   ],
+   "contracts": 2
+  },
+  "890": {
+   "items": [
+    "890-95 Recycled Water Supply, Groundwater and Sewage Treatment Equipment, Including Parts and Accessories"
+   ],
+   "contracts": 1
+  },
+  "905": {
+   "items": [
+    "905-16 Airplanes, Helicopters and Accessories Maintenance and Repair Services"
+   ],
+   "contracts": 2
+  },
+  "909": {
+   "items": [
+    "909-60 Maintenance and Repair, Industrial Building"
+   ],
+   "contracts": 1
+  },
+  "910": {
+   "items": [
+    "910-13 Elevator Installation, Maintenance, Repair and Inspection Services",
+    "910-20 Escalator and Moving Walkway, Installation, Maintenance and Repair Services",
+    "910-27 Garbage and Trash Removal, Disposal and or Treatment Services",
+    "910-36 Heating, Air Conditioning, and Ventilation Maintenance, Repair and Installation Services",
+    "910-39 Janitorial and Custodial Services",
+    "910-48 Locksmith Services",
+    "910-59 Pest Control Services: Termite Inspection and Control, Bird Proofing, Animal Trapping, Rodent Control, Exterminating and Fumigation"
+   ],
+   "contracts": 19
+  },
+  "913": {
+   "items": [
+    "913-71 Maintenance and Repair, Highway and Roads, Including Removal of Asphalt, Concrete, Bitumens, etc.",
+    "913-94 Paving and Resurfacing, Alley and Parking Lot",
+    "913-95 Paving and Resurfacing, Highway and Road"
+   ],
+   "contracts": 11
+  },
+  "915": {
+   "items": [
+    "915-03 Advertising and Public Relations, Including Skywriting",
+    "915-04 Advertising Services, Outdoor Billboard, etc.",
+    "915-15 Broadcasting Services, Television",
+    "915-58 Mailing Services: Addressing, Collating, Packaging, Sorting and Delivery",
+    "915-75 Telephone Services, Cellular",
+    "915-77 Telephone Services, Long Distance and Local, Including 800, Telex, Watts Services, and Offender Telephone Systems",
+    "915-79 Telecommunication Services (Not Otherwise Classified)",
+    "915-82 Video Production Services",
+    "915-96 Web Page Design, Management and Maintenance Services",
+    "915-97 Wiring Services, Data and Voice"
+   ],
+   "contracts": 50
+  },
+  "917": {
+   "items": [
+    "917-35 Contracted Services, Travel, Hotel"
+   ],
+   "contracts": 1
+  },
+  "918": {
+   "items": [
+    "918-00 CONSULTING SERVICES",
+    "918-03 Alcohol and Drug Abuse Consulting",
+    "918-04 Accounting, Auditing, Budget Consulting",
+    "918-20 Business Consulting, Small",
+    "918-32 Consulting Services (Not Otherwise Classified)",
+    "918-38 Education and Training Consulting",
+    "918-40 Employee Benefits Consulting",
+    "918-54 Furnishings Consulting",
+    "918-69 Insurance Consulting",
+    "918-71 IT Consulting, (Not Otherwise Classified)",
+    "918-75 Management Consulting",
+    "918-81 Natural Disasters, Fire, Flood, Wind, Quakes, Consulting",
+    "918-90 Strategic Planning and Consulting",
+    "918-93 Security and Safety Consulting",
+    "918-95 Telecommunications Consulting",
+    "918-97 Utilities: Gas, Water, Electric Consulting"
+   ],
+   "contracts": 48
+  },
+  "920": {
+   "items": [
+    "920-00 DATA PROCESSING, COMPUTER, PROGRAMMING, AND SOFTWARE SERVICES",
+    "920-02 Access Services, Data",
+    "920-03 Application Service Provider (ASP), Web Based Hosted",
+    "920-05 Application, Infrastructure, Hosting and Cloud Computing Services, Vendor Hosted and Internally Hosted",
+    "920-13 Advanced Authentication System Software Services, Including Maintenance and Repair",
+    "920-14 Applications Software, Mainframes and Servers",
+    "920-17 Electronic Forms Services",
+    "920-21 Data Entry Services",
+    "920-22 Data Preparation and Processing Services, Including Bates Coding",
+    "920-38 Optical Scanning Services",
+    "920-39 Processing System Services, Data (Not Otherwise Classified)",
+    "920-40 Programming Services, Computer, Including Mobile Device Applications",
+    "920-45 Software Maintenance and Support Services",
+    "920-46 Software Updating and Upgrading Services",
+    "920-47 Support Services, Computer, Includes Computer Warranties",
+    "920-64 System Implementation and Engineering Services",
+    "920-65 System Requirements Quality Assurance Review",
+    "920-91 Training, Computer Based, Software Supported"
+   ],
+   "contracts": 51
+  },
+  "924": {
+   "items": [
+    "924-18 Educational Services, Alternative",
+    "924-20 Examination and Testing Services"
+   ],
+   "contracts": 6
+  },
+  "925": {
+   "items": [
+    "925-35 Environmental Engineering",
+    "925-77 Pollution Control Engineering",
+    "925-79 Railroad; Rapid Transit; Monorail Engineering",
+    "925-95 Utilities, Gas, Steam, Electric Engineering"
+   ],
+   "contracts": 12
+  },
+  "926": {
+   "items": [
+    "926-00 ENVIRONMENTAL AND ECOLOGICAL SERVICES",
+    "926-29 Contaminated Groundwater Services, Including Discharge Pipe Installation",
+    "926-77 Recycling Services",
+    "926-78 Remediation Services, Environmental, Including Rehabilitation Services Hazardous Waste and Mold Remediation",
+    "926-83 Site Assessment, Environmental"
+   ],
+   "contracts": 19
+  },
+  "928": {
+   "items": [
+    "928-00 EQUIPMENT MAINTENANCE AND REPAIR SERVICES FOR AUTOMOBILES, TRUCKS, TRAILERS, TRANSIT BUSES AND OTHER VEHICLES",
+    "928-04 Accessories Maintenance and Repair, (Not Otherwise Classified)",
+    "928-15 Automobile and Other Passenger Vehicles Maintenance and Repair (Not Otherwise Classified)",
+    "928-19 Body and Frame Work, Including Undercoating",
+    "928-24 Buses, School and Mass Transit Maintenance and Repair",
+    "928-27 Communications Systems, Vehicle Maintenance and Repair, Including Installation and Removal Services",
+    "928-30 Cooling, Heating, and Ventilating System, A/C System, Hoses, Water Pump, Radiator, Heater and Accessories, Ventilation, etc. Maintenance and Repair",
+    "928-47 General Maintenance and Repair, Vehicle (Not Otherwise Classified), Including Oil Changes, Lubrication, Guaranteed Maintenance Programs, etc. (See 928-88 for Tune-Ups)",
+    "928-49 Hydraulics Pump, Hydraulic Motor, Valves, Gauges, etc. Maintenance and Repair",
+    "928-67 Road Services, Vehicle, Including Mobile Repair Services",
+    "928-86 Truck and Van Maintenance and Repair (Not Otherwise Classified)",
+    "928-87 Truck Maintenance and Repair, Heavy",
+    "928-92 Vehicle Inspection and Testing Services, Emissions, etc.",
+    "928-93 Washing, Waxing, Polishing, Steam Cleaning, Disinfecting, Decal Removal, etc."
+   ],
+   "contracts": 88
+  },
+  "929": {
+   "items": [
+    "929-43 Hydraulics, Pump, Hydraulic Motor, Valves, Gauges, etc. Maintenance and Repair",
+    "929-47 Lifts and Hoists Maintenance and Repair",
+    "929-58 Material Handling Equipment Maintenance and Repair",
+    "929-70 Snow Plow and Blower Maintenance and Repair"
+   ],
+   "contracts": 32
+  },
+  "936": {
+   "items": [
+    "936-33 Fire Protection Equipment and Systems Including Fire Hydrants, Fire Sprinkler Systems, Smoke Detectors, Jaws of Life, Fire Protection Material Treatment, Firestop and Fire Barriers, etc.Inspection, Maintenance and Repair",
+    "936-39 Generators, Portable and Stationary, Including Parts and Accessories Maintenance and Repair",
+    "936-73 Security and Access Systems Maintenance and Repair",
+    "936-84 Towers, Radio/Radar, etc., Maintenance and Repair, Including Painting",
+    "936-94 Weather Forecasting Equipment Maintenance and Repair"
+   ],
+   "contracts": 16
+  },
+  "938": {
+   "items": [
+    "938-81 Scientific Equipment Maintenance and Repair"
+   ],
+   "contracts": 1
+  },
+  "939": {
+   "items": [
+    "939-52 Mailing Machines and Equipment Maintenance and Repair",
+    "939-60 Office Machines and Mechanical Aids, Small, Maintenance and Repair",
+    "939-72 Radio, Telecommunications, Telephone Equipment, Including 911 Systems and Facsimile Transceivers, Maintenance and Repair"
+   ],
+   "contracts": 16
+  },
+  "940": {
+   "items": [
+    "940-86 Tower Maintenance and Repair"
+   ],
+   "contracts": 1
+  },
+  "944": {
+   "items": [
+    "944-38 Crop Farming (Not Otherwise Classified)",
+    "944-54 Miscellaneous Farming Services"
+   ],
+   "contracts": 3
+  },
+  "945": {
+   "items": [
+    "945-00 FISHING, HUNTING, TRAPPING, GAME PROPAGATION, AND RELATED SERVICES"
+   ],
+   "contracts": 1
+  },
+  "946": {
+   "items": [
+    "946-10 Accounting and Billing Services, Including Payroll Services, 3rd Party Reimbursement for Medicare, Medicaid, Private Insurance, etc.",
+    "946-12 Actuarial Services and Retirement Planning",
+    "946-15 Appraisal Services, Real Estate",
+    "946-20 Audit Services",
+    "946-33 Collection Services, Financial Debt",
+    "946-35 Credit Card, Charge Card Services",
+    "946-54 Installment and Lease Purchase Financing",
+    "946-56 Investment Management Services"
+   ],
+   "contracts": 42
+  },
+  "947": {
+   "items": [
+    "947-41 Firefighting Services, Forestry"
+   ],
+   "contracts": 2
+  },
+  "948": {
+   "items": [
+    "948-07 Administration Services, Health",
+    "948-37 Experimental Medical Services",
+    "948-43 Health Information Services",
+    "948-46 Hospital Services, Inpatient and Outpatient",
+    "948-48 Health Care Services (Not Otherwise Classified)",
+    "948-72 Pharmaceutical Services",
+    "948-74 Professional Medical Services: Physicians, Pharmacists, and All Specialties",
+    "948-76 Psychologists, Psychological and Psychiatric Services, Including Behavioral Management Services",
+    "948-86 Therapy and Rehabilitation Services",
+    "948-93 Waste Disposal Services, Medical"
+   ],
+   "contracts": 19
+  },
+  "952": {
+   "items": [
+    "952-00 HUMAN SERVICES",
+    "952-05 Alcohol and Drug Detoxification, Including Rehabilitation)",
+    "952-07 Alcohol and Drug Testing Services",
+    "952-15 Case Management",
+    "952-20 Correctional Services",
+    "952-77 Research and Evaluation, Human Services, Including Productivity Audits",
+    "952-90 Training and Instruction Services, Clients, Not Staff",
+    "952-94 Transportation Services: Elderly, Handicapped, Incapacitated, Prisoners, Juries, Students. Etc."
+   ],
+   "contracts": 17
+  },
+  "953": {
+   "items": [
+    "953-52 Insurance and Insurance Services (Not Otherwise Classified)"
+   ],
+   "contracts": 1
+  },
+  "954": {
+   "items": [
+    "954-05 Laundry and Linen Service, (Not Otherwise Classified)"
+   ],
+   "contracts": 1
+  },
+  "956": {
+   "items": [
+    "956-35 Internet Database Subscriptions",
+    "956-70 Research Services, Other Than Business"
+   ],
+   "contracts": 3
+  },
+  "958": {
+   "items": [
+    "958-15 Building and Facilities Management Services",
+    "958-39 Financial Management Services",
+    "958-41 Fleet Management Services",
+    "958-45 Forestry Management Services, Including Inventory, Monitoring, Extension, Pest Control, etc.",
+    "958-50 Fuel Management Services",
+    "958-58 Hospital Management Services",
+    "958-61 Insurance and Risk Management Services",
+    "958-66 Lottery Management Services",
+    "958-77 Project Management Services",
+    "958-82 Records Management Services, Including Document Management Services and Technology Integration",
+    "958-85 Soil and Land Management Services, Including Testing, Protection, Preparation, Planning, etc.",
+    "958-96 Waste Management Services"
+   ],
+   "contracts": 23
+  },
+  "961": {
+   "items": [
+    "961-05 Arbitration, Mediation, and Alternative Dispute Resolution Services",
+    "961-13 Chartering Services for Aircraft, Boats, Buses, and other Transportation",
+    "961-16 Claims Processing Services",
+    "961-24 Court Reporting Services, Including Electronic",
+    "961-38 Food Preparation Services, Including Food Canning Services",
+    "961-45 Inspection and Certification Services",
+    "961-46 Interpreter Services, Foreign Language, Hearing Impaired, etc., (See Item 17 for Interpreter Services - Electronically Assisted)",
+    "961-50 Legal Services Including Depositions and Expert Witness Testimony",
+    "961-56 Program and Project Development and Management Services",
+    "961-64 Satellite Global Positioning System Information Services (GPS)",
+    "961-75 Translation Services, All Languages"
+   ],
+   "contracts": 28
+  },
+  "962": {
+   "items": [
+    "962-09 Auctioneering Services, Including On-line Auctions",
+    "962-14 Blue Printing Services: Blue Prints, Blue Line, Large Engineering",
+    "962-24 Courier/Delivery Services, Including Air Courier Services)",
+    "962-25 Disposal and Removal, Dead Animals",
+    "962-27 Document Shredding Services",
+    "962-46 Installation and Removal Services (Not Otherwise Classified)",
+    "962-56 Moving Services",
+    "962-58 Professional Services (Not Otherwise Classified)",
+    "962-69 Personnel Services, Temporary",
+    "962-70 Removal and Pickup of Dead Bodies",
+    "962-91 Utility Locator Service, Underground"
+   ],
+   "contracts": 28
+  },
+  "963": {
+   "items": [
+    "963-91 Warranties"
+   ],
+   "contracts": 1
+  },
+  "966": {
+   "items": [
+    "966-07 Business Cards Printing",
+    "966-22 Decal Printing",
+    "966-36 Forms Printing, Not Continuous",
+    "966-62 Offset Printing, Booklets, Saddle Stitch Binding (Quan. Under 100,000): Books and Magazines"
+   ],
+   "contracts": 5
+  },
+  "967": {
+   "items": [
+    "967-17 Assembly Line Services",
+    "967-31 Classroom and Educational Furnishings and Equipment, Manufacturing Services"
+   ],
+   "contracts": 4
+  },
+  "968": {
+   "items": [
+    "968-36 Dust Control Watering",
+    "968-71 Solid or Liquid Waste Disposal, Including Management Services. (See 926-45 for Hazardous Waste Disposal)",
+    "968-72 Snow and Ice Removal Services",
+    "968-90 Vehicle Towing and Storage",
+    "968-96 Water and Wastewater Treatment Services"
+   ],
+   "contracts": 125
+  },
+  "971": {
+   "items": [
+    "971-70 Storage Space Rental or Lease",
+    "971-91 Warehouse Rental or Lease"
+   ],
+   "contracts": 3
+  },
+  "975": {
+   "items": [
+    "975-11 Airplanes, Gliders, Helicopters, and Accessories Rental or Lease",
+    "975-14 Automobiles and Other Passenger Vehicles, Including Emergency Type Rental or Lease",
+    "975-36 Forestry Equipment Rental or Lease",
+    "975-86 Truck and Van, Including Fire and Garbage Trucks Rental or Lease"
+   ],
+   "contracts": 7
+  },
+  "979": {
+   "items": [
+    "979-81 Testing and Training Apparatus, Instruments, and Machines Rental or Lease"
+   ],
+   "contracts": 1
+  },
+  "981": {
+   "items": [
+    "981-00 RENTAL OR LEASE OF GENERAL EQUIPMENT (HVAC, ATHLETIC, FIRE AND POLICE PROTECTION, ETC.)"
+   ],
+   "contracts": 4
+  },
+  "985": {
+   "items": [
+    "985-54 Mailing Equipment Including Postage Meter Rental or Lease"
+   ],
+   "contracts": 10
+  },
+  "988": {
+   "items": [
+    "988-36 Grounds Maintenance: Mowing, Edging, Plant, Not Tree Trimming, etc.",
+    "988-52 Landscaping, Including Design, Fertilizing, Planting, etc., Not Grounds Maintenance or Tree Trimming Services",
+    "988-88 Tree Trimming and Pruning Services"
+   ],
+   "contracts": 16
+  },
+  "990": {
+   "items": [
+    "990-29 Disaster Preparedness and Emergency Planning Services",
+    "990-30 Disaster Relief Services",
+    "990-41 Fingerprinting Services",
+    "990-46 Guard and Security Services"
+   ],
+   "contracts": 14
+  },
+  "992": {
+   "items": [
+    "992-65 Pressure Testing Services, Fuel Tanks, Pressure Tanks, etc."
+   ],
+   "contracts": 1
+  },
+  "015": {
+   "items": [
+    "015-39 Paper, Chemicals, and Supplies, Coated or Treated Paper Type Copying Machines, (See 305-39 for Diazo Process Copy Machines"
+   ],
+   "contracts": 18
+  },
+  "020": {
+   "items": [
+    "020-00 AGRICULTURAL EQUIPMENT, IMPLEMENTS, AND ACCESSORIES (SEE CLASS 022 FOR PARTS)",
+    "020-61 Loaders, Tractor Mounted, Farm",
+    "020-65 Mower, Steep Slope Type with Cutter Head on Telescoping Boom: Flail, Rotary, or Sickle Bar Cutter Heads, For Mounting on Tractors or Trucks (See Class 515 for Lawn Type Mowers)",
+    "020-89 Tractors, Farm, Wheel Type"
+   ],
+   "contracts": 17
+  },
+  "022": {
+   "items": [
+    "022-04 Brush Chipper, Cutter and Saw Parts"
+   ],
+   "contracts": 4
+  },
+  "031": {
+   "items": [
+    "031-67 HVAC Equipment, Accessories and Supplies (Not Otherwise Classified)"
+   ],
+   "contracts": 3
+  },
+  "035": {
+   "items": [
+    "035-04 Aircraft Avionics, (Not Otherwise Classified): Navigation Instruments, Transponders, Global Positioning Systems, etc.",
+    "035-20 Airplanes",
+    "035-35 Engines and Parts, Helicopter",
+    "035-75 Parts (Except Engine), Helicopter",
+    "035-81 Sweepers, Runway (See 765-77 for Street Sweepers)"
+   ],
+   "contracts": 5
+  },
+  "040": {
+   "items": [
+    "040-00 ANIMALS, BIRDS, MARINE LIFE, INSECTS AND POULTRY, LIVE, INCLUDING ACCESSORY ITEMS"
+   ],
+   "contracts": 1
+  },
+  "055": {
+   "items": [
+    "055-13 Car Seats for Infants",
+    "055-32 Gauges, Automotive, Including Speedometers",
+    "055-78 Seats, Including Parts and Accessories, Automotive",
+    "055-79 Sirens, Horns and Back-up Alarms, Automotive",
+    "055-90 Wheelchair Lift and Accessories, Vehicle-Mounted"
+   ],
+   "contracts": 41
+  },
+  "060": {
+   "items": [
+    "060-00 AUTOMOTIVE AND TRAILER EQUIPMENT AND PARTS",
+    "060-09 Batteries and Charging Stations For Electric Automobiles, Including Recycled Types",
+    "060-57 Glass and Supplies: Door, Windshield, etc., Automotive",
+    "060-66 Parts and Accessories, Automotive, Miscellaneous (Not Otherwise Classified)",
+    "060-70 Replacement Parts for Chrysler (Mopar)",
+    "060-74 Replacement Parts for other than Chrysler, Ford, General Motors, and International Harvester",
+    "060-94 Transmissions, Standard and Automatic, Including Clutch Assemblies and Parts",
+    "060-97 Windshield Wiper and Washer Assemblies, and Parts, Including Windshield Washer Fluid"
+   ],
+   "contracts": 39
+  },
+  "065": {
+   "items": [
+    "065-05 Aerial Ladders and Towers, Including Buckets for Personnel",
+    "065-30 Dump Bodies, Hoist Subframes, etc.",
+    "065-67 Platform Bodies, Including Elevating Type",
+    "065-88 Trailer Bodies and Parts, Including Access Steps and Ladders"
+   ],
+   "contracts": 8
+  },
+  "071": {
+   "items": [
+    "071-03 Ambulances and Rescue Vehicles (See 072-30 for Fire Protection and Crash Rescue Trucks)",
+    "071-04 Automobiles",
+    "071-05 Automobiles, Police and Security Equipped",
+    "071-80 SUV Type Vehicles, Including Carryalls",
+    "071-90 Vans, Cargo",
+    "071-92 Vans, Passenger, Regular and Handicapped Equipped"
+   ],
+   "contracts": 26
+  },
+  "072": {
+   "items": [
+    "072-00 TRUCKS, INCLUDING, DIESEL, GASOLINE, ELECTRIC, HYBRID, AND ALTERNATIVE FUEL UNITS",
+    "072-01 Class 1 Trucks (6,000 lb. GVWR or less)",
+    "072-02 Class 2 Trucks (6,001 - 10,000 lb. GVWR)",
+    "072-03 Class 3 Trucks (10,001 - 14,000 lb. GVWR)",
+    "072-04 Class 4 Trucks (14,001 - 16,000 lb. GVWR)",
+    "072-05 Class 5 Trucks (16,001 - 19,500 lb. GVWR)",
+    "072-06 Class 6 Trucks (19,501 - 26,000 lb. GVWR)",
+    "072-08 Class 8 Trucks (33,001 lb. GVWR and Over)"
+   ],
+   "contracts": 32
+  },
+  "073": {
+   "items": [
+    "073-08 Trailers, With Enclosed Refrigeration Unit",
+    "073-10 Trailers, Semi, Enclosed"
+   ],
+   "contracts": 1
+  },
+  "075": {
+   "items": [
+    "075-44 Lifts and Hoists, Floor Type: Electric, Hydraulic, or Pneumatic"
+   ],
+   "contracts": 5
+  }
+ }
+}

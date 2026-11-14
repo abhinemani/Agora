@@ -47,6 +47,7 @@ const supplierMerges = reviewed<{ merge: string[][]; confidence: string }>("supp
 const categoryPicks = reviewed<{ pick: string; confidence: string }>("category");
 const canonRows = reviewed<{ name: string | null; sku: string | null; list: number | null; discount: number | null; price: number | null; unit: string | null; issue: string | null; confidence: string; page: number; line: string }>("canon-rows");
 const productNames = reviewed<{ pick: string | null; confidence: string }>("product-name");
+const nigpPicks = reviewed<{ classes: string[]; confidence: string }>("nigp");
 
 interface RawSupplier {
   supplier_id: string;
@@ -398,6 +399,10 @@ interface Contract {
   category?: string;
   /** A state contract (NJSTART): whether the state opens it to its local governments, and its solicitation. */
   state_contract?: { state: string; locals: boolean; solicitation: string | null; type_code: string | null; group: string | null; spent: number | null; more_items: boolean };
+  /** NIGP commodity classes (3 digits) and, where the source prints them, item codes ("490-90").
+   * "published": from the contract's own records (NJSTART). "reviewed": chosen by the AI review
+   * (scripts/cleanup) from the classes NJSTART's records name. */
+  nigp?: { classes: string[]; codes: string[]; source: "published" | "reviewed" };
 }
 /** GSA codes that describe nothing on their own: order-level materials, ancillary supplies. */
 const GSA_FILLER = new Set(["OLM", "ANCILLARY"]);
@@ -466,6 +471,28 @@ function stateContractOf(meta: Record<string, unknown>): Partial<Contract> {
     ...(typeof meta.category === "string" ? { category: meta.category } : {}),
   };
 }
+// NIGP commodity codes. NJSTART prints them on its line items; every other contract takes the
+// classes the review chose for its title (GSA contracts: for their SINs, in SIN order).
+const nigpStats = { published: 0, reviewed: 0, none: 0 };
+{
+  const njCodes = new Map((njstart?.contracts ?? []).map((c) => [c.contract_id, ((c.source_metadata ?? {}).nigp as string[] | undefined) ?? []]));
+  for (const c of contracts) {
+    if (c.state_contract) {
+      const codes = njCodes.get(c.id) ?? [];
+      if (codes.length) {
+        c.nigp = { classes: [...new Set(codes.map((x) => x.slice(0, 3)))], codes, source: "published" };
+        nigpStats.published++;
+      } else nigpStats.none++;
+      continue;
+    }
+    const picks = c.coop === "GSA MAS" ? [...new Set(c.sins.flatMap((x) => nigpPicks[`sin:${x}`]?.classes ?? []))] : (nigpPicks[`title:${c.title.trim().toLowerCase()}`]?.classes ?? []);
+    if (picks.length) {
+      c.nigp = { classes: picks.slice(0, 6), codes: [], source: "reviewed" };
+      nigpStats.reviewed++;
+    } else nigpStats.none++;
+  }
+}
+
 // Categories: each distinct title was classified once; GSA contracts take their first described SIN's.
 let categorized = 0;
 for (const c of contracts) {
@@ -491,6 +518,8 @@ interface Offering {
   unit: string | null;
   url: string;
   category: string | null;
+  /** The NIGP item code the source prints on this line (NJSTART). */
+  nigp?: string;
 }
 const offerings: Offering[] = rawOfferings.map((o) => {
   const meta = o.source_metadata ?? {};
@@ -510,6 +539,7 @@ const offerings: Offering[] = rawOfferings.map((o) => {
     unit: o.unit_of_measure ?? null,
     url: o.source_url,
     category: typeof meta.category_as_published === "string" ? meta.category_as_published : null,
+    ...(typeof meta.nigp === "string" ? { nigp: meta.nigp } : {}),
   };
 });
 const usedProducts = new Set(offerings.map((o) => o.product));
@@ -778,8 +808,23 @@ const insights = {
     merge_examples: suppliers.filter((s) => s.aliases.length >= 2 && s.coops.length >= 3).slice(0, 8).map((s) => ({ name: s.name, aliases: s.aliases.slice(0, 3) })),
   },
   per_coop: perCoop,
+  nigp: {
+    ...nigpStats,
+    contracts: contracts.length,
+    coop_contracts_coded: contracts.filter((c) => !c.state_contract && c.nigp).length,
+    coop_contracts: contracts.filter((c) => !c.state_contract).length,
+    classes_used: new Set(contracts.flatMap((c) => c.nigp?.classes ?? [])).size,
+    priced_offerings_coded: offerings.filter((o) => o.nigp).length,
+    top_classes: Object.entries(contracts.reduce<Record<string, number>>((m, c) => { for (const k of c.nigp?.classes ?? []) m[k] = (m[k] ?? 0) + 1; return m; }, {})).sort((a, b) => b[1] - a[1]).slice(0, 12),
+  },
   njstart: njSummary && {
     ...njSummary,
+    ...(() => {
+      const f = join(SRC, "njstart/nigp.json");
+      if (!existsSync(f)) return {};
+      const nb = JSON.parse(readFileSync(f, "utf8")) as { codes: Record<string, unknown>; classes: Record<string, unknown> };
+      return { nigp_codes: Object.keys(nb.codes).length, nigp_classes: Object.keys(nb.classes).length };
+    })(),
     suppliers_shared_with_coops: suppliers.filter((s) => s.coops.includes("NJSTART") && s.coops.some((c) => c !== "NJSTART")).length,
     offerings: offerings.filter((o) => o.coop === "NJSTART").length,
     products_on_two_or_more_contracts: Object.values(offerings.filter((o) => o.coop === "NJSTART").reduce<Record<string, Set<string>>>((m, o) => ((m[o.product] ??= new Set()).add(o.contract), m), {})).filter((x) => x.size > 1).length,

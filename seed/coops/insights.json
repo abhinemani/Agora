@@ -39,28 +39,29 @@
    "census_only": 3157,
    "nces_only": 6245
   },
-  "matched": 45529,
-  "merged_by_id": 3530,
-  "county_offices": 261,
+  "matched": 45564,
+  "merged_by_id": 3603,
+  "county_offices": 267,
   "reviewed_school_pairs": 2839,
   "reviewed_matches": 6059,
   "review_tasks": {
    "school-pairs": 125,
-   "gov-match": 5213
+   "gov-match": 5401
   },
-  "county_governing_bodies_merged": 190,
-  "added": 55803,
-  "confirmed_public": 1541,
-  "private_set_aside": 869,
+  "county_governing_bodies_merged": 192,
+  "added": 55769,
+  "confirmed_public": 1434,
+  "private_set_aside": 870,
   "private_examples": [
    {
-    "name": "Wallace State Community College",
+    "name": "Arizona State University",
     "state": "AK",
     "coops": [
      "coop_sourcewell",
      "coop_buyboard_national",
      "coop_eandi",
      "coop_hgacbuy",
+     "coop_choice",
      "coop_mohave",
      "coop_buyboard",
      "coop_costars"
@@ -104,32 +105,32 @@
    }
   ],
   "governments_with_id": 100462,
-  "roster_governments": 59666,
-  "roster_with_id": 44591,
+  "roster_governments": 60080,
+  "roster_with_id": 44631,
   "roster_by_type": {
    "tribal": {
-    "all": 385,
+    "all": 386,
     "with_id": 0
    },
    "special_district": {
-    "all": 17583,
-    "with_id": 8685
+    "all": 17763,
+    "with_id": 8704
    },
    "school_district": {
-    "all": 17417,
-    "with_id": 13204
+    "all": 17524,
+    "with_id": 13220
    },
    "county": {
-    "all": 3388,
+    "all": 3425,
     "with_id": 2995
    },
    "municipality": {
-    "all": 18805,
-    "with_id": 18291
+    "all": 18862,
+    "with_id": 18294
    },
    "higher_education": {
-    "all": 2030,
-    "with_id": 1416
+    "all": 2062,
+    "with_id": 1418
    },
    "state_agency": {
     "all": 58,
@@ -143,39 +144,39 @@
     "type": "tribal"
    },
    {
-    "name": "District of Columbia Department of Housing and Community Development",
+    "name": "Government of the District of Columbia",
     "state": "DC",
     "type": "special_district"
    },
    {
-    "name": "Spring Hill Recreation Commission",
-    "state": "KS",
+    "name": "Bagdad Fire Protection District",
+    "state": "KY",
     "type": "special_district"
    },
    {
-    "name": "Mississippi Delta Academies",
-    "state": "MS",
-    "type": "school_district"
+    "name": "Confederated Salish and Kootenai Tribes",
+    "state": "MT",
+    "type": "tribal"
    },
    {
-    "name": "Town of Colonie",
+    "name": "Utica Public Library",
     "state": "NY",
-    "type": "municipality"
+    "type": "special_district"
    },
    {
-    "name": "Dauntless Hook and ladder Ambulance League",
+    "name": "East Brandywine Fire Company",
     "state": "PA",
     "type": "special_district"
    },
    {
-    "name": "Polk Township Volunteer Fire Company",
+    "name": "Ronks Fire Company",
     "state": "PA",
     "type": "special_district"
    },
    {
-    "name": "City of Deer Park Crime Control Prevention District",
+    "name": "Erath, County of, Texas",
     "state": "TX",
-    "type": "special_district"
+    "type": "county"
    }
   ],
   "merge_examples": [
@@ -204,59 +205,59 @@
     "id": "census 103654"
    },
    {
-    "name": "Holdingford Public School District 738",
+    "name": "Hopkins Independent School District 270",
     "state": "MN",
     "merged": [
-     "Holdingford Public Schools"
+     "Hopkins Public School District"
     ],
-    "id": "census 180236"
+    "id": "census 180092"
    },
    {
-    "name": "Medford Township Public School District",
+    "name": "Millstone Township Fire District",
     "state": "NJ",
     "merged": [
-     "Medford Township Public Schools"
+     "Millstone Township Fire District #1"
     ],
-    "id": "census 117647"
+    "id": "census 152409"
    },
    {
-    "name": "Dahlonegah Public School",
+    "name": "Dale Independent School District 2",
     "state": "OK",
     "merged": [
-     "Dahlonegah School"
+     "Dale Public Schools"
     ],
-    "id": "census 187122"
+    "id": "census 111570"
    },
    {
-    "name": "Metro Nashville Public Schools",
+    "name": "Moore County",
     "state": "TN",
     "merged": [
-     "Metropolitan Nashville Public Schools"
+     "Moore County Board of Education"
     ],
-    "id": "census 122109"
+    "id": "census 189446"
    },
    {
-    "name": "North Wyoming Community College District",
+    "name": "Rock Springs, Green River, Sweetwater County Combined Communications Joint Powers Board",
     "state": "WY",
     "merged": [
-     "Northern Wyoming Community College District"
+     "Sweetwater Combined Communications Joint Powers Board"
     ],
-    "id": "census 115591"
+    "id": "census 252987"
    }
   ],
   "websites": {
-   "total": 47439,
+   "total": 47438,
    "by_source": {
-    "gov": 14132,
+    "gov": 14131,
     "census": 20494,
     "ipeds": 1838,
     "nces": 10975
    },
-   "roster_with_website": 30338
+   "roster_with_website": 30369
   }
  },
  "workbook": {
-  "roster_rows": 90469,
+  "roster_rows": 93224,
   "tabs": [
    "Overview",
    "Memberships",
@@ -330,6 +331,15 @@
    "states": 50
   },
   {
+   "program": "Choice Partners",
+   "coop_id": "coop_choice",
+   "raw": 2755,
+   "kept": 2454,
+   "inferred": 90,
+   "dropped": 301,
+   "states": 48
+  },
+  {
    "program": "Mohave",
    "coop_id": "coop_mohave",
    "raw": 492,
@@ -340,36 +350,36 @@
   }
  ],
  "directory": {
-  "governments": 121321,
-  "from_rosters": 64229,
-  "on_a_roster": 59666,
+  "governments": 121676,
+  "from_rosters": 64722,
+  "on_a_roster": 60080,
   "by_type": {
-   "tribal": 515,
-   "state_agency": 950,
-   "special_district": 51527,
-   "school_district": 24056,
-   "higher_education": 2805,
-   "county": 4370,
-   "municipality": 37098
+   "tribal": 516,
+   "state_agency": 947,
+   "special_district": 51680,
+   "school_district": 24143,
+   "higher_education": 2831,
+   "county": 4407,
+   "municipality": 37152
   },
-  "inferred": 4125,
-  "with_domain": 47439,
-  "roster_with_domain": 30338,
+  "inferred": 4142,
+  "with_domain": 47438,
+  "roster_with_domain": 30369,
   "dotgov_rows": 15750,
-  "dotgov_matched": 9709,
-  "dotgov_added": 4423
+  "dotgov_matched": 9713,
+  "dotgov_added": 4418
  },
  "overlap": {
   "by_roster_count": {
-   "1": 44606,
-   "2": 11011,
-   "3": 3595,
-   "4+": 454
+   "1": 44753,
+   "2": 10695,
+   "3": 3304,
+   "4+": 1328
   },
   "conservative_key_entities": 75467,
   "conservative_key_multi": 11309,
-  "entity_key_multi": 15060,
-  "on_three_or_more": 4059,
+  "entity_key_multi": 15327,
+  "on_three_or_more": 4642,
   "examples": [
    {
     "name": "Borough of Fairbanks North Star",
@@ -380,67 +390,68 @@
     "coops": 2
    },
    {
-    "name": "Enterprise City School District",
+    "name": "DeKalb County Schools",
     "state": "AL",
     "also": [
-     "Enterprise City Board of Education"
+     "Dekalb County Board of Education"
     ],
     "coops": 2
    },
    {
-    "name": "Saraland City Schools District",
+    "name": "Pike Road Board of Education",
     "state": "AL",
     "also": [
-     "Saraland City Schools"
+     "Pike Road School District"
+    ],
+    "coops": 3
+   },
+   {
+    "name": "Wynne School District",
+    "state": "AR",
+    "also": [
+     "Wynne Public Schools"
     ],
     "coops": 2
    },
    {
-    "name": "Antelope Union High School District 50",
+    "name": "City of Apache Junction",
     "state": "AZ",
     "also": [
-     "Antelope UHSD No.50"
+     "Apache Junction, City of"
+    ],
+    "coops": 3
+   },
+   {
+    "name": "City of Tombstone",
+    "state": "AZ",
+    "also": [
+     "Tombstone, City of"
     ],
     "coops": 2
    },
    {
-    "name": "City of Coolidge",
+    "name": "Globe Unified School District",
     "state": "AZ",
     "also": [
-     "Coolidge, City of"
+     "Globe Unified School District 1",
+     "Globe USD No.1"
     ],
     "coops": 4
    },
    {
-    "name": "Cochise Technology District No.1",
+    "name": "Morenci Unified School District 18",
     "state": "AZ",
     "also": [
-     "Cochise Technology District"
+     "Morenci USD No.18"
     ],
     "coops": 2
-   },
-   {
-    "name": "Hyder Elementary School District 16",
-    "state": "AZ",
-    "also": [
-     "Hyder Elem SD No.16"
-    ],
-    "coops": 2
-   },
-   {
-    "name": "Page Unified School District 8",
-    "state": "AZ",
-    "also": [
-     "Page USD No.8"
-    ],
-    "coops": 3
    }
   ]
  },
  "coop_counts": {
   "coop_sourcewell": {
    "list": 0,
-   "roster": 48199,
+   "roster": 48200,
    "agency": 7,
    "purchase": 0
   },
@@ -452,7 +463,7 @@
   },
   "coop_buyboard_national": {
    "list": 0,
-   "roster": 4628,
+   "roster": 4629,
    "agency": 1,
    "purchase": 0
   },
@@ -460,6 +471,12 @@
    "list": 0,
    "roster": 6174,
    "agency": 3,
+   "purchase": 0
+  },
+  "coop_choice": {
+   "list": 0,
+   "roster": 2399,
+   "agency": 7,
    "purchase": 0
   },
   "coop_mohave": {
@@ -484,12 +501,6 @@
    "list": 0,
    "roster": 0,
    "agency": 5,
-   "purchase": 0
-  },
-  "coop_choice": {
-   "list": 0,
-   "roster": 0,
-   "agency": 7,
    "purchase": 0
   },
   "coop_equalis": {
@@ -554,9 +565,9 @@
   }
  },
  "evidence": {
-  "roster": 59666,
+  "roster": 60080,
   "agency": 12,
-  "purchase": 3569,
+  "purchase": 3573,
   "id_checks": [
    {
     "agency": "Lawrence",
@@ -605,7 +616,7 @@
    "Assistance Organization": 5590980,
    "NULL": 5098
   },
-  "matched_to_rosters": 2161,
+  "matched_to_rosters": 2188,
   "blank_state_merges": 192,
   "blank_state_examples": [
    {
@@ -648,7 +659,8 @@
    "coops": [
     "coop_hgacbuy",
     "coop_sourcewell",
-    "coop_buyboard"
+    "coop_buyboard",
+    "coop_choice"
    ],
    "strongest": "roster"
   },
@@ -674,7 +686,8 @@
    "coops": [
     "coop_hgacbuy",
     "coop_sourcewell",
-    "coop_buyboard"
+    "coop_buyboard",
+    "coop_choice"
    ],
    "strongest": "roster"
   },
@@ -753,7 +766,8 @@
    "coops": [
     "coop_hgacbuy",
     "coop_sourcewell",
-    "coop_buyboard"
+    "coop_buyboard",
+    "coop_choice"
    ],
    "strongest": "roster"
   },
@@ -778,7 +792,8 @@
    "coops": [
     "coop_hgacbuy",
     "coop_sourcewell",
-    "coop_buyboard"
+    "coop_buyboard",
+    "coop_choice"
    ],
    "strongest": "roster"
   },
@@ -791,7 +806,8 @@
    "coops": [
     "coop_hgacbuy",
     "coop_sourcewell",
-    "coop_buyboard"
+    "coop_buyboard",
+    "coop_choice"
    ],
    "strongest": "roster"
   },
@@ -828,7 +844,8 @@
    "coops": [
     "coop_hgacbuy",
     "coop_sourcewell",
-    "coop_eandi"
+    "coop_eandi",
+    "coop_choice"
    ],
    "strongest": "roster"
   },
@@ -841,7 +858,8 @@
    "coops": [
     "coop_hgacbuy",
     "coop_sourcewell",
-    "coop_buyboard"
+    "coop_buyboard",
+    "coop_choice"
    ],
    "strongest": "roster"
   },
@@ -855,7 +873,8 @@
     "coop_hgacbuy",
     "coop_sourcewell",
     "coop_buyboard",
-    "coop_eandi"
+    "coop_eandi",
+    "coop_choice"
    ],
    "strongest": "roster"
   },
@@ -868,7 +887,8 @@
    "coops": [
     "coop_hgacbuy",
     "coop_sourcewell",
-    "coop_buyboard"
+    "coop_buyboard",
+    "coop_choice"
    ],
    "strongest": "roster"
   },
@@ -881,7 +901,8 @@
    "coops": [
     "coop_hgacbuy",
     "coop_sourcewell",
-    "coop_buyboard"
+    "coop_buyboard",
+    "coop_choice"
    ],
    "strongest": "roster"
   },
@@ -895,7 +916,8 @@
     "coop_hgacbuy",
     "coop_sourcewell",
     "coop_buyboard",
-    "coop_eandi"
+    "coop_eandi",
+    "coop_choice"
    ],
    "strongest": "roster"
   },
@@ -921,7 +943,8 @@
    "coops": [
     "coop_hgacbuy",
     "coop_sourcewell",
-    "coop_buyboard"
+    "coop_buyboard",
+    "coop_choice"
    ],
    "strongest": "roster"
   },
@@ -934,7 +957,8 @@
    "coops": [
     "coop_hgacbuy",
     "coop_sourcewell",
-    "coop_buyboard"
+    "coop_buyboard",
+    "coop_choice"
    ],
    "strongest": "roster"
   },
@@ -948,7 +972,8 @@
     "coop_hgacbuy",
     "coop_buyboard",
     "coop_sourcewell",
-    "coop_eandi"
+    "coop_eandi",
+    "coop_choice"
    ],
    "strongest": "roster"
   },
@@ -961,13 +986,14 @@
    "coops": [
     "coop_hgacbuy",
     "coop_sourcewell",
-    "coop_buyboard"
+    "coop_buyboard",
+    "coop_choice"
    ],
    "strongest": "roster"
   },
   {
    "id": "gov_tx_carrollton-farmers-branch-isd",
-   "name": "Carrollton Farmers Branch Independent School District",
+   "name": "Carrollton-Farmers Branch ISD",
    "state": "TX",
    "type": "school_district",
    "dir_sales": 17016959,
@@ -975,7 +1001,8 @@
     "coop_sourcewell",
     "coop_hgacbuy",
     "coop_buyboard",
-    "coop_eandi"
+    "coop_eandi",
+    "coop_choice"
    ],
    "strongest": "roster"
   },
@@ -988,7 +1015,8 @@
    "coops": [
     "coop_hgacbuy",
     "coop_sourcewell",
-    "coop_buyboard"
+    "coop_buyboard",
+    "coop_choice"
    ],
    "strongest": "roster"
   },
@@ -1002,19 +1030,21 @@
     "coop_hgacbuy",
     "coop_sourcewell",
     "coop_buyboard",
-    "coop_eandi"
+    "coop_eandi",
+    "coop_choice"
    ],
    "strongest": "roster"
   },
   {
    "id": "gov_tx_san-jacinto-college-district",
-   "name": "San Jacinto College",
+   "name": "San Jacinto Community College District",
    "state": "TX",
    "type": "higher_education",
    "dir_sales": 15324891,
    "coops": [
     "coop_hgacbuy",
     "coop_sourcewell",
+    "coop_choice",
     "coop_buyboard",
     "coop_eandi"
    ],
@@ -1030,6 +1060,7 @@
     "coop_sourcewell",
     "coop_buyboard",
     "coop_eandi",
+    "coop_choice",
     "coop_hgacbuy"
    ],
    "strongest": "roster"
@@ -1044,7 +1075,8 @@
     "coop_hgacbuy",
     "coop_sourcewell",
     "coop_buyboard",
-    "coop_eandi"
+    "coop_eandi",
+    "coop_choice"
    ],
    "strongest": "roster"
   },
@@ -1057,7 +1089,8 @@
    "coops": [
     "coop_hgacbuy",
     "coop_sourcewell",
-    "coop_buyboard"
+    "coop_buyboard",
+    "coop_choice"
    ],
    "strongest": "roster"
   },
@@ -1088,6 +1121,18 @@
    "strongest": "roster"
   },
   {
+   "id": "gov_tx_university-of-texas-health-science-center-at-houston",
+   "name": "University of Texas Health Science Center at Houston",
+   "state": "TX",
+   "type": "higher_education",
+   "dir_sales": 13383842,
+   "coops": [
+    "coop_hgacbuy",
+    "coop_choice"
+   ],
+   "strongest": "roster"
+  },
+  {
    "id": "gov_tx_sam-houston-state-university",
    "name": "Sam Houston State University",
    "state": "TX",
@@ -1097,7 +1142,8 @@
     "coop_hgacbuy",
     "coop_sourcewell",
     "coop_buyboard",
-    "coop_eandi"
+    "coop_eandi",
+    "coop_choice"
    ],
    "strongest": "roster"
   },
@@ -1122,7 +1168,8 @@
    "coops": [
     "coop_hgacbuy",
     "coop_sourcewell",
-    "coop_buyboard"
+    "coop_buyboard",
+    "coop_choice"
    ],
    "strongest": "roster"
   },
@@ -1134,21 +1181,8 @@
    "dir_sales": 12764585,
    "coops": [
     "coop_hgacbuy",
-    "coop_sourcewell"
-   ],
-   "strongest": "roster"
-  },
-  {
-   "id": "gov_tx_university-of-north-texas",
-   "name": "University of North Texas",
-   "state": "TX",
-   "type": "higher_education",
-   "dir_sales": 12473495,
-   "coops": [
-    "coop_hgacbuy",
     "coop_sourcewell",
-    "coop_buyboard",
-    "coop_eandi"
+    "coop_choice"
    ],
    "strongest": "roster"
   }
@@ -1548,11 +1582,11 @@
   },
   {
    "program": "Choice Partners",
-   "status": "Selected agency relationships imported",
-   "records": null,
-   "evidence": "Local participation agreements and published member announcements",
-   "next": "An older September 2024 roster surfaced on a third-party host; not imported as current membership. Selected public agency evidence is now included in Agency Relationships or Purchase Evidence; this is not a full member roster.",
-   "url": "https://mesc.org/coopQuestionarie/CP-Response.pdf"
+   "status": "Roster imported",
+   "records": 2755,
+   "evidence": "Public member table: name, entity type and state",
+   "next": "Non-profits and private schools set aside; members whose type isn't given are kept only when the name reads as government.",
+   "url": "https://www.choicepartners.org/view-members/"
   },
   {
    "program": "TXMAS",

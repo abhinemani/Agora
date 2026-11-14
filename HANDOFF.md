@@ -52,7 +52,7 @@ Everything below is merged to `main` and deployed on Railway. Each batch passed 
 
 ## Waiting on the user
 
-**The live half of the test set has never run.** The build session had no API key, so `evals/baseline.json` covers only the 29 guard cases. Run `npm run eval -- --save` once with `ANTHROPIC_API_KEY` set, read any failures (a failing live case may be a wrong expectation rather than a wrong answer), and commit the baseline. Until then the prompts themselves are unmeasured.
+**The live half of the test set has never run.** The build session had no API key, so `evals/baseline.json` covers only the 29 guard cases. Run `npm run eval -- --save` once with `ANTHROPIC_API_KEY` set, read any failures (a failing live case may be a wrong expectation rather than a wrong answer), and commit the baseline. Until then the prompts themselves are unmeasured. A later cloud session tried and couldn't: its proxy won't carry a key for Anthropic's API, and the environment's `ANTHROPIC_API_KEY` didn't reach the shell, so this has to run where a real key is set (locally, or a cloud environment whose variable holds one). That session did make the eval refuse to save a baseline when the key is rejected, and keep API failures out of the score.
 
 Otherwise nothing. Burke's price list and 1GPA's roster arrived as manual downloads and are loaded. They're saved in the repo (`seed/catalog/source/price-files/` and `seed/coops/source/rosters/`), so rebuilds don't need them again.
 

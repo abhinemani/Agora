@@ -42,9 +42,15 @@ interface Result {
   problems: string[];
   outcome: string | null;
   output: string | null;
+  /** Set when the API itself failed (bad key, rate limit, outage), so the model was never tested. */
+  unrun?: string;
 }
 
-async function runOnce(c: Case, fx: Awaited<ReturnType<typeof fixtures>>): Promise<{ problems: string[]; outcome: string | null; output: string | null }> {
+/** An API failure rather than a model answer: such a case says nothing about the prompt. */
+const apiFailure = (reason: string | null | undefined) => (reason?.startsWith("API error:") ? reason : null);
+const authFailure = (reason: string) => /\b(401|403)\b|authentication_error|permission_error/.test(reason);
+
+async function runOnce(c: Case, fx: Awaited<ReturnType<typeof fixtures>>): Promise<{ problems: string[]; outcome: string | null; output: string | null; unrun?: string }> {
   // A contract brief is cached per contract; each case needs its own reading.
   (globalThis as unknown as { __agoraBriefs?: Map<string, unknown> }).__agoraBriefs?.clear();
   const before = aiRecords().length;
@@ -55,7 +61,7 @@ async function runOnce(c: Case, fx: Awaited<ReturnType<typeof fixtures>>): Promi
       .slice(0, aiRecords().length - before)
       .find((r) => r.task === c.task);
     const problems = c.expect.map((check) => check({ result, record })).filter((p): p is string => p !== null);
-    return { problems, outcome: record?.outcome ?? null, output: record?.output ?? null };
+    return { problems, outcome: record?.outcome ?? null, output: record?.output ?? null, unrun: apiFailure(record?.reason) ?? undefined };
   } catch (e) {
     return { problems: [`threw: ${(e as Error).message}`], outcome: null, output: null };
   } finally {
@@ -76,15 +82,32 @@ async function runOnce(c: Case, fx: Awaited<ReturnType<typeof fixtures>>): Promi
   stubModel(null);
 
   const results: Result[] = [];
+  /** Live cases the API never answered. They are reported, but never scored or saved. */
+  const unrunnable: Result[] = [];
   for (const c of picked) {
     const kind = c.canned === undefined ? "live" : "guard";
     if (kind === "live" && !key) continue;
     const problems: string[] = [];
     let last = { outcome: null as string | null, output: null as string | null };
+    let unrun: string | undefined;
     for (let i = 0; i < (kind === "live" ? runs : 1); i++) {
       const r = await runOnce(c, fx);
+      if (r.unrun && kind === "live") {
+        if (authFailure(r.unrun)) {
+          console.error(`\nStopped: the API refused the key (${r.unrun}).`);
+          console.error("Set ANTHROPIC_API_KEY to a working key and run again. Nothing was saved.");
+          process.exit(2);
+        }
+        unrun = r.unrun;
+        break;
+      }
       problems.push(...r.problems.map((p) => (runs > 1 && kind === "live" ? `run ${i + 1}: ${p}` : p)));
       last = r;
+    }
+    if (unrun) {
+      unrunnable.push({ id: c.id, task: c.task, kind, title: c.title, pass: false, problems: [], ...last, unrun });
+      console.log(` ---  ${c.id.padEnd(40)} ${c.title}\n         didn't run: ${unrun}`);
+      continue;
     }
     const res: Result = { id: c.id, task: c.task, kind, title: c.title, pass: !problems.length, problems, ...last };
     results.push(res);
@@ -127,12 +150,13 @@ async function runOnce(c: Case, fx: Awaited<ReturnType<typeof fixtures>>): Promi
   }
   if (fresh.length) console.log(`  Failing, with no baseline to compare: ${fresh.map((r) => r.id).join(", ")}.`);
   if (skipped.length) console.log(`\n${skipped.length} model case${skipped.length === 1 ? " was" : "s were"} skipped: ANTHROPIC_API_KEY isn't set. Only the checks were tested, not the prompts.`);
+  if (unrunnable.length) console.log(`\n${unrunnable.length} model case${unrunnable.length === 1 ? "" : "s"} didn't run because the API failed: ${unrunnable.map((r) => r.id).join(", ")}. They keep their baseline entries; run again to test them.`);
   console.log(`\n${results.filter((r) => r.pass).length} of ${results.length} cases passed.`);
 
-  writeFileSync(LAST, JSON.stringify({ ran: new Date().toISOString(), model: MODEL, runs, prompts: Object.fromEntries(promptsSeen), results }, null, 2));
+  writeFileSync(LAST, JSON.stringify({ ran: new Date().toISOString(), model: MODEL, runs, prompts: Object.fromEntries(promptsSeen), results, unrunnable }, null, 2));
 
   if (has("save")) {
-    // Cases that didn't run this time (skipped for want of a key, or filtered out) keep their old entries.
+    // Cases that didn't run this time (skipped for want of a key, filtered out, or not answered by the API) keep their old entries.
     const next: Baseline = {
       saved: new Date().toISOString(),
       model: MODEL,
@@ -145,5 +169,5 @@ async function runOnce(c: Case, fx: Awaited<ReturnType<typeof fixtures>>): Promi
     console.log(`Saved the baseline: ${Object.keys(next.cases).length} cases.`);
     process.exit(0);
   }
-  process.exit(regressions.length || fresh.length ? 1 : 0);
+  process.exit(regressions.length || fresh.length || unrunnable.length ? 1 : 0);
 })();

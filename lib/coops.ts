@@ -155,7 +155,7 @@ export const PUBLISHED_COOPS: Coop[] = [
   published("coop_tips", "TIPS", "https://www.tips-usa.com", "No bulk roster: TIPS offers it to vendors only. Known from agencies' own procurement pages."),
   published("coop_omnia", "OMNIA Partners", "https://www.omniapartners.com/publicsector", "No published roster. Known from agencies' procurement pages and state adoption flyers."),
   published("coop_equalis", "Equalis Group", "https://equalisgroup.org", "No public membership list. Known from agencies' procurement pages."),
-  published("coop_1gpa", "1GPA", "https://www.1gpa.org", "Member names on request only. Known from agencies' procurement pages."),
+  published("coop_1gpa", "1GPA", "https://www.1gpa.org", "Published member list dated August 28, 2023: a snapshot, so a listed member may have left since."),
   published("coop_choice", "Choice Partners", "https://www.choicepartners.org", "Public member table (name, type, state); non-profits and private schools are set aside."),
   published("coop_pace", "PACE (ESC Region 20)", "", "No bulk roster. Known from agencies' procurement pages."),
   published("coop_pca", "Purchasing Cooperative of America", "https://www.pcamerica.org", "No bulk roster. Known from agencies' procurement pages."),

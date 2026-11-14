@@ -7,9 +7,9 @@
 // Choice Partners: the public "View Members" table (name, type, state, region).
 // Only names, types and states are kept.
 //
-// 1GPA: its published membership workbook (last modified August 2023) can't be fetched from
+// 1GPA: its published membership workbook (dated August 28, 2023) can't be fetched from
 // here, because Dropbox serves it from a one-time host. Save the .xlsx as
-// seed/coops/source/rosters/1gpa-members-2023-08-16.xlsx and this script converts it.
+// seed/coops/source/rosters/1gpa-members-2023-08-28.xlsx and this script converts it.
 
 import { existsSync, mkdirSync, readdirSync, writeFileSync } from "node:fs";
 import { dirname, join } from "node:path";
@@ -78,7 +78,7 @@ function oneGpa() {
       const name = String(r[cName] ?? "").trim();
       const code = stateCode(String(r[cState] ?? ""));
       if (!name || !code) continue;
-      rows.push([name, unverified(cType >= 0 ? String(r[cType]).trim() : ""), cCity >= 0 ? String(r[cCity]).trim() : "", code, "1GPA", "1GPA published membership list", "2023-08-16"]);
+      rows.push([name, unverified(cType >= 0 ? String(r[cType]).trim() : ""), cCity >= 0 ? String(r[cCity]).trim() : "", code, "1GPA", "1GPA published membership list", "2023-08-28"]);
     }
   }
   write("1gpa-members.csv", rows);

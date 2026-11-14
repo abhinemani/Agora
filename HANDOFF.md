@@ -6,9 +6,9 @@ Where Agora's data work stands as of November 14, 2026, what's waiting, and what
 
 Everything below is merged to `main` and deployed on Railway. Each batch passed typecheck, build and the 13-step rehearsal.
 
-**The co-op directory.** It holds 121,676 governments, one record each. 60,080 are on at least one co-op roster, and 45,564 are tied to a permanent federal ID (Census, NCES district or IPEDS college). The rosters come from Sourcewell, HGACBuy, E&I, COSTARS, BuyBoard (Texas and National), Mohave and Choice Partners, the last added in PR #13. County offices point to their county.
+**The co-op directory.** It holds 121,810 governments, one record each. 60,227 are on at least one co-op roster, and 45,574 are tied to a permanent federal ID (Census, NCES district or IPEDS college). The rosters come from Sourcewell, HGACBuy, E&I, COSTARS, BuyBoard (Texas and National), Mohave, Choice Partners and 1GPA (an August 2023 snapshot). County offices point to their county.
 
-**The co-op catalog.** 13 co-ops' public contract directories: 31,930 supplier contracts, 22,778 companies, 35,112 products. GSA contracts are described by their schedule categories (SINs), with a flag for whether cities may use them.
+**The co-op catalog.** 13 co-ops' public contract directories: 31,930 supplier contracts, 22,778 companies, 46,568 products. GSA contracts are described by their schedule categories (SINs), with a flag for whether cities may use them.
 
 **AI data cleanup** (PR #12). 17,767 reviewed decisions, all in `seed/cleanup/decisions/`:
 
@@ -19,33 +19,20 @@ Everything below is merged to `main` and deployed on Railway. Each batch passed 
 - 223 product names cleaned;
 - 109 Canon price rows.
 
-**Item prices from price files** (PRs #14 and #17). 725 priced offerings:
+**Item prices from price files.** 12,181 priced offerings:
 
 | Source | What it is | Offerings |
 |---|---|---:|
 | BuyBoard 724-23 | Vehicle award report: awarded base-model prices | 376 |
 | NASPO ValuePoint 204521 | Endera transit bus base prices | 6 |
 | NASPO ValuePoint MA3964 | SitOnIt furniture list prices, shown as "before the contract discount" | 349 |
+| OMNIA Partners R220201 | Burke 2027 playground parts and structures at the contract's net price (list less 7%) | 11,456 |
 
 **State rules** (PR #15). The 50-state cooperative purchasing research. A **State law** note sits beside co-op contracts for the buyer's state, and turns red when a request looks like construction. All 50 states, with their sources, are at `/data#states`.
 
 ## Waiting on the user
 
-**Burke's 2027 playground price list.** It comes from OMNIA contract R220201, but OMNIA's robots.txt bars Claude's crawler, so a person has to download it. [Download link](https://www.omniapartners.com/api/document-download?contract=149002&filename=2027+Burke+Equipment+Price+List_OMNIA+Partners.pdf). According to the research it lists item numbers with both list and net prices. Once the file is in hand:
-
-1. Save it in `seed/catalog/source/price-files/`.
-2. Write a reader for it in `scripts/import-price-files.ts`, after looking at its layout.
-3. Re-run `import:price-files`, then `import:catalog-coops`.
-
-The prices are labelled 2027, so show that vintage.
-
-**1GPA's membership list.** Dropbox serves the file from a one-time host that can't be allowlisted, so it also needs a manual download. [Download link](https://www.dropbox.com/s/9i5d6xhsmob7hcp/1%20-%20PUBLISHED%20Membership%20List.xlsx?dl=1). The reader is already built:
-
-1. Save the file as `seed/coops/source/rosters/1gpa-members-2023-08-16.xlsx`.
-2. Run `npm run fetch:rosters`, which converts it to CSV.
-3. Run `npm run import:coops`.
-
-It's flagged as an August 2023 snapshot.
+Nothing right now. Burke's price list and 1GPA's roster arrived as manual downloads and are loaded. They're saved in the repo (`seed/catalog/source/price-files/` and `seed/coops/source/rosters/`), so rebuilds don't need them again.
 
 ## Decisions made
 

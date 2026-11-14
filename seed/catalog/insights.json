@@ -21,8 +21,8 @@
   "contracts_categorized": 30860,
   "products_renamed_by_review": 223,
   "canon_rows_added": 109,
-  "price_file_rows": 807,
-  "price_file_offerings": 725,
+  "price_file_rows": 12263,
+  "price_file_offerings": 12181,
   "price_file_unmatched": [
    "BuyBoard 724-23: Donalson CDJR, LLC",
    "BuyBoard 724-23: Rockdale Country Ford",
@@ -307,7 +307,7 @@
    "with_end": 695,
    "expired": 0,
    "with_states": 0,
-   "offerings": 0
+   "offerings": 11456
   },
   {
    "coop": "BuyBoard",
@@ -421,16 +421,17 @@
   }
  ],
  "products": {
-  "products": 35112,
-  "offerings": 40228,
+  "products": 46568,
+  "offerings": 51684,
   "by_status": {
    "quote": 1509,
    "published_discount": 8102,
    "member_login": 26291,
-   "published_price": 4326
+   "published_price": 15782
   },
   "priced_suppliers": [
    "Canon U.S.A., Inc.",
+   "BCI Burke",
    "Exemplis, LLC",
    "Caldwell Country Chevrolet II LLC",
    "Five Star Chevrolet",

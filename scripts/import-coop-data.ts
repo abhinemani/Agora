@@ -1155,7 +1155,7 @@ const EXTRA_ROSTER_NOTES: Record<string, { evidence: string; next: string; url: 
     url: "https://www.choicepartners.org/view-members/",
   },
   "1GPA": {
-    evidence: "Published membership workbook, last modified August 16, 2023",
+    evidence: "Published membership workbook, dated August 28, 2023",
     next: "A historical snapshot: a listed member may have left since. Ask 1GPA for a current list.",
     url: "https://www.1gpa.org",
   },

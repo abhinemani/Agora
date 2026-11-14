@@ -20,13 +20,15 @@ export default function CartPage() {
   const [tab, setTab] = useState<Tab>("draft");
   if (!db) return <Loading />;
   const agency = cartAgency(db);
-  const carts = db.carts.filter((c) => c.agency === agency);
+  // The open cart is the person's own, whatever agency they're buying for (the server sends only theirs).
+  // Carts sent on for approval are the agency's.
+  const carts = db.carts.filter((c) => c.agency === agency && c.status !== "draft");
   const count = (t: Tab) => carts.filter((c) => c.status === t).length;
-  const draft = carts.find((c) => c.status === "draft");
+  const draft = db.carts.find((c) => c.status === "draft");
 
   return (
     <div className="space-y-6">
-      <PageTitle title={`${agency}'s carts`}>
+      <PageTitle title={user ? `${agency}'s carts` : "Your cart"}>
         Collect everything for a purchase in one cart. Loci splits it by supplier and pays each share the right way: P-card under the{" "}
         {money(db.agency.quick_buy_threshold, false)} quick-buy limit, a PO at or over it.
       </PageTitle>

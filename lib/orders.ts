@@ -97,11 +97,11 @@ export const cartAgency = (db: Pick<Db, "session" | "agency">) => db.session.buy
 export const cartOwner = (c: Pick<Cart, "owner" | "user_id">) => c.owner ?? c.user_id;
 
 /**
- * The open cart for this session's agency. On the server, pass the owner (lib/actions.ts `me()`), since every
- * visitor has their own draft; the browser receives only its own drafts (app/api/state/route.ts), so it can leave it out.
+ * The open cart: one per person (or, before signing in, per browser), whichever agency they're buying for. On the server,
+ * pass the owner (lib/actions.ts `me()`); the browser receives only its own draft (app/api/state/route.ts), so it can leave it out.
  */
-export const draftCart = (db: Pick<Db, "carts" | "session" | "agency">, owner?: string): Cart | undefined =>
-  db.carts.find((c) => c.agency === cartAgency(db) && c.status === "draft" && (owner === undefined || cartOwner(c) === owner));
+export const draftCart = (db: Pick<Db, "carts">, owner?: string): Cart | undefined =>
+  db.carts.find((c) => c.status === "draft" && (owner === undefined || cartOwner(c) === owner));
 
 /** Demo people: the requester who builds carts and the purchasing lead who approves them. */
 export const REQUESTER = "Dana Whitfield";

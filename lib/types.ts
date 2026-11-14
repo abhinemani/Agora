@@ -446,7 +446,8 @@ export interface CartLine {
  * sent for approval when any supplier's share needs a PO, then checked out into orders. */
 export interface Cart {
   id: string;
-  agency: string;
+  /** The agency it's bought for. Null while a visitor fills it: it's attached when they sign in, and follows the agency they buy for until checkout. */
+  agency: string | null;
   status: "draft" | "pending" | "approved" | "rejected";
   lines: CartLine[];
   created_by: string;

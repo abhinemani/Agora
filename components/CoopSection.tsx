@@ -23,32 +23,46 @@ export function FitPill({ fit }: { fit: number }) {
   );
 }
 
+type SectionProps = { section: Section; requestId: string; refs?: Record<string, number> };
+
+const stateHits = (section: Section) => section.hits.filter((h) => h.program === "state");
+const coopHits = (section: Section) => section.hits.filter((h) => !h.program);
+
+/** What each part of the co-op section holds, for the headings and counts on the results page. */
+export function coopCounts(section: Section) {
+  const state = stateHits(section);
+  return {
+    state: section.catalog?.state_total ?? state.length,
+    stateNames: [...new Set(state.map((h) => stateLabel(h.state ?? "")))],
+    coops: coopHits(section).length + (section.catalog?.more_member ?? 0) + (section.catalog?.more_other ?? 0),
+    gsa: section.catalog?.gsa_total ?? 0,
+  };
+}
+
+/** TRX state contracts for the request. For a buyer in that state they are the preferred route and sit above
+ * every co-op; with no agency set they are one folded source among the others. */
+export function StateContracts({ section, requestId, refs }: SectionProps) {
+  const state = stateHits(section);
+  if (!state.length) return null;
+  return <StateLane hits={state} total={section.catalog?.state_total ?? state.length} retrieved={section.catalog?.state_retrieved} requestId={requestId} refs={refs} />;
+}
+
 /** Co-op contracts for the request: the co-ops the agency belongs to, then the ones it could join. */
-/** `refs` maps a contract id to the reference number the personal shopper cites it by. */
-export function CoopSection({ section, requestId, onMembershipChange, refs, query }: { section: Section; requestId: string; onMembershipChange: () => void; refs?: Record<string, number>; query?: string }) {
+/** `refs` maps a contract id to the reference number the recommended route cites it by. */
+export function CoopContracts({ section, requestId, onMembershipChange, refs, query }: SectionProps & { onMembershipChange: () => void; query?: string }) {
   const { db } = useStore();
   const buyer = db?.session.buyer ?? null;
-  if (!section.hits.length) return null;
-  // TRX state contracts (NJSTART, Hawaii SPO) lead, in their own block; the co-op lists hold the rest.
-  const state = section.hits.filter((h) => h.program === "state");
-  const coopHits = section.hits.filter((h) => !h.program);
-  const members = coopHits.filter((h) => h.member);
-  const others = coopHits.filter((h) => !h.member);
+  const hits = coopHits(section);
+  const state = stateHits(section);
+  const members = hits.filter((h) => h.member);
+  const others = hits.filter((h) => !h.member);
 
   return (
-    <>
-      {state.length > 0 && <StateLane hits={state} total={section.catalog?.state_total ?? state.length} retrieved={section.catalog?.state_retrieved} requestId={requestId} refs={refs} />}
-      {(coopHits.length > 0 || (section.catalog?.gsa.length ?? 0) > 0) && (
-    <section id="coops" className="scroll-mt-24 border-y border-base-lighter bg-white py-6">
-      <div className="flex flex-wrap items-end justify-between gap-3">
-        <div>
-          <h2 className="text-lg font-bold tracking-tight text-navy">Co-op contracts for this</h2>
-          <p className="mt-0.5 text-xs text-slate">
-            {buyer ? "Split by the co-ops your agency belongs to. " : "Set your agency to see which of these co-ops you already belong to. "}
-            Ordering happens on the co-op's own contract page.
-          </p>
-        </div>
-      </div>
+    <div>
+      <p className="text-xs text-slate">
+        {buyer ? "Split by the co-ops your agency belongs to. " : "Select an agency to see which of these co-ops it belongs to. "}
+        Ordering happens on the co-op's own contract page.
+      </p>
       {buyer && (
         <div className="mt-3 rounded-lg bg-tint px-3 py-2">
           <CoopMemberships onChange={onMembershipChange} />
@@ -71,26 +85,10 @@ export function CoopSection({ section, requestId, onMembershipChange, refs, quer
         </div>
       ) : (
         <div className="mt-4">
-          <HitList title={`${section.hits.length} co-op contract${section.hits.length === 1 ? "" : "s"}`} empty="" hits={section.hits} requestId={requestId} refs={refs} more={(section.catalog?.more_member ?? 0) + (section.catalog?.more_other ?? 0)} />
+          <HitList title={`${hits.length} co-op contract${hits.length === 1 ? "" : "s"}`} empty="No co-op contract covers this." hits={hits} requestId={requestId} refs={refs} more={(section.catalog?.more_member ?? 0) + (section.catalog?.more_other ?? 0)} />
         </div>
       )}
 
-      {section.catalog && section.catalog.gsa.length > 0 && (
-        <div className="mt-6 border-t border-base-lighter pt-4">
-          <h3 className="text-xs font-semibold text-slate">
-            Federal schedule (GSA MAS) <span className="font-normal">({section.catalog.gsa_total})</span>
-          </h3>
-          <p className="mb-2 mt-0.5 max-w-2xl text-[11px] text-slate">
-            GSA isn't a co-op. State and local governments may buy only the SINs GSA opens to cooperative purchasing; each card says which of its SINs those are, and
-            contracts with none are marked not open.
-          </p>
-          <ul className="grid gap-2 lg:grid-cols-2">
-            {section.catalog.gsa.map((h) => (
-              <Hit key={h.contract_id} h={h} requestId={requestId} refN={refs?.[h.contract_id]} />
-            ))}
-          </ul>
-        </div>
-      )}
       {section.catalog && (
         <p className="mt-4 text-[11px] text-slate">
           Includes contracts from 13 co-ops' public directories{state.length ? ` and ${[...new Set(state.map((h) => h.coop))].join(" and ")}` : ""}, retrieved {new Date(`${section.catalog.retrieved}T12:00:00Z`).toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" })}.{" "}
@@ -107,9 +105,30 @@ export function CoopSection({ section, requestId, onMembershipChange, refs, quer
           )}
         </p>
       )}
-    </section>
+    </div>
+  );
+}
+
+/** Federal schedule contracts. GSA isn't a co-op, so they are listed apart. */
+export function GsaContracts({ section, requestId, refs }: SectionProps) {
+  if (!section.catalog?.gsa.length) return null;
+  return (
+    <div>
+      <p className="mb-3 max-w-2xl text-xs text-slate">
+        GSA isn't a co-op. State and local governments may buy only the SINs GSA opens to cooperative purchasing; each card says which of its SINs those are, and contracts
+        with none are marked not open.
+      </p>
+      <ul className="grid gap-2 lg:grid-cols-2">
+        {section.catalog.gsa.map((h) => (
+          <Hit key={h.contract_id} h={h} requestId={requestId} refN={refs?.[h.contract_id]} />
+        ))}
+      </ul>
+      {section.catalog.gsa_total > section.catalog.gsa.length && (
+        <p className="mt-2 text-[11px] text-slate">
+          {section.catalog.gsa_total - section.catalog.gsa.length} more matching schedule contracts, lower in fit. Narrow the request to see them.
+        </p>
       )}
-    </>
+    </div>
   );
 }
 
@@ -149,7 +168,7 @@ function StateBlock({ first, state, hits, more, retrieved, requestId, refs }: { 
       <p className="mt-1 max-w-3xl text-sm text-slate">
         {buyer
           ? `${buyer.name} can buy on these ${program} contracts${through}. They come first because they're already competitively bid by government and carry the lowest fee of any shared contract.`
-          : `${program} contracts are open to ${where} local governments through the ${p?.coop_program ?? "state's cooperative purchasing program"}. Set your agency to see whether you can use them.`}{" "}
+          : `${program} contracts are open to ${where} local governments through the ${p?.coop_program ?? "state's cooperative purchasing program"}. Select an agency to see whether it can use them.`}{" "}
         Ordering happens under the contract number, as {program} sets out.
         {preferredFirst &&
           " A preferred source leads the list: New York law has public buyers take approved items from Corcraft, NYSID or NIBNY before any contract, when one meets the need."}

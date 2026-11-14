@@ -1,6 +1,6 @@
 const { chromium } = require('playwright');
 const B = process.argv[2] || 'http://localhost:3000';
-// Runs the README demo path (steps 1–13) in a real browser against a running
+// Runs the README demo path (steps 1–16) in a real browser against a running
 // server and reports PASS/FAIL per step. Usage: npm run build && npm start, then
 // node scripts/rehearse-demo.cjs [base-url]. Failure screenshots go to ./rehearsal/.
 const OUT = require('path').join(process.cwd(), 'rehearsal') + '/';
@@ -21,6 +21,8 @@ require('fs').mkdirSync(OUT, { recursive: true });
   const role = async (r) => { await menu(); await p.getByRole('menuitemradio', { name: new RegExp(r) }).click(); await p.waitForTimeout(800); };
   const agency = async (name) => { await menu(); await p.getByRole('menuitem', { name: /Your agency/ }).click(); await p.locator(`button:has-text("${name}")`).first().click(); await p.waitForTimeout(800); };
   const search = async (q) => { await p.goto(B + '/'); await p.locator('input[placeholder^="Describe"]').fill(q); await p.keyboard.press('Enter'); await p.waitForURL(/\/request\//); await p.waitForTimeout(1500); const yes = p.locator('button:has-text("Yes")'); if (await yes.count()) { await yes.first().click(); } await p.waitForTimeout(1500); };
+  // The other sources on a results page are folded; open one before reading it.
+  const openFold = async (id) => { const b = p.locator(`#${id} > h3 > button[aria-expanded="false"]`); if (await b.count()) { await b.click(); await p.waitForTimeout(400); } };
   const ledgerOpts = async () => p.evaluate(() => fetch('/api/state').then(r => r.json()).then(j => [...new Set(j.db.revenue.map(e => e.option))].sort((a,b)=>a-b)));
 
   // Buying, uploads and the purchasing pages need an account, so the walkthrough signs in first (creating the account on a fresh server).
@@ -105,7 +107,7 @@ require('fs').mkdirSync(OUT, { recursive: true });
   });
   await step(9, 'Crested Butte laptops: co-ops it is on, a catalog co-op it could join, ask purchasing', async () => {
     await role('Buyer'); await agency('Town of Crested Butte'); await search('laptops for the town hall');
-    const sec = p.locator('#coops'); const txt = await sec.innerText();
+    await openFold('coops'); const sec = p.locator('#coops'); const txt = await sec.innerText();
     // Colorado signed NASPO's addendum for Dell 23004 (not Apple 23003), and Sourcewell's roster lists the town.
     const [on, join] = txt.split("Co-ops you could join");
     if (!/23004/.test(on) || !/Sourcewell/.test(on)) throw new Error('Dell 23004 and Sourcewell should be under Co-ops you\'re on');
@@ -159,8 +161,36 @@ require('fs').mkdirSync(OUT, { recursive: true });
     await p.locator('button:has-text("Try the sample")').click(); await p.waitForSelector('text=/Matched in Agora/');
     const m = await p.locator('text=/Matched in Agora/').innerText();
     await role('Buyer'); await agency('Harmon Lake Township'); await search('laptops');
-    const coops = await p.locator('#coops').innerText().catch(() => '');
+    await openFold('coops'); const coops = await p.locator('#coops').innerText().catch(() => '');
     return `${m} · Harmon Lake sees Sourcewell as its co-op: ${/Harmon Lake Township's co-ops:[\s\S]*Sourcewell/.test(coops)}`;
+  });
+  await step(14, 'Find a product: electric vehicles only, no gasoline', async () => {
+    await p.goto(B + '/dive'); await p.waitForTimeout(1200);
+    const box = p.locator('input[placeholder="Describe what you need"]'); await box.fill('small electric utility vehicle'); await box.press('Enter');
+    await p.waitForSelector('text=/\\d+ OF \\d+ MATCH/i', { timeout: 60000 });
+    const txt = await p.locator('main').innerText();
+    if (/gasoline/i.test(txt)) throw new Error('a gasoline vehicle is on an electric shortlist');
+    if (!/Electric/.test(txt)) throw new Error('no electric vehicle on the shortlist');
+    return (txt.match(/\d+ OF \d+ MATCH/i) || ['matched'])[0];
+  });
+  await step(15, 'Ask a contract: agreements listed first, price files get price questions', async () => {
+    await p.goto(B + '/ask'); await p.waitForSelector('text=Which contract?'); await p.waitForTimeout(1500);
+    const first = await p.locator('main ul button, main li button').first().innerText();
+    if (/^[^\n]*\n[^\n]*\nPrice file/.test(first)) throw new Error('a price file leads the list: ' + first.split('\n')[0]);
+    await p.locator('#find-contract').fill('R220201'); await p.waitForTimeout(500);
+    await p.locator('main button:has-text("R220201")').first().click(); await p.waitForTimeout(800);
+    const q = p.locator('button:has-text("What date are these prices from?")');
+    if (!(await q.count())) throw new Error('no price-file question offered for a price file');
+    await q.click();
+    await p.locator('main figcaption').or(p.locator('text=/Nothing in these documents|couldn\'t/i')).first().waitFor({ timeout: 90000 });
+    return 'first listed: ' + first.split('\n')[0] + ' · Burke price file answered';
+  });
+  await step(16, 'Check a quote: the playground sample', async () => {
+    await p.goto(B + '/quote-check'); await p.waitForTimeout(1000);
+    await p.locator('main button:has-text("sample")').first().click();
+    await p.waitForSelector('text=/Lines read/i', { timeout: 90000 });
+    const txt = await p.locator('main').innerText();
+    return (txt.match(/\d+ of \d+ checked lines[^.\n]*/i) || ['report shown'])[0];
   });
   console.log(results.join('\n'));
   console.log('page errors:', [...new Set(errors)].slice(0, 8));

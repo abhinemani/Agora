@@ -80,10 +80,18 @@ export function shopperCandidates(results: Results): ResultOption[] {
     .slice(0, 3);
 }
 
+/** A match this close needs no confirmation step: the recommended route is shown straight away, with the item open to change. */
+export const CLEAR_MATCH_FIT = 80;
+export function clearMatch(results: Results) {
+  const top = shopperCandidates(results)[0];
+  return Boolean(top && top.fit >= CLEAR_MATCH_FIT);
+}
+
 const NOT_A_COOP = "gsa_mas";
 const memberHits = (r: Results) => (r.buyer ? r.coops.hits.filter((h) => h.member && h.eligible).slice(0, 2) : []);
 const joinHits = (r: Results) => (r.buyer ? r.coops.hits.filter((h) => !h.member && h.coop_id !== NOT_A_COOP).slice(0, 2) : []);
-const anyHits = (r: Results) => (r.buyer ? [] : r.coops.hits.filter((h) => h.coop_id !== NOT_A_COOP).slice(0, 3));
+// With no agency set, a state's contracts are open to that state only, so they aren't offered as a route yet.
+const anyHits = (r: Results) => (r.buyer ? [] : r.coops.hits.filter((h) => h.coop_id !== NOT_A_COOP && !h.program).slice(0, 3));
 
 /** Whether the shopper has anything to plan with for this request. */
 export function shopperApplies(results: Results) {

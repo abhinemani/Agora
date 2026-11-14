@@ -14,7 +14,7 @@ export const GET = withSession(
   const s = currentScope();
   const mine = new Set([s?.user?.id, s?.visitor ? `v:${s.visitor}` : undefined].filter(Boolean));
   const requests = db.requests.filter((r) => !r.owner || mine.has(r.owner));
-  const user = s?.user ? { id: s.user.id, name: s.user.name, email: s.user.email, role: s.user.role } : null;
+  const user = s?.user ? { id: s.user.id, name: s.user.name, email: s.user.email, role: s.user.role, verified: s.user.verified } : null;
   return NextResponse.json({ db: { ...db, contracts, requests }, llm: hasApiKey(), user });
   },
   { readOnly: true },

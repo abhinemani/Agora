@@ -8,6 +8,8 @@ export interface Account {
   name: string;
   email: string;
   role: Role;
+  /** They've confirmed their email address. */
+  verified: boolean;
 }
 
 interface Store {

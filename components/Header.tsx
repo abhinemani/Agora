@@ -51,6 +51,7 @@ export function Header() {
   const [navOpen, setNavOpen] = useState(false);
   useEffect(() => setNavOpen(false), [path, role]);
   const [picking, setPicking] = useState(false);
+  const [resent, setResent] = useState<string | null>(null);
   // Appearance: follow the system, or a saved Light or Dark choice (applied early by the script in layout.tsx).
   const [appearance, setAppearance] = useState<"system" | "light" | "dark">("system");
   useEffect(() => {
@@ -166,6 +167,22 @@ export function Header() {
                   <>
                     <div className="text-ui-xs font-bold">{user.name}</div>
                     <div className="truncate text-ui-3xs text-base-dark">{user.email}</div>
+                    {!user.verified && (
+                      <div className="mt-1 text-ui-3xs text-base-dark">
+                        Email not confirmed yet.{" "}
+                        <button
+                          onClick={async () => {
+                            const res = await fetch("/api/auth", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ op: "resend" }) });
+                            const sent = res.ok && (await res.json()).result?.sent;
+                            setResent(sent ? "Sent. Check your inbox." : "Couldn't send just now. Try again later.");
+                          }}
+                          className="font-bold text-primary hover:text-primary-dark"
+                        >
+                          Send the link again
+                        </button>
+                        {resent && <span className="block">{resent}</span>}
+                      </div>
+                    )}
                     <button
                       role="menuitem"
                       onClick={() => {

@@ -422,6 +422,9 @@ export interface Order {
   created_at: string;
   /** Who asked for it, and the cart it came from, if any. */
   requester?: string;
+  /** The account that placed it and the agency it was placed for, when someone was signed in. Used for approval notices. */
+  user_id?: string;
+  agency?: string;
   cart_id?: string | null;
   /** Each step the order has been through, oldest first. */
   events?: { status: OrderStatus; at: string; note: string }[];
@@ -445,6 +448,8 @@ export interface Cart {
   status: "draft" | "pending" | "approved" | "rejected";
   lines: CartLine[];
   created_by: string;
+  /** The account that started the cart, when someone was signed in. Used for approval notices. */
+  user_id?: string;
   /** Who has the cart now: the requester, or whoever it was handed to. */
   holder: string;
   handoff?: { from: string; to: string; division: string; ship_to: string; notes: string; at: string };

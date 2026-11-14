@@ -40,6 +40,13 @@ export function schema(): Promise<void> {
          expires_at timestamptz not null
        );
        create index if not exists sessions_user on sessions(user_id);
+       alter table users add column if not exists email_verified_at timestamptz;
+       create table if not exists email_tokens (
+         token_hash text primary key,
+         user_id text not null references users(id) on delete cascade,
+         kind text not null,
+         expires_at timestamptz not null
+       );
        create table if not exists app_state (
          key text primary key,
          value jsonb not null,

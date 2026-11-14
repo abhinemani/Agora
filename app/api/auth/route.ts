@@ -1,11 +1,14 @@
-// Accounts: POST { op: "signup" | "signin" | "signout", ... }. The session travels in an HttpOnly cookie.
+// Accounts: POST { op: "signup" | "signin" | "signout" | "verify" | "resend" | "forgot" | "reset", ... }. The session travels in an HttpOnly cookie.
 
 import { NextResponse } from "next/server";
-import { AuthError, endSession, SESSION_COOKIE, sessionCookie, signIn, signUp, startSession } from "@/lib/auth";
+import { AuthError, endSession, resetPassword, SESSION_COOKIE, sessionCookie, signIn, signUp, startSession, userByEmail, verifyEmail, type User } from "@/lib/auth";
+import { sendReset, sendVerification } from "@/lib/notify";
 import { currentScope, getDb } from "@/lib/db";
 import { cookie, withSession } from "@/lib/session";
 
 export const dynamic = "force-dynamic";
+
+const view = (u: User) => ({ id: u.id, name: u.name, email: u.email, role: u.role, verified: u.verified });
 
 export const POST = withSession(async (req: Request) => {
   const body = await req.json().catch(() => ({}));
@@ -18,14 +21,29 @@ export const POST = withSession(async (req: Request) => {
       res.headers.append("set-cookie", sessionCookie(null));
       return res;
     }
-    if (body.op !== "signup" && body.op !== "signin") return NextResponse.json({ error: "Unknown request." }, { status: 400 });
+    if (body.op === "forgot") {
+      // The same answer whether or not there's an account, so the form doesn't reveal who has one.
+      await sendReset(await userByEmail(body.email), req);
+      return NextResponse.json({ result: { ok: true } });
+    }
+    if (body.op === "resend") {
+      if (!s.user) return NextResponse.json({ error: "Sign in first." }, { status: 401 });
+      return NextResponse.json({ result: { sent: await sendVerification(s.user, req) } });
+    }
+    if (body.op === "verify") {
+      const user = await verifyEmail(body.token);
+      if (s.user?.id === user.id) s.user = user;
+      return NextResponse.json({ result: { user: view(user) } });
+    }
+    if (body.op !== "signup" && body.op !== "signin" && body.op !== "reset") return NextResponse.json({ error: "Unknown request." }, { status: 400 });
     // A new account starts with the agency already chosen in this browser, if there is one.
-    const user = body.op === "signup" ? await signUp({ ...body, agency: s.buyer }) : await signIn(body);
+    const user = body.op === "signup" ? await signUp({ ...body, agency: s.buyer }) : body.op === "reset" ? await resetPassword(body.token, body.password) : await signIn(body);
     s.user = user;
+    const emailed = body.op === "signup" ? await sendVerification(user, req) : false;
     if (!s.buyer && user.agency) s.buyer = user.agency;
     // Searches made in this browser before signing in now belong to the account.
     for (const r of getDb().requests) if (r.owner === `v:${s.visitor}`) r.owner = user.id;
-    const res = NextResponse.json({ result: { user: { id: user.id, name: user.name, email: user.email, role: user.role } } });
+    const res = NextResponse.json({ result: { user: view(user), emailed } });
     res.headers.append("set-cookie", sessionCookie(await startSession(user.id)));
     return res;
   } catch (err) {

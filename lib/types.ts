@@ -402,6 +402,8 @@ export interface Request {
   preference_answer: "yes" | "no" | "always_ask" | null;
   created_at: string;
   outcome: "ordered" | "solicitation" | "abandoned" | null;
+  /** What the requester confirmed with the personal shopper (lib/shopper.ts): the catalog item, or null for "by quote". */
+  shopper?: { listing_id: string | null; add_ons: { listing_id: string; quantity: number }[]; confirmed_at: string };
 }
 
 export type OrderStatus = "placed" | "pending_approval" | "approved" | "shipped" | "delivered" | "invoiced" | "reconciled";

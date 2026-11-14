@@ -11,7 +11,9 @@ import { CoopSection, FitPill } from "@/components/CoopSection";
 import { RouteStrip } from "@/components/RouteStrip";
 import { ExpiredNote, InviteAdminBanner, NextSteps, OwnContractsCard } from "@/components/ResultExtras";
 import { CategoryIcon } from "@/components/CategoryIcon";
-import { BestFit, TickFrame } from "@/components/blueprint";
+import { Annotation, BestFit, RefTag, TickFrame } from "@/components/blueprint";
+import { Shopper } from "@/components/Shopper";
+import { shopperApplies, shopperRefs } from "@/lib/shopper";
 import { useStore } from "@/components/store";
 import { Lock, People, Plus, Sparkle } from "@/components/icons";
 import { Badge, Button, Card, Checkbox, ErrorNote, Eyebrow, IconCircle, LinkButton, Loading, RevenueTags, SourcePill, Stars, SupplierBadges, money } from "@/components/ui";
@@ -106,6 +108,11 @@ export default function RequestResults() {
   // Best fit: the top-ranked option the buyer can act on right away (no quote, no co-op to join first).
   const bestId = all.length > 1 ? all.find((o) => !o.quote_route && o.member !== false)?.listing.id : undefined;
   const sources = results ? results.groups.length : 0;
+  // The personal shopper cites results by number; the same number is tagged on each cited result.
+  const refs = results ? shopperRefs(results) : [];
+  const listingRefs = Object.fromEntries(refs.filter((r) => r.key.startsWith("listing:")).map((r) => [r.key.slice(8), r.n]));
+  const contractRefs = Object.fromEntries(refs.filter((r) => r.key.startsWith("contract:")).map((r) => [r.key.slice(9), r.n]));
+  const heading = p.item ? p.item.charAt(0).toUpperCase() + p.item.slice(1) : request.raw_text;
 
   return (
     <div className="space-y-6">
@@ -115,8 +122,10 @@ export default function RequestResults() {
         </Link>
         <div className="mt-4 flex flex-wrap items-start justify-between gap-4">
           <div className="min-w-0">
-            <h1 className="font-heading text-heading-xl font-bold leading-tight text-ink">Results for “{request.raw_text}”</h1>
+            {p.category && <Annotation className="mb-1 text-base-dark">{p.category}</Annotation>}
+            <h1 className="font-heading text-heading-xl font-bold leading-tight text-ink">{heading}</h1>
             <p className="mt-1.5 text-sm text-slate" title={request.parse_mode === "llm" ? "Read by Claude" : "Read with offline rules"}>
+              Matched from your search “{request.raw_text}”.{" "}
               {results && !results.no_match ? `${all.length} option${all.length === 1 ? "" : "s"} across ${sources} kind${sources === 1 ? "" : "s"} of contract. ` : ""}
               {p.quantity > 1 ? `${p.quantity} needed` : "One needed"}
               {p.deadline ? `, ${p.deadline}` : ""}
@@ -180,6 +189,7 @@ export default function RequestResults() {
       <ErrorNote message={error} />
       {!needsBuyer && !needsAnswer && !results && !error && <Loading label={buyer ? `Checking every contract ${buyer.name} can use` : "Checking every contract in Agora"} />}
 
+      {results && shopperApplies(results) && <Shopper results={results} requestId={id} onChanged={() => setResults(null)} />}
       {results && <RouteStrip results={results} />}
       {results && <InviteAdminBanner requestId={id} />}
       {results && <OwnContractsCard hits={results.own_contracts} agency={results.buyer?.name ?? "Your agency"} />}
@@ -199,7 +209,7 @@ export default function RequestResults() {
 
           <div id="options" className="grid scroll-mt-24 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-3">
             {shown.map((o) => (
-              <OptionCard key={o.listing.id} o={o} qty={p.quantity} requestId={id} best={o.listing.id === bestId} />
+              <OptionCard key={o.listing.id} o={o} qty={p.quantity} requestId={id} best={o.listing.id === bestId} refN={listingRefs[o.listing.id]} />
             ))}
           </div>
           {verifiedOnly && hiddenByVerified > 0 && (
@@ -216,7 +226,7 @@ export default function RequestResults() {
             </button>
           )}
 
-          <CoopSection section={coops!} requestId={id} onMembershipChange={() => setResults(null)} />
+          <CoopSection section={coops!} requestId={id} onMembershipChange={() => setResults(null)} refs={contractRefs} />
           <CatalogProducts data={results.catalog_products} requestId={id} />
 
           <div className="grid gap-4 md:grid-cols-3">
@@ -238,7 +248,7 @@ export default function RequestResults() {
       )}
 
       {results && results.no_match && showEarn && <KindBanner kind={PURCHASE_KINDS.new_need} />}
-      {results && results.no_match && <CoopSection section={coops!} requestId={id} onMembershipChange={() => setResults(null)} />}
+      {results && results.no_match && <CoopSection section={coops!} requestId={id} onMembershipChange={() => setResults(null)} refs={contractRefs} />}
       {results && results.no_match && (
         <div className="mt-8">
           <CatalogProducts data={results.catalog_products} requestId={id} />
@@ -304,7 +314,7 @@ function Parsed({ label, value }: { label: string; value: string }) {
   );
 }
 
-function OptionCard({ o, qty, requestId, best = false }: { o: ResultOption; qty: number; requestId: string; best?: boolean }) {
+function OptionCard({ o, qty, requestId, best = false, refN }: { o: ResultOption; qty: number; requestId: string; best?: boolean; refN?: number }) {
   const { db, act } = useStore();
   const [chosen, setChosen] = useState(o.listing.id);
   const [quoted, setQuoted] = useState<string | null>(null);
@@ -344,6 +354,7 @@ function OptionCard({ o, qty, requestId, best = false }: { o: ResultOption; qty:
     <div className="group flex flex-col bg-white">
       {best ? <TickFrame>{image}</TickFrame> : image}
       <div className="mt-4 flex flex-wrap items-center gap-1.5">
+        {refN !== undefined && <RefTag n={refN} />}
         {best && <BestFit />}
         <Link href={`/storefronts/${o.supplier.id}`} className="text-ui-3xs uppercase tracking-label text-base-dark no-underline hover:underline">
           {o.supplier.name}

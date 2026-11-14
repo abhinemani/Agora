@@ -25,10 +25,10 @@ require('fs').mkdirSync(OUT, { recursive: true });
 
   // Buying, uploads and the purchasing pages need an account, so the walkthrough signs in first (creating the account on a fresh server).
   await p.goto(B + '/');
-  await p.evaluate(async () => {
-    const auth = (op) => fetch('/api/auth', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ op, name: 'Rehearsal', email: 'rehearsal@example.gov', password: 'rehearsal-walkthrough', role: 'buyer' }) });
-    if (!(await auth('signup')).ok) await auth('signin');
-  });
+  // Outside the page, through the context's request client (it shares the page's cookies), so the
+  // expected 400 from signing up an account that already exists isn't counted as a page error.
+  const auth = (op) => p.context().request.post(B + '/api/auth', { data: { op, name: 'Rehearsal', email: 'rehearsal@example.gov', password: 'rehearsal-walkthrough', role: 'buyer' } });
+  if (!(await auth('signup')).ok()) await auth('signin');
   await p.evaluate(() => fetch('/api/act', { method: 'POST', headers: { 'content-type': 'application/json' }, body: '{"action":"reset"}' })); await p.goto(B + '/');
 
   await step(1, 'Riverbend folding tables, local/MBE yes', async () => {

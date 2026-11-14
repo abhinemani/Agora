@@ -1,0 +1,78 @@
+name: gate
+
+# One required check for branch protection. Typecheck and build always run.
+# The 16-step rehearse runs unless the PR changes only root-level Markdown
+# (README.md, HANDOFF.md, CLAUDE.md). Rehearse resets the demo, so it only
+# ever runs against the server started here, never the live site.
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, ready_for_review]
+
+concurrency:
+  group: gate-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  gate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Decide whether rehearse is needed
+        id: scope
+        run: |
+          changed=$(git diff --name-only "origin/${{ github.base_ref }}...HEAD")
+          echo "$changed"
+          if echo "$changed" | grep -qvE '^[^/]+\.md$'; then
+            echo "rehearse=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "rehearse=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - run: npm ci
+      - run: npm run typecheck
+      - run: npm run build
+
+      - name: Install Playwright
+        if: steps.scope.outputs.rehearse == 'true'
+        run: |
+          npm install --no-save playwright
+          npx playwright install --with-deps chromium
+
+      - name: Rehearse
+        if: steps.scope.outputs.rehearse == 'true'
+        run: |
+          npx next start -p 3000 > server.log 2>&1 &
+          for i in $(seq 1 60); do
+            curl -sf http://localhost:3000 > /dev/null && break
+            sleep 1
+          done
+          npm run rehearse
+
+      - name: Keep rehearsal output on failure
+        if: failure() && steps.scope.outputs.rehearse == 'true'
+        uses: actions/upload-artifact@v4
+        with:
+          name: rehearsal
+          path: |
+            rehearsal/
+            server.log
+
+      - name: Turn on auto-merge
+        if: success() && !github.event.pull_request.draft && github.event.pull_request.head.repo.full_name == github.repository
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: gh pr merge --auto --squash "${{ github.event.pull_request.number }}"

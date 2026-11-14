@@ -103,6 +103,16 @@ Listings without an ID are joined by `entityKey` in `lib/coops.ts`, the same fun
 
 **Co-op data** (`/data`, in the account menu) explains all of this for leadership. It covers what's in the workbook, the five ways Agora uses it, a live agency lookup, the evidence ladder, documented purchases, a prospect list (the largest DIR buyers already on several co-ops), cautions (including six NASPO awards whose addendum states disagree with Agora's seed) and the data still needed, led by a government ID spine.
 
+**State rules.** Whether a city or school district may buy off a co-op contract is a matter of state law. Agora's 50-state research of November 13, 2026 (`seed/states/source/`: the report and its summary workbook) covers, for each state:
+
+- the authority for local governments and for school districts;
+- any state-approved list (only Alabama and Mississippi run true lists);
+- the conditions: board action, and what the lead contract must be;
+- exclusions, construction above all;
+- quote and formal-bid thresholds.
+
+`npm run import:state-rules` (`scripts/import-state-rules.ts`) builds `lib/state-rules.json` from the workbook's tables and each state's report section, with its statute links. The file is server-only (`lib/state-rules.ts`), so results carry just the buyer's state. **Co-op contracts for this** shows a **State law** note: the authority line for the buyer's kind of government, its conditions and thresholds, an openness grade from 1 to 5, and a red warning when the request looks like construction. `/data#states` lists all 50 states with the full sections. The research's flags (`[mirror]`, `[secondary]`, `[unverified]`, `[currency unconfirmed]`) are kept and shown, because many points were read on third-party mirrors. None of this is legal advice, and it doesn't change routing; the agency's own quick-buy limit still decides.
+
 ## The co-op catalog
 
 The membership directory says which co-ops each agency is on; the co-op catalog says what those co-ops have under contract. It's a capture of 13 co-ops' public contract directories, supplier lists, product tables and price files, retrieved November 13, 2026 (`seed/catalog/source/`, with its own README, coverage and validation notes): 31,930 supplier contracts, 34,619 products in 39,503 offerings and 12,602 price-document links, from Sourcewell, OMNIA Partners, TIPS, BuyBoard, HGACBuy, NASPO ValuePoint, Equalis, 1GPA, Choice Partners, E&I, PEPPM, NPPGov and cooperative-flagged GSA MAS listings.

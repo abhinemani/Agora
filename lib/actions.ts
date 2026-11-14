@@ -3,6 +3,7 @@
 
 import { buildResults, estimateTotal, finishCoopSection, findSimilarSolicitation, mentionsPreference, parseRequest, ruleFor } from "./assistant";
 import { catalogContract, catalogCoopHits, catalogOffering, catalogProducts, catalogRetrieved, catalogSupplierById, materializeSupplier } from "./catalog";
+import { stateRuleFor } from "./state-rules";
 import { getDb, nextId, resetDb } from "./db";
 import { dedupe, extractFile, findSupplier, parseContract, type InputFile } from "./parser";
 import {
@@ -151,6 +152,7 @@ export function getResults(requestId: string) {
     const section = finishCoopSection(db, [...results.coops.hits, ...cat.hits], db.session.buyer?.name ?? null);
     results.coops = { ...section, catalog: { retrieved: catalogRetrieved(), more_member: cat.more_member, more_other: cat.more_other, gsa: cat.gsa, gsa_total: cat.gsa_total } };
   }
+  results.coops = { ...results.coops, state_rule: stateRuleFor(db.session.buyer, `${request.raw_text} ${request.parsed.item}`) };
   const products = catalogProducts(db, request.parsed.item, db.session.buyer);
   if (products.hits.length) results.catalog_products = { ...products, retrieved: catalogRetrieved() };
 

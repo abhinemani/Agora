@@ -6,6 +6,7 @@ import type { CoopHit, CoopSection as Section } from "@/lib/assistant";
 import { goHref } from "@/lib/coops";
 import { CoopLink } from "./CoopLink";
 import { CoopMemberships } from "./CoopMemberships";
+import { StateRuleNote } from "./StateRuleNote";
 import { useStore } from "./store";
 import { Badge, ErrorNote, Alert } from "./ui";
 
@@ -43,6 +44,7 @@ export function CoopSection({ section, requestId, onMembershipChange }: { sectio
           <CoopMemberships onChange={onMembershipChange} />
         </div>
       )}
+      {section.state_rule && <StateRuleNote rule={section.state_rule} />}
 
       {section.better && (
         <Alert type="warning" heading="A co-op you're not on fits this better" className="mt-4">

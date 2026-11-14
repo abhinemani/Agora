@@ -62,7 +62,7 @@ The importers apply only high- and medium-confidence decisions.
 
 ## Shipping
 
-- The site runs on Railway, which auto-deploys `main` (domain `riverbend-storefront-production.up.railway.app`). Check deploys with the Railway tools; the deployment's status should read SUCCESS.
+- The site runs on Railway, which auto-deploys `main` (at `agora.ethoslabs.us`; Railway's own address is `riverbend-storefront-production.up.railway.app`). Check deploys with the Railway tools; the deployment's status should read SUCCESS.
 - Each shipped batch: typecheck, build and rehearse, update the README (and `/data` when numbers change), commit, open a PR, merge, and confirm the deploy.
 - Don't put model names or IDs in commits, PRs or code.
 - In cloud sessions, outbound hosts are allowlisted per environment. A refused connection usually means the host needs adding.

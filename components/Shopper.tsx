@@ -2,14 +2,15 @@
 
 import Link from "next/link";
 import { useEffect, useMemo, useRef, useState } from "react";
-import type { Results } from "@/lib/assistant";
-import { buildPlan, defaultSelection, purchaseFileText, shopperAddOns, shopperCandidates, usd, type Plan, type PlanRoute, type ShopperSelection } from "@/lib/shopper";
+import type { ResultOption, Results } from "@/lib/assistant";
+import { buildPlan, clearMatch, defaultSelection, purchaseFileText, shopperAddOns, shopperCandidates, usd, type Plan, type PlanRoute, type ShopperSelection } from "@/lib/shopper";
 import type { ShopperText } from "@/lib/shopper-ai";
 import { Feedback } from "./Feedback";
 import { PAPERWORK_LABEL, paperworkKinds, type Paperwork, type PaperworkKind } from "@/lib/paperwork";
 import { Annotation, BestFit, Mark, RefTag, TickFrame } from "./blueprint";
 import { useStore } from "./store";
-import { ErrorNote } from "./ui";
+import { ErrorNote, sourceLabel } from "./ui";
+import { eligibilityFact, leadTimeFact, requirementFact, type Fact } from "./results/OptionsTable";
 
 const label = "font-mono text-[11px] uppercase tracking-[0.14em]";
 const primaryBtn = "inline-flex min-h-[44px] items-center rounded-md bg-primary px-4 text-ui-xs font-bold leading-none text-white no-underline hover:bg-primary-dark disabled:opacity-60";
@@ -19,18 +20,6 @@ const textLink = "inline-flex min-h-[44px] items-center text-ui-xs font-bold tex
 /** "**bold**" in the shopper's text becomes <strong>. Nothing else is interpreted. */
 function Rich({ text }: { text: string }) {
   return <>{text.split(/\*\*(.+?)\*\*/g).map((part, i) => (i % 2 ? <strong key={i}>{part}</strong> : part))}</>;
-}
-
-function Band({ step, title, working = false }: { step: string; title: string; working?: boolean }) {
-  return (
-    <div className="flex items-center gap-3 bg-[#0F3D73] px-5 py-4 [background-image:linear-gradient(rgba(255,255,255,0.06)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.06)_1px,transparent_1px)] [background-size:16px_16px]">
-      <Mark className="h-8 w-8" onDark working={working} />
-      <div className="min-w-0">
-        <div className={`${label} text-[#BFD5EE]`}>{step}</div>
-        <div className="font-heading text-lg font-bold text-white">{title}</div>
-      </div>
-    </div>
-  );
 }
 
 function Sources({ plan, refs }: { plan: Plan; refs: number[] }) {
@@ -49,20 +38,43 @@ function Sources({ plan, refs }: { plan: Plan; refs: number[] }) {
   );
 }
 
-/** The personal shopper on the results page: confirm what you're buying, then see how to buy it.
- * The plan is computed by rules (lib/shopper.ts) and redraws as the order changes. With an API key,
- * the shopper also words the plan and answers questions; without one, the rule-based wording stands. */
-export function Shopper({ results, requestId, onChanged }: { results: Results; requestId: string; onChanged: () => void }) {
+/** How a priced option is held: "under City of Riverbend contract RB-2024-117". */
+function routePhrase(o: ResultOption, buyerName: string | null) {
+  const num = o.contract_number ? ` ${o.contract_number}` : "";
+  if (o.group === "own_contract") return `under ${buyerName ?? "agency"} contract${num}`;
+  if (o.group === "no_approval") return "published price, no contract";
+  if (o.group === "gsa") return `under GSA schedule${num}`;
+  return `under ${sourceLabel(o.group).toLowerCase()}${o.group === "reseller" ? " contract" : ""}${num}`;
+}
+
+function Tile({ name, fact, big = false }: { name: string; fact: Fact; big?: boolean }) {
+  return (
+    <div className="flex flex-col gap-0.5 bg-white px-5 py-3.5">
+      <dt className={`${label} !text-[10.5px] text-base-dark`}>{name}</dt>
+      <dd className={`${big ? "text-heading-lg" : "text-body-md"} font-bold leading-snug ${fact.tone ?? "text-ink"}`}>{fact.text}</dd>
+      {fact.note && <dd className="text-ui-3xs text-base-dark">{fact.note}</dd>}
+    </div>
+  );
+}
+
+/** The top of the results page: the recommended route for the request, the purchase file and questions.
+ * The route is computed by rules (lib/shopper.ts) and redraws as the order changes. With an API key the
+ * summary is worded by the model and questions are answered; without one, the rule-based wording stands.
+ * A close match skips the item confirmation; the item stays open to change. `children` is the rest of the
+ * page (every option, other sources), laid out under the route at full width. */
+export function Shopper({ results, requestId, onChanged, options, children }: { results: Results; requestId: string; onChanged: () => void; options: ResultOption[]; children?: React.ReactNode }) {
   const { db, act, llm } = useStore();
   const request = db?.requests.find((r) => r.id === requestId);
   const [sel, setSel] = useState<ShopperSelection>(() => defaultSelection(results, request ?? results.request));
   const [busy, setBusy] = useState(false);
+  const [editing, setEditing] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [brief, setBrief] = useState<ShopperText | null>(null);
   const [writing, setWriting] = useState(false);
   const briefFor = useRef<string | null>(null);
 
   const confirmedAt = request?.shopper?.confirmed_at ?? null;
+  const showPlan = !editing && (Boolean(confirmedAt) || clearMatch(results));
   const candidates = useMemo(() => shopperCandidates(results), [results]);
   const chosen = candidates.find((o) => o.listing.id === sel.listing_id);
   const listings = db?.listings ?? [];
@@ -72,17 +84,18 @@ export function Shopper({ results, requestId, onChanged }: { results: Results; r
     [results, listings, db?.agency.quick_buy_threshold, db?.agency.name, sel],
   );
 
-  // Once the items are confirmed, ask the shopper to word the plan. The rule-based wording shows meanwhile, and stays if this fails.
+  // Once the route is shown, ask the model to word the summary. The rule-based wording shows meanwhile, and stays if this fails.
+  const briefKey = showPlan ? (confirmedAt ?? "matched") : null;
   useEffect(() => {
-    if (!confirmedAt || !llm || briefFor.current === confirmedAt) return;
-    briefFor.current = confirmedAt;
+    if (!briefKey || !llm || briefFor.current === briefKey) return;
+    briefFor.current = briefKey;
     setBrief(null);
     setWriting(true);
     act<ShopperText | null>("shopperBrief", { requestId })
-      .then((b) => briefFor.current === confirmedAt && setBrief(b))
+      .then((b) => briefFor.current === briefKey && setBrief(b))
       .catch(() => {})
       .finally(() => setWriting(false));
-  }, [confirmedAt, llm, act, requestId]);
+  }, [briefKey, llm, act, requestId]);
 
   if (!db || !request) return null;
 
@@ -110,21 +123,48 @@ export function Shopper({ results, requestId, onChanged }: { results: Results; r
       await act("confirmItems", { requestId, listingId: sel.listing_id, quantity: sel.quantity, addOns: sel.add_ons.map((a) => ({ listingId: a.listing_id, quantity: a.quantity })) });
       onChanged();
     });
+  const change = () =>
+    run(async () => {
+      if (confirmedAt) await act("editItems", { requestId });
+      setEditing(true);
+    });
 
   const pct = plan.total === null ? 0 : Math.min(100, (plan.total / (plan.limit * 3)) * 100);
   const under = plan.total !== null && plan.total < plan.limit;
-  const meterNote = plan.total === null ? "Total unknown until quoted" : plan.payment === "coop_site" ? "Ordered on the co-op's site" : under ? "Fits on a P-card" : plan.payment === "needs_contract" ? "Over the limit: needs a contract" : "Over the limit: needs a PO";
+  const meterNote = plan.total === null ? "Total unknown until quoted" : plan.payment === "coop_site" ? "Ordered on the co-op's site" : under ? "Within the P-card limit" : plan.payment === "needs_contract" ? "Over the limit: requires a contract" : "Over the limit: requires a purchase order";
+
+  // The route's four facts, and a cheaper option when one exists (single-item orders only: add-ons aren't comparable).
+  const priced = plan.routes.find((r) => r.kind === "priced");
+  const otherRoutes = plan.routes.filter((r) => r.kind !== "priced");
+  const lead = plan.routes.find((r) => r.recommended) ?? plan.routes[0];
+  const requirement: Fact =
+    plan.payment === "pcard"
+      ? { text: "P-card", note: `${usd(plan.gap)} under ${plan.limit_phrase}` }
+      : plan.payment === "po"
+        ? { text: "Purchase order", note: plan.gap === 0 ? `At ${plan.limit_phrase}` : `${usd(plan.gap)} over ${plan.limit_phrase}` }
+        : plan.payment === "needs_contract"
+          ? { text: "Contract or solicitation", note: `Over ${plan.limit_phrase}` }
+          : chosen
+            ? requirementFact(chosen, "po")
+            : { text: "Quote" };
+  const cheaper =
+    chosen && plan.total !== null && plan.lines.length === 1
+      ? options.filter((o) => o.listing.id !== chosen.listing.id && !o.quote_route && o.listing.unit === chosen.listing.unit && o.total < plan.total!).sort((a, b) => a.total - b.total)[0]
+      : undefined;
 
   return (
-    <section aria-label="Your personal shopper" className="grid items-start gap-6 lg:grid-cols-[minmax(0,1fr)_320px]">
-      <div className="min-w-0 space-y-4">
-        {!confirmedAt ? (
+    <div className="grid items-start gap-x-6 gap-y-8 lg:grid-cols-[minmax(0,1fr)_320px]">
+      <section aria-label="Recommended route" className="min-w-0 space-y-4 lg:col-start-1 lg:row-start-1">
+        {!showPlan ? (
           <>
             <div className="border border-primary-darker bg-white">
-              <Band step="Your personal shopper · step 1 of 2" title="Confirm what you're buying" />
+              <div className="border-b border-base-lighter px-5 pb-3 pt-4">
+                <div className={`${label} text-primary`}>Step 1 of 2</div>
+                <h2 className="font-heading text-heading-lg font-bold text-ink">Confirm the item</h2>
+              </div>
 
               <fieldset className="space-y-2.5 px-5 pt-5">
-                <legend className="mb-2.5 text-body-md font-bold text-ink">{candidates.length > 1 ? "Which one?" : "Is this it?"}</legend>
+                <legend className="mb-2.5 text-body-md font-bold text-ink">{candidates.length > 1 ? "Select the item" : "Matched item"}</legend>
                 {candidates.map((o, i) => {
                   const on = sel.listing_id === o.listing.id;
                   const peer = results.peer && results.peer.listing_title === o.listing.title ? results.peer : null;
@@ -164,7 +204,7 @@ export function Shopper({ results, requestId, onChanged }: { results: Results; r
                   <label className={`flex cursor-pointer flex-wrap items-start gap-x-3.5 gap-y-2 border px-4 py-3.5 ${sel.listing_id === null ? "border-primary-darker bg-primary-lighter/40" : "border-base-lighter bg-white"}`}>
                     <input type="radio" name={`item-${requestId}`} checked={sel.listing_id === null} onChange={() => pick(null)} className="mt-0.5 h-5 w-5 accent-[#162E51]" />
                     <span className="flex min-w-0 flex-[1_1_300px] flex-col gap-1.5">
-                      <span className="text-body-md font-bold text-ink">{candidates.length ? "Something else, or a specific make or model" : `${request.parsed.item}, by quote`}</span>
+                      <span className="text-body-md font-bold text-ink">{candidates.length ? "A different item, or a specific make or model" : `${request.parsed.item}, by quote`}</span>
                       <span className="flex flex-wrap items-center gap-x-2.5 gap-y-1.5 text-ui-2xs text-base-darker">
                         <span>Through {[...new Set(quoteHits.map((h) => h.coop))].join(", ")}</span>
                         {coopRoutes.flatMap((r) => r.refs).map((n) => (
@@ -172,7 +212,7 @@ export function Shopper({ results, requestId, onChanged }: { results: Results; r
                         ))}
                       </span>
                       <span className="text-ui-2xs text-base-dark">
-                        {quoteHits.every((h) => h.products === 0) ? "No catalog items are loaded for these contracts, so there's nothing to pick from yet." : "Some of these contracts have priced products further down the page."}
+                        {quoteHits.every((h) => h.products === 0) ? "No catalog items are loaded for these contracts, so there is nothing to select yet." : "Some of these contracts have priced products further down the page."}
                       </span>
                     </span>
                     <span className="text-right text-ui-2xs text-base-dark">
@@ -186,7 +226,7 @@ export function Shopper({ results, requestId, onChanged }: { results: Results; r
               {addOns.length > 0 && (
                 <fieldset className="px-5 pt-5">
                   <legend className="text-body-md font-bold text-ink">
-                    Add to this order? <span className="text-ui-2xs font-normal text-base-dark">Also on this contract.</span>
+                    Additional items <span className="text-ui-2xs font-normal text-base-dark">On the same contract.</span>
                   </legend>
                   {addOns.map((l) => {
                     const q = addOnQty(l.id);
@@ -222,7 +262,7 @@ export function Shopper({ results, requestId, onChanged }: { results: Results; r
               <div className="mt-5 flex flex-wrap items-start gap-x-8 gap-y-5 border-t border-primary-light/60 bg-primary-lighter/40 px-5 py-4">
                 <div>
                   <label htmlFor={`qty-${requestId}`} className="block text-body-md font-bold text-ink">
-                    How many?
+                    Quantity
                   </label>
                   <div className="mt-1.5 flex items-stretch">
                     <button type="button" aria-label="One fewer" onClick={() => setQty(sel.quantity - 1)} className="h-11 w-11 border border-base-light bg-white text-xl font-semibold text-ink">
@@ -276,9 +316,9 @@ export function Shopper({ results, requestId, onChanged }: { results: Results; r
 
               <div className="flex flex-wrap items-center gap-x-5 gap-y-2.5 border-t border-base-lighter px-5 py-4">
                 <button type="button" disabled={busy} onClick={confirm} className={primaryBtn}>
-                  Confirm and see how to buy
+                  Confirm item
                 </button>
-                <span className="min-w-0 flex-[1_1_260px] text-ui-2xs text-base-dark">Items, SKUs and prices come from the price lists in Agora. Your shopper matched your words to them and didn't write any of them.</span>
+                <span className="min-w-0 flex-[1_1_260px] text-ui-2xs text-base-dark">Items, SKUs and prices come from the price lists in Agora. None of them are generated.</span>
               </div>
             </div>
 
@@ -286,79 +326,174 @@ export function Shopper({ results, requestId, onChanged }: { results: Results; r
               <span aria-hidden className="h-2.5 w-2.5 shrink-0 border-[1.5px] border-primary-light bg-white" />
               <div>
                 <div className={`${label} text-base-dark`}>Step 2 of 2</div>
-                <div className="text-sm text-base-darker">Your buying plan: which routes are open {results.buyer ? `to ${results.buyer.name}` : "to you"} for exactly these items, and what each one takes.</div>
+                <div className="text-sm text-base-darker">Recommended route: the routes open {results.buyer ? `to ${results.buyer.name}` : "to this request"} for the confirmed item, and what each requires.</div>
               </div>
             </div>
           </>
         ) : (
-          <>
-            <div className="flex flex-wrap items-center gap-x-4 gap-y-2.5 border border-base-light bg-white px-5 py-3.5">
-              <span aria-hidden className="h-2.5 w-2.5 shrink-0 bg-[#162E51]" />
+          <div className="border border-primary-darker bg-white shadow-2">
+            <div className="flex flex-wrap items-center gap-x-4 gap-y-2 border-b border-base-lighter bg-base-lightest px-5 py-2.5">
               <div className="min-w-0 flex-[1_1_320px]">
-                <div className={`${label} text-base-dark`}>Step 1 · confirmed</div>
-                <div className="text-sm font-semibold text-ink">{plan.file.items}</div>
+                <span className={`${label} text-base-dark`}>{confirmedAt ? "Item · confirmed" : "Item · matched, not yet confirmed"}</span>
+                <div className="text-ui-xs font-bold text-ink">{plan.file.items}</div>
               </div>
-              <span className="text-body-md font-bold tabular-nums text-ink">{plan.total === null ? "Price by quote" : usd(plan.total)}</span>
-              <button type="button" disabled={busy} onClick={() => run(() => act("editItems", { requestId }))} className={outlineBtn}>
-                Edit
+              <button type="button" disabled={busy} onClick={change} className={textLink}>
+                Change item or quantity
               </button>
             </div>
 
-            <div className="border border-primary-darker bg-white">
-              <Band step="Your personal shopper · step 2 of 2" title="Your buying plan" working={writing} />
-              <div className="space-y-2.5 px-5 pt-5">
-                <h2 className="font-heading text-2xl font-bold leading-snug text-ink">{brief?.headline ?? plan.headline}</h2>
-                {(brief?.paragraphs ?? [plan.summary]).map((p, i) => (
-                  <p key={i} className="max-w-[68ch] text-body-md leading-relaxed text-ink">
-                    <Rich text={p} />
-                  </p>
-                ))}
-                {writing && <p className="text-ui-2xs text-base-dark">Your shopper is writing this up. The plan below is already final.</p>}
-                <Feedback key={brief?.log_id} id={brief?.log_id} />
+            <div className="space-y-2.5 px-5 pb-5 pt-5">
+              <div className="flex flex-wrap items-center gap-2.5">
+                <span className={`${label} text-primary`}>Recommended route</span>
+                {(priced ?? lead)?.refs.map((n) => <RefTag key={n} n={n} />)}
+                {writing && <Mark className="h-4 w-4" working />}
               </div>
-
-              <div className="flex flex-wrap gap-3 px-5 py-5">
-                {plan.routes.map((r, i) => (
-                  <RouteCard key={r.kind} n={i + 1} route={r} plan={plan} requestId={requestId} />
-                ))}
-              </div>
-
-              {plan.unknowns.length > 0 && (
-                <div className="flex flex-wrap items-baseline gap-x-4 gap-y-1.5 border-t border-base-lighter px-5 py-3.5">
-                  <span className={`${label} text-base-dark`}>What I don't know</span>
-                  <ul className="min-w-0 flex-[1_1_320px] space-y-1 text-sm text-ink">
-                    {plan.unknowns.map((u) => (
-                      <li key={u}>{u}</li>
-                    ))}
-                  </ul>
-                </div>
-              )}
-              <div className="px-5 pb-4">
-                <Sources plan={plan} refs={brief?.refs.length ? brief.refs : plan.routes.flatMap((r) => r.refs)} />
-              </div>
+              <h2 className="max-w-[40ch] font-heading text-heading-lg font-bold leading-tight text-ink sm:text-heading-xl">{chosen ? `${chosen.supplier.name}, ${routePhrase(chosen, results.buyer?.name ?? null)}` : (lead?.title ?? plan.headline)}</h2>
+              {(brief?.paragraphs ?? [plan.summary]).map((p, i) => (
+                <p key={i} className="max-w-[72ch] text-body-sm leading-relaxed text-base-darker">
+                  <Rich text={p} />
+                </p>
+              ))}
+              <Feedback key={brief?.log_id} id={brief?.log_id} />
             </div>
-          </>
+
+            {chosen && (
+              <dl className="grid grid-cols-2 gap-px border-y border-base-lighter bg-base-lighter xl:grid-cols-4">
+                <Tile big name="Price" fact={{ text: plan.total === null ? "By quote" : usd(plan.total), note: plan.lines.length === 1 ? `${plan.lines[0].quantity} × ${usd(plan.lines[0].unit_price)} / ${plan.lines[0].unit} · published price` : `${plan.lines.length} items · published prices` }} />
+                <Tile name="Eligibility" fact={eligibilityFact(chosen, results.buyer)} />
+                <Tile name="Requirement" fact={requirement} />
+                <Tile name="Lead time" fact={leadTimeFact(chosen)} />
+              </dl>
+            )}
+
+            {cheaper && (
+              <div className="flex flex-wrap items-baseline gap-x-4 gap-y-1.5 border-b border-warning-light bg-warning-lighter px-5 py-3.5">
+                <span className={`${label} !text-[10.5px] text-warning-darker`}>Lower-cost option</span>
+                <span className="min-w-0 flex-[1_1_360px] text-ui-xs text-ink">
+                  {cheaper.supplier.name}, {routePhrase(cheaper, results.buyer?.name ?? null)}: {usd(cheaper.total)} in all, {usd(Math.round((plan.total! - cheaper.total) * 100) / 100)} less. {requirementFact(cheaper, cheaper.rule.payment).text}
+                  {cheaper.member === false ? "; membership required" : ""}
+                  {cheaper.listing.lead_time_days ? `; ${cheaper.listing.lead_time_days}-day lead time` : ""}.
+                </span>
+                <a href="#options" className={textLink}>
+                  Compare options
+                </a>
+              </div>
+            )}
+
+            {priced && (
+              <div className="flex flex-wrap items-center gap-x-4 gap-y-2 px-5 py-4">
+                <PricedActions plan={plan} requestId={requestId} />
+              </div>
+            )}
+
+            {otherRoutes.length > 0 && (
+              <div className="border-t border-base-lighter px-5 py-4">
+                {priced && <div className={`${label} mb-3 text-base-dark`}>Other routes</div>}
+                <div className="flex flex-wrap gap-3">
+                  {otherRoutes.map((r) => (
+                    <RouteCard key={r.kind} route={r} requestId={requestId} />
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {plan.unknowns.length > 0 && (
+              <div className="flex flex-wrap items-baseline gap-x-4 gap-y-1.5 border-t border-base-lighter px-5 py-3.5">
+                <span className={`${label} text-base-dark`}>Not known</span>
+                <ul className="min-w-0 flex-[1_1_320px] space-y-1 text-sm text-ink">
+                  {plan.unknowns.map((u) => (
+                    <li key={u}>{u}</li>
+                  ))}
+                </ul>
+              </div>
+            )}
+            <div className="px-5 pb-4">
+              <Sources plan={plan} refs={brief?.refs.length ? brief.refs : plan.routes.flatMap((r) => r.refs)} />
+            </div>
+          </div>
         )}
         <ErrorNote message={error} />
-      </div>
+      </section>
 
-      <aside className="space-y-4">
-        <PurchaseFile results={results} plan={plan} confirmedAt={confirmedAt} />
-        {confirmedAt && <PaperworkCard plan={plan} requestId={requestId} />}
+      <aside className="order-last min-w-0 space-y-4 lg:order-none lg:col-start-2 lg:row-start-1">
+        <PurchaseFile results={results} plan={plan} confirmedAt={confirmedAt} shown={showPlan} />
+        {showPlan && <PaperworkCard plan={plan} requestId={requestId} />}
         <AskBox plan={plan} requestId={requestId} enabled={llm} supplier={chosen?.supplier.name ?? null} />
       </aside>
-    </section>
+
+      {children && <div className="min-w-0 space-y-8 lg:col-span-2">{children}</div>}
+
+      <nav aria-label="Purchase file and questions" className="fixed inset-x-0 bottom-0 z-30 flex gap-2 border-t border-primary-darker bg-white px-4 py-2.5 shadow-4 lg:hidden">
+        <a href="#purchase-file" className="flex min-h-[44px] flex-1 items-center justify-center border border-base-light text-ui-xs font-bold text-ink no-underline">
+          Purchase file
+        </a>
+        <a href="#questions" className="flex min-h-[44px] flex-1 items-center justify-center bg-[#162E51] text-ui-xs font-bold text-white no-underline">
+          Ask a question
+        </a>
+      </nav>
+    </div>
   );
 }
 
-function RouteCard({ n, route, plan, requestId }: { n: number; route: PlanRoute; plan: Plan; requestId: string }) {
+/** Buying the recommended, priced route: into the cart, to checkout, or out to the co-op's site. */
+function PricedActions({ plan, requestId }: { plan: Plan; requestId: string }) {
+  const { act } = useStore();
+  const [state, setState] = useState<"idle" | "busy" | "done">("idle");
+  const [error, setError] = useState<string | null>(null);
+  const first = plan.lines[0];
+  const add = async () => {
+    setState("busy");
+    setError(null);
+    try {
+      for (const l of plan.lines) await act("addToCart", { listingId: l.listing_id, quantity: l.quantity, requestId });
+      setState("done");
+    } catch (e) {
+      setError((e as Error).message);
+      setState("idle");
+    }
+  };
+  return (
+    <>
+      {(plan.payment === "pcard" || plan.payment === "po") &&
+        (state === "done" ? (
+          <Link href="/cart" className={textLink}>
+            Added to the cart. Open the cart →
+          </Link>
+        ) : (
+          <>
+            {plan.lines.length === 1 && (
+              <Link href={`/checkout?listing=${first.listing_id}&qty=${first.quantity}&request=${requestId}`} className={primaryBtn}>
+                {plan.payment === "po" ? "Start purchase order" : "Check out"} · {usd(plan.total ?? 0)}
+              </Link>
+            )}
+            <button type="button" disabled={state === "busy"} className={plan.lines.length === 1 ? outlineBtn : primaryBtn} onClick={add}>
+              Add to cart{plan.lines.length === 1 ? "" : ` · ${usd(plan.total ?? 0)}`}
+            </button>
+          </>
+        ))}
+      {plan.payment === "coop_site" && first && (
+        <Link href={`/product/${first.listing_id}?qty=${first.quantity}&request=${requestId}`} className={primaryBtn}>
+          Product and contract page
+        </Link>
+      )}
+      {plan.payment === "needs_contract" && (
+        <Link href={`/solicitations/new?request=${requestId}`} className={primaryBtn}>
+          Draft a solicitation
+        </Link>
+      )}
+      <ErrorNote message={error} />
+    </>
+  );
+}
+
+function RouteCard({ route, requestId }: { route: PlanRoute; requestId: string }) {
   const { db, act } = useStore();
   const [state, setState] = useState<"idle" | "busy" | "done">("idle");
   const [error, setError] = useState<string | null>(null);
   const buyer = db?.session.buyer?.name;
   const hit = route.hits[0];
   const asked = state === "done" || (route.kind === "join" && Boolean(db?.referrals.some((x) => x.contract_id === hit?.contract_id && x.agency === buyer && x.request_id === requestId)));
-  const kindLabel = route.kind === "priced" ? "priced" : route.kind === "member" ? "on your co-op" : route.kind === "join" ? "not open to you yet" : "co-op contracts";
+  const kindLabel = route.kind === "member" ? "Open to this agency" : route.kind === "join" ? "Membership required" : "Co-op contracts";
   const go = async (fn: () => Promise<unknown>) => {
     setState("busy");
     setError(null);
@@ -370,69 +505,27 @@ function RouteCard({ n, route, plan, requestId }: { n: number; route: PlanRoute;
       setState("idle");
     }
   };
-  const first = plan.lines[0];
 
   return (
-    <div className={`flex min-w-0 flex-[1_1_240px] flex-col gap-2.5 border px-4 py-3.5 ${route.recommended ? "border-primary-light bg-primary-lighter/40" : "border-base-lighter bg-white"}`}>
+    <div className={`flex min-w-0 flex-[1_1_260px] flex-col gap-2 border px-4 py-3.5 ${route.recommended ? "border-primary-light bg-primary-lighter/40" : "border-base-lighter bg-white"}`}>
       <div className="flex flex-wrap items-center gap-2">
-        <span className={`${label} text-base-darker`}>
-          Route {n} · {kindLabel}
-        </span>
-        {route.recommended && (route.kind === "priced" ? <BestFit /> : <span className="bg-primary-lighter px-1.5 py-0.5 text-ui-3xs font-bold text-primary-darker">Start here</span>)}
-      </div>
-      <div className="text-body-md font-bold text-ink">{route.title}</div>
-      <p className="text-sm leading-relaxed text-base-darker">{route.body}</p>
-      <div className="flex flex-wrap items-center gap-2">
+        <span className={`${label} text-base-darker`}>{kindLabel}</span>
+        {route.recommended && <span className="bg-primary-darker px-1.5 py-0.5 text-ui-3xs font-bold text-white">Recommended</span>}
         {route.refs.map((x) => (
           <RefTag key={x} n={x} />
         ))}
       </div>
+      <div className="text-body-sm font-bold text-ink">{route.title}</div>
+      <p className="text-ui-xs leading-relaxed text-base-darker">{route.body}</p>
       <div className="mt-auto flex flex-wrap items-center gap-x-4 gap-y-1 pt-1">
-        {route.kind === "priced" && (plan.payment === "pcard" || plan.payment === "po") && (
-          <>
-            {state === "done" ? (
-              <Link href="/cart" className={textLink}>
-                In your cart. Open the cart →
-              </Link>
-            ) : (
-              <button
-                type="button"
-                disabled={state === "busy"}
-                className={primaryBtn}
-                onClick={() =>
-                  go(async () => {
-                    for (const l of plan.lines) await act("addToCart", { listingId: l.listing_id, quantity: l.quantity, requestId });
-                  })
-                }
-              >
-                Add to cart · {usd(plan.total ?? 0)}
-              </button>
-            )}
-            {plan.lines.length === 1 && state !== "done" && (
-              <Link href={`/checkout?listing=${first.listing_id}&qty=${first.quantity}&request=${requestId}`} className={textLink}>
-                Check out now →
-              </Link>
-            )}
-          </>
-        )}
-        {route.kind === "priced" && plan.payment === "coop_site" && first && (
-          <Link href={`/product/${first.listing_id}?qty=${first.quantity}&request=${requestId}`} className={textLink}>
-            See the product and its contract page →
-          </Link>
-        )}
-        {route.kind === "priced" && plan.payment === "needs_contract" && (
-          <Link href={`/solicitations/new?request=${requestId}`} className={textLink}>
-            Build a solicitation →
-          </Link>
-        )}
         {(route.kind === "member" || route.kind === "coops") && (
-          <a href="#coops" className={textLink}>
-            See {route.hits.length === 1 ? "this contract" : "these contracts"} ↓
+          <a href={route.hits.every((h) => h.program === "state") ? "#state-contracts" : "#coops"} className={textLink}>
+            View {route.hits.length === 1 ? "this contract" : "these contracts"}
           </a>
         )}
         {route.kind === "member" && (
           <Link href="/quote-check" className={textLink}>
-            Got a quote? Check it →
+            Check a quote
           </Link>
         )}
         {route.kind === "join" &&
@@ -440,7 +533,7 @@ function RouteCard({ n, route, plan, requestId }: { n: number; route: PlanRoute;
             <span className="inline-flex min-h-[44px] items-center text-ui-xs font-bold text-success-darker">Sent to purchasing</span>
           ) : (
             <button type="button" disabled={state === "busy" || !hit?.eligible} className={outlineBtn} onClick={() => go(() => act("askToJoin", { contractId: hit.contract_id, requestId, fit: hit.fit }))}>
-              Ask purchasing to get us on this
+              Ask purchasing about this contract
             </button>
           ))}
       </div>
@@ -449,15 +542,15 @@ function RouteCard({ n, route, plan, requestId }: { n: number; route: PlanRoute;
   );
 }
 
-function PurchaseFile({ results, plan, confirmedAt }: { results: Results; plan: Plan; confirmedAt: string | null }) {
-  const pending = !confirmedAt;
+function PurchaseFile({ results, plan, confirmedAt, shown }: { results: Results; plan: Plan; confirmedAt: string | null; shown: boolean }) {
+  const pending = !shown;
   const rows: [string, string, boolean?][] = [
     ["Request", `“${results.request.raw_text}”${results.buyer ? `, ${results.buyer.name}, ${results.buyer.state}` : ""}`],
-    [`Items · ${pending ? "not confirmed yet" : "confirmed"}`, plan.file.items, true],
+    [`Items · ${confirmedAt ? "confirmed" : "not confirmed yet"}`, plan.file.items, true],
     ["Options considered", `${plan.refs.length} source${plan.refs.length === 1 ? "" : "s"}, Ref${plan.refs.length === 1 ? "" : "s"} ${plan.refs.length > 1 ? `1 to ${plan.refs.length}` : "1"}`],
-    ["Route", pending ? "Pending. Confirm the items first." : plan.file.route],
-    ["Why", pending ? "Pending" : plan.file.why],
-    ["Still needed", pending ? "Your confirmation of the items" : plan.file.needed],
+    ["Route", pending ? "Pending confirmation of the item" : plan.file.route],
+    ["Basis", pending ? "Pending" : plan.file.why],
+    ["Outstanding", pending ? "Confirmation of the item" : plan.file.needed],
   ];
   const download = () => {
     const url = URL.createObjectURL(new Blob([purchaseFileText(results, plan, confirmedAt)], { type: "text/plain" }));
@@ -468,10 +561,10 @@ function PurchaseFile({ results, plan, confirmedAt }: { results: Results; plan: 
     URL.revokeObjectURL(url);
   };
   return (
-    <div className="border border-base-light bg-white">
+    <div id="purchase-file" className="scroll-mt-24 border border-base-light bg-white">
       <div className="border-b border-base-lighter px-5 pb-3 pt-4">
-        <div className="font-heading text-lg font-bold text-ink">The purchase file</div>
-        <Annotation className="text-base-dark">Writes itself as you shop</Annotation>
+        <h2 className="font-heading text-lg font-bold text-ink">Purchase file</h2>
+        <Annotation className="text-base-dark">Record of this request</Annotation>
       </div>
       <dl className="px-5 pb-2 pt-1">
         {rows.map(([k, v, strong]) => (
@@ -527,9 +620,10 @@ function AskBox({ plan, requestId, enabled, supplier }: { plan: Plan; requestId:
   };
 
   return (
-    <div className="border border-base-light bg-white">
+    <div id="questions" className="scroll-mt-24 border border-base-light bg-white">
       <div className="px-5 pt-4">
-        <Annotation className="text-base-dark">Ask your shopper</Annotation>
+        <h2 className="font-heading text-lg font-bold text-ink">Questions</h2>
+        <Annotation className="text-base-dark">About this purchase</Annotation>
       </div>
 
       {turns.length > 0 && (
@@ -547,13 +641,13 @@ function AskBox({ plan, requestId, enabled, supplier }: { plan: Plan; requestId:
               <div className="flex items-start gap-3.5">
                 <span aria-hidden className="relative mt-1 h-[9px] w-[9px] shrink-0 bg-[#162E51] shadow-[0_0_0_5px_rgb(var(--us-white))]" />
                 <div className="min-w-0 flex-1 space-y-2">
-                  <div className={`${label} text-primary`}>Your shopper</div>
+                  <div className={`${label} text-primary`}>Agora</div>
                   {t.status === "pending" && (
                     <div className="flex items-center gap-2 text-sm text-base-dark">
                       <Mark className="h-5 w-5" working /> Checking the contract data
                     </div>
                   )}
-                  {t.status === "failed" && <p className="text-sm text-ink">I couldn't answer that from Agora's data just now. The plan and the sources on this page still stand.</p>}
+                  {t.status === "failed" && <p className="text-sm text-ink">No answer could be drawn from Agora's data. The route and sources on this page still stand.</p>}
                   {t.answer?.paragraphs.map((p, j) => (
                     <p key={j} className="text-sm leading-relaxed text-ink">
                       <Rich text={p} />
@@ -590,20 +684,20 @@ function AskBox({ plan, requestId, enabled, supplier }: { plan: Plan; requestId:
                 }}
               >
                 <label htmlFor={`ask-${requestId}`} className="sr-only">
-                  Ask your shopper
+                Question about this purchase
                 </label>
-                <input id={`ask-${requestId}`} type="text" value={text} onChange={(e) => setText(e.target.value)} maxLength={500} placeholder="Ask about a supplier or a co-op" className="h-11 min-w-0 flex-1 !rounded-none !border-0 bg-transparent px-3.5 text-sm text-ink !shadow-none outline-none" />
+                <input id={`ask-${requestId}`} type="text" value={text} onChange={(e) => setText(e.target.value)} maxLength={500} placeholder="Ask about a supplier or a contract" className="h-11 min-w-0 flex-1 !rounded-none !border-0 bg-transparent px-3.5 text-sm text-ink !shadow-none outline-none" />
                 <button type="submit" disabled={waiting || !text.trim()} className="h-11 bg-[#162E51] px-4 text-sm font-bold text-white disabled:opacity-60">
-                  Ask →
+                  Ask
                 </button>
               </form>
             </TickFrame>
           </div>
         </>
       ) : (
-        <p className="mt-2 px-5 text-sm text-base-darker">Questions are answered by Claude and need the AI connection, which is off. The plan and the purchase file are rule-based and work without it.</p>
+        <p className="mt-2 px-5 text-sm text-base-darker">Questions are answered by Claude and need the AI connection, which is off. The route and the purchase file are rule-based and work without it.</p>
       )}
-      <p className="px-5 pb-4 pt-1 text-ui-3xs leading-relaxed text-base-dark">Your shopper works only from Agora's contract data and shows its sources. It never guesses a price or decides on its own which contracts you can use.</p>
+      <p className="px-5 pb-4 pt-1 text-ui-3xs leading-relaxed text-base-dark">Answers draw only on Agora's contract data and cite their sources. Prices are never estimated, and eligibility is decided by the contract rules, not by the answer.</p>
     </div>
   );
 }
@@ -642,7 +736,7 @@ function PaperworkCard({ plan, requestId }: { plan: Plan; requestId: string }) {
   return (
     <div className="border border-base-light bg-white">
       <div className="border-b border-base-lighter px-5 pb-3 pt-4">
-        <div className="font-heading text-lg font-bold text-ink">Paperwork</div>
+        <h2 className="font-heading text-lg font-bold text-ink">Paperwork</h2>
         <Annotation className="text-base-dark">Drafted from the purchase file</Annotation>
       </div>
       <div className="px-5 pt-1">
@@ -681,7 +775,7 @@ function PaperworkCard({ plan, requestId }: { plan: Plan; requestId: string }) {
             </button>
           </div>
           <p className="text-ui-3xs leading-relaxed text-base-dark">
-            {doc.written_by === "llm" ? "Worded by your shopper from the purchase file; every figure and contract number was checked against it." : "Filled in from the purchase file."} Fill the [bracketed] blanks and read it before you send it. Agora doesn't send it for you.
+            {doc.written_by === "llm" ? "Worded by Claude from the purchase file; every figure and contract number was checked against it." : "Filled in from the purchase file."} Fill the [bracketed] blanks and read it before you send it. Agora doesn't send it for you.
           </p>
           <Feedback key={doc.log_id} id={doc.log_id} />
         </div>

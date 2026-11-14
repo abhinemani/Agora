@@ -4,24 +4,22 @@ import Link from "next/link";
 import { useParams, useSearchParams } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
 import { BuyerPicker } from "@/components/BuyerPicker";
-import { AddToCart } from "@/components/AddToCart";
-import { CoopLink } from "@/components/CoopLink";
 import { CatalogProducts } from "@/components/CatalogProducts";
-import { CoopSection, FitPill } from "@/components/CoopSection";
-import { RouteStrip } from "@/components/RouteStrip";
+import { CoopContracts, GsaContracts, StateContracts, coopCounts } from "@/components/CoopSection";
 import { ExpiredNote, InviteAdminBanner, NextSteps, OwnContractsCard } from "@/components/ResultExtras";
-import { CategoryIcon } from "@/components/CategoryIcon";
-import { Annotation, BestFit, RefTag, TickFrame } from "@/components/blueprint";
 import { Shopper } from "@/components/Shopper";
+import { Fold, FoldGroup } from "@/components/results/Fold";
+import { OptionsTable } from "@/components/results/OptionsTable";
+import { RequestSummary } from "@/components/results/RequestSummary";
 import { shopperApplies, shopperRefs } from "@/lib/shopper";
 import { useStore } from "@/components/store";
-import { Lock, People, Plus, Sparkle } from "@/components/icons";
-import { Badge, Button, Card, Checkbox, ErrorNote, Eyebrow, IconCircle, LinkButton, Loading, RevenueTags, SourcePill, Stars, SupplierBadges, money } from "@/components/ui";
+import { Lock, People, Plus } from "@/components/icons";
+import { Badge, Button, Card, Checkbox, ErrorNote, Eyebrow, IconCircle, Loading, RevenueTags, Stars, money } from "@/components/ui";
 import { verificationSummary } from "@/lib/verification";
 import { goHref } from "@/lib/coops";
 import { contractHref } from "@/components/ContractBits";
-import type { ContractLead, Results, ResultOption, Unavailable } from "@/lib/assistant";
-import { PURCHASE_KINDS, TRANSACTION_FEE_SOURCES } from "@/lib/revenue_rules";
+import type { ContractLead, Results, Unavailable } from "@/lib/assistant";
+import { PURCHASE_KINDS } from "@/lib/revenue_rules";
 
 function KindBanner({ kind }: { kind: (typeof PURCHASE_KINDS)[keyof typeof PURCHASE_KINDS] }) {
   return (
@@ -36,15 +34,6 @@ function KindBanner({ kind }: { kind: (typeof PURCHASE_KINDS)[keyof typeof PURCH
       <RevenueTags options={kind.options} size="md" />
     </div>
   );
-}
-
-function earnsFor(o: ResultOption) {
-  const tags: number[] = [];
-  if (o.listing.source !== "no_approval") tags.push(2);
-  if (TRANSACTION_FEE_SOURCES.includes(o.listing.source)) tags.push(3);
-  if (o.sponsored) tags.push(5);
-  if (o.rule.payment === "pcard") tags.push(9);
-  return tags;
 }
 
 /** Cards shown before "Show all"; large catalogs can match dozens. */
@@ -113,56 +102,202 @@ export default function RequestResults() {
   const refs = results ? shopperRefs(results) : [];
   const listingRefs = Object.fromEntries(refs.filter((r) => r.key.startsWith("listing:")).map((r) => [r.key.slice(8), r.n]));
   const contractRefs = Object.fromEntries(refs.filter((r) => r.key.startsWith("contract:")).map((r) => [r.key.slice(9), r.n]));
-  const heading = p.item ? p.item.charAt(0).toUpperCase() + p.item.slice(1) : request.raw_text;
+  const priced = results && !results.no_match;
+  const cc = results ? coopCounts(coops!) : null;
+  const who = buyer?.name ?? "this agency";
+  const counts = priced ? `${all.length} priced option${all.length === 1 ? "" : "s"} on ${sources} kind${sources === 1 ? "" : "s"} of contract` : null;
+  const dateOf = (d: string) => new Date(d).toLocaleDateString("en-US", { month: "long", year: "numeric" });
 
-  return (
-    <div className="space-y-6">
-      <div>
-        <Link href="/" className="text-sm text-slate hover:text-navy">
-          ← New search
-        </Link>
-        <div className="mt-4 flex flex-wrap items-start justify-between gap-4">
-          <div className="min-w-0">
-            {p.category && <Annotation className="mb-1 text-base-dark">{p.category}</Annotation>}
-            <h1 className="font-heading text-heading-xl font-bold leading-tight text-ink">{heading}</h1>
-            <p className="mt-1.5 text-sm text-slate" title={request.parse_mode === "llm" ? "Read by Claude" : "Read with offline rules"}>
-              Matched from your search “{request.raw_text}”.{" "}
-              {results && !results.no_match ? `${all.length} option${all.length === 1 ? "" : "s"} across ${sources} kind${sources === 1 ? "" : "s"} of contract. ` : ""}
-              {p.quantity > 1 ? `${p.quantity} needed` : "One needed"}
-              {p.deadline ? `, ${p.deadline}` : ""}
-              {p.est_total ? `, about ${money(p.est_total, false)}` : ""}.
-              {request.preference_answer === "yes" && " Favoring local and MBE suppliers."}
+  // Everything under the recommended route: every priced option, then the other sources, folded.
+  const main = results && (
+    <>
+      <InviteAdminBanner requestId={id} />
+      <OwnContractsCard hits={results.own_contracts} agency={results.buyer?.name ?? "Your agency"} />
+
+      {priced && (
+        <section aria-labelledby="options-heading" className="space-y-3">
+          {showEarn && <KindBanner kind={results.groups.every((g) => g.source === "no_approval") ? PURCHASE_KINDS.no_approval : PURCHASE_KINDS.contract} />}
+          <div className="flex flex-wrap items-baseline gap-x-4 gap-y-1">
+            <h2 id="options-heading" className="font-heading text-heading-lg font-bold text-ink">
+              Purchasing options
+            </h2>
+            <p className="text-ui-xs text-base-dark">
+              {counts}. {buyer ? `Only contracts open to ${buyer.name}, ${buyer.state} are listed` : "Every contract in Agora is listed; select an agency to limit them to the ones it can use"}.
             </p>
           </div>
-          <div className="flex shrink-0 flex-wrap items-center gap-2">
-            {results && !results.no_match && (
-              <button onClick={() => setWhy(!why)} className="inline-flex items-center rounded-md bg-white px-3 py-2 text-ui-2xs font-bold leading-none text-base-darker shadow-[inset_0_0_0_1px_theme(colors.base.light)] hover:text-primary hover:shadow-[inset_0_0_0_2px_theme(colors.primary.DEFAULT)]">
-                {why ? "Hide ranking" : "How these are ranked"}
+          <OptionsTable
+            options={shown}
+            qty={p.quantity}
+            requestId={id}
+            recommendedId={bestId}
+            refs={listingRefs}
+            buyer={buyer}
+            footer={
+              <div className="flex flex-wrap items-center gap-x-5 gap-y-2">
+                <p className="min-w-0 flex-[1_1_320px] text-ui-2xs text-base-dark">Prices are published prices from each supplier's listing. Sponsored suppliers are marked and are not ranked higher for it.</p>
+                <Checkbox checked={verifiedOnly} onChange={setVerifiedOnly} label="Verified suppliers only" />
+                <button type="button" onClick={() => setWhy(!why)} aria-expanded={why} className="inline-flex min-h-[44px] items-center text-ui-xs font-bold text-primary hover:text-primary-dark">
+                  {why ? "Hide ranking" : "How these are ranked"}
+                </button>
+              </div>
+            }
+          />
+          {why && (
+            <Card className="bg-navy-50/60 p-4">
+              <ul className="list-disc space-y-1 pl-5 text-sm text-navy">
+                {results.explanation.map((e) => (
+                  <li key={e}>{e}</li>
+                ))}
+              </ul>
+            </Card>
+          )}
+          {verifiedOnly && hiddenByVerified > 0 && (
+            <p className="text-ui-2xs text-base-dark">
+              {hiddenByVerified} option{hiddenByVerified === 1 ? "" : "s"} from suppliers whose checks aren't all passing {hiddenByVerified === 1 ? "is" : "are"} hidden.{" "}
+              <button onClick={() => setVerifiedOnly(false)} className="text-ink underline">
+                Show everything
               </button>
-            )}
-            {results && !results.no_match && <Checkbox checked={verifiedOnly} onChange={setVerifiedOnly} label="Verified suppliers only" />}
-            <button onClick={() => setChanging(!changing)} className="inline-flex items-center rounded-md bg-white px-3 py-2 text-ui-2xs font-bold leading-none text-base-darker shadow-[inset_0_0_0_1px_theme(colors.base.light)] hover:text-primary hover:shadow-[inset_0_0_0_2px_theme(colors.primary.DEFAULT)]">
-              {changing ? "Cancel" : buyer ? `For ${buyer.name}` : "Set your agency"}
+            </p>
+          )}
+          {all.length > shown.length && (
+            <button onClick={() => setShowAll(true)} className="w-full border border-dashed border-base-light py-3 text-sm font-semibold text-ink hover:bg-white">
+              Show all {all.length} options
             </button>
+          )}
+        </section>
+      )}
+
+      {results.no_match && showEarn && <KindBanner kind={PURCHASE_KINDS.new_need} />}
+      {results.no_match && (
+        <Card className="p-6">
+          <div className="flex gap-4">
+            <IconCircle size="lg">
+              <Plus />
+            </IconCircle>
+            <div>
+              <h2 className="font-heading text-heading-lg font-bold text-ink">
+                {results.own_contracts.length
+                  ? "Nothing else in Agora covers this, but the agency's own contract does."
+                  : results.contract_leads.some((c) => c.eligible) || results.coops.hits.some((h) => h.eligible)
+                    ? "No published prices for this yet. Contracts that cover it are listed below."
+                    : results.unavailable.length
+                      ? `No contract open to ${who} covers this yet.`
+                      : "No contract covers this yet."}
+              </h2>
+              {results.contract_leads.some((c) => c.eligible) && (
+                <p className="mt-2 text-sm text-navy">
+                  The contracts listed below cover this kind of purchase, but Agora doesn't hold their prices yet. Open one for its terms and how to buy under it, and ask the
+                  supplier for a quote under the contract before running a solicitation.
+                </p>
+              )}
+              <p className="mt-2 text-sm text-slate">
+                Most requests resolve to something already on contract or under a quick-buy limit. {results.buyer?.name ?? "The agency"} can run a solicitation, and once it's
+                awarded the contract joins Agora for the next agency that needs the same thing.
+              </p>
+              {results.similar_solicitation && (
+                <p className="mt-3 text-sm text-navy">
+                  The draft starts from the closest past solicitation: <span className="font-semibold">{results.similar_solicitation.title}</span>.
+                </p>
+              )}
+              <NextSteps requestId={id} />
+              <Link href="/" className="mt-3 inline-block text-xs font-semibold text-slate hover:text-navy">
+                Search with different words →
+              </Link>
+            </div>
           </div>
-        </div>
-        <p className="mt-2 text-xs text-slate">
-          {buyer
-            ? `Showing only contracts open to ${buyer.name}, ${buyer.state}.`
-            : "Showing every contract in Agora. Set your agency to hide the ones you can't use."}
-        </p>
-      </div>
+        </Card>
+      )}
+
+      {/* TRX state contracts are the preferred route for their own state's buyers, so they stay open above every co-op. */}
+      {buyer && <StateContracts section={coops!} requestId={id} refs={contractRefs} />}
+
+      <FoldGroup title="Other sources" note="Additional contracts and procurement methods for this request.">
+        {cc!.coops > 0 && (
+          <Fold
+            id="coops"
+            title="Cooperative contracts"
+            count={cc!.coops}
+            note={buyer ? `Split by the co-ops ${buyer.name} belongs to and the ones it could join.` : "Open to members, or to agencies in states that have signed on. Depends on the agency."}
+            defaultOpen={!all.length}
+          >
+            <CoopContracts section={coops!} requestId={id} onMembershipChange={() => setResults(null)} refs={contractRefs} query={p.item} />
+          </Fold>
+        )}
+        {!buyer && cc!.state > 0 && (
+          <Fold id="other-state-contracts" title="State contracts" count={cc!.state} note={`${cc!.stateNames.join(", ")}. Open to local governments in ${cc!.stateNames.length === 1 ? "that state" : "those states"} only.`}>
+            <StateContracts section={coops!} requestId={id} refs={contractRefs} />
+          </Fold>
+        )}
+        {cc!.gsa > 0 && (
+          <Fold id="gsa" title="Federal schedule (GSA)" count={cc!.gsa} note="Open to state and local governments only for the categories GSA allows.">
+            <GsaContracts section={coops!} requestId={id} refs={contractRefs} />
+          </Fold>
+        )}
+        {results.catalog_products && results.catalog_products.hits.length > 0 && (
+          <Fold id="catalog-products-fold" title="Products in co-op price files" count={results.catalog_products.total} note="Published prices with their vintage, not quotes. Ordering happens on the co-op's site.">
+            <CatalogProducts data={results.catalog_products} requestId={id} />
+          </Fold>
+        )}
+        {results.contract_leads.length > 0 && (
+          <Fold id="by-quote" title="Contracts with no prices on file" count={results.contract_leads.length} note="They cover this purchase; the price comes by quote.">
+            <ContractLeadsCard leads={results.contract_leads} />
+          </Fold>
+        )}
+        {results.peer && (
+          <Fold
+            id="peer"
+            title="Peer purchase on record"
+            note={`${results.peer.agency_name} (${results.peer.distance_miles} miles), ${dateOf(results.peer.date)}: ${money(results.peer.unit_price)} each from ${results.peer.supplier_name.replace(/\.$/, "")}. For reference; not a price offered to ${who}.`}
+          >
+            <div className="max-w-md">
+              <PeerCard peer={results.peer} qty={p.quantity} />
+            </div>
+          </Fold>
+        )}
+        {results.unavailable.length > 0 && (
+          <Fold id="not-open" title={`Contracts not open to ${who}`} count={results.unavailable.length} note="Matches on contracts this agency can't use, with the reason.">
+            <UnavailableCard items={results.unavailable} buyerName={who} />
+          </Fold>
+        )}
+        <Link href={`/solicitations/new?request=${id}`} className="flex min-h-[44px] items-center gap-4 px-5 py-3.5 text-ink no-underline hover:bg-base-lightest">
+          <span className="w-12 shrink-0" aria-hidden />
+          <span className="min-w-0 flex-1">
+            <span className="block text-body-sm font-bold">Issue a solicitation</span>
+            <span className="block text-ui-2xs text-base-dark">A draft is generated from this request and the closest past award.</span>
+          </span>
+          <span className="shrink-0 whitespace-nowrap text-ui-xs font-bold text-primary">Start a draft</span>
+        </Link>
+      </FoldGroup>
+      <ExpiredNote items={results.expired} />
+    </>
+  );
+
+  return (
+    <div className="space-y-6 pb-20 lg:pb-0">
+      <Link href="/" className="text-sm text-slate hover:text-navy">
+        ← New search
+      </Link>
+      <RequestSummary request={request} buyer={buyer} counts={counts} onAgency={() => setChanging(!changing)} changing={changing} />
 
       {changing && <BuyerPicker onDone={() => setChanging(false)} onClose={() => setChanging(false)} />}
 
+      {!buyer && !changing && (
+        <div className="flex flex-wrap items-center gap-x-6 gap-y-3 border border-warning bg-warning-lighter px-5 py-4">
+          <div className="min-w-0 flex-[1_1_360px]">
+            <h2 className="text-body-md font-bold text-ink">No agency selected</h2>
+            <p className="text-ui-xs text-base-darker">
+              Eligibility depends on state law and the agency's cooperative memberships. Until an agency is selected, every contract is listed and none is checked against them.
+            </p>
+          </div>
+          <Button onClick={() => setChanging(true)}>Select agency</Button>
+        </div>
+      )}
+
       {needsAnswer && !changing && (
         <Card accent="maroon" className="flex flex-wrap items-center gap-4 p-5">
-          <IconCircle>
-            <Sparkle />
-          </IconCircle>
           <div className="min-w-0 flex-1">
-            <div className="font-semibold text-navy">Riverbend has a local-vendor preference. Should I favor local and MBE-certified suppliers?</div>
-            <div className="text-xs text-slate">I'll remember your answer for the rest of this session.</div>
+            <div className="font-semibold text-navy">Riverbend has a local-vendor preference. Favor local and MBE-certified suppliers for this request?</div>
+            <div className="text-xs text-slate">The answer is kept for the rest of this session.</div>
           </div>
           <div className="flex gap-2">
             {(
@@ -190,258 +325,14 @@ export default function RequestResults() {
       <ErrorNote message={error} />
       {!needsBuyer && !needsAnswer && !results && !error && <Loading label={buyer ? `Checking every contract ${buyer.name} can use` : "Checking every contract in Agora"} />}
 
-      {results && shopperApplies(results) && <Shopper results={results} requestId={id} onChanged={() => setResults(null)} />}
-      {results && <RouteStrip results={results} />}
-      {results && <InviteAdminBanner requestId={id} />}
-      {results && <OwnContractsCard hits={results.own_contracts} agency={results.buyer?.name ?? "Your agency"} />}
-
-      {results && !results.no_match && (
-        <>
-          {showEarn && <KindBanner kind={results.groups.every((g) => g.source === "no_approval") ? PURCHASE_KINDS.no_approval : PURCHASE_KINDS.contract} />}
-          {why && (
-            <Card className="bg-navy-50/60 p-4">
-              <ul className="list-disc space-y-1 pl-5 text-sm text-navy">
-                {results.explanation.map((e) => (
-                  <li key={e}>{e}</li>
-                ))}
-              </ul>
-            </Card>
-          )}
-
-          <div id="options" className="grid scroll-mt-24 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-3">
-            {shown.map((o) => (
-              <OptionCard key={o.listing.id} o={o} qty={p.quantity} requestId={id} best={o.listing.id === bestId} refN={listingRefs[o.listing.id]} />
-            ))}
-          </div>
-          {verifiedOnly && hiddenByVerified > 0 && (
-            <p className="text-ui-2xs text-base-dark">
-              {hiddenByVerified} option{hiddenByVerified === 1 ? "" : "s"} from suppliers whose checks aren't all passing {hiddenByVerified === 1 ? "is" : "are"} hidden.{" "}
-              <button onClick={() => setVerifiedOnly(false)} className="text-ink underline">
-                Show everything
-              </button>
-            </p>
-          )}
-          {all.length > shown.length && (
-            <button onClick={() => setShowAll(true)} className="w-full rounded-xl border border-dashed border-navy/20 py-3 text-sm font-semibold text-navy hover:bg-white">
-              Show all {all.length} options
-            </button>
-          )}
-
-          <CoopSection section={coops!} requestId={id} onMembershipChange={() => setResults(null)} refs={contractRefs} query={p.item} />
-          <CatalogProducts data={results.catalog_products} requestId={id} />
-
-          <div className="grid gap-4 md:grid-cols-3">
-            {results.peer && <PeerCard peer={results.peer} qty={p.quantity} />}
-            <UnavailableCard items={results.unavailable} buyerName={results.buyer?.name ?? "this agency"} />
-            <ContractLeadsCard leads={results.contract_leads} />
-            <div className="flex flex-col justify-between rounded-2xl border border-line bg-white p-5">
-              <div>
-                <div className="text-base font-bold tracking-tight text-navy">Don't see what you need?</div>
-                <p className="mt-1 text-sm text-slate">Turn this request into a solicitation. Agora drafts it from what you asked for and the closest past award.</p>
-              </div>
-              <Link href={`/solicitations/new?request=${id}`} className="mt-4 text-sm font-bold text-maroon hover:underline">
-                Build a solicitation →
-              </Link>
-            </div>
-          </div>
-          <ExpiredNote items={results.expired} />
-        </>
-      )}
-
-      {results && results.no_match && showEarn && <KindBanner kind={PURCHASE_KINDS.new_need} />}
-      {results && results.no_match && <CoopSection section={coops!} requestId={id} onMembershipChange={() => setResults(null)} refs={contractRefs} query={p.item} />}
-      {results && results.no_match && (
-        <div className="mt-8">
-          <CatalogProducts data={results.catalog_products} requestId={id} />
-        </div>
-      )}
-      {results && results.no_match && (
-        <div className="grid gap-6 lg:grid-cols-3">
-          <Card className="p-6 lg:col-span-2">
-            <div className="flex gap-4">
-              <IconCircle size="lg">
-                <Plus />
-              </IconCircle>
-              <div>
-                <h2 className="text-2xl font-extrabold tracking-tight text-navy">
-                  {results.own_contracts.length
-                    ? "Nothing else in Agora covers this, but your agency's own contract does."
-                    : results.contract_leads.some((c) => c.eligible) || results.coops.hits.some((h) => h.eligible)
-                    ? "No published prices for this yet, but there are contracts that cover it."
-                    : results.unavailable.length
-                      ? `No contract open to ${results.buyer?.name ?? "you"} covers this yet.`
-                      : "No contract covers this yet. You may be the first agency to buy it."}
-                </h2>
-                {results.contract_leads.some((c) => c.eligible) && (
-                  <p className="mt-2 text-sm text-navy">
-                    The contracts listed alongside cover this kind of purchase, but Agora doesn't hold their prices yet. Open one for its terms and how to buy under it, and
-                    ask the supplier for a quote under the contract before running a solicitation.
-                  </p>
-                )}
-                <p className="mt-2 text-sm text-slate">
-                  This is rare: most requests resolve to something already on contract or under a quick-buy limit. {results.buyer?.name ?? "Your agency"} can run a
-                  solicitation, and once it's awarded the contract joins Agora, ready for the next agency that needs the same thing.
-                </p>
-                {results.similar_solicitation && (
-                  <p className="mt-3 text-sm text-navy">
-                    I'll start from the closest past solicitation: <span className="font-semibold">{results.similar_solicitation.title}</span>.
-                  </p>
-                )}
-                <NextSteps requestId={id} />
-                <Link href="/" className="mt-3 inline-block text-xs font-semibold text-slate hover:text-navy">
-                  Or try different words →
-                </Link>
-              </div>
-            </div>
-          </Card>
-          <div className="space-y-4">
-            {results.peer && <PeerCard peer={results.peer} qty={p.quantity} />}
-            <UnavailableCard items={results.unavailable} buyerName={results.buyer?.name ?? "this agency"} />
-            <ContractLeadsCard leads={results.contract_leads} />
-            <ExpiredNote items={results.expired} />
-          </div>
-        </div>
-      )}
-    </div>
-  );
-}
-
-function Parsed({ label, value }: { label: string; value: string }) {
-  return (
-    <span className="rounded-md border border-navy/10 bg-white px-2.5 py-1">
-      <span className="text-slate">{label}: </span>
-      <span className="font-semibold text-navy">{value}</span>
-    </span>
-  );
-}
-
-function OptionCard({ o, qty, requestId, best = false, refN }: { o: ResultOption; qty: number; requestId: string; best?: boolean; refN?: number }) {
-  const { db, act } = useStore();
-  const [chosen, setChosen] = useState(o.listing.id);
-  const [quoted, setQuoted] = useState<string | null>(null);
-  const [quoteError, setQuoteError] = useState<string | null>(null);
-  const qr = o.quote_route;
-  const lo = o.link_out;
-  const l = o.variants.find((v) => v.id === chosen) ?? o.listing;
-  const tiered = o.variants.length > 1;
-  const total = Math.round(l.unit_price * qty * 100) / 100;
-  const limit = db?.agency.quick_buy_threshold ?? 10_000;
-  const via = o.rule.text.includes(" · Piggyback") ? o.rule.text.slice(o.rule.text.indexOf(" · Piggyback")) : "";
-  const rule =
-    l.id === o.listing.id || qr
-      ? o.rule
-      : total < limit
-        ? { text: `Under a $${Math.round(limit / 1000)}K quick-buy limit · P-card OK${via}`, payment: "pcard" as const }
-        : { text: `Needs PO · over $${Math.round(limit / 1000)}K${via}`, payment: "po" as const };
-  const title = tiered ? l.title.replace(/\s*\([^)]*\)\s*$/, "") : l.title;
-  const href = `/product/${l.id}?qty=${qty}&request=${requestId}`;
-  const image = (
-    <Link href={href} className="relative grid aspect-[4/3] place-items-center overflow-hidden bg-base-lightest no-underline" aria-label={title}>
-            <span className="h-full w-full transition-transform duration-300 group-hover:scale-[1.03] motion-reduce:transition-none">
-              <CategoryIcon category={l.category} size="xl" neutral />
-            </span>
-            <span className="absolute left-3 top-3">
-              <SourcePill source={l.source} contractId={l.contract_id} />
-            </span>
-            <span className="absolute right-3 top-3 flex items-center gap-1.5">
-              {o.member === true && db?.session.buyer && <span className="bg-white px-1.5 py-0.5 text-ui-3xs text-success-darker">Your co-op</span>}
-              {o.member === false && db?.session.buyer && <span className="bg-white px-1.5 py-0.5 text-ui-3xs text-ink">Join to use</span>}
-              <FitPill fit={o.fit} />
-            </span>
-            {o.sponsored && <span className="absolute bottom-3 left-3 bg-white/90 px-1.5 py-0.5 text-ui-3xs text-base-dark">Sponsored</span>}
-          </Link>
-  );
-  return (
-    <div className="group flex flex-col bg-white">
-      {best ? <TickFrame>{image}</TickFrame> : image}
-      <div className="mt-4 flex flex-wrap items-center gap-1.5">
-        {refN !== undefined && <RefTag n={refN} />}
-        {best && <BestFit />}
-        <Link href={`/storefronts/${o.supplier.id}`} className="text-ui-3xs uppercase tracking-label text-base-dark no-underline hover:underline">
-          {o.supplier.name}
-        </Link>
-        <SupplierBadges supplier={o.supplier} />
-      </div>
-      <Link href={href} className="mt-1 text-body-md leading-snug text-ink no-underline hover:underline">
-        {title}
-      </Link>
-      <p className="mt-1 line-clamp-2 text-ui-2xs leading-relaxed text-base-dark">
-        {qr
-          ? `${qr.reference} isn't open to your agency. Buy through ${qr.vehicle} ${qr.contract_number}: the supplier quotes a discount off list${lo ? `, on ${lo.coop}'s contract page` : ""}.${qr.research_note ? ` ${qr.research_note}.` : ""}`
-          : l.detail || [o.vehicle, o.contract_number].filter(Boolean).join(" ") || o.delivery}
-      </p>
-      {tiered && (
-        <label className="mb-1 flex flex-wrap items-center gap-2 text-[11px] text-slate">
-          {o.variants.length} tiers
-          <select value={chosen} onChange={(e) => setChosen(e.target.value)} className="min-w-0 max-w-full flex-1 !py-1 text-xs">
-            {o.variants.map((v) => (
-              <option key={v.id} value={v.id}>
-                {v.variant ?? v.sku} · {money(v.unit_price)} / {v.unit}
-              </option>
-            ))}
-          </select>
-        </label>
-      )}
-      <div className="mb-3 mt-1 flex flex-wrap items-center gap-x-2 gap-y-1 text-[11px]">
-        {lo && !qr ? (
-          <span className="text-slate">
-            Bought on {lo.coop}'s site · {o.contract_number}
-          </span>
+      {results &&
+        (shopperApplies(results) ? (
+          <Shopper results={results} requestId={id} onChanged={() => setResults(null)} options={all}>
+            {main}
+          </Shopper>
         ) : (
-          !qr && <span className={rule.payment === "po" ? "text-amber-700" : "text-emerald-700"}>{rule.text}</span>
-        )}
-        <Stars rating={o.supplier.rating} count={o.supplier.review_count} />
-        {!qr && !lo && <RevenueTags options={earnsFor({ ...o, rule })} />}
-      </div>
-      <div className="mt-auto flex flex-col gap-3 pt-2">
-        <div className="min-w-0">
-          <div className={`text-body-md font-semibold tabular-nums ${qr ? "text-base-dark" : "text-ink"}`}>
-            {money(l.unit_price)}
-            <span className="text-ui-3xs font-normal text-base-dark"> / {l.unit}</span>
-          </div>
-          <div className="text-[10px] text-slate">{qr ? `Reference price on ${qr.reference}` : qty > 1 ? `${qty} for ${money(total)}` : o.delivery}</div>
-        </div>
-        <div className="flex items-center gap-2 [&>*]:flex-1 [&>*]:justify-center">
-          {lo || qr ? (
-            <Link href={href} className="inline-flex items-center rounded-md bg-white px-4 py-2.5 text-ui-xs font-bold leading-none text-primary no-underline shadow-[inset_0_0_0_2px_theme(colors.primary.DEFAULT)] hover:text-primary-dark hover:shadow-[inset_0_0_0_2px_theme(colors.primary.dark)]">
-              View
-            </Link>
-          ) : (
-            <AddToCart listingId={l.id} quantity={qty} requestId={requestId} />
-          )}
-          {lo ? (
-            <CoopLink contractId={lo.contract_id} coop={lo.coop} hasLink={lo.has_link} listingId={l.id} requestId={requestId} />
-          ) : qr ? (
-            quoted ? (
-              <span className="text-[11px] font-semibold text-emerald-800">Quote {quoted} sent</span>
-            ) : (
-              <button
-                className="inline-flex items-center rounded-md bg-primary px-4 py-2.5 text-ui-xs font-bold leading-none text-white no-underline hover:bg-primary-dark active:bg-primary-darker"
-                onClick={async () => {
-                  setQuoteError(null);
-                  try {
-                    const q = await act<{ id: string }>("requestQuote", { listingId: l.id, contractId: qr.contract_id, quantity: qty });
-                    setQuoted(q.id);
-                  } catch (e) {
-                    setQuoteError((e as Error).message);
-                  }
-                }}
-              >
-                Request a quote
-              </button>
-            )
-          ) : (
-            <Link href={`/checkout?listing=${l.id}&qty=${qty}&request=${requestId}`} className="inline-flex items-center rounded-md bg-primary px-4 py-2.5 text-ui-xs font-bold leading-none text-white no-underline hover:bg-primary-dark active:bg-primary-darker">
-              Buy
-            </Link>
-          )}
-        </div>
-      </div>
-      {quoteError && (
-        <div className="mt-2">
-          <ErrorNote message={quoteError} />
-        </div>
-      )}
+          <div className="space-y-8">{main}</div>
+        ))}
     </div>
   );
 }

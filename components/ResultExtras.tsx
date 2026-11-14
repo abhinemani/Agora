@@ -25,7 +25,9 @@ export function OwnContractsCard({ hits, agency }: { hits: OwnHit[]; agency: str
         {hits.map((h) => (
           <li key={h.contract_id} className="flex flex-wrap items-start justify-between gap-3 rounded-md border border-info-light bg-white p-3">
             <div className="min-w-0">
-              <div className="text-sm font-semibold text-navy">{h.title}</div>
+              <Link href={`/contracts/${h.contract_id}`} className="text-sm font-semibold text-navy hover:underline">
+                {h.title}
+              </Link>
               <div className="mt-0.5 text-xs text-slate">
                 <Link href={`/storefronts/${h.supplier_id}`} className="text-navy hover:text-maroon hover:underline">
                   {h.vendor}

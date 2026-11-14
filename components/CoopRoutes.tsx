@@ -53,7 +53,9 @@ export function CoopRoutesSection({ data, name }: { data: CatalogStorefront; nam
               {buyer && c.member && <Badge tone="green">Your co-op</Badge>}
               {buyer && !c.member && c.coop_id !== "gsa_mas" && <Badge tone="maroon">Join to use</Badge>}
             </div>
-            <div className="mt-1 text-xs text-navy">{c.title}</div>
+            <Link href={`/contracts/${c.id}`} className="mt-1 block text-xs text-navy underline decoration-base-light underline-offset-2 hover:text-maroon">
+              {c.title}
+            </Link>
             <div className={`mt-1 text-[11px] ${c.eligible ? "text-slate" : "text-maroon"}`}>
               {c.eligible ? c.reason : `Not open to you: ${c.reason}`}
               {c.end ? ` · through ${date(c.end)}` : " · end date not published"}

@@ -97,6 +97,24 @@ Every results page opens with **Your personal shopper**, in two steps. It turns 
 
 Not built yet: proactive nudges, such as matching an expiring contract in the register to co-op contracts that cover it.
 
+## Contracts: the explorer and a page per contract
+
+For most requests the best Agora can surface is a contract a buyer may use, not an item with a price: the co-op catalog holds 31,930 contracts, and item prices come from a handful of them. So the contract is a record in its own right.
+
+**Contracts** in the header (`/contracts`) searches every contract Agora knows: the co-op catalog's and the ones Agora holds itself (state contracts, agency registers, the demo contracts), 31,942 in all. Search by what a contract covers, who holds it, or its number. Filters narrow by kind (your agency's, state, co-op, federal), program, category, whether the agency can use it today, whether item prices are on file, and whether Agora can read one of its documents. With an agency set, contracts it can use come first, its own and state contracts ahead of co-ops; each row carries a tag: **You can use this**, **Needs a state addendum**, **Join to use** or **Not open to you**. Expired contracts and other agencies' register contracts are left out. The earlier list of contracts with prices loaded stays at `/vehicles`.
+
+**Each contract has a page** (`/contracts/<id>`), reached from the explorer, the co-op section and quote-only cards on a results page, a supplier's storefront, and the agency's own-contract card. It answers what a buyer asks when there is no catalog item:
+
+- **Can I use it?** The access line for the buyer's agency, with the reason, and the state-law note for co-op contracts.
+- **How do I buy under it?** Numbered steps built from the record: join the co-op or confirm the addendum where that applies, ask the supplier for a quote that cites the contract, check the quote, order through the program. The steps are general practice, not terms read from the contract.
+- **What does it cover?** The program's scope lines, and for GSA each SIN marked open to state and local governments or federal only.
+- **Prices and items.** What kind of pricing is on file, said plainly (prices on file with their vintage, list prices before the discount, a discount off list, prices behind a member login, or none), and a searchable list of the contract's items where there are any. A list price is never shown as the contract price, and no discount percentage is shown.
+- **What the documents say.** The documents on file, and for contracts Agora can read, a **contract brief** and **ask this contract**.
+
+**The contract brief** asks the same six questions of every readable contract (what it covers, who can use it, how prices are set, fees, term and renewals, how to order), so two contracts can be compared field by field. It runs when someone presses **Read this contract**, and is cached. With a key, Claude writes one or two sentences per field and must quote the words they rest on; a field is kept only if its quote is in the cited passage word for word and every figure in the summary is in the passages. Otherwise, and without a key, the field shows the passage that bears on it most, or says the documents don't say. Lines with an email address or phone number are dropped from what's shown.
+
+Agora can read a document for about 11,900 contracts: the price files it holds, master agreements published as files on the hosts in `DOCUMENT_HOSTS`, and GSA's contract terms and price lists under `/ref_text/` on GSA Advantage (its robots.txt bars only `/advantage/rs/`), fetched only when someone asks. OMNIA and TIPS documents are read only where a person downloaded the file. HGACBuy's document bundles are linked but not read, since they are zip archives.
+
 ## The shopper's tools: find a product, check a quote, ask a contract
 
 **Shopper** in the header opens three tools that share one header.
@@ -298,7 +316,8 @@ The prototype supports section 8 of the spec end to end. Switch roles with the B
 | `lib/auth.ts`, `lib/session.ts`, `lib/persist.ts`, `lib/pg.ts`, `components/Account.tsx` | Accounts and sessions, what each request knows about who is asking, saving the store to Postgres, and the sign-in dialog and account gate |
 | `lib/dive.ts`, `lib/dive-ai.ts`, `app/dive/` | The product dive: the shortlist, the questions built from it, the comparison, and Claude's reading of typed messages |
 | `lib/quote-check.ts`, `app/quote-check/`, `app/api/quote-check/` | Check a quote: reading its lines and comparing them with the price files by part number |
-| `lib/docs.ts`, `app/ask/` | Ask a contract: reading held and published contract documents, finding passages, and checking quotes |
+| `lib/docs.ts`, `app/ask/` | Ask a contract and the contract brief: reading held and published contract documents, finding passages, and checking quotes |
+| `lib/contracts.ts`, `app/contracts/`, `app/api/catalog/contracts/`, `components/ContractBits.tsx` | The contract explorer and the page per contract: one row and one detail shape for catalog contracts and Agora's own, with access, pricing on file and how to buy |
 | `lib/paperwork.ts`, `lib/paperwork-ai.ts` | The memo, quote request and note to purchasing drafted from the purchase file |
 | `app/page.tsx`, `app/marketplaces/`, `app/storefronts/` | The marketplace home, the city marketplaces (Riverbend's included), and supplier storefronts |
 | `lib/parser.ts` | Contract extraction (PDF / DOCX / XLSX / CSV), LLM structuring, offline heuristic, dedupe |

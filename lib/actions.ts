@@ -31,7 +31,7 @@ import { buildPlan, defaultSelection, shopperAddOns, shopperCandidates, type Sho
 import { answerQuestion, shopperFacts, writeBrief, type ShopperTurn } from "./shopper-ai";
 import { paperworkKinds, paperworkTemplate, type PaperworkKind } from "./paperwork";
 import { polish } from "./paperwork-ai";
-import { askDocument, readableContracts } from "./docs";
+import { askDocument, contractBrief, readableContracts } from "./docs";
 import { diveItems, diveSearch, diveVerdict, offlineDiveFilters, type DiveFilter } from "./dive";
 import { readDiveMessage, writeVerdict } from "./dive-ai";
 
@@ -274,6 +274,15 @@ export async function askContract(args: { contractId: string; question: string }
   const question = String(args.question ?? "").trim().slice(0, 400);
   if (!question) fail("Type a question first.");
   return askDocument(getDb(), String(args.contractId ?? ""), question);
+}
+
+/** A contract's documents read into the same six fields every contract page shows. Read-only. */
+export async function briefContract(args: { contractId: string }) {
+  try {
+    return await contractBrief(getDb(), String(args.contractId ?? ""));
+  } catch (e) {
+    fail((e as Error).message);
+  }
 }
 
 // ---------------------------------------------------------------- product dive

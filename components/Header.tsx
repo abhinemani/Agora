@@ -23,7 +23,7 @@ const NAV: Record<Role, { href: string; label: string }[]> = {
     { href: "/dive", label: "Shopper" },
     { href: "/browse", label: "Browse" },
     { href: "/storefronts", label: "Storefronts" },
-    { href: "/vehicles", label: "Contracts" },
+    { href: "/contracts", label: "Contracts" },
     { href: "/requests", label: "Requests" },
     { href: "/marketplaces", label: "For cities" },
   ],
@@ -33,7 +33,7 @@ const NAV: Record<Role, { href: string; label: string }[]> = {
     { href: "/procurement/setup", label: "Setup" },
     { href: "/procurement/spend", label: "Spend" },
     { href: "/solicitations", label: "Solicitations" },
-    { href: "/vehicles", label: "Contracts" },
+    { href: "/contracts", label: "Contracts" },
   ],
   supplier: [
     { href: "/supplier", label: "Profile" },

@@ -9,6 +9,7 @@
 import { existsSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 import * as z from "zod/v4";
+import { catalogContract, catalogDocumentsFor, catalogSupplierById, type CatalogDocument } from "./catalog";
 import { structured } from "./llm";
 import { extractFile } from "./parser";
 import { ungrounded } from "./shopper-ai";
@@ -63,24 +64,72 @@ const allowed = (url: string) => {
   }
 };
 
+/** A co-op catalog document Agora may fetch: GSA's contract terms (robots.txt bars only /advantage/rs/) and price files published as PDFs on a document host. */
+export function readableCatalogDocument(d: Pick<CatalogDocument, "url" | "kind">): boolean {
+  try {
+    const u = new URL(d.url);
+    if (u.protocol !== "https:") return false;
+    if (u.host === "www.gsaadvantage.gov") return u.pathname.startsWith("/ref_text/") && /\.(htm|html|pdf)$/i.test(u.pathname);
+    return (DOCUMENT_HOSTS.has(u.host) || u.host === "downloads.canon.com") && isFile(u.pathname);
+  } catch {
+    return false;
+  }
+}
+
 interface Entry extends ReadableContract {
   docs: Doc[];
 }
 
-function entries(db: Db): Entry[] {
-  const out: Entry[] = [];
-  // Price files in the repository, each tied to its contract by the rows read from it.
-  const rowsPath = join(process.cwd(), "seed/catalog/price-rows.json");
-  const g = globalThis as unknown as { __agoraHeldFiles?: { file: string; coop: string; number: string; supplier: string; vintage: string }[] };
+interface HeldFile {
+  file: string;
+  coop: string;
+  number: string;
+  supplier: string;
+  vintage: string;
+}
+/** Price files in the repository, each tied to its contract by the rows read from it. */
+function heldFiles(): HeldFile[] {
+  const g = globalThis as unknown as { __agoraHeldFiles?: HeldFile[] };
   if (!g.__agoraHeldFiles) {
-    const seen = new Map<string, { file: string; coop: string; number: string; supplier: string; vintage: string }>();
-    const rows: { file: string; coop: string; number: string; supplier: string; vintage: string }[] = existsSync(rowsPath) ? JSON.parse(readFileSync(rowsPath, "utf8")) : [];
+    const rowsPath = join(process.cwd(), "seed/catalog/price-rows.json");
+    const seen = new Map<string, HeldFile>();
+    const rows: HeldFile[] = existsSync(rowsPath) ? JSON.parse(readFileSync(rowsPath, "utf8")) : [];
     for (const r of rows) if (!seen.has(r.file) && existsSync(join(PRICE_FILES, r.file))) seen.set(r.file, { file: r.file, coop: r.coop, number: r.number, supplier: r.supplier, vintage: r.vintage });
     g.__agoraHeldFiles = [...seen.values()];
   }
-  for (const f of g.__agoraHeldFiles) {
+  return g.__agoraHeldFiles;
+}
+const heldDoc = (f: HeldFile): Doc => ({ id: `file:${f.file}`, label: `Price file: ${f.vintage}`, path: join(PRICE_FILES, f.file) });
+
+/** The documents Agora can read for one contract: by its id in Agora, in the co-op catalog, or as a held price file. */
+function entryFor(db: Db, id: string): Entry | null {
+  const listed = entries(db).find((e) => e.id === id);
+  const cat = catalogContract(id) ?? catalogContract(db.contracts.find((c) => c.id === id)?.catalog_id);
+  if (!cat) return listed ?? null;
+  const docs: Doc[] = [...(listed?.docs ?? [])];
+  for (const f of heldFiles()) if (f.coop === cat.coop && f.number === cat.number && !docs.some((d) => d.id === `file:${f.file}`)) docs.push(heldDoc(f));
+  for (const d of catalogDocumentsFor(cat.id)) if (readableCatalogDocument(d) && !docs.some((x) => x.url === d.url)) docs.push({ id: d.id, label: cat.coop_id === "gsa_mas" ? "GSA contract terms and price list" : d.label, url: d.url });
+  if (!docs.length) return null;
+  return {
+    id,
+    name: listed?.name ?? `${cat.coop} ${cat.number}`,
+    supplier: listed?.supplier ?? catalogSupplierById(cat.supplier)?.name ?? "",
+    title: listed?.title ?? cat.title,
+    documents: docs.slice(0, 3).map((d) => ({ label: d.label, held: Boolean(d.path) })),
+    docs: docs.slice(0, 3),
+  };
+}
+
+/** What Agora could read for a contract, without reading it. */
+export function readableDocuments(db: Db, id: string): { label: string; held: boolean }[] {
+  return entryFor(db, id)?.documents ?? [];
+}
+
+function entries(db: Db): Entry[] {
+  const out: Entry[] = [];
+  for (const f of heldFiles()) {
     const suppliers = f.coop === "BuyBoard" ? "Awarded dealers" : f.supplier;
-    out.push({ id: `file:${f.file}`, name: `${f.coop} ${f.number}`, supplier: suppliers, title: f.vintage, documents: [{ label: `Price file: ${f.vintage}`, held: true }], docs: [{ id: `file:${f.file}`, label: `Price file: ${f.vintage}`, path: join(PRICE_FILES, f.file) }] });
+    out.push({ id: `file:${f.file}`, name: `${f.coop} ${f.number}`, supplier: suppliers, title: f.vintage, documents: [{ label: `Price file: ${f.vintage}`, held: true }], docs: [heldDoc(f)] });
   }
   // Contracts whose master agreement or price file is published as a file on a document host.
   for (const c of db.contracts) {
@@ -121,9 +170,23 @@ async function pagesOf(doc: Doc): Promise<Page[]> {
       if (Number(res.headers.get("content-length") ?? 0) > MAX_BYTES) throw new Error("it is over 15 MB");
       buffer = Buffer.from(await res.arrayBuffer());
       if (buffer.length > MAX_BYTES) throw new Error("it is over 15 MB");
-      filename = decodeURIComponent(new URL(doc.url!).pathname.split("/").pop() || "document.pdf");
+      let from = new URL(doc.url!);
+      // GSA's "online" page is a redirect stub to the contract's PDF in the same folder.
+      const hop = buffer.length < 4000 ? buffer.toString("utf8").match(/http-equiv=["']?refresh["']?[^>]*url=([^"'>\s]+)/i) : null;
+      if (hop) {
+        const next = new URL(hop[1], from);
+        if (next.host !== from.host || !next.pathname.startsWith("/ref_text/")) throw new Error("it points somewhere Agora doesn't read");
+        const res2 = await fetch(next, { signal: controller.signal, headers: { "user-agent": "Agora contract reader" } });
+        if (!res2.ok) throw new Error(`its publisher answered ${res2.status}`);
+        if (Number(res2.headers.get("content-length") ?? 0) > MAX_BYTES) throw new Error("it is over 15 MB");
+        buffer = Buffer.from(await res2.arrayBuffer());
+        if (buffer.length > MAX_BYTES) throw new Error("it is over 15 MB");
+        from = next;
+      }
+      filename = decodeURIComponent(from.pathname.split("/").pop() || "document.pdf");
     } catch (e) {
-      throw new Error((e as Error).name === "AbortError" ? "its publisher took too long" : (e as Error).message || "it couldn't be downloaded");
+      const m = (e as Error).message;
+      throw new Error((e as Error).name === "AbortError" ? "its publisher took too long" : !m || m === "fetch failed" ? "its publisher couldn't be reached" : m);
     } finally {
       clearTimeout(timer);
     }
@@ -169,14 +232,14 @@ function chunks(document: string, pages: Page[]): Passage[] {
   return out;
 }
 
-function topPassages(all: Passage[], question: string, k: number): Passage[] {
+function topPassages(all: Passage[], question: string, k: number, minHits = 1): Passage[] {
   const q = [...new Set(words(question))];
   if (!q.length) return [];
   const sets = all.map((c) => new Set(words(c.text)));
   const idf = new Map(q.map((w) => [w, Math.log(1 + all.length / (1 + sets.filter((s) => s.has(w)).length))]));
   return all
     .map((c, i) => ({ c, score: q.reduce((s, w) => s + (sets[i].has(w) ? idf.get(w)! : 0), 0), hits: q.filter((w) => sets[i].has(w)).length }))
-    .filter((x) => x.score > 0)
+    .filter((x) => x.score > 0 && x.hits >= minHits)
     .sort((a, b) => b.hits - a.hits || b.score - a.score)
     .slice(0, k)
     .map((x) => x.c);
@@ -192,7 +255,7 @@ const flat = (s: string) => s.toLowerCase().replace(/[\s ]+/g, " ").replace(/[�
 
 /** Answer a question from one contract's documents. */
 export async function askDocument(db: Db, contractId: string, question: string): Promise<ContractAnswer> {
-  const entry = entries(db).find((e) => e.id === contractId);
+  const entry = entryFor(db, contractId);
   if (!entry) throw new Error("Agora doesn't hold a readable document for that contract.");
   const read: ContractAnswer["read"] = [];
   const unread: string[] = [];
@@ -241,4 +304,132 @@ export async function askDocument(db: Db, contractId: string, question: string):
     return { ...base, answer: null, passages: shown, note: "I couldn't verify an answer against the document's own words, so here are the passages that bear on your question." };
   }
   return { ...base, answer: { paragraphs, quotes }, passages: shown, note: out.can_answer ? "" : "The documents Agora can read don't settle this. Purchasing, the co-op or the supplier would know." };
+}
+
+// ------------------------------------------------------------------ the contract brief
+
+/** The same six questions asked of every contract, so two contracts can be read side by side. */
+const BRIEF_FIELDS = [
+  { id: "scope", label: "What it covers", query: "scope products services covered included offered description categories equipment supplies special item" },
+  { id: "eligibility", label: "Who can use it", query: "eligible entities agencies state local government governments participating members cooperative purchasing authorized users political subdivisions" },
+  { id: "pricing", label: "How prices are set", query: "price prices pricing discount discounts list schedule rates percent catalog volume quantity" },
+  { id: "fees", label: "Fees", query: "administrative fee fees industrial funding membership participation cost charge" },
+  { id: "term", label: "Term and renewals", query: "term period effective expiration expires renewal renew option extend extension years through" },
+  { id: "ordering", label: "How to order", query: "order orders ordering purchase procedure submit quote delivery payment terms minimum warranty" },
+] as const;
+
+export interface BriefField {
+  id: string;
+  label: string;
+  /** The model's one or two sentences, kept only when its quote is in the document word for word. */
+  summary: string | null;
+  quote: Passage | null;
+  /** Without a verified summary: the passage that best bears on the field. */
+  passage: Passage | null;
+}
+export interface ContractBrief {
+  contract: string;
+  read: { label: string; pages: number }[];
+  unread: string[];
+  fields: BriefField[];
+  mode: "ai" | "passages";
+  note: string;
+}
+
+const BriefSchema = z.object({
+  fields: z.array(
+    z.object({
+      id: z.string().describe("The field id, exactly as given."),
+      found: z.boolean().describe("False when the field's passages don't say."),
+      summary: z.string().describe("One or two short sentences answering the field from its passages. Empty when found is false."),
+      passage: z.number().int().describe("The passage number the quote is copied from."),
+      quote: z.string().describe("A sentence or clause copied word for word from that passage."),
+    }),
+  ),
+});
+
+/** Officials' and sales reps' contact details stay out of what Agora shows: a line with an email address or phone number is dropped whole, since it usually carries a name too. */
+const CONTACT = /[\w.+-]+@[\w-]+(\.[\w-]+)+|(\+?1[\s.-]?)?\(?\b\d{3}\)?[\s.-]\d{3}[\s.-]\d{4}\b/;
+const mask = (t: string) =>
+  t
+    .split("\n")
+    .map((line) => (CONTACT.test(line) ? "[contact details removed]" : line))
+    .join("\n");
+const excerpt = (p: Passage): Passage => ({ ...p, text: mask(p.text.length > 600 ? `${p.text.slice(0, 600)}…` : p.text) });
+
+const briefs = ((globalThis as unknown as { __agoraBriefs?: Map<string, ContractBrief> }).__agoraBriefs ??= new Map<string, ContractBrief>());
+
+/** Read a contract's documents into the six brief fields. Each summary rests on a quote checked against the page. */
+export async function contractBrief(db: Db, contractId: string): Promise<ContractBrief> {
+  const entry = entryFor(db, contractId);
+  if (!entry) throw new Error("Agora doesn't hold a readable document for that contract.");
+  const key = `${contractId}|${process.env.ANTHROPIC_API_KEY ? "ai" : "off"}`;
+  const have = briefs.get(key);
+  if (have) return have;
+  const read: ContractBrief["read"] = [];
+  const unread: string[] = [];
+  const all: Passage[] = [];
+  for (const d of entry.docs) {
+    try {
+      const pages = await pagesOf(d);
+      read.push({ label: d.label, pages: pages.length });
+      all.push(...chunks(d.label, pages));
+    } catch (e) {
+      unread.push(`${d.label} couldn't be read: ${(e as Error).message}.`);
+    }
+  }
+  const base = { contract: entry.name, read, unread };
+  if (!all.length) return { ...base, fields: [], mode: "passages", note: "None of this contract's documents could be read." };
+
+  // A passage has to share several of a field's words to count: a price file says nothing about eligibility.
+  const per = BRIEF_FIELDS.map((f) => ({ f, passages: topPassages(all, f.query, 3, 3) }));
+  const numbered: Passage[] = [];
+  const numberOf = (p: Passage) => {
+    const i = numbered.indexOf(p);
+    return i >= 0 ? i + 1 : numbered.push(p);
+  };
+  const prompt = per.map(({ f, passages }) => `FIELD ${f.id}: ${f.label}\n${passages.map((p) => `[${numberOf(p)}] (${p.document}, page ${p.page})\n${p.text}`).join("\n\n") || "(no passage)"}`).join("\n\n----\n\n");
+
+  const out = await structured({
+    system:
+      `You brief a government employee on a contract, using only the numbered PASSAGES from its documents, grouped by FIELD.\n` +
+      `- For each field, say in one or two short sentences what its passages establish, and copy the one sentence or clause your answer rests on word for word, with its passage number.\n` +
+      `- If a field's passages don't say, set found to false. Don't use outside knowledge about the supplier, the program or typical contract terms.\n` +
+      `- Never state a price, percentage, fee or date that isn't in the passages, and never do arithmetic to make one.\n` +
+      `- Leave out people's names, phone numbers, email addresses and street addresses.\n` +
+      `- Plain words, no lists.`,
+    user: `CONTRACT: ${entry.name}, ${entry.supplier}\n\n${prompt}`,
+    schema: BriefSchema,
+    maxTokens: 2500,
+    timeoutMs: 45_000,
+  });
+
+  let verified = 0;
+  const fields: BriefField[] = per.map(({ f, passages }) => {
+    const fallback = passages[0] ? excerpt(passages[0]) : null;
+    const a = out?.fields.find((x) => x.id === f.id);
+    if (a?.found) {
+      const p = numbered[a.passage - 1];
+      const text = a.quote.trim().replace(/^["“]|["”]$/g, "");
+      const summary = a.summary.trim();
+      const ok = p && passages.includes(p) && text.length >= 12 && flat(p.text).includes(flat(text)) && summary && !ungrounded(summary, [], { passages: passages.map((x) => x.text) }, []);
+      if (ok) {
+        verified++;
+        return { id: f.id, label: f.label, summary: mask(summary), quote: { document: p.document, page: p.page, text: mask(text) }, passage: null };
+      }
+    }
+    return { id: f.id, label: f.label, summary: null, quote: null, passage: fallback };
+  });
+  const brief: ContractBrief = {
+    ...base,
+    fields,
+    mode: verified ? "ai" : "passages",
+    note: !out
+      ? "The AI connection is off, so each field shows the passage that best bears on it instead of a summary."
+      : verified < fields.length
+        ? "Where a summary couldn't be checked against the document's own words, the closest passage is shown instead."
+        : "",
+  };
+  briefs.set(key, brief);
+  return brief;
 }

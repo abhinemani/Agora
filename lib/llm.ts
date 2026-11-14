@@ -49,6 +49,8 @@ export async function structured<T extends z.ZodType>(opts: {
   maxTokens?: number;
   timeoutMs?: number;
   effort?: "low" | "medium" | "high";
+  /** PDFs the model reads along with `user` (a scanned document's pages), base64-encoded. */
+  documents?: { data: string; title?: string }[];
 }): Promise<z.infer<T> | null> {
   const meta = { task: opts.task, prompt: fingerprint(MODEL, opts.system), input: opts.about ?? "" };
   promptsSeen.set(opts.task, meta.prompt);
@@ -75,7 +77,14 @@ export async function structured<T extends z.ZodType>(opts: {
         model: MODEL,
         max_tokens: opts.maxTokens ?? 16000,
         system: opts.system,
-        messages: [{ role: "user", content: opts.user }],
+        messages: [
+          {
+            role: "user",
+            content: opts.documents?.length
+              ? [...opts.documents.map((d) => ({ type: "document" as const, source: { type: "base64" as const, media_type: "application/pdf" as const, data: d.data }, ...(d.title ? { title: d.title } : {}) })), { type: "text" as const, text: opts.user }]
+              : opts.user,
+          },
+        ],
         output_config: { format: zodOutputFormat(opts.schema), effort: opts.effort ?? "low" },
       },
       { timeout: opts.timeoutMs ?? 30_000 },

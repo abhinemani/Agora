@@ -59,7 +59,10 @@ export function docSchema(): Promise<boolean> {
          label text not null,
          primary key (url, contract_id)
        );
-       create index if not exists doc_links_contract on doc_links(contract_id);`,
+       create index if not exists doc_links_contract on doc_links(contract_id);
+       alter table doc_urls add column if not exists via text not null default 'file';
+       alter table doc_urls add column if not exists ocr_tries int not null default 0;
+       create index if not exists doc_urls_scan on doc_urls(status) where status = 'scan';`,
     )
     .then(() => true)
     .catch((e) => {
@@ -72,7 +75,7 @@ export function docSchema(): Promise<boolean> {
 const clean = (s: string) => s.replace(/\u0000/g, "").replace(/[ \t]{3,}/g, "   ").replace(/\n{3,}/g, "\n\n");
 
 /** Save a document's text (or why it has none) under its URL. Identical text is stored once. */
-export async function storeDocument(url: string, result: { pages: StoredPage[]; filename?: string | null; bytes?: number | null } | { status: Exclude<DocStatus, "text">; detail: string; filename?: string | null; bytes?: number | null }): Promise<void> {
+export async function storeDocument(url: string, result: { pages: StoredPage[]; filename?: string | null; bytes?: number | null; via?: "file" | "scan" } | { status: Exclude<DocStatus, "text">; detail: string; filename?: string | null; bytes?: number | null }): Promise<void> {
   const p = pool();
   if (!p || !(await docSchema())) return;
   if ("status" in result) {
@@ -98,9 +101,9 @@ export async function storeDocument(url: string, result: { pages: StoredPage[]; 
       }
     }
     await client.query(
-      `insert into doc_urls (url, hash, status, detail, filename, bytes) values ($1, $2, 'text', null, $3, $4)
-       on conflict (url) do update set hash = excluded.hash, status = 'text', detail = null, filename = coalesce(excluded.filename, doc_urls.filename), bytes = coalesce(excluded.bytes, doc_urls.bytes), checked_at = now()`,
-      [url, hash, result.filename ?? null, result.bytes ?? null],
+      `insert into doc_urls (url, hash, status, detail, filename, bytes, via) values ($1, $2, 'text', null, $3, $4, $5)
+       on conflict (url) do update set hash = excluded.hash, status = 'text', detail = null, filename = coalesce(excluded.filename, doc_urls.filename), bytes = coalesce(excluded.bytes, doc_urls.bytes), via = excluded.via, checked_at = now()`,
+      [url, hash, result.filename ?? null, result.bytes ?? null, result.via ?? "file"],
     );
     await client.query("commit");
   } catch (e) {
@@ -137,12 +140,45 @@ export async function storedPages(url: string): Promise<StoredPage[] | null> {
   }
 }
 
-/** URLs already settled: stored, or tried and not worth trying again yet (failures are retried after a day, three times at most). */
+/** URLs already settled: stored, or tried and not worth trying again yet (failures are retried after a day, three times
+ * at most). Old Word files and files over 15 MB, which earlier versions couldn't take, get another try. */
 export async function settledUrls(): Promise<Set<string>> {
   const p = pool();
   if (!p || !(await docSchema())) return new Set();
-  const r = await p.query<{ url: string }>(`select url from doc_urls where status <> 'failed' or tries >= 3 or checked_at > now() - interval '1 day'`);
+  const r = await p.query<{ url: string }>(
+    `select url from doc_urls
+     where not (status = 'unsupported' and detail like '%DOC files%' and tries < 3)
+       and not (status = 'too_large' and detail like '%15 MB%' and tries < 3)
+       and (status <> 'failed' or tries >= 3 or checked_at > now() - interval '1 day')`,
+  );
   return new Set(r.rows.map((x) => x.url));
+}
+
+/** Scanned documents waiting to be read by Claude, oldest first, with a label from a contract that links them. */
+export async function scansToRead(limit: number): Promise<{ url: string; label: string }[]> {
+  const p = pool();
+  if (!p || !(await docSchema())) return [];
+  const r = await p.query<{ url: string; label: string }>(
+    `select u.url, coalesce((select l.label from doc_links l where l.url = u.url limit 1), u.filename, 'Scanned document') as label
+     from doc_urls u where u.status = 'scan' and u.ocr_tries < 2 order by u.checked_at limit $1`,
+    [limit],
+  );
+  return r.rows;
+}
+
+/** A scan Claude couldn't read this time: counted, so it is tried at most twice. */
+export async function scanNotRead(url: string, detail: string): Promise<void> {
+  const p = pool();
+  if (!p) return;
+  await p.query(`update doc_urls set ocr_tries = ocr_tries + 1, detail = $2, checked_at = now() where url = $1`, [url, detail.slice(0, 300)]);
+}
+
+/** Pages read from scans so far, for the spending cap. */
+export async function scanPagesRead(): Promise<number> {
+  const p = pool();
+  if (!p || !(await docSchema())) return 0;
+  const r = await p.query<{ n: string | null }>(`select sum(t.page_count) n from doc_text t where exists (select 1 from doc_urls u where u.hash = t.hash and u.via = 'scan')`);
+  return Number(r.rows[0].n ?? 0);
 }
 
 /** Words from a request or question as a tsquery: every word ("all"), or any of them ("any"). */
@@ -216,19 +252,22 @@ export async function contractPages(contractId: string, question: string, limit 
 }
 
 /** How far the store has got, for /api/docs/status and the logs. */
-export async function docStoreStatus(): Promise<{ database: boolean; urls: Record<string, number>; linked_urls: number; contracts: number; texts: number; pages: number; database_mb: number | null; by_program: Record<string, { linked: number; text: number }> } | null> {
+export async function docStoreStatus(): Promise<{ database: boolean; urls: Record<string, number>; read_from_scans: number; scans_waiting: number; linked_urls: number; contracts: number; texts: number; pages: number; database_mb: number | null; by_program: Record<string, { linked: number; text: number }> } | null> {
   const p = pool();
   if (!p || !(await docSchema())) return null;
-  const [urls, linked, texts, size, prog] = await Promise.all([
+  const [urls, linked, texts, size, prog, scans] = await Promise.all([
     p.query<{ status: string; n: string }>(`select status, count(*) n from doc_urls group by status`),
     p.query<{ urls: string; contracts: string }>(`select count(distinct url) urls, count(distinct contract_id) contracts from doc_links`),
     p.query<{ texts: string; pages: string }>(`select (select count(*) from doc_text) texts, (select count(*) from doc_pages) pages`),
     p.query<{ mb: string }>(`select round(pg_database_size(current_database()) / 1048576.0) mb`),
     p.query<{ program: string; linked: string; text: string }>(`select l.program, count(distinct l.url) linked, count(distinct l.url) filter (where u.status = 'text') text from doc_links l left join doc_urls u on u.url = l.url group by l.program`),
+    p.query<{ read: string; waiting: string }>(`select count(*) filter (where via = 'scan' and status = 'text') read, count(*) filter (where status = 'scan' and ocr_tries < 2) waiting from doc_urls`),
   ]);
   return {
     database: true,
     urls: Object.fromEntries(urls.rows.map((r) => [r.status, Number(r.n)])),
+    read_from_scans: Number(scans.rows[0].read),
+    scans_waiting: Number(scans.rows[0].waiting),
     linked_urls: Number(linked.rows[0].urls),
     contracts: Number(linked.rows[0].contracts),
     texts: Number(texts.rows[0].texts),

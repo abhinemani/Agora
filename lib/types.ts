@@ -298,6 +298,8 @@ export interface ContractDocument {
   mime_type: string;
   file_hash: string;
   uploaded_by_role: Role;
+  /** The account that uploaded it, so a read that is never published can be cleared with the account. */
+  uploaded_by?: string;
   uploaded_at: string;
   page_count: number;
   parse_status: "pending" | "parsed" | "failed";

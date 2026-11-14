@@ -44,9 +44,18 @@ const AuthCtx = createContext<{ prompt: AuthPrompt | null; finish: (signedIn: bo
 
 class NeedsAccount extends Error {}
 
+/** A response's JSON, or a message a person can act on when a proxy or a crash answered with something else. */
+export async function readJson(res: Response): Promise<{ result?: unknown; error?: string; needs_account?: boolean; job?: string; status?: string }> {
+  try {
+    return await res.json();
+  } catch {
+    throw new Error(res.status === 502 || res.status === 503 || res.status === 504 ? "Agora took too long to answer. Wait a moment and try again." : `Agora couldn't complete that (error ${res.status}). Try again.`);
+  }
+}
+
 export async function post<T>(url: string, body: unknown): Promise<T> {
   const res = await fetch(url, { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify(body) });
-  const json = await res.json();
+  const json = await readJson(res);
   if (res.status === 401 && json.needs_account) throw new NeedsAccount(json.error);
   if (!res.ok) throw new Error(json.error ?? "Something went wrong");
   return json.result as T;

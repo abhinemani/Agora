@@ -2,18 +2,29 @@
 
 import { useEffect, useState } from "react";
 
+const remembered = new Map<string, boolean>();
+
 /** One folded source on the results page: a title, a count and a line on what it is, opened on demand.
  * A link to `#id` anywhere on the page opens it. */
 export function Fold({ id, title, count, note, defaultOpen = false, children }: { id: string; title: string; count?: number | string; note?: React.ReactNode; defaultOpen?: boolean; children: React.ReactNode }) {
-  const [open, setOpen] = useState(defaultOpen);
+  // The page redraws its results after some actions (confirming a membership, changing the item);
+  // a section the person opened stays open through that.
+  const key = () => `${window.location.pathname}#${id}`;
+  const [open, setOpenState] = useState(defaultOpen);
+  const setOpen = (on: boolean) => {
+    remembered.set(key(), on);
+    setOpenState(on);
+  };
   useEffect(() => {
+    const was = remembered.get(key());
+    if (was !== undefined) setOpenState(was);
     const check = () => {
       if (window.location.hash === `#${id}`) setOpen(true);
     };
     check();
     window.addEventListener("hashchange", check);
     return () => window.removeEventListener("hashchange", check);
-  }, [id]);
+  }, [id]); // eslint-disable-line react-hooks/exhaustive-deps
   return (
     <section id={id} className="scroll-mt-24 border-b border-base-lighter last:border-b-0">
       <h3>

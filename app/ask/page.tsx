@@ -10,6 +10,10 @@ import type { ContractAnswer, ReadableContract } from "@/lib/docs";
 
 const label = "font-mono text-[11px] uppercase tracking-[0.14em]";
 const SUGGESTED = ["Does this cover installation?", "Who is eligible to order under it?", "When does it end, and can it be renewed?", "What are the payment terms?"];
+// A price file lists items and prices and says nothing about terms, so it gets questions it can answer.
+const SUGGESTED_PRICES = ["What does this price file cover?", "What date are these prices from?", "Are these net, list or awarded prices?"];
+/** Only price files to read: no master agreement, so no terms, eligibility or renewal language. */
+const pricesOnly = (c: ReadableContract) => c.documents.length > 0 && c.documents.every((d) => /^price (file|catalog|list)/i.test(d.label));
 
 interface Turn {
   question: string;
@@ -32,6 +36,8 @@ export default function AskContract() {
   useEffect(() => {
     post<ReadableContract[]>("/api/act", { action: "contractsToAsk" })
       .then((list) => {
+        // Contracts with an agreement to read come first: they can answer the most questions.
+        list = [...list].sort((x, y) => Number(pricesOnly(x)) - Number(pricesOnly(y)));
         setContracts(list);
         const want = new URLSearchParams(window.location.search).get("contract");
         const hit = list.find((c) => c.id === want);
@@ -173,7 +179,7 @@ export default function AskContract() {
               )}
 
               <div className="mt-4 px-5">
-                {SUGGESTED.filter((s) => !turns.some((t) => t.question === s)).map((s) => (
+                {(pricesOnly(chosen) ? SUGGESTED_PRICES : SUGGESTED).filter((s) => !turns.some((t) => t.question === s)).map((s) => (
                   <button key={s} type="button" disabled={busy} onClick={() => ask(s)} className="flex min-h-[44px] w-full items-center justify-between gap-3 border-t border-base-lighter text-left text-sm font-semibold text-primary hover:text-primary-dark disabled:opacity-60">
                     <span>{s}</span>
                     <span aria-hidden>→</span>

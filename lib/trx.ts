@@ -16,6 +16,17 @@ export const TRX_STATES = ["NJ", "OR", "AR", "HI", "NY"] as const;
 /** How far below the best co-op fit (0–100) a TRX state contract may be and still lead the results. */
 export const TRX_MARGIN = 15;
 
+/** How a New York buyer uses a preferred source (Corcraft, NYSID, NIBNY), which comes before an OGS contract. */
+export const NY_PREFERRED_STEPS = (c: { supplier: string; approval: "approved" | "agency" | "not_approved" }) =>
+  c.approval === "not_approved"
+    ? [`The OGS list names this offering but doesn't approve it as a preferred-source item. You may buy it from ${c.supplier} as an ordinary purchase, under your usual rules.`]
+    : [
+        c.approval === "agency"
+          ? "The OGS list approves this offering as a preferred source for one state agency; for everyone else it's optional."
+          : `New York's preferred sources come first: under State Finance Law § 162, public buyers take items the OGS list approves from ${c.supplier} before any contract, when the item meets the need in form, function and utility.`,
+        `Order from ${c.supplier} through its catalog, or ask it for a price. The list publishes no prices.`,
+      ];
+
 /** Each loaded TRX state's purchasing program, as buyers know it, and how a local buys on it. */
 export interface TrxProgram {
   /** The program name on cards and buttons. */

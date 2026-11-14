@@ -31,12 +31,12 @@
   ]
  },
  "suppliers": {
-  "records": 26957,
-  "companies": 24517,
+  "records": 26960,
+  "companies": 24520,
   "merged_by_name": 2090,
   "merged_by_website": 343,
   "merged_by_uei": 0,
-  "with_website": 13936,
+  "with_website": 13939,
   "on_two_or_more_coops": 1502,
   "most_coops": [
    {
@@ -490,17 +490,28 @@
    "with_end": 1411,
    "expired": 0,
    "with_states": 1411,
-   "offerings": 0
+   "offerings": 3036
+  },
+  {
+   "coop": "NY Preferred Source",
+   "coop_id": "state_ny_ps",
+   "contracts": 41,
+   "suppliers": 3,
+   "with_link": 0,
+   "with_end": 0,
+   "expired": 0,
+   "with_states": 41,
+   "offerings": 667
   }
  ],
  "nigp": {
   "published": 1282,
   "reviewed": 27698,
-  "none": 6273,
-  "contracts": 35253,
+  "none": 6314,
+  "contracts": 35294,
   "coop_contracts_coded": 27698,
   "coop_contracts": 31930,
-  "state_uncoded": 2041,
+  "state_uncoded": 2082,
   "classes_used": 150,
   "priced_offerings_coded": 4572,
   "top_classes": [
@@ -569,8 +580,29 @@
    "Technology": 347
   },
   "certified": 392,
-  "suppliers": 1310,
-  "priced_lines": 0,
+  "preferred": {
+   "providers": 3,
+   "contracts": 41,
+   "offerings": 667,
+   "by_section": {
+    "A": 560,
+    "B": 27,
+    "C": 3,
+    "D": 68,
+    "E": 9
+   }
+  },
+  "suppliers": 1313,
+  "priced_lines": 3036,
+  "prices": {
+   "rule": 3036,
+   "reviewed": 0,
+   "by_basis": {
+    "net_price": 3036
+   }
+  },
+  "with_prices": 48,
+  "products": 3255,
   "suppliers_shared_with_coops": 511
  },
  "arkansas": {
@@ -684,13 +716,13 @@
   "products_on_two_or_more_contracts": 568
  },
  "products": {
-  "products": 51548,
-  "offerings": 59490,
+  "products": 54803,
+  "offerings": 63193,
   "by_status": {
-   "quote": 1509,
+   "quote": 2176,
    "published_discount": 8102,
    "member_login": 26291,
-   "published_price": 23588
+   "published_price": 26624
   },
   "by_status_coops": {
    "quote": 1509,
@@ -1390,6 +1422,12 @@
    "Mark McLarty Ford",
    "Red River Ford",
    "Superior Auto Mall",
+   "Actus Manufacturing Inc Dba Addco Acquisition LLC",
+   "Eberl Iron Works Inc",
+   "Elderlee Inc",
+   "Systems Roadways Inc",
+   "TrafFix Devices",
+   "Work Zone Equipment Ny Inc",
    "BCI Burke",
    "Exemplis, LLC",
    "Caldwell Country Chevrolet II LLC",
@@ -1408,13 +1446,13 @@
    "LHD Partners, LP dba Longhorn Harley-Davidson",
    "Endera Motors, LLC"
   ],
-  "multi_route": 5585
+  "multi_route": 5707
  },
  "documents": {
-  "total": 33501,
+  "total": 33542,
   "by_kind": {
    "htm": 11892,
-   "unknown": 20755,
+   "unknown": 20796,
    "pdf": 727,
    "docx": 7,
    "xlsx": 120
@@ -1426,7 +1464,8 @@
    "NJSTART": 18635,
    "Hawaii SPO": 354,
    "Arkansas OSP": 499,
-   "NYS OGS": 1411
+   "NYS OGS": 1411,
+   "NY Preferred Source": 41
   }
  },
  "reconcile": {

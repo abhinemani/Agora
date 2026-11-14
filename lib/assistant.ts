@@ -357,6 +357,8 @@ export interface CoopHit {
   solicitation?: string | null;
   /** The state whose contract it is (state contracts only). */
   state?: string;
+  /** A New York preferred source: approved, approved for one agency only, or listed as not approved. */
+  preferred?: "approved" | "agency" | "not_approved";
 }
 
 export interface CoopSection {
@@ -499,7 +501,8 @@ function coopSection(db: Db, itemTokens: string[], buyer: Buyer | null, matched:
 /** Order co-op hits (the agency's co-ops first, then open ones, then by fit) and flag a better fit elsewhere. */
 export function finishCoopSection(db: Db, hits: CoopHit[], agency: string | null): CoopSection {
   // A TRX state contract the buyer can use comes before any co-op contract (lib/trx.ts).
-  const trx = (h: CoopHit) => Number(Boolean(h.trx && h.eligible));
+  // ...and among them a New York preferred source the list approves, which the law puts first.
+  const trx = (h: CoopHit) => (h.trx && h.eligible ? (h.preferred === "approved" ? 3 : h.preferred === "not_approved" ? 1 : 2) : 0);
   hits.sort((a, b) => trx(b) - trx(a) || Number(b.member) - Number(a.member) || Number(b.eligible) - Number(a.eligible) || b.fit - a.fit || a.coop.localeCompare(b.coop));
   const memberships_known = membershipsFor(db, agency).length > 0 || hits.some((h) => h.member);
   const bestMember = hits.filter((h) => h.member && h.eligible).sort((a, b) => b.fit - a.fit)[0] ?? null;

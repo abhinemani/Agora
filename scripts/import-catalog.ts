@@ -134,7 +134,7 @@ const newYork = existsSync(NY_FILE)
 const nySummary = existsSync(join(SRC, "ny/summary.json")) ? JSON.parse(readFileSync(join(SRC, "ny/summary.json"), "utf8")) : null;
 /** The state programs folded in, by program name. */
 const STATE_SOURCES = [njstart && { program: "NJSTART", ...njstart }, hawaii && { program: "Hawaii SPO", ...hawaii }, arkansas && { program: "Arkansas OSP", ...arkansas }, newYork && { program: "NYS OGS", ...newYork }].filter(<T,>(x: T | null): x is T => Boolean(x));
-const STATE_PROGRAMS = new Set(["NJSTART", "Hawaii SPO", "Arkansas OSP", "NYS OGS"]);
+const STATE_PROGRAMS = new Set(["NJSTART", "Hawaii SPO", "Arkansas OSP", "NYS OGS", "NY Preferred Source"]);
 const arSummary = existsSync(join(SRC, "arkansas/summary.json")) ? JSON.parse(readFileSync(join(SRC, "arkansas/summary.json"), "utf8")) : null;
 for (const src of STATE_SOURCES) {
   rawSuppliers.push(...src.suppliers);
@@ -227,6 +227,7 @@ const COOP_ID: Record<string, string> = {
   "Hawaii SPO": "state_hi",
   "Arkansas OSP": "state_ar",
   "NYS OGS": "state_ny",
+  "NY Preferred Source": "state_ny_ps",
 };
 
 // ------------------------------------------------------------------ suppliers: one record per company
@@ -423,7 +424,7 @@ interface Contract {
   /** One of Agora's categories, from a reviewed classification of the contract's title (or its first SIN). */
   category?: string;
   /** A state contract (NJSTART): whether the state opens it to its local governments, and its solicitation. */
-  state_contract?: { state: string; locals: boolean; solicitation: string | null; type_code: string | null; group: string | null; spent: number | null; more_items: boolean; participants?: string[]; islands?: string[]; use?: string };
+  state_contract?: { state: string; locals: boolean; solicitation: string | null; type_code: string | null; group: string | null; spent: number | null; more_items: boolean; participants?: string[]; islands?: string[]; use?: string; preferred?: "approved" | "agency" | "not_approved" };
   /** NIGP commodity classes (3 digits) and, where the source prints them, item codes ("490-90").
    * "published": from the contract's own records (NJSTART). "reviewed": chosen by the AI review
    * (scripts/cleanup) from the classes NJSTART's records name. */
@@ -503,6 +504,8 @@ function stateContractOf(meta: Record<string, unknown>): Partial<Contract> {
       // Hawaii names its participating jurisdictions: a local must be one of them.
       ...(Array.isArray(meta.jurisdictions) ? { participants: meta.jurisdictions as string[] } : {}),
       ...(typeof meta.use_of_contracts === "string" ? { use: meta.use_of_contracts } : {}),
+      // New York's preferred sources: whether the list approves this offering, for one agency, or not at all.
+      ...(typeof meta.preferred === "string" ? { preferred: meta.preferred as "approved" | "agency" | "not_approved" } : {}),
       ...(Array.isArray(meta.islands) && (meta.islands as string[]).length ? { islands: meta.islands as string[] } : {}),
     },
     ...(typeof meta.category === "string" ? { category: meta.category } : {}),

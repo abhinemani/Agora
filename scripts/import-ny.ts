@@ -89,6 +89,37 @@ if (process.argv[2] === "--read") {
       1,
     ) + "\n",
   );
+  // New York's preferred sources (State Finance Law § 162): Corcraft, NYSID and NIBNY, and the offerings
+  // each is listed for, with the approval category the state gives each one. Providers' phone numbers and
+  // emails are left out.
+  const ps = join(dir, "preferred_sources");
+  if (existsSync(join(ps, "offerings.json"))) {
+    const offerings = JSON.parse(readFileSync(join(ps, "offerings.json"), "utf8")) as Record<string, string | number>[];
+    const providers = JSON.parse(readFileSync(join(ps, "providers.json"), "utf8")) as Record<string, unknown>[];
+    writeFileSync(
+      join(OUT, "preferred.json"),
+      JSON.stringify(
+        {
+          source: "https://ogs.ny.gov/procurement/list-preferred-source-offerings",
+          revision: offerings[0]?.source_revision ?? null,
+          providers: providers.map((x) => ({ name: x.provider_name, kind: x.provider_type, vendor_id: x.vendor_id, website: x.website_url, catalogs: x.catalog_urls ?? [] })),
+          offerings: offerings.map((x) => ({
+            id: x.offering_id,
+            section: x.section,
+            type: x.offering_type,
+            approval: x.approval_status,
+            category: x.category,
+            subcategory: x.subcategory || null,
+            name: x.offering_name_or_definition,
+            providers: [x.corcraft_listed === "Yes" && "Corcraft", x.nibny_listed === "Yes" && "National Industries for the Blind New York (NIBNY)", x.nysid_listed === "Yes" && "New York State Industries for the Disabled (NYSID)"].filter(Boolean),
+            page: x.source_pdf_page,
+          })),
+        },
+        null,
+        1,
+      ) + "\n",
+    );
+  }
   console.log(`Read ${contracts.length} supplier contracts in ${awards.length} awards.`);
   process.exit(0);
 }
@@ -272,6 +303,7 @@ const products = new Map<string, Record<string, unknown>>();
 const offerings: Record<string, unknown>[] = [];
 const priceStats = { rule: 0, reviewed: 0, by_basis: {} as Record<string, number> };
 const contractIds = new Set(contracts.map((c) => c.contract_id as string));
+// (Preferred-source contracts are added after prices, below.)
 for (const [file, key] of [["prices-rule.json", "rule"], ["prices-reviewed.json", "reviewed"]] as const) {
   if (!existsSync(join(OUT, file))) continue;
   for (const r of (JSON.parse(readFileSync(join(OUT, file), "utf8")) as { rows: Record<string, string | number | null>[] }).rows) {
@@ -307,12 +339,86 @@ for (const [file, key] of [["prices-rule.json", "rule"], ["prices-reviewed.json"
     });
   }
 }
+// New York's preferred sources: one contract per provider, section and category, its offerings as items
+// priced by quote (the list publishes no prices). Approval categories are kept as the state gives them:
+// A and D approved, B approved for one agency and optional for others, C and E not approved.
+const PS_PROGRAM = "NY Preferred Source";
+const preferredStats = { providers: 0, contracts: 0, offerings: 0, by_section: {} as Record<string, number> };
+if (existsSync(join(OUT, "preferred.json"))) {
+  const ps = JSON.parse(readFileSync(join(OUT, "preferred.json"), "utf8")) as { source: string; revision: string; providers: { name: string; vendor_id: string; website: string; catalogs: string[] }[]; offerings: { id: string; section: string; type: string; approval: string; category: string; subcategory: string | null; name: string; providers: string[]; page: number }[] };
+  const SECTION: Record<string, { label: string; kind: "approved" | "agency" | "not_approved" }> = {
+    A: { label: "approved statewide", kind: "approved" },
+    B: { label: "approved for a specific agency; optional for others", kind: "agency" },
+    C: { label: "not approved as a preferred-source item; optional", kind: "not_approved" },
+    D: { label: "approved preferred-source service", kind: "approved" },
+    E: { label: "not approved as a preferred-source service; optional", kind: "not_approved" },
+  };
+  const tidy = (x: string) => x.toLowerCase().replace(/\b([a-z])/g, (m) => m.toUpperCase()).replace(/\b(And|Of|The|For|Or|In)\b/g, (m) => m.toLowerCase());
+  const groups = new Map<string, typeof ps.offerings>();
+  for (const o of ps.offerings) for (const prov of o.providers) {
+    const k = `${prov}|${o.section}|${o.category}`;
+    (groups.get(k) ?? groups.set(k, []).get(k)!).push(o);
+  }
+  preferredStats.providers = ps.providers.length;
+  for (const [k, offs] of groups) {
+    const [prov, section, category] = k.split("|");
+    const p = ps.providers.find((x) => x.name === prov);
+    const sec = SECTION[section];
+    const sid = `sup_nyps_${hash(prov.toLowerCase())}`;
+    if (!suppliers.has(sid)) suppliers.set(sid, { supplier_id: sid, name: prov, name_variants: [prov], cooperatives: [PS_PROGRAM], websites: p?.website ? [p.website] : [] });
+    const cid = `con_nyps_${hash(k, 12)}`;
+    preferredStats.contracts++;
+    preferredStats.by_section[section] = (preferredStats.by_section[section] ?? 0) + offs.length;
+    contracts.push({
+      contract_id: cid,
+      cooperative: PS_PROGRAM,
+      contract_number: `${p?.vendor_id ? `Vendor ${p.vendor_id} · ` : ""}Section ${section}`,
+      supplier_id: sid,
+      supplier_name: prov,
+      title: `${tidy(category)}: preferred source, ${sec.label}`,
+      start_date: null,
+      end_date: null,
+      category_labels: [tidy(category), ...new Set(offs.map((o) => o.subcategory).filter((x): x is string => Boolean(x))), ...offs.map((o) => o.name)].slice(0, 60),
+      regions_as_published: ["New York"],
+      contract_url: p?.catalogs?.[0] ?? ps.source,
+      lead_agency: "New York preferred source (State Finance Law § 162), listed by OGS",
+      source_metadata: {
+        state_contract: { state: "NY", locals: true, solicitation: `Preferred source, Section ${section}`, type_code: sec.label, group: "Preferred source" },
+        preferred: sec.kind,
+        preferred_section: section,
+        line_items_paginated: false,
+      },
+    });
+    documents.push({ document_id: `doc_nyps_${hash(cid)}`, cooperative: PS_PROGRAM, url: "https://ogs.ny.gov/procurement/list-preferred-source-offerings", label: `OGS List of Preferred Source Offerings, ${ps.revision}`, contract_id: cid });
+    for (const o of offs) {
+      const pid = `prd_nyps_${hash(`${o.id}`)}`;
+      if (!products.has(pid)) products.set(pid, { product_id: pid, product_name: o.subcategory ? `${o.name} (${o.subcategory})` : o.name, manufacturer: null, manufacturer_sku: null, record_type: "preferred_source_offering", title_conflict_requires_review: false });
+      offerings.push({
+        offering_id: `off_nyps_${hash(`${cid}|${o.id}`)}`,
+        product_id: pid,
+        supplier_id: sid,
+        contract_id: cid,
+        cooperative: PS_PROGRAM,
+        product_name: o.name,
+        vendor_sku: null,
+        source_url: ps.source,
+        fixed_price: null,
+        discount_percent: null,
+        pricing_status: "quote",
+        unit_of_measure: null,
+        source_metadata: { category_as_published: `${tidy(category)} (Section ${section}, ${sec.label}), page ${o.page} of the ${ps.revision} list` },
+      });
+      preferredStats.offerings++;
+    }
+  }
+}
+
 // What each priced contract covers, in its price file's words.
 for (const c of contracts) {
   const items = [...new Set(offerings.filter((o) => o.contract_id === c.contract_id).map((o) => String((products.get(o.product_id as string) ?? {}).product_name ?? "")).filter(Boolean))].slice(0, 25);
   if (items.length) c.category_labels = [...(c.category_labels as string[]), ...items];
 }
 writeFileSync(join(OUT, "records.json.gz"), gzipSync(JSON.stringify({ retrieved: src.retrieved, suppliers: [...suppliers.values()], contracts, products: [...products.values()], offerings, documents }), { level: 9 }));
-const summary = { source: SOURCE, retrieved: src.retrieved, master_report_date: src.master_report_date, ...stats, suppliers: suppliers.size, priced_lines: offerings.length, prices: priceStats, with_prices: new Set(offerings.map((o) => o.contract_id)).size, products: products.size };
+const summary = { source: SOURCE, retrieved: src.retrieved, master_report_date: src.master_report_date, ...stats, preferred: preferredStats, suppliers: suppliers.size, priced_lines: offerings.filter((o) => o.fixed_price != null).length, prices: priceStats, with_prices: new Set(offerings.map((o) => o.contract_id)).size, products: products.size };
 writeFileSync(join(OUT, "summary.json"), JSON.stringify(summary, null, 1) + "\n");
 console.log(JSON.stringify(summary, null, 1));

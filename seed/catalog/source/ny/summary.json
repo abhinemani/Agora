@@ -13,6 +13,30 @@
   "Technology": 347
  },
  "certified": 392,
- "suppliers": 1310,
- "priced_lines": 0
+ "preferred": {
+  "providers": 3,
+  "contracts": 41,
+  "offerings": 667,
+  "by_section": {
+   "A": 560,
+   "B": 27,
+   "C": 3,
+   "D": 68,
+   "E": 9
+  }
+ },
+ "suppliers": 1313,
+ "priced_lines": 5735,
+ "prices": {
+  "rule": 3036,
+  "reviewed": 2699,
+  "by_basis": {
+   "net_price": 3036,
+   "contract_price": 1580,
+   "ceiling": 396,
+   "index_adjusted": 723
+  }
+ },
+ "with_prices": 132,
+ "products": 4233
 }

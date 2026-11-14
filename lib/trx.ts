@@ -16,6 +16,17 @@ export const TRX_STATES = ["NJ", "OR", "AR", "HI", "NY"] as const;
 /** How far below the best co-op fit (0–100) a TRX state contract may be and still lead the results. */
 export const TRX_MARGIN = 15;
 
+/** How a New York buyer uses a preferred source (Corcraft, NYSID, NIBNY), which comes before an OGS contract. */
+export const NY_PREFERRED_STEPS = (c: { supplier: string; approval: "approved" | "agency" | "not_approved" }) =>
+  c.approval === "not_approved"
+    ? [`The OGS list names this offering but doesn't approve it as a preferred-source item. You may buy it from ${c.supplier} as an ordinary purchase, under your usual rules.`]
+    : [
+        c.approval === "agency"
+          ? "The OGS list approves this offering as a preferred source for one state agency; for everyone else it's optional."
+          : `New York's preferred sources come first: under State Finance Law § 162, public buyers take items the OGS list approves from ${c.supplier} before any contract, when the item meets the need in form, function and utility.`,
+        `Order from ${c.supplier} through its catalog, or ask it for a price. The list publishes no prices.`,
+      ];
+
 /** Each loaded TRX state's purchasing program, as buyers know it, and how a local buys on it. */
 export interface TrxProgram {
   /** The program name on cards and buttons. */
@@ -86,6 +97,8 @@ export interface StateContractFields {
   participants?: string[];
   /** Who may use it, in the award's own words (New York's "Use of Contracts"). */
   use?: string | null;
+  /** A New York preferred source rather than a contract (State Finance Law § 162). */
+  preferred?: "approved" | "agency" | "not_approved";
 }
 export const isTrxState = (state: string | null | undefined) => Boolean(state && (TRX_STATES as readonly string[]).includes(state));
 
@@ -110,7 +123,13 @@ export function stateContractAccess(sc: StateContractFields, buyer: Buyer | null
   const where = stateLabel(sc.state);
   const program = TRX_PROGRAM[sc.state]?.coop_program ?? "the state's cooperative purchasing program";
   const counties = sc.participants ? HI_COUNTIES.filter(([, re]) => sc.participants!.some((p) => re.test(p))).map(([n]) => n) : [];
-  const open = sc.participants
+  const open = sc.preferred
+    ? sc.preferred === "approved"
+      ? `Open to ${where} public buyers, who take it before any contract under State Finance Law § 162`
+      : sc.preferred === "agency"
+        ? "Approved as a preferred source for one state agency; optional for everyone else"
+        : "Listed but not approved as a preferred source; an ordinary purchase"
+    : sc.participants
     ? counties.length
       ? `Open to the jurisdictions it lists, including ${list(counties.map((c) => (c === "Honolulu" ? "Honolulu" : c === "Hawaii County" ? "Hawaii County" : `${c} County`)))}`
       : `For ${where} state agencies only; no county is a participating jurisdiction`

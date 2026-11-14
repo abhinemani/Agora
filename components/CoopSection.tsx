@@ -129,7 +129,9 @@ function StateBlock({ first, state, hits, more, retrieved, requestId, refs }: { 
   const { db } = useStore();
   const buyer = db?.session.buyer ?? null;
   const p = TRX_PROGRAM[state];
-  const program = hits[0]?.coop ?? p?.name ?? "the state";
+  // The program's own name (a New York lane can mix OGS contracts and preferred sources).
+  const program = p?.name ?? hits[0]?.coop ?? "the state";
+  const preferredFirst = hits.some((h) => h.preferred === "approved");
   const where = stateLabel(state);
   const date = retrieved?.[program];
   return (
@@ -145,6 +147,8 @@ function StateBlock({ first, state, hits, more, retrieved, requestId, refs }: { 
           ? `${buyer.name} can buy on these ${program} contracts through the ${p?.coop_program ?? "state's cooperative purchasing program"}. They come first because they're already competitively bid by the state and carry the lowest fee of any shared contract.`
           : `${program} contracts are open to ${where} local governments through the ${p?.coop_program ?? "state's cooperative purchasing program"}. Set your agency to see whether you can use them.`}{" "}
         Ordering happens under the contract number, as {program} sets out.
+        {preferredFirst &&
+          " A preferred source leads the list: New York law has public buyers take approved items from Corcraft, NYSID or NIBNY before any contract, when one meets the need."}
       </p>
       <ul className="mt-4 grid gap-2 lg:grid-cols-2">
         {hits.map((h) => (
@@ -233,7 +237,13 @@ function Hit({ h, requestId, refN }: { h: CoopHit; requestId: string; refN?: num
                 <Badge tone="green">TRX</Badge>
               </span>
             )}
-            {h.program === "state" ? (
+            {h.preferred ? (
+              <span title="New York's preferred sources (Corcraft, NYSID, NIBNY) come before state contracts for the items the OGS list approves, under State Finance Law § 162.">
+                <Badge tone={h.preferred === "approved" ? "green" : h.preferred === "agency" ? "amber" : "neutral"}>
+                  {h.preferred === "approved" ? "Preferred source: buy here first" : h.preferred === "agency" ? "Preferred source for one agency; optional" : "Listed, not approved as a preferred source"}
+                </Badge>
+              </span>
+            ) : h.program === "state" ? (
               <span title={`A ${h.coop} state contract${h.solicitation ? `, awarded under ${h.solicitation}` : ""}. Read from the state's public contract list.`}>
                 <Badge tone="neutral">State contract{h.solicitation ? ` · ${h.solicitation}` : ""}</Badge>
               </span>

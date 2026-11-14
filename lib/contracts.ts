@@ -14,7 +14,7 @@ import { coopOf, goHref, isContractLevelUrl, onCoopContract } from "./coops";
 import { readableCatalogDocument, readableDocuments } from "./docs";
 import { stateRuleFor, type BuyerStateRule } from "./state-rules";
 import { asNigp, nigpClassLabel, nigpCodeLabel } from "./nigp";
-import { isTrx, TRX_PROGRAM } from "./trx";
+import { isTrx, NY_PREFERRED_STEPS, TRX_PROGRAM } from "./trx";
 import type { Buyer, Contract, Db } from "./types";
 import { checkEligibility } from "./vehicles";
 
@@ -353,9 +353,10 @@ function offeringNote(o: CatalogOffering): string {
   return "Price by quote";
 }
 
-function steps(c: { program: string; number: string; supplier: string; kind: ContractKind; access: AccessStatus; priced: number; in_agora: boolean; hasLink: boolean; state?: { code: string; name: string; coop_program: string; solicitation: string | null; locals: boolean } }): string[] {
+function steps(c: { program: string; number: string; supplier: string; kind: ContractKind; access: AccessStatus; priced: number; in_agora: boolean; hasLink: boolean; state?: { code: string; name: string; coop_program: string; solicitation: string | null; locals: boolean; preferred?: "approved" | "agency" | "not_approved" } }): string[] {
   const out: string[] = [];
   if (c.access === "closed") return ["This contract isn't open to your agency. Look for the same supplier on another contract below, or ask purchasing whether an addendum or membership would open it."];
+  if (c.state?.preferred) return NY_PREFERRED_STEPS({ supplier: c.supplier, approval: c.state.preferred });
   if (c.state && !c.in_agora) {
     // A TRX state contract, bought by a local the way that state's program sets out (lib/trx.ts).
     const program = TRX_PROGRAM[c.state.code];
@@ -474,7 +475,7 @@ function catalogDetail(db: Db, c: CatalogContract, itemQuery: string): ContractD
     documents: docs.map((d) => ({ label: d.label, url: d.url, host: host(d.url), readable: readableCatalogDocument(d) })),
     readable: readableDocuments(db, c.id),
     link: c.url ? { href: goHref(c.id), label: `Open on ${program}`, tracked: true } : c.directory ? { href: c.directory, label: `Find ${c.number} in ${possessive(program)} directory`, tracked: false } : null,
-    steps: steps({ program, number: c.number, supplier, kind, access, priced: priced.length, in_agora: false, hasLink, state: c.state_contract ? { code: c.state_contract.state, name: program, coop_program: TRX_PROGRAM[c.state_contract.state]?.coop_program ?? "state's cooperative purchasing program", solicitation: c.state_contract.solicitation, locals: c.state_contract.locals } : undefined }),
+    steps: steps({ program, number: c.number, supplier, kind, access, priced: priced.length, in_agora: false, hasLink, state: c.state_contract ? { code: c.state_contract.state, name: program, coop_program: TRX_PROGRAM[c.state_contract.state]?.coop_program ?? "state's cooperative purchasing program", solicitation: c.state_contract.solicitation, locals: c.state_contract.locals, preferred: c.state_contract.preferred } : undefined }),
     provenance: c.state_contract
       ? `From ${possessive(program)} public list of active contracts, retrieved ${longDate(idx.state_retrieved?.[c.coop] ?? idx.retrieved)}. ${c.state_contract.participants ? "Who may use it is the contract's own list of participating jurisdictions, read from its price list." : `Whether a contract is open to local governments is the state's own "NJ Cooperative Purchasing" flag on the contract.`}`
       : `From ${possessive(program)} public contract directory, retrieved ${longDate(idx.retrieved)}. Terms and eligibility aren't independently verified.`,

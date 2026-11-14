@@ -1,0 +1,33 @@
+{
+ "source": "https://spo.hawaii.gov/for-vendors/contract-awards/price-vendor-lists/",
+ "retrieved": "2026-11-14",
+ "directory_entries": 107,
+ "checked": {
+  "families": 83,
+  "answered": 83,
+  "contractors": 259,
+  "contractors_dropped": 0,
+  "jurisdictions": 1592,
+  "jurisdictions_dropped": 0,
+  "prices": 1911,
+  "prices_dropped": 188,
+  "expires_dropped": 0
+ },
+ "families": 77,
+ "contracts": 259,
+ "open_to_counties": 225,
+ "state_only": 34,
+ "unknown_jurisdictions": 0,
+ "priced_lines": 1911,
+ "with_prices": 57,
+ "documents": 354,
+ "by_source": {
+  "Hawaii / other": 86,
+  "NASPO ValuePoint": 157,
+  "Sourcewell": 12,
+  "MMCAP": 3,
+  "RFxPremier": 1
+ },
+ "suppliers": 222,
+ "products": 1456
+}

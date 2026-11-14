@@ -182,7 +182,8 @@ if (mode === "--collect") {
       });
       // A price stays only when its line is in the text and the line prints that number.
       const prices = (a.prices ?? []).filter((p) => {
-        const ok = typeof p.price === "number" && p.price > 0 && found(p.line) && numbersIn(p.line).has(p.price) && found(p.contractor.split(/\s+/).slice(0, 2).join(" "));
+        // The line must print words as well as the number: a bare "6,864.00" says nothing about what it prices.
+        const ok = typeof p.price === "number" && p.price > 0 && /[A-Za-z]{3,}/.test(p.line) && found(p.line) && numbersIn(p.line).has(p.price) && found(p.contractor.split(/\s+/).slice(0, 2).join(" "));
         ok ? stats.prices++ : stats.prices_dropped++;
         return ok;
       });
@@ -263,7 +264,7 @@ for (const a of extracted.families) {
     contracts.push({
       contract_id: id,
       cooperative: COOP,
-      contract_number: c.contract_no ? `${a.family} · ${c.contract_no}` : number.replace(/^SPO Price List Contract No\.?\s*/i, ""),
+      contract_number: c.contract_no ? `${a.family} · ${c.contract_no}` : number.replace(/^SPO\b.*?Contract No\.?\s*/i, ""),
       supplier_id: supplierFor(c.name),
       supplier_name: c.name,
       title,

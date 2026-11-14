@@ -98,7 +98,7 @@ export function stateContractAccess(sc: StateContractFields, buyer: Buyer | null
   if (buyer.state !== sc.state) return { member: false, eligible: false, reason: `a ${where} state contract, for ${where} public entities` };
   if (buyer.entity_type === "state_agency") return { member: true, eligible: true, reason: `Open to ${where} state agencies` };
   if (sc.participants) {
-    if (listed(sc.participants, buyer)) return { member: true, eligible: true, reason: `${buyer.name} is a participating jurisdiction` };
+    if (listed(sc.participants, buyer)) return { member: true, eligible: true, reason: `the jurisdictions on its list, including ${buyer.name}` };
     return { member: false, eligible: false, reason: counties.length ? `${buyer.name} isn't among its participating jurisdictions (${list(counties)} ${counties.length === 1 ? "is" : "are"})` : `for ${where} state agencies only; no county participates` };
   }
   if (!sc.locals) return { member: false, eligible: false, reason: `for ${where} state agencies only; the state hasn't opened it to cooperative purchasing` };

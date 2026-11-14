@@ -34,6 +34,7 @@ import { polish } from "./paperwork-ai";
 import { askDocument, contractBrief, readableContracts } from "./docs";
 import { diveItems, diveSearch, diveVerdict, offlineDiveFilters, type DiveFilter } from "./dive";
 import { readDiveMessage, writeVerdict } from "./dive-ai";
+import { rate } from "./ai-log";
 
 const EVIDENCE_RANK = { list: 0, roster: 1, agency: 2, purchase: 3 } as const;
 const rankEvidence = (e: keyof typeof EVIDENCE_RANK | undefined) => EVIDENCE_RANK[e ?? "list"];
@@ -260,6 +261,14 @@ export async function draftPaperwork(args: { requestId: string; kind: PaperworkK
   const { db, results, plan } = shopperContext(args.requestId);
   if (!paperworkKinds(plan).includes(args.kind)) fail("That document doesn't apply to this purchase.");
   return polish(paperworkTemplate(results, plan, args.kind), shopperFacts(db, results, plan), plan.refs.map((r) => r.n));
+}
+
+/** A thumbs up or down on something the model wrote, with an optional note on what was wrong. One vote per browser. */
+export function rateAnswer(args: { id: string; vote: "up" | "down" | null; note?: string }) {
+  const vote = args.vote === "up" || args.vote === "down" ? args.vote : null;
+  const who = currentScope()?.user?.id ?? currentScope()?.visitor ?? "anonymous";
+  if (!rate(String(args.id ?? ""), who, vote, typeof args.note === "string" ? args.note : undefined)) fail("That answer is no longer on file.");
+  return { vote };
 }
 
 // ---------------------------------------------------------------- ask a contract

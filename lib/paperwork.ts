@@ -15,6 +15,8 @@ export interface Paperwork {
   title: string;
   text: string;
   written_by: "template" | "llm";
+  /** The model call that worded it, so a thumbs up or down can be recorded against it. */
+  log_id?: string;
 }
 
 export const PAPERWORK_LABEL: Record<PaperworkKind, string> = {

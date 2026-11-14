@@ -10,6 +10,7 @@ npm run dev            # http://localhost:3000
 npm run typecheck      # tsc --noEmit
 npm run build
 npm run rehearse       # 13-step demo walkthrough in Playwright; needs a server on :3000
+npm run eval           # the fixed test set for the prompts and their checks (evals/cases.ts)
 ```
 
 Run `rehearse` against a production build: `npm run build`, then `npx next start -p 3000`, then `npm run rehearse`. All 13 steps must pass, with no page errors, before anything merges. To stop the server, run `pkill -f next-server` (`pkill -f "next start"` doesn't stop it).
@@ -21,6 +22,14 @@ Run `rehearse` against a production build: `npm run build`, then `npx next start
 - `/api/state` sends the whole `Db` to the browser. Large datasets therefore stay server-only and are read lazily: the co-op directory (`lib/directory.ts`), the co-op catalog (`lib/catalog.ts`) and state rules (`lib/state-rules.ts`). Results carry only the slice a page needs. Never import those modules or their JSON into a `"use client"` component.
 - A helper used by both a server page and a client component can't live in a `"use client"` file (see `components/StateRuleBits.tsx`).
 - The UI uses USWDS-based Tailwind tokens (`tailwind.config.ts`). The theme has `error-*`, `warning-*` and `success-*` colors, plus emerald and amber; it has no `red-*`.
+
+## Changing a prompt or a check
+
+Every model call goes through `structured()` in `lib/llm.ts` with a `task` name, and its caller reports what became of the output with `kept()`, `partly()`, `discarded()` or `pieces()`. That is what `/quality` counts, so a new call site needs both. Text the model wrote carries a `log_id` to the page, which shows `<Feedback id={...} />` under it.
+
+Before changing a prompt, a schema or a check, run `npm run eval` with `ANTHROPIC_API_KEY` set, make the change, and run it again. Nothing that passed before may fail. Add a case to `evals/cases.ts` for whatever the change was meant to fix, then save the new baseline with `npm run eval -- --save` and commit `evals/baseline.json`. Without a key only the guard cases run: they test the checks, not the prompts.
+
+The log holds what people typed. Keep it server-only, and keep the recent-calls list on `/quality` behind a signed-in account.
 
 ## The data pipeline
 

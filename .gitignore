@@ -12,3 +12,4 @@ seed/cleanup/shards/
 seed/cleanup/out/
 seed/cleanup/tasks/
 seed/catalog/source/price-files/cache/
+evals/last-run.json

@@ -5,6 +5,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import type { Results } from "@/lib/assistant";
 import { buildPlan, defaultSelection, purchaseFileText, shopperAddOns, shopperCandidates, usd, type Plan, type PlanRoute, type ShopperSelection } from "@/lib/shopper";
 import type { ShopperText } from "@/lib/shopper-ai";
+import { Feedback } from "./Feedback";
 import { PAPERWORK_LABEL, paperworkKinds, type Paperwork, type PaperworkKind } from "@/lib/paperwork";
 import { Annotation, BestFit, Mark, RefTag, TickFrame } from "./blueprint";
 import { useStore } from "./store";
@@ -313,6 +314,7 @@ export function Shopper({ results, requestId, onChanged }: { results: Results; r
                   </p>
                 ))}
                 {writing && <p className="text-ui-2xs text-base-dark">Your shopper is writing this up. The plan below is already final.</p>}
+                <Feedback key={brief?.log_id} id={brief?.log_id} />
               </div>
 
               <div className="flex flex-wrap gap-3 px-5 py-5">
@@ -558,6 +560,7 @@ function AskBox({ plan, requestId, enabled, supplier }: { plan: Plan; requestId:
                     </p>
                   ))}
                   {t.answer && <Sources plan={plan} refs={t.answer.refs} />}
+                  <Feedback id={t.answer?.log_id} />
                 </div>
               </div>
             </div>
@@ -680,6 +683,7 @@ function PaperworkCard({ plan, requestId }: { plan: Plan; requestId: string }) {
           <p className="text-ui-3xs leading-relaxed text-base-dark">
             {doc.written_by === "llm" ? "Worded by your shopper from the purchase file; every figure and contract number was checked against it." : "Filled in from the purchase file."} Fill the [bracketed] blanks and read it before you send it. Agora doesn't send it for you.
           </p>
+          <Feedback key={doc.log_id} id={doc.log_id} />
         </div>
       )}
     </div>

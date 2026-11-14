@@ -10,7 +10,7 @@ import { existsSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 import * as z from "zod/v4";
 import { catalogContract, catalogDocumentsFor, catalogSupplierById, type CatalogDocument } from "./catalog";
-import { structured } from "./llm";
+import { discarded, modelOn, pieces, structured } from "./llm";
 import { extractFile } from "./parser";
 import { ungrounded } from "./shopper-ai";
 import type { Db } from "./types";
@@ -52,6 +52,8 @@ export interface ContractAnswer {
   answer: { paragraphs: string[]; quotes: Passage[] } | null;
   passages: Passage[];
   note: string;
+  /** The model call behind the answer, so a thumbs up or down can be recorded against it. */
+  log_id?: string;
 }
 
 const isFile = (url: string) => /\.(pdf|xlsx|xls|docx|csv)(\?|$)/i.test(url);
@@ -275,6 +277,8 @@ export async function askDocument(db: Db, contractId: string, question: string):
   if (!passages.length) return { ...base, answer: null, passages: [], note: "Nothing in these documents uses the words in your question. Try the term the contract would use." };
 
   const out = await structured({
+    task: "contract_answer",
+    about: `${entry.name}: ${question}`,
     system:
       `You answer a government employee's question about a contract, using only the numbered PASSAGES from its documents.\n` +
       `- If the passages don't answer it, set can_answer to false and say what they do cover. Don't use outside knowledge about the supplier, the co-op or typical contract terms.\n` +
@@ -299,11 +303,13 @@ export async function askDocument(db: Db, contractId: string, question: string):
   }
   const paragraphs = out.paragraphs.map((p) => p.trim()).filter(Boolean).slice(0, 3);
   const bad = ungrounded(paragraphs.join("\n"), [], { passages: passages.map((p) => p.text), question }, []);
+  const text = [...paragraphs, ...out.quotes.map((q) => `[${q.passage}] "${q.text}"`)].join("\n");
   if (!paragraphs.length || bad || (out.can_answer && !quotes.length)) {
-    console.warn("[docs] answer discarded:", bad ?? "no quote could be verified");
+    discarded(out, bad ?? (paragraphs.length ? "No quote matched the document word for word" : "The answer was empty"), text);
     return { ...base, answer: null, passages: shown, note: "I couldn't verify an answer against the document's own words, so here are the passages that bear on your question." };
   }
-  return { ...base, answer: { paragraphs, quotes }, passages: shown, note: out.can_answer ? "" : "The documents Agora can read don't settle this. Purchasing, the co-op or the supplier would know." };
+  const log_id = pieces(out, text, quotes.length, out.quotes.length, "A quote didn't match the document word for word", { declined: !out.can_answer });
+  return { ...base, ...(log_id ? { log_id } : {}), answer: { paragraphs, quotes }, passages: shown, note: out.can_answer ? "" : "The documents Agora can read don't settle this. Purchasing, the co-op or the supplier would know." };
 }
 
 // ------------------------------------------------------------------ the contract brief
@@ -334,6 +340,8 @@ export interface ContractBrief {
   fields: BriefField[];
   mode: "ai" | "passages";
   note: string;
+  /** The model call behind the summaries, so a thumbs up or down can be recorded against it. */
+  log_id?: string;
 }
 
 const BriefSchema = z.object({
@@ -363,7 +371,7 @@ const briefs = ((globalThis as unknown as { __agoraBriefs?: Map<string, Contract
 export async function contractBrief(db: Db, contractId: string): Promise<ContractBrief> {
   const entry = entryFor(db, contractId);
   if (!entry) throw new Error("Agora doesn't hold a readable document for that contract.");
-  const key = `${contractId}|${process.env.ANTHROPIC_API_KEY ? "ai" : "off"}`;
+  const key = `${contractId}|${modelOn() ? "ai" : "off"}`;
   const have = briefs.get(key);
   if (have) return have;
   const read: ContractBrief["read"] = [];
@@ -391,6 +399,8 @@ export async function contractBrief(db: Db, contractId: string): Promise<Contrac
   const prompt = per.map(({ f, passages }) => `FIELD ${f.id}: ${f.label}\n${passages.map((p) => `[${numberOf(p)}] (${p.document}, page ${p.page})\n${p.text}`).join("\n\n") || "(no passage)"}`).join("\n\n----\n\n");
 
   const out = await structured({
+    task: "contract_brief",
+    about: entry.name,
     system:
       `You brief a government employee on a contract, using only the numbered PASSAGES from its documents, grouped by FIELD.\n` +
       `- For each field, say in one or two short sentences what its passages establish, and copy the one sentence or clause your answer rests on word for word, with its passage number.\n` +
@@ -420,8 +430,11 @@ export async function contractBrief(db: Db, contractId: string): Promise<Contrac
     }
     return { id: f.id, label: f.label, summary: null, quote: null, passage: fallback };
   });
+  const found = out?.fields.filter((x) => x.found) ?? [];
+  const log_id = pieces(out, found.map((x) => `${x.id}: ${x.summary} [${x.passage}] "${x.quote}"`).join("\n"), verified, found.length, "A field's quote didn't match the document, or its summary stated a figure the passages don't hold", { declined: !found.length });
   const brief: ContractBrief = {
     ...base,
+    ...(log_id ? { log_id } : {}),
     fields,
     mode: verified ? "ai" : "passages",
     note: !out

@@ -247,6 +247,9 @@ export function Header() {
                 <Link role="menuitem" href="/data" onClick={() => setOpen(false)} className="flex min-h-12 items-center px-4 text-ui-xs text-ink no-underline hover:bg-base-lightest">
                   Co-op data
                 </Link>
+                <Link role="menuitem" href="/quality" onClick={() => setOpen(false)} className="flex min-h-12 items-center px-4 text-ui-xs text-ink no-underline hover:bg-base-lightest">
+                  AI quality
+                </Link>
                 <Link role="menuitem" href="/coops/price-lists" onClick={() => setOpen(false)} className="flex min-h-12 items-center px-4 text-ui-xs text-ink no-underline hover:bg-base-lightest">
                   Price-list queue
                 </Link>

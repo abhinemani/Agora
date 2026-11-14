@@ -23,6 +23,7 @@ const handlers: Record<string, Handler> = {
   askShopper: (b) => A.askShopper(b),
   draftPaperwork: (b) => A.draftPaperwork(b),
   contractsToAsk: () => A.contractsToAsk(),
+  rateAnswer: (b) => A.rateAnswer(b),
   askContract: (b) => A.askContract(b),
   briefContract: (b) => A.briefContract(b),
   dive: (b) => A.dive(b),
@@ -74,7 +75,7 @@ const handlers: Record<string, Handler> = {
 };
 
 // What anyone can do without an account: search, set an agency, and use the shopper's tools.
-const OPEN = new Set(["createRequest", "setPreference", "setBuyer", "clearBuyer", "getResults", "confirmItems", "editItems", "shopperBrief", "askShopper", "dive", "diveCompare", "contractsToAsk", "askContract", "briefContract"]);
+const OPEN = new Set(["createRequest", "setPreference", "setBuyer", "clearBuyer", "getResults", "confirmItems", "editItems", "shopperBrief", "askShopper", "dive", "diveCompare", "contractsToAsk", "askContract", "briefContract", "rateAnswer"]);
 // Everything else needs a signed-in person. The phrase finishes "Sign in or create a free account to ...".
 const WHY: [RegExp, string][] = [
   [/cart/i, "use the cart"],

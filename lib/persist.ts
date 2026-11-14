@@ -9,6 +9,7 @@
 //
 // With no DATABASE_URL this does nothing and the state stays in memory.
 
+import { loadAiLog } from "./ai-log";
 import { getDb, seedSnapshot } from "./db";
 import { pool, schema } from "./pg";
 import type { Db } from "./types";
@@ -66,6 +67,7 @@ export function ready(): Promise<void> {
   if (!p) return Promise.resolve();
   return (state.ready ??= (async () => {
     await schema();
+    await loadAiLog();
     baseline();
     const db = getDb();
     const rows = await p.query("select key, value from app_state");

@@ -108,6 +108,22 @@ const rawProducts = jsonl<RawProduct>("products");
 const rawOfferings = jsonl<RawOffering>("offerings");
 const rawDocuments = jsonl<RawDocument>("documents");
 
+// NJSTART, New Jersey's state contracts (npm run import:njstart), in the same raw shapes.
+// They join the catalog as a state program, not a co-op: lib/catalog.ts gives them their
+// own lane and opens them to New Jersey buyers.
+const NJSTART_FILE = join(SRC, "njstart/records.json.gz");
+const njstart = existsSync(NJSTART_FILE)
+  ? (JSON.parse(gunzipSync(readFileSync(NJSTART_FILE)).toString("utf8")) as { retrieved: string; suppliers: RawSupplier[]; contracts: RawContract[]; products: RawProduct[]; offerings: RawOffering[]; documents: RawDocument[] })
+  : null;
+if (njstart) {
+  rawSuppliers.push(...njstart.suppliers);
+  rawContracts.push(...njstart.contracts);
+  rawProducts.push(...njstart.products);
+  rawOfferings.push(...njstart.offerings);
+  rawDocuments.push(...njstart.documents);
+}
+const njSummary = existsSync(join(SRC, "njstart/summary.json")) ? JSON.parse(readFileSync(join(SRC, "njstart/summary.json"), "utf8")) : null;
+
 // ------------------------------------------------------------------ GSA's own data (npm run fetch:gsa)
 
 /** Every MAS Special Item Number: title, description, and whether state and local governments may use it. */
@@ -184,6 +200,7 @@ const COOP_ID: Record<string, string> = {
   PEPPM: "coop_peppm",
   "NASPO ValuePoint": "coop_naspo",
   "GSA MAS": "gsa_mas",
+  NJSTART: "state_nj",
 };
 
 // ------------------------------------------------------------------ suppliers: one record per company
@@ -379,6 +396,8 @@ interface Contract {
   coop_sins?: { code: string; title: string }[];
   /** One of Agora's categories, from a reviewed classification of the contract's title (or its first SIN). */
   category?: string;
+  /** A state contract (NJSTART): whether the state opens it to its local governments, and its solicitation. */
+  state_contract?: { state: string; locals: boolean; solicitation: string | null; type_code: string | null; group: string | null; spent: number | null; more_items: boolean };
 }
 /** GSA codes that describe nothing on their own: order-level materials, ancillary supplies. */
 const GSA_FILLER = new Set(["OLM", "ANCILLARY"]);
@@ -435,13 +454,23 @@ const contracts: Contract[] = rawContracts.map((c) => {
     directory: (urlUses.get(c.contract_url) ?? 0) > 3 ? c.contract_url : null,
     sins: c.SINs ?? [],
     renewal: typeof meta.renewal_limit === "string" ? meta.renewal_limit.slice(0, 10) : null,
+    ...stateContractOf(meta),
   };
 });
+/** NJSTART's fields: who may use it, and the commodity group and NIGP class's category when they settle one. */
+function stateContractOf(meta: Record<string, unknown>): Partial<Contract> {
+  const sc = meta.state_contract as { state: string; locals: boolean; solicitation: string | null; type_code: string | null; group: string | null } | undefined;
+  if (!sc) return {};
+  return {
+    state_contract: { state: sc.state, locals: sc.locals, solicitation: sc.solicitation, type_code: sc.type_code, group: sc.group, spent: typeof meta.spent_to_date === "number" ? meta.spent_to_date : null, more_items: meta.line_items_paginated === true },
+    ...(typeof meta.category === "string" ? { category: meta.category } : {}),
+  };
+}
 // Categories: each distinct title was classified once; GSA contracts take their first described SIN's.
 let categorized = 0;
 for (const c of contracts) {
   const pick = c.coop === "GSA MAS" ? (c.sins.map((x) => categoryPicks[`sin:${x}`]?.pick).find((x) => x && x !== "Other") ?? categoryPicks[`sin:${c.sins[0]}`]?.pick) : categoryPicks[`title:${c.title.trim().toLowerCase()}`]?.pick;
-  if (pick) (c.category = pick), categorized++;
+  if (pick && !c.state_contract) (c.category = pick), categorized++;
 }
 const contractById = new Map(contracts.map((c) => [c.id, c]));
 
@@ -604,7 +633,7 @@ const documents = rawDocuments.map((d) => {
   return { id: d.document_id, contract: d.contract_id, coop: d.cooperative, url: d.url, label: d.label, kind: ext === "html" ? "htm" : ext };
 });
 
-const catalog = { version: 1, retrieved: RETRIEVED, suppliers, contracts, products, offerings, documents };
+const catalog = { version: 1, retrieved: RETRIEVED, ...(njstart ? { state_retrieved: { NJSTART: njstart.retrieved } } : {}), suppliers, contracts, products, offerings, documents };
 mkdirSync(join(ROOT, "seed/catalog"), { recursive: true });
 writeFileSync(join(ROOT, "seed/catalog/catalog.json.gz"), gzipSync(JSON.stringify(catalog), { level: 9 }));
 
@@ -708,10 +737,17 @@ const perCoop = Object.keys(COOP_ID).map((co) => {
     offerings: offerings.filter((o) => o.coop === co).length,
   };
 });
-const multiCoop = suppliers.filter((s) => s.coops.filter((c) => c !== "GSA MAS").length >= 2);
+const multiCoop = suppliers.filter((s) => s.coops.filter((c) => c !== "GSA MAS" && c !== "NJSTART").length >= 2);
 const insights = {
   retrieved: RETRIEVED,
-  source_counts: { suppliers: rawSuppliers.length, contracts: rawContracts.length, products: rawProducts.length, offerings: rawOfferings.length, documents: rawDocuments.length },
+  // The 13 co-ops' capture alone; NJSTART's counts are under njstart.
+  source_counts: {
+    suppliers: rawSuppliers.length - (njstart?.suppliers.length ?? 0),
+    contracts: rawContracts.length - (njstart?.contracts.length ?? 0),
+    products: rawProducts.length - (njstart?.products.length ?? 0),
+    offerings: rawOfferings.length - (njstart?.offerings.length ?? 0),
+    documents: rawDocuments.length - (njstart?.documents.length ?? 0),
+  },
   cleanup: {
     gsa_contracts: contracts.filter((c) => c.coop === "GSA MAS").length,
     gsa_described: gsaDescribed,
@@ -742,10 +778,17 @@ const insights = {
     merge_examples: suppliers.filter((s) => s.aliases.length >= 2 && s.coops.length >= 3).slice(0, 8).map((s) => ({ name: s.name, aliases: s.aliases.slice(0, 3) })),
   },
   per_coop: perCoop,
+  njstart: njSummary && {
+    ...njSummary,
+    suppliers_shared_with_coops: suppliers.filter((s) => s.coops.includes("NJSTART") && s.coops.some((c) => c !== "NJSTART")).length,
+    offerings: offerings.filter((o) => o.coop === "NJSTART").length,
+    products_on_two_or_more_contracts: Object.values(offerings.filter((o) => o.coop === "NJSTART").reduce<Record<string, Set<string>>>((m, o) => ((m[o.product] ??= new Set()).add(o.contract), m), {})).filter((x) => x.size > 1).length,
+  },
   products: {
     products: products.length,
     offerings: offerings.length,
     by_status: offerings.reduce<Record<string, number>>((m, o) => ((m[o.status] = (m[o.status] ?? 0) + 1), m), {}),
+    by_status_coops: offerings.filter((o) => o.coop !== "NJSTART").reduce<Record<string, number>>((m, o) => ((m[o.status] = (m[o.status] ?? 0) + 1), m), {}),
     priced_suppliers: [...new Set(offerings.filter((o) => o.status === "published_price").map((o) => o.supplier))].map((id) => suppliers.find((s) => s.id === id)?.name),
     multi_route: Object.values(offerings.reduce<Record<string, Set<string>>>((m, o) => ((m[o.product] ??= new Set()).add(o.contract), m), {})).filter((s) => s.size > 1).length,
   },

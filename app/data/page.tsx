@@ -8,6 +8,7 @@ import Link from "next/link";
 import { DataLookup } from "@/components/DataLookup";
 import { Card } from "@/components/ui";
 import { SEED_COOPS } from "@/lib/coops";
+import { TRX_MARGIN } from "@/lib/trx";
 import { ENTITY_LABEL } from "@/lib/vehicles";
 import type { EntityType } from "@/lib/types";
 import insights from "@/seed/coops/insights.json";
@@ -161,6 +162,7 @@ const REVIEW_TASK: Record<string, string> = {
 
 export default function CoopDataPage() {
   const d = insights.directory;
+  const nj = catalogInsights.njstart;
   const f = insights.federal;
   const o = insights.overlap;
   const prospects = insights.prospects.slice(0, 15);
@@ -191,6 +193,7 @@ export default function CoopDataPage() {
             ["#lookup", "Look up an agency"],
             ["#evidence", "How we know"],
             ["#catalog", "Co-op catalog"],
+            ["#njstart", "NJSTART"],
             ["#cleanup", "Cleanup"],
             ["#states", "State rules"],
             ["#prospects", "Prospects"],
@@ -512,7 +515,7 @@ export default function CoopDataPage() {
             </p>
             <p>
               The capture listed suppliers by exact name, so &quot;CDW-G&quot; and &quot;CDWG&quot; were two companies. Agora merges records whose names match once legal
-              suffixes are dropped, or that share a website: {n(catalogInsights.suppliers.records)} records became {n(catalogInsights.suppliers.companies)} companies, and{" "}
+              suffixes are dropped, or that share a website: {n(catalogInsights.suppliers.records)} records (NJSTART&apos;s vendors included) became {n(catalogInsights.suppliers.companies)} companies, and{" "}
               {n(catalogInsights.suppliers.on_two_or_more_coops)} of them hold contracts on two or more co-ops.
             </p>
           </>
@@ -522,7 +525,7 @@ export default function CoopDataPage() {
           head={["Co-op", "Contracts", "Own page", "End date", "Products"]}
           right={[1, 2, 3, 4]}
           rows={catalogInsights.per_coop
-            .filter((c) => c.contracts)
+            .filter((c) => c.contracts && c.coop !== "NJSTART")
             .sort((a, b) => b.contracts - a.contracts)
             .map((c) => [
               <span key="c" className="font-bold">
@@ -564,8 +567,8 @@ export default function CoopDataPage() {
 
         <h3 className="mt-8 text-ui-md font-bold text-ink">Products and prices</h3>
         <p className="mt-1 max-w-[72ex] text-body-sm text-base-darker">
-          Products are concentrated in three places. Canon&apos;s Sourcewell price file gives {n(catalogInsights.products.by_status.published_price ?? 0)} rows a real price
-          (April 2026, with list price and discount). HGACBuy publishes {n(catalogInsights.products.by_status.published_discount ?? 0)} discounts without the base prices to
+          Products are concentrated in three places. Canon&apos;s Sourcewell price file gives {n(catalogInsights.products.by_status_coops.published_price ?? 0)} rows a real price
+          (April 2026, with list price and discount). HGACBuy publishes {n(catalogInsights.products.by_status_coops.published_discount ?? 0)} discounts without the base prices to
           apply them to. PEPPM lists {n(catalogInsights.products.by_status.member_login ?? 0)} technology items whose prices sit behind a member login.{" "}
           {n(catalogInsights.products.multi_route)} products are sold on two or more contracts, which is where &quot;every way to buy it&quot; earns its keep. Agora shows a
           discount as a discount and a blank price as unknown, never as a price.
@@ -574,6 +577,54 @@ export default function CoopDataPage() {
           Try it: search for <Link href="/" className="text-primary">playground equipment</Link> as the Town of Crested Butte, browse{" "}
           <Link href="/storefronts" className="text-primary">every supplier on a co-op contract</Link>, or open the{" "}
           <Link href="/coops/price-lists" className="text-primary">price-list queue</Link>.
+        </p>
+      </Section>
+
+      <Section
+        id="njstart"
+        title="NJSTART: New Jersey's state contracts, first for New Jersey buyers"
+        intro={
+          <>
+            <p>
+              NJSTART is New Jersey&apos;s purchasing system, and its state contracts are the TRX program Sovra supports. A New Jersey town, county or school district can buy
+              on any state contract the state opens to its Cooperative Purchasing Program. The state has already bid it, so the local unit doesn&apos;t advertise for bids of
+              its own, and it carries the lowest fee of any shared contract. That makes it the route Agora prefers: for a New Jersey buyer, matching NJSTART contracts sit
+              above every co-op in results, and NJSTART prices come first on each product.
+            </p>
+            <p>
+              Agora holds all {n(nj.contracts)} active NJSTART contracts, read from the state&apos;s public list on {date(nj.retrieved)}. The state flags{" "}
+              {n(nj.open_to_locals)} of them &quot;NJ Cooperative Purchasing&quot;, open to local governments; the other {n(nj.state_only)} are for state agencies, so Agora
+              shows them only to a state agency. They come from {n(nj.suppliers)} vendors, {n(nj.suppliers_shared_with_coops)} of whom also hold co-op contracts and now
+              show both on one storefront. NJSTART reports {usd(nj.spent_to_date)} spent on them to date.
+            </p>
+            <p>
+              {n(nj.priced_lines)} awarded line-item prices on {n(nj.with_prices)} contracts are loaded, each checked against the line it was read from and labelled with its
+              contract term. {n(nj.products_on_two_or_more_contracts)} products are priced on two or more contracts, so the same item can be compared across the suppliers
+              on one award. Lines that aren&apos;t a price a buyer would pay stay out: {n(nj.dropped.no_price)} with no unit price (their prices are in the price sheet),{" "}
+              {n(nj.dropped.index_markup)} fuel lines bid as a markup over the daily OPIS index, {n(nj.dropped.not_orderable)} marked not orderable,{" "}
+              {n(nj.dropped.placeholder)} placeholders and {n(nj.dropped.discount)} with a discount, which waits on the discount decision.
+            </p>
+          </>
+        }
+      >
+        <Table
+          head={["Commodity group", "Contracts"]}
+          right={[1]}
+          rows={Object.entries(nj.groups).map(([g, c]) => [
+            <span key="g" className="font-bold">
+              {g}
+            </span>,
+            n(c as number),
+          ])}
+        />
+        <p className="mt-2 max-w-[72ex] text-ui-xs text-base-dark">
+          How the preference works: an NJSTART contract leads when it fits within {TRX_MARGIN} points of the best co-op contract, so a far closer co-op fit still wins. Line
+          items are those on each contract&apos;s first summary page; contracts with more pages say so on their own page. The {n(nj.documents)} attached documents (price
+          sheets, terms, methods of operation) are linked, not read yet. Oregon, Arkansas, Hawaii and New York are TRX states too; their state contracts aren&apos;t loaded.
+        </p>
+        <p className="mt-3 text-ui-xs text-base-dark">
+          Try it: set your agency to Harmon Lake Township, New Jersey, and search for <Link href="/" className="text-primary">snow plow parts</Link> or road salt, or browse{" "}
+          <Link href="/contracts?coop=NJSTART" className="text-primary">every NJSTART contract</Link>.
         </p>
       </Section>
 

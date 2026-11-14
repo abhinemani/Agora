@@ -2,7 +2,7 @@
 // exactly one place per action.
 
 import { buildResults, estimateTotal, finishCoopSection, findSimilarSolicitation, mentionsPreference, parseRequest, ruleFor } from "./assistant";
-import { catalogContract, catalogCoopHits, catalogOffering, catalogProducts, catalogRetrieved, catalogSupplierById, materializeSupplier } from "./catalog";
+import { catalogContract, catalogCoopHits, catalogOffering, catalogProducts, catalogRetrieved, catalogStateRetrieved, catalogSupplierById, materializeSupplier } from "./catalog";
 import { stateRuleFor } from "./state-rules";
 import { currentScope, getDb, nextId, resetDb } from "./db";
 import { dedupe, extractFile, findSupplier, parseContract, type InputFile } from "./parser";
@@ -160,7 +160,7 @@ export function getResults(requestId: string) {
   const cat = catalogCoopHits(db, request.parsed.item, db.session.buyer, { category: request.parsed.category });
   if (cat.hits.length || cat.gsa.length) {
     const section = finishCoopSection(db, [...results.coops.hits, ...cat.hits], db.session.buyer?.name ?? null);
-    results.coops = { ...section, catalog: { retrieved: catalogRetrieved(), more_member: cat.more_member, more_other: cat.more_other, gsa: cat.gsa, gsa_total: cat.gsa_total } };
+    results.coops = { ...section, catalog: { retrieved: catalogRetrieved(), more_member: cat.more_member, more_other: cat.more_other, gsa: cat.gsa, gsa_total: cat.gsa_total, state: cat.state, state_total: cat.state_total, state_retrieved: catalogStateRetrieved() } };
   }
   results.coops = { ...results.coops, state_rule: stateRuleFor(db.session.buyer, `${request.raw_text} ${request.parsed.item}`) };
   const products = catalogProducts(db, request.parsed.item, db.session.buyer);

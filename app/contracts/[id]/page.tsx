@@ -57,7 +57,13 @@ export default function ContractPage() {
         <div className="mt-4 flex flex-wrap items-center gap-x-2.5 gap-y-1 text-ui-xs text-base-darker">
           <span className={`${label} text-primary`}>{c.kind_label}</span>
           <span className="font-bold text-ink">{c.program}</span>
+          {c.trx && (
+            <span title="A state contract on the TRX program, which Sovra supports. Agora lists it ahead of co-op contracts for that state's buyers.">
+              <Badge tone="green">TRX</Badge>
+            </span>
+          )}
           <span className="font-mono">{c.number}</span>
+          {c.solicitation && <span>· awarded under {c.solicitation}</span>}
           {c.expired && <Badge tone="amber">Expired</Badge>}
         </div>
         <h1 className="mt-1.5 max-w-[40ch] font-heading text-heading-xl font-bold leading-tight text-ink">{c.title}</h1>

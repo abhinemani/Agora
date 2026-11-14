@@ -32,9 +32,9 @@ export function CatalogProducts({ data, requestId }: { data: Results["catalog_pr
     <section id="catalog-products" className="scroll-mt-24">
       <div className="flex flex-wrap items-end justify-between gap-3">
         <div>
-          <h2 className="text-lg font-bold tracking-tight text-navy">Products on co-op contracts</h2>
+          <h2 className="text-lg font-bold tracking-tight text-navy">{data.hits.some((h) => h.routes.some((r) => r.trx)) ? "Products on state and co-op contracts" : "Products on co-op contracts"}</h2>
           <p className="mt-0.5 max-w-2xl text-xs text-slate">
-            From co-ops' public product tables and price files. Each lists every contract that sells it. Prices are as published, not a quote: confirm the current price,
+            From co-ops' public product tables and price files{data.hits.some((h) => h.routes.some((r) => r.trx)) ? ", and NJSTART's awarded line items" : ""}. Each lists every contract that sells it. Prices are as published, not a quote: confirm the current price,
             options and freight with the supplier.
           </p>
         </div>
@@ -88,7 +88,12 @@ function ProductCard({ h, requestId }: { h: CatalogProductHit; requestId: string
                   <Link href={`/contracts/${r.contract_id}`} className="font-mono text-slate underline decoration-base-light underline-offset-2 hover:text-maroon" title="Contract details">
                     {r.contract_number}
                   </Link>{" "}
-                  {buyer && r.coop_id !== "gsa_mas" && !r.member && <Badge tone="maroon">Join to use</Badge>}
+                  {r.trx && (
+                    <span title="A New Jersey state contract on the TRX program, which Sovra supports. Agora lists it first for New Jersey buyers.">
+                      <Badge tone="green">TRX</Badge>
+                    </span>
+                  )}{" "}
+                  {buyer && r.coop_id !== "gsa_mas" && !r.member && !r.trx && <Badge tone="maroon">Join to use</Badge>}
                 </div>
                 <div className="text-slate">
                   <Link href={`/storefronts/${r.supplier_id}`} className="hover:text-maroon hover:underline">
@@ -116,7 +121,7 @@ function ProductCard({ h, requestId }: { h: CatalogProductHit; requestId: string
           All {h.routes.length} contracts
         </button>
       )}
-      {vintage && <p className="mt-2 text-[11px] text-slate">Prices from the {vintage} price file.</p>}
+      {vintage && <p className="mt-2 text-[11px] text-slate">{/^NJSTART/.test(vintage) ? `${vintage}.` : `Prices from the ${vintage} price file.`}</p>}
     </li>
   );
 }

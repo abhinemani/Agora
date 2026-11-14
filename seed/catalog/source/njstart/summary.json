@@ -1,0 +1,39 @@
+{
+ "source": "https://www.njstart.gov/bso/view/search/external/advancedSearchContractBlanket.xhtml?view=activeContracts",
+ "retrieved": "2026-11-14",
+ "internal": 1,
+ "contracts": 1437,
+ "open_to_locals": 966,
+ "state_only": 471,
+ "with_prices": 836,
+ "priced_lines": 5810,
+ "lines": 10180,
+ "dropped": {
+  "no_price": 4153,
+  "no_name": 0,
+  "not_orderable": 22,
+  "index_markup": 166,
+  "placeholder": 14,
+  "discount": 5,
+  "percent": 0,
+  "unverified": 0
+ },
+ "documents": 18635,
+ "spent_to_date": 8073204272,
+ "groups": {
+  "Commodities Fleet": 323,
+  "General Services 2": 224,
+  "Commodities/Food & Clothing": 180,
+  "Technology and Telecommunications": 179,
+  "General Services 1": 179,
+  "Comm/Gen": 162,
+  "Professional Services": 161,
+  "Professional Services -2": 19,
+  "Central Procurement (4210)": 4,
+  "Technology and Computing": 4,
+  "Division of Purchase and Property": 2
+ },
+ "suppliers": 1120,
+ "products": 3439,
+ "note": "Line items are the first summary page of each contract; contracts with more item pages are flagged line_items_paginated. Attachments are linked, not downloaded."
+}

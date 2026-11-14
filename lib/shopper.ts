@@ -184,7 +184,8 @@ export function buildPlan(args: { results: Results; listings: Listing[]; limit: 
     summary = `${supplier} lists this at a published price: **${usd(total!)} in all**. The contract belongs to ${chosen!.link_out!.coop}, so the order is placed on its contract page, not in Agora.`;
   } else if (members.length) {
     headline = "This one starts with a quote.";
-    summary = `No catalog item with a published price is on this order. **${COUNT[members.length] ?? members.length} co-op contract${members.length === 1 ? "" : "s"} open to ${who} today** cover${members.length === 1 ? "s" : ""} it: ${hitNames(members)}. Name the make, model and quantity in the quote request.`;
+    const kindWord = members.every((h) => h.program === "state") ? "state contract" : members.some((h) => h.program === "state") ? "contract" : "co-op contract";
+    summary = `No catalog item with a published price is on this order. **${COUNT[members.length] ?? members.length} ${kindWord}${members.length === 1 ? "" : "s"} open to ${who} today** cover${members.length === 1 ? "s" : ""} it: ${hitNames(members)}. Name the make, model and quantity in the quote request.`;
   } else if (joins.length) {
     headline = `No contract open to ${who} covers this yet.`;
     summary = `The closest fit is ${hitNames(joins.slice(0, 1))}, on a co-op ${who} isn't on. **Getting onto it is a question for purchasing.**`;
@@ -209,12 +210,23 @@ export function buildPlan(args: { results: Results; listings: Listing[]; limit: 
             : "Too large for an off-contract purchase.";
     routes.push({ kind: "priced", recommended: payment !== "needs_contract", title, body: `${what}. ${usd(total!)} in all. ${then}`, refs: refNums([`listing:${chosen.listing.id}`]), hits: [] });
   }
+  // NJSTART contracts lead the member hits for New Jersey buyers (lib/trx.ts); say what they are.
+  const memberIntro = (hs: CoopHit[]) => {
+    const state = hs.filter((h) => h.program === "state");
+    const coop = hs.filter((h) => !h.program);
+    const are = (n: number) => (n === 1 ? "is" : "are");
+    const stateLine = state.length
+      ? `${hitNames(state)} ${are(state.length)} New Jersey state contract${state.length === 1 ? "" : "s"}, open to ${who} through the state's Cooperative Purchasing Program with no bid of its own.`
+      : "";
+    const coopLine = coop.length ? `${who} is on ${coopNames(coop)}. ${hitNames(coop)} ${are(coop.length)} open to you.` : "";
+    return [stateLine, coopLine].filter(Boolean).join(" ");
+  };
   if (members.length)
     routes.push({
       kind: "member",
       recommended: !routes.some((r) => r.recommended),
       title: `Get a quote through ${coopNames(members)}`,
-      body: `${who} is on ${coopNames(members)}. ${hitNames(members)} ${members.length === 1 ? "is" : "are"} open to you. ${noPrices(members) ? "Agora holds no prices for " + (members.length === 1 ? "it" : "them") + ", so the price comes by quote." : "Some of their products are priced in the results below."}`,
+      body: `${memberIntro(members)} ${noPrices(members) ? "Agora holds no prices for " + (members.length === 1 ? "it" : "them") + ", so the price comes by quote." : "Some of their products are priced in the results below."}`,
       refs: refNums(members.map((h) => `contract:${h.contract_id}`)),
       hits: members,
     });

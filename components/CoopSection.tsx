@@ -28,10 +28,16 @@ export function CoopSection({ section, requestId, onMembershipChange, refs, quer
   const { db } = useStore();
   const buyer = db?.session.buyer ?? null;
   if (!section.hits.length) return null;
-  const members = section.hits.filter((h) => h.member);
-  const others = section.hits.filter((h) => !h.member);
+  // TRX state contracts (NJSTART) lead, in their own block; the co-op lists hold the rest.
+  const state = section.hits.filter((h) => h.program === "state");
+  const coopHits = section.hits.filter((h) => !h.program);
+  const members = coopHits.filter((h) => h.member);
+  const others = coopHits.filter((h) => !h.member);
 
   return (
+    <>
+      {state.length > 0 && <StateLane hits={state} total={section.catalog?.state_total ?? state.length} retrieved={section.catalog?.state_retrieved} requestId={requestId} refs={refs} />}
+      {(coopHits.length > 0 || (section.catalog?.gsa.length ?? 0) > 0) && (
     <section id="coops" className="scroll-mt-24 border-y border-base-lighter bg-white py-6">
       <div className="flex flex-wrap items-end justify-between gap-3">
         <div>
@@ -86,7 +92,7 @@ export function CoopSection({ section, requestId, onMembershipChange, refs, quer
       )}
       {section.catalog && (
         <p className="mt-4 text-[11px] text-slate">
-          Includes contracts from 13 co-ops' public directories, retrieved {new Date(`${section.catalog.retrieved}T12:00:00Z`).toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" })}.{" "}
+          Includes contracts from 13 co-ops' public directories{state.length ? " and New Jersey's NJSTART" : ""}, retrieved {new Date(`${section.catalog.retrieved}T12:00:00Z`).toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" })}.{" "}
           <a href="/data#catalog" className="underline">
             About the co-op catalog
           </a>
@@ -100,6 +106,50 @@ export function CoopSection({ section, requestId, onMembershipChange, refs, quer
           )}
         </p>
       )}
+    </section>
+      )}
+    </>
+  );
+}
+
+/** TRX state contracts for this request: the route Agora prefers, so they sit above every co-op. */
+function StateLane({ hits, total, retrieved, requestId, refs }: { hits: CoopHit[]; total: number; retrieved?: string | null; requestId: string; refs?: Record<string, number> }) {
+  const { db } = useStore();
+  const buyer = db?.session.buyer ?? null;
+  const program = hits[0]?.coop ?? "NJSTART";
+  return (
+    <section id="state-contracts" className="scroll-mt-24 border-y-2 border-emerald-200 bg-emerald-50/40 py-6">
+      <div className="flex flex-wrap items-center gap-2">
+        <h2 className="text-lg font-bold tracking-tight text-navy">New Jersey state contracts for this</h2>
+        <span title="A state contract on the TRX program, which Sovra supports">
+          <Badge tone="green">TRX</Badge>
+        </span>
+      </div>
+      <p className="mt-1 max-w-3xl text-sm text-slate">
+        {buyer
+          ? `${buyer.name} can buy on these ${program} contracts through the New Jersey Cooperative Purchasing Program. They come first because they're already competitively bid by the state and carry the lowest fee of any shared contract.`
+          : `${program} contracts are open to New Jersey local governments through the state's Cooperative Purchasing Program. Set your agency to see whether you can use them.`}{" "}
+        Ordering happens on {program}, under the contract number.
+      </p>
+      <ul className="mt-4 grid gap-2 lg:grid-cols-2">
+        {hits.map((h) => (
+          <Hit key={h.contract_id} h={h} requestId={requestId} refN={refs?.[h.contract_id]} />
+        ))}
+      </ul>
+      {total > hits.length && (
+        <p className="mt-2 text-[11px] text-slate">
+          {total - hits.length} more matching {program} contract{total - hits.length === 1 ? "" : "s"}, lower in fit.{" "}
+          <Link href={`/contracts?coop=${encodeURIComponent(program)}`} className="font-semibold underline">
+            Browse them in the contract explorer
+          </Link>
+        </p>
+      )}
+      <p className="mt-3 text-[11px] text-slate">
+        From {program}'s list of active contracts{retrieved ? `, retrieved ${new Date(`${retrieved}T12:00:00Z`).toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" })}` : ""}. Prices are the state's awarded line items.{" "}
+        <a href="/data#njstart" className="underline">
+          About NJSTART in Agora
+        </a>
+      </p>
     </section>
   );
 }
@@ -162,8 +212,17 @@ function Hit({ h, requestId, refN }: { h: CoopHit; requestId: string; refN?: num
             {refN !== undefined && <RefTag n={refN} />}
             <span className="text-sm font-semibold text-navy">{h.coop}</span>
             <span className="font-mono text-[11px] text-slate">{h.contract_number}</span>
-            {buyer && !h.member && h.coop_id !== "gsa_mas" && <Badge tone="maroon">Join to use</Badge>}
-            {h.source === "catalog" ? (
+            {buyer && !h.member && h.coop_id !== "gsa_mas" && !h.program && <Badge tone="maroon">Join to use</Badge>}
+            {h.trx && (
+              <span title="A state contract on the TRX program, which Sovra supports">
+                <Badge tone="green">TRX</Badge>
+              </span>
+            )}
+            {h.program === "state" ? (
+              <span title={`A ${h.coop} state contract${h.solicitation ? `, awarded under ${h.solicitation}` : ""}. Read from the state's public contract list.`}>
+                <Badge tone="neutral">State contract{h.solicitation ? ` · ${h.solicitation}` : ""}</Badge>
+              </span>
+            ) : h.source === "catalog" ? (
               <span title={`From ${h.coop}'s public contract directory. Terms and eligibility aren't independently verified.`}>
                 <Badge tone="neutral">Co-op directory</Badge>
               </span>

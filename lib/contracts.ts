@@ -9,10 +9,11 @@
 // the documents say comes from lib/docs.ts, quoted.
 
 import { fitScoreSets, requestTokens, SAME_AS, tokens } from "./assistant";
-import { catalogAccess, catalogIndex, type CatalogContract, type CatalogOffering } from "./catalog";
+import { catalogAccess, catalogIndex, isTrxContract, type CatalogContract, type CatalogOffering } from "./catalog";
 import { coopOf, goHref, isContractLevelUrl, onCoopContract } from "./coops";
 import { readableCatalogDocument, readableDocuments } from "./docs";
 import { stateRuleFor, type BuyerStateRule } from "./state-rules";
+import { isTrx, TRX_PROGRAM } from "./trx";
 import type { Buyer, Contract, Db } from "./types";
 import { checkEligibility } from "./vehicles";
 
@@ -49,6 +50,8 @@ export interface ContractRow {
   /** Prices are loaded and buyable in Agora, rather than on the co-op's site. */
   in_agora: boolean;
   fit: number | null;
+  /** A state contract in a TRX state (lib/trx.ts), the route Agora prefers for that state's buyers. */
+  trx: boolean;
 }
 
 const today = () => new Date().toISOString().slice(0, 10);
@@ -56,11 +59,15 @@ const ACCESS_RANK: Record<AccessStatus, number> = { open: 0, check: 1, unknown: 
 
 function catalogStatus(buyer: Buyer | null, c: CatalogContract, a: { member: boolean; eligible: boolean }): AccessStatus {
   if (!a.eligible) return "closed";
+  // A state contract needs no membership: open to the buyers the state allows, once an agency is set.
+  if (c.state_contract) return !buyer ? "unknown" : a.member ? "open" : "closed";
   if (c.coop_id === "gsa_mas") return "open";
   if (!buyer) return "unknown";
   if (a.member) return "open";
   return c.coop_id === "coop_naspo" ? "check" : "join";
 }
+
+const catalogKind = (c: CatalogContract): ContractKind => (c.state_contract ? "state" : c.coop_id === "gsa_mas" ? "federal" : "coop");
 
 function agoraKind(c: Contract): ContractKind {
   return c.source === "state_contract" ? "state" : c.source === "gsa" ? "federal" : c.source === "reseller" ? "reseller" : c.source === "own_contract" ? "agency" : "coop";
@@ -140,16 +147,18 @@ function scan(db: Db, buyer: Buyer | null, q: string): Scan {
       fit = byNumber ? 100 : words.length ? fitScoreSets(words, idx.cTitle[i], idx.cScope[i], idx.cWeights) : 0;
       if (fit < 50) continue;
     }
-    const k = `${c.coop_id}|${c.states === "any" ? "*" : c.states.join(",")}|${(c.coop_sins ?? []).map((x) => x.code).join(",")}`;
+    const k = `${c.coop_id}|${c.states === "any" ? "*" : c.states.join(",")}|${(c.coop_sins ?? []).map((x) => x.code).join(",")}|${c.state_contract?.locals ?? ""}`;
     let a = accessCache.get(k);
     if (!a) accessCache.set(k, (a = catalogAccess(db, buyer, c)));
     const offers = idx.offeringsByContract.get(c.id) ?? [];
     const docs = idx.documentsByContract.get(c.id) ?? [];
     rows.push({
       id: c.id,
-      kind: c.coop_id === "gsa_mas" ? "federal" : "coop",
+      kind: catalogKind(c),
+      trx: isTrxContract(c),
       program: db.coops.find((x) => x.id === c.coop_id)?.name ?? c.coop,
-      program_id: c.coop_id || c.coop,
+      // A state program is keyed by its name, so the catalog's NJSTART and Agora's own NJSTART contracts are one program.
+      program_id: c.state_contract ? c.coop : c.coop_id || c.coop,
       number: c.number,
       title: c.title,
       supplier: idx.supplierById.get(c.supplier)?.name ?? "",
@@ -186,6 +195,7 @@ function scan(db: Db, buyer: Buyer | null, q: string): Scan {
     rows.push({
       id: c.id,
       kind: agoraKind(c),
+      trx: isTrx(c),
       program: coop?.name ?? c.vehicle ?? c.owner,
       program_id: coop?.id ?? c.vehicle ?? c.owner,
       number: c.contract_number,
@@ -270,6 +280,10 @@ export interface ContractItem {
 export interface ContractDetail {
   id: string;
   kind: ContractKind;
+  /** A state contract in a TRX state (lib/trx.ts). */
+  trx: boolean;
+  /** The state solicitation it was awarded under, e.g. T2187, shared by every supplier on the award. */
+  solicitation: string | null;
   kind_label: string;
   program: string;
   number: string;
@@ -317,6 +331,7 @@ const longDate = (d: string) => new Date(`${d}T12:00:00Z`).toLocaleDateString("e
 
 /** What an offering's number is, in plain words, by the vintage the importer gave it. */
 function offeringNote(o: CatalogOffering): string {
+  if (o.price != null && /^NJSTART/.test(o.vintage ?? "")) return "Awarded state contract price";
   if (o.price != null) return /award/i.test(o.vintage ?? "") ? "Awarded bid, base model" : /net price/i.test(o.vintage ?? "") ? "Contract net price" : /base vehicle|cost sheet/i.test(o.vintage ?? "") ? "Base price, before options and delivery" : "Published price";
   if (o.list != null) return "List price, before the contract discount";
   if (o.status === "member_login") return "Price behind the co-op's member login";
@@ -324,9 +339,18 @@ function offeringNote(o: CatalogOffering): string {
   return "Price by quote";
 }
 
-function steps(c: { program: string; number: string; supplier: string; kind: ContractKind; access: AccessStatus; priced: number; in_agora: boolean; hasLink: boolean }): string[] {
+function steps(c: { program: string; number: string; supplier: string; kind: ContractKind; access: AccessStatus; priced: number; in_agora: boolean; hasLink: boolean; state?: { name: string; coop_program: string; solicitation: string | null; locals: boolean } }): string[] {
   const out: string[] = [];
   if (c.access === "closed") return ["This contract isn't open to your agency. Look for the same supplier on another contract below, or ask purchasing whether an addendum or membership would open it."];
+  if (c.state && !c.in_agora) {
+    // A New Jersey state contract (NJSTART), bought by a local through the state's cooperative purchasing program.
+    const award = c.state.solicitation ? ` (awarded under ${c.state.solicitation})` : "";
+    if (c.state.locals) out.push(`If your agency hasn't already, register once with the ${c.state.coop_program}. Purchasing will know; there's no per-contract membership.`);
+    out.push(`Buy from ${c.supplier || "the supplier"} under ${c.state.name} ${c.number}${award}. The state already bid it, so a local unit doesn't advertise for bids of its own (New Jersey's Local Public Contracts Law allows purchases on state contracts).`);
+    out.push(c.priced > 0 ? "Check the supplier's quote against the awarded prices below. They're the state's line items; anything not listed is priced from the contract's price sheet." : "Ask the supplier for a quote at the contract's prices; its price sheet is among the documents below.");
+    out.push(`Keep the contract number on the purchase order, and follow the method of operation in the contract's documents for how to place the order.`);
+    return out;
+  }
   if (c.access === "join") out.push(`Get on ${c.program} first. Ask purchasing: most co-ops take a short membership form, and some states want a board resolution or an interlocal agreement before the first order.`);
   if (c.access === "check") out.push(`Confirm your state has a participating addendum to ${c.number}. Without one, your state's purchasing office decides whether you may use it.`);
   if (c.kind === "federal") out.push("Order only under the SINs marked open to state and local governments. The rest of the schedule is for federal buyers.");
@@ -344,7 +368,7 @@ function catalogDetail(db: Db, c: CatalogContract, itemQuery: string): ContractD
   const access = catalogStatus(buyer, c, a);
   const program = db.coops.find((x) => x.id === c.coop_id)?.name ?? c.coop;
   const supplier = idx.supplierById.get(c.supplier)?.name ?? "";
-  const kind: ContractKind = c.coop_id === "gsa_mas" ? "federal" : "coop";
+  const kind = catalogKind(c);
   const offers = idx.offeringsByContract.get(c.id) ?? [];
   const priced = offers.filter(payable);
   const listed = offers.filter((o) => o.price == null && o.list != null);
@@ -354,7 +378,10 @@ function catalogDetail(db: Db, c: CatalogContract, itemQuery: string): ContractD
   const n = (x: number, word: string) => `${x.toLocaleString("en-US")} ${word}${x === 1 ? "" : "s"}`;
   let headline: string;
   let detail: string;
-  if (priced.length) {
+  if (priced.length && c.state_contract) {
+    headline = `${n(priced.length, "awarded price")} on file`;
+    detail = `The state's awarded line items for this contract, read from ${program}${c.start && c.end ? ` (contract term ${longDate(c.start)} to ${longDate(c.end)})` : ""}. Confirm the current price and any annual adjustment with the supplier.${c.state_contract.more_items ? ` ${program} lists more items than Agora has loaded; the rest are on the contract's page.` : ""}`;
+  } else if (priced.length) {
     headline = `${n(priced.length, "item")} with a price on file`;
     detail = `${notes.join("; ")}. These are prices as published${vintages.length ? ` in ${vintages.join("; ")}` : ""}, not a quote: confirm the current price, options and freight with the supplier.`;
   } else if (listed.length) {
@@ -366,6 +393,9 @@ function catalogDetail(db: Db, c: CatalogContract, itemQuery: string): ContractD
   } else if (offers.some((o) => o.status === "member_login")) {
     headline = "Prices behind the co-op's member login";
     detail = `The co-op lists ${n(offers.length, "product")} under this contract, and shows prices to signed-in members only.`;
+  } else if (c.state_contract) {
+    headline = "No item prices on file";
+    detail = `${program} doesn't list this contract's prices as line items. They're in its price sheet, among the documents below; the supplier quotes from it.`;
   } else {
     headline = "No item prices on file";
     detail = "The program's directory names the contract and what it covers, not what each item costs. The supplier quotes under the contract.";
@@ -399,6 +429,8 @@ function catalogDetail(db: Db, c: CatalogContract, itemQuery: string): ContractD
     id: c.id,
     kind,
     kind_label: KIND_LABEL[kind],
+    trx: isTrxContract(c),
+    solicitation: c.state_contract?.solicitation ?? null,
     program,
     number: c.number,
     title: c.title,
@@ -421,8 +453,10 @@ function catalogDetail(db: Db, c: CatalogContract, itemQuery: string): ContractD
     documents: docs.map((d) => ({ label: d.label, url: d.url, host: host(d.url), readable: readableCatalogDocument(d) })),
     readable: readableDocuments(db, c.id),
     link: c.url ? { href: goHref(c.id), label: `Open on ${program}`, tracked: true } : c.directory ? { href: c.directory, label: `Find ${c.number} in ${possessive(program)} directory`, tracked: false } : null,
-    steps: steps({ program, number: c.number, supplier, kind, access, priced: priced.length, in_agora: false, hasLink }),
-    provenance: `From ${possessive(program)} public contract directory, retrieved ${longDate(idx.retrieved)}. Terms and eligibility aren't independently verified.`,
+    steps: steps({ program, number: c.number, supplier, kind, access, priced: priced.length, in_agora: false, hasLink, state: c.state_contract ? { name: program, coop_program: TRX_PROGRAM[c.state_contract.state]?.coop_program ?? "state's cooperative purchasing program", solicitation: c.state_contract.solicitation, locals: c.state_contract.locals } : undefined }),
+    provenance: c.state_contract
+      ? `From ${possessive(program)} public list of active contracts, retrieved ${longDate(idx.state_retrieved?.[c.coop] ?? idx.retrieved)}. Whether a contract is open to local governments is the state's own "NJ Cooperative Purchasing" flag on the contract.`
+      : `From ${possessive(program)} public contract directory, retrieved ${longDate(idx.retrieved)}. Terms and eligibility aren't independently verified.`,
     related: (idx.contractsBySupplier.get(c.supplier) ?? [])
       .filter((x) => x.id !== c.id && !(x.end && x.end < today()))
       .slice(0, 6)
@@ -458,6 +492,8 @@ function agoraDetail(db: Db, c: Contract, itemQuery: string): ContractDetail {
     id: c.id,
     kind,
     kind_label: KIND_LABEL[kind],
+    trx: isTrx(c),
+    solicitation: null,
     program,
     number: c.contract_number,
     title: c.title,

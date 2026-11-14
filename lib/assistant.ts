@@ -346,6 +346,12 @@ export interface CoopHit {
   end?: string | null;
   /** The co-op's directory page, when it publishes no page per contract. */
   directory_url?: string | null;
+  /** "state": a state contract (NJSTART), not a co-op's. */
+  program?: "state";
+  /** A state contract in a TRX state, the route Agora prefers for that state's buyers (lib/trx.ts). */
+  trx?: boolean;
+  /** The state solicitation it was awarded under (e.g. T2187), shared by every supplier on the award. */
+  solicitation?: string | null;
 }
 
 export interface CoopSection {
@@ -355,7 +361,7 @@ export interface CoopSection {
   /** A co-op the agency isn't on fits better than every co-op it is on. */
   better: { hit: CoopHit; than: CoopHit | null } | null;
   /** The co-op catalog's share of the section: what's shown, what else matched, and the GSA lane. */
-  catalog?: { retrieved: string; more_member: number; more_other: number; gsa: CoopHit[]; gsa_total: number };
+  catalog?: { retrieved: string; more_member: number; more_other: number; gsa: CoopHit[]; gsa_total: number; state: CoopHit[]; state_total: number; state_retrieved?: string | null };
   /** What the buyer's state law says about using co-op contracts (lib/state-rules.ts). */
   state_rule?: import("./state-rules").BuyerStateRule | null;
 }
@@ -487,10 +493,12 @@ function coopSection(db: Db, itemTokens: string[], buyer: Buyer | null, matched:
 
 /** Order co-op hits (the agency's co-ops first, then open ones, then by fit) and flag a better fit elsewhere. */
 export function finishCoopSection(db: Db, hits: CoopHit[], agency: string | null): CoopSection {
-  hits.sort((a, b) => Number(b.member) - Number(a.member) || Number(b.eligible) - Number(a.eligible) || b.fit - a.fit || a.coop.localeCompare(b.coop));
+  // A TRX state contract the buyer can use comes before any co-op contract (lib/trx.ts).
+  const trx = (h: CoopHit) => Number(Boolean(h.trx && h.eligible));
+  hits.sort((a, b) => trx(b) - trx(a) || Number(b.member) - Number(a.member) || Number(b.eligible) - Number(a.eligible) || b.fit - a.fit || a.coop.localeCompare(b.coop));
   const memberships_known = membershipsFor(db, agency).length > 0 || hits.some((h) => h.member);
   const bestMember = hits.filter((h) => h.member && h.eligible).sort((a, b) => b.fit - a.fit)[0] ?? null;
-  const bestOther = hits.filter((h) => !h.member && h.eligible).sort((a, b) => b.fit - a.fit)[0] ?? null;
+  const bestOther = hits.filter((h) => !h.member && h.eligible && !h.program).sort((a, b) => b.fit - a.fit)[0] ?? null;
   // Flag only a real gap: a clearly better fit on a co-op the agency hasn't joined.
   const better = memberships_known && bestOther && (!bestMember || bestOther.fit >= bestMember.fit + 10) ? { hit: bestOther, than: bestMember } : null;
   return { hits, memberships_known, better };

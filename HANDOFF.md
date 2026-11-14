@@ -30,6 +30,8 @@ Everything below is merged to `main` and deployed on Railway. Each batch passed 
 
 **State rules** (PR #15). The 50-state cooperative purchasing research. A **State law** note sits beside co-op contracts for the buyer's state, and turns red when a request looks like construction. All 50 states, with their sources, are at `/data#states`.
 
+**NJSTART, preferred for New Jersey.** All 1,437 active NJSTART contracts (November 14, 2026) are in the catalog as a state program, 966 of them open to New Jersey local governments, with 5,810 awarded line-item prices on 836 contracts. They're the TRX route: for a New Jersey buyer they lead results in their own block, above every co-op, when they fit within 15 points of the best co-op contract, and their prices lead each product's routes. Fuel bid as a markup over OPIS, discount lines and placeholders stay out. README **NJSTART** and `/data#njstart` have the detail.
+
 **Contracts as records.** `/contracts` searches all 31,942 contracts (the co-op catalog's plus Agora's own), and every contract has a page at `/contracts/<id>` with access for the buyer's agency, how to buy under it, what it covers, the pricing on file, its documents, a six-field brief and questions answered from the documents. Result cards, storefronts and the own-contract card link to it. The brief's AI path was not exercised in the build session, which had no API key; the passage fallback was.
 
 **Measuring the AI.** Every model call is logged with what became of it (kept, kept in part, discarded, failed), each AI answer has a thumbs up or down, `/quality` reports both by job and by prompt version, and `npm run eval` runs a fixed test set of 54 cases against a saved baseline. The README's **Knowing whether the AI is right** section is the reference. The log, the thumbs and the page were checked end to end against a stand-in model server; the 29 guard cases pass.
@@ -99,6 +101,8 @@ The product dive narrows by words in product names, so its questions are sometim
 Worth doing after item 2, since attributes only matter for products that have a price.
 
 ## Smaller things worth doing
+
+0. **NJSTART depth.** 668 contracts have more line-item pages than the first one Agora read, and most prices sit in the 18,635 attached price sheets (linked, not read). Reading the remaining item pages, then the price sheets through the contract reader, is the next price-depth win for New Jersey. Oregon, Arkansas, Hawaii and New York are TRX states with no state contracts loaded yet; each would follow `scripts/import-njstart.ts`.
 
 1. **BuyBoard's next vehicle award.** 724-23 ends November 30, 2026. Its replacement award report will hold current prices; load it the same way.
 2. **Item-price reports elsewhere at BuyBoard.** Its tabulation sheets may include other base-price reports (trucks, buses, equipment). Scanning them needs `www.buyboard.com` allowlisted.

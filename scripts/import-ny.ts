@@ -365,8 +365,9 @@ for (const r of src.contracts) {
       line_items_paginated: false,
     },
   });
-  documents.push({ document_id: `doc_ny_${hash(`${id}|master`)}`, cooperative: COOP, url: "https://ogs.ny.gov/complete-listing-all-statewide-contracts", label: `OGS master list of statewide contracts, ${src.master_report_date} (page ${r.page})`, contract_id: id });
+  // The award's own documents first (how to use, pricing, terms), then the master list that names the contract.
   for (const d of awardDocs.get(r.award) ?? []) documents.push({ document_id: `doc_ny_${hash(`${id}|${d.url}`)}`, cooperative: COOP, url: d.url, label: d.label, contract_id: id });
+  documents.push({ document_id: `doc_ny_${hash(`${id}|master`)}`, cooperative: COOP, url: "https://ogs.ny.gov/complete-listing-all-statewide-contracts", label: `OGS master list of statewide contracts, ${src.master_report_date} (page ${r.page})`, contract_id: id });
 }
 
 // Prices: award 23452's net prices read by rule, and the other price files' prices kept by --collect-prices.

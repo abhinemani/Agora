@@ -10,7 +10,7 @@
 // and price-book figures are the contract's terms on the date shown.
 
 import { execFileSync } from "node:child_process";
-import { readFileSync, writeFileSync } from "node:fs";
+import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import * as XLSX from "xlsx";
@@ -27,7 +27,7 @@ export interface PriceRow {
   price: number;
   unit: string;
   /** What the figure is: an awarded bid, or a base price in a price schedule. */
-  basis: "awarded_bid" | "base_price";
+  basis: "awarded_bid" | "base_price" | "list_price";
   vintage: string;
   file: string;
   source_url: string;
@@ -118,7 +118,76 @@ function naspoTransitCostSheets(file: string, number: string, supplier: string, 
   return out;
 }
 
+/** A large price file kept out of git: fetched into seed/catalog/source/price-files/cache/ when missing. */
+function cached(file: string, url: string) {
+  const dir = join(DIR, "cache");
+  mkdirSync(dir, { recursive: true });
+  if (!existsSync(join(dir, file))) execFileSync("curl", ["-sSfL", "-m", "300", "-o", join(dir, file), url]);
+  return `cache/${file}`;
+}
+
+const titleCase = (s: string) => s.toLowerCase().replace(/\b([a-z])/g, (c) => c.toUpperCase());
+
+/**
+ * SitOnIt's price book: each chair family opens with featured models, each a complete
+ * configuration with one list price ("GOOD :: $747" over a column of description). Columns are
+ * read by position, since labels and descriptions wrap within their column.
+ */
+function sitonitFeatured(file: string, number: string, supplier: string, sourceUrl: string, vintage: string): PriceRow[] {
+  const out: PriceRow[] = [];
+  pdfPages(file).forEach((text, i) => {
+    const lines = text.split("\n");
+    const at = lines.findIndex((l) => /^\s*Featured Models\s*$/.test(l));
+    if (at < 0) return;
+    const [family, kind] = lines.filter((l) => l.trim() && !/Docusign Envelope/.test(l)).slice(0, 2).map((l) => l.trim());
+    const block: string[] = [];
+    for (const l of lines.slice(at + 1)) {
+      if (/\|\s*November 2024 Price List/.test(l)) break;
+      if (l.trim()) block.push(l);
+    }
+    if (!block.length) return;
+    const starts = [...block[0].matchAll(/\S.*?(?=\s{3,}|$)/g)].map((m) => m.index!);
+    const cols = starts.map(() => [] as string[]);
+    for (const l of block)
+      starts.forEach((s, c) => {
+        const to = c + 1 < starts.length ? starts[c + 1] - 3 : l.length;
+        const part = l.slice(Math.max(0, s - 3), to).trim();
+        if (part) cols[c].push(part);
+      });
+    for (const col of cols) {
+      const m = col.join(" ").replace(/\s+/g, " ").match(/^(.*?)\s*::\s*\$([\d,]+)\s*(.*)$/);
+      if (!m) continue;
+      const [, label, amount, desc] = m;
+      out.push({
+        coop: "NASPO ValuePoint",
+        number,
+        supplier,
+        product: `SitOnIt ${family} ${kind.toLowerCase()}, ${titleCase(label)} model: ${desc.trim()}`,
+        maker: "SitOnIt Seating",
+        price: money(amount),
+        unit: "each",
+        basis: "list_price",
+        vintage,
+        file,
+        source_url: sourceUrl,
+        page: i + 1,
+        line: block.find((l) => l.includes(`$${amount}`))?.trim().replace(/\s{2,}/g, "  ") ?? "",
+      });
+    }
+  });
+  return out;
+}
+
+const SITONIT_URL = "https://s3.us-east-1.amazonaws.com/nvp/Master%20Agreements/Exemplis%2C%20LLC/November_2024_Price_List.pdf";
+
 const rows: PriceRow[] = [
+  ...sitonitFeatured(
+    cached("naspo-ma3964-sitonit-price-list-2024-11.pdf", SITONIT_URL),
+    "MA3964",
+    "Exemplis, LLC",
+    SITONIT_URL,
+    "SitOnIt November 4, 2024 list",
+  ),
   ...buyboardAwardReport(
     "buyboard-724-23-award-report.pdf",
     "724-23",

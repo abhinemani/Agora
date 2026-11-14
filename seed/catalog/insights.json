@@ -21,8 +21,8 @@
   "contracts_categorized": 30860,
   "products_renamed_by_review": 223,
   "canon_rows_added": 109,
-  "price_file_rows": 458,
-  "price_file_offerings": 376,
+  "price_file_rows": 807,
+  "price_file_offerings": 725,
   "price_file_unmatched": [
    "BuyBoard 724-23: Donalson CDJR, LLC",
    "BuyBoard 724-23: Rockdale Country Ford",
@@ -406,7 +406,7 @@
    "with_end": 519,
    "expired": 9,
    "with_states": 468,
-   "offerings": 6
+   "offerings": 355
   },
   {
    "coop": "GSA MAS",
@@ -421,16 +421,17 @@
   }
  ],
  "products": {
-  "products": 34763,
-  "offerings": 39879,
+  "products": 35112,
+  "offerings": 40228,
   "by_status": {
    "quote": 1509,
    "published_discount": 8102,
    "member_login": 26291,
-   "published_price": 3977
+   "published_price": 4326
   },
   "priced_suppliers": [
    "Canon U.S.A., Inc.",
+   "Exemplis, LLC",
    "Caldwell Country Chevrolet II LLC",
    "Five Star Chevrolet",
    "The Sewell Family of Companies, Inc.",

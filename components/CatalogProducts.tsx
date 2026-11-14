@@ -16,6 +16,7 @@ function priceLine(r: CatalogRoute): { text: string; tone: string } {
       text: `${money(r.price)}${r.unit && r.unit !== "each" ? ` / ${r.unit}` : ""}${r.list ? ` (list ${money(r.list)}${r.discount != null ? `, ${Math.round(r.discount)}% off` : ""})` : ""}`,
       tone: "text-ink font-bold",
     };
+  if (r.list != null) return { text: `List ${money(r.list)}${r.unit && r.unit !== "each" ? ` / ${r.unit}` : ""} · before the contract discount`, tone: "text-ink font-bold" };
   if (r.discount != null) return { text: `${r.discount}% off list · list price not published`, tone: "text-ink" };
   if (r.status === "member_login") return { text: "Price behind the co-op's member login", tone: "text-slate" };
   return { text: "Quote from the supplier", tone: "text-slate" };

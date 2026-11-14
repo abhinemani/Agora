@@ -583,14 +583,14 @@ const priceFileStats = { rows: 0, attached: 0, unmatched: [] as string[] };
       contract: best.c.id,
       coop: r.coop,
       sku: null,
-      price: r.price,
-      list: null,
+      price: r.basis === "list_price" ? null : r.price,
+      list: r.basis === "list_price" ? r.price : null,
       discount: null,
       unit: r.unit,
       status: "published_price",
       vintage: r.vintage,
       url: r.source_url,
-      category: `${r.basis === "awarded_bid" ? "Awarded bid" : "Base price"}, page ${r.page} of the price file`,
+      category: `${r.basis === "awarded_bid" ? "Awarded bid" : r.basis === "list_price" ? "List price" : "Base price"}, page ${r.page} of the price file`,
     });
     priceFileStats.attached++;
   }

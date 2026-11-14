@@ -41,7 +41,7 @@ export const TRX_PROGRAM: Record<string, TrxProgram> = {
   },
   AR: {
     name: "Arkansas OSP",
-    coop_program: "state's participating addenda, which treat each political subdivision as a participating entity",
+    coop_program: "state's participating addenda",
     portal: "https://sas.arkansas.gov/procurement/state-contracts/",
     data_anchor: "arkansas",
     steps: (c) => [

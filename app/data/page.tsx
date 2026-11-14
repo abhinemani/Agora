@@ -164,6 +164,7 @@ export default function CoopDataPage() {
   const d = insights.directory;
   const nj = catalogInsights.njstart;
   const hi = catalogInsights.hawaii;
+  const ar = catalogInsights.arkansas;
   const f = insights.federal;
   const o = insights.overlap;
   const prospects = insights.prospects.slice(0, 15);
@@ -196,6 +197,7 @@ export default function CoopDataPage() {
             ["#catalog", "Co-op catalog"],
             ["#njstart", "NJSTART"],
             ["#hawaii", "Hawaii"],
+            ["#arkansas", "Arkansas"],
             ["#nigp", "NIGP codes"],
             ["#cleanup", "Cleanup"],
             ["#states", "State rules"],
@@ -623,7 +625,7 @@ export default function CoopDataPage() {
         <p className="mt-2 max-w-[72ex] text-ui-xs text-base-dark">
           How the preference works: an NJSTART contract leads when it fits within {TRX_MARGIN} points of the best co-op contract, so a far closer co-op fit still wins. Line
           items are those on each contract&apos;s first summary page; contracts with more pages say so on their own page. The {n(nj.documents)} attached documents (price
-          sheets, terms, methods of operation) are linked, not read yet. Hawaii is loaded too (below); Oregon, Arkansas and New York are TRX states whose contracts aren&apos;t loaded yet.
+          sheets, terms, methods of operation) are linked, not read yet. Hawaii and Arkansas are loaded too (below); Oregon and New York are TRX states whose contracts aren&apos;t loaded yet.
         </p>
         <p className="mt-3 text-ui-xs text-base-dark">
           Try it: set your agency to Harmon Lake Township, New Jersey, and search for <Link href="/" className="text-primary">snow plow parts</Link> or road salt, or browse{" "}
@@ -650,6 +652,28 @@ export default function CoopDataPage() {
               mostly table rows that print only numbers. Prices are by island where the list says so, and rates the list sets as ceilings are labelled as ceilings.{" "}
               {n(hi.suppliers_shared_with_coops)} of the {n(hi.suppliers)} contractors also hold co-op contracts. The documents&apos; text isn&apos;t kept: it names
               procurement staff.
+            </p>
+          </>
+        }
+      />
+
+      <Section
+        id="arkansas"
+        title="Arkansas: the Office of State Procurement's statewide contracts"
+        intro={
+          <>
+            <p>
+              Arkansas is the third TRX state loaded. The Office of State Procurement lists {n(ar.listings)} statewide contracts, most of them the state&apos;s participating
+              addenda to NASPO ValuePoint, Sourcewell, OMNIA Partners and MMCAP contracts. A listing often groups several vendors, so review agents split each into supplier
+              contracts, and a check kept only vendor names, agreement numbers, co-op links and quotes found in the listing&apos;s own text: {n(ar.checked.vendors)} vendors,
+              none dropped. Two process servers who contract as individuals are left out. That leaves {n(ar.contracts)} supplier contracts from {n(ar.suppliers)} suppliers,{" "}
+              {n(ar.suppliers_shared_with_coops)} of whom also hold co-op contracts.
+            </p>
+            <p>
+              Arkansas&apos;s participating addenda treat each political subdivision as a participating entity, so a contract is open to Arkansas cities, counties and school
+              districts unless its own text says otherwise. {n(ar.state_only)} does, in a quoted sentence (DocuSign&apos;s pricing is for state agencies only). The state&apos;s
+              vehicle and school bus price sheets give {n(ar.priced_lines)} base prices on {n(ar.with_prices)} contracts, labelled as awarded bids for the base vehicle before
+              options and delivery; two prices from a dealer not on the listing stay out.
             </p>
           </>
         }

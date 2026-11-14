@@ -36,7 +36,9 @@ require('fs').mkdirSync(OUT, { recursive: true });
     const box = p.locator('input[placeholder^="Search Riverbend"]');
     await box.fill('40 folding tables for the Eastside rec center, delivered before March'); await p.keyboard.press('Enter');
     await p.waitForURL(/\/request\//); await p.waitForTimeout(1500);
-    await p.locator('button:has-text("Yes")').first().click(); await p.waitForTimeout(2500);
+    await p.locator('button:has-text("Yes")').first().click();
+    // The first search loads the catalog on a cold server: wait for the options rather than a fixed time.
+    await p.locator('#options a[href^="/storefronts/"]').first().waitFor({ timeout: 30000 }); await p.waitForTimeout(1000);
     const makers = await p.locator('#options a[href^="/storefronts/"]').allInnerTexts();
     const peer = await p.locator('text=Harper County').count();
     if (!/riverside/i.test(makers[0] ?? '')) throw new Error('first is ' + makers[0]);

@@ -1,0 +1,2083 @@
+{
+ "checked": {
+  "listings": 97,
+  "answered": 97,
+  "vendors": 218,
+  "vendors_dropped": 0,
+  "outlines_dropped": 0,
+  "coop_links_dropped": 0,
+  "quotes_dropped": 0
+ },
+ "listings": [
+  {
+   "post_id": "5971",
+   "kind": "contract",
+   "vendors": [
+    {
+     "name": "United Rentals",
+     "outline": "4600057404",
+     "coop_ref": "Sourcewell 040924-URI",
+     "coop_url": "https://www.sourcewell-mn.gov/cooperative-purchasing/040924-uri"
+    }
+   ],
+   "locals": "open",
+   "locals_quote": "All state agencies, K-12 educational institutions, and local public procurement units (cities, counties, municipalities) of the Participating State (“Eligible Purchasers”), are authorized to purchase products and services under the terms and conditions of this PA."
+  },
+  {
+   "post_id": "5981",
+   "kind": "contract",
+   "vendors": [
+    {
+     "name": "US Foods, Inc.",
+     "outline": null,
+     "coop_ref": "OMNIA Partners #42356",
+     "coop_url": "https://www.omniapartners.com/suppliers/us-foods/public-sector/contract-documents#c6351:~:text=Opening%20Documents-,Food%20Distribution%20Services%20and%20Products,-North%20Carolina%20State"
+    }
+   ],
+   "locals": "unstated",
+   "locals_quote": null
+  },
+  {
+   "post_id": "5999",
+   "kind": "contract",
+   "vendors": [
+    {
+     "name": "Presidio Networked Solutions LLC",
+     "outline": "4600047583",
+     "coop_ref": null,
+     "coop_url": null
+    },
+    {
+     "name": "Vision Data Spaces",
+     "outline": "4600047710",
+     "coop_ref": null,
+     "coop_url": null
+    }
+   ],
+   "locals": "unstated",
+   "locals_quote": null
+  },
+  {
+   "post_id": "6005",
+   "kind": "catalog",
+   "vendors": [
+    {
+     "name": "AR Correctional Industries",
+     "outline": "4600050726",
+     "coop_ref": null,
+     "coop_url": null
+    }
+   ],
+   "locals": "unstated",
+   "locals_quote": null
+  },
+  {
+   "post_id": "6036",
+   "kind": "contract",
+   "vendors": [
+    {
+     "name": "Daktronics, Inc.",
+     "outline": "4600050714",
+     "coop_ref": "Omnia Partners/Region 4 ESC #R220601",
+     "coop_url": "https://www.omniapartners.com/publicsector/suppliers/daktronics/overview"
+    }
+   ],
+   "locals": "unstated",
+   "locals_quote": null
+  },
+  {
+   "post_id": "6061",
+   "kind": "contract",
+   "vendors": [
+    {
+     "name": "Kimball International",
+     "outline": null,
+     "coop_ref": "OMNIA Partners",
+     "coop_url": "https://www.omniapartners.com/suppliers/kimball-international-brands-inc/public-sector/contract-documents#contract-2122"
+    },
+    {
+     "name": "The HON Company",
+     "outline": null,
+     "coop_ref": "OMNIA Partners",
+     "coop_url": "https://www.omniapartners.com/suppliers/hon/public-sector/contract-documents#contract-2104"
+    },
+    {
+     "name": "Jasper Seating (JSI)",
+     "outline": null,
+     "coop_ref": "OMNIA Partners",
+     "coop_url": "https://www.omniapartners.com/suppliers/jsi/public-sector/contract-documents#contract-2105"
+    },
+    {
+     "name": "AIS",
+     "outline": null,
+     "coop_ref": "OMNIA Partners",
+     "coop_url": "https://www.omniapartners.com/suppliers/ais/public-sector/contract-documents#contract-2087"
+    },
+    {
+     "name": "OFS",
+     "outline": null,
+     "coop_ref": "OMNIA Partners",
+     "coop_url": "https://www.omniapartners.com/suppliers/ofs-carolina/public-sector/contract-documents#contract-2089"
+    },
+    {
+     "name": "Haworth",
+     "outline": null,
+     "coop_ref": "OMNIA Partners",
+     "coop_url": "https://www.omniapartners.com/suppliers/haworth/public-sector/contract-documents"
+    },
+    {
+     "name": "MillerKnoll",
+     "outline": null,
+     "coop_ref": "OMNIA Partners",
+     "coop_url": "https://www.omniapartners.com/suppliers/millerknoll/public-sector/contract-documents"
+    },
+    {
+     "name": "DIRTT",
+     "outline": null,
+     "coop_ref": "OMNIA Partners",
+     "coop_url": "https://www.omniapartners.com/suppliers/dirtt/public-sector/contract-documents"
+    },
+    {
+     "name": "Steelcase",
+     "outline": null,
+     "coop_ref": "OMNIA Partners",
+     "coop_url": "https://www.omniapartners.com/suppliers/steelcase/public-sector"
+    },
+    {
+     "name": "9 to 5 Seating, LLC",
+     "outline": null,
+     "coop_ref": null,
+     "coop_url": null
+    },
+    {
+     "name": "AmTab Manufacturing",
+     "outline": null,
+     "coop_ref": null,
+     "coop_url": null
+    },
+    {
+     "name": "COE Distributing",
+     "outline": null,
+     "coop_ref": null,
+     "coop_url": null
+    },
+    {
+     "name": "Ecologic Furniture",
+     "outline": null,
+     "coop_ref": null,
+     "coop_url": null
+    },
+    {
+     "name": "ERG International",
+     "outline": null,
+     "coop_ref": null,
+     "coop_url": null
+    },
+    {
+     "name": "Fellowes, Inc",
+     "outline": null,
+     "coop_ref": null,
+     "coop_url": null
+    },
+    {
+     "name": "Innerplan Office Interiors",
+     "outline": null,
+     "coop_ref": null,
+     "coop_url": null
+    },
+    {
+     "name": "Kaplan Early Learning Company",
+     "outline": null,
+     "coop_ref": null,
+     "coop_url": null
+    },
+    {
+     "name": "Krueger International",
+     "outline": null,
+     "coop_ref": null,
+     "coop_url": null
+    },
+    {
+     "name": "LaHarpe's Office Furniture",
+     "outline": null,
+     "coop_ref": null,
+     "coop_url": null
+    },
+    {
+     "name": "Nightingale Corporation",
+     "outline": null,
+     "coop_ref": null,
+     "coop_url": null
+    },
+    {
+     "name": "Nova Solutions, Inc",
+     "outline": null,
+     "coop_ref": null,
+     "coop_url": null
+    },
+    {
+     "name": "Office Master, Inc",
+     "outline": null,
+     "coop_ref": null,
+     "coop_url": null
+    },
+    {
+     "name": "Paragon Furniture, Inc",
+     "outline": null,
+     "coop_ref": null,
+     "coop_url": null
+    },
+    {
+     "name": "Virco, Inc",
+     "outline": null,
+     "coop_ref": null,
+     "coop_url": null
+    }
+   ],
+   "locals": "unstated",
+   "locals_quote": null
+  },
+  {
+   "post_id": "6085",
+   "kind": "contract",
+   "vendors": [
+    {
+     "name": "Verizon",
+     "outline": "4600045706",
+     "coop_ref": "NASPO ValuePoint",
+     "coop_url": "https://www.naspovaluepoint.org/portfolio/wireless-voice-data-accessories-2019-2029/verizon-wireless/"
+    },
+    {
+     "name": "T-Mobile",
+     "outline": "4600045708",
+     "coop_ref": "NASPO ValuePoint",
+     "coop_url": "https://www.naspovaluepoint.org/portfolio/wireless-voice-data-accessories-2019-2029/t-mobile-usa-inc/"
+    },
+    {
+     "name": "Discount Cell, Inc.",
+     "outline": "4600045707",
+     "coop_ref": "NASPO ValuePoint",
+     "coop_url": "https://www.naspovaluepoint.org/portfolio/wireless-voice-data-accessories-2019-2029/discountcell-llc/"
+    }
+   ],
+   "locals": "unstated",
+   "locals_quote": null
+  },
+  {
+   "post_id": "6102",
+   "kind": "contract",
+   "vendors": [
+    {
+     "name": "Clear Creek Golf Car & Vehicles LLC",
+     "outline": "4600046083",
+     "coop_ref": null,
+     "coop_url": null
+    }
+   ],
+   "locals": "unstated",
+   "locals_quote": null
+  },
+  {
+   "post_id": "6103",
+   "kind": "contract",
+   "vendors": [
+    {
+     "name": "Mansfield Oil",
+     "outline": "4600056524",
+     "coop_ref": "OMNIA Partners",
+     "coop_url": "https://www.omniapartners.com/suppliers/mansfield-oil/public-sector/contract-documents?hsCtaAttrib=161505568109#c20108:~:text=14%2D0121-,Motor%20and%20Aviation%20Fuels%2C%20Bulk%20Fuels%2C%20and%20Related%20Products%20and%20Services,-Region%2014%20ESC"
+    }
+   ],
+   "locals": "unstated",
+   "locals_quote": null
+  },
+  {
+   "post_id": "15664",
+   "kind": "contract",
+   "vendors": [
+    {
+     "name": "Satellite Tracking of People",
+     "outline": "4600054693",
+     "coop_ref": "NASPO ValuePoint XXPSX0021",
+     "coop_url": "https://www.naspovaluepoint.org/portfolio/electronic-monitoring-2023-2029/satellite-tracking-of-people-llc/"
+    }
+   ],
+   "locals": "unstated",
+   "locals_quote": null
+  },
+  {
+   "post_id": "16625",
+   "kind": "contract",
+   "vendors": [
+    {
+     "name": "Cisco Systems Inc",
+     "outline": "4600048977",
+     "coop_ref": "NASPO ValuePoint",
+     "coop_url": "https://www.naspovaluepoint.org/portfolio/data-communications-2019-2026/"
+    },
+    {
+     "name": "HPE",
+     "outline": "4600046044",
+     "coop_ref": "NASPO ValuePoint",
+     "coop_url": "https://www.naspovaluepoint.org/portfolio/data-communications-2019-2026/"
+    },
+    {
+     "name": "Palo Alto Networks",
+     "outline": "4600047971",
+     "coop_ref": "NASPO ValuePoint",
+     "coop_url": "https://www.naspovaluepoint.org/portfolio/data-communications-2019-2026/"
+    },
+    {
+     "name": "Extreme Networks",
+     "outline": "4600048764",
+     "coop_ref": "NASPO ValuePoint",
+     "coop_url": "https://www.naspovaluepoint.org/portfolio/data-communications-2019-2026/"
+    },
+    {
+     "name": "Juniper Networks",
+     "outline": "4600048595",
+     "coop_ref": "NASPO ValuePoint",
+     "coop_url": "https://www.naspovaluepoint.org/portfolio/data-communications-2019-2026/"
+    }
+   ],
+   "locals": "unstated",
+   "locals_quote": null
+  },
+  {
+   "post_id": "16902",
+   "kind": "contract",
+   "vendors": [
+    {
+     "name": "Government Supply Services (Staples)",
+     "outline": null,
+     "coop_ref": "Sourcewell 070924-SCC",
+     "coop_url": "https://www.sourcewell-mn.gov/cooperative-purchasing/070924-scc"
+    }
+   ],
+   "locals": "unstated",
+   "locals_quote": null
+  },
+  {
+   "post_id": "17024",
+   "kind": "contract",
+   "vendors": [
+    {
+     "name": "Premier BioTech Inc",
+     "outline": "4600057112",
+     "coop_ref": "MMCAP MMS2501108",
+     "coop_url": "https://infuse-mn.gov/products/contracts/index.jsp"
+    }
+   ],
+   "locals": "unstated",
+   "locals_quote": null
+  },
+  {
+   "post_id": "19133",
+   "kind": "contract",
+   "vendors": [
+    {
+     "name": "Davis Playgrounds, Inc.",
+     "outline": null,
+     "coop_ref": "TIPS 24070201",
+     "coop_url": "https://www.tips-usa.com/vendorProfile.cfm?RecordID=94B9FC178D7595F0E7F2520D99089480"
+    },
+    {
+     "name": "Swift Recreation",
+     "outline": null,
+     "coop_ref": "TIPS 24070201",
+     "coop_url": "https://www.tips-usa.com/vendorProfile.cfm?RecordID=9D7ECE3B5E47CE4F9B39DC2705558359"
+    }
+   ],
+   "locals": "unstated",
+   "locals_quote": null
+  },
+  {
+   "post_id": "19204",
+   "kind": "contract",
+   "vendors": [
+    {
+     "name": "Bimbo Bakeries USA",
+     "outline": "4600047987",
+     "coop_ref": null,
+     "coop_url": null
+    }
+   ],
+   "locals": "unstated",
+   "locals_quote": null
+  },
+  {
+   "post_id": "19221",
+   "kind": "contract",
+   "vendors": [
+    {
+     "name": "Master's Transportation",
+     "outline": "4600048060",
+     "coop_ref": null,
+     "coop_url": null
+    },
+    {
+     "name": "Central States Bus Sales",
+     "outline": "4600048063",
+     "coop_ref": null,
+     "coop_url": null
+    },
+    {
+     "name": "Midwest Bus Sales",
+     "outline": "4600048075",
+     "coop_ref": null,
+     "coop_url": null
+    },
+    {
+     "name": "Rush Truck Centers of Arkansas",
+     "outline": "4600050267",
+     "coop_ref": null,
+     "coop_url": null
+    }
+   ],
+   "locals": "open",
+   "locals_quote": "Arkansas State Agencies/Political Subdivision User Instructions"
+  },
+  {
+   "post_id": "21255",
+   "kind": "contract",
+   "vendors": [
+    {
+     "name": "The Goodyear Tire and Rubber Company",
+     "outline": "4600054848",
+     "coop_ref": "NASPO Value Point 24155",
+     "coop_url": "https://www.naspovaluepoint.org/suppliers/goodyear-tire-rubber-co/"
+    },
+    {
+     "name": "Michelin North America, Inc.",
+     "outline": "4600054899",
+     "coop_ref": "NASPO Value Point 24155",
+     "coop_url": "https://www.naspovaluepoint.org/suppliers/michelin-north-america-inc/"
+    },
+    {
+     "name": "Bridgestone Firestone Inc.",
+     "outline": "4600054855",
+     "coop_ref": "NASPO Value Point 24155",
+     "coop_url": "https://www.naspovaluepoint.org/suppliers/bridgestone-americas-tire-operation-llc/"
+    }
+   ],
+   "locals": "unstated",
+   "locals_quote": null
+  },
+  {
+   "post_id": "22144",
+   "kind": "contract",
+   "vendors": [
+    {
+     "name": "GH Armor Systems Inc.",
+     "outline": "4600057416",
+     "coop_ref": "NASPO ValuePoint",
+     "coop_url": "https://www.naspovaluepoint.org/suppliers/gh-armor-systems-inc/"
+    },
+    {
+     "name": "Point Blank Enterprises Inc.",
+     "outline": "4600057476",
+     "coop_ref": "NASPO ValuePoint",
+     "coop_url": "https://www.naspovaluepoint.org/suppliers/point-blank-enterprises-inc/"
+    },
+    {
+     "name": "Safariland LLC",
+     "outline": "4600057415",
+     "coop_ref": "NASPO ValuePoint",
+     "coop_url": "https://www.naspovaluepoint.org/suppliers/safariland-llc/"
+    },
+    {
+     "name": "United Shield International LLC",
+     "outline": "4600057417",
+     "coop_ref": "NASPO ValuePoint",
+     "coop_url": "https://www.naspovaluepoint.org/suppliers/united-shield-international-llc/"
+    }
+   ],
+   "locals": "unstated",
+   "locals_quote": null
+  },
+  {
+   "post_id": "22241",
+   "kind": "contract",
+   "vendors": [
+    {
+     "name": "Henry Schein",
+     "outline": "4600053796",
+     "coop_ref": "MMCAP INFUSE #MMS2200734",
+     "coop_url": "https://infuse-mn.gov/products/contracts/index.jsp"
+    }
+   ],
+   "locals": "unstated",
+   "locals_quote": null
+  },
+  {
+   "post_id": "22556",
+   "kind": "qualified_vendor_list",
+   "vendors": [
+    {
+     "name": "Arkansas Mold and Water Inc",
+     "outline": null,
+     "coop_ref": null,
+     "coop_url": null
+    },
+    {
+     "name": "Belfor USA Group Inc",
+     "outline": null,
+     "coop_ref": null,
+     "coop_url": null
+    },
+    {
+     "name": "Metro Disaster Specialists",
+     "outline": null,
+     "coop_ref": null,
+     "coop_url": null
+    },
+    {
+     "name": "ServPro Commercial LLC",
+     "outline": null,
+     "coop_ref": null,
+     "coop_url": null
+    }
+   ],
+   "locals": "open",
+   "locals_quote": "The scope of services under a resulting contract may include providing property damage Mitigation for approximately 140 State Agency accounts located at approximately 5,800 buildings, structures, and leased locations covered under the State of Arkansas Multi-Agency Insurance Trust insurance plan, plus various other public school districts, Political Subdivisions, and publicly-funded higher education Entities throughout the State that may choose to utilize the QVL."
+  },
+  {
+   "post_id": "23963",
+   "kind": "contract",
+   "vendors": [
+    {
+     "name": "WEX Bank",
+     "outline": "4600058198",
+     "coop_ref": "Sourcewell 030625-WEX",
+     "coop_url": "https://www.sourcewell-mn.gov/cooperative-purchasing/030625-WEX"
+    }
+   ],
+   "locals": "open",
+   "locals_quote": "All state agencies, K-12 educational institutions, and local public procurement units (cities, counties, municipalities) of the Participating State (“Eligible Purchasers”), are authorized to purchase products and services under the terms and conditions of this PA."
+  },
+  {
+   "post_id": "25792",
+   "kind": "contract",
+   "vendors": [
+    {
+     "name": "Pronto Process Servers, LLC",
+     "outline": null,
+     "coop_ref": null,
+     "coop_url": null
+    },
+    {
+     "name": "Myers Detective Agency",
+     "outline": null,
+     "coop_ref": null,
+     "coop_url": null
+    },
+    {
+     "name": "Four Seasons Civil Process",
+     "outline": null,
+     "coop_ref": null,
+     "coop_url": null
+    },
+    {
+     "name": "Frazier and Associates, Inc",
+     "outline": null,
+     "coop_ref": null,
+     "coop_url": null
+    },
+    {
+     "name": "Rags 'N Calico",
+     "outline": null,
+     "coop_ref": null,
+     "coop_url": null
+    },
+    {
+     "name": "Mid-South Investigations",
+     "outline": null,
+     "coop_ref": null,
+     "coop_url": null
+    },
+    {
+     "name": "Wright Investigations",
+     "outline": null,
+     "coop_ref": null,
+     "coop_url": null
+    }
+   ],
+   "locals": "unstated",
+   "locals_quote": null
+  },
+  {
+   "post_id": "25895",
+   "kind": "contract",
+   "vendors": [
+    {
+     "name": "The Hertz Corporation",
+     "outline": null,
+     "coop_ref": "NASPO Value Point",
+     "coop_url": "https://www.naspovaluepoint.org/portfolio/passenger-vehicle-and-box-truck-rentals/hertz/"
+    },
+    {
+     "name": "EAN Services LLC (Enterprise Holdings Inc.)",
+     "outline": null,
+     "coop_ref": "NASPO Value Point",
+     "coop_url": "https://www.naspovaluepoint.org/portfolio/passenger-vehicle-and-box-truck-rentals/ean-services/"
+    }
+   ],
+   "locals": "unstated",
+   "locals_quote": null
+  },
+  {
+   "post_id": "26235",
+   "kind": "contract",
+   "vendors": [
+    {
+     "name": "FedEx",
+     "outline": "4600049761",
+     "coop_ref": "NASPO ValuePoint MA454",
+     "coop_url": "https://www.naspovaluepoint.org/portfolio/small-package-delivery-services/fedex-corporate-services-inc-as-agent-for-federal-express-corporation-and-fedex-ground-package-system-inc/"
+    }
+   ],
+   "locals": "unstated",
+   "locals_quote": null
+  },
+  {
+   "post_id": "26957",
+   "kind": "contract",
+   "vendors": [
+    {
+     "name": "Sysco Corporation",
+     "outline": "4600053609",
+     "coop_ref": null,
+     "coop_url": null
+    }
+   ],
+   "locals": "unstated",
+   "locals_quote": null
+  },
+  {
+   "post_id": "26985",
+   "kind": "contract",
+   "vendors": [
+    {
+     "name": "Gulf States Distributors Inc.",
+     "outline": "4600050066",
+     "coop_ref": null,
+     "coop_url": null
+    },
+    {
+     "name": "Precision Delta Corporation (Winchester)",
+     "outline": "4600050105",
+     "coop_ref": null,
+     "coop_url": null
+    }
+   ],
+   "locals": "unstated",
+   "locals_quote": null
+  },
+  {
+   "post_id": "28013",
+   "kind": "contract",
+   "vendors": [
+    {
+     "name": "BK Technologies",
+     "outline": "4600053417",
+     "coop_ref": "NASPO Valuepoint 00318",
+     "coop_url": "https://naspovaluepoint.org/portfolio/public-safety-communications-products-services-and-solutions/bk-technologies-inc/"
+    },
+    {
+     "name": "E.F. Johnson",
+     "outline": "4600049976",
+     "coop_ref": "NASPO Valuepoint 00318",
+     "coop_url": "https://naspovaluepoint.org/portfolio/public-safety-communications-products-services-and-solutions/ef-johnson-company/"
+    },
+    {
+     "name": "Icom America, Inc.",
+     "outline": "4600049973",
+     "coop_ref": "NASPO Valuepoint 00318",
+     "coop_url": "https://naspovaluepoint.org/portfolio/public-safety-communications-products-services-and-solutions/icom-america/"
+    },
+    {
+     "name": "JVCKenwood USA Corporation",
+     "outline": "4600050035",
+     "coop_ref": "NASPO Valuepoint 00318",
+     "coop_url": "https://naspovaluepoint.org/portfolio/public-safety-communications-products-services-and-solutions/jvc-kenwood-usa-corporation/"
+    },
+    {
+     "name": "L3Harris",
+     "outline": "4600050174",
+     "coop_ref": "NASPO Valuepoint 00318",
+     "coop_url": "https://naspovaluepoint.org/portfolio/public-safety-communications-products-services-and-solutions/l3harris-technologies-inc/"
+    },
+    {
+     "name": "Motorola",
+     "outline": "4600050253",
+     "coop_ref": "NASPO Valuepoint 00318",
+     "coop_url": "https://naspovaluepoint.org/portfolio/public-safety-communications-products-services-and-solutions/motorola-solutions/"
+    },
+    {
+     "name": "Tait Communications",
+     "outline": "4600049975",
+     "coop_ref": "NASPO Valuepoint 00318",
+     "coop_url": "https://naspovaluepoint.org/portfolio/public-safety-communications-products-services-and-solutions/tait-north-america/"
+    },
+    {
+     "name": "Valmont Telecommunications Corporation",
+     "outline": "4600056193",
+     "coop_ref": "NASPO Valuepoint 00318",
+     "coop_url": "https://www.naspovaluepoint.org/portfolio/public-safety-communications-products-services-and-solutions/valmont-telecommunications-corporation/"
+    }
+   ],
+   "locals": "unstated",
+   "locals_quote": null
+  },
+  {
+   "post_id": "30781",
+   "kind": "contract",
+   "vendors": [
+    {
+     "name": "Computer Aid Inc. (CAI)",
+     "outline": "4600050627",
+     "coop_ref": "Sourcewell 071321-CAI",
+     "coop_url": "https://www.sourcewell-mn.gov/cooperative-purchasing/071321-cai#tab-contract-documents"
+    }
+   ],
+   "locals": "unstated",
+   "locals_quote": null
+  },
+  {
+   "post_id": "31934",
+   "kind": "contract",
+   "vendors": [
+    {
+     "name": "Lowe’s Home Center, LLC",
+     "outline": null,
+     "coop_ref": "NASPO ValuePoint",
+     "coop_url": "https://www.naspovaluepoint.org/portfolio/walk-in-building-supplies-2022-2027/lowes-home-centers-llc/"
+    }
+   ],
+   "locals": "unstated",
+   "locals_quote": null
+  },
+  {
+   "post_id": "32289",
+   "kind": "contract",
+   "vendors": [
+    {
+     "name": "Printing Papers, Inc.",
+     "outline": "4600057875",
+     "coop_ref": null,
+     "coop_url": null
+    }
+   ],
+   "locals": "unstated",
+   "locals_quote": null
+  },
+  {
+   "post_id": "32582",
+   "kind": "contract",
+   "vendors": [
+    {
+     "name": "Rock Doc, LLC dba Rock Solid Shredding",
+     "outline": "4600051714",
+     "coop_ref": null,
+     "coop_url": null
+    }
+   ],
+   "locals": "open",
+   "locals_quote": "Arkansas public schools and other political governmental entities, e.g., cities, counties, municipalities, may also purchase from the resulting contract as cooperative participants."
+  },
+  {
+   "post_id": "32813",
+   "kind": "contract",
+   "vendors": [
+    {
+     "name": "Zoll Medical Corporation",
+     "outline": "4600055547",
+     "coop_ref": "NASPO ValuePoint SW0300",
+     "coop_url": "https://www.naspovaluepoint.org/portfolio/automatic-external-defibrillator-aed-accessories-2024-2029/zoll-medical-corporation/"
+    }
+   ],
+   "locals": "unstated",
+   "locals_quote": null
+  },
+  {
+   "post_id": "32866",
+   "kind": "contract",
+   "vendors": [
+    {
+     "name": "Bob Barker Company",
+     "outline": "4600056178",
+     "coop_ref": "NASPO 5400027173",
+     "coop_url": "https://www.naspovaluepoint.org/suppliers/bob-barker-co-inc/"
+    }
+   ],
+   "locals": "unstated",
+   "locals_quote": null
+  },
+  {
+   "post_id": "32872",
+   "kind": "contract",
+   "vendors": [
+    {
+     "name": "AutoZone Parts, Inc.",
+     "outline": "4600051739",
+     "coop_ref": "Omnia Partners R211201",
+     "coop_url": "https://www.omniapartners.com/publicsector/suppliers/autozone/contract-documentation#c51144"
+    }
+   ],
+   "locals": "unstated",
+   "locals_quote": null
+  },
+  {
+   "post_id": "33288",
+   "kind": "contract",
+   "vendors": [
+    {
+     "name": "ATA Services Inc",
+     "outline": "4600051630",
+     "coop_ref": "NASPO ValuePoint",
+     "coop_url": "https://www.naspovaluepoint.org/suppliers/ata-services-inc/"
+    },
+    {
+     "name": "DatamanUSA",
+     "outline": "4600051655",
+     "coop_ref": "NASPO ValuePoint",
+     "coop_url": "https://www.naspovaluepoint.org/suppliers/datamanusa-llc/"
+    }
+   ],
+   "locals": "unstated",
+   "locals_quote": null
+  },
+  {
+   "post_id": "33587",
+   "kind": "qualified_vendor_list",
+   "vendors": [
+    {
+     "name": "Rave Mobile Safety",
+     "outline": null,
+     "coop_ref": null,
+     "coop_url": null
+    },
+    {
+     "name": "CrisisGo, Inc.",
+     "outline": null,
+     "coop_ref": null,
+     "coop_url": null
+    }
+   ],
+   "locals": "open",
+   "locals_quote": "This Qualified Vendors List (QVL) is issued by the Office of State Procurement (OSP) for Arkansas Public Schools to establish a pool of qualified vendors for a K-12 Emergency Alert Mobile Application System."
+  },
+  {
+   "post_id": "33995",
+   "kind": "contract",
+   "vendors": [
+    {
+     "name": "US Foods, Inc.",
+     "outline": null,
+     "coop_ref": "Sourcewell 111621-USF",
+     "coop_url": "https://www.sourcewell-mn.gov/cooperative-purchasing/111621-usf#tab-contract-documents"
+    }
+   ],
+   "locals": "unstated",
+   "locals_quote": null
+  },
+  {
+   "post_id": "34179",
+   "kind": "contract",
+   "vendors": [
+    {
+     "name": "Imperial Bag & Paper Company dba American Paper & Twine",
+     "outline": "4600052273",
+     "coop_ref": null,
+     "coop_url": null
+    }
+   ],
+   "locals": "unstated",
+   "locals_quote": null
+  },
+  {
+   "post_id": "34932",
+   "kind": "contract",
+   "vendors": [
+    {
+     "name": "Francotyp Postalia Inc. dba FP Mailing Solutions",
+     "outline": null,
+     "coop_ref": "NASPO ValuePoint",
+     "coop_url": "https://www.naspovaluepoint.org/portfolio/mailing-equipment-supplies-and-maintenance-2022-2027/fp-mailing-solutions/"
+    },
+    {
+     "name": "BlueCrest, Inc.",
+     "outline": null,
+     "coop_ref": "NASPO ValuePoint",
+     "coop_url": "https://www.naspovaluepoint.org/portfolio/mailing-equipment-supplies-and-maintenance-2022-2027/bluecrest/?_ga=2.104764096.139477479.1718036388-292160598.1646079585"
+    },
+    {
+     "name": "Quadient Inc.",
+     "outline": null,
+     "coop_ref": "NASPO ValuePoint",
+     "coop_url": "https://www.naspovaluepoint.org/portfolio/mailing-equipment-supplies-and-maintenance-2022-2027/quadient-inc/"
+    },
+    {
+     "name": "Pitney Bowes, Inc.",
+     "outline": null,
+     "coop_ref": "NASPO ValuePoint",
+     "coop_url": "https://www.naspovaluepoint.org/portfolio/mailing-equipment-supplies-and-maintenance-2022-2027/pitney-bowes-inc/"
+    }
+   ],
+   "locals": "unstated",
+   "locals_quote": null
+  },
+  {
+   "post_id": "35156",
+   "kind": "contract",
+   "vendors": [
+    {
+     "name": "Sanofi Pasteur",
+     "outline": "4600048006",
+     "coop_ref": "MMCAP 2200727",
+     "coop_url": "https://infuse-mn.gov/products/contracts/index.jsp"
+    },
+    {
+     "name": "GlaxoSmithKline",
+     "outline": "4600052569",
+     "coop_ref": "MMCAP 2200724",
+     "coop_url": "https://infuse-mn.gov/products/contracts/index.jsp"
+    }
+   ],
+   "locals": "unstated",
+   "locals_quote": null
+  },
+  {
+   "post_id": "35281",
+   "kind": "contract",
+   "vendors": [
+    {
+     "name": "Mohawk Carpet Distribution LLC",
+     "outline": "4600056458",
+     "coop_ref": "Equalis Group",
+     "coop_url": "https://equalisgroup.org/mohawk-group/#:~:text=Contract%23%3ACOG%2D2157A"
+    }
+   ],
+   "locals": "unstated",
+   "locals_quote": null
+  },
+  {
+   "post_id": "35908",
+   "kind": "contract",
+   "vendors": [
+    {
+     "name": "HD Supply (formerly Home Depot Pro International)",
+     "outline": null,
+     "coop_ref": "OMNIA Partners 25-JH-011",
+     "coop_url": "https://www.omniapartners.com/suppliers/hd-supply-formerly-home-depot-pro-institutional/public-sector/contract-documents#contract-2169"
+    }
+   ],
+   "locals": "unstated",
+   "locals_quote": null
+  },
+  {
+   "post_id": "35978",
+   "kind": "contract",
+   "vendors": [
+    {
+     "name": "US Foods",
+     "outline": null,
+     "coop_ref": "Sourcewell 040522",
+     "coop_url": "https://www.sourcewell-mn.gov/cooperative-purchasing/040522-usf#tab-contact-information"
+    },
+    {
+     "name": "Ben E Keith",
+     "outline": null,
+     "coop_ref": "Sourcewell 040522",
+     "coop_url": "https://www.sourcewell-mn.gov/cooperative-purchasing/040522-bek"
+    }
+   ],
+   "locals": "open",
+   "locals_quote": "All state agencies, K-12 educational institutions, and local public procurement units (cities, counties, municipalities) of the Participating State (“Eligible Purchasers”), are authorized to purchase products and services under the terms and conditions of this PA."
+  },
+  {
+   "post_id": "35984",
+   "kind": "contract",
+   "vendors": [
+    {
+     "name": "Next Step Group, Inc., dba Next Step Innovation",
+     "outline": "4600052737",
+     "coop_ref": "TIPS USA 230105",
+     "coop_url": "https://www.tips-usa.com/vendorProfile.cfm?RecordID=AE9B89CBD3E1274E75E60ED1097BE3C2"
+    },
+    {
+     "name": "Genesis Datacom",
+     "outline": "4600058028",
+     "coop_ref": "TIPS USA 230105",
+     "coop_url": "https://www.tips-usa.com/contracts/vendors/0961C01EB58F8DE6AC093453FFCDFD06"
+    }
+   ],
+   "locals": "unstated",
+   "locals_quote": null
+  },
+  {
+   "post_id": "35988",
+   "kind": "contract",
+   "vendors": [
+    {
+     "name": "Graybar Electric Company, Inc.",
+     "outline": "4600057636",
+     "coop_ref": "OMNIA Partners EV2370",
+     "coop_url": "https://www.omniapartners.com/suppliers/graybar/public-sector/contract-documents#contract-88"
+    }
+   ],
+   "locals": "unstated",
+   "locals_quote": null
+  },
+  {
+   "post_id": "36126",
+   "kind": "contract",
+   "vendors": [
+    {
+     "name": "Cardinal Health",
+     "outline": "4600055744",
+     "coop_ref": "MMCAP INFUSE #2401062",
+     "coop_url": "https://infuse-mn.gov/products/contracts/index.jsp"
+    }
+   ],
+   "locals": "unstated",
+   "locals_quote": null
+  },
+  {
+   "post_id": "36147",
+   "kind": "contract",
+   "vendors": [
+    {
+     "name": "Trane U.S. Inc.",
+     "outline": "4600053050",
+     "coop_ref": "OMNIA Partners | HVAC Region 4",
+     "coop_url": "https://www.omniapartners.com/suppliers/trane/public-sector/contract-documents#contract-1056:~:text=let%20you%20know.-,HVAC%20Products%2C%20Installation%2C%20Labor%20Based%20Solutions%2C%20and%20Related%20Products%20and%20Services,-Racine%20County%2C%20WI"
+    },
+    {
+     "name": "Daikin Applied Americas Inc",
+     "outline": "4600057159",
+     "coop_ref": "Sourcewell #080824",
+     "coop_url": "https://www.sourcewell-mn.gov/cooperative-purchasing/080824-DIN"
+    },
+    {
+     "name": "Johnson Controls Inc",
+     "outline": "4600057157",
+     "coop_ref": "Sourcewell #080824",
+     "coop_url": "https://www.sourcewell-mn.gov/cooperative-purchasing/080824-JHN"
+    }
+   ],
+   "locals": "unstated",
+   "locals_quote": null
+  },
+  {
+   "post_id": "36323",
+   "kind": "contract",
+   "vendors": [
+    {
+     "name": "McKesson Medical Surgical Government Solutions, LLC",
+     "outline": "4600052690",
+     "coop_ref": "MMCAP INFUSE MMS2200736",
+     "coop_url": "https://infuse-mn.gov/products/contracts/index.jsp"
+    }
+   ],
+   "locals": "unstated",
+   "locals_quote": null
+  },
+  {
+   "post_id": "36632",
+   "kind": "contract",
+   "vendors": [
+    {
+     "name": "PlayPower, Inc.",
+     "outline": "4600053052",
+     "coop_ref": "NASPO ValuePoint",
+     "coop_url": "https://www.naspovaluepoint.org/portfolio/parks-and-recreation-equipment-and-installation-2023-2027/playpower-inc/"
+    },
+    {
+     "name": "PlayCore Wisconsin, Inc DBA GameTime",
+     "outline": "4600053243",
+     "coop_ref": "NASPO ValuePoint",
+     "coop_url": "https://www.naspovaluepoint.org/portfolio/parks-and-recreation-equipment-and-installation-2023-2027/playcore-wisconsin-inc-dba-gametime/"
+    },
+    {
+     "name": "Landscape Structures, Inc.",
+     "outline": "4600053456",
+     "coop_ref": "NASPO ValuePoint",
+     "coop_url": "https://www.naspovaluepoint.org/portfolio/parks-and-recreation-equipment-and-installation-2023-2027/landscape-structures-inc/"
+    }
+   ],
+   "locals": "unstated",
+   "locals_quote": null
+  },
+  {
+   "post_id": "37123",
+   "kind": "contract",
+   "vendors": [
+    {
+     "name": "GovDeals",
+     "outline": "4600053246",
+     "coop_ref": "NASPO ValuePoint",
+     "coop_url": "https://www.naspovaluepoint.org/portfolio/online-auction-services-2022-2026/"
+    }
+   ],
+   "locals": "unstated",
+   "locals_quote": null
+  },
+  {
+   "post_id": "37183",
+   "kind": "qualified_vendor_list",
+   "vendors": [],
+   "locals": "unstated",
+   "locals_quote": null
+  },
+  {
+   "post_id": "38190",
+   "kind": "contract",
+   "vendors": [
+    {
+     "name": "Concordance Healthcare Solutions, LLC",
+     "outline": "4600053670",
+     "coop_ref": "MMCAP Infuse #2200731",
+     "coop_url": "https://infuse-mn.gov/products/contracts/index.jsp"
+    }
+   ],
+   "locals": "unstated",
+   "locals_quote": null
+  },
+  {
+   "post_id": "38301",
+   "kind": "contract",
+   "vendors": [
+    {
+     "name": "Medline Industries, LP",
+     "outline": "4600053701",
+     "coop_ref": "MMCAP INFUSE #2200733",
+     "coop_url": "https://infuse-mn.gov/products/contracts/index.jsp"
+    }
+   ],
+   "locals": "unstated",
+   "locals_quote": null
+  },
+  {
+   "post_id": "38303",
+   "kind": "contract",
+   "vendors": [
+    {
+     "name": "Medical Solutions",
+     "outline": "4600053204",
+     "coop_ref": "MMCAP INFUSE #2200732",
+     "coop_url": "https://infuse-mn.gov/products/contracts/index.jsp"
+    }
+   ],
+   "locals": "unstated",
+   "locals_quote": null
+  },
+  {
+   "post_id": "38662",
+   "kind": "contract",
+   "vendors": [
+    {
+     "name": "Dell Marketing L.P.",
+     "outline": "4600052434",
+     "coop_ref": "NASPO Valuepoint",
+     "coop_url": "https://www.naspovaluepoint.org/suppliers/dell-marketing-lp/"
+    },
+    {
+     "name": "Insight Public Sector Inc",
+     "outline": "4600052436",
+     "coop_ref": "NASPO Valuepoint",
+     "coop_url": "https://www.naspovaluepoint.org/suppliers/insight-public-sector-inc-2/"
+    },
+    {
+     "name": "SHI International",
+     "outline": "4600052437",
+     "coop_ref": "NASPO Valuepoint",
+     "coop_url": "https://www.naspovaluepoint.org/suppliers/shi-international-corp-2/"
+    },
+    {
+     "name": "CDWG",
+     "outline": "4600052435",
+     "coop_ref": "NASPO Valuepoint",
+     "coop_url": "https://www.naspovaluepoint.org/suppliers/cdw-g-llc/"
+    }
+   ],
+   "locals": "unstated",
+   "locals_quote": null
+  },
+  {
+   "post_id": "38671",
+   "kind": "contract",
+   "vendors": [
+    {
+     "name": "CKEP USA",
+     "outline": null,
+     "coop_ref": "OMNIA Partners 23FS4",
+     "coop_url": "https://www.omniapartners.com/suppliers/ckep/public-sector/contract-documents#contract-1926"
+    }
+   ],
+   "locals": "unstated",
+   "locals_quote": null
+  },
+  {
+   "post_id": "39197",
+   "kind": "contract",
+   "vendors": [
+    {
+     "name": "Apple",
+     "outline": "4600055281",
+     "coop_ref": "NASPO Valuepoint",
+     "coop_url": "https://www.naspovaluepoint.org/suppliers/apple-inc/"
+    },
+    {
+     "name": "Dell",
+     "outline": "4600053723",
+     "coop_ref": "NASPO Valuepoint",
+     "coop_url": "https://www.naspovaluepoint.org/suppliers/dell-marketing-lp-2/"
+    },
+    {
+     "name": "HP Inc.",
+     "outline": "4600053720",
+     "coop_ref": "NASPO Valuepoint",
+     "coop_url": "https://www.naspovaluepoint.org/suppliers/hp-inc/"
+    },
+    {
+     "name": "Hewlett Packard Enterprises",
+     "outline": "4600053725",
+     "coop_ref": "NASPO Valuepoint",
+     "coop_url": "https://www.naspovaluepoint.org/suppliers/hewlett-packard-enterprise-co/"
+    },
+    {
+     "name": "IBM",
+     "outline": "4600054501",
+     "coop_ref": "NASPO Valuepoint",
+     "coop_url": "https://www.naspovaluepoint.org/suppliers/ibm-corp/"
+    },
+    {
+     "name": "Lenovo",
+     "outline": "4600053750",
+     "coop_ref": "NASPO Valuepoint",
+     "coop_url": "https://www.naspovaluepoint.org/suppliers/lenovo-united-states-inc/"
+    },
+    {
+     "name": "Lenovo Global Technology",
+     "outline": "4600053751",
+     "coop_ref": "NASPO Valuepoint",
+     "coop_url": "https://www.naspovaluepoint.org/suppliers/lenovo-global-technology-inc/"
+    },
+    {
+     "name": "Microsoft",
+     "outline": "4600054322",
+     "coop_ref": "NASPO Valuepoint",
+     "coop_url": "https://www.naspovaluepoint.org/suppliers/microsoft-corp/"
+    },
+    {
+     "name": "NetApp US Public Sector Inc",
+     "outline": "4600054502",
+     "coop_ref": "NASPO Valuepoint",
+     "coop_url": "https://www.naspovaluepoint.org/suppliers/netapp-us-public-sector-inc/"
+    },
+    {
+     "name": "Panasonic",
+     "outline": "4600053749",
+     "coop_ref": "NASPO Valuepoint",
+     "coop_url": "https://www.naspovaluepoint.org/suppliers/panasonic-connect-n-a-division-of-panasonic-corp-of-n-a/"
+    },
+    {
+     "name": "Everpure (Pure Storage)",
+     "outline": "4600053727",
+     "coop_ref": "NASPO Valuepoint",
+     "coop_url": "https://www.naspovaluepoint.org/suppliers/everpure-inc/"
+    }
+   ],
+   "locals": "unstated",
+   "locals_quote": null
+  },
+  {
+   "post_id": "43580",
+   "kind": "contract",
+   "vendors": [
+    {
+     "name": "Harrells, Inc.",
+     "outline": "4600053985",
+     "coop_ref": "Omnia Partners # RH-23-037",
+     "coop_url": "https://www.omniapartners.com/suppliers/harrells/public-sector/contract-documents#contract-1948"
+    }
+   ],
+   "locals": "unstated",
+   "locals_quote": null
+  },
+  {
+   "post_id": "45285",
+   "kind": "contract",
+   "vendors": [
+    {
+     "name": "Carahsoft",
+     "outline": "4600054418",
+     "coop_ref": "NASPO ValuePoint",
+     "coop_url": "https://www.naspovaluepoint.org/suppliers/carahsoft-technology-corporation/"
+    },
+    {
+     "name": "SHI",
+     "outline": "4600054446",
+     "coop_ref": "NASPO ValuePoint",
+     "coop_url": "https://www.naspovaluepoint.org/suppliers/shi-international-corp/"
+    },
+    {
+     "name": "Deloitte Consulting LLP",
+     "outline": "4600054447",
+     "coop_ref": "NASPO ValuePoint",
+     "coop_url": "https://www.naspovaluepoint.org/suppliers/deloitte-consulting/"
+    },
+    {
+     "name": "AT&T",
+     "outline": "4600047325",
+     "coop_ref": "NASPO ValuePoint",
+     "coop_url": "https://www.naspovaluepoint.org/suppliers/att-corp/"
+    },
+    {
+     "name": "HPE",
+     "outline": "4600049569",
+     "coop_ref": "NASPO ValuePoint",
+     "coop_url": "https://www.naspovaluepoint.org/suppliers/hewlett-packard-enterprise-company/"
+    }
+   ],
+   "locals": "unstated",
+   "locals_quote": null
+  },
+  {
+   "post_id": "45527",
+   "kind": "contract",
+   "vendors": [
+    {
+     "name": "Deere and Company",
+     "outline": null,
+     "coop_ref": "Sourcewell 082923-DAC",
+     "coop_url": "https://stg.sourcewell-mn.gov/cooperative-purchasing/082923-DAC"
+    },
+    {
+     "name": "Kubota",
+     "outline": null,
+     "coop_ref": "Sourcewell 082923-KBA",
+     "coop_url": "https://www.sourcewell-mn.gov/cooperative-purchasing/082923-kba"
+    }
+   ],
+   "locals": "unstated",
+   "locals_quote": null
+  },
+  {
+   "post_id": "45958",
+   "kind": "contract",
+   "vendors": [
+    {
+     "name": "Thomson Reuters dba West Publishing Corporation",
+     "outline": "4600056606",
+     "coop_ref": "Texas DIR-CPO-5258",
+     "coop_url": "https://dir.texas.gov/contracts/dir-cpo-5258"
+    }
+   ],
+   "locals": "open",
+   "locals_quote": "All eligible purchasers within the State of Arkansas, including State agencies, K-12 educational institutions, and local public procurement units (cities, counties, municipalities), are authorized to purchase products under the terms and conditions of this participating addendum."
+  },
+  {
+   "post_id": "46184",
+   "kind": "contract",
+   "vendors": [
+    {
+     "name": "Home Depot USA Inc",
+     "outline": null,
+     "coop_ref": "OMNIA 16154",
+     "coop_url": "https://www.omniapartners.com/suppliers/the-home-depot-pro/public-sector/contract-documents#c21274:~:text=let%20you%20know.-,Maintenance%2C%20Repair%2C%20Operating%20Supplies%2C%20Industrial%20Supplies%20and%20Related%20Products%20and%20Services,-Maricopa%20County%2C%20AZ"
+    }
+   ],
+   "locals": "open",
+   "locals_quote": "All eligible purchasers within the State of Arkansas, including State agencies, K-12 educational institutions, and local public procurement units (cities, counties, municipalities), are authorized to purchase products under the terms and conditions of this participating addendum."
+  },
+  {
+   "post_id": "46193",
+   "kind": "contract",
+   "vendors": [
+    {
+     "name": "VWR International LLC",
+     "outline": "4600054150",
+     "coop_ref": "NASPO ValuePoint",
+     "coop_url": "https://www.naspovaluepoint.org/suppliers/vwr-international-llc/"
+    },
+    {
+     "name": "Fisher Scientific Company LLC",
+     "outline": "4600054158",
+     "coop_ref": "NASPO ValuePoint",
+     "coop_url": "https://www.naspovaluepoint.org/suppliers/fisher-scientific-co-llc/"
+    }
+   ],
+   "locals": "unstated",
+   "locals_quote": null
+  },
+  {
+   "post_id": "46347",
+   "kind": "contract",
+   "vendors": [
+    {
+     "name": "Canon",
+     "outline": "4600060412",
+     "coop_ref": "NASPO ValuePoint",
+     "coop_url": "https://www.naspovaluepoint.org/suppliers/canon-usa-inc/"
+    },
+    {
+     "name": "HP, Inc",
+     "outline": "4600055856",
+     "coop_ref": "NASPO ValuePoint",
+     "coop_url": "https://www.naspovaluepoint.org/suppliers/hp-inc-2/"
+    },
+    {
+     "name": "Konica Minolta Business Solutions USA Inc",
+     "outline": "4600054937",
+     "coop_ref": "NASPO ValuePoint",
+     "coop_url": "https://www.naspovaluepoint.org/suppliers/konica-minolta-business-solutions-usa-inc/"
+    },
+    {
+     "name": "Kyocera Document Solutions America Inc",
+     "outline": "4600054890",
+     "coop_ref": "NASPO ValuePoint",
+     "coop_url": "https://www.naspovaluepoint.org/suppliers/kyocera-document-solution-america-inc/"
+    },
+    {
+     "name": "Lexmark International Inc",
+     "outline": "4600054905",
+     "coop_ref": "NASPO ValuePoint",
+     "coop_url": "https://www.naspovaluepoint.org/suppliers/lexmark-international-inc/"
+    },
+    {
+     "name": "Ricoh USA Inc",
+     "outline": "4600054926",
+     "coop_ref": "NASPO ValuePoint",
+     "coop_url": "https://www.naspovaluepoint.org/suppliers/ricoh-usa-inc/"
+    },
+    {
+     "name": "Sharp Electronics Corporation",
+     "outline": "4600054894",
+     "coop_ref": "NASPO ValuePoint",
+     "coop_url": "https://www.naspovaluepoint.org/suppliers/sharp-electronics-corp/"
+    },
+    {
+     "name": "Toshiba America Business Solutions",
+     "outline": "4600054914",
+     "coop_ref": "NASPO ValuePoint",
+     "coop_url": "https://www.naspovaluepoint.org/suppliers/toshiba-america-business-solutions-inc/"
+    },
+    {
+     "name": "Xerox Corporation",
+     "outline": "4600054858",
+     "coop_ref": "NASPO ValuePoint",
+     "coop_url": "https://www.naspovaluepoint.org/suppliers/xerox-corp/"
+    }
+   ],
+   "locals": "unstated",
+   "locals_quote": null
+  },
+  {
+   "post_id": "46427",
+   "kind": "contract",
+   "vendors": [
+    {
+     "name": "CNH Industrial America LLC",
+     "outline": "4600054250",
+     "coop_ref": "Sourcewell 011723",
+     "coop_url": "https://www.sourcewell-mn.gov/cooperative-purchasing/011723-CNH-1"
+    },
+    {
+     "name": "JA Riggs Tractor Company (JA Riggs-CAT)",
+     "outline": "4600055232",
+     "coop_ref": "Sourcewell 011723",
+     "coop_url": "https://www.sourcewell-mn.gov/cooperative-purchasing/011723-cat"
+    },
+    {
+     "name": "Deere & Company",
+     "outline": "4600056113",
+     "coop_ref": "Sourcewell 011723",
+     "coop_url": "https://www.sourcewell-mn.gov/cooperative-purchasing/011723-jdc"
+    }
+   ],
+   "locals": "open",
+   "locals_quote": "All state agencies, K-12 educational institutions, and local public procurement units (cities, counties, municipalities) of the Participating State (“Eligible Purchasers”), are authorized to purchase products and services under the terms and conditions of this PA."
+  },
+  {
+   "post_id": "46885",
+   "kind": "contract",
+   "vendors": [
+    {
+     "name": "Dana Safety Supply Inc",
+     "outline": "4600055345",
+     "coop_ref": "TIPS 240102",
+     "coop_url": "https://www.tips-usa.com/vendorProfile.cfm?RecordID=28DB6DB7E7E9767017BC4283C79CE1F9#:~:text=Emergency%20Responder%20Supplies%2C%20Equipment%2C%20and%20Services"
+    }
+   ],
+   "locals": "open",
+   "locals_quote": "All state agencies, K-12 educational institutions, and local public procurement units (cities, counties, municipalities) of the Participating State (“Eligible Purchasers”), are authorized to purchase products and services under the terms and conditions of this PA."
+  },
+  {
+   "post_id": "47476",
+   "kind": "contract",
+   "vendors": [
+    {
+     "name": "Kustom Signals Inc",
+     "outline": "4600055417",
+     "coop_ref": "NASPO ValuePoint 24823",
+     "coop_url": "https://www.naspovaluepoint.org/suppliers/kustom-signals-inc/"
+    },
+    {
+     "name": "Laser Technology Inc",
+     "outline": "4600055463",
+     "coop_ref": "NASPO ValuePoint 24823",
+     "coop_url": "https://www.naspovaluepoint.org/suppliers/laser-technology-inc/"
+    },
+    {
+     "name": "MPH Industries",
+     "outline": "4600055461",
+     "coop_ref": "NASPO ValuePoint 24823",
+     "coop_url": "https://www.naspovaluepoint.org/suppliers/mph-industries-inc/"
+    },
+    {
+     "name": "Applied Concepts dba Stalker",
+     "outline": "4600055413",
+     "coop_ref": "NASPO ValuePoint 24823",
+     "coop_url": "https://www.naspovaluepoint.org/suppliers/applied-concepts-inc-dba-stalker-radar/"
+    }
+   ],
+   "locals": "unstated",
+   "locals_quote": null
+  },
+  {
+   "post_id": "47910",
+   "kind": "contract",
+   "vendors": [
+    {
+     "name": "Farber Specialty Vehicles",
+     "outline": "4600055601",
+     "coop_ref": "OMNIA MA 177718",
+     "coop_url": "https://www.omniapartners.com/suppliers/farber-specialty-vehicles/public-sector/contract-documents#c7521"
+    }
+   ],
+   "locals": "unstated",
+   "locals_quote": null
+  },
+  {
+   "post_id": "48076",
+   "kind": "contract",
+   "vendors": [
+    {
+     "name": "Motorola Solutions, Inc.",
+     "outline": "4600055586",
+     "coop_ref": "SOURCEWELL 101223-MOT",
+     "coop_url": "https://www.sourcewell-mn.gov/cooperative-purchasing/101223-mot"
+    }
+   ],
+   "locals": "open",
+   "locals_quote": "All state agencies, K-12 educational institutions, and local public procurement units (cities, counties, municipalities) of the Participating State (“Eligible Purchasers”), are authorized to purchase products and services under the terms and conditions of this PA."
+  },
+  {
+   "post_id": "48342",
+   "kind": "contract",
+   "vendors": [
+    {
+     "name": "Middleton Heat and Air",
+     "outline": "4600055982",
+     "coop_ref": "TIPS 241001",
+     "coop_url": "https://www.tips-usa.com/vendorProfile.cfm?RecordID=D4244868F23A915F22DDA4FA2AE26BD7"
+    }
+   ],
+   "locals": "unstated",
+   "locals_quote": null
+  },
+  {
+   "post_id": "48362",
+   "kind": "contract",
+   "vendors": [
+    {
+     "name": "Periscope Holdings",
+     "outline": "4600055912",
+     "coop_ref": "NASPO 18P 22120900000000000080",
+     "coop_url": "https://www.naspovaluepoint.org/suppliers/periscope-holdings-inc/"
+    }
+   ],
+   "locals": "unstated",
+   "locals_quote": null
+  },
+  {
+   "post_id": "48800",
+   "kind": "contract",
+   "vendors": [
+    {
+     "name": "Ariens",
+     "outline": "4600056364",
+     "coop_ref": "Sourcewell 112624-ACO",
+     "coop_url": "https://www.sourcewell-mn.gov/cooperative-purchasing/112624-aco"
+    },
+    {
+     "name": "Deere & Company",
+     "outline": "4600056365",
+     "coop_ref": "Sourcewell 112624-DAC",
+     "coop_url": "https://www.sourcewell-mn.gov/cooperative-purchasing/112624-dac"
+    },
+    {
+     "name": "Kubota",
+     "outline": "4600056297",
+     "coop_ref": "Sourcewell 112624-KBA",
+     "coop_url": "https://www.sourcewell-mn.gov/cooperative-purchasing/112624-KBA"
+    },
+    {
+     "name": "The Toro Company",
+     "outline": "4600056330",
+     "coop_ref": "Sourcewell 112624-TTC",
+     "coop_url": "https://www.sourcewell-mn.gov/cooperative-purchasing/112624-TTC"
+    }
+   ],
+   "locals": "open",
+   "locals_quote": "All state agencies, K-12 educational institutions, and local public procurement units (cities, counties, municipalities) of the Participating State (“Eligible Purchasers”), are authorized to purchase products and services under the terms and conditions of this PA."
+  },
+  {
+   "post_id": "56030",
+   "kind": "contract",
+   "vendors": [
+    {
+     "name": "Carahsoft (DocuSign)",
+     "outline": "4600054418",
+     "coop_ref": "NASPO ValuePoint",
+     "coop_url": "https://www.naspovaluepoint.org/suppliers/carahsoft-technology-corporation/"
+    }
+   ],
+   "locals": "state_agencies_only",
+   "locals_quote": "The DocuSign contract pricing is available for State of Arkansas departments and agencies only."
+  },
+  {
+   "post_id": "59759",
+   "kind": "contract",
+   "vendors": [
+    {
+     "name": "Network Distribution",
+     "outline": "4600056902",
+     "coop_ref": "OMNIA 240240-01",
+     "coop_url": "https://www.omniapartners.com/suppliers/network-distribution/public-sector/contract-documents#contract-2195"
+    }
+   ],
+   "locals": "open",
+   "locals_quote": "All state agencies, K-12 educational institutions, and local public procurement units (cities, counties, municipalities) of the Participating State (“Eligible Purchasers”), are authorized to purchase products and services under the terms and conditions of this PA."
+  },
+  {
+   "post_id": "59893",
+   "kind": "contract",
+   "vendors": [
+    {
+     "name": "FFF Enterprises",
+     "outline": "4600056981",
+     "coop_ref": "MMCAP MMS2501243",
+     "coop_url": "https://mmcap.mn.gov/"
+    }
+   ],
+   "locals": "unstated",
+   "locals_quote": null
+  },
+  {
+   "post_id": "59894",
+   "kind": "contract",
+   "vendors": [
+    {
+     "name": "Henry Schein",
+     "outline": "4600056599",
+     "coop_ref": "MMCAP MMS2401077",
+     "coop_url": "https://members.mmcap.mn.gov/user/login?destination=/about"
+    }
+   ],
+   "locals": "unstated",
+   "locals_quote": null
+  },
+  {
+   "post_id": "59988",
+   "kind": "contract",
+   "vendors": [
+    {
+     "name": "Linguistica",
+     "outline": null,
+     "coop_ref": "NASPO 40-00000-24-00076AG",
+     "coop_url": "https://www.naspovaluepoint.org/suppliers/linguistica-international-inc/"
+    },
+    {
+     "name": "Propio LS, LLC",
+     "outline": null,
+     "coop_ref": "NASPO 40-00000-24-00076AK",
+     "coop_url": "https://www.naspovaluepoint.org/suppliers/propio-ls-llc/"
+    }
+   ],
+   "locals": "unstated",
+   "locals_quote": null
+  },
+  {
+   "post_id": "60063",
+   "kind": "contract",
+   "vendors": [
+    {
+     "name": "Everon, LLC (formerly ADT Commercial, LLC)",
+     "outline": "4600057115",
+     "coop_ref": "NASPO ValuePoint",
+     "coop_url": "https://www.naspovaluepoint.org/portfolio/security-fire-protection-services-2023-2032/everon-llc-formerly-adt-commercial-llc/"
+    }
+   ],
+   "locals": "unstated",
+   "locals_quote": null
+  },
+  {
+   "post_id": "60148",
+   "kind": "contract",
+   "vendors": [
+    {
+     "name": "GLI Capital Group, dba Public Knowledge",
+     "outline": "4600058003",
+     "coop_ref": null,
+     "coop_url": null
+    },
+    {
+     "name": "Ikaso Consulting",
+     "outline": "4600057464",
+     "coop_ref": null,
+     "coop_url": null
+    },
+    {
+     "name": "The Boston Consulting Group",
+     "outline": "4600057465",
+     "coop_ref": null,
+     "coop_url": null
+    },
+    {
+     "name": "Gartner",
+     "outline": "4600057466",
+     "coop_ref": null,
+     "coop_url": null
+    },
+    {
+     "name": "Guidehouse",
+     "outline": "4600057467",
+     "coop_ref": null,
+     "coop_url": null
+    }
+   ],
+   "locals": "open",
+   "locals_quote": "SAS OSP seeks to establish statewide contracts for use by Arkansas state agencies, K-12 educational institutions, and local public procurement units (cities, counties, and municipalities) (herein collectively referred to as “Eligible Purchasers”)."
+  },
+  {
+   "post_id": "60181",
+   "kind": "contract",
+   "vendors": [
+    {
+     "name": "PRECOR",
+     "outline": "4600057426",
+     "coop_ref": "Sourcewell 052324-PCR",
+     "coop_url": "https://www.sourcewell-mn.gov/cooperative-purchasing/052324-PCR"
+    }
+   ],
+   "locals": "unstated",
+   "locals_quote": null
+  },
+  {
+   "post_id": "60259",
+   "kind": "contract",
+   "vendors": [
+    {
+     "name": "Club Car LLC",
+     "outline": "4600046083",
+     "coop_ref": "OMNIA Partners EV2671-01",
+     "coop_url": "https://www.omniapartners.com/suppliers/club-car-inc/public-sector/contract-documents"
+    }
+   ],
+   "locals": "unstated",
+   "locals_quote": null
+  },
+  {
+   "post_id": "60420",
+   "kind": "contract",
+   "vendors": [
+    {
+     "name": "Lewis & Ellis, LLC",
+     "outline": "4600057630",
+     "coop_ref": null,
+     "coop_url": null
+    },
+    {
+     "name": "Milliman, Inc",
+     "outline": "4600057633",
+     "coop_ref": null,
+     "coop_url": null
+    },
+    {
+     "name": "Gabriel, Roeder, Smith, & Company",
+     "outline": "4600057641",
+     "coop_ref": null,
+     "coop_url": null
+    },
+    {
+     "name": "Examination Resources",
+     "outline": "4600057643",
+     "coop_ref": null,
+     "coop_url": null
+    }
+   ],
+   "locals": "unstated",
+   "locals_quote": null
+  },
+  {
+   "post_id": "60450",
+   "kind": "contract",
+   "vendors": [
+    {
+     "name": "WEHCO NEWSPAPERS INC",
+     "outline": "4600057694",
+     "coop_ref": null,
+     "coop_url": null
+    }
+   ],
+   "locals": "unstated",
+   "locals_quote": null
+  },
+  {
+   "post_id": "60468",
+   "kind": "contract",
+   "vendors": [
+    {
+     "name": "UKG",
+     "outline": "4600056979",
+     "coop_ref": "OMNIA 24-6833",
+     "coop_url": "https://www.omniapartners.com/suppliers/ukg/public-sector/contract-documents#contract-2207"
+    }
+   ],
+   "locals": "unstated",
+   "locals_quote": null
+  },
+  {
+   "post_id": "60873",
+   "kind": "contract",
+   "vendors": [
+    {
+     "name": "Geotab USA, Inc",
+     "outline": "4600057687",
+     "coop_ref": "NASPO ValuePoint MA3695",
+     "coop_url": "https://www.naspovaluepoint.org/portfolio/wireless-voice-data-accessories-2019-2029/geotab/"
+    }
+   ],
+   "locals": "unstated",
+   "locals_quote": null
+  },
+  {
+   "post_id": "60947",
+   "kind": "contract",
+   "vendors": [
+    {
+     "name": "Redwood Toxicology",
+     "outline": "4600057710",
+     "coop_ref": "MMCAP MMS 2501110",
+     "coop_url": "https://mmcap.mn.gov/"
+    }
+   ],
+   "locals": "unstated",
+   "locals_quote": null
+  },
+  {
+   "post_id": "60949",
+   "kind": "contract",
+   "vendors": [
+    {
+     "name": "Maximus US Services, Inc",
+     "outline": "4600057646",
+     "coop_ref": null,
+     "coop_url": null
+    }
+   ],
+   "locals": "unstated",
+   "locals_quote": null
+  },
+  {
+   "post_id": "61411",
+   "kind": "contract",
+   "vendors": [
+    {
+     "name": "Sharp Properties dba A Sharper Image",
+     "outline": "4600058030",
+     "coop_ref": null,
+     "coop_url": null
+    }
+   ],
+   "locals": "open",
+   "locals_quote": "The State seeks to establish a Statewide Janitorial Services contract for use by Arkansas State agencies, K-12 educational institutions, and local public procurement units (cities, counties, and municipalities) (herein collectively referred to as “Purchasing Entity”)."
+  },
+  {
+   "post_id": "62010",
+   "kind": "contract",
+   "vendors": [
+    {
+     "name": "Tyler Technologies, Inc.",
+     "outline": "4600057667",
+     "coop_ref": "NASPO ValuePoint AR3764",
+     "coop_url": "https://www.naspovaluepoint.org/portfolios/citizen-engagement-platforms/"
+    }
+   ],
+   "locals": "unstated",
+   "locals_quote": null
+  },
+  {
+   "post_id": "62013",
+   "kind": "contract",
+   "vendors": [
+    {
+     "name": "The Sherwin Williams Company",
+     "outline": "4600058001",
+     "coop_ref": "OMNIA Partners MA #02-147",
+     "coop_url": "https://www.omniapartners.com/suppliers/sherwin-williams/public-sector/contract-documents#c28719"
+    }
+   ],
+   "locals": "open",
+   "locals_quote": "All state agencies, K-12 educational institutions, and local public procurement units (cities, counties, municipalities) of the Participating State (“Eligible Purchasers”), are authorized to purchase products and services under the terms and conditions of this PA."
+  },
+  {
+   "post_id": "62015",
+   "kind": "contract",
+   "vendors": [
+    {
+     "name": "ServiceWear",
+     "outline": "4600057847",
+     "coop_ref": "OMNIA Partners | MA #251002",
+     "coop_url": "https://www.omniapartners.com/suppliers/servicewear-apparel/public-sector/contract-documents#contract-2224"
+    }
+   ],
+   "locals": "open",
+   "locals_quote": "All state agencies, K-12 educational institutions, and local public procurement units (cities, counties, municipalities) of the Participating State (“Eligible Purchasers”), are authorized to purchase products and services under the terms and conditions of this PA."
+  },
+  {
+   "post_id": "62026",
+   "kind": "contract",
+   "vendors": [
+    {
+     "name": "Johnson Controls Fire Protection",
+     "outline": "4600057670",
+     "coop_ref": "Sourcewell 121024-JHN",
+     "coop_url": "https://www.sourcewell-mn.gov/cooperative-purchasing/121024-jhn"
+    }
+   ],
+   "locals": "unstated",
+   "locals_quote": null
+  },
+  {
+   "post_id": "62192",
+   "kind": "contract",
+   "vendors": [
+    {
+     "name": "REI Systems Inc",
+     "outline": "4600060092",
+     "coop_ref": "NASPO Valuepoint AR2472 (Cloud Solutions)",
+     "coop_url": "https://www.naspovaluepoint.org/suppliers/carahsoft-technology-corporation/"
+    }
+   ],
+   "locals": "open",
+   "locals_quote": "All state agencies, K-12 educational institutions, and local public procurement units (cities, counties, municipalities) of the Participating State are considered Eligible Purchasers and are authorized to purchase products and services under the terms and conditions of this PA."
+  },
+  {
+   "post_id": "63269",
+   "kind": "contract",
+   "vendors": [
+    {
+     "name": "Aftermath Disaster Recovery, Inc",
+     "outline": "4600060546",
+     "coop_ref": "NASPO MA #OK-MA-EV00000453",
+     "coop_url": "https://www.naspovaluepoint.org/suppliers/aftermath-disaster-recovery-inc/"
+    },
+    {
+     "name": "DRC Emergency Services",
+     "outline": "4600060510",
+     "coop_ref": "NASPO MA #OK-MA-EV00000453",
+     "coop_url": "https://www.naspovaluepoint.org/suppliers/drc-emergency-services-llc/"
+    }
+   ],
+   "locals": "unstated",
+   "locals_quote": null
+  },
+  {
+   "post_id": "63270",
+   "kind": "contract",
+   "vendors": [],
+   "locals": "unstated",
+   "locals_quote": null
+  },
+  {
+   "post_id": "63272",
+   "kind": "contract",
+   "vendors": [
+    {
+     "name": "Ben Nelson Golf & Utility Vehicles",
+     "outline": "4600060502",
+     "coop_ref": "OMNIA Partners R260201",
+     "coop_url": "https://www.omniapartners.com/suppliers/e-z-go-division-of-textron-inc#discover-contracts"
+    }
+   ],
+   "locals": "open",
+   "locals_quote": "All state agencies, K-12 educational institutions, and local public procurement units (cities, counties, municipalities) of the Participating State (“Eligible Purchasers”), are authorized to purchase products and services under the terms and conditions of this PA."
+  },
+  {
+   "post_id": "63430",
+   "kind": "contract",
+   "vendors": [
+    {
+     "name": "Bale Chevrolet",
+     "outline": "4600060523",
+     "coop_ref": null,
+     "coop_url": null
+    },
+    {
+     "name": "Red River Ford",
+     "outline": "4600060524",
+     "coop_ref": null,
+     "coop_url": null
+    },
+    {
+     "name": "Red River Dodge",
+     "outline": "4600060525",
+     "coop_ref": null,
+     "coop_url": null
+    },
+    {
+     "name": "Landers CDJR",
+     "outline": "4600060526",
+     "coop_ref": null,
+     "coop_url": null
+    },
+    {
+     "name": "Mark McLarty Ford",
+     "outline": "4600060529",
+     "coop_ref": null,
+     "coop_url": null
+    },
+    {
+     "name": "Smart Auto",
+     "outline": "4600060530",
+     "coop_ref": null,
+     "coop_url": null
+    },
+    {
+     "name": "Smart Chevrolet",
+     "outline": "4600060531",
+     "coop_ref": null,
+     "coop_url": null
+    },
+    {
+     "name": "Superior 6",
+     "outline": "4600060559",
+     "coop_ref": null,
+     "coop_url": null
+    },
+    {
+     "name": "Superior Auto Mall",
+     "outline": "4600060560",
+     "coop_ref": null,
+     "coop_url": null
+    }
+   ],
+   "locals": "unstated",
+   "locals_quote": null
+  }
+ ]
+}

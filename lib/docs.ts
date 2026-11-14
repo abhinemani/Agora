@@ -19,7 +19,7 @@ import type { Db } from "./types";
 /** Hosts that publish contract documents as plain files. Sites with bot walls or robots rules against fetching stay off this list.
  * The state programs' hosts were checked November 14, 2026: Arkansas allows all (crawl delay 10 s, and Agora fetches one
  * document when asked); OGS bars only admin, login and search paths; Corcraft publishes no robots.txt; NJSTART and Empire
- * Procure Connect redirect theirs to their vendor's, which bars only /craft. */
+ * Procure Connect redirect theirs to their vendor's, which bars only /craft; so does OregonBuys. */
 const DOCUMENT_HOSTS = new Set([
   "s3.us-east-1.amazonaws.com",
   "s3.us-west-2.amazonaws.com",
@@ -31,8 +31,9 @@ const DOCUMENT_HOSTS = new Set([
   "shop.corcraft.ny.gov",
   "www.njstart.gov",
   "empireprocureconnect.com",
+  "oregonbuys.gov",
 ]);
-/** NJSTART and Empire Procure Connect serve attachments through a download action, not a file path. */
+/** NJSTART, Empire Procure Connect and OregonBuys serve attachments through a download action, not a file path. */
 const isDownload = (u: URL) => /\/bso\/external\/purchaseorder\/poSummary\.sda$/.test(u.pathname) && u.searchParams.get("mode") === "download";
 
 /** Contract documents held as text (npm run import:doctext), keyed by URL: read without fetching. Loaded per program on first use. */

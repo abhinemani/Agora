@@ -138,9 +138,15 @@ const epc = existsSync(EPC_FILE)
   ? (JSON.parse(gunzipSync(readFileSync(EPC_FILE)).toString("utf8")) as { retrieved: string; suppliers: RawSupplier[]; contracts: RawContract[]; products: RawProduct[]; offerings: RawOffering[]; documents: RawDocument[] })
   : null;
 const epcSummary = existsSync(join(SRC, "epc/summary.json")) ? JSON.parse(readFileSync(join(SRC, "epc/summary.json"), "utf8")) : null;
+// Oregon's statewide price agreements on OregonBuys (npm run import:oregon), the same way.
+const OREGON_FILE = join(SRC, "oregon/records.json.gz");
+const oregon = existsSync(OREGON_FILE)
+  ? (JSON.parse(gunzipSync(readFileSync(OREGON_FILE)).toString("utf8")) as { retrieved: string; suppliers: RawSupplier[]; contracts: RawContract[]; products: RawProduct[]; offerings: RawOffering[]; documents: RawDocument[] })
+  : null;
+const orSummary = existsSync(join(SRC, "oregon/summary.json")) ? JSON.parse(readFileSync(join(SRC, "oregon/summary.json"), "utf8")) : null;
 /** The state programs folded in, by program name. */
-const STATE_SOURCES = [njstart && { program: "NJSTART", ...njstart }, hawaii && { program: "Hawaii SPO", ...hawaii }, arkansas && { program: "Arkansas OSP", ...arkansas }, newYork && { program: "NYS OGS", ...newYork }, epc && { program: "Empire Procure Connect", ...epc }].filter(<T,>(x: T | null): x is T => Boolean(x));
-const STATE_PROGRAMS = new Set(["NJSTART", "Hawaii SPO", "Arkansas OSP", "NYS OGS", "NY Preferred Source", "Empire Procure Connect"]);
+const STATE_SOURCES = [njstart && { program: "NJSTART", ...njstart }, hawaii && { program: "Hawaii SPO", ...hawaii }, arkansas && { program: "Arkansas OSP", ...arkansas }, newYork && { program: "NYS OGS", ...newYork }, epc && { program: "Empire Procure Connect", ...epc }, oregon && { program: "OregonBuys", ...oregon }].filter(<T,>(x: T | null): x is T => Boolean(x));
+const STATE_PROGRAMS = new Set(["NJSTART", "Hawaii SPO", "Arkansas OSP", "NYS OGS", "NY Preferred Source", "Empire Procure Connect", "OregonBuys"]);
 const arSummary = existsSync(join(SRC, "arkansas/summary.json")) ? JSON.parse(readFileSync(join(SRC, "arkansas/summary.json"), "utf8")) : null;
 for (const src of STATE_SOURCES) {
   rawSuppliers.push(...src.suppliers);
@@ -235,6 +241,7 @@ const COOP_ID: Record<string, string> = {
   "NYS OGS": "state_ny",
   "NY Preferred Source": "state_ny_ps",
   "Empire Procure Connect": "trx_epc",
+  OregonBuys: "state_or",
 };
 
 // ------------------------------------------------------------------ suppliers: one record per company
@@ -523,7 +530,7 @@ function stateContractOf(meta: Record<string, unknown>): Partial<Contract> {
 // classes the review chose for its title (GSA contracts: for their SINs, in SIN order).
 const nigpStats = { published: 0, reviewed: 0, none: 0 };
 {
-  // Published codes from any state source that prints them (NJSTART, Empire Procure Connect).
+  // Published codes from any state source that prints them (NJSTART, Empire Procure Connect, OregonBuys).
   const njCodes = new Map(STATE_SOURCES.flatMap((s) => s.contracts).map((c) => [c.contract_id, ((c.source_metadata ?? {}).nigp as string[] | undefined) ?? []]));
   for (const c of contracts) {
     if (c.state_contract) {
@@ -866,6 +873,10 @@ const insights = {
     classes_used: new Set(contracts.flatMap((c) => c.nigp?.classes ?? [])).size,
     priced_offerings_coded: offerings.filter((o) => o.nigp).length,
     top_classes: Object.entries(contracts.reduce<Record<string, number>>((m, c) => { for (const k of c.nigp?.classes ?? []) m[k] = (m[k] ?? 0) + 1; return m; }, {})).sort((a, b) => b[1] - a[1]).slice(0, 12),
+  },
+  oregon: orSummary && {
+    ...orSummary,
+    suppliers_shared_with_coops: suppliers.filter((s) => s.coops.includes("OregonBuys") && s.coops.some((c) => c !== "OregonBuys")).length,
   },
   epc: epcSummary && {
     ...epcSummary,

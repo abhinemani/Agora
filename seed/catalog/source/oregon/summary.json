@@ -1,0 +1,53 @@
+{
+ "source": "https://oregonbuys.gov/bso/view/search/external/advancedSearchContractBlanket.xhtml",
+ "scope": "Active blankets of the Department of Administrative Services, Procurement Services (107090)",
+ "retrieved": "2026-11-14",
+ "listed": 1117,
+ "pages_missing": 888,
+ "intergovernmental": 216,
+ "orcpp_membership_agreements": 193,
+ "expired": 0,
+ "contracts": 13,
+ "open_to_locals": 5,
+ "state_only": 8,
+ "flag_missing": 0,
+ "with_nigp": 13,
+ "nasPO_addenda": 0,
+ "mmcap": 0,
+ "oregon_forward": 4,
+ "open_ended": 0,
+ "with_prices": 0,
+ "priced_lines": 0,
+ "lines": 28,
+ "dropped": {
+  "no_price": 28,
+  "placeholder": 0,
+  "discount": 0,
+  "percent": 0,
+  "index_markup": 0,
+  "unverified": 0,
+  "no_name": 0
+ },
+ "documents": 167,
+ "attachments": 154,
+ "spent_to_date": 2682523,
+ "disciplines": {
+  "Personal Services": 4,
+  "Supplies": 5,
+  "Trade Services": 4
+ },
+ "suppliers": 13,
+ "products": 0,
+ "orcpp_members": 987,
+ "orcpp_members_by_type": {
+  "Special": 304,
+  "School": 246,
+  "Non-profit": 172,
+  "City": 168,
+  "County": 50,
+  "Other": 31,
+  "Oregon Forward Contractor": 16
+ },
+ "members_retrieved": "2026-11-14",
+ "note": "Line items are the summary page's; most agreements print $0 placeholders and keep prices in attached price sheets, which are linked, not read."
+}

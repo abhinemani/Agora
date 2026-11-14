@@ -3,9 +3,10 @@
 // split into its PDF pages. Contact details in the documents are kept, at the product owner's
 // instruction. Spreadsheets become one page of rows; contract summary pages become one page.
 //
-//   npm run import:doctext -- --hawaii <dir> --arkansas <dir> --ny <dir> --njstart <dir> --epc <dir>
+//   npm run import:doctext -- --hawaii <dir> --arkansas <dir> --ny <dir> --njstart <dir> --epc <dir> --oregon <dir>
 //
-// Each folder is that program's unzipped collection (the same folders the program's importer reads).
+// Each folder is that program's unzipped collection (the same folders the program's importer reads); for
+// Oregon, the cache npm run fetch:oregon writes (seed/catalog/source/oregon/cache).
 // Writes seed/catalog/doctext/<program>.json.gz: { retrieved, documents: { [url]: { label, pages } } }.
 // Server only (lib/docs.ts reads it lazily).
 
@@ -131,5 +132,35 @@ if (args.has("epc")) {
   write("epc", "2026-11-14", store);
 }
 
-writeFileSync(join(OUT, "summary.json"), JSON.stringify(stats, null, 1) + "\n");
+// OregonBuys: each DAS price agreement's public summary page (ORS chapter 190 agreements aside, as in
+// scripts/import-oregon.ts). Attachments are fetched live.
+if (args.has("oregon")) {
+  const dir = args.get("oregon")!;
+  const store: Store = {};
+  const meta = JSON.parse(readFileSync(join(dir, "list.json"), "utf8")) as { retrieved: string };
+  for (const r of parseCsv(readFileSync(join(dir, "list.csv"), "utf8"))) {
+    const id = r["Blanket #"].trim();
+    const f = join(dir, "pages", `${id.replace(/[^A-Za-z0-9._-]/g, "_")}.html`);
+    if (!existsSync(f)) continue;
+    const text = readFileSync(f, "utf8")
+      .replace(/<script[\s\S]*?<\/script>|<style[\s\S]*?<\/style>/gi, " ")
+      .replace(/<[^>]+>/g, " ")
+      .replace(/&nbsp;/g, " ")
+      .replace(/&amp;/g, "&")
+      .replace(/&#39;/g, "'")
+      .replace(/&quot;/g, '"')
+      .replace(/\s+/g, " ")
+      .trim();
+    if (/Discipline Type:\s*ORS ?190/i.test(text)) continue;
+    const url = `https://oregonbuys.gov/bso/external/purchaseorder/poSummary.sda?docId=${encodeURIComponent(id)}&releaseNbr=0&external=true&parentUrl=close`;
+    const from = text.indexOf("Header Information");
+    store[url] = { label: `OregonBuys price agreement summary page, ${id}`, pages: [{ num: 1, text: (from >= 0 ? text.slice(from) : text).replace(/Copyright ©.*$/, "").replace(/\s+(?=[A-Z][A-Za-z /#%._&-]{2,40}:)/g, "\n").trim() }] };
+  }
+  write("oregon", meta.retrieved, store);
+}
+
+// Keep the counts of programs not rebuilt this run.
+const SUMMARY = join(OUT, "summary.json");
+if (existsSync(SUMMARY)) for (const [k, v] of Object.entries(JSON.parse(readFileSync(SUMMARY, "utf8")) as typeof stats)) stats[k] ??= v;
+writeFileSync(SUMMARY, JSON.stringify(stats, null, 1) + "\n");
 console.log(stats);

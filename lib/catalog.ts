@@ -17,6 +17,7 @@ import { join } from "node:path";
 import { gunzipSync } from "node:zlib";
 import { fitScoreSets, requestTokens, SAME_AS, tokens, type CoopHit, type Weights } from "./assistant";
 import { isMember, normalizeDomain } from "./coops";
+import { orcppMember } from "./orcpp";
 import { isTrxState, stateContractAccess, TRX_MARGIN } from "./trx";
 import type { Buyer, Db, Supplier as AgoraSupplier } from "./types";
 import { stateName } from "./vehicles";
@@ -255,7 +256,7 @@ function candidates(index: Map<string, number[]>, words: string[]): Set<number> 
 export function catalogAccess(db: Db, buyer: Buyer | null, c: CatalogContract): { member: boolean; eligible: boolean; reason: string } {
   const coopName = db.coops.find((x) => x.id === c.coop_id)?.name ?? c.coop;
   const where = c.states === "any" ? "" : c.states.length <= 6 ? c.states.map(stateName).join(", ") : `${c.states.length} states`;
-  if (c.state_contract) return stateContractAccess(c.state_contract, buyer);
+  if (c.state_contract) return stateContractAccess(c.state_contract, buyer, c.state_contract.state === "OR" && buyer ? orcppMember(buyer) : undefined);
   if (c.coop_id === "gsa_mas") {
     // GSA's SIN list says which SINs state and local governments may buy through cooperative purchasing.
     const open = c.coop_sins ?? [];

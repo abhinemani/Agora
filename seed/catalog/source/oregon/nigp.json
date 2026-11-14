@@ -1,0 +1,301 @@
+{
+ "source": "NIGP codes and descriptions as printed on OregonBuys' public price agreement pages",
+ "retrieved": "2026-11-14",
+ "codes": {
+  "080-55": {
+   "description": "Nameplates, Plastic",
+   "lines": 1,
+   "contracts": 1
+  },
+  "204-89": {
+   "description": "Scanners and Readers, Magnetic Strip",
+   "lines": 1,
+   "contracts": 1
+  },
+  "206-85": {
+   "description": "Scanners and Readers, Magnetic Strip",
+   "lines": 1,
+   "contracts": 1
+  },
+  "206-86": {
+   "description": "Scanners and Readers, Optical Character: Bar Code, Remittance Scanner and Processors, etc.",
+   "lines": 1,
+   "contracts": 1
+  },
+  "207-00": {
+   "description": "COMPUTER ACCESSORIES AND SUPPLIES",
+   "lines": 1,
+   "contracts": 1
+  },
+  "405-13": {
+   "description": "Gas, Natural, Including Compressed Natural Gas (CNG) Req # / Item #: REQ-10700-00144283 / 1",
+   "lines": 1,
+   "contracts": 1
+  },
+  "405-15": {
+   "description": "Gasoline, Automotive Req # / Item #: REQ-10700-00194251 / 1",
+   "lines": 2,
+   "contracts": 2
+  },
+  "425-06": {
+   "description": "Chairs, Metal",
+   "lines": 1,
+   "contracts": 1
+  },
+  "425-20": {
+   "description": "Desks and Tables, Metal",
+   "lines": 1,
+   "contracts": 1
+  },
+  "425-40": {
+   "description": "Filing Cabinets, Metal: Card, Jumbo, Lateral, Legal, and Letter",
+   "lines": 1,
+   "contracts": 1
+  },
+  "625-26": {
+   "description": "Eye Glasses Including Sunglasses, Including Frames, Cases, Parts, etc.",
+   "lines": 2,
+   "contracts": 1
+  },
+  "850-00": {
+   "description": "TEXTILES, FIBERS, HOUSEHOLD LINENS, AND PIECE GOODS",
+   "lines": 1,
+   "contracts": 1
+  },
+  "850-03": {
+   "description": "Bags, Bedding",
+   "lines": 2,
+   "contracts": 1
+  },
+  "915-15": {
+   "description": "Broadcasting Services, Television",
+   "lines": 1,
+   "contracts": 1
+  },
+  "918-19": {
+   "description": "Buildings, Structures and Components Consulting",
+   "lines": 1,
+   "contracts": 1
+  },
+  "918-32": {
+   "description": "Consulting Services (Not Otherwise Classified)",
+   "lines": 1,
+   "contracts": 1
+  },
+  "918-66": {
+   "description": "Human Resources Consulting",
+   "lines": 2,
+   "contracts": 2
+  },
+  "918-85": {
+   "description": "Personnel and Employment Consulting, Human Resources",
+   "lines": 2,
+   "contracts": 2
+  },
+  "920-45": {
+   "description": "Software Maintenance and Support Services",
+   "lines": 1,
+   "contracts": 1
+  },
+  "920-66": {
+   "description": "System, Network, Database, DBA Administration Services",
+   "lines": 1,
+   "contracts": 1
+  },
+  "936-00": {
+   "description": "EQUIPMENT MAINTENANCE AND REPAIR SERVICES FOR GENERAL EQUIPMENT",
+   "lines": 1,
+   "contracts": 1
+  },
+  "936-37": {
+   "description": "Gates, Electric, Card Reader, etc. Maintenance and Repair",
+   "lines": 1,
+   "contracts": 1
+  },
+  "946-25": {
+   "description": "Banking Services",
+   "lines": 1,
+   "contracts": 1
+  },
+  "946-38": {
+   "description": "Custom Brokerage Services, Including Stocks and Bonds",
+   "lines": 2,
+   "contracts": 2
+  },
+  "958-15": {
+   "description": "Building and Facilities Management Services",
+   "lines": 1,
+   "contracts": 1
+  },
+  "958-72": {
+   "description": "Parking Management Services, Including Operations, Admissions, and Supervision",
+   "lines": 1,
+   "contracts": 1
+  },
+  "958-77": {
+   "description": "Project Management Services",
+   "lines": 3,
+   "contracts": 3
+  },
+  "961-02": {
+   "description": "Administrative Services, All Kinds Req # / Item #: REQ-10700-00095286 / 1",
+   "lines": 2,
+   "contracts": 2
+  },
+  "963-43": {
+   "description": "Intergovernmental and Inter-Agency Contracts",
+   "lines": 202,
+   "contracts": 202
+  },
+  "966-00": {
+   "description": "PRINTING AND TYPESETTING SERVICES",
+   "lines": 1,
+   "contracts": 1
+  },
+  "966-07": {
+   "description": "Business Cards Printing",
+   "lines": 1,
+   "contracts": 1
+  },
+  "967-00": {
+   "description": "PRODUCTION AND MANUFACTURING SERVICES",
+   "lines": 1,
+   "contracts": 1
+  },
+  "990-46": {
+   "description": "Guard and Security Services",
+   "lines": 3,
+   "contracts": 1
+  }
+ },
+ "classes": {
+  "204": {
+   "items": [
+    "204-89 Scanners and Readers, Magnetic Strip"
+   ],
+   "contracts": 1
+  },
+  "206": {
+   "items": [
+    "206-85 Scanners and Readers, Magnetic Strip",
+    "206-86 Scanners and Readers, Optical Character: Bar Code, Remittance Scanner and Processors, etc."
+   ],
+   "contracts": 1
+  },
+  "207": {
+   "items": [
+    "207-00 COMPUTER ACCESSORIES AND SUPPLIES"
+   ],
+   "contracts": 1
+  },
+  "405": {
+   "items": [
+    "405-13 Gas, Natural, Including Compressed Natural Gas (CNG) Req # / Item #: REQ-10700-00144283 / 1",
+    "405-15 Gasoline, Automotive Req # / Item #: REQ-10700-00194251 / 1"
+   ],
+   "contracts": 3
+  },
+  "425": {
+   "items": [
+    "425-06 Chairs, Metal",
+    "425-20 Desks and Tables, Metal",
+    "425-40 Filing Cabinets, Metal: Card, Jumbo, Lateral, Legal, and Letter"
+   ],
+   "contracts": 1
+  },
+  "625": {
+   "items": [
+    "625-26 Eye Glasses Including Sunglasses, Including Frames, Cases, Parts, etc."
+   ],
+   "contracts": 1
+  },
+  "850": {
+   "items": [
+    "850-00 TEXTILES, FIBERS, HOUSEHOLD LINENS, AND PIECE GOODS",
+    "850-03 Bags, Bedding"
+   ],
+   "contracts": 1
+  },
+  "915": {
+   "items": [
+    "915-15 Broadcasting Services, Television"
+   ],
+   "contracts": 1
+  },
+  "918": {
+   "items": [
+    "918-19 Buildings, Structures and Components Consulting",
+    "918-32 Consulting Services (Not Otherwise Classified)",
+    "918-66 Human Resources Consulting",
+    "918-85 Personnel and Employment Consulting, Human Resources"
+   ],
+   "contracts": 5
+  },
+  "920": {
+   "items": [
+    "920-45 Software Maintenance and Support Services",
+    "920-66 System, Network, Database, DBA Administration Services"
+   ],
+   "contracts": 2
+  },
+  "936": {
+   "items": [
+    "936-00 EQUIPMENT MAINTENANCE AND REPAIR SERVICES FOR GENERAL EQUIPMENT",
+    "936-37 Gates, Electric, Card Reader, etc. Maintenance and Repair"
+   ],
+   "contracts": 1
+  },
+  "946": {
+   "items": [
+    "946-25 Banking Services",
+    "946-38 Custom Brokerage Services, Including Stocks and Bonds"
+   ],
+   "contracts": 3
+  },
+  "958": {
+   "items": [
+    "958-15 Building and Facilities Management Services",
+    "958-72 Parking Management Services, Including Operations, Admissions, and Supervision",
+    "958-77 Project Management Services"
+   ],
+   "contracts": 5
+  },
+  "961": {
+   "items": [
+    "961-02 Administrative Services, All Kinds Req # / Item #: REQ-10700-00095286 / 1"
+   ],
+   "contracts": 2
+  },
+  "963": {
+   "items": [
+    "963-43 Intergovernmental and Inter-Agency Contracts"
+   ],
+   "contracts": 202
+  },
+  "966": {
+   "items": [
+    "966-00 PRINTING AND TYPESETTING SERVICES",
+    "966-07 Business Cards Printing"
+   ],
+   "contracts": 1
+  },
+  "967": {
+   "items": [
+    "967-00 PRODUCTION AND MANUFACTURING SERVICES"
+   ],
+   "contracts": 1
+  },
+  "990": {
+   "items": [
+    "990-46 Guard and Security Services"
+   ],
+   "contracts": 1
+  },
+  "080": {
+   "items": [
+    "080-55 Nameplates, Plastic"
+   ],
+   "contracts": 1
+  }
+ }
+}

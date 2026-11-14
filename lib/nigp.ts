@@ -1,11 +1,12 @@
 // NIGP commodity codes, as NJSTART's public contract pages print them (scripts/import-njstart.ts
-// writes seed/catalog/source/njstart/nigp.json). Agora holds no licensed NIGP codebook, so it can
-// name only the codes those records use: 520 item codes in 150 classes. Server only.
+// writes seed/catalog/source/njstart/nigp.json), plus the codes OregonBuys prints that NJSTART's
+// don't (scripts/import-oregon.ts writes seed/catalog/source/oregon/nigp.json). Agora holds no
+// licensed NIGP codebook, so it can name only the codes those records use. Server only.
 //
 // Contracts carry their codes in CatalogContract.nigp: "published" when the contract's own records
 // print them (NJSTART), "reviewed" when the AI review chose the classes from this list (co-ops, GSA).
 
-import { readFileSync } from "node:fs";
+import { existsSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 
 interface Codebook {
@@ -15,11 +16,24 @@ interface Codebook {
 
 const g = globalThis as unknown as { __agoraNigp?: Codebook };
 function load(): Codebook {
-  if (!g.__agoraNigp) g.__agoraNigp = JSON.parse(readFileSync(join(process.cwd(), "seed/catalog/source/njstart/nigp.json"), "utf8")) as Codebook;
+  if (!g.__agoraNigp) {
+    const book = JSON.parse(readFileSync(join(process.cwd(), "seed/catalog/source/njstart/nigp.json"), "utf8")) as Codebook;
+    const or = join(process.cwd(), "seed/catalog/source/oregon/nigp.json");
+    if (existsSync(or)) {
+      const extra = JSON.parse(readFileSync(or, "utf8")) as Codebook;
+      for (const [code, x] of Object.entries(extra.codes)) {
+        if (book.codes[code]) continue;
+        book.codes[code] = x;
+        const k = code.slice(0, 3);
+        (book.classes[k] ??= { items: [], contracts: 0 }).items.push(`${code} ${x.description}`);
+      }
+    }
+    g.__agoraNigp = book;
+  }
   return g.__agoraNigp;
 }
 
-/** "490-90" → its description as NJSTART prints it. */
+/** "490-90" → its description as NJSTART (or OregonBuys) prints it. */
 export const nigpCodeLabel = (code: string): string | null => load().codes[code]?.description ?? null;
 
 /** A class has no published title here, so it's described by the item codes seen under it: "490: Testing Instruments, Laboratory; …". */

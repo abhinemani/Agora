@@ -5,7 +5,8 @@
 //                                 AGORA_ANTHROPIC_API_KEY in a Claude Code cloud session)
 //   npm run eval -- --guards      only the cases that need no key
 //   npm run eval -- --only brief  cases whose id or task contains "brief"
-//   npm run eval -- --runs 3      each live case three times; it passes only if all three do
+//   npm run eval -- --runs 3      each live case three times; it passes only if all three do,
+//                                 and its pass rate (2/3) is printed and saved with --save
 //   npm run eval -- --save        save this run as the baseline (evals/baseline.json)
 //
 // It exits with an error if any case fails that isn't already recorded as
@@ -30,6 +31,8 @@ interface Baseline {
   /** Each task's prompt fingerprint when the baseline was saved. */
   prompts: Partial<Record<Task, string>>;
   cases: Record<string, "pass" | "fail">;
+  /** Live cases' pass rates ("2/3") from the last save made with --runs above 1. */
+  rates?: Record<string, string>;
 }
 const BASELINE = join(process.cwd(), "evals/baseline.json");
 const LAST = join(process.cwd(), "evals/last-run.json");
@@ -46,6 +49,9 @@ interface Result {
   output: string | null;
   /** Set when the API itself failed (bad key, rate limit, outage), so the model was never tested. */
   unrun?: string;
+  /** Live cases: how many runs passed, of how many. */
+  passed?: number;
+  of?: number;
 }
 
 /** An API failure rather than a model answer: such a case says nothing about the prompt. */
@@ -84,6 +90,8 @@ async function runOnce(c: Case, fx: Awaited<ReturnType<typeof fixtures>>): Promi
   stubModel(null);
 
   const results: Result[] = [];
+  /** What became of the model's output in each live run, by task: kept, partial, discarded or failed. */
+  const outcomes = new Map<Task, Map<string, number>>();
   /** Live cases the API never answered. They are reported, but never scored or saved. */
   const unrunnable: Result[] = [];
   for (const c of picked) {
@@ -92,6 +100,8 @@ async function runOnce(c: Case, fx: Awaited<ReturnType<typeof fixtures>>): Promi
     const problems: string[] = [];
     let last = { outcome: null as string | null, output: null as string | null };
     let unrun: string | undefined;
+    let passed = 0;
+    let of = 0;
     for (let i = 0; i < (kind === "live" ? runs : 1); i++) {
       const r = await runOnce(c, fx);
       if (r.unrun && kind === "live") {
@@ -104,6 +114,13 @@ async function runOnce(c: Case, fx: Awaited<ReturnType<typeof fixtures>>): Promi
         break;
       }
       problems.push(...r.problems.map((p) => (runs > 1 && kind === "live" ? `run ${i + 1}: ${p}` : p)));
+      of++;
+      if (!r.problems.length) passed++;
+      if (kind === "live") {
+        const m = outcomes.get(c.task) ?? new Map<string, number>();
+        m.set(r.outcome ?? "none", (m.get(r.outcome ?? "none") ?? 0) + 1);
+        outcomes.set(c.task, m);
+      }
       last = r;
     }
     if (unrun) {
@@ -111,9 +128,10 @@ async function runOnce(c: Case, fx: Awaited<ReturnType<typeof fixtures>>): Promi
       console.log(` ---  ${c.id.padEnd(40)} ${c.title}\n         didn't run: ${unrun}`);
       continue;
     }
-    const res: Result = { id: c.id, task: c.task, kind, title: c.title, pass: !problems.length, problems, ...last };
+    const res: Result = { id: c.id, task: c.task, kind, title: c.title, pass: !problems.length, problems, ...last, ...(kind === "live" ? { passed, of } : {}) };
     results.push(res);
-    console.log(`${res.pass ? "  ok  " : " FAIL "} ${c.id.padEnd(40)} ${c.title}`);
+    const rate = kind === "live" && runs > 1 ? `${passed}/${of}`.padEnd(5) : "";
+    console.log(`${res.pass ? "  ok  " : " FAIL "} ${c.id.padEnd(40)} ${rate}${c.title}`);
     for (const p of problems) console.log(`         ${p}`);
   }
 
@@ -126,8 +144,12 @@ async function runOnce(c: Case, fx: Awaited<ReturnType<typeof fixtures>>): Promi
       const of = rs.filter((r) => r.kind === kind);
       return of.length ? `${of.filter((r) => r.pass).length}/${of.length}` : "–";
     };
-    console.log(`  ${TASKS[task].padEnd(32)} prompt ${promptsSeen.get(task) ?? "?"}   checks ${part("guard").padEnd(6)} model ${part("live")}`);
+    const o = outcomes.get(task);
+    const total = o ? [...o.values()].reduce((a, b) => a + b, 0) : 0;
+    const kept = o ? `   output kept ${o.get("kept") ?? 0}/${total}${o.get("partial") ? `, in part ${o.get("partial")}` : ""}${o.get("discarded") ? `, discarded ${o.get("discarded")}` : ""}` : "";
+    console.log(`  ${TASKS[task].padEnd(32)} prompt ${promptsSeen.get(task) ?? "?"}   checks ${part("guard").padEnd(6)} model ${part("live").padEnd(6)}${kept}`);
   }
+  if (outcomes.size) console.log("  (output kept counts every live run's model output: kept whole, kept in part, or discarded by a check)");
 
   // ---- against the baseline
   const base: Baseline | null = existsSync(BASELINE) ? JSON.parse(readFileSync(BASELINE, "utf8")) : null;
@@ -148,6 +170,12 @@ async function runOnce(c: Case, fx: Awaited<ReturnType<typeof fixtures>>): Promi
     if (fixed.length) console.log(`  Now passing that failed before: ${fixed.map((r) => r.id).join(", ")}.`);
     if (known.length) console.log(`  Still failing, as in the baseline: ${known.map((r) => r.id).join(", ")}.`);
     if (regressions.length) console.log(`  REGRESSIONS, passed before and fail now: ${regressions.map((r) => r.id).join(", ")}.`);
+    const rateOf = (r: string) => {
+      const [a, b] = r.split("/").map(Number);
+      return b ? a / b : 1;
+    };
+    const lower = results.filter((r) => r.of && runs > 1 && base.rates?.[r.id] && r.passed! / r.of < rateOf(base.rates[r.id]));
+    if (lower.length) console.log(`  Lower pass rate than the baseline: ${lower.map((r) => `${r.id} (${r.passed}/${r.of}, was ${base.rates![r.id]})`).join(", ")}.`);
     if (unbaselined.length && key) console.log(`  ${unbaselined.length} model case${unbaselined.length === 1 ? " has" : "s have"} no baseline yet.`);
   }
   if (fresh.length) console.log(`  Failing, with no baseline to compare: ${fresh.map((r) => r.id).join(", ")}.`);
@@ -164,8 +192,13 @@ async function runOnce(c: Case, fx: Awaited<ReturnType<typeof fixtures>>): Promi
       model: MODEL,
       prompts: { ...base?.prompts, ...Object.fromEntries(promptsSeen) },
       cases: { ...base?.cases, ...Object.fromEntries(results.map((r) => [r.id, r.pass ? "pass" : "fail"] as const)) },
+      rates: { ...base?.rates, ...(runs > 1 ? Object.fromEntries(results.filter((r) => r.of).map((r) => [r.id, `${r.passed}/${r.of}`])) : {}) },
     };
+    if (runs === 1) for (const r of results) if (r.of && next.rates) delete next.rates[r.id];
     for (const id of Object.keys(next.cases)) if (!CASES.some((c) => c.id === id)) delete next.cases[id];
+    for (const id of Object.keys(next.rates ?? {})) if (!CASES.some((c) => c.id === id)) delete next.rates![id];
+    next.rates = Object.fromEntries(Object.entries(next.rates ?? {}).sort(([a], [b]) => a.localeCompare(b)));
+    if (!Object.keys(next.rates).length) delete next.rates;
     next.cases = Object.fromEntries(Object.entries(next.cases).sort(([a], [b]) => a.localeCompare(b)));
     writeFileSync(BASELINE, `${JSON.stringify(next, null, 2)}\n`);
     console.log(`Saved the baseline: ${Object.keys(next.cases).length} cases.`);

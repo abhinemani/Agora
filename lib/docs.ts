@@ -413,6 +413,17 @@ const mask = (t: string) =>
     .join("\n");
 const excerpt = (p: Passage): Passage => ({ ...p, text: mask(p.text.length > 600 ? `${p.text.slice(0, 600)}…` : p.text) });
 
+/** Why a brief field's answer can't be shown, or null when its quote and summary check out. Each reason starts the same way for the same failure, so /quality can count them (reasonKind in lib/ai-log.ts). */
+function briefProblem(a: { p: Passage | undefined; passages: Passage[]; quote: string; summary: string; n: number }): string | null {
+  // Any numbered passage will do, not only the ones listed under this field: what matters is that the words are on the page.
+  if (!a.p) return `cited passage ${a.n}, which doesn't exist`;
+  if (a.quote.length < 12) return "the quote is too short to check";
+  if (!flat(a.p.text).includes(flat(a.quote))) return `the quote isn't in passage ${a.n} word for word`;
+  if (!a.summary) return "the summary is empty";
+  const why = ungrounded(a.summary, [], { passages: [...new Set([...a.passages, a.p])].map((x) => x.text) }, []);
+  return why ? `the summary's ${why}` : null;
+}
+
 const briefs = ((globalThis as unknown as { __agoraBriefs?: Map<string, ContractBrief> }).__agoraBriefs ??= new Map<string, ContractBrief>());
 
 /** Read a contract's documents into the six brief fields. Each summary rests on a quote checked against the page. */
@@ -463,6 +474,8 @@ export async function contractBrief(db: Db, contractId: string): Promise<Contrac
   });
 
   let verified = 0;
+  /** Why each field the model answered was dropped, so the log says which check it failed. */
+  const dropped: string[] = [];
   const fields: BriefField[] = per.map(({ f, passages }) => {
     const fallback = passages[0] ? excerpt(passages[0]) : null;
     const a = out?.fields.find((x) => x.id === f.id);
@@ -470,16 +483,17 @@ export async function contractBrief(db: Db, contractId: string): Promise<Contrac
       const p = numbered[a.passage - 1];
       const text = a.quote.trim().replace(/^["“]|["”]$/g, "");
       const summary = a.summary.trim();
-      const ok = p && passages.includes(p) && text.length >= 12 && flat(p.text).includes(flat(text)) && summary && !ungrounded(summary, [], { passages: passages.map((x) => x.text) }, []);
-      if (ok) {
+      const problem = briefProblem({ p, passages, quote: text, summary, n: a.passage });
+      if (!problem && p) {
         verified++;
         return { id: f.id, label: f.label, summary: mask(summary), quote: { document: p.document, page: p.page, text: mask(text) }, passage: null };
       }
+      dropped.push(`field ${f.id}: ${problem}`);
     }
     return { id: f.id, label: f.label, summary: null, quote: null, passage: fallback };
   });
   const found = out?.fields.filter((x) => x.found) ?? [];
-  const log_id = pieces(out, found.map((x) => `${x.id}: ${x.summary} [${x.passage}] "${x.quote}"`).join("\n"), verified, found.length, "A field's quote didn't match the document, or its summary stated a figure the passages don't hold", { declined: !found.length });
+  const log_id = pieces(out, found.map((x) => `${x.id}: ${x.summary} [${x.passage}] "${x.quote}"`).join("\n"), verified, found.length, dropped.join("; "), { declined: !found.length });
   const brief: ContractBrief = {
     ...base,
     ...(log_id ? { log_id } : {}),

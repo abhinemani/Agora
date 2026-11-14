@@ -1,0 +1,20 @@
+{
+ "source": "https://empireprocureconnect.info/empire-procure-connect-home",
+ "list_url": "https://empireprocureconnect.info/hubfs/Empire%20Procure%20Connect/Contract%20Lists/2026%201105_EPC%20Contract%20List.pdf?hsLang=en",
+ "list_period": "November 2026",
+ "retrieved": "2026-11-14",
+ "contracts": 197,
+ "open": 109,
+ "county_only": 88,
+ "on_list": 51,
+ "region_limited": 3,
+ "with_nigp": 197,
+ "by_county": {
+  "County of Rockland": 28,
+  "County of Chemung": 158,
+  "County of Ulster": 11
+ },
+ "suppliers": 157,
+ "documents": 534,
+ "priced_lines": 0
+}

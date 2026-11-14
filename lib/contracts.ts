@@ -14,7 +14,7 @@ import { coopOf, goHref, isContractLevelUrl, onCoopContract } from "./coops";
 import { readableCatalogDocument, readableDocuments } from "./docs";
 import { stateRuleFor, type BuyerStateRule } from "./state-rules";
 import { asNigp, nigpClassLabel, nigpCodeLabel } from "./nigp";
-import { isTrx, NY_PREFERRED_STEPS, TRX_PROGRAM } from "./trx";
+import { isTrx, NY_PREFERRED_STEPS, TRX_PROGRAM, TRX_PROGRAM_BY_NAME } from "./trx";
 import type { Buyer, Contract, Db } from "./types";
 import { checkEligibility } from "./vehicles";
 
@@ -155,7 +155,7 @@ function scan(db: Db, buyer: Buyer | null, q: string): Scan {
       fit = byNumber ? 100 : words.length ? fitScoreSets(words, idx.cTitle[i], idx.cScope[i], idx.cWeights) : 0;
       if (fit < 50) continue;
     }
-    const k = `${c.coop_id}|${c.states === "any" ? "*" : c.states.join(",")}|${(c.coop_sins ?? []).map((x) => x.code).join(",")}|${c.state_contract?.locals ?? ""}`;
+    const k = `${c.coop_id}|${c.states === "any" ? "*" : c.states.join(",")}|${(c.coop_sins ?? []).map((x) => x.code).join(",")}|${c.state_contract ? JSON.stringify([c.state_contract.locals, c.state_contract.participants, c.state_contract.use, c.state_contract.preferred, c.state_contract.owner]) : ""}`;
     let a = accessCache.get(k);
     if (!a) accessCache.set(k, (a = catalogAccess(db, buyer, c)));
     const offers = idx.offeringsByContract.get(c.id) ?? [];
@@ -345,7 +345,7 @@ const longDate = (d: string) => new Date(`${d}T12:00:00Z`).toLocaleDateString("e
 
 /** What an offering's number is, in plain words, by the vintage the importer gave it. */
 function offeringNote(o: CatalogOffering): string {
-  if (o.price != null && /^(NJSTART|Hawaii SPO|Arkansas OSP|NYS OGS)/.test(o.vintage ?? "")) return "Awarded state contract price";
+  if (o.price != null && /^(NJSTART|Hawaii SPO|Arkansas OSP|NYS OGS|Empire Procure Connect)/.test(o.vintage ?? "")) return "Awarded state contract price";
   if (o.price != null) return /award/i.test(o.vintage ?? "") ? "Awarded bid, base model" : /net price/i.test(o.vintage ?? "") ? "Contract net price" : /base vehicle|cost sheet/i.test(o.vintage ?? "") ? "Base price, before options and delivery" : "Published price";
   if (o.list != null) return "List price, before the contract discount";
   if (o.status === "member_login") return "Price behind the co-op's member login";
@@ -359,7 +359,7 @@ function steps(c: { program: string; number: string; supplier: string; kind: Con
   if (c.state?.preferred) return NY_PREFERRED_STEPS({ supplier: c.supplier, approval: c.state.preferred });
   if (c.state && !c.in_agora) {
     // A TRX state contract, bought by a local the way that state's program sets out (lib/trx.ts).
-    const program = TRX_PROGRAM[c.state.code];
+    const program = TRX_PROGRAM_BY_NAME[c.state.name] ?? TRX_PROGRAM[c.state.code];
     if (program) out.push(...program.steps({ supplier: c.supplier, number: c.number, solicitation: c.state.solicitation }));
     else out.push(`Buy from ${c.supplier || "the supplier"} under ${c.state.name} ${c.number}.`);
     out.push(c.priced > 0 ? "Check the supplier's quote against the awarded prices below. They're the state's line items; anything not listed is priced from the contract's own price list." : "Ask the supplier for a quote at the contract's prices; its price list is among the documents below.");

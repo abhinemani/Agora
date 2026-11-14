@@ -4,6 +4,7 @@
 
 import { NextResponse } from "next/server";
 import { exploreContracts, contractDetail, type ContractKind } from "@/lib/contracts";
+import { searchDocuments } from "@/lib/doc-store";
 import { getDb } from "@/lib/db";
 import { withSession } from "@/lib/session";
 
@@ -12,7 +13,7 @@ export const dynamic = "force-dynamic";
 const KINDS = new Set(["coop", "federal", "state", "agency", "reseller"]);
 
 // Read-only: it changes nothing in the store, so there is nothing to save afterwards.
-export const GET = withSession((req: Request) => {
+export const GET = withSession(async (req: Request) => {
   const p = new URL(req.url).searchParams;
   const db = getDb();
   const id = p.get("id");
@@ -21,6 +22,9 @@ export const GET = withSession((req: Request) => {
     return contract ? NextResponse.json({ contract }) : NextResponse.json({ contract: null }, { status: 404 });
   }
   const kind = p.get("kind") ?? "";
+  // Contracts whose documents contain the query (lib/doc-store.ts; nothing without a database).
+  const q = (p.get("q") ?? "").trim();
+  const docHits = q.length >= 3 && !/^\d[\d\s-]*$/.test(q) ? new Map((await searchDocuments(q, { limit: 100 })).map((h) => [h.contract_id, h])) : undefined;
   return NextResponse.json(
     exploreContracts(db, {
       q: p.get("q") ?? "",
@@ -32,6 +36,7 @@ export const GET = withSession((req: Request) => {
       readable: p.get("readable") === "1",
       offset: Number(p.get("offset")) || 0,
       limit: 25,
+      docHits,
     }),
   );
 }, { readOnly: true });

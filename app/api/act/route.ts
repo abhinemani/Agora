@@ -16,7 +16,10 @@ const handlers: Record<string, Handler> = {
   setBuyer: (b) => A.setBuyer(b.buyer),
   clearBuyer: () => A.clearBuyer(),
   requestQuote: (b) => A.requestQuote(b),
-  getResults: (b) => A.getResults(b.requestId),
+  getResults: async (b) => {
+    await A.prepareResults(b.requestId);
+    return A.getResults(b.requestId);
+  },
   confirmItems: (b) => A.confirmItems(b),
   editItems: (b) => A.editItems(b.requestId),
   shopperBrief: (b) => A.shopperBrief(b.requestId),

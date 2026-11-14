@@ -19,6 +19,8 @@ const MAX_PAGES = 60;
 export interface InputFile {
   filename: string;
   buffer: Buffer;
+  /** Save the file under uploads/ (an upload a person made). The document reader reads without saving. */
+  keep?: boolean;
 }
 
 export interface ExtractedFile {
@@ -79,9 +81,11 @@ function htmlTableRows(html: string): unknown[][] {
 export async function extractFile(file: InputFile): Promise<ExtractedFile> {
   const ext = file.filename.toLowerCase().split(".").pop() ?? "";
   const hash = createHash("sha256").update(file.buffer).digest("hex").slice(0, 16);
-  mkdirSync(UPLOAD_DIR, { recursive: true });
-  const stored = join(UPLOAD_DIR, `${hash}.${ext}`);
-  if (!existsSync(stored)) writeFileSync(stored, file.buffer);
+  if (file.keep !== false) {
+    mkdirSync(UPLOAD_DIR, { recursive: true });
+    const stored = join(UPLOAD_DIR, `${hash}.${ext}`);
+    if (!existsSync(stored)) writeFileSync(stored, file.buffer);
+  }
   const base = { filename: file.filename, hash, mime: MIME[ext] ?? "application/octet-stream" };
 
   if (ext === "pdf") {

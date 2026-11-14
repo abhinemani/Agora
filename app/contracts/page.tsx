@@ -272,6 +272,12 @@ function Row({ r }: { r: ContractRow }) {
             {r.supplier}
             {r.end ? ` · through ${shortDate(r.end)}` : " · end date not published"}
           </div>
+          {r.found_in && (
+            <div className="mt-1 text-ui-2xs text-base-darker">
+              In {r.found_in.label}
+              {r.found_in.page > 1 ? `, page ${r.found_in.page}` : ""}: <span className="italic">&ldquo;{r.found_in.snippet}&rdquo;</span>
+            </div>
+          )}
         </div>
         <div className="flex flex-wrap items-center gap-2 sm:flex-col sm:items-end sm:justify-center">
           <AccessTag access={r.access} />

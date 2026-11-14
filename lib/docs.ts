@@ -12,7 +12,9 @@ import { join } from "node:path";
 import * as z from "zod/v4";
 import { catalogContract, catalogDocumentsFor, catalogSupplierById, type CatalogDocument } from "./catalog";
 import { discarded, modelOn, pieces, structured } from "./llm";
+import { contractPages, storeDocument, storedPages } from "./doc-store";
 import { extractFile } from "./parser";
+import { hasDatabase } from "./pg";
 import { ungrounded } from "./shopper-ai";
 import type { Db } from "./types";
 
@@ -72,7 +74,7 @@ export interface ReadableContract {
   title: string;
   documents: { label: string; held: boolean }[];
 }
-interface Page {
+export interface Page {
   num: number;
   text: string;
 }
@@ -94,6 +96,10 @@ export interface ContractAnswer {
 }
 
 const isFile = (url: string) => /\.(pdf|xlsx|xls|docx|csv)(\?|$)/i.test(url);
+/** May the server fetch this document? A file or download action on one of DOCUMENT_HOSTS. */
+export const fetchable = (url: string) => allowed(url);
+/** Text Agora holds in the repository for this URL (seed/catalog/doctext). */
+export const heldPages = (url: string): Page[] | null => (heldTextReady() ? (textFor(url)?.pages ?? null) : null);
 const allowed = (url: string) => {
   try {
     const u = new URL(url);
@@ -196,52 +202,56 @@ export function readableContracts(db: Db): ReadableContract[] {
 
 const cache = ((globalThis as unknown as { __agoraDocText?: Map<string, Page[]> }).__agoraDocText ??= new Map<string, Page[]>());
 
-async function pagesOf(doc: Doc): Promise<Page[]> {
-  const have = cache.get(doc.id);
-  if (have) return have;
-  const held = doc.url ? textFor(doc.url) : null;
-  if (held) {
-    cache.set(doc.id, held.pages);
-    return held.pages;
-  }
+/** Fetch a document from its publisher and read its text. Throws with the reason it couldn't be read; `status` on
+ * the error says which kind ("scan", "too_large", "unsupported", "failed"), for the document store. */
+export async function fetchDocument(url: string): Promise<{ pages: Page[]; filename: string; bytes: number }> {
   let buffer: Buffer;
   let filename: string;
-  if (doc.path) {
-    buffer = readFileSync(doc.path);
-    filename = doc.path.split("/").pop()!;
-  } else {
-    const controller = new AbortController();
-    const timer = setTimeout(() => controller.abort(), 25_000);
-    try {
-      const res = await fetch(doc.url!, { signal: controller.signal, headers: { "user-agent": "Agora contract reader" } });
-      if (!res.ok) throw new Error(`its publisher answered ${res.status}`);
-      if (Number(res.headers.get("content-length") ?? 0) > MAX_BYTES) throw new Error("it is over 15 MB");
-      buffer = Buffer.from(await res.arrayBuffer());
-      if (buffer.length > MAX_BYTES) throw new Error("it is over 15 MB");
-      let from = new URL(doc.url!);
-      // GSA's "online" page is a redirect stub to the contract's PDF in the same folder.
-      const hop = buffer.length < 4000 ? buffer.toString("utf8").match(/http-equiv=["']?refresh["']?[^>]*url=([^"'>\s]+)/i) : null;
-      if (hop) {
-        const next = new URL(hop[1], from);
-        if (next.host !== from.host || !next.pathname.startsWith("/ref_text/")) throw new Error("it points somewhere Agora doesn't read");
-        const res2 = await fetch(next, { signal: controller.signal, headers: { "user-agent": "Agora contract reader" } });
-        if (!res2.ok) throw new Error(`its publisher answered ${res2.status}`);
-        if (Number(res2.headers.get("content-length") ?? 0) > MAX_BYTES) throw new Error("it is over 15 MB");
-        buffer = Buffer.from(await res2.arrayBuffer());
-        if (buffer.length > MAX_BYTES) throw new Error("it is over 15 MB");
-        from = next;
-      }
-      // A download action names the file in its Content-Disposition header ("Price Sheet.xlsx").
-      const disposed = res.headers.get("content-disposition")?.match(/filename\*?=(?:UTF-8'')?"?([^";]+)"?/i)?.[1];
-      filename = disposed ? decodeURIComponent(disposed) : decodeURIComponent(from.pathname.split("/").pop() || "document.pdf");
-      if (!/\.\w{2,4}$/.test(filename)) filename += buffer.subarray(0, 4).toString("latin1") === "%PDF" ? ".pdf" : buffer.subarray(0, 2).toString("latin1") === "PK" ? ".xlsx" : "";
-    } catch (e) {
-      const m = (e as Error).message;
-      throw new Error((e as Error).name === "AbortError" ? "its publisher took too long" : !m || m === "fetch failed" ? "its publisher couldn't be reached" : m);
-    } finally {
-      clearTimeout(timer);
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), 45_000);
+  try {
+    const res = await fetch(url, { signal: controller.signal, headers: { "user-agent": "Agora contract reader" } });
+    if (!res.ok) throw new Error(`its publisher answered ${res.status}`);
+    if (Number(res.headers.get("content-length") ?? 0) > MAX_BYTES) throw docError("it is over 15 MB", "too_large");
+    buffer = Buffer.from(await res.arrayBuffer());
+    if (buffer.length > MAX_BYTES) throw docError("it is over 15 MB", "too_large");
+    let from = new URL(url);
+    // GSA's "online" page is a redirect stub to the contract's PDF in the same folder.
+    const hop = buffer.length < 4000 ? buffer.toString("utf8").match(/http-equiv=["']?refresh["']?[^>]*url=([^"'>\s]+)/i) : null;
+    if (hop) {
+      const next = new URL(hop[1], from);
+      if (next.host !== from.host || !next.pathname.startsWith("/ref_text/")) throw new Error("it points somewhere Agora doesn't read");
+      const res2 = await fetch(next, { signal: controller.signal, headers: { "user-agent": "Agora contract reader" } });
+      if (!res2.ok) throw new Error(`its publisher answered ${res2.status}`);
+      if (Number(res2.headers.get("content-length") ?? 0) > MAX_BYTES) throw docError("it is over 15 MB", "too_large");
+      buffer = Buffer.from(await res2.arrayBuffer());
+      if (buffer.length > MAX_BYTES) throw docError("it is over 15 MB", "too_large");
+      from = next;
     }
+    // A download action names the file in its Content-Disposition header ("Price Sheet.xlsx").
+    const disposed = res.headers.get("content-disposition")?.match(/filename\*?=(?:UTF-8'')?"?([^";]+)"?/i)?.[1];
+    filename = disposed ? safeDecode(disposed) : safeDecode(from.pathname.split("/").pop() || "document.pdf");
+    if (!/\.\w{2,4}$/.test(filename)) filename += buffer.subarray(0, 4).toString("latin1") === "%PDF" ? ".pdf" : buffer.subarray(0, 2).toString("latin1") === "PK" ? ".xlsx" : "";
+  } catch (e) {
+    const m = (e as Error).message;
+    if ((e as { status?: string }).status) throw e;
+    throw new Error((e as Error).name === "AbortError" ? "its publisher took too long" : !m || m === "fetch failed" ? "its publisher couldn't be reached" : m);
+  } finally {
+    clearTimeout(timer);
   }
+  return { pages: await readBuffer(buffer, filename), filename, bytes: buffer.length };
+}
+const docError = (message: string, status: string) => Object.assign(new Error(message), { status });
+const safeDecode = (s: string) => {
+  try {
+    return decodeURIComponent(s);
+  } catch {
+    return s;
+  }
+};
+
+/** A file's text by page: PDFs read directly, everything else through the upload reader. */
+async function readBuffer(buffer: Buffer, filename: string): Promise<Page[]> {
   let pages: Page[];
   if (/\.pdf$/i.test(filename)) {
     // Read directly: master agreements and price lists run past the upload reader's 60-page limit.
@@ -253,10 +263,37 @@ async function pagesOf(doc: Doc): Promise<Page[]> {
     } finally {
       await parser.destroy();
     }
-    if (pages.reduce((n, p) => n + p.text.replace(/\s/g, "").length, 0) < 40 * pages.length) throw new Error("it is a scanned document with no text layer");
-  } else {
-    const file = await extractFile({ filename, buffer });
-    pages = file.rows?.length ? [{ num: 1, text: file.rows.map((r) => r.map((c) => String(c ?? "")).join("  ")).join("\n") }] : file.pages;
+    if (pages.reduce((n, p) => n + p.text.replace(/\s/g, "").length, 0) < 40 * pages.length) throw docError("it is a scanned document with no text layer", "scan");
+    return pages;
+  }
+  if (!/\.(xlsx|xls|csv|docx|htm|html)$/i.test(filename)) throw docError(`Agora doesn't read ${filename.split(".").pop()?.toUpperCase() || "this kind of"} files`, "unsupported");
+  try {
+    const file = await extractFile({ filename, buffer, keep: false });
+    return file.rows?.length ? [{ num: 1, text: file.rows.map((r) => r.map((c) => String(c ?? "")).join("  ")).join("\n") }] : file.pages;
+  } catch (e) {
+    throw docError((e as Error).message.replace(/\.$/, ""), /scanned/i.test((e as Error).message) ? "scan" : "failed");
+  }
+}
+
+async function pagesOf(doc: Doc): Promise<Page[]> {
+  const have = cache.get(doc.id);
+  if (have) return have;
+  const held = doc.url ? textFor(doc.url) : null;
+  if (held) {
+    cache.set(doc.id, held.pages);
+    return held.pages;
+  }
+  let pages: Page[];
+  if (doc.path) pages = await readBuffer(readFileSync(doc.path), doc.path.split("/").pop()!);
+  else {
+    // Text the server has already stored (lib/doc-ingest.ts), then the publisher; what's fetched is stored for next time.
+    const stored = hasDatabase() ? await storedPages(doc.url!) : null;
+    if (stored) pages = stored;
+    else {
+      const got = await fetchDocument(doc.url!);
+      pages = got.pages;
+      if (hasDatabase()) storeDocument(doc.url!, got).catch((e) => console.error("[docs] couldn't store a document:", (e as Error).message));
+    }
   }
   cache.set(doc.id, pages);
   return pages;
@@ -318,6 +355,18 @@ export async function askDocument(db: Db, contractId: string, question: string):
       all.push(...chunks(d.label, pages));
     } catch (e) {
       unread.push(`${d.label} couldn't be read: ${(e as Error).message}.`);
+    }
+  }
+  // The rest of the contract's documents, when the server has stored their text: the pages that best match the question.
+  if (hasDatabase()) {
+    const catId = catalogContract(contractId)?.id ?? catalogContract(db.contracts.find((c) => c.id === contractId)?.catalog_id)?.id;
+    const readUrls = new Set(entry.docs.map((d) => d.url).filter(Boolean));
+    const more = catId ? (await contractPages(catId, question, 12)).filter((p) => !readUrls.has(p.url)) : [];
+    const byLabel = new Map<string, Page[]>();
+    for (const p of more) (byLabel.get(p.label) ?? byLabel.set(p.label, []).get(p.label)!).push({ num: p.num, text: p.text });
+    for (const [label, pages] of byLabel) {
+      read.push({ label: `${label} (${pages.length === 1 ? "one page" : `${pages.length} pages`} matched)`, pages: pages.length });
+      all.push(...chunks(label, pages));
     }
   }
   const base = { contract: entry.name, read, unread };

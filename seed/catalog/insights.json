@@ -436,6 +436,66 @@
    "offerings": 5810
   }
  ],
+ "nigp": {
+  "published": 1282,
+  "reviewed": 0,
+  "none": 32085,
+  "contracts": 33367,
+  "coop_contracts_coded": 0,
+  "coop_contracts": 31930,
+  "classes_used": 149,
+  "priced_offerings_coded": 4572,
+  "top_classes": [
+   [
+    "968",
+    125
+   ],
+   [
+    "928",
+    88
+   ],
+   [
+    "920",
+    51
+   ],
+   [
+    "915",
+    50
+   ],
+   [
+    "918",
+    48
+   ],
+   [
+    "946",
+    42
+   ],
+   [
+    "055",
+    41
+   ],
+   [
+    "060",
+    39
+   ],
+   [
+    "405",
+    37
+   ],
+   [
+    "650",
+    32
+   ],
+   [
+    "929",
+    32
+   ],
+   [
+    "072",
+    32
+   ]
+  ]
+ },
  "njstart": {
   "source": "https://www.njstart.gov/bso/view/search/external/advancedSearchContractBlanket.xhtml?view=activeContracts",
   "retrieved": "2026-11-14",

@@ -52,6 +52,9 @@ export interface CatalogContract {
   category?: string;
   /** A state contract (NJSTART), not a co-op's: who may use it and the solicitation it came from. */
   state_contract?: { state: string; locals: boolean; solicitation: string | null; type_code: string | null; group: string | null; spent: number | null; more_items: boolean };
+  /** NIGP commodity classes and item codes: "published" from the contract's own records (NJSTART),
+   * "reviewed" when the AI review chose the classes (lib/nigp.ts). */
+  nigp?: { classes: string[]; codes: string[]; source: "published" | "reviewed" };
 }
 /** A state program in a TRX state: the route Agora prefers for that state's buyers (lib/trx.ts). */
 export const isTrxContract = (c: Pick<CatalogContract, "state_contract"> | null | undefined) => Boolean(c?.state_contract && isTrxState(c.state_contract.state));
@@ -77,6 +80,8 @@ export interface CatalogOffering {
   unit: string | null;
   url: string;
   category: string | null;
+  /** The NIGP item code printed on this line (NJSTART). */
+  nigp?: string;
 }
 export interface CatalogDocument {
   id: string;

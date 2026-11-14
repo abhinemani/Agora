@@ -171,6 +171,11 @@ function splitTitle(desc: string): { t: string | null; title: string } {
 }
 
 /** The commodity group: "FLEET - Commodities Fleet" → "Commodities Fleet". */
+/** "490-90" and "49090" → "490-90"; a bare class "490" stays "490". */
+const normNigp = (c: string | null | undefined) => {
+  const m = (c ?? "").trim().match(/^(\d{3})-?(\d{2})?$/);
+  return m ? (m[2] ? `${m[1]}-${m[2]}` : m[1]) : null;
+};
 const groupName = (g: string | null) => (g ? g.replace(/^[A-Z0-9]+\s*-\s*/, "").trim() : null);
 const groupCode = (g: string | null) => (g ? (g.match(/^([A-Z0-9]+)\s*-/)?.[1] ?? null) : null);
 
@@ -280,6 +285,8 @@ for (const r of contractsCsv) {
       set_aside: d?.set_aside ?? null,
       spent_to_date: spent,
       line_items_paginated: r["Line Items May Be Paginated"] === "Yes",
+      // NIGP commodity codes as NJSTART publishes them on the contract's line items ("490-90").
+      nigp: [...new Set(nigp.map(normNigp).filter((x): x is string => Boolean(x)))].sort(),
     },
   });
 }
@@ -395,7 +402,7 @@ for (const r of items) {
       document_vintage: `NJSTART awarded contract price, contract term ${term}; read from NJSTART ${longDate(retrieved)}`,
       category_as_published: `${meta.state_contract.solicitation ? `${meta.state_contract.solicitation} ` : ""}${c.title}: awarded price, NJSTART item ${r.item_number}`,
       basis: "awarded_bid",
-      nigp: r.nigp_code || null,
+      nigp: normNigp(r.nigp_code),
       line: line.slice(0, 600),
     },
   });
@@ -434,4 +441,39 @@ const summary = {
   note: "Line items are the first summary page of each contract; contracts with more item pages are flagged line_items_paginated. Attachments are linked, not downloaded.",
 };
 writeFileSync(join(OUT, "summary.json"), JSON.stringify(summary, null, 1) + "\n");
+
+// The NIGP codes NJSTART's public records use, with the description the state prints beside each.
+// Agora has no licensed NIGP codebook: this is the list it can name, and the list review agents
+// choose classes from when tagging the co-ops' contracts (scripts/cleanup).
+{
+  const codes = new Map<string, { description: string; lines: number; contracts: Set<string> }>();
+  for (const r of items) {
+    const code = normNigp(r.nigp_code);
+    if (!code) continue;
+    const x = codes.get(code) ?? { description: r.nigp_description.replace(/\s+/g, " ").trim(), lines: 0, contracts: new Set<string>() };
+    x.lines++;
+    x.contracts.add(r.contract_number);
+    codes.set(code, x);
+  }
+  const classes: Record<string, { items: string[]; contracts: number }> = {};
+  for (const [code, x] of [...codes].sort(([a], [b]) => a.localeCompare(b))) {
+    const k = code.slice(0, 3);
+    (classes[k] ??= { items: [], contracts: 0 }).items.push(`${code} ${x.description}`);
+  }
+  for (const k of Object.keys(classes)) classes[k].contracts = new Set([...codes].filter(([c]) => c.startsWith(k)).flatMap(([, x]) => [...x.contracts])).size;
+  writeFileSync(
+    join(OUT, "nigp.json"),
+    JSON.stringify(
+      {
+        source: "NIGP codes and descriptions as printed on NJSTART's public contract pages",
+        retrieved,
+        codes: Object.fromEntries([...codes].sort(([a], [b]) => a.localeCompare(b)).map(([c, x]) => [c, { description: x.description, lines: x.lines, contracts: x.contracts.size }])),
+        classes,
+      },
+      null,
+      1,
+    ) + "\n",
+  );
+  console.log(`NIGP: ${codes.size} codes in ${Object.keys(classes).length} classes.`);
+}
 console.log(JSON.stringify(summary, null, 1));

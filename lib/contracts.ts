@@ -13,6 +13,7 @@ import { catalogAccess, catalogIndex, isTrxContract, type CatalogContract, type 
 import { coopOf, goHref, isContractLevelUrl, onCoopContract } from "./coops";
 import { readableCatalogDocument, readableDocuments } from "./docs";
 import { stateRuleFor, type BuyerStateRule } from "./state-rules";
+import { asNigp, nigpClassLabel, nigpCodeLabel } from "./nigp";
 import { isTrx, TRX_PROGRAM } from "./trx";
 import type { Buyer, Contract, Db } from "./types";
 import { checkEligibility } from "./vehicles";
@@ -52,6 +53,9 @@ export interface ContractRow {
   fit: number | null;
   /** A state contract in a TRX state (lib/trx.ts), the route Agora prefers for that state's buyers. */
   trx: boolean;
+  /** NIGP commodity classes, and whether the source printed them or the review chose them. */
+  nigp: string[];
+  nigp_source: "published" | "reviewed" | null;
 }
 
 const today = () => new Date().toISOString().slice(0, 10);
@@ -124,7 +128,10 @@ function scan(db: Db, buyer: Buyer | null, q: string): Scan {
   const now = today();
   const query = q.trim().toLowerCase();
   const words = requestTokens(query);
-  const numberLike = /\d/.test(query) ? query.replace(/\s+/g, "") : "";
+  // A NIGP code or class ("490", "490-90") finds the contracts tagged with it.
+  const nigpQ = asNigp(query);
+  const hasNigp = (c: CatalogContract) => Boolean(nigpQ && c.nigp && (nigpQ.length === 3 ? c.nigp.classes.includes(nigpQ) : c.nigp.codes.includes(nigpQ)));
+  const numberLike = /\d/.test(query) && !nigpQ ? query.replace(/\s+/g, "") : "";
   const seeded = new Set(db.contracts.map((c) => c.catalog_id).filter(Boolean));
   const rows: Scan["rows"] = [];
 
@@ -135,6 +142,7 @@ function scan(db: Db, buyer: Buyer | null, q: string): Scan {
     const set = new Set<number>();
     for (const w of words) for (const x of [w, ...(SAME_AS[w] ?? [])]) for (const i of idx.cIndex.get(x) ?? []) set.add(i);
     if (numberLike.length >= 3) idx.contracts.forEach((c, i) => c.number.toLowerCase().replace(/\s+/g, "").includes(numberLike) && set.add(i));
+    if (nigpQ) idx.contracts.forEach((c, i) => (hasNigp(c) || c.number.includes(nigpQ)) && set.add(i));
     wanted = set;
   }
   const accessCache = new Map<string, ReturnType<typeof catalogAccess>>();
@@ -143,7 +151,7 @@ function scan(db: Db, buyer: Buyer | null, q: string): Scan {
     if (seeded.has(c.id) || (c.end && c.end < now)) continue;
     let fit: number | null = null;
     if (query) {
-      const byNumber = numberLike.length >= 3 && c.number.toLowerCase().replace(/\s+/g, "").includes(numberLike);
+      const byNumber = (numberLike.length >= 3 && c.number.toLowerCase().replace(/\s+/g, "").includes(numberLike)) || hasNigp(c) || Boolean(nigpQ && c.number.includes(nigpQ));
       fit = byNumber ? 100 : words.length ? fitScoreSets(words, idx.cTitle[i], idx.cScope[i], idx.cWeights) : 0;
       if (fit < 50) continue;
     }
@@ -156,6 +164,8 @@ function scan(db: Db, buyer: Buyer | null, q: string): Scan {
       id: c.id,
       kind: catalogKind(c),
       trx: isTrxContract(c),
+      nigp: c.nigp?.classes ?? [],
+      nigp_source: c.nigp?.source ?? null,
       program: db.coops.find((x) => x.id === c.coop_id)?.name ?? c.coop,
       // A state program is keyed by its name, so the catalog's NJSTART and Agora's own NJSTART contracts are one program.
       program_id: c.state_contract ? c.coop : c.coop_id || c.coop,
@@ -196,6 +206,8 @@ function scan(db: Db, buyer: Buyer | null, q: string): Scan {
       id: c.id,
       kind: agoraKind(c),
       trx: isTrx(c),
+      nigp: [],
+      nigp_source: null,
       program: coop?.name ?? c.vehicle ?? c.owner,
       program_id: coop?.id ?? c.vehicle ?? c.owner,
       number: c.contract_number,
@@ -284,6 +296,8 @@ export interface ContractDetail {
   trx: boolean;
   /** The state solicitation it was awarded under, e.g. T2187, shared by every supplier on the award. */
   solicitation: string | null;
+  /** NIGP commodity codes with their descriptions: printed by the source, or classes the review chose. */
+  nigp: { source: "published" | "reviewed"; classes: { code: string; label: string | null }[]; codes: { code: string; label: string | null }[] } | null;
   kind_label: string;
   program: string;
   number: string;
@@ -431,6 +445,13 @@ function catalogDetail(db: Db, c: CatalogContract, itemQuery: string): ContractD
     kind_label: KIND_LABEL[kind],
     trx: isTrxContract(c),
     solicitation: c.state_contract?.solicitation ?? null,
+    nigp: c.nigp
+      ? {
+          source: c.nigp.source,
+          classes: c.nigp.classes.map((code) => ({ code, label: nigpClassLabel(code) })),
+          codes: c.nigp.codes.map((code) => ({ code, label: nigpCodeLabel(code) })),
+        }
+      : null,
     program,
     number: c.number,
     title: c.title,
@@ -494,6 +515,7 @@ function agoraDetail(db: Db, c: Contract, itemQuery: string): ContractDetail {
     kind_label: KIND_LABEL[kind],
     trx: isTrx(c),
     solicitation: null,
+    nigp: null,
     program,
     number: c.contract_number,
     title: c.title,

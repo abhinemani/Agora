@@ -126,9 +126,15 @@ const ARKANSAS_FILE = join(SRC, "arkansas/records.json.gz");
 const arkansas = existsSync(ARKANSAS_FILE)
   ? (JSON.parse(gunzipSync(readFileSync(ARKANSAS_FILE)).toString("utf8")) as { retrieved: string; suppliers: RawSupplier[]; contracts: RawContract[]; products: RawProduct[]; offerings: RawOffering[]; documents: RawDocument[] })
   : null;
+// New York OGS centralized contracts (npm run import:ny), the same way.
+const NY_FILE = join(SRC, "ny/records.json.gz");
+const newYork = existsSync(NY_FILE)
+  ? (JSON.parse(gunzipSync(readFileSync(NY_FILE)).toString("utf8")) as { retrieved: string; suppliers: RawSupplier[]; contracts: RawContract[]; products: RawProduct[]; offerings: RawOffering[]; documents: RawDocument[] })
+  : null;
+const nySummary = existsSync(join(SRC, "ny/summary.json")) ? JSON.parse(readFileSync(join(SRC, "ny/summary.json"), "utf8")) : null;
 /** The state programs folded in, by program name. */
-const STATE_SOURCES = [njstart && { program: "NJSTART", ...njstart }, hawaii && { program: "Hawaii SPO", ...hawaii }, arkansas && { program: "Arkansas OSP", ...arkansas }].filter(<T,>(x: T | null): x is T => Boolean(x));
-const STATE_PROGRAMS = new Set(["NJSTART", "Hawaii SPO", "Arkansas OSP"]);
+const STATE_SOURCES = [njstart && { program: "NJSTART", ...njstart }, hawaii && { program: "Hawaii SPO", ...hawaii }, arkansas && { program: "Arkansas OSP", ...arkansas }, newYork && { program: "NYS OGS", ...newYork }].filter(<T,>(x: T | null): x is T => Boolean(x));
+const STATE_PROGRAMS = new Set(["NJSTART", "Hawaii SPO", "Arkansas OSP", "NYS OGS"]);
 const arSummary = existsSync(join(SRC, "arkansas/summary.json")) ? JSON.parse(readFileSync(join(SRC, "arkansas/summary.json"), "utf8")) : null;
 for (const src of STATE_SOURCES) {
   rawSuppliers.push(...src.suppliers);
@@ -220,6 +226,7 @@ const COOP_ID: Record<string, string> = {
   NJSTART: "state_nj",
   "Hawaii SPO": "state_hi",
   "Arkansas OSP": "state_ar",
+  "NYS OGS": "state_ny",
 };
 
 // ------------------------------------------------------------------ suppliers: one record per company
@@ -416,7 +423,7 @@ interface Contract {
   /** One of Agora's categories, from a reviewed classification of the contract's title (or its first SIN). */
   category?: string;
   /** A state contract (NJSTART): whether the state opens it to its local governments, and its solicitation. */
-  state_contract?: { state: string; locals: boolean; solicitation: string | null; type_code: string | null; group: string | null; spent: number | null; more_items: boolean; participants?: string[]; islands?: string[] };
+  state_contract?: { state: string; locals: boolean; solicitation: string | null; type_code: string | null; group: string | null; spent: number | null; more_items: boolean; participants?: string[]; islands?: string[]; use?: string };
   /** NIGP commodity classes (3 digits) and, where the source prints them, item codes ("490-90").
    * "published": from the contract's own records (NJSTART). "reviewed": chosen by the AI review
    * (scripts/cleanup) from the classes NJSTART's records name. */
@@ -495,6 +502,7 @@ function stateContractOf(meta: Record<string, unknown>): Partial<Contract> {
       more_items: meta.line_items_paginated === true,
       // Hawaii names its participating jurisdictions: a local must be one of them.
       ...(Array.isArray(meta.jurisdictions) ? { participants: meta.jurisdictions as string[] } : {}),
+      ...(typeof meta.use_of_contracts === "string" ? { use: meta.use_of_contracts } : {}),
       ...(Array.isArray(meta.islands) && (meta.islands as string[]).length ? { islands: meta.islands as string[] } : {}),
     },
     ...(typeof meta.category === "string" ? { category: meta.category } : {}),
@@ -846,6 +854,10 @@ const insights = {
     classes_used: new Set(contracts.flatMap((c) => c.nigp?.classes ?? [])).size,
     priced_offerings_coded: offerings.filter((o) => o.nigp).length,
     top_classes: Object.entries(contracts.reduce<Record<string, number>>((m, c) => { for (const k of c.nigp?.classes ?? []) m[k] = (m[k] ?? 0) + 1; return m; }, {})).sort((a, b) => b[1] - a[1]).slice(0, 12),
+  },
+  new_york: nySummary && {
+    ...nySummary,
+    suppliers_shared_with_coops: suppliers.filter((s) => s.coops.includes("NYS OGS") && s.coops.some((c) => c !== "NYS OGS")).length,
   },
   arkansas: arSummary && {
     ...arSummary,

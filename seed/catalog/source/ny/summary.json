@@ -1,0 +1,18 @@
+{
+ "source": "https://ogs.ny.gov/procurement/ogs-centralized-contracts-list",
+ "retrieved": "2026-11-14",
+ "master_report_date": "2026-11-03",
+ "awards": 83,
+ "contracts": 1411,
+ "open_to_locals": 1378,
+ "state_only": 33,
+ "use_unstated": 27,
+ "by_type": {
+  "Commodity": 747,
+  "Service": 317,
+  "Technology": 347
+ },
+ "certified": 392,
+ "suppliers": 1310,
+ "priced_lines": 0
+}

@@ -63,6 +63,8 @@ export interface CatalogContract {
     participants?: string[];
     /** The islands a Hawaii contractor serves, when the list says. */
     islands?: string[];
+    /** Who may use it, in the award's words (New York's "Use of Contracts"). */
+    use?: string;
   };
   /** NIGP commodity classes and item codes: "published" from the contract's own records (NJSTART),
    * "reviewed" when the AI review chose the classes (lib/nigp.ts). */

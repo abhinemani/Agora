@@ -14,7 +14,7 @@
   "gsa_open_to_cities": 7132,
   "gsa_sins": 277,
   "gsa_cooperative_sins": 56,
-  "names_title_cased": 11728,
+  "names_title_cased": 12516,
   "merged_by_uei": 0,
   "parts_labelled": 4112,
   "suppliers_merged_by_review": 7,
@@ -31,9 +31,9 @@
   ]
  },
  "suppliers": {
-  "records": 25647,
-  "companies": 23729,
-  "merged_by_name": 1568,
+  "records": 26957,
+  "companies": 24517,
+  "merged_by_name": 2090,
   "merged_by_website": 343,
   "merged_by_uei": 0,
   "with_website": 13936,
@@ -51,11 +51,12 @@
      "Hawaii SPO",
      "NASPO ValuePoint",
      "NJSTART",
+     "NYS OGS",
      "OMNIA Partners",
      "Sourcewell",
      "TIPS"
     ],
-    "contracts": 28
+    "contracts": 29
    },
    {
     "id": "cat_893418876ba75fddd993",
@@ -69,11 +70,12 @@
      "Hawaii SPO",
      "NASPO ValuePoint",
      "NJSTART",
+     "NYS OGS",
      "OMNIA Partners",
      "Sourcewell",
      "TIPS"
     ],
-    "contracts": 19
+    "contracts": 21
    },
    {
     "id": "cat_506cc6b39ec0eb5c4cec",
@@ -85,12 +87,13 @@
      "Hawaii SPO",
      "NASPO ValuePoint",
      "NJSTART",
+     "NYS OGS",
      "OMNIA Partners",
      "PEPPM",
      "Sourcewell",
      "TIPS"
     ],
-    "contracts": 15
+    "contracts": 16
    },
    {
     "id": "cat_af208adcb81b1a525476",
@@ -103,10 +106,11 @@
      "Equalis Group",
      "NJSTART",
      "NPPGov",
+     "NYS OGS",
      "OMNIA Partners",
      "TIPS"
     ],
-    "contracts": 18
+    "contracts": 20
    },
    {
     "id": "cat_1369ef49157eb75828c2",
@@ -119,10 +123,75 @@
      "Hawaii SPO",
      "NASPO ValuePoint",
      "NJSTART",
+     "NYS OGS",
      "OMNIA Partners",
      "Sourcewell"
     ],
-    "contracts": 10
+    "contracts": 11
+   },
+   {
+    "id": "cat_214328f043ee2ee86bb0",
+    "name": "Lakeshore Learning Materials LLC",
+    "coops": [
+     "1GPA",
+     "BuyBoard",
+     "Choice Partners",
+     "Equalis Group",
+     "GSA MAS",
+     "NJSTART",
+     "NPPGov",
+     "NYS OGS",
+     "TIPS"
+    ],
+    "contracts": 22
+   },
+   {
+    "id": "cat_13ed7098617bcbe6cb96",
+    "name": "Cogent Infotech Corporation",
+    "coops": [
+     "Choice Partners",
+     "Equalis Group",
+     "GSA MAS",
+     "HGACBuy",
+     "Hawaii SPO",
+     "NASPO ValuePoint",
+     "NPPGov",
+     "NYS OGS",
+     "Sourcewell"
+    ],
+    "contracts": 11
+   },
+   {
+    "id": "cat_0495d8c5535e894464b7",
+    "name": "Fellowes, Inc.",
+    "coops": [
+     "Arkansas OSP",
+     "Equalis Group",
+     "GSA MAS",
+     "NASPO ValuePoint",
+     "NJSTART",
+     "NYS OGS",
+     "OMNIA Partners",
+     "Sourcewell",
+     "TIPS"
+    ],
+    "contracts": 9
+   },
+   {
+    "id": "cat_5f1d721967eb2067c67b",
+    "name": "Quadient, Inc.",
+    "coops": [
+     "Arkansas OSP",
+     "BuyBoard",
+     "GSA MAS",
+     "Hawaii SPO",
+     "NASPO ValuePoint",
+     "NJSTART",
+     "NYS OGS",
+     "OMNIA Partners",
+     "Sourcewell"
+    ],
+    "contracts": 8
    },
    {
     "id": "cat_38f685b654efb7facba2",
@@ -140,94 +209,34 @@
     "contracts": 44
    },
    {
-    "id": "cat_0160f61b377640b33e94",
-    "name": "Ameresco Inc.",
+    "id": "cat_019cf5414cb30b87f973",
+    "name": "CDW Government LLC",
     "coops": [
      "1GPA",
-     "BuyBoard",
-     "Equalis Group",
+     "Choice Partners",
      "GSA MAS",
      "Hawaii SPO",
-     "OMNIA Partners",
-     "Sourcewell",
+     "NJSTART",
+     "NYS OGS",
+     "PEPPM",
      "TIPS"
     ],
-    "contracts": 23
+    "contracts": 34
    },
    {
-    "id": "cat_214328f043ee2ee86bb0",
-    "name": "Lakeshore Learning Materials LLC",
+    "id": "cat_9cd35a0ecc2e3cd5be1d",
+    "name": "School Specialty LLC",
     "coops": [
      "1GPA",
      "BuyBoard",
      "Choice Partners",
      "Equalis Group",
-     "GSA MAS",
      "NJSTART",
      "NPPGov",
-     "TIPS"
+     "NYS OGS",
+     "OMNIA Partners"
     ],
-    "contracts": 20
-   },
-   {
-    "id": "cat_35c5eed038a31882bac8",
-    "name": "Lawson Products Inc",
-    "coops": [
-     "1GPA",
-     "BuyBoard",
-     "Equalis Group",
-     "GSA MAS",
-     "Hawaii SPO",
-     "NASPO ValuePoint",
-     "OMNIA Partners",
-     "TIPS"
-    ],
-    "contracts": 11
-   },
-   {
-    "id": "cat_8e20f8f70d834637ff5a",
-    "name": "New Tech Solutions Inc",
-    "coops": [
-     "BuyBoard",
-     "Choice Partners",
-     "E&I",
-     "Equalis Group",
-     "GSA MAS",
-     "NASPO ValuePoint",
-     "OMNIA Partners",
-     "TIPS"
-    ],
-    "contracts": 11
-   },
-   {
-    "id": "cat_13ed7098617bcbe6cb96",
-    "name": "Cogent Infotech Corporation",
-    "coops": [
-     "Choice Partners",
-     "Equalis Group",
-     "GSA MAS",
-     "HGACBuy",
-     "Hawaii SPO",
-     "NASPO ValuePoint",
-     "NPPGov",
-     "Sourcewell"
-    ],
-    "contracts": 10
-   },
-   {
-    "id": "cat_ar_653492f978c873f7",
-    "name": "Ricoh USA, Inc.",
-    "coops": [
-     "Arkansas OSP",
-     "BuyBoard",
-     "GSA MAS",
-     "Hawaii SPO",
-     "NASPO ValuePoint",
-     "NJSTART",
-     "OMNIA Partners",
-     "Sourcewell"
-    ],
-    "contracts": 10
+    "contracts": 24
    }
   ],
   "merge_examples": [
@@ -251,7 +260,8 @@
     "name": "Altec Industries",
     "aliases": [
      "ALTEC INDUSTRIES, INC.",
-     "Altec Industries Inc"
+     "Altec Industries Inc",
+     "ALTEC INDUSTRIES INC"
     ]
    },
    {
@@ -288,7 +298,8 @@
     "name": "AT&T Corp",
     "aliases": [
      "AT&T",
-     "AT&T Corp."
+     "AT&T Corp.",
+     "AT&T CORP"
     ]
    }
   ]
@@ -469,16 +480,27 @@
    "expired": 0,
    "with_states": 216,
    "offerings": 85
+  },
+  {
+   "coop": "NYS OGS",
+   "coop_id": "state_ny",
+   "contracts": 1411,
+   "suppliers": 1299,
+   "with_link": 39,
+   "with_end": 1411,
+   "expired": 0,
+   "with_states": 1411,
+   "offerings": 0
   }
  ],
  "nigp": {
   "published": 1282,
   "reviewed": 27698,
-  "none": 4862,
-  "contracts": 33842,
+  "none": 6273,
+  "contracts": 35253,
   "coop_contracts_coded": 27698,
   "coop_contracts": 31930,
-  "state_uncoded": 630,
+  "state_uncoded": 2041,
   "classes_used": 150,
   "priced_offerings_coded": 4572,
   "top_classes": [
@@ -532,6 +554,25 @@
    ]
   ]
  },
+ "new_york": {
+  "source": "https://ogs.ny.gov/procurement/ogs-centralized-contracts-list",
+  "retrieved": "2026-11-14",
+  "master_report_date": "2026-11-03",
+  "awards": 83,
+  "contracts": 1411,
+  "open_to_locals": 1378,
+  "state_only": 33,
+  "use_unstated": 27,
+  "by_type": {
+   "Commodity": 747,
+   "Service": 317,
+   "Technology": 347
+  },
+  "certified": 392,
+  "suppliers": 1310,
+  "priced_lines": 0,
+  "suppliers_shared_with_coops": 511
+ },
  "arkansas": {
   "source": "https://sas.arkansas.gov/procurement/state-contracts/",
   "retrieved": "2026-11-14",
@@ -561,7 +602,7 @@
   ],
   "with_prices": 10,
   "products": 85,
-  "suppliers_shared_with_coops": 137
+  "suppliers_shared_with_coops": 139
  },
  "hawaii": {
   "source": "https://spo.hawaii.gov/for-vendors/contract-awards/price-vendor-lists/",
@@ -595,7 +636,7 @@
   },
   "suppliers": 222,
   "products": 1456,
-  "suppliers_shared_with_coops": 143,
+  "suppliers_shared_with_coops": 146,
   "products_on_two_or_more_contracts": 113
  },
  "njstart": {
@@ -638,7 +679,7 @@
   "note": "Line items are the first summary page of each contract; contracts with more item pages are flagged line_items_paginated. Attachments are linked, not downloaded.",
   "nigp_codes": 520,
   "nigp_classes": 150,
-  "suppliers_shared_with_coops": 310,
+  "suppliers_shared_with_coops": 343,
   "offerings": 5810,
   "products_on_two_or_more_contracts": 568
  },
@@ -1217,7 +1258,7 @@
    "Miner Ltd",
    "Public Partnerships LLC",
    "GRM Facilities Mgt. Inc.",
-   "H.K. Truck Services Inc.",
+   "HK Truck Services Inc",
    "Edenred Benefits, LLC",
    "Pagodins Tree Care Service LLC",
    "John de Rouville",
@@ -1370,10 +1411,10 @@
   "multi_route": 5585
  },
  "documents": {
-  "total": 32090,
+  "total": 33501,
   "by_kind": {
    "htm": 11892,
-   "unknown": 19344,
+   "unknown": 20755,
    "pdf": 727,
    "docx": 7,
    "xlsx": 120
@@ -1384,7 +1425,8 @@
    "Sourcewell": 1,
    "NJSTART": 18635,
    "Hawaii SPO": 354,
-   "Arkansas OSP": 499
+   "Arkansas OSP": 499,
+   "NYS OGS": 1411
   }
  },
  "reconcile": {

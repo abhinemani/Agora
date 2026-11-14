@@ -20,18 +20,26 @@ const primaryBtn = "inline-flex min-h-[44px] items-center justify-center rounded
 export function AuthDialog() {
   const { prompt, finish } = useAuthPrompt();
   const { db, setRole } = useStore();
-  const [mode, setMode] = useState<"signin" | "signup">("signin");
+  const [mode, setMode] = useState<"signin" | "signup" | "forgot">("signin");
   const [form, setForm] = useState({ name: "", email: "", password: "", role: "buyer" });
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  // What to say after a step that ends in "check your email".
+  const [notice, setNotice] = useState<{ text: string; signedIn: boolean } | null>(null);
   const first = useRef<HTMLInputElement>(null);
+  // Closing the "check your email" note after signing up still counts as signed in.
+  const signedIn = useRef(false);
+  signedIn.current = Boolean(notice?.signedIn);
+  const dismiss = () => void finish(signedIn.current);
 
   useEffect(() => {
     if (!prompt) return;
     setError(null);
+    setNotice(null);
+    setMode((m) => (m === "forgot" ? "signin" : m));
     setForm((f) => ({ ...f, password: "" }));
     first.current?.focus();
-    const esc = (e: KeyboardEvent) => e.key === "Escape" && void finish(false);
+    const esc = (e: KeyboardEvent) => e.key === "Escape" && void finish(signedIn.current);
     document.addEventListener("keydown", esc);
     return () => document.removeEventListener("keydown", esc);
   }, [prompt, finish]);
@@ -46,8 +54,18 @@ export function AuthDialog() {
       const res = await fetch("/api/auth", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ op: mode, ...form }) });
       const json = await res.json();
       if (!res.ok) throw new Error(json.error ?? "Something went wrong");
+      if (mode === "forgot") {
+        setNotice({ text: `If there's an Agora account for ${form.email}, we've sent it a link to choose a new password. The link lasts one hour.`, signedIn: false });
+        return;
+      }
       // Open on the side of Agora the person signed up for.
-      if (mode === "signup") setRole(json.result.user.role);
+      if (mode === "signup") {
+        setRole(json.result.user.role);
+        if (json.result.emailed) {
+          setNotice({ text: `Your account is ready. We've sent a link to ${form.email} to confirm it's yours; you can carry on in the meantime.`, signedIn: true });
+          return;
+        }
+      }
       await finish(true);
     } catch (e) {
       setError((e as Error).message);
@@ -57,23 +75,32 @@ export function AuthDialog() {
   };
 
   return (
-    <div className="fixed inset-0 z-50 grid place-items-center overflow-y-auto bg-[rgba(15,30,56,0.55)] p-4" onMouseDown={(e) => e.target === e.currentTarget && void finish(false)}>
+    <div className="fixed inset-0 z-50 grid place-items-center overflow-y-auto bg-[rgba(15,30,56,0.55)] p-4" onMouseDown={(e) => e.target === e.currentTarget && dismiss()}>
       <div role="dialog" aria-modal="true" aria-labelledby="auth-title" className="w-full max-w-md border border-primary-darker bg-white shadow-3">
         <div className="flex items-center gap-3 bg-[#0F3D73] px-5 py-4">
           <Mark className="h-8 w-8" onDark working={busy} />
           <h2 id="auth-title" className="font-heading text-lg font-bold text-white">
-            {mode === "signin" ? "Sign in to Agora" : "Create your Agora account"}
+            {notice ? "Check your email" : mode === "signin" ? "Sign in to Agora" : mode === "signup" ? "Create your Agora account" : "Reset your password"}
           </h2>
         </div>
+        {notice && (
+          <div className="space-y-4 px-5 py-5">
+            <p className="text-sm text-ink">{notice.text}</p>
+            <button type="button" onClick={() => void finish(notice.signedIn)} className={primaryBtn}>
+              {notice.signedIn ? "Continue" : "Close"}
+            </button>
+          </div>
+        )}
         <form
+          hidden={Boolean(notice)}
           className="space-y-3.5 px-5 py-5"
           onSubmit={(e) => {
             e.preventDefault();
             void submit();
           }}
         >
-          {prompt.reason && <p className="text-sm text-ink">{prompt.reason}</p>}
-          <p className="text-ui-2xs text-base-dark">Searching, the buying plan and the shopper's tools stay free to use without an account.</p>
+          {prompt.reason && mode !== "forgot" && <p className="text-sm text-ink">{prompt.reason}</p>}
+          <p className="text-ui-2xs text-base-dark">{mode === "forgot" ? "Enter the email you signed up with and we'll send a link to choose a new password." : "Searching, the buying plan and the shopper's tools stay free to use without an account."}</p>
           {mode === "signup" && (
             <label className="block text-sm font-bold text-ink">
               Your name
@@ -84,9 +111,10 @@ export function AuthDialog() {
             Work email
             <input ref={mode === "signin" ? first : undefined} className={field} type="email" value={form.email} autoComplete="email" required onChange={(e) => setForm({ ...form, email: e.target.value })} />
           </label>
-          <label className="block text-sm font-bold text-ink">
+          <label className="block text-sm font-bold text-ink" hidden={mode === "forgot"}>
             Password
             <input
+              disabled={mode === "forgot"}
               className={field}
               type="password"
               value={form.password}
@@ -114,11 +142,16 @@ export function AuthDialog() {
           <ErrorNote message={error} />
           <div className="flex flex-wrap items-center gap-x-4 gap-y-2 pt-1">
             <button type="submit" disabled={busy} className={primaryBtn}>
-              {mode === "signin" ? "Sign in" : "Create account"}
+              {mode === "signin" ? "Sign in" : mode === "signup" ? "Create account" : "Send the link"}
             </button>
             <button type="button" onClick={() => void finish(false)} className="min-h-[44px] text-ui-xs font-bold text-primary hover:text-primary-dark">
               Not now
             </button>
+            {mode === "signin" && (
+              <button type="button" onClick={() => (setMode("forgot"), setError(null))} className="min-h-[44px] text-ui-xs font-bold text-primary hover:text-primary-dark">
+                Forgot your password?
+              </button>
+            )}
           </div>
           <p className="border-t border-base-lighter pt-3 text-sm text-ink">
             {mode === "signin" ? "New to Agora?" : "Already have an account?"}{" "}

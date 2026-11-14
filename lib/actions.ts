@@ -31,6 +31,7 @@ import { buildPlan, defaultSelection, shopperAddOns, shopperCandidates, type Sho
 import { answerQuestion, shopperFacts, writeBrief, type ShopperTurn } from "./shopper-ai";
 import { paperworkKinds, paperworkTemplate, type PaperworkKind } from "./paperwork";
 import { polish } from "./paperwork-ai";
+import { tellPurchasing, tellRequester } from "./notify";
 import { askDocument, contractBrief, readableContracts } from "./docs";
 import { diveItems, diveSearch, diveVerdict, offlineDiveFilters, type DiveFilter } from "./dive";
 import { readDiveMessage, writeVerdict } from "./dive-ai";
@@ -389,6 +390,8 @@ function createOrder(
     department: args.department,
     created_at: now(),
     requester: args.requester ?? REQUESTER,
+    user_id: currentScope()?.user?.id,
+    agency: db.session.buyer?.name,
     cart_id: args.cartId ?? null,
     gl_code: glCode(db, args.department),
     events: [
@@ -397,6 +400,14 @@ function createOrder(
     ],
   };
   db.orders.unshift(order);
+  // A PO from checkout waits on purchasing. One placed from an approved cart is already decided.
+  if (status === "pending_approval")
+    tellPurchasing(order.agency, currentScope()?.user, {
+      subject: `A purchase order is waiting for your approval: ${order.id}`,
+      lines: [`${currentScope()?.user?.name ?? "A requester"} at ${order.agency} placed ${order.id}: ${qty} × ${listing.title}, $${total.toLocaleString("en-US")}. It needs approval before it goes to the supplier.`],
+      path: "/procurement",
+      label: "Review the order",
+    });
   const req = db.requests.find((r) => r.id === args.requestId);
   if (req) req.outcome = "ordered";
 
@@ -418,6 +429,7 @@ export function approveOrder(orderId: string) {
   if (o.status !== "pending_approval") fail(`${o.id} isn't waiting on approval.`);
   o.status = "approved";
   (o.events ??= []).push({ status: "approved", at: now(), note: `PO approved by ${PURCHASER}, Purchasing` });
+  tellRequester(o.user_id, currentScope()?.user, { subject: `Your purchase order was approved: ${o.id}`, lines: [`Purchasing approved ${o.id}. It has gone to the supplier.`], path: `/orders/${o.id}`, label: "Track the order" });
   return o;
 }
 
@@ -448,7 +460,7 @@ export function advanceOrder(orderId: string) {
 function activeCart(db: Db) {
   let cart = draftCart(db);
   if (!cart) {
-    cart = { id: nextId(db, "cart", "cart", 3), agency: cartAgency(db), status: "draft", lines: [], created_by: REQUESTER, holder: REQUESTER, order_ids: [], created_at: now(), updated_at: now() };
+    cart = { id: nextId(db, "cart", "cart", 3), agency: cartAgency(db), status: "draft", lines: [], created_by: REQUESTER, user_id: currentScope()?.user?.id, holder: REQUESTER, order_ids: [], created_at: now(), updated_at: now() };
     db.carts.unshift(cart);
   }
   return cart;
@@ -507,8 +519,16 @@ export function submitCart() {
   if (blocked) fail(blocked.blocked!);
   cart.submitted_at = now();
   cart.updated_at = now();
+  cart.user_id ??= currentScope()?.user?.id;
   if (needsApproval(groups)) {
     cart.status = "pending";
+    const who = currentScope()?.user;
+    tellPurchasing(cart.agency, who, {
+      subject: `A cart is waiting for your approval: ${cart.id}`,
+      lines: [`${who?.name ?? "A requester"} at ${cart.agency} sent cart ${cart.id} for approval. It has ${cart.lines.length} line${cart.lines.length === 1 ? "" : "s"}.`],
+      path: "/procurement",
+      label: "Review the cart",
+    });
     return cart;
   }
   return placeCart(db, cart, false);
@@ -541,6 +561,7 @@ export function approveCart(cartId: string) {
   if (cart.status !== "pending") fail(`Cart ${cart.id} isn't waiting on approval.`);
   cart.decided_by = PURCHASER;
   cart.decided_at = now();
+  tellRequester(cart.user_id, currentScope()?.user, { subject: `Your cart was approved: ${cart.id}`, lines: [`Purchasing approved cart ${cart.id} for ${cart.agency}. The orders have been placed.`], path: "/orders", label: "See the orders" });
   return placeCart(db, cart, true);
 }
 
@@ -550,6 +571,7 @@ export function rejectCart(args: { cartId: string; reason: string }) {
   if (cart.status !== "pending") fail(`Cart ${cart.id} isn't waiting on approval.`);
   const reason = args.reason?.trim() || fail("Say why, so the requester can fix it.");
   Object.assign(cart, { status: "rejected", reject_reason: reason, decided_by: PURCHASER, decided_at: now(), updated_at: now() });
+  tellRequester(cart.user_id, currentScope()?.user, { subject: `Your cart was sent back: ${cart.id}`, lines: [`Purchasing sent cart ${cart.id} back with this note: "${reason}"`, "You can change the cart and send it again."], path: "/cart", label: "Open the cart" });
   return cart;
 }
 
@@ -1228,6 +1250,12 @@ export function askToJoin(args: { contractId: string; requestId?: string | null;
     ...(cat ? { contract_number: cat.number, supplier: catalogSupplierById(cat.supplier)?.name, has_link: Boolean(cat.url) } : {}),
   };
   db.referrals.unshift(referral);
+  tellPurchasing(agency, currentScope()?.user, {
+    subject: `A request to use ${coop.name} ${contract.contract_number ?? ""}`.trim(),
+    lines: [`${currentScope()?.user?.name ?? "A requester"} at ${agency} asked whether the agency can get onto ${coop.name} for this purchase: "${referral.need}".`, `The contract is ${coop.name} ${contract.contract_number ?? ""}: ${contract.title}.`],
+    path: "/procurement",
+    label: "See the request",
+  });
   return referral;
 }
 

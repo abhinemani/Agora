@@ -706,7 +706,10 @@ export default function CoopDataPage() {
               New York&apos;s preferred sources come before any contract. Under State Finance Law § 162, public buyers take the items the OGS list approves from Corcraft,
               NYSID or NIBNY first, when an item meets the need. The September 2026 list&apos;s {n(ny.preferred.offerings)} offering-and-provider pairs are in Agora as{" "}
               {n(ny.preferred.contracts)} preferred-source records, with each approval category kept: approved items lead New York results, items approved for one agency
-              are marked optional for others, and the 12 the list marks not approved never lead. The list publishes no prices.
+              are marked optional for others, and the 12 the list marks not approved never lead. The list publishes no prices, but Corcraft&apos;s Price &amp;
+              Specification Guide does: {n(ny.preferred.corcraft_prices)} dock-delivered prices, read by review agents and each checked on its printed line, of which{" "}
+              {n(ny.preferred.corcraft_on_approved_records)} sit on the approved Corcraft category they belong to (office furniture, tables, textiles, janitorial and more).
+              The rest are catalog items the list doesn&apos;t name, kept on a record marked not on the list.
             </p>
           </>
         }

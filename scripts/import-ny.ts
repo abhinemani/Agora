@@ -231,6 +231,9 @@ if (process.argv[2] === "--collect-corcraft") {
   const SH = join(ROOT, "seed/cleanup/shards");
   const cats = new Set(Object.keys(JSON.parse(readFileSync(join(SH, "corcraft-categories.json"), "utf8"))));
   const numbersIn = (line: string) => new Set((line.match(/\d[\d,]*(\.\d+)?/g) ?? []).map((n) => Number(n.replace(/,/g, ""))));
+  const code = (x: unknown) => String(x ?? "").replace(/[\s_*-]+/g, "").toUpperCase();
+  // The guide prints Corcraft's order phone on some price rows; phone numbers aren't kept.
+  const noPhones = (x: string) => x.replace(/\(?\b\d{3}\)?[\s.-]*\d{3}-\d{4}\b/g, "[phone]");
   const rows: Record<string, unknown>[] = [];
   const stats = { prices: 0, dropped: { not_found: 0, no_words: 0, bad_category: 0, zero: 0 }, matched_category: 0 };
   for (let i = 1; i <= 3; i++) {
@@ -242,7 +245,8 @@ if (process.argv[2] === "--collect-corcraft") {
       let why: keyof typeof stats.dropped | null = null;
       if (!(price > 0)) why = "zero";
       else if (!numbersIn(line).has(price)) why = "not_found";
-      else if (!/[A-Za-z]{3,}/.test(line) && !/[A-Za-z]{3,}/.test(lines[n - 2] ?? "")) why = "no_words";
+      // Words on the line or the one above, or the item's own code printed on the line ("S11_ _P_ _000000_  215.00").
+      else if (!/[A-Za-z]{3,}/.test(line) && !/[A-Za-z]{3,}/.test(lines[n - 2] ?? "") && !(code(p.code).length >= 3 && code(line).includes(code(p.code)))) why = "no_words";
       else if (p.category != null && !cats.has(String(p.category))) why = "bad_category";
       if (why) {
         stats.dropped[why]++;
@@ -250,7 +254,7 @@ if (process.argv[2] === "--collect-corcraft") {
       }
       stats.prices++;
       if (p.category) stats.matched_category++;
-      rows.push({ section: String(p.section ?? "").slice(0, 80), item: String(p.item).slice(0, 180), code: p.code ? String(p.code).slice(0, 40) : null, price, unit: p.unit ?? "each", category: p.category ?? null, line: line.replace(/\s+/g, " ").trim().slice(0, 300), line_number: n });
+      rows.push({ section: String(p.section ?? "").slice(0, 80), item: String(p.item).slice(0, 180), code: p.code ? String(p.code).slice(0, 40) : null, price, unit: p.unit ?? "each", category: p.category ?? null, line: noPhones(line).replace(/\s+/g, " ").trim().slice(0, 300), line_number: n });
     }
   }
   writeFileSync(join(OUT, "corcraft-prices.json"), JSON.stringify({ source: "https://shop.corcraft.ny.gov/corcraftassets/Brochures/Price_Guide.pdf", edition: "Price & Specification Guide, prices effective October 2023 (revised September 10, 2026)", basis: "dock delivered price", checked: stats, rows }, null, 1) + "\n");

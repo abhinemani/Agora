@@ -499,13 +499,13 @@
   {
    "coop": "NY Preferred Source",
    "coop_id": "state_ny_ps",
-   "contracts": 41,
+   "contracts": 42,
    "suppliers": 3,
    "with_link": 0,
    "with_end": 0,
    "expired": 0,
-   "with_states": 41,
-   "offerings": 667
+   "with_states": 42,
+   "offerings": 1813
   },
   {
    "coop": "Empire Procure Connect",
@@ -522,11 +522,11 @@
  "nigp": {
   "published": 1479,
   "reviewed": 27698,
-  "none": 6316,
-  "contracts": 35493,
+  "none": 6317,
+  "contracts": 35494,
   "coop_contracts_coded": 27698,
   "coop_contracts": 31930,
-  "state_uncoded": 2084,
+  "state_uncoded": 2085,
   "classes_used": 164,
   "priced_offerings_coded": 4572,
   "top_classes": [
@@ -618,7 +618,7 @@
   "certified": 392,
   "preferred": {
    "providers": 3,
-   "contracts": 41,
+   "contracts": 42,
    "offerings": 667,
    "by_section": {
     "A": 560,
@@ -626,10 +626,12 @@
     "C": 3,
     "D": 68,
     "E": 9
-   }
+   },
+   "corcraft_prices": 1146,
+   "corcraft_on_approved_records": 994
   },
   "suppliers": 1313,
-  "priced_lines": 5735,
+  "priced_lines": 6881,
   "prices": {
    "rule": 3036,
    "reviewed": 2699,
@@ -640,8 +642,8 @@
     "index_adjusted": 723
    }
   },
-  "with_prices": 132,
-  "products": 4233,
+  "with_prices": 133,
+  "products": 5376,
   "suppliers_shared_with_coops": 523
  },
  "arkansas": {
@@ -755,13 +757,13 @@
   "products_on_two_or_more_contracts": 568
  },
  "products": {
-  "products": 55781,
-  "offerings": 65892,
+  "products": 56924,
+  "offerings": 67038,
   "by_status": {
    "quote": 2176,
    "published_discount": 8102,
    "member_login": 26291,
-   "published_price": 29323
+   "published_price": 30469
   },
   "by_status_coops": {
    "quote": 1509,
@@ -1543,6 +1545,7 @@
    "Naglee Moving & Storage Inc",
    "Dimon & Bacorn Inc",
    "Lincoln Moving & Storage of Buffalo Inc",
+   "Corcraft",
    "BCI Burke",
    "Exemplis, LLC",
    "Caldwell Country Chevrolet II LLC",
@@ -1561,7 +1564,7 @@
    "LHD Partners, LP dba Longhorn Harley-Davidson",
    "Endera Motors, LLC"
   ],
-  "multi_route": 5810
+  "multi_route": 5811
  },
  "documents": {
   "total": 34080,

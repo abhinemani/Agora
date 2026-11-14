@@ -394,7 +394,10 @@ function catalogDetail(db: Db, c: CatalogContract, itemQuery: string): ContractD
   const n = (x: number, word: string) => `${x.toLocaleString("en-US")} ${word}${x === 1 ? "" : "s"}`;
   let headline: string;
   let detail: string;
-  if (priced.length && c.state_contract) {
+  if (priced.length && c.state_contract?.preferred) {
+    headline = `${n(priced.length, "price")} from the provider's price guide`;
+    detail = `${supplier || "The provider"}'s own published prices (for Corcraft, the Price & Specification Guide, dock delivered), not a bid award. Confirm the current price with ${supplier || "the provider"} before you order.`;
+  } else if (priced.length && c.state_contract) {
     headline = `${n(priced.length, "awarded price")} on file`;
     detail = `The state's awarded line items for this contract, read from ${program}${c.start && c.end ? ` (contract term ${longDate(c.start)} to ${longDate(c.end)})` : ""}. Confirm the current price and any annual adjustment with the supplier.${c.state_contract.more_items ? ` ${program} lists more items than Agora has loaded; the rest are on the contract's page.` : ""}`;
   } else if (priced.length) {

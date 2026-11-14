@@ -634,6 +634,8 @@ export interface DirectoryGovernment {
   domain_source?: "gov" | "census" | "nces" | "ipeds";
   /** Permanent federal IDs: Census of Governments (CENSUS_ID_PID6), NCES district (LEAID), IPEDS college (UNITID). */
   ids?: { census?: string; nces?: string; ipeds?: string };
+  /** The government this is an office of: a county's sheriff or district attorney points at the county. */
+  parent?: { id: string; name: string };
   /** Census of Governments population (general-purpose governments) or school enrollment. */
   population?: number;
   enrollment?: number;

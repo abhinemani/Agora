@@ -1,0 +1,107 @@
+{
+ "falcon road maintenance equipment": {
+  "merge": [
+   [
+    "cat_025c2a6dfb3243ee5c84",
+    "cat_fedccad2a8617cc87b56"
+   ]
+  ],
+  "confidence": "medium",
+  "reason": "Both share alias Falcon Road Maintenance Equipment, LLC; dba of same entity"
+ },
+ "mckesson medical surgical government solutions": {
+  "merge": [
+   [
+    "cat_3e2703ec84d5c3d466f4",
+    "cat_1596acbb314b6702940b"
+   ]
+  ],
+  "confidence": "medium",
+  "reason": "Same alias McKesson Medical-Surgical Government Solutions LLC; website mismatch noted"
+ },
+ "riddell all american sports": {
+  "merge": [
+   [
+    "cat_271a0f5b1233777099af",
+    "cat_57bf9b1bcd8fb609f659"
+   ]
+  ],
+  "confidence": "high",
+  "reason": "All American Sports Corp dba Riddell All American Sports in both"
+ },
+ "veritiv": {
+  "merge": [
+   [
+    "cat_498d7ffa076d2e031079",
+    "cat_3295ffe037f9b1723a67"
+   ]
+  ],
+  "confidence": "low",
+  "reason": "Both Veritiv brand; operating company vs corporation label may differ"
+ },
+ "w s darley": {
+  "merge": [
+   [
+    "cat_2ec5879b82cbfed56e28",
+    "cat_e94ff39b177b5ede253b"
+   ]
+  ],
+  "confidence": "high",
+  "reason": "W.S. Darley & Co. punctuation variants"
+ },
+ "blick art materials": {
+  "merge": [
+   [
+    "cat_7178da887e5b2ca293cb",
+    "cat_600b13fae22f6851454e"
+   ]
+  ],
+  "confidence": "high",
+  "reason": "Blick Art Materials LLC in both records"
+ },
+ "lexia learning systems": {
+  "merge": [
+   [
+    "cat_2785b4d38e17adf5f1c9",
+    "cat_1d996f36fece9899e541"
+   ]
+  ],
+  "confidence": "medium",
+  "reason": "Shared alias Lexia Learning Systems LLC; dba of same entity"
+ },
+ "business interiors": {
+  "merge": [],
+  "confidence": "medium",
+  "reason": "Facilitech dba vs Business Interiors, Inc.; different websites, different firms"
+ },
+ "forte": {
+  "merge": [],
+  "confidence": "high",
+  "reason": "Forte LLC probate finder unrelated to Forté co-op supplier"
+ },
+ "batteries plus": {
+  "merge": [],
+  "confidence": "medium",
+  "reason": "Tourbillon Enterprises is a franchisee, distinct from Batteries Plus LLC"
+ },
+ "hme ahrens fox": {
+  "merge": [
+   [
+    "cat_74fd5a15c84ac8206c37",
+    "cat_2a5a68fef7f33382c291"
+   ]
+  ],
+  "confidence": "medium",
+  "reason": "HME Incorporated dba HME Ahrens-Fox; same fire apparatus maker"
+ },
+ "herff jones": {
+  "merge": [],
+  "confidence": "medium",
+  "reason": "Houston Graduation Center is a separate local distributor of Herff Jones"
+ },
+ "pierce": {
+  "merge": [],
+  "confidence": "medium",
+  "reason": "Pierce & Company vs bare Pierce (likely Pierce Manufacturing); insufficient evidence"
+ }
+}

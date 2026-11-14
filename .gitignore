@@ -8,3 +8,6 @@ uploads/*
 !uploads/.gitkeep
 
 rehearsal/
+seed/cleanup/shards/
+seed/cleanup/out/
+seed/cleanup/tasks/

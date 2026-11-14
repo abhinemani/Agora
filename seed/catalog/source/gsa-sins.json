@@ -1,0 +1,1391 @@
+{
+ "source": "https://www.gsaelibrary.gsa.gov/ElibMain/scheduleSummary.do?scheduleNumber=MAS",
+ "retrieved": "2026-11-14",
+ "sins": {
+  "485": {
+   "title": "Ground Transportation",
+   "description": "Ground Transportation Services utilizing Van, Motor Coach (Bus), or Limousine for both scheduled and unscheduled routes. Services are available for single or multiple passenger shuttle transportation between and among buildings; driver services; airport transport; and VIP transport; etc. within or between cities. All services necessary to provide passenger shuttle services.",
+   "cooperative": false
+  },
+  "531": {
+   "title": "Employee Relocation Solution",
+   "description": "Includes all services relating to employee relocation, such as home sale assistance, property management, and household goods shipment coordination.",
+   "cooperative": false
+  },
+  "3152": {
+   "title": "Workwear Clothing",
+   "description": "Includes all types of workwear clothing, such as work suits, coats, hoods, cold weather gear, reflective clothing, camouflage, hazardous material clothing, etc.",
+   "cooperative": true
+  },
+  "3361": {
+   "title": "Law Enforcement and Fire Fighting Vehicles and Attachments",
+   "description": "Includes fire fighting and law enforcement vehicles and their related attachments, such as mobile water supply attachments, fire fighting vehicle glider kits, SWAT vehicles, mobile crime scene vehicles, etc.",
+   "cooperative": false
+  },
+  "33411": {
+   "title": "Purchasing of New Electronic Equipment",
+   "description": "Includes desktop, laptop, tablet computers (including rugged), servers, storage equipment, hyperconverged integrated systems, supercomputers, routers, switches and other communications equipment, IT security equipment (hardware based firewalls), audio and video (AV) equipment, public address systems, monitors/displays, sensors and other Internet of Things (IOT) devices, printers and Multi-Function Device (MFD) equipment, broadcast band radio, two-way radio (LMR), microwave radio equipment, satellite communications equipment, radio transmitters/receivers (airborne), radio navigation equipment/antennas, optical/imaging systems, and associated peripherals required for operations (such as controllers, connectors, cables, drivers, adapters, etc., ancillary installation of any equipment purchased.",
+   "cooperative": true
+  },
+  "33512": {
+   "title": "Energy-Efficient Lighting and Sustainable Energy Solutions",
+   "description": "Includes lighting solutions for indoor and outdoor activities, including aviation, marine, and emergency disaster relief. Energy solutions that use solar, fuel, geothermal, and wind power are available.",
+   "cooperative": false
+  },
+  "33611": {
+   "title": "Purchase or Lease of Gas or Electric Low Speed Vehicles",
+   "description": "Purchase or lease street legal electric or gasoline powered low-speed vehicles. Vehicles configured to carry two, four, six or more passengers, or two passengers and a pickup bed or other utility box. Applications include: passenger transport, security patrol, maintenance, and delivery. Vehicles have basic safety equipment and comply with Federal Motor Vehicle Safety Standard Number 500.",
+   "cooperative": false
+  },
+  "33712": {
+   "title": "Complete Daycare, Preschool and Classroom Solutions",
+   "description": "Daycare, preschool, and classroom furniture including but not limited to storage units/cabinets, high chairs, cribs, student desks and chairs, and related accessories.",
+   "cooperative": false
+  },
+  "33721": {
+   "title": "Office Furniture",
+   "description": "Includes all furniture placed in an office, such as chairs, desks, etc.",
+   "cooperative": false
+  },
+  "54151": {
+   "title": "Software Maintenance Services",
+   "description": "Software maintenance services creates, designs, implements, and/or integrates customized changes to software that solve one or more problems and is not included with the price of the software. Software maintenance services includes person-to-person communications regardless of the medium used to communicate: telephone support, online technical support, customized support, and/or technical expertise which are charged commercially.",
+   "cooperative": true
+  },
+  "54161": {
+   "title": "Agency Human Capital Evaluation",
+   "description": "This function assesses results achieved across all Human Capital Management systems and activities in support of mission goals to identify and implement improvements. This function includes the following sub-function: A.10.1 Human Capital Programmatic Evaluation OPM Federal Human Capital Business Reference Model",
+   "cooperative": false
+  },
+  "56131": {
+   "title": "Talent Acquisition",
+   "description": "The Talent Acquisition function is the establishment of internal programs and procedures for attracting, recruiting, assessing, and selecting highly qualified, productive employees with appropriate skills and competencies, from all sectors of society, all in accordance with merit system principles. Services include developing a staffing strategy and plan; establishing an applicant evaluation approach; announcing the vacancy, sourcing and evaluating candidates against the competency requirements for the position; initiating pre -employment activities; and hiring employees. This function includes the following sub-functions: A.2.1 Talent Acquisition Management; A.2.3 Candidate Sourcing and Recruitment; A.2.3 Candidate Assessment and Selection; A.2.4 Applicant Screening and Reciprocity Investigation; A.2.5 Vetting Adjudication; and A.2.6 New Hire in-processing and Onboarding OPM Federal Human Capital Business Reference Model",
+   "cooperative": false
+  },
+  "238160": {
+   "title": "Roofing Products and Services Solutions",
+   "description": "Includes roofing products, services, and associated materials for the repair or replacement of a roof. Services include installation and site preparation in support of the repair or replacement of a roof. This SIN may be used to satisfy a requirement for materials only, services/labor only, or a comprehensive requirement for both. For ordering limitations and information, refer to the Special Ordering Procedures/Ordering Guide posted on www.gsa.gov.",
+   "cooperative": false
+  },
+  "238320": {
+   "title": "Surface Preparation",
+   "description": "Services related to the preparation for application of chemical compounds to Federal vehicles, machinery and other equipment and Support Training/Consultation Services as they pertain to preparation for and application of chemical compounds to Federal vehicles, machinery and other equipment. Does not cover passenger cards, trucks or buses. These services include surface preparation for painting and sealant application on ships, aircraft, vehicles and other equipment or machinery surface that requires application of chemical compound, such as paint, sealant, coatings, or adhesives.",
+   "cooperative": false
+  },
+  "238910": {
+   "title": "Installation and Site Preparation Services",
+   "description": "Includes installation and site preparation services ordered in conjunction with buildings and structures, building materials, storage tanks/systems, services for alternative energy solutions or power distribution equipment, fuel dispensing & management systems, and security systems purchased under this schedule contract. For ordering limitations and information, refer to the Special Ordering Procedures/Ordering Guide posted on www.gsa.gov",
+   "cooperative": false
+  },
+  "314110": {
+   "title": "Carpet Flooring",
+   "description": "Carpet flooring including but not limited to broadloom carpet, carpet tiles, carpet cushions, mats and matting with and without logos.",
+   "cooperative": false
+  },
+  "314120": {
+   "title": "Lodging and Hospitality Supplies and Services",
+   "description": "Includes lodging and hospitality supplies and services, such as air cleaners and purifiers, houseware items for furnishing guest rooms or living quarters, mattresses, safety and security components, amenities, outdoor furniture and equipment, etc.",
+   "cooperative": false
+  },
+  "315210": {
+   "title": "Uniforms",
+   "description": "Includes uniforms and work wear for food service, housekeeping, laundry, facilities, maintenance, guest services, and other hospitality personnel.",
+   "cooperative": false
+  },
+  "316210": {
+   "title": "Footwear",
+   "description": "Includes all types of footwear, including shoes, boots, etc.",
+   "cooperative": true
+  },
+  "321918": {
+   "title": "Commercial Flooring",
+   "description": "Hard surface flooring including but not limited to vinyl tile, rubber tile, linoleum, laminate wood flooring, sheet flooring",
+   "cooperative": false
+  },
+  "321920": {
+   "title": "Pallets, Plastic and Wood",
+   "description": "Airfeight, export/import pallet, treated pallet, untreated pallet, drum pallet, wooden pallet, lightweight air cargo, heavy duty reversible pallet, plastic pallet, poly pallet, euro pallet, ISO container 6-ft loading ramp, flat utility pallet, motorcycle insert fixture pallet, motorcycle insert fixture pallet, tire rack insert pallet, disposable plastic corrugated pallets and omni pallet with runners.",
+   "cooperative": false
+  },
+  "321991": {
+   "title": "Mobile Homes, Travel Trailers",
+   "description": "Includes pre-engineered and/or prefabricated buildings and structures for storage solutions, such as leveling the trailer, maintenance agreements, and design assistance.",
+   "cooperative": false
+  },
+  "322220": {
+   "title": "Performance-Oriented Packaging (POP), plastic over pack, and hazardous material packaging",
+   "description": "Refrigerated shipper, dry ice labels, shipper labels, cargo air only label, foam inserts, freezer bricks, infectious shipper, various sizes of gallon drums",
+   "cooperative": false
+  },
+  "322291": {
+   "title": "Restroom Products",
+   "description": "This includes, but is not limited to, items such as: Dispensers for Roll Toilet Tissue, Toilet Tissue, Paper Towels, Dispensers for Paper Towels, toilet seat covers, facial tissues, and soaps for restroom dispensers.",
+   "cooperative": false
+  },
+  "324110": {
+   "title": "Propane",
+   "description": "Includes propane products, service and repair, and rental demurrage related to propane.",
+   "cooperative": false
+  },
+  "324191": {
+   "title": "Commercial Coatings, Removers, Adhesives, Sealants and Lubricants, Petroleum and Waxes",
+   "description": "Includes commercial coatings, removers, adhesives, sealants, stains, varnishes, shellacs, lacquers, applicators, lubricants, petroleum, waxes, and accessories.",
+   "cooperative": false
+  },
+  "325320": {
+   "title": "Pest and Animal Control Products & Services",
+   "description": "Includes pest and animal control products, such as mosquito deterrent, cattle guards, salts, sprays, etc. Services include but are not limited to the planning; development; management; operations; and maintenance for pest control and removal (includes insect and weed control) at or on Federal facilities and/or properties (to include shrubs and trees). These services involve applications of pesticides (including organic and natural pesticides) as well as trapping and/or removal of pests.",
+   "cooperative": false
+  },
+  "325412": {
+   "title": "Criminal Investigative Equipment and Supplies",
+   "description": "Includes products necessary for criminal investigations, such as evidence collection supplies, fingerprinting, polygraphs, evidence collection containers, etc.",
+   "cooperative": true
+  },
+  "325611": {
+   "title": "Cleaning Products",
+   "description": "Includes cleaning products such as laundry cleaner, floor/carpet cleaners, sorbents, biodegradable cleanser/degreasers, and other related cleaning chemicals, dispensing equipment and systems.",
+   "cooperative": false
+  },
+  "325612": {
+   "title": "Disinfectants, Sterilants and Deodorizers",
+   "description": "Includes disinfectants, sterilants, and deodorizers.",
+   "cooperative": false
+  },
+  "325992": {
+   "title": "Micro-photographic Film, Paper, Chemical Preparation and Equipment",
+   "description": "Includes micro-photographic film and paper, chemical preparation, and equipment, such as microfilm copy paper, finishing and editing equipment, quality control equipment, etc.",
+   "cooperative": false
+  },
+  "325998": {
+   "title": "Chemical Additives",
+   "description": "Includes chemical additives such as fuel oil additive, fuel engine primer, antifreeze, and road stabilization/ice melting chemicals.",
+   "cooperative": false
+  },
+  "326199": {
+   "title": "Waste and Recycling Containers and Receptacles",
+   "description": "Outdoor and Indoor Use - Includes waste and recycling containers/receptacles for indoor and outdoor use.",
+   "cooperative": false
+  },
+  "326220": {
+   "title": "Hoses, Valves, Fittings, Nozzles, Couplings and Related Accessories",
+   "description": "Includes all hoses, valves, fittings, nozzles, couplings, and related accessories.",
+   "cooperative": true
+  },
+  "327910": {
+   "title": "Abrasives and Blasters",
+   "description": "Includes abrasives, blasters, and blaster media.",
+   "cooperative": false
+  },
+  "332216": {
+   "title": "Law Enforcement, Firefighting and Rescue Tools, Equipment and Accessories",
+   "description": "Includes firefighting and rescue equipment, such as jaws, cutters, axes, shovels, etc. Also includes products related to emergency preparedness and first responder equipment.",
+   "cooperative": true
+  },
+  "332311": {
+   "title": "Above Ground Storage Tanks/Systems",
+   "description": "Includes all above ground storage tanks, systems, and related accessories.",
+   "cooperative": false
+  },
+  "332312": {
+   "title": "Temporary and Permanent Structures",
+   "description": "Includes both temporary and permanent structures, such as portable roads, airstrips, helipads, ramps, and bridges.",
+   "cooperative": false
+  },
+  "332321": {
+   "title": "Doors, Windows, Skylights, Panels, and Shutters",
+   "description": "Includes all doors, windows, skylights, panels, shutters, and all associated accessories and hardware.",
+   "cooperative": false
+  },
+  "332439": {
+   "title": "Shipping, Cargo, Freight, and Storage Containers",
+   "description": "Includes shipping, cargo, freight, and storage containers.",
+   "cooperative": false
+  },
+  "332510": {
+   "title": "Hardware Manufacturing (Hardware Store, Home Improvement Center, or MRO",
+   "description": "Services) - Includes all commercially available services typically performed in a Hardware Store. All services performed must be within the spirit and concept of a hardware store. These services may only be offered by contractors awarded SIN 332510C and/or SIN 332510S.",
+   "cooperative": false
+  },
+  "332913": {
+   "title": "Plumbing Products and Bathroom Fixture Solutions",
+   "description": "Includes all plumbing products and bathroom fixture solutions, such as lavatories, bathtubs, water closets, etc.",
+   "cooperative": false
+  },
+  "332994": {
+   "title": "Burning Equipment",
+   "description": "Includes all burning equipment, such as flame throwers, drip torches, aerial ignition equipment, etc.",
+   "cooperative": true
+  },
+  "332999": {
+   "title": "Law Enforcement Personal Equipment",
+   "description": "Includes all personal equipment related to law enforcement, such as restraints, duty belts, flashlights, weapon scopes, gas masks, etc.",
+   "cooperative": true
+  },
+  "333112": {
+   "title": "Lawn and Garden Equipment, Machinery, Implements, Tools, Products and Accessories",
+   "description": "Includes, but not limited to: Mowers (all types) not to exceed 30 hp; gas and diesel tractors dedicated to lawn and garden without implements (excludes tractors with attachments enabling multiple or general purpose use such as loading, excavation, agricultural, highway or road maintenance or clearing, mowing construction, etc.); mowing implements; flail mowing units; boom mowers; sickle mowers; rotary mowing units; rototillers; snow throwers and blowers; grass, hedge and tree trimmers; edgers; blowers; vacuums; sweepers; sprayers; renovators; spiders; sod cutters; broadcasters; spreaders; seeders and other various lawn and garden implements (not tractor drawn or mounted). Tools including but not limited to: chain saws, lawn sprinklers, soaker hoses, garden hoses, grass shears, pruning shears, tree trimmers, pruning saws, weed whip cutters, rakes, spading forks, manure forks, brush hooks and garden hoes. Products include typical nursery and garden items, such as trees, shrubs, plants, seeds, fertilizer, bulbs, and sod.",
+   "cooperative": false
+  },
+  "333120": {
+   "title": "Street Repair and Cleaning Equipment and Attachments",
+   "description": "Street Repair Equipment and Attachments Snow Maintenance and clearing equipment and attachments",
+   "cooperative": false
+  },
+  "333241": {
+   "title": "Food Preparation Equipment",
+   "description": "Includes food preparation equipment related to cooking, beverage serving, and/or concessions.",
+   "cooperative": false
+  },
+  "333244": {
+   "title": "Post Copying/Finishing Equipment and Supplies",
+   "description": "Includes all equipment and supplies necessary for post-copy, such as paper folding, paper gathering, inserting, collating and finishing, paper cutting, and all other related equipment.",
+   "cooperative": false
+  },
+  "333249": {
+   "title": "3D Printing Solutions and Additive Manufacturing Solutions",
+   "description": "Includes printers; ancillary equipment, technical services and supplies required to generate functional prototype images and printed objects. Equipment may include all classes and sizes of 3D Printers, laser imaging devices, post processing devices and ancillary accessories and software to produce functional items. Technical services include but are not limited to: 3D Printing and laser imaging to produce a digital file used to generate functional prototype images and printed objects. All types of consumables and other items related to this SIN are included.",
+   "cooperative": false
+  },
+  "333314": {
+   "title": "Microscopes",
+   "description": "Includes microscopes and borescopes.",
+   "cooperative": false
+  },
+  "333318": {
+   "title": "Dictating and Transcribing Machines and Systems",
+   "description": "Includes a professional dictation system that offers a full voice recording system interface using advanced technology. Products may include digital recorders, microphones, sound cards, etc.",
+   "cooperative": false
+  },
+  "333415": {
+   "title": "Laboratory Refrigerators And Freezers",
+   "description": "Includes reach-in and walk-in refrigerator and freezer configurations suitable for blood banking, chromatography, mortuary, and other special-use cooling or freezing requirements. Excludes all household, commercial or display case refrigerators and freezers.",
+   "cooperative": false
+  },
+  "333912": {
+   "title": "Air Compressors and Pressure Cleaners",
+   "description": "Includes air compressors and pressure cleaners.",
+   "cooperative": false
+  },
+  "333914": {
+   "title": "Fuel Management Systems",
+   "description": "Includes all elements necessary for fuel management systems, such as components for managing/monitoring pressure and tank level, leak detection, and lubrication equipment. Includes additional options, parts, and accessories.",
+   "cooperative": false
+  },
+  "333921": {
+   "title": "Vehicle Material Handling Equipment",
+   "description": "Includes all vehicle material handling equipment, such as lifts, engine hoists, engine stands, jacks, tire dollies, etc. Includes equipment for maintenance and repair of automobiles, trucks, buses, motorcycles, and aircraft. Includes all options and accessories related to these products.",
+   "cooperative": false
+  },
+  "333922": {
+   "title": "Warehouse Equipment Supplies",
+   "description": "Includes all warehouse equipment supplies, such as storage systems, storage racks, conveyors and conveyor systems, conveyor belts, etc.",
+   "cooperative": false
+  },
+  "333923": {
+   "title": "Vehicular Cranes and Attachments",
+   "description": "Includes but not limited to Wheeled and Tracked Cranes",
+   "cooperative": false
+  },
+  "333924": {
+   "title": "Utility Trucks and Tractors",
+   "description": "Includes utility trucks and tractors, such as tow, cargo, baggage, and aircraft tug tractors; loaders; electric burden carriers, etc.",
+   "cooperative": false
+  },
+  "333997": {
+   "title": "Scales and Balances",
+   "description": "Includes laboratory, vehicular and industrial scales and balances.",
+   "cooperative": false
+  },
+  "333999": {
+   "title": "Animal Caging Equipment",
+   "description": "Includes animal cages and caging systems intended for the care, study and storage of animals that are used in the research biomedical laboratory environment.",
+   "cooperative": false
+  },
+  "334118": {
+   "title": "Personal & Document Identification Systems",
+   "description": "Includes personal and document identification systems, such as eye, face, palm, fingerprint, and voice recognition systems. These systems may include, but are not limited to, photo identification cameras, embossed card systems, and smart card technology.",
+   "cooperative": false
+  },
+  "334220": {
+   "title": "Surveillance Systems, Wearable Body Cameras, and Vehicular Video",
+   "description": "334220- Surveillance Systems, Unmanned Aircraft Systems (UAS)/Drones, Wearable Body Cameras, and Vehicular Video Equipment- Includes surveillance systems such as wearable body cameras, vehicular video equipment, and related video storage and services. This SIN also includes Unmanned Aircraft Systems (UAS)/Drones, along with associated replacement parts, accessories, and ancillary services such as training and installation, when offered as part of a total solution. Ancillary services must directly support the products offered under this SIN and may not be proposed on a standalone basis.",
+   "cooperative": true
+  },
+  "334290": {
+   "title": "Security and Detection Systems",
+   "description": "Includes security and detection systems and devices, such as gas detectors, pressure level monitoring, patient/detainee monitoring systems, etc.",
+   "cooperative": true
+  },
+  "334310": {
+   "title": "Professional Audio/Video Products",
+   "description": "Includes professional audio/video equipment and parts.",
+   "cooperative": false
+  },
+  "334419": {
+   "title": "Unique Identification (UID) / Radio Frequency Identification (RFID",
+   "description": "For a variety of applications including supply chain management, logistics, and anti-counterfeiting, to improve inventory management and reduce operating costs. Unique Identification (UID) is a system of distinguishing one object from another. UID of items requires that qualifying items have a data matrix inscribed either directly on the item or on a permanent machine-readable label affixed to the item. Radio Frequency Identification (RFID) is a method of remotely storing and retrieving data using devices called RFID tags/transponders. An RFID tag is a small object integrated with a silicon chip, such as an adhesive sticker, that can be attached to or incorporated into a product. RFID tags contain antennas to enable them to receive and respond to radio-frequency queries from an RFID transceiver. RFID allows for individual items to have a unique identifier and can identify many items at once. RFID enables consumer packaged goods companies, retailers and other industries to improve their operating efficiency throughout their supply chains.",
+   "cooperative": false
+  },
+  "334511": {
+   "title": "Search, Detection, Navigation, Guidance, Aeronautical and Nautical Systems and Instruments",
+   "description": "Includes telecommunications equipment and accessories, such as radar (except airborne), underwater, light, and laser equipment.",
+   "cooperative": true
+  },
+  "334512": {
+   "title": "Total Solution Support Products for Facilities Management Systems",
+   "description": "Includes products to support facilities management systems, such as repair parts, surveillance systems, security functions, energy functions, building comfort systems, etc.",
+   "cooperative": true
+  },
+  "334513": {
+   "title": "Water, Air, Soil and Seismic Measuring",
+   "description": "Includes water current meters, seawater sampling, and salinity measuring equipment.",
+   "cooperative": false
+  },
+  "334515": {
+   "title": "Diagnostic, Measuring and Testing Equipment",
+   "description": "Includes diagnostic, measuring, and testing equipment used in laboratory settings, such as microscopes, borescopes, etc.",
+   "cooperative": false
+  },
+  "334516": {
+   "title": "Analytical Instruments",
+   "description": "Includes analytical equipment for laboratory use, such as testing equipment, etc.",
+   "cooperative": true
+  },
+  "334519": {
+   "title": "Bomb and Hazardous Material Disposal; Metal and Bomb Detection",
+   "description": "Includes products necessary for bomb and hazardous material disposal, including protective and detective equipment.",
+   "cooperative": true
+  },
+  "335220": {
+   "title": "Sanitation and Warewashing Equipment",
+   "description": "Includes sanitation and warewashing equipment, such as dishwashers, warewashing and warewashing racks, food waste disposers, etc.",
+   "cooperative": false
+  },
+  "335911": {
+   "title": "Batteries",
+   "description": "Includes, but not limited to, batteries, chargers, monitoring systems, battery spill containment systems, and all options, parts, and accessories related to these products. Products can be used for rental, emergency, or disaster recovery efforts.",
+   "cooperative": false
+  },
+  "335999": {
+   "title": "Power Distribution Equipment and Solar Energy Solutions",
+   "description": "Includes power distribution equipment and services, such as portable light towers, uninterruptible power supplies, metering, transformers, electric motors (excludes automotive motors), motor controllers/motor control centers, repair and maintenance services, etc. Alternative and Renewable Sustainable Energy Solutions including Solar Energy Systems, Fuel Cells, Geothermal, and Wind Power. Includes all options and accessories related to these products and services.",
+   "cooperative": false
+  },
+  "336211": {
+   "title": "Tank Trucks",
+   "description": "NFPA 385 & 407 compliant Fuel and Petroleum tank trucks Including but not limited to Bulk Fuel Haulers, Ground Fuel Servicing Trucks (single and multiple product), Aircraft Refueling and De-fueling Tank Trucks. Potable and Non-potable Water Trucks, Street Flushers, Dust Control Spray Trucks, and Trailers. Related equipment and accessories and related equipment.",
+   "cooperative": false
+  },
+  "336212": {
+   "title": "Trailers and Attachments",
+   "description": "Includes but not limited to: Closed Van Semitrailers, Refrigerated Semitrailers, Platform Semitrailers, Low-bed Semitrailers, Cargo Trailers, Utility Trailers",
+   "cooperative": false
+  },
+  "336320": {
+   "title": "Vehicle Signal and Restraint System",
+   "description": "Includes vehicle signal and restraint systems, such as vehicular emergency signals, sirens, spot and flood lights, beacon warning devices, etc.",
+   "cooperative": true
+  },
+  "336413": {
+   "title": "Aircraft Armoring and Helicopter Equipment",
+   "description": "Includes aircraft armoring and helicopter equipment, including items used for firefighting, search, and rescue.",
+   "cooperative": true
+  },
+  "336611": {
+   "title": "Marine Craft Repairing",
+   "description": "336611 includes all repair and maintenance services for marine crafts and products such as boats (all types), floating marine barriers and booms, inboard and outboard engines, etc.",
+   "cooperative": true
+  },
+  "336612": {
+   "title": "Marine Craft",
+   "description": "336612 includes marine crafts and products such as boats (all types), floating marine barriers and booms, inboard and outboard engines, etc.",
+   "cooperative": true
+  },
+  "336991": {
+   "title": "Wheel and Track Vehicles",
+   "description": "Includes all wheel and track vehicles, such as ATVs, snowmobiles, bicycles, and any required accessory.",
+   "cooperative": false
+  },
+  "336992": {
+   "title": "Non-Tactical Armored Vehicles and Vehicle Armoring Services",
+   "description": "Includes armored vehicles (excluding patrol cars) used strictly for law enforcement or security purposes, and any miscellaneous armoring products and services.",
+   "cooperative": true
+  },
+  "336999": {
+   "title": "Food Center Concepts",
+   "description": "Includes products related to food service and holding carts, food transport equipment, and food kiosks.",
+   "cooperative": false
+  },
+  "337127": {
+   "title": "Institutional Furniture",
+   "description": "Includes laboratory furniture systems, industrial furniture systems, and storage.",
+   "cooperative": false
+  },
+  "337215": {
+   "title": "Firearm Care",
+   "description": "Includes all products and services related to firearm care, including storage, securing, cleaning, bullet recovery, vaults, etc.",
+   "cooperative": true
+  },
+  "339112": {
+   "title": "Breathing Air Equipment and Related Items",
+   "description": "Includes breathing air equipment, inhalator devices, respiratory protection products, etc.",
+   "cooperative": true
+  },
+  "339920": {
+   "title": "Target Systems/Target Range Accessories",
+   "description": "Includes target systems and target range accessories, such as protective lenses, shooters gloves, hearing protection devices. etc.",
+   "cooperative": true
+  },
+  "339940": {
+   "title": "Office Products",
+   "description": "Office products include, but are not limited to items such as: pens, pencils, markers, xerographic paper, printer paper, fax paper, binders, tape, envelopes, shredders, helical-scan, disk packs, disk cartridges, CDs, diskettes, DVDs, anti-glare/anti-radiation screens (VDT), ergonomic workstations products other than furniture, security, protective and related ADP supplies, and toner cartridges. Toner cartridge offerors must provide arrangements for empty toner cartridges to be returned from customers. This may include prepaid shipping labels in the products packaging and/or rebates.",
+   "cooperative": false
+  },
+  "339950": {
+   "title": "Signs",
+   "description": "Includes all signage, such as directories, site/facility identification, scoreboards, exit signs, etc.",
+   "cooperative": false
+  },
+  "339994": {
+   "title": "Hand Floor Cleaning Equipment",
+   "description": "Includes equipment for cleaning the floor by hand, such as mops, buckets, wringers, squeegees, cleaning products, and related items.",
+   "cooperative": false
+  },
+  "488190": {
+   "title": "Aircraft Components, Maintenance, Repair Services, Extended Warranties, And Maintenance Agreements",
+   "description": "Offers customers the choice between hourly repair and annual service agreements. Includes time and material service, and fixed price per incident repair service for aircrafts and related equipment.",
+   "cooperative": false
+  },
+  "492110": {
+   "title": "Package Delivery and Freight Trucking",
+   "description": "492110 includes domestic delivery for letters, parcels, etc. as well as freight transportation services.",
+   "cooperative": false
+  },
+  "492210": {
+   "title": "492210 Local Courier Delivery Services",
+   "description": "492210 Includes domestic delivery services (e.g. local, air, bicycle, boat, or truck) for letters, parcels, etc.",
+   "cooperative": false
+  },
+  "511120": {
+   "title": "Technical Publications and Industry Reports",
+   "description": "Technical publications, subscriptions, industry reports, scientific/technical journals, engineering publications, instructional manuals",
+   "cooperative": false
+  },
+  "511210": {
+   "title": "Software Licenses",
+   "description": "Includes both term and perpetual software licenses and maintenance.",
+   "cooperative": true
+  },
+  "512110": {
+   "title": "Video/Film Production",
+   "description": "Services include writing, directing, shooting, arranging for talent / animation, narration, music and sound effects, duplication, distribution, video scoring; and editing. Videotape and film production services will be provided to inform the public and Government agencies about the latest products, services, and/or issues in various outputs such as: industry standard formats, accessibility and video streaming development. Filming in studios, on location, live shows or events may also be required.",
+   "cooperative": false
+  },
+  "517312": {
+   "title": "Wireless Mobility Solutions",
+   "description": "Wireless Mobility Solutions, including but not limited to, Wireless Carriers Services, Telecommunication Resellers, Other Mobility End-Point Infrastructure - Mobility infrastructure, Mobility-as-a-Service, Enterprise Mobility Management, Mobile Backend-as-a-Service, Telecom Expense Management, Mobile Application Vetting, Mobile Threat Protection, Mobile Identity Management, Internet of Things (IoT), and Other/Mobile Services. All Nationwide Business Plans under this contract may include \"\"no-cost\"\" Service Enabling Devices (SEDs) (including, but not limited to, cell phones and shall be offered to the general public at \"\"no-cost\"\") and bundling the SEDs with cellular service. The SEDs are offered on an \"\"as available\"\" basis and may or may not be domestic end products or end products of a designated country. The \"no-cost\" SEDs are not available through this contract apart from ordering cellular service.",
+   "cooperative": true
+  },
+  "517410": {
+   "title": "Commercial Satellite Communications Solutions (COMSATCOM)",
+   "description": "Includes but not limited to products and services, such as: leased commercially available satellite bandwidth; shared or private satellite subscription/managed services; satellite phone services; satellite terminals, phones, modems, and related equipment and services. Solutions include transponded capacity consisting of dedicated bandwidth on a commercial satellite in any frequency band. Transponded Capacity includes all services necessary to allow the customer to use the transponded capacity, including: engineering (e.g., development of link budgets, transmission plans); basic customer training (e.g., acquiring satellite signal, peak and polarization); core management and control of the transponded capacity; and required approvals. Subscription Services include but are not limited to: worldwide satellite-based Internet, voice, data, and video services. Subscription services entail existing commercial satellite services solutions, including terminals, in any frequency band. Subscription services include the network management, monitoring, engineering, integration, and operations required to deliver the services. These solutions may include fixed and/or mobile satellite services, along with service-enabling components such as terminals, teleports, and terrestrial interfaces. Host Nation Agreements (HNAs) are separately priced when required.",
+   "cooperative": true
+  },
+  "522310": {
+   "title": "Financial Advising, Loan Servicing and Asset Management Services",
+   "description": "Services include assisting agencies on cross-cutting issues, asset marketability, equity monitoring, originations, and addressing any other considerations regarding the acquisition, management and/or resolution of an asset; assisting agencies in servicing, monitoring and maintaining loan assets such as establishing loan database, remittance processing, processing loan cancellations and consolidations, billing services, and servicing troubled loans which may include borrower negotiations, restructuring, foreclosure and supervision of the sale of the collateral and workout agreements.",
+   "cooperative": false
+  },
+  "524292": {
+   "title": "Separation and Retirement",
+   "description": "This function includes conducting efficient and accurate Human Capital processing actions in support of employee separation or retirement work includes but is not limited to: conducting efficient and accurate HC processing actions in support of employee separation or retirement, handling the appropriate notifications and determining the terms of the separation. Ensuring knowledge transfer occurs between the separating employee and remaining employees. Separating employees are offered transition counseling and support. This sub-function includes: A.6.1 Separation Counseling and; A.6.2 Retirement Planning and Processing. OPM Federal Human Capital Business Reference Model",
+   "cooperative": false
+  },
+  "531110": {
+   "title": "Long Term Lodging",
+   "description": "Includes corporate lodging services in an apartment, condominium, or similar long stay type of property.",
+   "cooperative": false
+  },
+  "531210": {
+   "title": "Financial Asset Resolution Services",
+   "description": "Assist agencies in all asset resolution related areas including valuation / pricing, portfolio stratification, restructuring and disposition strategies which best meet agency goals. Make specific recommendations as to the best execution. Conduct a sale or other disposition vehicle. Provide marketing expertise, budget and credit reform analyses",
+   "cooperative": false
+  },
+  "532111": {
+   "title": "Automotive equipment rental and leasing, Rental Supplemental Vehicle Program (RSVP)",
+   "description": "Includes rental services of vehicle types (including car, truck, and special equipment rentals such as trailers, refrigerated trucks, etc.) to supplement federal fleets and/or support official business vehicular needs for other than temporary duty travel purposes.",
+   "cooperative": false
+  },
+  "532112": {
+   "title": "Leasing of Passenger Cars, SUVs, Vans, and Light Trucks",
+   "description": "Leasing of Passenger Cars, SUVs, Vans, and Light Trucks",
+   "cooperative": false
+  },
+  "532120": {
+   "title": "Leased Heavy Duty Vehicles",
+   "description": "Leasing of heavy duty vehicles including Fire Trucks",
+   "cooperative": false
+  },
+  "532310": {
+   "title": "Rental and Leasing of Hardware Store Products",
+   "description": "Includes rental of specific, individually-identified by manufacturer name and manufacturer part number commercial products, equipment and machinery covered under the Hardware and Tools subcategory such as: tools; tool kits; hardware store products; paint and coating applicators and accessories; appliances; lawn and garden equipment and machinery; and woodworking/ metalworking and industrial equipment and machinery. Excludes consumable products, commercial rental fees not included in the fixed price (e.g., delivery charges and mileage fees), and leasing agreements.",
+   "cooperative": false
+  },
+  "541110": {
+   "title": "Professional Legal Services",
+   "description": "Assist agencies with the full spectrum of professional legal support required for the resolution, management and/or disposition of assets held by the Federal Government.",
+   "cooperative": false
+  },
+  "541211": {
+   "title": "Auditing Services",
+   "description": "Perform financial-related audits, performance audits, recovery audits, transportation audits, and contract audits in accordance with Generally Accepted Government Auditing Standards (GAGAS) and non-GAGAS. Financial and Performance audits: Perform an independent assessment of an audited entity's financial statements in conformity with generally accepted accounting principles, financial information, adherence to financial compliance requirements and internal controls, or organization or program performance to identify areas for improvement. Recovery audits: identify recoverable funds resulting from overpayments, duplicate payments and underpayments under the authority of public law and regulation, e.g., Section 354 of the National Defense Authorization Act for FY 96 (Public Law 104-106; 110 Stat. 268; 10 U.S.C. 2461). Transportation audits: perform administrative reviews and rate examinations on prepayment and post payment transportation bills to ensure accuracy, completeness, and compliance with established rates, tariffs, quotations, agreements, tenders or other applicable rate authority.",
+   "cooperative": false
+  },
+  "541214": {
+   "title": "Payroll Services",
+   "description": "Services include those that an agency identifies as recurring commercial activities such as billing, payroll processing that includes collecting information on hours worked, pay rates, deductions, and other payroll-related data using that information to generate paychecks, payroll reports, and tax filings. These establishments may use data processing and tabulating techniques as part of providing their services.",
+   "cooperative": false
+  },
+  "541219": {
+   "title": "Budget and Financial Management Services",
+   "description": "Services include accounting, budgeting, and complementary financial services such as: transaction analysis, transaction processing, data analysis and summarization, technical assistance in devising new or revised accounting policies and procedures, classifying accounting transactions, special studies to improve accounting operations, assessment and improvement of budget formulation and execution processes, special reviews to resolve budget formulation or budget execution issues,and technical assistance to improve budget preparation or execution processes.",
+   "cooperative": false
+  },
+  "541380": {
+   "title": "Testing Laboratory Services",
+   "description": "Includes testing laboratory services and veterinary, natural, and life sciences; testing services and laboratories; and other professional, scientific, and technical consulting services. Testing and services include, but are not limited to: physical, chemical, analytical, or other testing services; quality assurance; fire safety inspections; training; safety audits; relying upon experimental, empirical, quantifiable data, relying on the scientific method, and professional services, tasks, and labor categories in the fields of biology, chemistry, physics, earth sciences, atmospheric science, oceanography, materials sciences, mathematics, geology, astronomy, veterinary medicine, statistics, systems science, etc., (excludes social and behavioral sciences). Examples of labor categories include, but are not limited to, Scientific Researchers, Biologists, Physicists, Mathematicians, Statisticians, Research Engineers, Meteorologists, Lab Technicians, Veterinarians and Veterinary Services, Chemists, Biochemical Engineers, Research Nurses.",
+   "cooperative": false
+  },
+  "541420": {
+   "title": "Engineering System Design and Integration Services",
+   "description": "Services include creating and developing designs and specifications that optimize the use, value, and appearance of their products. These services can include determination of the materials, construction, mechanisms, shape, color, and surface finishes of the product, taking into consideration human characteristics and needs, safety, market appeal, and efficiency in production, distribution, use, and maintenance. Associated tasks include, but are not limited to computer-aided design, e.g. CADD, risk reduction strategies and recommendations to mitigate identified risk conditions, fire modeling, performance-based design reviews, high level detailed specification and scope preparation, configuration, management and document control, fabrication, assembly and simulation, modeling, training, consulting, analysis of single or multi spacecraft missions and mission design analysis.",
+   "cooperative": false
+  },
+  "541430": {
+   "title": "Graphic Design Services",
+   "description": "Services include planning, designing, and managing the production of visual communication in order to convey specific messages or concepts, clarify complex information, or project visual identities. These services can include the design of printed materials, packaging, advertising, signage systems, and corporate identification (logos) and can include commercial artists engaged exclusively in generating drawings and illustrations requiring technical accuracy or interpretative skills Examples include commercial art, graphic design, special effects services that educate the consumer market about product(s) and/or service(s); updating, rewriting, and/or editing pre existing materials: developing conceptual design and layouts, creating sketches, drawings, publication designs, and typographic layouts; and furnishing custom or stock artwork (including electronic artwork).",
+   "cooperative": false
+  },
+  "541511": {
+   "title": "Web Based Marketing",
+   "description": "Services include, but are not limited to writing, modifying, testing, and supporting software to meet the needs of a particular customer. This can include website design and maintenance services, search engine development, email marketing, interactive marketing, web based advertising (including marketing and social media outlets), webcasting, video conferencing via the web, section 508 compliance, including captioning services, online media management; and related activities to web based services. Media will be provided in a format that is compatible with the ordering agency's software requirements. Continual website updates and maintenance may also be required.",
+   "cooperative": false
+  },
+  "541611": {
+   "title": "Management and Financial Consulting, Acquisition and Grants Management Support, and Business Program and Project Management Services",
+   "description": "Provide operating advice and assistance on administrative and management issues. Examples include: strategic and organizational planning, business process improvement, acquisition and grants management support, facilitation, surveys, assessment and improvement of financial management systems, financial reporting and analysis,due diligence in validating an agency's portfolio of assets and related support services, strategic financial planning, financial policy formulation and development,special cost studies, actuarial services, economic and regulatory analysis, benchmarking and program metrics, and business program and project management. Inherently Governmental services as identified in FAR 7.503 or by the ordering agency are prohibited. It is the responsibility of the Contracting Officer placing the order to make this determination. Ordering activities must require prospective contractors to identify potential conflicts of interest and address those, prior to task order award. Personal services as defined in FAR 37.104 are prohibited.",
+   "cooperative": false
+  },
+  "541613": {
+   "title": "Marketing Consulting Services",
+   "description": "Services include providing operating advice and assistance on marketing issues, such as developing marketing objectives and policies, sales forecasting, marketing planning and strategy, and development of multi-media campaigns. Services relating to providing assistance with challenges, contests, and competitions, such as providing marketing and advertising support, assistance with conducting the challenge / contest / competition, facilitating events; and supporting the judging of events are included. The challenge / contest / competition may be to identify a solution to a particular problem or to accomplish a particular goal. Prizes or other incentives may be offered by customers to find innovative or cost-effective solutions to improving open government. Solutions may be ideas, designs, proofs of concept or finished products. SIN 541810ODC must be used in conjunction with the payment for prizes or other incentives.",
+   "cooperative": false
+  },
+  "541614": {
+   "title": "Deployment, Distribution and Transportation Logistics Services:",
+   "description": "Services include the following: Deployment Logistics such as contingency planning, identifying/utilizing regional or global resources, integrating public/private sector resources, inventory/property planning, movement, storage, end-to-end industrial relocation/expansion services, and deploying communications and logistics systems to permit rapid deployment and management of supplies and equipment; Distribution and Transportation Logistics Services such as Planning and designing, implementing, or operating systems or facilities for the movement of supplies, equipment or people by road, air, water, rail, or pipeline.",
+   "cooperative": false
+  },
+  "541620": {
+   "title": "Environmental Consulting Services",
+   "description": "Services include providing advice and assistance to businesses and other organizations on environmental issues, such as the control of environmental contamination from pollutants, toxic substances, and hazardous materials; endangered species, wetland, watershed, and other natural resource management plans; Archeological and/or cultural resource management plans. This includes identifying problems (e.g., inspect buildings for hazardous materials), measure and evaluate risks, and recommend solutions. Multi-disciplined staff of scientists, engineers, and other technicians with expertise in areas, such as air and water quality, asbestos contamination, remediation, ecological restoration, and environmental law such as Planning and Documentation Services for the development, planning, facilitation, coordination, and documentation of and/or for environmental initiatives.",
+   "cooperative": false
+  },
+  "541690": {
+   "title": "Technical Consulting Services",
+   "description": "Services include providing advice and assistance on technical domains and issues (except those covered by the environmental,energy, and IT consulting SINs on this Schedule). Typical associated tasks include, but are not limited to: strategic planning, feasibility analysis, requirements determination, policy interpretation and support, process analysis and/or development, research studies, testing (other than laboratory testing), program analysis, and associated support tasks.",
+   "cooperative": false
+  },
+  "541715": {
+   "title": "Engineering Research and Development and Strategic Planning",
+   "description": "Services include conducting research and experimental development (except nanotechnology and biotechnology research and experimental development) in the physical, engineering and life sciences such as; such as agriculture, electronics, environmental, biology, botany, computers, chemistry, food, fisheries, forests, geology, health, mathematics, medicine, oceanography, pharmacy, physics, veterinary and other allied subjects. Typical tasks include, but are not limited to, analysis of mission, program goals and objectives, program evaluations, analysis of program effectiveness, requirements analysis, organizational performance assessment, special studies and analysis, training, and consulting; requirements analysis, cost/cost performance trade-off analysis,feasibility analysis, developing and completing fire safety evaluation worksheets as they relate to engineering services; operation and maintenance, evaluation of inspection, testing, and maintenance program for fire protection and life safety systems, program/project management, technology transfer/insertion, training and consulting.",
+   "cooperative": false
+  },
+  "541810": {
+   "title": "Advertising Services",
+   "description": "Services provided under this SIN will promote public awareness of an agency's mission and initiatives, enable public understanding of complex technical and social issues, disseminate information to industry and consumer advocacy groups and engage in recruitment campaigns. Services include, but are not limited to the following components: advertising objective determination, message decision / creation, media selection, outdoor marketing and media services, broadcast media (radio, TV, internet and public service announcements), direct mail services,media planning, media placement services, advertising evaluation, related activities to advertising services.",
+   "cooperative": false
+  },
+  "541820": {
+   "title": "Public Relations Services",
+   "description": "Services provided include providing customized media and public relation services such as the development of media messages and strategies; providing recommendations of media sources for placement of campaigns; preparing media materials such as, background materials, press releases, speeches and presentations and press kits: executing media programs, conducting press conferences, scheduling broadcast and/or print interviews, media alerts and press clipping services related activities to public relations services.",
+   "cooperative": false
+  },
+  "541910": {
+   "title": "Marketing Research and Analysis",
+   "description": "Services include customizing strategic marketing plans, branding initiatives, creating public awareness of products, services, and issues; targeting market identification and analysis, establishing measurable marketing objectives; determining market trends and conditions, identifying and implementing appropriate strategies, conducting focus groups, telemarketing, individual interviews, preparing/distributing surveys, and compiling/analyzing results, establishing call centers (in relation to services provided under this schedule).",
+   "cooperative": false
+  },
+  "541930": {
+   "title": "Translation and Interpretation Services",
+   "description": "Services include translating written material, interpreting speech from one language to another, and services to facilitate communication with and by persons who are visually or hearing impaired.. Services provided must include communication from a source language to a target language. Examples include interpretation of oral communication to and from English and native Foreign Language including Simultaneous, Consecutive, Escort, Community, Telephonic and Voiceovers; Collecting, translating / interpreting and delivering mission related data; performing data analysis of translated materials; cultural consulting and role-playing; Title III monitoring, transcriptions and intercepts; preparing related reports and assessments; forensic processing; screening / gisting; related project / program management and control for linguist screening and, recruitment; logistical coordination; site supervision and quality control of all related services. Sign Language Services include ASL/English, Manually Coded English, Pidgin Signed English (PSE), Contact Sign; International Sign. Other services include closed captioning, voice-overs, textbook or audio script translation, website (HTML) and online document translation with typesetting services, telephone Services (TDD and TTY), deaf interpreting, tactile, transcription of braille documents and captioning services, cued English transliteration, and Section 508 compliant language services.",
+   "cooperative": false
+  },
+  "541990": {
+   "title": "All Other Professional, Scientific, and Technical Services (Non-IT)",
+   "description": "Services provided include professional, scientific, and technical services not covered under other SINs. Examples include, but are not limited to, the following: appraisal services (except real estate); crisis management; emergency preparedness; emergency management; commodity inspector services; mathematical (both theoretical and applied) and statistical (both theoretical and applied) professional services; performance and impact evaluation services (related to a scientific or technical project); public health planning services; and weather forecasting services.",
+   "cooperative": false
+  },
+  "561110": {
+   "title": "Office Administrative Services",
+   "description": "Includes day-to-day office administrative support services, such as clerical/ secretarial functions, data entry, payroll administration,recordkeeping, travel preparation,scheduling, notetaking, meeting management,drafting memos/notes/letters,purchasing/requisitioning supplies, and logistics.",
+   "cooperative": false
+  },
+  "561320": {
+   "title": "561320 Temporary Staffing",
+   "description": "561320 Includes temporary administrative and professional staffing.",
+   "cooperative": false
+  },
+  "561410": {
+   "title": "Editorial, Publishing, and Library Media Services",
+   "description": "Includes the acquisition of professional support services in the publishing of print and electronically published media and communication documents, books, research studies, and general manuscript preparation but excluding any advertising, marketing or public relations materials; document editing or proofreading; typing, word processing, or desktop publishing; and; specialized transcription services for medical billing, medical coding, medical transcription and voice recognition/transcription.",
+   "cooperative": false
+  },
+  "561422": {
+   "title": "Automated Contact Center Solutions (ACCS)",
+   "description": "Automated Contact Center Solution (ACCS) is defined as any offering utilized to establish and maintain contact center capabilities for an agency. The offering may consist of one or more of the following: products, equipment, software, and/or services. Any labor categories offered must be in support of the total solution and cannot be a stand-alone offering. Permissible offerings under this SIN may include any technologies or services required to deliver and support an ACCS for an agency, including but not limited to: Artificial Intelligence (AI), Chat Bots, Robotic Process Automation, Interactive Voice Response (IVR), Voice/Speech Recognition, Text-to-Speech, Voicemail, Callback, Web Callback, Email Delivery, Hosted Online Ordering, Hosted Email Web Form, Hosted FAQ Service, etc.",
+   "cooperative": true
+  },
+  "561439": {
+   "title": "Document Production On-site and Off-site Services",
+   "description": "Includes the necessary equipment (e.g. high-volume digital color copiers, scanners) and personnel required for effective on-site/off-site document production. Also includes single or multiple shift production operations, consumable supplies (paper and transparencies are usually not included), on-going equipment maintenance, and customized agency reports.",
+   "cooperative": false
+  },
+  "561440": {
+   "title": "Debt Collection Services",
+   "description": "Services include providing collection services and servicing of defaulted loans which may include borrower negotiations, restructuring, and workout agreements",
+   "cooperative": false
+  },
+  "561450": {
+   "title": "Business Information Services (BIS)",
+   "description": "Services include electronic and non-electronic transmission of consumer and/or business: credit reports, address verification reports, skip location reports, public information, domestic business profile, international business profile, mortgage reports, supplemental credit reference reports, bond rating, managed fund rating, institutional ranking, data processing (credit/financial) credit scoring, security freeze (lock credit file), merged credit files, business credit risk assessment, and miscellaneous business information services. Firms may provide computer software intended for BIS use and customization of reports.",
+   "cooperative": false
+  },
+  "561510": {
+   "title": "Travel Agent Services",
+   "description": "Commercial services for the provision of travel agent services which includes, but not limited to: travel arrangement, reservation, ticketing and traveler support for air, rail, lodging, car rental and ancillary services, which includes arrangement, booking, ticketing, business services, delivery services, destination services, documentation, frequent flyer and loyalty programs, help desk, international services, invoicing, reconciliation, profile management, quality control, reporting, stand alone bookings for lodging and rental car",
+   "cooperative": false
+  },
+  "561599": {
+   "title": "Travel Consulting Services",
+   "description": "Commercial services for the provision of travel consulting services which includes, but not limited to: travel systems analysis, assessment, travel policy development and analysis, market research, requirements development, supplier negotiations, supplier management, training, travel management, security, technology support, travel expense management, bench marking, cost and revenue reports, travel management publications, risk management, and study/survey services.",
+   "cooperative": false
+  },
+  "561611": {
+   "title": "Background Investigation Services",
+   "description": "A variety of background investigations of persons for Federal Government purposes (including employment) are provided. Examples of background investigation services include but are not limited to: Provide background investigations (background checks) for potential or existing employees in accordance with applicable Federal, State and local regulations. Verification of previous employers; salary histories; criminal records checks; education verification; and credit history checks. All investigative activities must be conducted in compliance with the Fair Credit Report Act as amended. Upon request, investigative services offered include Local Agency Check (LAC), National Agency Check with Local Agency Checks and credit checks (NACLC), Single Scope Background Investigations (SSBI), SSBI - Periodic Reinvestigation (SSBI-PR) and Single Scope Background Investigations - Misconduct Investigations (SSBI-MI). These investigative services can support the authorized Department/Agencies in acquiring Reports of Investigation (ROI) in areas of public trust, national security and suitability investigations conducted by the Federal Government in compliance with appropriate sections of the United States Code (i.e. Title 5, Title 15), Executive Orders and requesting Department/Agency Directives, Policies and Procedures. Service providers must operate from a facility approved in accordance with the provisions of the National Industrial Security Program Operating Manual (NISPOM). Investigative Support Personnel and the Field Investigator staff must have active security clearances to the appropriate level as required by the customer Agency/Department.",
+   "cooperative": false
+  },
+  "561612": {
+   "title": "Protective Service Occupations",
+   "description": "Includes protective service occupations to support on-site security operations, such as security guards, alarm monitors, baggage inspectors, corrections and court security officers, etc.",
+   "cooperative": true
+  },
+  "561730": {
+   "title": "Grounds Maintenance",
+   "description": "Includes all services related to soil preparation, planting, maintaining and cultivating grounds as well as snow removal.",
+   "cooperative": false
+  },
+  "561920": {
+   "title": "Conference, Meeting, Event and Trade Show Planning Services",
+   "description": "Service include organizing, promoting, and/or managing events, such as business and trade shows, conventions, conferences, and meetings (whether or not they manage and provide the staff to operate the facilities in which these events take place), project management, coordination and implementation of third party participation, collection management of third party payment for participation, liaison support with venue, audiovisual and information technology support, topic and speaker identification, site location research, reservation of facilities, on-site meeting and registration support, editorial services, automation and telecommunications support, design and editing productions; and mailing and other communication with attendees including pre/post meeting mailings/travel support and computer database creation.",
+   "cooperative": false
+  },
+  "561990": {
+   "title": "Document Destruction Services",
+   "description": "Includes on-site and off-site destruction of classified, unclassified, or personal identifiable information. Types of documents include hard copy media, electronic media, and optical mass storage media. Destruction techniques may include, but are not limited to, shredding, pulverization, disintegration, and incineration.",
+   "cooperative": false
+  },
+  "562112": {
+   "title": "Hazardous Waste Disposal Services",
+   "description": "Services include, but are not limited to: Management and oversight of Hazardous Material (HAZMAT) disposal operations, and management, oversight and recycling of universal waste (e.g., batteries, cell phones, cathode ray tubes (CRTs), and compact fluorescent light bulbs (CFLs)). This includes reuse assessments and inventory, destruction, inventory transfer and/or disposal after compliance with GSA Office of Personal Property Management requirements outlined in Federal Management Regulations 101-42, 102-36, and 102-37 (as applicable). Examples of types of material waste services include, but are not limited to: Solid waste, industrial waste, mining waste, and oilfield waste (e.g., drill cuttings); Liquid waste (e.g., wastewater containing less than 1% solids); medical waste; pharmaceutical waste; excess inventory; surplus inventory; non-hazardous materials that pose no immediate threat to human health and the environment, excluding household waste (e.g., routine refuse collection and disposal); hazardous materials and/or those that contain leachable toxic components; plastics such as acrylic, nylon, high-density polyethylene (HDPE) and low-density polyethylene (LDPE); confiscated materials; and construction debris such as asphalt, drywall and/or metal.",
+   "cooperative": false
+  },
+  "611420": {
+   "title": "Information Technology Training",
+   "description": "Includes training on hardware, software, cloud, and other applicable systems.",
+   "cooperative": true
+  },
+  "611430": {
+   "title": "Professional and Management Development Training",
+   "description": "Services include offering an array of short duration courses and seminars for management and professional development. Training for career development may be provided directly to individuals or through employers' training programs, and courses may be customized or modified to meet the special needs of customers. Instruction may be provided in diverse settings, such as the establishment's or agency's training facilities, and through diverse means, such as correspondence, television, the Internet, or other electronic and distance-learning methods. The training provided may include the use of simulators and simulation methods. Proposed professional services shall be in support of planning, creating, and/or executing testing and test administration, learning management, internship, or development of new courses or subject matter delivered via an instructor-led (i.e. traditional classroom setting or conference/seminar) and/or web-based (i.e. Internet/Intranet, software packages and computer applications) system. Examples include Training Services that are instructor led Training or Web Based Training of Education Courses, Course Development and Test Administration, Learning Management, and Internships; Environmental Training Services in order to meet Federal mandates and Executive Orders; training of agency personnel to deal with media and media responses; Logistics Training Services related to system operations, automated tools for supply and value chain management, property and inventory management, distribution and transportation management, and maintenance of equipment and facilities; Audit & Financial training services related to course development and instruction required to support audit, review, financial assessment and financial management activities. Any firm offering Defense Acquisition Workforce Improvement Act (DAWIA) and Federal Acquisition Certification in Contracting (FAC-C) Training for Acquisition Workforce Personnel will include an identify only DAWIA and FAC-C courses that have been deemed DAU equivalent or approved by the Federal Acquisition Institute (FAI).",
+   "cooperative": false
+  },
+  "611512": {
+   "title": "Flight Training",
+   "description": "Includes aviation and flight training",
+   "cooperative": false
+  },
+  "611630": {
+   "title": "Linguistic Training and Education",
+   "description": "Services include customized or standardized off-the-shelf Foreign Language training courses at on and off site locations in classroom, private, semi-private, tutorial and in-country immersion forums. Instructional training for various language proficiency levels and testing is included. Educational material in publication, software, audio and video formats may be provided.",
+   "cooperative": false
+  },
+  "611710": {
+   "title": "Educational Support Services",
+   "description": "Includes support personnel and services for educational needs, including training.",
+   "cooperative": false
+  },
+  "713940": {
+   "title": "Fitness Center Management Services",
+   "description": "Includes management and maintenance services for a government-owned gym or fitness room. The contractor must ensure optimal performance of all employed personnel, equipment, and amenities in the facility.",
+   "cooperative": false
+  },
+  "811212": {
+   "title": "Maintenance of Equipment, Repair Services and/or Repair/Spare Parts",
+   "description": "Maintenance, Repair Service, and Repair Parts/Spare Parts for Government-Owned General Purpose Commercial Information Technology Equipment, Radio/Telephone Equipment",
+   "cooperative": true
+  },
+  "811310": {
+   "title": "Maintenance and Repair Shop Equipment",
+   "description": "Includes all maintenance and repair shop equipment, such as recycling services, refrigerant recycling, antifreeze coolant recycling, filter crushers, tire cutters, etc. Includes all options and accessories related to these products.",
+   "cooperative": false
+  },
+  "812910": {
+   "title": "Canine Training, Handling, and Caging Products and Services",
+   "description": "Working Canines and Canine Program Products and Services - Includes working dogs/canines and related products and services, such as canine training, handler training, handling equipment, kennels/caging, search and detection capabilities, and associated support services for law enforcement, security, and other official government mission requirements. Excludes pets, companion animals, and emotional support animals.",
+   "cooperative": true
+  },
+  "812990": {
+   "title": "Personal Trainer and Aerobic/Cardio Class Leader/Instructor",
+   "description": "Includes fitness professionals who develop personalized exercise plans, support clients in their holistic health goals, and teach group fitness classes. Examples include, but are not limited to, an athletic trainer, strength trainer/coach, staff and personal trainers, aerobic class instructor, fitness coach, etc. Instructors may be required to understand military fitness standards, modifications for disabled participants, and possess accredited fitness certifications.",
+   "cooperative": false
+  },
+  "561210FAC": {
+   "title": "Facilities Maintenance and Management",
+   "description": "Includes all services related to the complete operations, maintenance and repair of federal real property. Real property could include stand-alone facilities and structures such as hospitals and federal buildings to large, multi-facility complexes such as DoD military installations. Typical maintenance services include: elevator, HVAC, electrical, plumbing, septic, fire alarm/fire suppression, energy management control systems (EMCS), water distribution, septic, telephone, water tanks, waste management, recycling, etc. This SIN can also be used for facilities management solutions such as to fulfill a requirement for adequate staff/personnel to help manage federal facility operations. In addition, this SIN provides a complete array of facilities consulting and facilities assessment services.",
+   "cooperative": false
+  },
+  "541690E": {
+   "title": "Energy Services",
+   "description": "Includes services related to energy management to include renewable energy studies and projects, energy services related training, resource efficiency management (REM) services, water conservation, building commissioning, re-commissioning and retro-commissioning, energy audits, energy consumption metering services, testing and evaluation of networked energy management systems, energy security, LEED, Green Globes, Energy Star, Power Purchase Agreements, consulting on carbon emissions trading programs, renewable energy credits/certificates, greenhouse gas measurement and management, high performance sustainable buildings and sustainable design principles, resilience of Federal infrastructure and operations, energy services consulting etc.",
+   "cooperative": false
+  },
+  "561210SB": {
+   "title": "Smart Building Systems Integration",
+   "description": "Includes the comprehensive integration of building systems and technology using a non-proprietary, open architecture. Typical building systems to be integrated include: building automation, telecommunications, security, energy and environmental control, HVAC, etc. Tasks may include, but are not limited to: requirements analysis, integration planning, testing, operational training and support, cybersecurity for building control systems, etc.",
+   "cooperative": true
+  },
+  "811310MR": {
+   "title": "Machine and Equipment Sales, Maintenance and Repair",
+   "description": "Includes the sale, maintenance and repair of commercial/industrial machinery and equipment, such as machine tools, metalworking machinery, food machinery, cleaning equipment, and containers.",
+   "cooperative": false
+  },
+  "333318F": {
+   "title": "Floor Care Cleaning and Equipment",
+   "description": "Includes cleaning equipment designed for commercial, industrial, household, and/or special use environments floor care. Includes vacuums, carpet cleaners like shampoos and extractors, floor machines, strippers, replacement parts for floor care equipment, etc.",
+   "cooperative": false
+  },
+  "332215T": {
+   "title": "Cooking Utensils",
+   "description": "Includes tableware, such as flatware (stainless, silver, and silver-plated), glassware, and disposable tableware.",
+   "cooperative": false
+  },
+  "333415REM": {
+   "title": "Refrigeration Equipment",
+   "description": "Includes Blast Freezers; Chillers; Commercial Refrigerators; Commercial Freezers; Dairy Cases; Deli Cases; Walk-In Refrigerators; Walk-in Freezers; Ice Dispensers; Water Stations; Ice Making Equipment; Ice Storage Bins and Carts.",
+   "cooperative": false
+  },
+  "332311P": {
+   "title": "Pre-Engineered and Prefabricated Buildings and Structures for Storage Solutions",
+   "description": "Includes storage structures made of wood, fiberglass, steel, aluminum, metal, tension fabric, pre-cast concrete, etc. All options include accessories and may contain recycled or bio-based materials.",
+   "cooperative": false
+  },
+  "532490P": {
+   "title": "Lease/Rental of Pre-Engineered/Prefabricated Buildings and Structures",
+   "description": "Includes pre-engineered, prefabricated, portable, mobile, modular, and tension fabric buildings and structures, including portable/mobile office buildings, restroom facilities, utility rooms, temporary living quarters, mobile homes, and related temporary structures. The lease or rental of these portable structures are suitable for emergencies and disaster recovery efforts, including turnkey temporary facility solutions where the primary requirement is the lease/rental of covered structures.",
+   "cooperative": false
+  },
+  "339920PARK": {
+   "title": "Park and Playground Equipment",
+   "description": "Includes all park and playground equipment, such as grills, bike racks, playground equipment, gazebos, etc. Also includes related services and/or installation.",
+   "cooperative": false
+  },
+  "339920S": {
+   "title": "Fitness Equipment, Outdoor Gear and Related Items",
+   "description": "Includes all fitness equipment (including fitness technology), smart exercise equipment, fitness supplies such as weight benches, treadmills, wearable fitness technology, fitness trackers, and related fitness applications. Also includes equipment and accessories specifically designed for personnel operating in outdoor environments.",
+   "cooperative": false
+  },
+  "541614CF": {
+   "title": "Comprehensive Furniture Management Services",
+   "description": "Comprehensive Furniture Management Services including but not limited to Project Management, Assets Management, and Furniture Design/Layout",
+   "cooperative": false
+  },
+  "339113H": {
+   "title": "Healthcare Furniture",
+   "description": "Includes furniture designed and marketed for hospital and/or long-term patient care use, such as hospital patient room furniture, hospital and geriatric chairs, medical head-walls, and patient service columns for general patient care.",
+   "cooperative": false
+  },
+  "337121H": {
+   "title": "Household, Dormitory & Quarters Furniture",
+   "description": "Furniture for use in a household or quarters.",
+   "cooperative": false
+  },
+  "FURNISH": {
+   "title": "FURNISH Commercial Office Furnishings",
+   "description": "FURNISH Commercial Office Furnishings including but not limited to lamps and shades, window treatments, coordinating bedspreads and comforters, cubicle curtains and hardware, wall art and artificial trees; includes international offerings under this category.",
+   "cooperative": false
+  },
+  "337122O": {
+   "title": "337122O Park, Recreational & Outdoor Furniture",
+   "description": "337122O Includes Park and Recreational Tables, Benches, Outdoor Pool and Patio Furniture and Bleachers.",
+   "cooperative": false
+  },
+  "337127CF": {
+   "title": "337127CF Cafeteria and Food Service Furniture",
+   "description": "337127CF Includes cafeteria and food service furniture, such as booth seating, cluster units, etc. 337127",
+   "cooperative": false
+  },
+  "337127CI": {
+   "title": "337127CI Correctional Institution Furniture",
+   "description": "337127CI Includes furniture and accessories specifically designed for use in correctional institutions.",
+   "cooperative": false
+  },
+  "337127INT": {
+   "title": "International Furniture Products",
+   "description": "Includes furniture to be used specifically in foreign destinations only.",
+   "cooperative": false
+  },
+  "337215M": {
+   "title": "337215M Mail Sorting and Distribution Furniture",
+   "description": "337215M Includes tables, storage units, consoles, racks, workbenches and accessories designed to be used as interrelated components for the purpose of dumping, opening, reading, sorting, packing and/or wrapping both incoming and outgoing mail.",
+   "cooperative": false
+  },
+  "33721T": {
+   "title": "Training Room, Auditorium and Theater Furniture",
+   "description": "Training room, auditorium furniture and theater furniture including floor mounted ascending tier seating. Accessories designed to be used with the offered furniture are acceptable. Products meet applicable safety, performance and flammability requirements.",
+   "cooperative": false
+  },
+  "337121P": {
+   "title": "Packaged Household Dormitory and Quarters Furniture",
+   "description": "Includes packaged furniture solutions necessary for customers to furnish sleeping rooms, suites, lounges, dayrooms, common areas, etc.",
+   "cooperative": false
+  },
+  "33721P": {
+   "title": "Packaged Furniture",
+   "description": "Includes packaged furniture solutions for customers needing to furnish an office.",
+   "cooperative": false
+  },
+  "541214HR": {
+   "title": "Compensation and Benefits",
+   "description": "541214HR This function provides for General Human Resources basic financial services including but not limited to Payroll, Benefits Management, Workers Compensation, Unemployment Insurance Claims; and Executive Services. This function includes the following sub-functions: A.5.1 Compensation Management; A.5.2 Work Schedule and Leave Administration; A.5.3 Benefits Management; and A.5.4 Work-Life Wellness/Employee Assistance Programs and Social Services. OPM Federal Human Capital Business Reference Model",
+   "cooperative": false
+  },
+  "541611W": {
+   "title": "Workforce Analytics and Employee Records",
+   "description": "This function requires the implementation of systematic, flexible, and inclusive processes to review workforce and performance data, metrics, and results, to anticipate and plan for future strategic and operational requirements and to make holistically informed Human Capital Management decisions. The function includes the following sub-functions: A.9.1 Employee Inquiry Processing; A.9.2 Employee Research; A.9.3 Workforce and Performance Analytics; A.9.4 Workforce and Performance Reporting; and A.9.5 Records Management. OPM Federal Human Capital Business Reference Model",
+   "cooperative": false
+  },
+  "541612EPM": {
+   "title": "Employee Performance Management",
+   "description": "The creation, implementation, and maintenance of comprehensive employee performance management practices, programs, and activities that support customer agency mission objectives. This function includes the following sub-functions: A.4.1 Employee Performance Management; and A.4.2 Recognition Management. OPM Federal Human Capital Business Reference Model",
+   "cooperative": false
+  },
+  "541612ER": {
+   "title": "Employee Relations",
+   "description": "This function is the design, development and implementation of programs to ensure mission effectiveness through employee accountability. Programs should strive to maintain an effective employer-employee relationship that balances the agency's needs against its employees' rights. The function includes the following sub-functions: A.7.1 Employee Accountability for Conduct and Performance; A.7.2 Administrative Grievances and Third-Party Proceedings; and A.7.3 Reasonable Accommodation Programming. OPM Federal Human Capital Business Reference Model",
+   "cooperative": false
+  },
+  "541612HC": {
+   "title": "Agency Human Capital Strategy, Policy and Operations",
+   "description": "Professional services include but are not limited to development of effective human capital management strategies and enhanced policy. This Function contains the following Sub-Functions: A.1.1 Human Capital Strategy; A.1.2 Workforce Planning; A.1.3 Position Classification and Position Management; A.1.4 Employee Engagement. OPM Federal Human Capital Business Reference Model",
+   "cooperative": false
+  },
+  "541612LOB": {
+   "title": "Human Resources Line of Business (HRLOB)",
+   "description": "Technology Solutions in support of other SINS in the Human Capital Category, including but not limited to Software, technology, systems and related solutions. Services and products offered under this SIN must be in support of one or more of the 16 Functions/50 Sub-functions in the Human Capital Lifecycle. Please see the OPM Federal Human Capital Business Reference Model(HCBRM) for a full list of these functions, or refer to the other SINS in this category. The HCBRM as developed by the Office of Personnel Management (OPM) as of January 2024 is available here: https://www.opm.gov/services-for-agencies/hr-line-of-business/hc-business-reference-model/hcbrm-40-map.pdf. The Human Capital Business Reference Model as of January 2024 or later may be used.",
+   "cooperative": false
+  },
+  "541612LR": {
+   "title": "Labor Relations",
+   "description": "This function involves the management of the relationship between the agency and its management associations, unions and bargaining units. This includes negotiating and administering labor contracts and collective bargaining agreements; managing negotiated grievances; and participating in negotiated third party proceedings. Includes adjudication of issues related to Disaster Relief. This function includes the following sub-functions: A.8.1 Labor Relations Management; A.8.2 Negotiated Grievances and Third-Party Proceedings; and A.8.3 Collective Bargaining OPM Federal Human Capital Business Reference Model",
+   "cooperative": false
+  },
+  "561EEO": {
+   "title": "EEO Services",
+   "description": "EEO Services may include but are not limited to providing investigation of Discrimination Complaints and Preparation of Reports of Investigation (includes individual Case/consolidated Case-One or Additional Issues, Continuing Violation, Online Reporting System, Additional Copies of Investigation Reports). Preparation of an Analysis and Recommended Final Agency Decision (FAD) in Discrimination Complaints, Inquiry, Resolution Attempt, and Preparation of an analysis and Recommended Final Agency Decision (FAD) on Allegations of Noncompliance With Settlement Agreements or Final Decisions, Resolution Attempt and Report of Inquiry Regarding Notices of Intent to Sue under Age Discrimination in Employment Act of 1967, as Amended, Alternative Dispute Resolution, Reference Materials relating to equal opportunity programs, EEO training and Consulting, EEO counseling (Individual and Class Complaint).",
+   "cooperative": false
+  },
+  "611430TD": {
+   "title": "Talent Development",
+   "description": "Professional services include the implementation and maintenance of comprehensive employee skills development, training and personal attributes via engagement programs to meet current and future talent demands of the agency and to develop and retain quality, high performing, and diverse talent. Services include conducting employee development needs assessments; designing employee development programs; administering and delivering employee development programs (Learning Management) and evaluating the overall effectiveness of the agency's employee development approach. The function includes the following sub-functions: A.3.1 Talent Development Planning and Strategy; A.3.2 Workforce Development and Training; and A.3.3 Learning Management. OPM Federal Human Capital Business Reference Model",
+   "cooperative": false
+  },
+  "624SS": {
+   "title": "Social Services, Professional Counseling and Veterans' Readjustment and Behavioral Health Services",
+   "description": "Contractor provides comprehensive employee assistance and related social and behavioral health counseling and readjustment services including, but not limited to, traditional EAP, vocational and psychosocial rehabilitation, physical/occupational/educational therapy and outpatient recovery; personal and family support, wellness coaching, psychotherapy, including homeless counseling and placement services, emergency response and social advocacy services, educational and public health program administration, service registries (employment, daycare, etc); legal, benefit/compensation consultation in the areas of individual and family personal and financial enhancement. Provides Telemental Health counseling services which augments treatment and improves patient access using Telehealth channels. Provides licensed and credentialed personnel who provide case management behavioral health support leading to improved patient centered outcomes in the evaluation, assessment, treatment and rehabilitation of identified patient population individuals (i.e. multi-tour war theater veterans; disaster victims; incarcerated individuals delivered either in-the-home, in community based facilities or in correctional facilities), telephonically, via remote video and/or via telehealth, web-based and/or social media channels - in areas including but not limited to, substance abuse disorder (SUD), suicide prevention, depression, military sexual trauma (MST), Post-Traumatic Stress Disorder (PTSD) and/or Traumatic Brain Injury (TBI) and/or Polytrauma. Services may be all inclusive, separate, short and/or long term, bundled or unbundled.",
+   "cooperative": false
+  },
+  "339999S": {
+   "title": "Safety Zone Products",
+   "description": "Includes all safety zone products, such as barricades, guardrails, safety barrels and drums, channelizers, safety fences, etc.",
+   "cooperative": false
+  },
+  "332510C": {
+   "title": "Hardware Store, Home Improvement Center, Industrial or General Supply Store, or Industrial Maintenance Repair and Operations (MRO) Distributor",
+   "description": "Catalog - Products and equipment including but not limited to: flooring, fencing, hardware, building materials, tools, appliances, electric, paint, plumbing, lawn and garden, motors, shop, machining, welding, material handling; carts, trucks and dock; HVAC, cleaning and irrigation, equipment. These items must meet government requirements for Energy Star or Federal Energy Management Program (FEMP)-designated products, and/or the use of non-ozone depleting substances, as applicable to product groups with designation.",
+   "cooperative": false
+  },
+  "332510S": {
+   "title": "Hardware Store, Home Improvement Center, Industrial or General Supply Store, or Industrial Maintenance Repair and Operations (MRO) Distributor",
+   "description": "Store Front - Products within the scope of a hardware, general merchandise store, specialty supply store, or industrial supply store/distributor to maintain, operate, and repair facilities equipment and operations including but not limited to: flooring, fencing, hardware, building materials and equipment, tools, appliances, lighting, electric, paint and other coatings and compounds, oils and lubricants, compounds and abrasives plumbing, lawn and garden, motors, machinery, industrial equipment such as woodworking, metalworking, plastics and accessories, evolving MRO technology and accessories, welding, material handling, carts, and dock equipment; HVAC, cleaning, and irrigation equipment, work safety clothing, footwear, fall protection, first aid safety, personal protective equipment and other commercial specialty tools or task-specific tools used in a non-traditional manner, such as for aircraft maintenance tools and equipment, supplies, or items needed to support government or military operations, excludes items that are MIL-SPEC and NSN specific. These items must meet government requirements for Energy Star or Federal Energy Management Program (FEMP)-designated products, and/or the use of non-ozone depleting substances, as applicable to product groups with designation.",
+   "cooperative": false
+  },
+  "333TOOL": {
+   "title": "Tools (Powered and Non-Powered), Tool Kits, Tool Boxes and Accessories",
+   "description": "Tools powered and non-powered, tool kits, tool boxes and accessories including but not limited to: general maintenance, vehicle, system specific, aircraft system specific, repair, cable, master, pinch pin, metric, standard, Society of American Engineers (SAE), mechanic, heavy equipment, diesel, industrial, impact, pneumatic, electrical, machinists, HVAC, gear, plumbing and soldering.",
+   "cooperative": false
+  },
+  "325998W": {
+   "title": "Water Treatment Solutions",
+   "description": "Includes water treatment products and systems that filter out harmful substances, such as treated/potable water storage, septic treatment systems, etc. Services include water treatment, testing, and purification.",
+   "cooperative": false
+  },
+  "331315A": {
+   "title": "Aluminum Sheets",
+   "description": "Extra & heavy duty aluminum foil, heavy meat film, standard aluminum foil, interfolded foil sheets, aluminum foil sheets, machine grade film, machine grade film, wrapmaster dispenser and, aluminum foil dispenser rolls",
+   "cooperative": false
+  },
+  "332999BMS": {
+   "title": "Building Materials and Services",
+   "description": "Internal and external building materials and services",
+   "cooperative": false
+  },
+  "332999P": {
+   "title": "Spill Containment Units, Containment Pallets, Non-Wooden Pallets",
+   "description": "Includes spill containment units and pallets, such as drive-on berms, drum overpacks, containment mats, etc. Includes all options and accessories related to these products.",
+   "cooperative": false
+  },
+  "333415HVAC": {
+   "title": "Heating, Ventilation, and Air Conditioning (HVAC)",
+   "description": "Includes all HVAC needs, such as air conditioners, ceiling fans,commercial air cleaning units/systems, humidifiers etc. Includes all options and accessories related to these products, such as air filters, thermostats, HVAC control panels, and replacement parts.",
+   "cooperative": false
+  },
+  "333923S": {
+   "title": "Scaffolding, Work, and Service Platforms",
+   "description": "Includes scaffolding work and service platform items, such as manual, motorized, and adjustable height options for scaffolding; aerial lifts; man lifts; ladder systems; etc. Includes all options and accessories related to these products.",
+   "cooperative": false
+  },
+  "335220D": {
+   "title": "Domestic Appliances",
+   "description": "Includes commercially available household, office, and residential appliances, such as refrigerators, freezers, microwaves, laundry machines, air purifiers, etc.",
+   "cooperative": false
+  },
+  "335220E": {
+   "title": "Export Appliances",
+   "description": "Includes commercially available household, office, and residential appliances, such as refrigerators, freezers, microwaves, laundry machines, air purifiers, etc.",
+   "cooperative": false
+  },
+  "3PACK": {
+   "title": "Packaging Materials",
+   "description": "Packaging materials including bags, bottles, boxes, cartons, container systems, metal drums, packaging and packing bulk materials. Air bubble protective wrap, kraft paper, steel strapping, plastic strapping, stainless steel wing seals, strapping and sealing kit, steel strapping cart dispenser, sealer, stretch wrap, pallet, stretch wrap, machine stretch wrap, hand stretch wrap dispenser, shrink wrap, packaging tape, paper band, steel strapping edge protector, glassine paper, volatile corrosion inhibitor treated paper, chemically neutral wrapping paper, dispensary wrapping paper, laminated & creped wrapping paper, meat wrapping paper, plastic coated wrapping paper, tissue wrapping paper, freight retaining strip, gummed tape and tie wire.",
+   "cooperative": false
+  },
+  "518210C": {
+   "title": "Cloud Computing and Cloud Related IT Professional Services",
+   "description": "Includes commercially available cloud computing services such as Infrastructure as a Service (IaaS), Platform as a Service (PaaS), and Software as a Service (SaaS) and emerging cloud computing services, to include cloud based artificial intelligence/machine learning. IT professional services that are focused on providing the types of services that support the Government's adoption of, migration to, or governance/management of cloud computing. Specific cloud related IT professional labor categories and/or fixed-price professional services solutions that support activities associated with assessing cloud solutions, refactoring workloads for cloud solutions, migrating legacy or other systems to cloud solutions, providing management/governance of cloud solutions, DevOps, developing cloud native applications, or other cloud oriented activities are within scope of this SIN.",
+   "cooperative": true
+  },
+  "54151ECOM": {
+   "title": "Electronic Commerce and Subscription Services",
+   "description": "Includes value added network services, e-mail services, Internet access services, electronic subscription services, data transmission services, and emerging electronic commerce technologies.",
+   "cooperative": true
+  },
+  "518210FM": {
+   "title": "Financial Management Quality Service Management Office (FM QSMO) Core Financial Management (FM) Solutions and IT Professional Services",
+   "description": "Includes Core Financial Management Solutions (Core FS) and Financial Management (FM) services and solutions that are complementary to or augment Core FS and/or support agency modernizations. Offerings include financial management software suites in a cloud environment; services, applications, and modules that help agencies adopt FM QSMO solutions; and IT professional services and/or labor categories, software, cloud computing and IT training that support FM QSMO adoption.",
+   "cooperative": false
+  },
+  "518210GM": {
+   "title": "Grants Quality Service Management Office (Grants QSMO) Marketplace",
+   "description": "Aligns with the Federal Integrated Business Framework for Grants Management (FIBF GRM) and meets mission needs. Offerings include grants-related tools and services in a cloud environment; services, applications, and modules that help agencies adopt Grants QSMO solutions; and IT professional services and/or labor categories, software, cloud computing and IT training that support agency adoption.",
+   "cooperative": false
+  },
+  "532420L": {
+   "title": "Leasing of new electronic equipment",
+   "description": "Leasing of new electronic equipment. Includes the following lease types: Lease to Ownership, and Lease with Option to Own",
+   "cooperative": true
+  },
+  "54151HACS": {
+   "title": "Highly Adaptive Cybersecurity Services (HACS)",
+   "description": "Includes a wide range of fields such as, the seven-step Risk Management Framework services, information assurance, virus detection, zero trust architecture, network management, situational awareness and incident response, secure web hosting, backups, security services and Security Operations Center (SOC) services. HACS vendors are cataloged under the 6 subgroups of High Value Asset Assessments; Risk and Vulnerability Assessments, Cyber Hunt, Incident Response, Penetration Testing, and Incident Handling and Event Management (IHEM).",
+   "cooperative": true
+  },
+  "54151HEAL": {
+   "title": "Health Information Technology Services",
+   "description": "Health Information Technology Services - Includes a wide range of Health IT services to include connected health, electronic health records, health information exchanges, health analytics, personal health information management, innovative Health IT solutions, health informatics, emerging Health IT research, Health Sciences Informatic and Computational Services, Health Communication Support Services and Enhancements to Facilitate Integration and Data Exchange at the Federal, State, and Local Level (when directly applicable to human health outcomes), Integration of Health Systems Across Federal Agencies and Public and Private Healthcare Systems, Modernization and Enhancement of Existing Health IT Legacy Systems, Automation of Clinical Processes (if intimate knowledge of the health processes is required), Biomedical Information Services Biomedical Modeling, Visualization, and Simulation, Biosurveillance and Disease Management Support (when humans are direct subjects, does not apply to biosurveillance of plants or animals), Scientific Computing Services (only when directly applicable to human health outcomes), Telemedicine (e.g., mobile health/mHealth), Healthcare Systems Studies (IT based directly applicable to human health outcomes), Standards Development for Health IT Services, and other Health IT services.",
+   "cooperative": true
+  },
+  "54151S": {
+   "title": "Information Technology Professional Services",
+   "description": "IT Professional Services and/or labor categories for database planning and design; systems analysis, integration, and design; programming, conversion and implementation support; network services, data/records management, and testing.",
+   "cooperative": true
+  },
+  "541370GEO": {
+   "title": "Earth Observation Solutions",
+   "description": "Provides geospatial earth observation technologies, products, and services to include, but not limited to ground, satellite and aerial based sensor data and imagery; worldwide digital transmission, internet, data, and video services and products through various networks, platforms, and applications. Offerings include global coverage, imagery, analysis, as a service, change detection, human geography, observation as a service, archive storage and distribution, monitoring, basemaps (mosaics), and earth observation solutions for accurate, mission critical information for uses to include, but not limited to, environmental, agriculture, meteorology, forestry, fish & wildlife habitats, disaster response and recovery, defense, maritime, mapping, humanitarian support, transportation, and public safety.",
+   "cooperative": true
+  },
+  "541519CSP": {
+   "title": "541519CSP Credential Service Providers (CSP)",
+   "description": "Managed service offering for component or full service Credential Service Providers (CSPs) that meet the requirements of NIST SP 800-63 Digital Identity Guidelines (current version), to include public facing and enterprise.",
+   "cooperative": true
+  },
+  "541519ICAM": {
+   "title": "Identity, Credentialing and Access Management (ICAM)",
+   "description": "Managed service offerings for electronic credentials (assurance levels IAL, AAL, and FAL), identity and access management, authentication, and identity and access management professional services.",
+   "cooperative": true
+  },
+  "541519PIV": {
+   "title": "Homeland Security Presidential Directive 12 Product and Service Components",
+   "description": "PIV products and PIV services to implement the requirements of HSPD-12, FIPS-201 and associated NIST special publications. implementation components specified under this SIN are: * PIV enrollment and registration services, * PIV systems infrastructure, * PIV card management and production services, * PIV card finalization services, * Logical access control products and services, * PIV system integration services. Installation services and FIPS 201 compliant PACS (Physical Access Control System) products.",
+   "cooperative": true
+  },
+  "541519PKI": {
+   "title": "Public Key Infrastructure (PKI) Shared Service Providers (PKI SSP) Program",
+   "description": "PKI SSPs shall provide reliable, authenticated, policy-compliant service offerings to support Federally issued Personal Identity Verification (PIV), Personal Identity Verification Interoperable (PIV-I), and associated certificates and cryptographic key service offerings. In accordance with 40 U.S.C. Federal and State agencies and Tribal organizations can leverage these service offerings to allow authorized personnel physical access to facilities and logical access to networks in accordance with X.509 Certificate Policy for the U.S. Federal PKI Common Policy Framework",
+   "cooperative": true
+  },
+  "339113PA": {
+   "title": "Protective Apparel",
+   "description": "Includes all protective apparel, including firefighting suits and accessories, body armor, wearable safety gear, head protection, etc. Also includes first responder apparel (e.g., firefighters, law enforcement).",
+   "cooperative": true
+  },
+  "4PL": {
+   "title": "4PL Fourth-Party Logistics (4PL) Supplies and Services",
+   "description": "This SIN encompasses all commercially available Fourth-Party Logistics (4PL) delivery models required for a full solution that includes, at a minimum, providing the product, logistical support, transportation, inventory management, and all other services necessary to support 4PL operations. Specific services include, but are not limited to: Vendor-Owned/Vendor-Managed Inventory (VMI) Services, such as resupply of designated items by the Vendor through regularly scheduled reviews of on-site inventory counts, removal of damaged or outdated goods, and the re-stocking of inventory to predetermined levels at their specified locations and customer support. 4PL services can be delivered in various 4PL models, separately or in combination: Brick and Mortar Retail Storefronts; Tool Rooms and Issue Points; Virtual ServMarts; Satellite Locations; In-Store Referral Ordering; Direct Delivery; and Online Catalogs. General Requirements Items must: (1) Represent a full and broad catalog (as outlined in SCP-FSS-001); and (2) Be within scope of at least one existing MAS SIN; and (3) Comply with all requirements outlined in corresponding SIN(s)",
+   "cooperative": false
+  },
+  "ANCILLARY": {
+   "title": "Ancillary Supplies and Services",
+   "description": "Ancillary supplies and/or services are support supplies and/or services which are not within the scope of any other SIN on this schedule. These supplies and/or services are necessary to complement a contractor's offerings to provide a solution to a customer requirement. This SIN may be used for orders and blanket purchase agreements that involve work or a project that is solely associated with the supplies and/or services purchased under this schedule.",
+   "cooperative": false
+  },
+  "ANCRA": {
+   "title": "Ancillary Repair and Alterations",
+   "description": "Includes ancillary repair and alteration services ordered in conjunction with the delivery, or installation of products or services. These services are non-complex in nature, such as routine painting, carpeting, simple hanging of drywall, basic electrical or plumbing work, landscaping. For ordering limitations and information, refer to the Special Ordering Procedures/Ordering Guide posted on www.gsa.gov.",
+   "cooperative": false
+  },
+  "NEW": {
+   "title": "Introduction of New Supplies and Services",
+   "description": "Includes the introduction of new supplies, technology and services categorically related to items already on GSA contract, which may be in commercial development and/or not yet introduced to the federal government.",
+   "cooperative": false
+  },
+  "OLM": {
+   "title": "Order-Level Materials (OLM)",
+   "description": "Order-level materials (OLMs) means products, services, and/or solutions (a combination of products and/or services) acquired in direct support of an order placed against a FSS contract, including orders under FSS BPAs, when the products, services, and/or solutions are not known at the time of FSS contract or FSS BPA award. OLM pricing is not established in FSS contracts or FSS BPAs.",
+   "cooperative": false
+  },
+  "339999F": {
+   "title": "Flags, Banners, Pennants, and Related Products",
+   "description": "Includes all flags, banners, pennants, ceremonial and color guard equipment. This encompasses only military, state, and government official items, to include customization.",
+   "cooperative": false
+  },
+  "334511T": {
+   "title": "Telecommunications Equipment",
+   "description": "Includes telecommunications equipment and accessories, such as radar (except airborne), underwater, light, and laser equipment.",
+   "cooperative": false
+  },
+  "541990AV": {
+   "title": "Professional Audio/Video Services",
+   "description": "Includes professional audio/video services.",
+   "cooperative": false
+  },
+  "518210DC": {
+   "title": "Document Conversion and Digitization Services",
+   "description": "Includes scanning of the original document's text and images, converting the information to digital data, transferring the data to a new media file, and formatting the information for use in a document imaging and storage system. Customized coding and indexing options are also available as part of the document conversion process.",
+   "cooperative": false
+  },
+  "541611LIT": {
+   "title": "Litigation Support Solutions",
+   "description": "Includes a wide range of services and products that aid customers in searching and retrieving, obtaining, organizing, analyzing and presenting evidence or materials for legal matters. Services, products and solutions include, but are not limited to: eDiscovery, Freedom of Information Act (FOIA) request, legal hold, document acquisition, document preparation and organization, data extraction from forensic images, document analysis, technical support, and project management. Includes any supplies and/or services necessary to provide a total litigation support solution.",
+   "cooperative": false
+  },
+  "561499M": {
+   "title": "Mail Management, Systems, Processing Equipment and Related Solutions",
+   "description": "Includes all services necessary to manage a mailroom, such as Mailroom Administrative Support Services, Presort/Certified Mail Services, Intelligent Mail Barcoding (IMB), Mail Tracking, Address and List Management Services, Postage Meters, Pick-Pack-Ship, Parcel Lockers, Virtual Mailroom, Mailroom Ergonomic Analysis Services, On-site and Off-site Mail Screening, Inspection Services and other Miscellaneous Mail Services and Equipment.",
+   "cooperative": false
+  },
+  "811212R": {
+   "title": "Repair of Government-Owned Equipment (for equipment NOT under Maintenance Service Agreement)",
+   "description": "Includes the repair of any type of copier equipment offered under this Schedule that's NOT covered under a maintenance service agreement. Includes directly related attachments, supplies, and accessories.",
+   "cooperative": false
+  },
+  "811212SA": {
+   "title": "Maintenance Service Agreement For Office Equipment",
+   "description": "Includes a maintenance service agreement consisting of preventative and repair (remedial) services for office equipment, such as service calls. Also includes the cost of labor, transportation, and replacement/spare parts (excluding consumable operating supplies).",
+   "cooperative": false
+  },
+  "541611O": {
+   "title": "Office Management Needs Assessment and Analysis Services",
+   "description": "Includes office equipment needs assessment and analysis services, which involves assessing various office management functions to identify improvement opportunities.",
+   "cooperative": false
+  },
+  "541614OR": {
+   "title": "Office Relocation and Reconfiguration",
+   "description": "Includes services for relocating and/or reconfiguring existing office furniture, equipment, and related supplies. Services include, but are not limited to, pre-move planning, relocation plan designing, reorganizing, and related ancillary supplies such as packing materials.",
+   "cooperative": false
+  },
+  "339940OS4": {
+   "title": "OS4 Office Products and Supplies",
+   "description": "Office products include, but are not limited to items such as: pens, pencils, markers, xerographic paper, printer paper, fax paper, binders, tape, envelopes, shredders, helical-scan, disk packs, disk cartridges, CDs, diskettes, DVDs, anti-glare/anti-radiation screens (VDT), ergonomic workstations products other than furniture, security, protective and related ADP supplies, and toner cartridges. Toner cartridge offerors must provide arrangements for empty toner cartridges to be returned from customers. This may include prepaid shipping labels in the products packaging and/or rebates.",
+   "cooperative": false
+  },
+  "339940SVC": {
+   "title": "Office Supply Support Services",
+   "description": "This SIN includes all commercially available services related to the support of office products. Services include, but are not limited to: on-site stores, walk-in stores, customizing and imprinting services. Items located in stores under SIN 339940SVC Office Supply Support Services must also be on 339940 Office Products or 339940OS4 Office Products and Supplies.",
+   "cooperative": false
+  },
+  "333316C": {
+   "title": "Copiers and Digital Duplicating Equipment",
+   "description": "Includes analog, engineering and multifunction digital copiers, printers (MFP), devices (MFD) with single-color and/or full-color imaging in both desktop and console configurations.",
+   "cooperative": false
+  },
+  "333316F": {
+   "title": "Flat Rate Monthly Fee for Copiers (to include Analog, Digital, Multifunctional and Engineer Copiers)",
+   "description": "Includes flat-rate monthly-fee plans for copiers, multifunction printers (MFP) and multifunction devices (MFD). The customer identifies the approximate number of copies required per month (i.e., monthly volume level) and the required functional capability of the copier equipment. The customer pays a flat-rate monthly fee, regardless of the number of copies made each month. The contractor provides the required copier equipment, accessories, and full maintenance services.",
+   "cooperative": false
+  },
+  "333316M": {
+   "title": "Multi-Media Readers, Reader-Printers and Systems",
+   "description": "Includes a wide range of readers and reader-printers, such as electronic reader scanner systems, aperture cards, and all other related equipment.",
+   "cooperative": false
+  },
+  "333316P": {
+   "title": "Photographic Supplies",
+   "description": "Includes cameras, accessories, photographic support, etc.",
+   "cooperative": false
+  },
+  "532420C": {
+   "title": "Copier Rental Solutions",
+   "description": "Includes rental plans for all copier, multifunction printers (MFP) and multifunction devices (MFD) equipment. The rental rate includes full-maintenance service (repairs, adjustments, replacements) by authorized service technicians, at no additional cost to the customer. Rental rates do not usually include the cost of consumable supplies.",
+   "cooperative": false
+  },
+  "532420LC": {
+   "title": "Operating Lease Plan For Copiers",
+   "description": "Includes operating lease plans that apply to copiers, multifunction printers (MFP) and multifunction devices (MFD) which allow federal agencies to lease equipment for a monthly rate over a period of time, with NO intent to purchase the equipment at the end of the lease agreement period. Ownership of the asset remains with the lessor.",
+   "cooperative": false
+  },
+  "532420LT": {
+   "title": "LTOP & Operating Lease Plan for all Non-Copier Office Machinery",
+   "description": "Includes both lease-to-own plans (LTOP) and operating lease plans applicable to all other products under this Schedule, with the exception of copiers. This includes laboratory imaging systems, mailroom equipment, typewriters, darkroom equipment and supplies, etc.",
+   "cooperative": false
+  },
+  "532420LTOP": {
+   "title": "Lease to Ownership Plans (LTOP) Copier",
+   "description": "Includes lease to ownership plans (LTOPs), which are intended for federal agencies who want to lease all types of copiers, multifunction printers (MFP) and multifunction devices (MFD) to ultimately secure ownership. When the lease period ends and all charges are paid, the leased equipment and its titles are immediately transferred from the contractor to the federal customer.",
+   "cooperative": false
+  },
+  "541611MPS": {
+   "title": "Managed Print Services",
+   "description": "Includes equipment and services required to manage imaging output (e.g. printing, scanning, copying, and fax devices) in a system that monitors and reports equipment status, needs and usage trends on a regular basis. Services may include the creation of a business plan solution that incorporates recommendations for each existing piece of equipment (including removal, retirement, recycling, and disposal).",
+   "cooperative": false
+  },
+  "493110RM": {
+   "title": "Physical Records Management Services",
+   "description": "Includes capabilities to manage the movement, manipulation, archiving, security, and management of physical records, including any ancillary supplies and/or services necessary to provide a total physical records management solution.",
+   "cooperative": false
+  },
+  "518210ERM": {
+   "title": "Electronic Records Management Solutions",
+   "description": "Electronic Records Management Solutions provide a comprehensive capability to solve the complex challenges posed by the movement, manipulation, archiving, security, and management of electronic records. The vendor provides professional management and administrative support personnel with the necessary skills to perform effective records management services for both classified and/or unclassified records. The services are provided using either Government or vendor equipment and facilities or a combination of both. The objective of electronic records management services is to permit the access, maintenance, control, storage, disposition, and transfer of electronic records. Includes any ancillary supplies and/or services necessary to provide a total electronic records management solution.",
+   "cooperative": false
+  },
+  "562910REM": {
+   "title": "Environmental Remediation Services",
+   "description": "Remediation services include site preparation, field investigation, conservation and closures, emergency response cleanup (ERC), underground storage tank/above-ground storage tank (UST/AST) removal, air monitoring, soil vapor extraction, stabilization/solidification, bio-venting, carbon absorption, containment, monitoring and/or reduction of hazardous waste sites, unexploded ordnance removal, and remediation-related laboratory testing (e.g., biological, chemical, physical, pollution and soil testing). Reclamation services include: creating new land from sea or riverbeds, wetland restoration, and restoring areas to a more natural state (e.g., after pollution, desertification, salinization, or conditions that have made it unusable). Remediation services encompassing three (3) or more industries/NAICS codes, where the preponderance of work is at least 50% under NAICS 562910, should be solicited and performed under SIN 562910RMI.",
+   "cooperative": false
+  },
+  "562910RMI": {
+   "title": "Environmental Remediation Services",
+   "description": "Multiple Industries - Environmental remediation services involving a range of services to restore a contaminated or environmentally degraded area to an acceptable condition, including but not limited to: preliminary assessment, site inspection, testing, remedial investigation, feasibility studies, remedial design, containment, remedial action, removal of contaminated materials, storage of contaminated materials, and security and site closeouts. The procurement must be composed of activities in three or more separate industries associated with separate NAICS codes. These activities may include but are not limited to, engineering services, management consulting services, hazardous and other waste collection, remediation services, testing laboratories, and research and development in the physical, engineering, and life sciences. At least 50% of the work must be for remediation services and not work under other industries.",
+   "cooperative": false
+  },
+  "541990IPS": {
+   "title": "Data Breach Response and Identity Protection",
+   "description": "Data Breach Response and Identity Protection Services (IPS) include an integrated, total solution to provide identity monitoring and notification of Personally Identifiable Information (PII) and Protected Health Information (PHI); identity theft insurance; identity restoration services; and protection (safeguarding) the confidentiality of PII and PHI. Additional requirements specifically for Identity Protection Services are found in the notes section referenced below. NOTE 1: Additional Proposal Instructions related to Identity Protection Services (IPS) are found in IPS Requirements Document 1B. NOTE 2: Any firm offering Identity Protection Services will be required to provide a System Security Plan (SSP) in accordance with the template found in IPS Requirement Document 1C. The firm will also be required to submit a Firm Fixed Price as outlined in IPS Pricing Document 2, unless otherwise defined at the Task Order level (e.g. per product redeemed per the agreed-upon coverage period (month, year, etc.) ) covering ALL services cited in Section I of IPS Requirements Document 1A. If defined otherwise at the Task Order level, it must still be able to be mapped to the awarded Schedule contract pricing. Firms are encouraged to provide separate line item pricing for key services within this total solution SIN that the firm believes could be ordered independently (e.g., credit monitoring, restoration, etc). This will allow the Ordering Agency to obtain only those services needed depending on level of breach. See IPS Pricing Document 2 for pricing tables. NOTE 3: Services provided shall be performed in accordance with applicable Federal laws and policies, including the Identity Theft and Assumption Deterrence Act of 1998, as amended by Public Law 105-318, 112 Statute 3007 (Oct. 30, 1998), and implemented by 18 U.S.C. 1028. Firms are required to adhere to all applicable Office of Management and Budget (OMB) policies including OMB Circular A-130, Managing Federal Information as a Strategic Resource, and any updates to OMB Memorandum M-17-12, Preparing for and Responding to a Breach of Personally Identifiable Information. NOTE 4: The Agency Ordering Guide for Identity Protection Services can be found at https://www.gsa.gov/buying-selling/products-services/professional-services/buy-services/identity-protection-services-ips",
+   "cooperative": false
+  },
+  "541990RISK": {
+   "title": "Risk Assessment and Mitigation Services",
+   "description": "Services include: breach mitigation and analysis/forensic services, the deployment of financial risk assessment and mitigation strategies and techniques; improvement of capabilities through the reduction, identification, and mitigation of risks; detailed risk statements, risk explanations and mitigation recommendations; design and development of new business applications, processes, and procedures in response to risk assessments; and ensuring compliance with governance and regulatory requirements. Under this SIN, firms can also assist the Ordering Agency with preventive measures in protecting Personally Identifiable Information (PII) and Protected Health Information (PHI) through the evaluation of threats and vulnerabilities to PII and PHI type of information; training of Government personnel on how to prevent data breaches and identity theft; vulnerability assessments; privacy impact and policy assessments; review and creation of privacy and safeguarding policies; prioritization of threats; maintenance and demonstration of compliance; and evaluation and analysis of internal controls critical to the detection and elimination of weaknesses to the protection of PII and PHI type of information.",
+   "cooperative": false
+  },
+  "541614SVC": {
+   "title": "Supply and Value Chain Management",
+   "description": "Includes supply and value chain management, which involves all phases of the planning, acquisition, and management of logistics systems.",
+   "cooperative": false
+  },
+  "541810ODC": {
+   "title": "Other Direct Costs for Marketing and Public Relations Services",
+   "description": "All Other Direct Costs (ODCs) proposed must be directly related and only purchased in conjunction with Marketing and Public Relations Subcategory services offered under these SINS: 512110, 541430, 541511, 541613, 541810, 541820, 541910, and 561920. ODCs shall be an integral part of the total marketing consulting services solution and shall not be the primary purpose of the work ordered. Items awarded under SIN 541810 ODC are not Order-Level Materials (OLMs). ODC's are defined, priced, and awarded at the FSS contract level, whereas OLMs are unknown before an order is placed. Possible ODCs may include: funding for payment of media spots on television/radio/social media, conference meeting space, prize payments, etc. Travel and per diem are not considered ODCs.",
+   "cooperative": false
+  },
+  "541330EMI": {
+   "title": "Engineering Services Related to Military, Aerospace Equipment, Military Weapons, National Energy Policy Act of 1992, Marine Engineering or Naval Architecture",
+   "description": "Services include: applying physical laws and principles of engineering in the design, development, and utilization of machines, materials, instruments, processes, and systems specifically relating to military aerospace equipment and/or military weapons, and/or engineering services awarded under the National Energy Policy Act of 1992, and/or marine engineering or naval Architecture. Services may involve any of the following activities: provision of advice, concept development, requirements analysis, preparation of feasibility studies, preparation of preliminary and final plans and designs, provision of technical services during the construction or installation phase, inspection and evaluation, and related services.",
+   "cooperative": false
+  },
+  "541330ENG": {
+   "title": "Engineering Services",
+   "description": "Services include: applying physical laws and principles of engineering in the design, development, and utilization of machines, materials, instruments, processes, and systems. Services may involve any of the following activities: provision of advice, concept development, requirements analysis, preparation of feasibility studies, preparation of preliminary and final plans and designs, provision of technical services during the construction or installation phase, inspection and evaluation of engineering projects, and related services.",
+   "cooperative": false
+  },
+  "541370GIS": {
+   "title": "Geographic Information Systems (GIS) Services",
+   "description": "Geographic Information Services (GIS) include: cultural resource GIS (CRGIS); groundwater monitoring; growth forecast modeling; habitat conservation plans; habitat modeling; image analysis support for emergency response; mapping, cartography, and mashups (e.g., combining data from more than one source into a single integrated tool to include aerial mapping); migration pattern analysis; natural resource planning; remote sensing for environmental studies; terrestrial, marine, and/or atmospheric measuring/management; vegetation mapping; and watershed characterization for mitigation planning.",
+   "cooperative": false
+  },
+  "541715AIR": {
+   "title": "Engineering Research and Development for Aircraft, Aircraft Engines and Engine Parts",
+   "description": "Services include conducting research and experimental development (except nanotechnology and biotechnology research and experimental development) specifically in relation to aircraft, aircraft engines, and aircraft engine parts.",
+   "cooperative": false
+  },
+  "541715APM": {
+   "title": "Engineering Research and Development for: Other Aircraft Parts and Auxiliary Equipment, Guided Missiles and Space Vehicles, Their Propulsion Units and Propulsion Parts",
+   "description": "Services include conducting research and experimental development (except nanotechnology and biotechnology research and experimental development) specifically in relation to other aircraft parts and auxiliary airplane equipment other than those specified in SIN 541714AIR, guided missiles and space vehicles, their propulsion units and propulsion parts.",
+   "cooperative": false
+  },
+  "333318TDTM": {
+   "title": "Off-the-Shelf Training Devices and Training Materials",
+   "description": "Off-the-Shelf Training Devices: Proposed training devices shall be commercially-available off-the-shelf training devices to include software programs, teaching machines and devices, simulators such as driving simulators, flight simulators, etc., prepared printed instructional material, medical models and simulators, prepared audio and visual instruction material and multimedia program kits. Customizable Training Devices: Proposed customized training devices and simulators shall be in addition to the or the result of planning, designing, and/or producing customized training products that include but are not limited to print, audio/visual, audio, digital formats and emerging technologies. Proposed training devices, print materials, audio-visual and multimedia formats, electronic media, etc., shall directly train students in a specific subject matter(s) or assist in the training of a specific subject matter(s). Customizable Training Devices/Materials: Proposed off-the-shelf devices and simulators may be customized to customer specifications via a scope of work and priced on a firm fixed price or labor hour basis.",
+   "cooperative": false
+  },
+  "611TRAINAW": {
+   "title": "Defense Acquisition Workforce Improvement Act (DAWIA) and Federal Acquisition Certification in Contracting (FAC-C) Professional Development Training for Acquisition Workforce Personnel",
+   "description": "In accordance with OMB Policy Letter 05-01, civilian agencies must follow the course equivalency determinations accepted by the Defense Acquisition University (DAU) to ensure that core training is comparable across the workforce and qualifies for certification. This SIN is intended to include only DAWIA and FAC-C courses that have been deemed DAU equivalent or approved by the Federal Acquisition Institute (FAI). When procuring FAC-C and DAWIA training for acquisition professionals interested in completing FAC-C or DAWIA training, the task order level Contracting Officer shall confirm that the courses being acquired are listed on one of the following website: https://icatalog.dau.edu/appg.aspx",
+   "cooperative": false
+  },
+  "334519ENV": {
+   "title": "Environmental Measuring Instruments",
+   "description": "Includes a variety of measuring instruments, such as manual and automatic samplers, water quality meters, water analyzers, radioactivity detectors, air sampling equipment, gas alarms, etc.",
+   "cooperative": false
+  },
+  "339113LAB": {
+   "title": "Laboratory Equipment and Products",
+   "description": "Includes both general and special purpose laboratory ware to contain, measure, and transfer laboratory samples and solutions. Products include reusable and disposable plasticware, non-plastic ware, and non-glassware.",
+   "cooperative": false
+  },
+  "532490L": {
+   "title": "Laboratory Maintenance, Repair, Leasing and Warranties",
+   "description": "Includes products for lab maintenance, repair, leasing, and warranties, such as equipment maintenance, repair and service; calibration and calibration traceability certificate; extended warranties; etc.",
+   "cooperative": false
+  },
+  "339113R": {
+   "title": "Medical/Rescue and Patient Transportation Products",
+   "description": "Includes medical and rescue products related to transporting patients, including kits and immobilization devices.",
+   "cooperative": true
+  },
+  "532490ESA": {
+   "title": "Equipment Service Agreements",
+   "description": "Offers the customer an option to receive all labor, parts, and materials necessary to maintain equipment in good operating condition. Includes emergency services, engineering hardware and software modifications, operator training, instrument certification, etc.",
+   "cooperative": false
+  },
+  "611430TTS": {
+   "title": "Technical Training And Support (TTS)",
+   "description": "Offers the customer an option to receive training in the use of the purchased equipment, in addition to technical support. Includes onsite and offsite, basic operator, hardware, software, installation, and applications development training.",
+   "cooperative": false
+  },
+  "561621H": {
+   "title": "Harbor/Waterfront Security Products and Services and Professional Marine Security Services",
+   "description": "Includes all types of harbor and waterfront security products, such as specialized surveillance equipment, professional marine security services, and training related to harbor/waterfront/marine security.",
+   "cooperative": true
+  },
+  "332312F": {
+   "title": "Flood Control",
+   "description": "Includes all products and services related to flood control, such as sandbagging equipment, etc.",
+   "cooperative": true
+  },
+  "332999S": {
+   "title": "Safes, Vault Systems, and Security Products",
+   "description": "Includes safes, vaults, and security products, such as interior components, vault door accessories, utility lockers, etc.",
+   "cooperative": false
+  },
+  "333314NV": {
+   "title": "Night Vision Equipment",
+   "description": "Includes night vision equipment, such as cameras with night vision, etc.",
+   "cooperative": true
+  },
+  "3FIRE": {
+   "title": "Fire Management Equipment",
+   "description": "Includes items required to manage fires, such as fire extinguishers, suppressants, pumps, portable tanks, retardant, etc.",
+   "cooperative": true
+  },
+  "541330L": {
+   "title": "Security System Integration, Design, Management, and Life Cycle Support",
+   "description": "Includes services involving the security integration/management discipline, which supports security products and systems throughout their lifecycle. Services may include, but are not limited to: testing, production, fielding, process improvement, disposal, etc.",
+   "cooperative": true
+  },
+  "541330SEC": {
+   "title": "Security System Integration, Design, Management, and Life Cycle Support",
+   "description": "Includes services related to PACS design, integration, implementation, and installation/testing. Offerors under this SIN have at least one employee who is CSEIP (Certified System Engineer ICAM PACS) certified and such certification can be verified at IDmanagement.gov.",
+   "cooperative": true
+  },
+  "541990L": {
+   "title": "Professional Law Enforcement Services",
+   "description": "Includes professional law enforcement services, such as fingerprinting, handwriting analysis, ballistic analysis, forensic artist, etc.",
+   "cooperative": true
+  },
+  "611430ST": {
+   "title": "Security Training",
+   "description": "Includes all security training related to law enforcement, security, emergency preparedness and/or first responders. Examples include instructor-led training, web-based training, pre-set courses, training development, consulting services, Continuance of Operations Planning (COOP) services, etc",
+   "cooperative": true
+  },
+  "334290L": {
+   "title": "Physical Access Control Systems (PACS)",
+   "description": "Includes physical access control systems (PACS), such as card-controlled access, biometrics, security barriers, etc.",
+   "cooperative": true
+  },
+  "334290PACS": {
+   "title": "Physical Access Control Systems (PACS)",
+   "description": "FIPS 201 - Includes physical access control systems (PACS), such as card-controlled access, biometrics, security barriers, etc.",
+   "cooperative": true
+  },
+  "339999E": {
+   "title": "Evidence Collection and Investigative Equipment and Supplies",
+   "description": "Includes evidence collection and investigative equipment, such as supplies for finger/palmprinting, forensic investigation, lie detectors, evidence collection containers, etc.",
+   "cooperative": true
+  },
+  "333318T": {
+   "title": "Wheel & Tire Equipment",
+   "description": "Includes all wheel and tire equipment, such as alignment equipment, tire inflation cages, bead breakers, inflation systems, brake lathes, etc. Includes all options and accessories related to these products.",
+   "cooperative": false
+  },
+  "3361E": {
+   "title": "Electric and Autonomous Vehicles and Accessories",
+   "description": "Includes electric and autonomous vehicles and accessories",
+   "cooperative": false
+  },
+  "3361V": {
+   "title": "Vocational Vehicles",
+   "description": "Utility & Telecom Construction Equipment and Attachments: Includes but not limited to: Service and Line Body Trucks, Personnel Lifts, Digger Derricks, Cable Placers. Special Vocation Vehicles and Attachment: Vocations include but not limited to: Blood Donor, Dental, Laboratory, Medical, Clinical, Healthcare, Mobile Command, Concession, Sound Stage, Emergency Response, Communication, Broadcast, Electronic News Gathering, Training, Marketing, Troop Transport, Patient Evacuation, and related options and equipment. Platforms include but not limited to: Truck, Van, Semitrailer, Trailer, Bus, and Motorcoach. Aircraft Ground Support Vehicles and Equipment: Includes but not limited to: Catering Highlift Trucks, Cabin Service Highlift Trucks, Handicap Passenger Highlift Trucks, Stake Bed Highlift Trucks, Narrow Passenger Stairway Trucks, Wide Body Passenger Stairway Trucks, Lavatory Trucks, Washers and De-icer Maintenance Lifts, Potable Water Trucks, Lavatory Carts, Belt Loaders, and related accessories. Waste Disposal Vehicles and Attachments: including but not limited to: Refuse Vehicles and/or Trailers; Recycling Vehicles and/or Trailers; Hazardous Waste Disposal Vehicles and/or Trailers; and Liquid Waste Vehicles and/or Trailers, Roll-off, Hoist, and Hook Lift Trucks.",
+   "cooperative": false
+  },
+  "336612R": {
+   "title": "Recreational Watercraft",
+   "description": "Includes recreational watercraft products, such as jet skis, canoes, kayaks, and paddleboats.",
+   "cooperative": false
+  },
+  "481211B": {
+   "title": "Air Charter Services",
+   "description": "Brokers - Commercial charter and related services for both domestic and international travel and transportation needs. Including, but not limited to, a full range of broker charter services is available, including passenger; medical/patient transport; emergency; environmental/climatology; agricultural; charter management; prisoner/alien transport.",
+   "cooperative": false
+  },
+  "481211O": {
+   "title": "Air Charter Services",
+   "description": "Owner Operated - Commercial charter and related services for both domestic and international travel and transportation needs. Including, but not limited to, a full range of owner-operated charter services is available, including passenger; medical/patient transport; emergency; environmental/climatology; agricultural; charter management; prisoner/alien transport.",
+   "cooperative": false
+  },
+  "541511T": {
+   "title": "Employee Relocation Management Software",
+   "description": "Includes relocation software and automation/technology tools that help agencies track, manage and report on their relocation programs. It includes authorization, planning, repatriation, expense management, tax gross ups, expense entry, communications, and integrations with financial systems, etc.",
+   "cooperative": false
+  },
+  "561599L": {
+   "title": "Lodging Negotiations and Management Services",
+   "description": "A full suite of lodging negotiation and management services for transient, extended stay and corporate housing needs are available which includes, but is not limited to, electronic lodging request for proposal systems and services, lodging locator and reservation services, pricing and negotiation assistance and support, leasing/rental support, lodging management services, marketing, rate/compliance audits, benchmarking, and reporting. Services also include lodging management support for disaster planning, recovery support, and pre-positioning support for first responders, incident management teams, evacuees/victims, and associated personnel supporting the emergency effort.",
+   "cooperative": false
+  }
+ }
+}

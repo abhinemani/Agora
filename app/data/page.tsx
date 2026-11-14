@@ -12,6 +12,7 @@ import type { EntityType } from "@/lib/types";
 import insights from "@/seed/coops/insights.json";
 import catalogInsights from "@/seed/catalog/insights.json";
 import catalogReconcile from "@/seed/catalog/reconcile.json";
+import reviewSummary from "@/seed/cleanup/decisions/summary.json";
 
 export const metadata: Metadata = {
   title: "Co-op data · Agora",
@@ -148,6 +149,15 @@ const reconcileRows = Object.values(
   }, {}),
 );
 
+const REVIEW_TASK: Record<string, string> = {
+  "gov-match": "Roster governments to federal records",
+  "school-pairs": "Census school districts to NCES districts",
+  "supplier-merge": "Look-alike supplier names",
+  category: "Contract categories",
+  "canon-rows": "Canon price rows",
+  "product-name": "Conflicting product names",
+};
+
 export default function CoopDataPage() {
   const d = insights.directory;
   const f = insights.federal;
@@ -180,6 +190,7 @@ export default function CoopDataPage() {
             ["#lookup", "Look up an agency"],
             ["#evidence", "How we know"],
             ["#catalog", "Co-op catalog"],
+            ["#cleanup", "Cleanup"],
             ["#prospects", "Prospects"],
             ["#cautions", "Cautions"],
             ["#needs", "What we still need"],
@@ -562,6 +573,49 @@ export default function CoopDataPage() {
           <Link href="/storefronts" className="text-primary">every supplier on a co-op contract</Link>, or open the{" "}
           <Link href="/coops/price-lists" className="text-primary">price-list queue</Link>.
         </p>
+      </Section>
+
+      <Section
+        id="cleanup"
+        title="Data cleanup: rules first, then AI review"
+        intro={
+          <>
+            <p>
+              The sources disagree, abbreviate and leave gaps, so the directory and catalog go through two cleanup passes. The first is rules over public data, which costs
+              nothing and is fully repeatable. The second sends what the rules couldn&apos;t settle to an AI reviewer, with real candidates to choose among.
+            </p>
+            <p>
+              Rules did most of the work. GSA titles every contract &quot;Multiple Award Schedule,&quot; so {n(catalogInsights.cleanup.gsa_described)} GSA contracts are now
+              described by their SINs, from GSA&apos;s own SIN list. Each has its end date, and {n(catalogInsights.cleanup.gsa_open_to_cities)} carry at least one of the{" "}
+              {n(catalogInsights.cleanup.gsa_cooperative_sins)} SINs GSA opens to state and local governments; the rest are marked not open. {n(catalogInsights.cleanup.names_title_cased)}{" "}
+              ALL CAPS supplier names were title-cased, {n(catalogInsights.cleanup.parts_labelled)} products named only by a part number now carry their maker, and{" "}
+              {n(f.county_offices ?? 0)} county offices (sheriffs, district attorneys, clerks) point at their county, while {n(f.county_governing_bodies_merged ?? 0)} county
+              commissions merged into the county they govern.
+            </p>
+            <p>
+              The AI review never invents a fact. Each item comes with the real records it could be, such as a roster entry with its top Census and NCES candidates, and the
+              model picks one or says none, with a confidence and a reason. A check rejects any answer that isn&apos;t one of the options offered, and any Canon price whose
+              numbers don&apos;t appear in its source line. Only high- and medium-confidence answers are applied; the rest stay in the decision files for people to review.
+            </p>
+          </>
+        }
+      >
+        {Object.keys(reviewSummary).length > 0 && (
+          <Table
+            head={["Review task", "Items", "Applied", "Answered none", "Low confidence", "Rejected by checks"]}
+            right={[1, 2, 3, 4, 5]}
+            rows={Object.entries(reviewSummary as Record<string, Record<string, number>>).map(([task, x]) => [
+              <span key="t" className="font-bold">
+                {REVIEW_TASK[task] ?? task}
+              </span>,
+              n(x.items),
+              n(Math.max(0, x.picked - (x.low_picked ?? 0))),
+              n(Math.max(0, x.kept - x.picked)),
+              n(x.low),
+              n(x.invalid + x.missing),
+            ])}
+          />
+        )}
       </Section>
 
       <Section

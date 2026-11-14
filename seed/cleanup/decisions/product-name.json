@@ -1,0 +1,1802 @@
+{
+ "prd_904cd06b98a57df5823f": {
+  "pick": "Start + Eco Plastic Filament Neon Glow",
+  "confidence": "low",
+  "reason": "more descriptive; pack-size variant may differ"
+ },
+ "prd_ef9b57152abfefa51ceb": {
+  "pick": "IPS-FM1",
+  "confidence": "medium",
+  "reason": "other variant is generic category"
+ },
+ "prd_c8e6b1bfbbfad6cf0443": {
+  "pick": "IPSCM",
+  "confidence": "medium",
+  "reason": "other variant is generic category"
+ },
+ "prd_a2ac5cc358c93719d085": {
+  "pick": "IPSMOD",
+  "confidence": "medium",
+  "reason": "other variant is generic category"
+ },
+ "prd_58f52e537a2467b8cf55": {
+  "pick": "IPSTROBE-I",
+  "confidence": "medium",
+  "reason": "other variant is generic category"
+ },
+ "prd_00a647cac7e81ded35dd": {
+  "pick": "IPSTROBE-O",
+  "confidence": "medium",
+  "reason": "other variant is generic category"
+ },
+ "prd_b675ee937230bc87007a": {
+  "pick": "IPSWDHD-MW",
+  "confidence": "medium",
+  "reason": "other variant is generic category"
+ },
+ "prd_4c7c64c50b30d5d9df35": {
+  "pick": "IPSWDHD-MW-IC",
+  "confidence": "medium",
+  "reason": "other variant is generic category"
+ },
+ "prd_4456390ba304491d9c95": {
+  "pick": "IPSWS-SM",
+  "confidence": "medium",
+  "reason": "other variant is generic category"
+ },
+ "prd_ae02730b99c06c24b2f8": {
+  "pick": "ZONEC2",
+  "confidence": "medium",
+  "reason": "other variant is generic category"
+ },
+ "prd_a3fe0d4ff5005e8da684": {
+  "pick": "IPBTN-VIS",
+  "confidence": "medium",
+  "reason": "other variant is generic category"
+ },
+ "prd_48f45b61c2d3ded4671a": {
+  "pick": "IPCSS-RWB",
+  "confidence": "medium",
+  "reason": "other variant is generic category"
+ },
+ "prd_a20fd8f184ed20fa1697": {
+  "pick": "IPSWS-FM",
+  "confidence": "medium",
+  "reason": "other variant is generic category"
+ },
+ "prd_b2cac2479b3f519d30a3": {
+  "pick": "IPCSS-RWB-IC",
+  "confidence": "medium",
+  "reason": "other variant is generic category"
+ },
+ "prd_5aab5ef8be0c78ccb233": {
+  "pick": "ZONEC2-IC",
+  "confidence": "medium",
+  "reason": "other variant is generic category"
+ },
+ "prd_ee080a4ea8a55d3ac839": {
+  "pick": "IPCSL-RWB-IC",
+  "confidence": "medium",
+  "reason": "other variant is generic category"
+ },
+ "prd_04db36e2abedf285ac56": {
+  "pick": "IPSMOD-IC",
+  "confidence": "medium",
+  "reason": "other variant is generic category"
+ },
+ "prd_64ad38b3d42730426b0c": {
+  "pick": "IPCDS-RWB-U-IC",
+  "confidence": "medium",
+  "reason": "other variant is generic category"
+ },
+ "prd_3ddb449b93019158dff4": {
+  "pick": null,
+  "confidence": "high",
+  "reason": "different products under reused part number"
+ },
+ "prd_5840ac90d8b8e1c4bc3e": {
+  "pick": null,
+  "confidence": "high",
+  "reason": "different products under reused part number"
+ },
+ "prd_229c0dd737926e443072": {
+  "pick": null,
+  "confidence": "high",
+  "reason": "catalog category labels, not product names"
+ },
+ "prd_ada9f520d273aca09c68": {
+  "pick": null,
+  "confidence": "high",
+  "reason": "catalog category labels, not product names"
+ },
+ "prd_0f2c5d941e1a8feda3ca": {
+  "pick": null,
+  "confidence": "high",
+  "reason": "catalog category labels, not product names"
+ },
+ "prd_d194a65f4024031b0eb2": {
+  "pick": null,
+  "confidence": "high",
+  "reason": "catalog category labels, not product names"
+ },
+ "prd_b5db40c1de439f407cc5": {
+  "pick": null,
+  "confidence": "high",
+  "reason": "catalog category labels, not product names"
+ },
+ "prd_655bc9e3a1b61eb5eb30": {
+  "pick": null,
+  "confidence": "high",
+  "reason": "catalog category labels, not product names"
+ },
+ "prd_f804261682e75d571b5c": {
+  "pick": null,
+  "confidence": "high",
+  "reason": "catalog category labels, not product names"
+ },
+ "prd_6a8dbccf254c2a10ad49": {
+  "pick": null,
+  "confidence": "high",
+  "reason": "catalog category labels, not product names"
+ },
+ "prd_d314bac159a87ee13ad4": {
+  "pick": null,
+  "confidence": "high",
+  "reason": "catalog category labels, not product names"
+ },
+ "prd_44ed753c19d17e783ce8": {
+  "pick": null,
+  "confidence": "high",
+  "reason": "catalog category labels, not product names"
+ },
+ "prd_5565e9cf136b3474afe1": {
+  "pick": null,
+  "confidence": "high",
+  "reason": "catalog category labels, not product names"
+ },
+ "prd_d1754b428234b87ae746": {
+  "pick": null,
+  "confidence": "high",
+  "reason": "catalog category labels, not product names"
+ },
+ "prd_c728b6c57e81ece6d8f7": {
+  "pick": null,
+  "confidence": "high",
+  "reason": "catalog category labels, not product names"
+ },
+ "prd_36460549c4c46ff9a9ac": {
+  "pick": null,
+  "confidence": "high",
+  "reason": "catalog category labels, not product names"
+ },
+ "prd_d46d44af0d972e48eb4c": {
+  "pick": null,
+  "confidence": "high",
+  "reason": "catalog category labels, not product names"
+ },
+ "prd_1a1cd5a680af2f5611d8": {
+  "pick": null,
+  "confidence": "high",
+  "reason": "catalog category labels, not product names"
+ },
+ "prd_1e7f765ab4d3a1bc2089": {
+  "pick": null,
+  "confidence": "high",
+  "reason": "catalog category labels, not product names"
+ },
+ "prd_cf793dc6b8df877c2d92": {
+  "pick": null,
+  "confidence": "high",
+  "reason": "catalog category labels, not product names"
+ },
+ "prd_5982d8f7a728b2a28e2b": {
+  "pick": "Cables",
+  "confidence": "low",
+  "reason": "other variant is internal code"
+ },
+ "prd_ca31d989192ea8fc9529": {
+  "pick": "Hub / Switch",
+  "confidence": "low",
+  "reason": "other variant is internal code"
+ },
+ "prd_cb494ef583e0d528a94a": {
+  "pick": "Network Device",
+  "confidence": "low",
+  "reason": "other variant is internal code"
+ },
+ "prd_f7c7732fc3ad6edf95fa": {
+  "pick": "Hub / Switch",
+  "confidence": "low",
+  "reason": "other variant is internal code"
+ },
+ "prd_5db3de140b66eebc7ac1": {
+  "pick": "Hub / Switch",
+  "confidence": "low",
+  "reason": "other variant is internal code"
+ },
+ "prd_cb1d46d7e0e06811e50d": {
+  "pick": "Power supply",
+  "confidence": "low",
+  "reason": "other variant is internal code"
+ },
+ "prd_4fcac8e81b400240990e": {
+  "pick": "Hub / Switch",
+  "confidence": "low",
+  "reason": "other variant is internal code"
+ },
+ "prd_00aad736b31a7fa4a5e8": {
+  "pick": "Hub / Switch",
+  "confidence": "low",
+  "reason": "other variant is internal code"
+ },
+ "prd_0f7ad4575ab9beee98ec": {
+  "pick": "Network Accessory",
+  "confidence": "low",
+  "reason": "other variant is internal code"
+ },
+ "prd_839709125b5f0fff87d9": {
+  "pick": "Network Cable",
+  "confidence": "low",
+  "reason": "other variant is internal code"
+ },
+ "prd_789c4873cdd9fc31d8d0": {
+  "pick": "Network Cable",
+  "confidence": "low",
+  "reason": "other variant is internal code"
+ },
+ "prd_738c57a56cb930ba9b21": {
+  "pick": "Network Cable",
+  "confidence": "low",
+  "reason": "other variant is internal code"
+ },
+ "prd_aa291ab604f7c7f6aadc": {
+  "pick": "Network Cable",
+  "confidence": "low",
+  "reason": "other variant is internal code"
+ },
+ "prd_f3612efd31efd5b8b589": {
+  "pick": "Network Cable",
+  "confidence": "low",
+  "reason": "other variant is internal code"
+ },
+ "prd_6b96fedb212d4d75912d": {
+  "pick": "Network Cable",
+  "confidence": "low",
+  "reason": "other variant is internal code"
+ },
+ "prd_b71d6beb7ea201314562": {
+  "pick": "Network Cable",
+  "confidence": "low",
+  "reason": "other variant is internal code"
+ },
+ "prd_0623a4864b05fac33de8": {
+  "pick": "Network Cable",
+  "confidence": "low",
+  "reason": "other variant is internal code"
+ },
+ "prd_0192912debcf8611ae87": {
+  "pick": "Network Accessory",
+  "confidence": "low",
+  "reason": "other variant is internal code"
+ },
+ "prd_735e3dbd01a9ffa18127": {
+  "pick": "Network Accessory",
+  "confidence": "low",
+  "reason": "other variant is internal code"
+ },
+ "prd_5a43c7f92ac57f6c4727": {
+  "pick": "Hub / Switch",
+  "confidence": "low",
+  "reason": "other variant is internal code"
+ },
+ "prd_46509b369e84a06a6232": {
+  "pick": "Network Accessory",
+  "confidence": "low",
+  "reason": "other variant is internal code"
+ },
+ "prd_adc81cba774a960d8583": {
+  "pick": "Network Accessory",
+  "confidence": "low",
+  "reason": "other variant is internal code"
+ },
+ "prd_33f8a220d24035e06ce8": {
+  "pick": "Hub / Switch",
+  "confidence": "low",
+  "reason": "other variant is internal code"
+ },
+ "prd_2ab8f20f79812088afa2": {
+  "pick": "Network Device",
+  "confidence": "low",
+  "reason": "other variant is internal code"
+ },
+ "prd_3a19e157aa48868a2fad": {
+  "pick": "Network Cable",
+  "confidence": "low",
+  "reason": "other variant is internal code"
+ },
+ "prd_9426c5d70a2ca190d9b2": {
+  "pick": "Network Cable",
+  "confidence": "low",
+  "reason": "other variant is internal code"
+ },
+ "prd_4d327a24bf031353dab5": {
+  "pick": "Network Cable",
+  "confidence": "low",
+  "reason": "other variant is internal code"
+ },
+ "prd_3e77b3942529daa6a41a": {
+  "pick": "Power Cables",
+  "confidence": "low",
+  "reason": "other variant is internal code"
+ },
+ "prd_ce076ab105bef6a7267f": {
+  "pick": "Hub / Switch",
+  "confidence": "low",
+  "reason": "other variant is internal code"
+ },
+ "prd_4d41bbf5628e22a2a673": {
+  "pick": "DUAL TECHNOLOGY OCCUPANCY SENSOR FOR ROOM SCHEDULING MGMT",
+  "confidence": "medium",
+  "reason": "descriptive; other is bare model"
+ },
+ "prd_79342ae09ef155b49fa7": {
+  "pick": "Antenna",
+  "confidence": "low",
+  "reason": "product type; other is a color fragment"
+ },
+ "prd_2b8f911642d3067dc052": {
+  "pick": "Docking Station",
+  "confidence": "low",
+  "reason": "product type; other is a fragment"
+ },
+ "prd_389686f852f6ec95fa9e": {
+  "pick": null,
+  "confidence": "high",
+  "reason": "catalog category labels, not product names"
+ },
+ "prd_171af3e7768ca578ee74": {
+  "pick": null,
+  "confidence": "high",
+  "reason": "catalog category labels, not product names"
+ },
+ "prd_2bffee95894078239f41": {
+  "pick": null,
+  "confidence": "high",
+  "reason": "catalog category labels, not product names"
+ },
+ "prd_80c0a6278339d464ad7d": {
+  "pick": "ADVANCED PREMIUM SUPPORT MAINTENANCE",
+  "confidence": "low",
+  "reason": "other variant misspelled; both incomplete"
+ },
+ "prd_75b8140788f7dab54dff": {
+  "pick": "ACTIVID ACTIVCLIENT PER USER - CLASSIC STANDARD SUPPORT AND MAINTENANCE, QTY 1-9",
+  "confidence": "high",
+  "reason": "complete, not truncated, includes quantity"
+ },
+ "prd_48ea334738c35e8deecd": {
+  "pick": "ACTIVID ACTIVCLIENT PER USER LICENSE - ADVANCED, QTY BETWEEN 100 AND 500",
+  "confidence": "high",
+  "reason": "most specific, complete"
+ },
+ "prd_5f94c41fea2988ada58f": {
+  "pick": null,
+  "confidence": "high",
+  "reason": "catalog category labels, not product names"
+ },
+ "prd_b4024444ae2ba1313b77": {
+  "pick": null,
+  "confidence": "high",
+  "reason": "catalog category labels, not product names"
+ },
+ "prd_7c66d2ab344fb8e49923": {
+  "pick": null,
+  "confidence": "high",
+  "reason": "catalog category labels, not product names"
+ },
+ "prd_ffeb92e993d0490da729": {
+  "pick": null,
+  "confidence": "high",
+  "reason": "catalog category labels, not product names"
+ },
+ "prd_b4c581a5aa7dbb2efad8": {
+  "pick": null,
+  "confidence": "high",
+  "reason": "catalog category labels, not product names"
+ },
+ "prd_8431541b5f0809cebac4": {
+  "pick": null,
+  "confidence": "high",
+  "reason": "catalog category labels, not product names"
+ },
+ "prd_ec0f4907ac367bd5c710": {
+  "pick": null,
+  "confidence": "high",
+  "reason": "catalog category labels, not product names"
+ },
+ "prd_1a025731c42033ee3c77": {
+  "pick": null,
+  "confidence": "high",
+  "reason": "catalog category labels, not product names"
+ },
+ "prd_5baaea53db57ac27f05d": {
+  "pick": null,
+  "confidence": "high",
+  "reason": "catalog category labels, not product names"
+ },
+ "prd_788a9b9cd5cd496b54f3": {
+  "pick": null,
+  "confidence": "high",
+  "reason": "catalog category labels, not product names"
+ },
+ "prd_00d442a72536c6f49be3": {
+  "pick": null,
+  "confidence": "high",
+  "reason": "catalog category labels, not product names"
+ },
+ "prd_10bb58f1f5c5b207855c": {
+  "pick": null,
+  "confidence": "high",
+  "reason": "catalog category labels, not product names"
+ },
+ "prd_deaa194e15cadec03247": {
+  "pick": "IPEVO DO-CAM creator's edition",
+  "confidence": "medium",
+  "reason": "specific edition with maker name"
+ },
+ "prd_d96a940ffbc0764e1ce2": {
+  "pick": "IPEVO V4K",
+  "confidence": "high",
+  "reason": "includes maker and model"
+ },
+ "prd_143a88d86ff02d43f2e4": {
+  "pick": "IPEVO V4K Pro",
+  "confidence": "high",
+  "reason": "includes maker and model"
+ },
+ "prd_e17d8c3858d5eaa80227": {
+  "pick": "IPEVO VZ-R",
+  "confidence": "high",
+  "reason": "includes maker and model"
+ },
+ "prd_cdf7c9cc077ba58e31f8": {
+  "pick": "IPEVO DO-CAM",
+  "confidence": "high",
+  "reason": "includes maker and model"
+ },
+ "prd_86b92ace998301b14c05": {
+  "pick": "CABLE_BO USB-C CABLE 1M",
+  "confidence": "medium",
+  "reason": "includes length, more specific"
+ },
+ "prd_aa602363ce202ab0a3dd": {
+  "pick": "LINEWIZE FILTER 1Y T1",
+  "confidence": "low",
+  "reason": "equivalent; clearer product name"
+ },
+ "prd_a79206321285c183f720": {
+  "pick": "Advanced BEC Protection",
+  "confidence": "high",
+  "reason": "names product; other is category"
+ },
+ "prd_309238ea753b64cdfcd6": {
+  "pick": "Aware BYOK",
+  "confidence": "high",
+  "reason": "names product; other is category"
+ },
+ "prd_6361c667378f08661fe0": {
+  "pick": "Aware BYOK",
+  "confidence": "high",
+  "reason": "names product; other is category"
+ },
+ "prd_643d21530b6f4aef7207": {
+  "pick": "Aware BYOK",
+  "confidence": "high",
+  "reason": "names product; other is category"
+ },
+ "prd_c11515327a1f6e01abf5": {
+  "pick": "Aware People Set Labels",
+  "confidence": "high",
+  "reason": "names product; other is category"
+ },
+ "prd_6618208216bfa99ca835": {
+  "pick": "Aware People Set Labels",
+  "confidence": "high",
+  "reason": "names product; other is category"
+ },
+ "prd_f6d877f781dedf4db569": {
+  "pick": "NEWLINE 2YR EXT WTY F/ TRUTOUCH 860",
+  "confidence": "high",
+  "reason": "descriptive; other is bare part number"
+ },
+ "prd_5dd6559c065efb6d6e1f": {
+  "pick": "NEWLINE 2YR EXT WTY F/ TRUTOUCH 750",
+  "confidence": "high",
+  "reason": "descriptive; other is bare part number"
+ },
+ "prd_dbb05ee401a054578799": {
+  "pick": "NEWLINE TRUTOUCH 980 WALL MOUNT",
+  "confidence": "high",
+  "reason": "descriptive; other is bare part number"
+ },
+ "prd_8668c6fd0805b4022732": {
+  "pick": "NEWLINE 650/700/750/800/860/X5/X7 WM",
+  "confidence": "medium",
+  "reason": "descriptive though abbreviated"
+ },
+ "prd_dd529fa28fffc512334a": {
+  "pick": "NEWLINE TRUTOUCH WIRELESS DONGLE",
+  "confidence": "high",
+  "reason": "descriptive; other is bare part number"
+ },
+ "prd_d4b13b0548e87541b4c9": {
+  "pick": "NEWLINE TRULIFT BALANCEBOX 400-70",
+  "confidence": "high",
+  "reason": "descriptive; other is bare part number"
+ },
+ "prd_69933510585c7679e121": {
+  "pick": "NEWLINE TRULIFT ITEACHSPIDER STAND",
+  "confidence": "high",
+  "reason": "descriptive; other is bare part number"
+ },
+ "prd_e2ee6c6de819ce17375a": {
+  "pick": "NEWLINE TRULIFT BALANCEBOX 650-130",
+  "confidence": "high",
+  "reason": "descriptive; other is bare part number"
+ },
+ "prd_ed2e906f2caa974c6de3": {
+  "pick": "NEWLINE TRUTOUCH OVER THE BOARD MNT",
+  "confidence": "high",
+  "reason": "descriptive; other is bare part number"
+ },
+ "prd_cd41b376e784b167e3c3": {
+  "pick": "NEWLINE TRULIFT MOTORIZED MOB STAND",
+  "confidence": "high",
+  "reason": "descriptive; other is bare part number"
+ },
+ "prd_822e55874c8ac69935df": {
+  "pick": "NEWLINE 512GB OPS HD UPG SSD",
+  "confidence": "high",
+  "reason": "descriptive; other is bare part number"
+ },
+ "prd_a364ccbed765d6d92fe1": {
+  "pick": "NEWLINE SIGNAGE PRO DVC LIC 1Y",
+  "confidence": "high",
+  "reason": "descriptive; other is bare part number"
+ },
+ "prd_7039e2d5b842eef0ef92": {
+  "pick": "NEWLINE BALANCEBOX 400-90 MIX STAND",
+  "confidence": "high",
+  "reason": "descriptive; other is bare part number"
+ },
+ "prd_dd57f972baf032d02358": {
+  "pick": "NEWLINE 27\" AIO VIDEO DISPLAY",
+  "confidence": "high",
+  "reason": "descriptive; other is bare model"
+ },
+ "prd_2e025369cacf08a873c8": {
+  "pick": "NEWLINE 1TB SSD OPS HARD DRIVE UPG",
+  "confidence": "high",
+  "reason": "descriptive; other is bare part number"
+ },
+ "prd_be9fbf65a6f62aceb42a": {
+  "pick": "NEWLINE 2Y WTY F/TRUTOUCH OBC UHDV",
+  "confidence": "high",
+  "reason": "descriptive; other is bare part number"
+ },
+ "prd_616bcc3e30a8626214cb": {
+  "pick": "NEWLINE SIGNAGE PRO SITE LIC 7Y",
+  "confidence": "high",
+  "reason": "descriptive; other is bare part number"
+ },
+ "prd_b09f0d86eb6c010737db": {
+  "pick": "NEWLINE SIGNAGE PRO SITE LIC 1Y",
+  "confidence": "high",
+  "reason": "descriptive; other is bare part number"
+ },
+ "prd_1fda362ee9d3e9fb7147": {
+  "pick": "NEWLINE SIGNAGE PRO DVC LIC 7Y",
+  "confidence": "high",
+  "reason": "descriptive; other is bare part number"
+ },
+ "prd_9f742fe33ef3a473231d": {
+  "pick": "NEWLINE SIGNAGE PRO DVC LIC 5Y",
+  "confidence": "high",
+  "reason": "descriptive; other is bare part number"
+ },
+ "prd_a7e67af52b906ded526f": {
+  "pick": "NEWLINE VOICE AMPLIFY SINGLE",
+  "confidence": "high",
+  "reason": "descriptive; other is bare part number"
+ },
+ "prd_b030e2758fd2457b4079": {
+  "pick": "NEWLINE LNCHR PWRD BY DSPLY NOTE 1",
+  "confidence": "medium",
+  "reason": "descriptive though abbreviated"
+ },
+ "prd_bd690f51ea91fbcdb209": {
+  "pick": "NEWLINE LNCHR PWRD BY DISPLAY NOTE",
+  "confidence": "medium",
+  "reason": "descriptive; spelled out display"
+ },
+ "prd_b5307777f242f04fe73d": {
+  "pick": "NWL LNCHR PWRD BY DSPLY NOTE 3",
+  "confidence": "medium",
+  "reason": "descriptive; other is bare part number"
+ },
+ "prd_2c262b1c1f77583c3771": {
+  "pick": "NEWLINE DV 135&163IN MOTORIZED HT",
+  "confidence": "high",
+  "reason": "descriptive; other is bare part number"
+ },
+ "prd_2d4ebacfd070a8ad4937": {
+  "pick": "NEWLINE 86IN DSX SERIES WALL MOUNT",
+  "confidence": "high",
+  "reason": "descriptive; other is bare part number"
+ },
+ "prd_a1ff2ec874378f911094": {
+  "pick": "NEWLINE 43-55IN DSX SRIES WALL MOUNT",
+  "confidence": "high",
+  "reason": "descriptive despite SRIES typo"
+ },
+ "prd_724130be3551dd00fdb0": {
+  "pick": "NEWLINE 65IN DSX SERIES WALL MOUNT",
+  "confidence": "high",
+  "reason": "descriptive; other is bare part number"
+ },
+ "prd_47a0be63fae1263a850d": {
+  "pick": "NEWLINE 75IN DSX SERIES WALL MOUNT",
+  "confidence": "high",
+  "reason": "descriptive; other is bare part number"
+ },
+ "prd_dfb4bfcaf3b3cb6e3d08": {
+  "pick": "NEWLINE SIGNAGE PRO SITE LIC 3Y",
+  "confidence": "high",
+  "reason": "descriptive; other is bare part number"
+ },
+ "prd_14ef087eecbe7f229946": {
+  "pick": "NEWLINE NT-PLUS/Q-PRO/Z-PRO WI-FI 6",
+  "confidence": "high",
+  "reason": "descriptive; other is bare part number"
+ },
+ "prd_d8645bdc876f15bf90bd": {
+  "pick": "NEWLINE 98IN HD MOBILE STAND",
+  "confidence": "high",
+  "reason": "descriptive; other is bare part number"
+ },
+ "prd_6c38de6e52f2f3ee918a": {
+  "pick": "NEWLINE BB MOBILE STND 650-130 VESA",
+  "confidence": "high",
+  "reason": "descriptive; other is bare part number"
+ },
+ "prd_fafe5e7aba915c5ea144": {
+  "pick": "NEWLINE BALANCEBOX 400-90 W/VESA",
+  "confidence": "high",
+  "reason": "descriptive; other is bare part number"
+ },
+ "prd_5ce1219b92b0b9da3fba": {
+  "pick": "NEWLINE AC MOBLIE STAND 4 DIR LOCKED",
+  "confidence": "high",
+  "reason": "descriptive despite MOBLIE typo"
+ },
+ "prd_67b9fdd8990226cf56ce": {
+  "pick": "NEWLINE BB MOBILE STAND MIX",
+  "confidence": "high",
+  "reason": "descriptive; other is bare part number"
+ },
+ "prd_014b23f1ebbf57c8f7b4": {
+  "pick": "NEWLINE SIGNAGE PRO SITE LIC 5Y",
+  "confidence": "high",
+  "reason": "descriptive; other is bare part number"
+ },
+ "prd_6b3e6e623ea274c26fc9": {
+  "pick": "NEWLINE SIGNAGE PRO DVC LIC 3Y",
+  "confidence": "high",
+  "reason": "descriptive; other is bare part number"
+ },
+ "prd_304827ceae9aad712bbf": {
+  "pick": null,
+  "confidence": "high",
+  "reason": "catalog category labels, not product names"
+ },
+ "prd_804d1661b25d9f272f54": {
+  "pick": "ANYWHERE HEADPHONE W/MIC USB",
+  "confidence": "high",
+  "reason": "descriptive; other is bare part number"
+ },
+ "prd_2affd1fd82d7d6d3fb05": {
+  "pick": "ANYWHERE CART HEADSET BLACK",
+  "confidence": "high",
+  "reason": "descriptive; other is bare part number"
+ },
+ "prd_1fb7e0be8e2efae9278e": {
+  "pick": "ANYWHERE 3.MM BASIC HEADPHONE",
+  "confidence": "high",
+  "reason": "descriptive; other is bare part number"
+ },
+ "prd_7418afa9a7ab725e462e": {
+  "pick": "ANYWHERE CART FIXED STAND F/FLAT PNL",
+  "confidence": "high",
+  "reason": "descriptive; other is bare part number"
+ },
+ "prd_ca2a046cb6571026da05": {
+  "pick": "ANYWHERE 65W AC ADAPTER",
+  "confidence": "high",
+  "reason": "descriptive; other is bare part number"
+ },
+ "prd_df41517af4c76619e8c4": {
+  "pick": "PWR-TECH 10BAY SEC BATT CHARGE CBNT",
+  "confidence": "high",
+  "reason": "descriptive; other is bare part number"
+ },
+ "prd_ddae5f08bf7008b56470": {
+  "pick": "PWR-TECH USB-C 36-BAY CHARGE CART",
+  "confidence": "high",
+  "reason": "descriptive; other is bare part number"
+ },
+ "prd_f92416c18997f44a3bd4": {
+  "pick": "PWR-TECH PV 10BAY W/10 PWR BATT",
+  "confidence": "high",
+  "reason": "descriptive; other is bare part number"
+ },
+ "prd_a754ec741ffbdaf35e87": {
+  "pick": "PWR-TECH PV 10BAY W/5 PWR BATT",
+  "confidence": "high",
+  "reason": "descriptive; other is bare part number"
+ },
+ "prd_bf39e29b300e0976c67c": {
+  "pick": "ANYWHERE PREMIUM HEADSET TYPE C PLUG",
+  "confidence": "high",
+  "reason": "descriptive; other is bare part number"
+ },
+ "prd_6814ff7aa91086edb909": {
+  "pick": "PWR-TECH CART 10-BAY CHARGE CABINET",
+  "confidence": "high",
+  "reason": "descriptive; other is bare part number"
+ },
+ "prd_b3b2d89141031206e141": {
+  "pick": "POWERTECH POWERVAULT W/10BAY BATT",
+  "confidence": "high",
+  "reason": "descriptive; other is bare part number"
+ },
+ "prd_da7b561c75c6af985822": {
+  "pick": "ANYWHERE HEADPHONE WITH MICROPHONE",
+  "confidence": "high",
+  "reason": "descriptive; other is bare part number"
+ },
+ "prd_2a4c63b62c30e37cb233": {
+  "pick": "POWER TECHNOLOGIES 15-BAY VERT CART",
+  "confidence": "high",
+  "reason": "descriptive; other is bare part number"
+ },
+ "prd_6574c73b395998a59f58": {
+  "pick": "ANYWHERE CART ECO 3.5MM HEADSET",
+  "confidence": "high",
+  "reason": "descriptive; other is bare part number"
+ },
+ "prd_51b6ef11680a607e9680": {
+  "pick": "ANYWHERE CART 12W USB POWER ADAPTER",
+  "confidence": "high",
+  "reason": "descriptive; other is bare part number"
+ },
+ "prd_32376a7879fd9e576676": {
+  "pick": "ANYWHERE 30BAY SECURE CHARGING CART",
+  "confidence": "high",
+  "reason": "descriptive; other is bare part number"
+ },
+ "prd_5017b7c6817dd332e84c": {
+  "pick": "PWR-TECH 24-BAY CHARGING LOCKER",
+  "confidence": "high",
+  "reason": "descriptive; other is bare part number"
+ },
+ "prd_ab9c3431a41b5ace5508": {
+  "pick": "ANYWHERE 30 ECONOMICAL CHARGING CART",
+  "confidence": "high",
+  "reason": "descriptive; other is bare part number"
+ },
+ "prd_c21771431b0232ac63fa": {
+  "pick": null,
+  "confidence": "high",
+  "reason": "catalog category labels, not product names"
+ },
+ "prd_aa73cca6e6cc48284d01": {
+  "pick": null,
+  "confidence": "high",
+  "reason": "catalog category labels, not product names"
+ },
+ "prd_2fcbef7556a3b2eaff3c": {
+  "pick": null,
+  "confidence": "high",
+  "reason": "catalog category labels, not product names"
+ },
+ "prd_6e610acda522d907e039": {
+  "pick": null,
+  "confidence": "high",
+  "reason": "catalog category labels, not product names"
+ },
+ "prd_ee92b04563ab8bdae953": {
+  "pick": null,
+  "confidence": "high",
+  "reason": "catalog category labels, not product names"
+ },
+ "prd_5e193a9db413015f391f": {
+  "pick": null,
+  "confidence": "high",
+  "reason": "catalog category labels, not product names"
+ },
+ "prd_cd41d30d0f8543ee90ee": {
+  "pick": "Rubrik Security Cloud - P",
+  "confidence": "low",
+  "reason": "truncated, but other is generic category"
+ },
+ "prd_e4b7b1cd41b1d7242f8c": {
+  "pick": "Rubrik Cloud Edition; per",
+  "confidence": "low",
+  "reason": "truncated, but other is generic category"
+ },
+ "prd_c5e702a89613c3f567d0": {
+  "pick": "Rubrik Cloud Vault in Azu",
+  "confidence": "low",
+  "reason": "truncated, but other is generic category"
+ },
+ "prd_00f609077c6d0825568c": {
+  "pick": "Enterprise Proactive Edit",
+  "confidence": "low",
+  "reason": "truncated, but other is generic category"
+ },
+ "prd_40c1227815a82cd6f592": {
+  "pick": "Rubrik Security Cloud - G",
+  "confidence": "low",
+  "reason": "truncated, but other is generic category"
+ },
+ "prd_f6a56c30310979c73876": {
+  "pick": "Rubrik Security Cloud - G",
+  "confidence": "low",
+  "reason": "truncated, but other is generic category"
+ },
+ "prd_cc4a554f33c3abb0b160": {
+  "pick": "Rubrik Foundation Edition",
+  "confidence": "medium",
+  "reason": "complete name; other is generic category"
+ },
+ "prd_48adcd9be6f5e78b9c36": {
+  "pick": "Enterprise Proactive Edit",
+  "confidence": "low",
+  "reason": "truncated, but other is generic category"
+ },
+ "prd_4dacfbb53116d8b9b01c": {
+  "pick": "Rubrik Security Cloud - G",
+  "confidence": "low",
+  "reason": "truncated, but other is generic category"
+ },
+ "prd_a292e01a1bce10cb1bbf": {
+  "pick": "Rubrik Security Cloud - G",
+  "confidence": "low",
+  "reason": "truncated, but other is generic category"
+ },
+ "prd_1d0a832ef1d621a5f09d": {
+  "pick": "Rubrik NAS Direct Archive",
+  "confidence": "medium",
+  "reason": "complete name; other is generic category"
+ },
+ "prd_3a18364b604c79c20ce7": {
+  "pick": "Rubrik Enterprise Proacti",
+  "confidence": "low",
+  "reason": "truncated, but other is generic category"
+ },
+ "prd_c1ed03e4c48335a9504e": {
+  "pick": "Rubrik Scale Enterprise P",
+  "confidence": "low",
+  "reason": "truncated, but other is generic category"
+ },
+ "prd_48d8d8efaa2cf03306da": {
+  "pick": "Rubrik Data Security as a",
+  "confidence": "low",
+  "reason": "truncated, but other is generic category"
+ },
+ "prd_fba5135b6d3f216919d3": {
+  "pick": "Rubrik Business Edition f",
+  "confidence": "low",
+  "reason": "truncated, but other is generic category"
+ },
+ "prd_aa3e9114cc693a1adc06": {
+  "pick": "Business Edition Add-On f",
+  "confidence": "low",
+  "reason": "truncated, but other is generic category"
+ },
+ "prd_3d54b009313f3ded2ea9": {
+  "pick": "Add-On from Foundation Ed",
+  "confidence": "low",
+  "reason": "truncated, but other is generic category"
+ },
+ "prd_1f4d3f457155e6a11b56": {
+  "pick": "Add-On from Foundation Ed",
+  "confidence": "low",
+  "reason": "truncated, but other is generic category"
+ },
+ "prd_6d1b5ce25a7aa1aa0892": {
+  "pick": "Add-On from Customer Host",
+  "confidence": "low",
+  "reason": "truncated, but other is generic category"
+ },
+ "prd_6e817c3b02fc827d2258": {
+  "pick": "Rubrik Laminar offering;",
+  "confidence": "low",
+  "reason": "truncated, but other is generic category"
+ },
+ "prd_300cdb65ac1debe461f7": {
+  "pick": "Rubrik Scale for NAS Clou",
+  "confidence": "low",
+  "reason": "truncated, but other is generic category"
+ },
+ "prd_c7e1cc558c1962e7e90b": {
+  "pick": "Rubrik Universal Cloud Li",
+  "confidence": "low",
+  "reason": "truncated, but other is generic category"
+ },
+ "prd_c599c3bdd6fe1da68a46": {
+  "pick": "Rubrik Security Cloud - P",
+  "confidence": "low",
+  "reason": "truncated, but other is generic category"
+ },
+ "prd_bbbcfd9476217208dda4": {
+  "pick": "Rubrik Security Cloud - G",
+  "confidence": "low",
+  "reason": "truncated, but other is generic category"
+ },
+ "prd_3e97240c67493b6919b6": {
+  "pick": "Support for R6000S-2 hard",
+  "confidence": "low",
+  "reason": "specific to model, though truncated"
+ },
+ "prd_6aaab3ba52c2dc7e519b": {
+  "pick": "Support for R6000S-3 hard",
+  "confidence": "low",
+  "reason": "specific to model, though truncated"
+ },
+ "prd_957216891f8ca57ece6e": {
+  "pick": "Non-Returnable Disk Servi",
+  "confidence": "low",
+  "reason": "truncated, but other is generic category"
+ },
+ "prd_0d2ecae6dc2f6c56b067": {
+  "pick": "Rubrik Edge Foundation Ed",
+  "confidence": "low",
+  "reason": "truncated, but other is generic category"
+ },
+ "prd_4c4b77813a9570143e0d": {
+  "pick": "Rubrik NAS Cloud Direct S",
+  "confidence": "low",
+  "reason": "truncated, but other is generic category"
+ },
+ "prd_8498648ae76bda70496c": {
+  "pick": null,
+  "confidence": "medium",
+  "reason": "EtherHaul and MultiHaul are different product lines"
+ },
+ "prd_0b96330694711d836230": {
+  "pick": "InformaCast Fusion Mobile User Add-On",
+  "confidence": "high",
+  "reason": "names product; other is category"
+ },
+ "prd_82159abb42ae1bcf523c": {
+  "pick": "InformaCast Fusion Mobile User Add-On",
+  "confidence": "high",
+  "reason": "names product; other is category"
+ },
+ "prd_cb53bd963abde51cd7e0": {
+  "pick": "InformaCast Fusion Mobile User Add-On",
+  "confidence": "high",
+  "reason": "names product; other is category"
+ },
+ "prd_410798ad641e46bc6bfe": {
+  "pick": "InformaCast Fusion Mobile User Add-On",
+  "confidence": "high",
+  "reason": "names product; other is category"
+ },
+ "prd_d375bb32e00a2c7599fe": {
+  "pick": "InformaCast Fusion Mobile User Add-On",
+  "confidence": "high",
+  "reason": "names product; other is category"
+ },
+ "prd_78d911456d760346a9a9": {
+  "pick": "InformaCast Fusion Mobile User Add-On",
+  "confidence": "high",
+  "reason": "names product; other is category"
+ },
+ "prd_1edc6e20dd4cc8811fac": {
+  "pick": "InformaCast Fusion Mobile User Add-On",
+  "confidence": "high",
+  "reason": "names product; other is category"
+ },
+ "prd_80809aa90756b0760fad": {
+  "pick": "InformaCast Fusion Mobile User Add-On",
+  "confidence": "high",
+  "reason": "names product; other is category"
+ },
+ "prd_fbee974d1fe9d6d2e8ed": {
+  "pick": "InformaCast Fusion Mobile User Add-On",
+  "confidence": "high",
+  "reason": "names product; other is category"
+ },
+ "prd_732ec4c2179ae21c9a1c": {
+  "pick": "InformaCast Fusion Mobile User Add-On",
+  "confidence": "high",
+  "reason": "names product; other is category"
+ },
+ "prd_d11d619d3103b7938fd4": {
+  "pick": "InformaCast Fusion Mobile User Add-On",
+  "confidence": "high",
+  "reason": "names product; other is category"
+ },
+ "prd_92aa6146bddb37614c33": {
+  "pick": "InformaCast Fusion Mobile User Add-On",
+  "confidence": "high",
+  "reason": "names product; other is category"
+ },
+ "prd_0e100a6b2ca5fe30e508": {
+  "pick": "InformaCast Mobile",
+  "confidence": "high",
+  "reason": "names product; other is service category"
+ },
+ "prd_954decf5c58d193ac419": {
+  "pick": "InformaCast Mobile",
+  "confidence": "high",
+  "reason": "names product; other is service category"
+ },
+ "prd_86526911cd002da9b62f": {
+  "pick": "InformaCast Mobile",
+  "confidence": "high",
+  "reason": "names product; other is service category"
+ },
+ "prd_9631edd257d414520e47": {
+  "pick": "InformaCast Mobile",
+  "confidence": "high",
+  "reason": "names product; other is service category"
+ },
+ "prd_fa5b098f2dfb27e9efaa": {
+  "pick": "InformaCast Mobile",
+  "confidence": "high",
+  "reason": "names product; other is service category"
+ },
+ "prd_b7c9a2c2b4503424c6f1": {
+  "pick": "InformaCast Mobile",
+  "confidence": "high",
+  "reason": "names product; other is service category"
+ },
+ "prd_d92d48515342e97d98a9": {
+  "pick": "InformaCast Mobile",
+  "confidence": "high",
+  "reason": "names product; other is service category"
+ },
+ "prd_6d2e9c4868393a21dfde": {
+  "pick": "InformaCast Mobile",
+  "confidence": "high",
+  "reason": "names product; other is service category"
+ },
+ "prd_0914750ed6b42a0a0a0a": {
+  "pick": "InformaCast Paging Gateway Software Interface",
+  "confidence": "high",
+  "reason": "names product; other is category"
+ },
+ "prd_0f2517fcdd9df6d23aab": {
+  "pick": "InformaCast Advanced Notification Subscription Licensing",
+  "confidence": "high",
+  "reason": "names product; other is category"
+ },
+ "prd_8e3d16dc8a0f1411ca23": {
+  "pick": "InformaCast Advanced Notification Subscription Licensing",
+  "confidence": "high",
+  "reason": "names product; other is category"
+ },
+ "prd_e104b9cee31718da297f": {
+  "pick": "InformaCast Advanced Notification Subsciption Endpoint Licensing",
+  "confidence": "medium",
+  "reason": "names product; contains typo Subsciption"
+ },
+ "prd_2b5c5d1d3d859a4251c3": {
+  "pick": "InformaCast Advanced Notification Subsciption Endpoint Licensing",
+  "confidence": "medium",
+  "reason": "names product; contains typo Subsciption"
+ },
+ "prd_ad408eb32583aa710d16": {
+  "pick": "InformaCast Advanced Notification Subsciption Endpoint Licensing",
+  "confidence": "medium",
+  "reason": "names product; contains typo Subsciption"
+ },
+ "prd_167482500f6b1aed8c23": {
+  "pick": "InformaCast Advanced Notification Subsciption Endpoint Licensing",
+  "confidence": "medium",
+  "reason": "names product; contains typo Subsciption"
+ },
+ "prd_5ab99ceb8055cc5650e0": {
+  "pick": "InformaCast Advanced Notification Subsciption Endpoint Licensing",
+  "confidence": "medium",
+  "reason": "names product; contains typo Subsciption"
+ },
+ "prd_7fca3f0233752f219445": {
+  "pick": "InformaCast Advanced Notification Perpetual Endpoint Licensing",
+  "confidence": "high",
+  "reason": "names product; other is category"
+ },
+ "prd_5143d60202003301dfe3": {
+  "pick": "InformaCast Advanced Notification Perpetual Endpoint Licensing",
+  "confidence": "high",
+  "reason": "names product; other is category"
+ },
+ "prd_3b7d41535c8338e2fe80": {
+  "pick": "SMART LUMIO SUB 3Y",
+  "confidence": "high",
+  "reason": "descriptive; other is bare part number"
+ },
+ "prd_a09180fe0aa92da4a010": {
+  "pick": "SMART LEARNING STE SUB 1Y",
+  "confidence": "high",
+  "reason": "descriptive; other is bare part number"
+ },
+ "prd_6ec61a5b9834a4c87be8": {
+  "pick": "SMART LEARNING STE SUB 3Y",
+  "confidence": "high",
+  "reason": "descriptive; other is bare part number"
+ },
+ "prd_bb487c3cefbc1a3e9497": {
+  "pick": "SMART REMOTE MGMT SUB 1Y",
+  "confidence": "high",
+  "reason": "name; others are tier-specific part numbers"
+ },
+ "prd_c30fcd6adad27badf074": {
+  "pick": "SMART RNW ADD LUMIO SUB 3Y",
+  "confidence": "high",
+  "reason": "descriptive; other is bare part number"
+ },
+ "prd_75566f1104978ebbfe15": {
+  "pick": "SMART RNW SUB 2Y",
+  "confidence": "high",
+  "reason": "descriptive; other is bare part number"
+ },
+ "prd_c93cd81ae26a9b733436": {
+  "pick": "SMART RNW ADD LUMIO SUB 1Y",
+  "confidence": "high",
+  "reason": "descriptive; other is bare part number"
+ },
+ "prd_86e18db2eaf7ef018827": {
+  "pick": "SMART LUMIO STD SUB RNW 1Y",
+  "confidence": "high",
+  "reason": "descriptive; other is bare part number"
+ },
+ "prd_2a8ea0b9d4a4f6e0de52": {
+  "pick": "SMART REMOTE MGMT SUB 5Y",
+  "confidence": "high",
+  "reason": "name; others are tier-specific part numbers"
+ },
+ "prd_13705d4c9547f47b12b7": {
+  "pick": "SMART TECHNOLOGIES LUMIO SUB 1Y",
+  "confidence": "high",
+  "reason": "descriptive; other is bare part number"
+ },
+ "prd_e88c634e81a68d28f93c": {
+  "pick": "SMART 2YR LIMITED WTY EXT",
+  "confidence": "low",
+  "reason": "descriptive; mpn suggests 5Y, term unclear"
+ },
+ "prd_0de4e21f9b751af27c79": {
+  "pick": "SMART REMOTE MGMT SUB 2Y",
+  "confidence": "high",
+  "reason": "name; others are tier-specific part numbers"
+ },
+ "prd_59eac6a8f9216d871373": {
+  "pick": "TechProtectus Premium 3.5MM Earbud",
+  "confidence": "high",
+  "reason": "descriptive; other is bare part number"
+ },
+ "prd_c72c954505cee81a3018": {
+  "pick": "TechProtectus 3.5mm Jack Noise Cancelling rugged headphone-with a Boom Mic",
+  "confidence": "high",
+  "reason": "descriptive; other is bare part number"
+ },
+ "prd_34cb623d36065611ff22": {
+  "pick": "TechProtectus USB-C Noise Cancelling rugged headphone-with an Inline Mic",
+  "confidence": "high",
+  "reason": "descriptive; other is bare part number"
+ },
+ "prd_ec2d0342030bcdaddbbe": {
+  "pick": "TechProtectus USB Noise Cancelling rugged headphone-with an Inline Mic",
+  "confidence": "high",
+  "reason": "descriptive; other is bare part number"
+ },
+ "prd_bee871c423f57ad449d1": {
+  "pick": "TechProtectus 3.5mm Jack Noise Cancelling rugged headphone-with an Inline Mic",
+  "confidence": "high",
+  "reason": "descriptive; other is bare part number"
+ },
+ "prd_49e9262298356d622a45": {
+  "pick": "TechProtectus 3.5 MM Noise Cancelling Headset with a Boom Microphone",
+  "confidence": "high",
+  "reason": "descriptive; other is bare part number"
+ },
+ "prd_5950834637ee1c38d049": {
+  "pick": "TechProtectus USB Noise Cancelling Headset with volume adjuster and Microphone",
+  "confidence": "high",
+  "reason": "descriptive; other is bare part number"
+ },
+ "prd_8d926594a02ad70a8322": {
+  "pick": "TechProtectus Shockproof Vertical Carry case-9.7-12 inch",
+  "confidence": "high",
+  "reason": "descriptive; other is bare part number"
+ },
+ "prd_0f25f29eab8dca1ead0c": {
+  "pick": "TechProtectus ShockProof Rugged Briefcase 13-14 inch",
+  "confidence": "high",
+  "reason": "descriptive; other is bare part number"
+ },
+ "prd_560630bd6bc2bc94cc0a": {
+  "pick": "TechProtectUs Shockproof Handle Stand iPad 10.2'' case of 9th/ 8th/7th Gen-Blue",
+  "confidence": "high",
+  "reason": "descriptive; other is bare part number"
+ },
+ "prd_208a28a4a2988c58959c": {
+  "pick": "TechProtectus Always on Carrying Case with Pocket-13 to 15 inch",
+  "confidence": "high",
+  "reason": "descriptive; other is bare part number"
+ },
+ "prd_4e76e87723bd1f43d457": {
+  "pick": "TechProtectus USB-C Noise Cancelling rugged headphone-with a boom mic",
+  "confidence": "high",
+  "reason": "descriptive; other is bare part number"
+ },
+ "prd_a25fa9e1262330a8d155": {
+  "pick": "TechProtectus Always on Carrying Case with Pocket-11 to 12 inch",
+  "confidence": "high",
+  "reason": "descriptive; other is bare part number"
+ },
+ "prd_f41410c0550d2459e8cd": {
+  "pick": "TechProtectUs Shockproof Handle Stand iPad 10.2'' case of 9th/ 8th/7th Gen-Pink",
+  "confidence": "high",
+  "reason": "descriptive; other is bare part number"
+ },
+ "prd_a2ef6eb61ffd1149867f": {
+  "pick": "TechProtectus USB Noise Cancelling rugged headphone-with a boom mic",
+  "confidence": "high",
+  "reason": "descriptive; other is bare part number"
+ },
+ "prd_f25059f9d4c251bb5bab": {
+  "pick": "TechProtectus USB Kids Headphone with an inline Microphone",
+  "confidence": "high",
+  "reason": "descriptive; other is bare part number"
+ },
+ "prd_910bf025429cdbb70b54": {
+  "pick": "TechProtectus 3.5MM Kids Headphone with a Boom Microphone and Volume Control",
+  "confidence": "high",
+  "reason": "descriptive; other is bare part number"
+ },
+ "prd_2a5f2df3bd2f00b5e8fc": {
+  "pick": "TechProtectus 3.5MM Kids Headphone with a Boom Microphone",
+  "confidence": "high",
+  "reason": "descriptive; other is bare part number"
+ },
+ "prd_e551682315bb297682d6": {
+  "pick": "TechProtectus USB Type C Headphone with a Boom Microphone and Volume Control",
+  "confidence": "high",
+  "reason": "descriptive; other is bare part number"
+ },
+ "prd_db63adb3904f2948a6aa": {
+  "pick": "TechProtectus USB Type C Headphone with a Boom Microphone",
+  "confidence": "high",
+  "reason": "descriptive; other is bare part number"
+ },
+ "prd_ecb87eadb041f20a7026": {
+  "pick": "TechProtectus USB Headphone with a Boom Microphone and Volume Control",
+  "confidence": "high",
+  "reason": "descriptive; other is bare part number"
+ },
+ "prd_7abb277e26c425c9ef05": {
+  "pick": "TechProtectus USB Headphone with a Boom Microphone",
+  "confidence": "high",
+  "reason": "descriptive; other is bare part number"
+ },
+ "prd_087cb9032598ef89bdad": {
+  "pick": "TechProtectus Standard 3.5MM Earbud",
+  "confidence": "high",
+  "reason": "descriptive; other is bare part number"
+ },
+ "prd_d1a2b67071b9c4afbc35": {
+  "pick": "TechProtectus ShockProof Hardshell Chromebook case-Dell 3100/3110",
+  "confidence": "high",
+  "reason": "descriptive; other is bare part number"
+ },
+ "prd_c25f8c8d02bffae7f9b2": {
+  "pick": "TechProtectus ShockProof Hardshell Chromebook case-Dell 3100/3110 2IN1",
+  "confidence": "high",
+  "reason": "descriptive; other is bare part number"
+ },
+ "prd_4f1c3c6d3f257d0834e5": {
+  "pick": "TechProtectus ShockProof Hardshell Chromebook case-Lenovo 100E/W Gen3",
+  "confidence": "high",
+  "reason": "descriptive; other is bare part number"
+ },
+ "prd_54e5a32da4552230b4a6": {
+  "pick": "TechProtectus ShockProof Hardshell Chromebook case-Lenovo 300E/W Gen3",
+  "confidence": "high",
+  "reason": "descriptive; other is bare part number"
+ },
+ "prd_1ec762d37dcf170a5bb6": {
+  "pick": "TechProtectus ShockProof Hardshell Chromebook case-Lenovo 500E/W Gen3",
+  "confidence": "high",
+  "reason": "descriptive; other is bare part number"
+ },
+ "prd_9a5565776af63bfefd80": {
+  "pick": "TechProtectus ShockProof Hardshell Chromebook case-Lenovo 100E/W Gen4",
+  "confidence": "high",
+  "reason": "descriptive; other is bare part number"
+ },
+ "prd_ae3d279a219d5455a1af": {
+  "pick": "TechProtectus ShockProof Hardshell Chromebook case-Lenovo 300E/W Gen4",
+  "confidence": "high",
+  "reason": "descriptive; other is bare part number"
+ },
+ "prd_f2db75c2911f60a838e7": {
+  "pick": "TechProtectus ShockProof Hardshell Chromebook case-Lenovo 500E/W Gen4",
+  "confidence": "high",
+  "reason": "descriptive; other is bare part number"
+ },
+ "prd_a0aaa476bd5e6fb5ec78": {
+  "pick": "TechProtectus ShockProof Hardshell Chromebook case-Lenovo 500E Gen4S",
+  "confidence": "high",
+  "reason": "descriptive; other is bare part number"
+ },
+ "prd_843e83977e44d858735f": {
+  "pick": "TechProtectus ShockProof Hardshell Chromebook case-Lenovo 14E Gen3",
+  "confidence": "high",
+  "reason": "descriptive; other is bare part number"
+ },
+ "prd_362ada1f6a563b6edb39": {
+  "pick": "TechProtectus ShockProof Hardshell Chromebook case-HPG8/G9",
+  "confidence": "high",
+  "reason": "descriptive; other is bare part number"
+ },
+ "prd_5d141cf837b7d9cc4a11": {
+  "pick": "TechProtectus ShockProof Hardshell Chromebook case-HP X360 G3 Fortis",
+  "confidence": "high",
+  "reason": "descriptive; other is bare part number"
+ },
+ "prd_918423e7cb3851e657cd": {
+  "pick": "TechProtectus ShockProof Hardshell Chromebook case-HP X360 G5 Fortis",
+  "confidence": "high",
+  "reason": "descriptive; other is bare part number"
+ },
+ "prd_20c161ef3901dc06954d": {
+  "pick": "TechProtectus ShockProof Hardshell Chromebook case-HP 11.6\" Fortis G10",
+  "confidence": "high",
+  "reason": "descriptive; other is bare part number"
+ },
+ "prd_8cc9698fd9a5ac19855a": {
+  "pick": "TechProtectus ShockProof Hardshell Laptop case-Microsoft Surface Laptop GO3/GO2/",
+  "confidence": "medium",
+  "reason": "descriptive though slightly truncated"
+ },
+ "prd_8b16a3a746529300eccd": {
+  "pick": "TechProtectus Signal Blocking Cellphone Pouch",
+  "confidence": "high",
+  "reason": "descriptive; other is bare part number"
+ },
+ "prd_142f8d79fb287fac6aeb": {
+  "pick": "TechProtectus Lockable Signal Blocking Cellphone Pouch",
+  "confidence": "high",
+  "reason": "descriptive; other is bare part number"
+ },
+ "prd_d39608fde9f16a424dde": {
+  "pick": "TechProtectus Portable Base Key for its lockable pouch",
+  "confidence": "high",
+  "reason": "descriptive; other is bare part number"
+ },
+ "prd_58ad692b77f99ac0655a": {
+  "pick": null,
+  "confidence": "high",
+  "reason": "warranty versus mount; clearly different products"
+ },
+ "prd_0427e150fe473738e968": {
+  "pick": "Bing Orthoimagery",
+  "confidence": "low",
+  "reason": "specific source; variants may differ"
+ },
+ "prd_f6445025195e3bdcb1b4": {
+  "pick": "Wayfinder Software",
+  "confidence": "medium",
+  "reason": "clarifies it is software"
+ },
+ "prd_039a59847753f6779faf": {
+  "pick": "VIEWSONIC SPRING-LOADED DUAL MON ARM",
+  "confidence": "high",
+  "reason": "complete with maker and item type"
+ },
+ "prd_bf2d71c72dce8e438a7d": {
+  "pick": "VIEWSONIC VWBD CAST DONGLE HDMI+USBA",
+  "confidence": "medium",
+  "reason": "specific with interfaces"
+ },
+ "prd_757af33bebdd2987d851": {
+  "pick": "VIEWSONIC 15.6\" PORTABLE TOUCH DISP",
+  "confidence": "high",
+  "reason": "complete; other truncated"
+ },
+ "prd_0ed69821dccb478844b7": {
+  "pick": "VIEWSONIC 24\" USB-C ERGO MON",
+  "confidence": "high",
+  "reason": "complete; other truncated"
+ },
+ "prd_f5d0363806f8df5161ed": {
+  "pick": "VIEWSONIC 15.6\" PORTABLE MON",
+  "confidence": "medium",
+  "reason": "complete noun; other lacks item type"
+ },
+ "prd_4b59636fdcf4e0676de9": {
+  "pick": "VIEWSONIC 24\" 1080P, VIDEO CON, CAM",
+  "confidence": "medium",
+  "reason": "complete; other truncated"
+ },
+ "prd_afc4554ccd567c5e067b": {
+  "pick": "VIEWSONIC 24\" PRIVACY FILTER SP",
+  "confidence": "medium",
+  "reason": "includes size and maker"
+ },
+ "prd_54a802703773caa52824": {
+  "pick": "VIEWSONIC 32IN 4K UHD LED MON",
+  "confidence": "high",
+  "reason": "complete; other lacks item type"
+ },
+ "prd_35aab0396e4fcce046d2": {
+  "pick": "VIEWSONIC 24IN LED MULTI-TOUCH DSPLY",
+  "confidence": "medium",
+  "reason": "clear; other is truncated jargon"
+ },
+ "prd_38545ad10005309ea4bb": {
+  "pick": "UNIVERSAL CLIENT MOUNTING KIT",
+  "confidence": "low",
+  "reason": "equivalent; universal is more specific"
+ },
+ "prd_9eb3b440d66a4f1ea3bb": {
+  "pick": "VIEWSONIC SCREEN PROTECTOR 23.6\"",
+  "confidence": "medium",
+  "reason": "includes size, maker"
+ },
+ "prd_a1175ea976da6dd11ac9": {
+  "pick": "VIEWSONIC 24IN 1080P ERGO,DP,USB HUB",
+  "confidence": "medium",
+  "reason": "complete; other truncated"
+ },
+ "prd_f352607f5c891a6b11b7": {
+  "pick": "VIEWSONIC MONITOR HOOD",
+  "confidence": "medium",
+  "reason": "other variant truncated at VP"
+ },
+ "prd_37c7e9be639e8427539b": {
+  "pick": "Vivacity Tech Guardian Vertical Sleeve with Pouch - 11in - Grey",
+  "confidence": "medium",
+  "reason": "11in matches part number"
+ },
+ "prd_7eb51c12f09c782b4190": {
+  "pick": "USB Keyboard (Cherry)",
+  "confidence": "high",
+  "reason": "other has Key Board spelling error"
+ },
+ "prd_d709232b9f66092d8766": {
+  "pick": "imageRUNNER ADVANCE DX Series Control Panel Protective Film (10 pack)",
+  "confidence": "high",
+  "reason": "specific to product series"
+ },
+ "prd_5b31b96adb3a0e910c38": {
+  "pick": null,
+  "confidence": "low",
+  "reason": "D1 and D1e kits may be distinct products"
+ },
+ "prd_d209d64b73fed07406ed": {
+  "pick": "Staple-P1 (For Booklet Finisher-AG1 and Convenience Stapler-A1)",
+  "confidence": "high",
+  "reason": "adds compatibility, more specific"
+ },
+ "prd_6f9e59f4405dc9d937aa": {
+  "pick": "Inner Finisher-L1",
+  "confidence": "medium",
+  "reason": "others add model-specific restrictions"
+ },
+ "prd_10b97a7f68c512c4072e": {
+  "pick": "Inner 2/3 Hole Puncher-D1",
+  "confidence": "medium",
+  "reason": "plain name; others add model restrictions"
+ },
+ "prd_0caf27ba5ae40c50cf26": {
+  "pick": "Attachment kit for Reader-A2",
+  "confidence": "medium",
+  "reason": "includes model suffix, no unclear OP prefix"
+ },
+ "prd_cf34c4532d3c6ce33140": {
+  "pick": null,
+  "confidence": "low",
+  "reason": "A1 and A1e kits may be distinct products"
+ },
+ "prd_d516b86e7f1dea3a3414": {
+  "pick": "Memory Mirroring Kit-A1",
+  "confidence": "high",
+  "reason": "includes model suffix"
+ },
+ "prd_673336dc63d2e48f4766": {
+  "pick": "IC Card Reader Box for Numeric Keypad-A1",
+  "confidence": "high",
+  "reason": "includes model suffix"
+ },
+ "prd_a3001d6b41961b3254af": {
+  "pick": "Tab Feeding Attachment-F1",
+  "confidence": "high",
+  "reason": "spelled out, readable"
+ },
+ "prd_6c125fc6975a570d075e": {
+  "pick": "Standard Power Filter 20A/120V (dealer provided item)",
+  "confidence": "medium",
+  "reason": "general name; C265 note may be narrowing"
+ },
+ "prd_784b4160359f92fd83f8": {
+  "pick": null,
+  "confidence": "high",
+  "reason": "variants name different imageFORCE models"
+ },
+ "prd_af3fe83041da44ed05a0": {
+  "pick": "Staple Cartridge-X1 (for Staple Finisher-AB3 and Booklet Finisher-A2 with Tri-Fold)",
+  "confidence": "high",
+  "reason": "adds compatibility, more specific"
+ },
+ "prd_19a5daeb500482b940a8": {
+  "pick": null,
+  "confidence": "low",
+  "reason": "feeding tray versus feeding and catch tray differ"
+ },
+ "prd_2412c6177cb830ced66b": {
+  "pick": "Finisher Jogger Kit-A1",
+  "confidence": "medium",
+  "reason": "more specific than Jogger Kit"
+ },
+ "prd_c21b663270e9e4e831e3": {
+  "pick": "Puncher Unit-BS1 (for Staple Finisher-X1, Booklet Finisher-X1, Staple Finisher-AG1 or Booklet Finisher-AG1)",
+  "confidence": "high",
+  "reason": "adds compatibility, more specific"
+ },
+ "prd_2a680a61837f7916b0aa": {
+  "pick": null,
+  "confidence": "low",
+  "reason": "LTR round versus A4/LTR punch may differ"
+ },
+ "prd_421518d3de780e8edc81": {
+  "pick": "Loose Leaf 5-Hole Punch (round) LTR-B1",
+  "confidence": "high",
+  "reason": "includes hole shape"
+ },
+ "prd_989fe19095efc9cf3afe": {
+  "pick": "Plastic Comb 19-Hole Punch (rect) LTR-B1",
+  "confidence": "high",
+  "reason": "includes hole shape"
+ },
+ "prd_58baff1a3564979e9bf0": {
+  "pick": "Twin Loop 21-Hole Punch (rect) LTR-B1",
+  "confidence": "high",
+  "reason": "includes hole shape"
+ },
+ "prd_e95a6a256be59a60f4ae": {
+  "pick": "Twin Loop 32-Hole Punch (sq) LTR-B1",
+  "confidence": "high",
+  "reason": "includes hole shape"
+ },
+ "prd_62a40a57077fb49c3e6f": {
+  "pick": "High Durability Color Coil 44-Hole Punch (round) LTR-B1",
+  "confidence": "high",
+  "reason": "includes hole shape"
+ },
+ "prd_e1206d93bf76e509adbe": {
+  "pick": "High Durability Loose Leaf 3-Hole Punch (round) LTR-B1",
+  "confidence": "high",
+  "reason": "complete; other lacks model suffix"
+ },
+ "prd_3861f4fdcfd790250301": {
+  "pick": "Staple-N1(For Staple Finisher-AG1, Booklet Finisher-AG1)",
+  "confidence": "high",
+  "reason": "adds compatibility, more specific"
+ },
+ "prd_bc8aa0534fc7dd374cc6": {
+  "pick": "Envelope Attachment-H1 for Multi Drawer Paper Deck-E1",
+  "confidence": "medium",
+  "reason": "states host device"
+ },
+ "prd_fbf7d40cc8014bd024e3": {
+  "pick": "Envelope Feeder Attachment-G1",
+  "confidence": "high",
+  "reason": "other is abbreviated"
+ },
+ "prd_a08acf9ec2dc172af9df": {
+  "pick": "Stack Bypass Alignment Tray-D1",
+  "confidence": "high",
+  "reason": "fully descriptive"
+ },
+ "prd_f7cfc0d81a85ba66c7b2": {
+  "pick": null,
+  "confidence": "low",
+  "reason": "XL tray and standard tray may differ"
+ },
+ "prd_25fca5ac9db850ae771c": {
+  "pick": null,
+  "confidence": "medium",
+  "reason": "i1 Basic Pro 3 and i1 Pro 3 differ"
+ },
+ "prd_04c5393f513f77dbdb89": {
+  "pick": "LAMpro Cheetah S15 Set",
+  "confidence": "high",
+  "reason": "other is scraped price junk"
+ },
+ "prd_54a215549386c5b8e42c": {
+  "pick": "Maintenance: MDSF Software Sandbox Platform for Testing Environment",
+  "confidence": "low",
+  "reason": "more specific; DSF/MDSF inconsistent"
+ },
+ "prd_b4e08c8318afc518892e": {
+  "pick": "Maintenance: ePS VDP Templates powered by DirectSmile",
+  "confidence": "medium",
+  "reason": "more specific"
+ },
+ "prd_71c2adef53049742dafa": {
+  "pick": "Maintenance: Add'l ePS VDP Rendering Engine",
+  "confidence": "low",
+  "reason": "indicates additional engine; both similar"
+ },
+ "prd_00e822606eb5104ad527": {
+  "pick": null,
+  "confidence": "high",
+  "reason": "DirectSmile license versus StoreFront Studio differ"
+ },
+ "prd_85ec69fb44dd91059808": {
+  "pick": "Maintenance: Shipping Provider Integration per individual shipping provider",
+  "confidence": "medium",
+  "reason": "clearer wording"
+ },
+ "prd_2c8527c79561f5f4e47c": {
+  "pick": "Maintenance: Additional Print Shops (>3 Requires Quote)",
+  "confidence": "medium",
+  "reason": "clean wording, no spacing issue"
+ },
+ "prd_dfb677f360645d477662": {
+  "pick": "Production Professional Services (per hour) (Dealer)",
+  "confidence": "medium",
+  "reason": "states per-hour unit"
+ },
+ "prd_725c95e887e361a5d48f": {
+  "pick": null,
+  "confidence": "low",
+  "reason": "Fiery Central Solo versus Base configuration unclear"
+ },
+ "prd_2a49113c71fbe747f99b": {
+  "pick": "Printer license for one Canon varioPRINT DP or Océ VarioPrint 6000",
+  "confidence": "medium",
+  "reason": "accurate brand spelling, clear"
+ },
+ "prd_d29814428598a355dc0a": {
+  "pick": "Canon Ink Tank PFI-2100 MBK - Pigment Ink Tank 160ml",
+  "confidence": "high",
+  "reason": "includes maker, model, size"
+ },
+ "prd_3101d2b2ca512d3387c0": {
+  "pick": "Canon Ink Tank PFI-2300 MBK - Pigment Ink Tank 330ml",
+  "confidence": "high",
+  "reason": "includes maker, model, size"
+ },
+ "prd_f43f003ad38e8bc39130": {
+  "pick": "Canon Ink Tank PFI-2700 MBK - Pigment Ink Tank 700ml",
+  "confidence": "high",
+  "reason": "includes maker, model, size"
+ },
+ "prd_dc2e13e2af715d442617": {
+  "pick": "Canon Ink Tank PFI-2100 O - Pigment Ink Tank 160ml",
+  "confidence": "high",
+  "reason": "includes maker, model, size"
+ },
+ "prd_97cd8abd7723b910d302": {
+  "pick": "Canon Ink Tank PFI-2300 O - Pigment Ink Tank 330ml",
+  "confidence": "high",
+  "reason": "includes maker, model, size"
+ },
+ "prd_08ef9f07b687020a55fc": {
+  "pick": "Canon Ink Tank PFI-2700 O- Pigment Ink Tank 700ml",
+  "confidence": "high",
+  "reason": "includes maker, model, size"
+ },
+ "prd_64071f74b38fea9d3b37": {
+  "pick": null,
+  "confidence": "medium",
+  "reason": "different hard drive kits referenced"
+ },
+ "prd_5fef39ac9e4efc54cc71": {
+  "pick": "IJC357 UV Ink White 1L",
+  "confidence": "low",
+  "reason": "variants conflict; white 1L fits two of three"
+ },
+ "prd_97a0091b8006fb0e640f": {
+  "pick": "IJC358 UV Ink White 1L",
+  "confidence": "low",
+  "reason": "mpn series is IJC358; variants conflict"
+ },
+ "prd_70eb3b9006b8346ad45b": {
+  "pick": null,
+  "confidence": "high",
+  "reason": "different PRISMA products under one part number"
+ },
+ "prd_220651ad2da8d459df38": {
+  "pick": null,
+  "confidence": "high",
+  "reason": "conflicting ink volume and type, 2L versus 800 ml"
+ },
+ "prd_fb637c62750863ca2748": {
+  "pick": null,
+  "confidence": "high",
+  "reason": "conflicting ink volume and type, 2L versus 800 ml"
+ },
+ "prd_7f268f5c0d979b2a6cde": {
+  "pick": null,
+  "confidence": "high",
+  "reason": "conflicting ink volume and type, 2L versus 800 ml"
+ },
+ "prd_726c93c3c4b598528fc3": {
+  "pick": null,
+  "confidence": "high",
+  "reason": "conflicting ink volume and type, 2L versus 800 ml"
+ },
+ "prd_b3ee8c5c043418f7eab7": {
+  "pick": null,
+  "confidence": "high",
+  "reason": "different colors; part number reused"
+ },
+ "prd_00d2640e09b9ef760f8e": {
+  "pick": null,
+  "confidence": "high",
+  "reason": "different colors and series; part number reused"
+ },
+ "prd_ded566b082c04027379f": {
+  "pick": null,
+  "confidence": "high",
+  "reason": "varnish versus magenta; part number reused"
+ },
+ "prd_545781a04a35647a9807": {
+  "pick": null,
+  "confidence": "high",
+  "reason": "different colors and sizes; part number reused"
+ },
+ "prd_dd20697b94ef3625d343": {
+  "pick": null,
+  "confidence": "high",
+  "reason": "cyan versus white; part number reused"
+ },
+ "prd_d95906145d5639ef88e9": {
+  "pick": null,
+  "confidence": "high",
+  "reason": "different colors and series; part number reused"
+ },
+ "prd_d4e1f83cb723568b04e8": {
+  "pick": null,
+  "confidence": "high",
+  "reason": "different colors and series; part number reused"
+ },
+ "prd_c03c73c55b0894a627f9": {
+  "pick": null,
+  "confidence": "high",
+  "reason": "different colors and series; part number reused"
+ },
+ "prd_ae05cf6aa10223c2e132": {
+  "pick": null,
+  "confidence": "high",
+  "reason": "different colors and series; part number reused"
+ },
+ "prd_99cb28ef1619966a9f6d": {
+  "pick": "Exchange Roller for C230/C240/M160II/M260/S150/SF400/S250N/R30/R40/RS40/R50",
+  "confidence": "low",
+  "reason": "fuller compatibility list; other may be narrower"
+ },
+ "prd_f922dba9522784347130": {
+  "pick": "eCarePAK PM (On-Site Service Program) for LVP Scanner Single Event Preventative Maintenance",
+  "confidence": "medium",
+  "reason": "spells out what PM means"
+ }
+}

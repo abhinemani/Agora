@@ -7,13 +7,29 @@
   "offerings": 39394,
   "documents": 12602
  },
+ "cleanup": {
+  "gsa_contracts": 12473,
+  "gsa_described": 12442,
+  "gsa_with_end": 12473,
+  "gsa_open_to_cities": 7132,
+  "gsa_sins": 277,
+  "gsa_cooperative_sins": 56,
+  "names_title_cased": 11661,
+  "merged_by_uei": 0,
+  "parts_labelled": 4112,
+  "suppliers_merged_by_review": 7,
+  "contracts_categorized": 30860,
+  "products_renamed_by_review": 223,
+  "canon_rows_added": 109
+ },
  "suppliers": {
   "records": 24094,
-  "companies": 22785,
+  "companies": 22778,
   "merged_by_name": 966,
   "merged_by_website": 343,
-  "with_website": 13937,
-  "on_two_or_more_coops": 1504,
+  "merged_by_uei": 0,
+  "with_website": 13936,
+  "on_two_or_more_coops": 1502,
   "most_coops": [
    {
     "id": "cat_19ab651278e93c73f19b",
@@ -261,7 +277,7 @@
    "with_end": 1099,
    "expired": 0,
    "with_states": 0,
-   "offerings": 3492
+   "offerings": 3601
   },
   {
    "coop": "TIPS",
@@ -300,7 +316,7 @@
    "coop": "HGACBuy",
    "coop_id": "coop_hgacbuy",
    "contracts": 1367,
-   "suppliers": 1194,
+   "suppliers": 1192,
    "with_link": 40,
    "with_end": 913,
    "expired": 0,
@@ -390,20 +406,20 @@
    "contracts": 12473,
    "suppliers": 11944,
    "with_link": 12473,
-   "with_end": 0,
+   "with_end": 12473,
    "expired": 0,
-   "with_states": 0,
+   "with_states": 12473,
    "offerings": 0
   }
  ],
  "products": {
-  "products": 34510,
-  "offerings": 39394,
+  "products": 34619,
+  "offerings": 39503,
   "by_status": {
    "quote": 1509,
    "published_discount": 8102,
    "member_login": 26291,
-   "published_price": 3492
+   "published_price": 3601
   },
   "priced_suppliers": [
    "Canon U.S.A., Inc."

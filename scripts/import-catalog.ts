@@ -16,7 +16,7 @@
 
 process.env.AGORA_SKIP_CATALOG_CORRECTIONS = "1";
 
-import { readFileSync, writeFileSync, mkdirSync } from "node:fs";
+import { existsSync, readFileSync, writeFileSync, mkdirSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { gunzipSync, gzipSync } from "node:zlib";
@@ -34,6 +34,18 @@ const jsonl = <T,>(name: string): T[] =>
     .split("\n")
     .filter(Boolean)
     .map((l) => JSON.parse(l) as T);
+
+/** AI-reviewed decisions (scripts/cleanup), checked against their items by collect.ts. Low confidence isn't applied. */
+function reviewed<T extends { confidence: string }>(name: string): Record<string, T> {
+  const path = join(ROOT, "seed/cleanup/decisions", `${name}.json`);
+  if (!existsSync(path)) return {};
+  const all = JSON.parse(readFileSync(path, "utf8")) as Record<string, T>;
+  return Object.fromEntries(Object.entries(all).filter(([, d]) => d.confidence !== "low"));
+}
+const supplierMerges = reviewed<{ merge: string[][]; confidence: string }>("supplier-merge");
+const categoryPicks = reviewed<{ pick: string; confidence: string }>("category");
+const canonRows = reviewed<{ name: string | null; sku: string | null; list: number | null; discount: number | null; price: number | null; unit: string | null; issue: string | null; confidence: string; page: number; line: string }>("canon-rows");
+const productNames = reviewed<{ pick: string | null; confidence: string }>("product-name");
 
 interface RawSupplier {
   supplier_id: string;
@@ -94,6 +106,65 @@ const rawContracts = jsonl<RawContract>("contracts");
 const rawProducts = jsonl<RawProduct>("products");
 const rawOfferings = jsonl<RawOffering>("offerings");
 const rawDocuments = jsonl<RawDocument>("documents");
+
+// ------------------------------------------------------------------ GSA's own data (npm run fetch:gsa)
+
+/** Every MAS Special Item Number: title, description, and whether state and local governments may use it. */
+const gsaSins = (JSON.parse(readFileSync(join(SRC, "gsa-sins.json"), "utf8")) as { sins: Record<string, { title: string; description: string; cooperative: boolean }> }).sins;
+interface GsaContract {
+  sins: Set<string>;
+  subs: Set<string>;
+  website: string;
+  uei: string;
+  option_end: string;
+  ultimate_end: string;
+}
+const gsaByContract = new Map<string, GsaContract>();
+{
+  const text = gunzipSync(readFileSync(join(SRC, "gsa-mas-contracts.csv.gz"))).toString("utf8");
+  const lines = text.split("\n").filter(Boolean);
+  const parse = (line: string) => {
+    const out: string[] = [];
+    let cur = "";
+    let q = false;
+    for (let i = 0; i < line.length; i++) {
+      const ch = line[i];
+      if (q) {
+        if (ch === '"' && line[i + 1] === '"') (cur += '"'), i++;
+        else if (ch === '"') q = false;
+        else cur += ch;
+      } else if (ch === '"') q = true;
+      else if (ch === ",") out.push(cur), (cur = "");
+      else cur += ch;
+    }
+    out.push(cur);
+    return out;
+  };
+  const head = parse(lines[0]);
+  const ix = (n: string) => head.indexOf(n);
+  for (const line of lines.slice(1)) {
+    const r = parse(line);
+    const num = r[ix("contract")];
+    const g = gsaByContract.get(num) ?? { sins: new Set<string>(), subs: new Set<string>(), website: "", uei: "", option_end: "", ultimate_end: "" };
+    if (r[ix("sin")]) g.sins.add(r[ix("sin")]);
+    if (r[ix("sub_category")]) g.subs.add(`${r[ix("large_category")]} / ${r[ix("sub_category")]}`);
+    g.website ||= r[ix("website")];
+    g.uei ||= r[ix("uei")];
+    g.option_end ||= r[ix("option_end")];
+    g.ultimate_end ||= r[ix("ultimate_end")];
+    gsaByContract.set(num, g);
+  }
+}
+// GSA lists each company's website and SAM UEI, a federal ID: add them to the suppliers they belong to.
+const gsaSupplier = new Map<string, GsaContract>(); // raw supplier id → GSA data
+for (const c of rawContracts) {
+  const g = c.cooperative === "GSA MAS" && c.contract_number ? gsaByContract.get(c.contract_number) : undefined;
+  if (g) gsaSupplier.set(c.supplier_id, g);
+}
+for (const s of rawSuppliers) {
+  const g = gsaSupplier.get(s.supplier_id);
+  if (g?.website) s.websites = [...new Set([...(s.websites ?? []), g.website])];
+}
 
 // ------------------------------------------------------------------ co-ops
 
@@ -177,6 +248,19 @@ for (const ids of byDomain.values()) {
   if (distinct.length > 6) continue;
   for (const id of distinct.slice(1)) if (find(id) !== find(distinct[0])) (union(distinct[0], id), mergedByWebsite++);
 }
+// Records sharing a SAM UEI are the same legal company, whatever they're called.
+let mergedByUei = 0;
+const byUei = new Map<string, string[]>();
+for (const [id, g] of gsaSupplier) if (g.uei) (byUei.get(g.uei) ?? byUei.set(g.uei, []).get(g.uei)!).push(id);
+for (const ids of byUei.values()) for (const id of ids.slice(1)) if (find(id) !== find(ids[0])) (union(ids[0], id), mergedByUei++);
+// Look-alike names a reviewer judged to be one company. Catalog ids are "cat_" + the record's raw id.
+let mergedByReview = 0;
+const rawIds = new Set(rawSuppliers.map((s) => s.supplier_id));
+for (const d of Object.values(supplierMerges))
+  for (const set of d.merge) {
+    const ids = set.map((x) => `sup_${x.replace(/^cat_/, "")}`).filter((x) => rawIds.has(x));
+    for (const id of ids.slice(1)) if (find(id) !== find(ids[0])) (union(ids[0], id), mergedByReview++);
+  }
 
 interface Supplier {
   id: string;
@@ -194,11 +278,38 @@ for (const c of rawContracts) contractsBySupplier.set(c.supplier_id, (contractsB
 const offeringsBySupplier = new Map<string, number>();
 for (const o of rawOfferings) offeringsBySupplier.set(o.supplier_id, (offeringsBySupplier.get(o.supplier_id) ?? 0) + 1);
 
+/** Words that stay in capitals when an ALL CAPS company name is title-cased. */
+const ACRONYMS = new Set(
+  "LLC LLP LP PC PLLC PA USA US UK IBM IT AI AV HVAC GIS IOT CDW HP GE ATT NA ADA EMS EMT RV ATV LED UV PPE OEM ERP CRM SAAS GPS CAD CNC MRI CT DNA PR HR TV DVD USB IP VOIP SAP AWS NTT CGI SAIC DLT KPMG BDO RSM PWC EY ESRI JLL AECOM MBA CPA NAPA NASA ICF ABM DNV TRC EA".split(" "),
+);
+const SMALL = new Set(["of", "and", "the", "for", "in", "at", "on", "to", "a", "an", "or", "by", "de", "la"]);
+/** "ALLIED MODULAR BUILDING SYSTEMS, INC." → "Allied Modular Building Systems, Inc."; keeps LLC, IBM, HVAC. */
+function titleCaseCompany(name: string): string {
+  if (/[a-z]/.test(name)) return name;
+  return name
+    .toLowerCase()
+    .split(/(\s+|-|\/|&|\(|\))/)
+    .map((w, i) => {
+      const bare = w.replace(/[.,']/g, "").toUpperCase();
+      if (ACRONYMS.has(bare)) return w.toUpperCase();
+      // Short letter runs with no vowel are initials ("JRS", "CDW"); numbers and codes stay as they are.
+      if (/^[a-z]{2,4}$/.test(bare.toLowerCase()) && !/[aeiouy]/.test(bare.toLowerCase())) return w.toUpperCase();
+      if (/\d/.test(w)) return w.toUpperCase();
+      if (i > 0 && SMALL.has(w)) return w;
+      return w.replace(/^([a-z])/, (c) => c.toUpperCase()).replace(/^(mc)([a-z])/, (_, a: string, b: string) => "Mc" + b.toUpperCase());
+    })
+    .join("");
+}
+let titleCased = 0;
+
 /** A readable name: mixed case over ALL CAPS, the brand over the legal entity's suffixes, the most-used spelling. */
 function displayName(rs: RawSupplier[]): string {
   const votes = new Map<string, number>();
   for (const s of rs) for (const n of new Set([s.name, ...s.name_variants])) votes.set(n, (votes.get(n) ?? 0) + (contractsBySupplier.get(s.supplier_id) ?? 0) + 1);
-  return [...votes.entries()].sort((a, b) => Number(/[a-z]/.test(b[0])) - Number(/[a-z]/.test(a[0])) || b[1] - a[1] || a[0].length - b[0].length)[0][0];
+  const best = [...votes.entries()].sort((a, b) => Number(/[a-z]/.test(b[0])) - Number(/[a-z]/.test(a[0])) || b[1] - a[1] || a[0].length - b[0].length)[0][0];
+  if (/[a-z]/.test(best)) return best;
+  titleCased++;
+  return titleCaseCompany(best);
 }
 
 const supplierOf = new Map<string, string>(); // raw supplier id → catalog supplier id
@@ -263,9 +374,50 @@ interface Contract {
   directory: string | null;
   sins: string[];
   renewal: string | null;
+  /** GSA SINs state and local governments may buy through cooperative purchasing, with their titles. */
+  coop_sins?: { code: string; title: string }[];
+  /** One of Agora's categories, from a reviewed classification of the contract's title (or its first SIN). */
+  category?: string;
 }
+/** GSA codes that describe nothing on their own: order-level materials, ancillary supplies. */
+const GSA_FILLER = new Set(["OLM", "ANCILLARY"]);
+let gsaDescribed = 0;
 const contracts: Contract[] = rawContracts.map((c) => {
   const meta = c.source_metadata ?? {};
+  const g = c.cooperative === "GSA MAS" && c.contract_number ? gsaByContract.get(c.contract_number) : undefined;
+  if (g || c.cooperative === "GSA MAS") {
+    // GSA titles every contract "Multiple Award Schedule": describe it by its SINs instead.
+    const codes = [...new Set([...(g?.sins ?? []), ...(c.SINs ?? [])])];
+    const named = codes.filter((x) => gsaSins[x] && !GSA_FILLER.has(x)).map((x) => ({ code: x, title: gsaSins[x].title }));
+    const shown = named.slice(0, 3).map((x) => x.title);
+    if (named.length) gsaDescribed++;
+    return {
+      id: c.contract_id,
+      supplier: supplierOf.get(c.supplier_id)!,
+      coop: c.cooperative,
+      coop_id: COOP_ID[c.cooperative] ?? "",
+      number: c.contract_number ?? "",
+      title: shown.length ? `${shown.join("; ")}${named.length > 3 ? ` (and ${named.length - 3} more)` : ""}` : "Multiple Award Schedule",
+      // GSA's own description of each SIN, first sentence, so "laptops" finds "Purchasing of New Electronic Equipment".
+      categories: [
+        ...new Set([
+          ...(g?.subs ?? []),
+          ...named.slice(3).map((x) => x.title),
+          ...named.map((x) => gsaSins[x.code].description.split(/(?<=\.)\s/)[0].slice(0, 240)).filter(Boolean),
+          ...(c.category_labels ?? []).filter((x) => !/^[0-9A-Z]{3,12}$/.test(x)),
+        ]),
+      ],
+      start: null,
+      end: g?.option_end || null,
+      states: "any",
+      lead: null,
+      url: c.contract_url,
+      directory: null,
+      sins: codes,
+      renewal: g?.ultimate_end || null,
+      coop_sins: named.filter((x) => gsaSins[x.code].cooperative),
+    };
+  }
   return {
     id: c.contract_id,
     supplier: supplierOf.get(c.supplier_id)!,
@@ -284,6 +436,12 @@ const contracts: Contract[] = rawContracts.map((c) => {
     renewal: typeof meta.renewal_limit === "string" ? meta.renewal_limit.slice(0, 10) : null,
   };
 });
+// Categories: each distinct title was classified once; GSA contracts take their first described SIN's.
+let categorized = 0;
+for (const c of contracts) {
+  const pick = c.coop === "GSA MAS" ? (c.sins.map((x) => categoryPicks[`sin:${x}`]?.pick).find((x) => x && x !== "Other") ?? categoryPicks[`sin:${c.sins[0]}`]?.pick) : categoryPicks[`title:${c.title.trim().toLowerCase()}`]?.pick;
+  if (pick) (c.category = pick), categorized++;
+}
 const contractById = new Map(contracts.map((c) => [c.id, c]));
 
 // ------------------------------------------------------------------ products and offerings
@@ -325,9 +483,48 @@ const offerings: Offering[] = rawOfferings.map((o) => {
   };
 });
 const usedProducts = new Set(offerings.map((o) => o.product));
+// A product named only by its part number ("AV2225PMIR-S") reads as its maker plus that number.
+const PART_ONLY = /^[A-Z0-9][A-Z0-9\-_./]{3,}$/;
+let partLabelled = 0;
+let renamedByReview = 0;
 const products = rawProducts
   .filter((p) => usedProducts.has(p.product_id))
-  .map((p) => ({ id: p.product_id, name: p.product_name, maker: p.manufacturer ?? null, mpn: p.manufacturer_sku ?? null, review: p.title_conflict_requires_review }));
+  .map((p) => {
+    const settled = productNames[p.product_id]?.pick;
+    if (settled) {
+      renamedByReview++;
+      return { id: p.product_id, name: settled, maker: p.manufacturer ?? null, mpn: p.manufacturer_sku ?? null, review: false };
+    }
+    const bare = p.product_name.trim();
+    const label = PART_ONLY.test(bare) && !/[a-z]/.test(bare) && p.manufacturer ? `${p.manufacturer.replace(/,? (Inc|LLC|Corp|Co)\.?$/i, "")} ${bare}` : bare;
+    if (label !== bare) partLabelled++;
+    return { id: p.product_id, name: label, maker: p.manufacturer ?? null, mpn: p.manufacturer_sku ?? null, review: p.title_conflict_requires_review };
+  });
+
+// Canon price-file rows the capture couldn't parse, read by a reviewer: kept only with a name and
+// a single price, every number of which collect.ts found in the source line.
+let canonAdded = 0;
+{
+  const canonOffer = offerings.find((o) => o.coop === "Sourcewell" && o.status === "published_price");
+  if (canonOffer)
+    for (const [id, r] of Object.entries(canonRows)) {
+      if (!r.name || !r.price || r.issue) continue; // a $0.00 price is a rounded fraction of a cent
+      const pid = `prd_canon_${id}`;
+      products.push({ id: pid, name: r.name, maker: "Canon", mpn: r.sku, review: false });
+      offerings.push({
+        ...canonOffer,
+        id: `off_canon_${id}`,
+        product: pid,
+        sku: r.sku,
+        price: r.price,
+        list: r.list,
+        discount: r.discount,
+        unit: r.unit,
+        category: `Canon price file, page ${r.page}`,
+      });
+      canonAdded++;
+    }
+}
 
 // ------------------------------------------------------------------ documents: the price-list reader's queue
 
@@ -444,11 +641,27 @@ const multiCoop = suppliers.filter((s) => s.coops.filter((c) => c !== "GSA MAS")
 const insights = {
   retrieved: RETRIEVED,
   source_counts: { suppliers: rawSuppliers.length, contracts: rawContracts.length, products: rawProducts.length, offerings: rawOfferings.length, documents: rawDocuments.length },
+  cleanup: {
+    gsa_contracts: contracts.filter((c) => c.coop === "GSA MAS").length,
+    gsa_described: gsaDescribed,
+    gsa_with_end: contracts.filter((c) => c.coop === "GSA MAS" && c.end).length,
+    gsa_open_to_cities: contracts.filter((c) => c.coop === "GSA MAS" && c.coop_sins?.length).length,
+    gsa_sins: Object.keys(gsaSins).length,
+    gsa_cooperative_sins: Object.values(gsaSins).filter((x) => x.cooperative).length,
+    names_title_cased: titleCased,
+    merged_by_uei: mergedByUei,
+    parts_labelled: partLabelled,
+    suppliers_merged_by_review: mergedByReview,
+    contracts_categorized: categorized,
+    products_renamed_by_review: renamedByReview,
+    canon_rows_added: canonAdded,
+  },
   suppliers: {
     records: rawSuppliers.length,
     companies: suppliers.length,
     merged_by_name: mergedByName,
     merged_by_website: mergedByWebsite,
+    merged_by_uei: mergedByUei,
     with_website: suppliers.filter((s) => s.websites.length).length,
     on_two_or_more_coops: multiCoop.length,
     most_coops: [...multiCoop].sort((a, b) => b.coops.length - a.coops.length || b.contracts - a.contracts).slice(0, 12).map((s) => ({ id: s.id, name: s.name, coops: s.coops, contracts: s.contracts })),
@@ -475,6 +688,7 @@ const insights = {
 };
 writeFileSync(join(ROOT, "seed/catalog/insights.json"), JSON.stringify(insights, null, 1) + "\n");
 
+console.log(`Cleanup: ${JSON.stringify(insights.cleanup)}`);
 console.log(`Suppliers: ${rawSuppliers.length.toLocaleString()} records → ${suppliers.length.toLocaleString()} companies (${mergedByName} merged by name, ${mergedByWebsite} by website); ${multiCoop.length.toLocaleString()} on 2+ co-ops.`);
 console.log(`Contracts: ${contracts.length.toLocaleString()}; ${contracts.filter((c) => c.url).length.toLocaleString()} with their own link; ${contracts.filter((c) => c.end && c.end < today).length} expired.`);
 console.log(`Products: ${products.length.toLocaleString()} in ${offerings.length.toLocaleString()} offerings ${JSON.stringify(insights.products.by_status)}; ${insights.products.multi_route} on 2+ contracts.`);

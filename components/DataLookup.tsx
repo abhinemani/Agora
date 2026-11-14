@@ -110,6 +110,15 @@ export function DataLookup() {
                 {gov.status === "inferred" && " · public status inferred from its name"}
               </div>
               {gov.aliases.length > 0 && <div className="mt-1 text-ui-3xs text-base-dark">Also published as {gov.aliases.map((a) => `“${a}”`).join(", ")}</div>}
+              {gov.parent && (
+                <div className="mt-1 text-ui-3xs text-base-dark">
+                  An office of{" "}
+                  <button className="font-bold text-primary underline" onClick={() => loadExample(gov.parent!.id)}>
+                    {gov.parent.name}
+                  </button>
+                  , which holds the federal ID
+                </div>
+              )}
               <FederalIds gov={gov} />
             </div>
             <Button disabled={busy} onClick={() => searchAs(gov)}>

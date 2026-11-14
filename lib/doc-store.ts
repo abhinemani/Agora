@@ -183,12 +183,12 @@ export async function searchDocuments(text: string, opts: { limit?: number; cont
          order by l.contract_id, h.rank desc
        )
        select b.contract_id, b.label, b.url, b.num as page, b.rank,
-              ts_headline('english', left(d.text, 20000), q.q, 'MaxWords=28, MinWords=10, MaxFragments=1, StartSel=, StopSel=') as snippet
+              ts_headline('english', left(d.text, 20000), q.q, 'MaxWords=28, MinWords=10, MaxFragments=1, StartSel=@@b, StopSel=@@e') as snippet
        from best b join doc_pages d on d.hash = b.hash and d.num = b.num and d.part = b.part, q
        order by b.rank desc limit $4`,
       [q, opts.contracts ?? null, opts.programs ?? null, opts.limit ?? 60],
     );
-    return r.rows.map((x) => ({ ...x, rank: Number(x.rank), snippet: x.snippet.replace(/\s+/g, " ").trim() }));
+    return r.rows.map((x) => ({ ...x, rank: Number(x.rank), snippet: x.snippet.replace(/@@[be]/g, "").replace(/\s+/g, " ").trim() }));
   } catch (e) {
     console.error("[docs] search failed:", (e as Error).message);
     return [];

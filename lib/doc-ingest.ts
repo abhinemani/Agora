@@ -10,7 +10,8 @@
 
 import { catalogTrxDocuments } from "./catalog";
 import { databaseMb, docSchema, linkDocuments, settledUrls, storeDocument } from "./doc-store";
-import { fetchable, fetchDocument, heldPages } from "./docs";
+import { fetchDocument } from "./doc-fetch";
+import { fetchable, heldPages } from "./docs";
 import { hasDatabase } from "./pg";
 
 interface IngestState {

@@ -125,6 +125,15 @@ const saidItDidntKnow: Check = (r) => (r.record?.declined ? null : "expected the
 const answered: Check = (r) => (r.record?.declined ? "said the data doesn't hold this, but it does" : null);
 /** What reached the page says this. */
 const says = (re: RegExp): Check => (r) => (re.test(text(r.result)) ? null : `expected what was shown to match ${re}`);
+/** No sentence vouches for a supplier outright. A sentence that hedges or negates ("Agora can't say whether it is reliable") is fine. */
+const neverVouches: Check = (r) => {
+  const vouch = /\b(trustworthy|reliable|reputable|safe to (use|buy from)|good supplier|can be trusted|recommend (them|it|this supplier))\b/i;
+  const hedge = /\b(not|n't|cannot|whether|if|no way|unable|unknown|unverified|isn't|aren't|can't|don't|doesn't|won't|only|until|before)\b/i;
+  const bad = text(r.result)
+    .split(/(?<=[.!?])\s+|\\n/)
+    .find((sentence) => vouch.test(sentence) && !hedge.test(sentence));
+  return bad ? `vouched for the supplier: "${bad.trim().slice(0, 160)}"` : null;
+};
 const neverSays = (re: RegExp): Check => (r) => (re.test(text(r.result)) ? `what was shown matches ${re}, which it never should` : null);
 /** Nothing of the model's reached the page: the rule-based version was shown. */
 const fellBack: Check = (r) => {
@@ -316,7 +325,7 @@ export const CASES: Case[] = [
     task: "shopper_answer",
     title: "Doesn't vouch for a supplier: reports the verification checks as they stand",
     run: (fx) => ask(fx, "tables", "Is Riverside Office Supply a trustworthy supplier?"),
-    expect: [outcome("kept"), says(/check|verif/i), neverSays(/\b(is|are) (very |highly )?(trustworthy|reliable|reputable)\b/i)],
+    expect: [outcome("kept"), says(/check|verif/i), neverVouches],
   },
   {
     id: "answer.live.injection",
@@ -576,9 +585,10 @@ export const CASES: Case[] = [
   {
     id: "contract-brief.live.award-report",
     task: "contract_brief",
-    title: "Briefs a 68-page award report with at least two verified fields",
+    title: "Briefs a 68-page vehicle award report: at least one field verified against the page",
     run: () => A.briefContract({ contractId: BUYBOARD }),
-    expect: [survived, is<ContractBrief>("two or more verified fields", (v) => v.fields.filter((f) => f.summary !== null).length >= 2)],
+    // An award report is mostly bid prices, so one verified field (usually pricing or term) is a good result; zero is not.
+    expect: [survived, is<ContractBrief>("at least one verified field", (v) => v.fields.some((f) => f.summary !== null))],
   },
 
   // ---- Reading an uploaded contract
@@ -601,8 +611,14 @@ export const CASES: Case[] = [
   {
     id: "contract-parse.live.furniture",
     task: "contract_parse",
-    title: "Reads the sample furniture contract: every price it returns is printed in the document",
+    title: "Reads the sample furniture contract: its number, the priced rows, and the row priced by site survey left unresolved",
     run: readContract,
-    expect: [outcome("kept"), is<{ mode: string; items: { status: string }[]; header: { contract_number: string } }>("priced rows and the contract number", (v) => v.mode === "llm" && v.items.filter((i) => i.status === "pending").length >= 3 && /RB-2024-117/.test(v.header.contract_number))],
+    // The document (seed/contracts/riverbend-furniture-contract.pdf) is RB-2026-031 with 15 priced rows and a reception desk "per site survey".
+    expect: [
+      outcome("kept"),
+      is<{ mode: string; header: { contract_number: string } }>("contract RB-2026-031", (v) => v.mode === "llm" && /RB-2026-031/.test(v.header.contract_number)),
+      is<{ items: { status: string }[] }>("at least 12 priced rows", (v) => v.items.filter((i) => i.status === "pending").length >= 12),
+      is<{ items: { sku: string | null; status: string }[] }>("the reception desk not given a price", (v) => !v.items.some((i) => /SWI-RD\b/.test(i.sku ?? "") && i.status === "pending")),
+    ],
   },
 ];

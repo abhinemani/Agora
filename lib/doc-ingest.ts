@@ -14,7 +14,7 @@ import { catalogTrxDocuments } from "./catalog";
 import { databaseMb, docSchema, linkDocuments, scanNotRead, scanPagesRead, scansToRead, settledUrls, storeDocument } from "./doc-store";
 import { downloadDocument, fetchDocument, INGEST_MAX_BYTES } from "./doc-fetch";
 import { readScan } from "./doc-ocr";
-import { modelOn } from "./llm";
+import { modelOn, SCAN_MODEL } from "./llm";
 import { fetchable, heldPages } from "./docs";
 import { hasDatabase } from "./pg";
 
@@ -167,7 +167,7 @@ async function readScans(stillFetching: () => boolean): Promise<void> {
       const got = await readScan(buffer, label);
       unanswered = got.failed_runs > 0;
       if (!got.pages.length) throw new Error(got.failed_runs ? "Claude couldn't read it" : "no page had readable text");
-      await storeDocument(url, { pages: got.pages, filename, bytes: buffer.length, via: "scan" });
+      await storeDocument(url, { pages: got.pages, filename, bytes: buffer.length, via: "scan", readBy: SCAN_MODEL });
       sc.read++;
       sc.pages += got.page_count;
     } catch (e) {

@@ -6,11 +6,13 @@
 //   doc_text   one row per distinct text (keyed by its hash): many contracts share an attachment, and many
 //              attachments repeat the same standard terms, so identical text is stored once
 //   doc_pages  that text by page (and part, for long pages), with a tsvector and a GIN index
-//   doc_urls   each document URL Agora has tried: its text's hash, or why it couldn't be read
+//   doc_urls   each document URL Agora has tried: its text's hash, or why it couldn't be read; for a scan, which model
+//              read it (read_by). Scans read by the main model are the reference transcriptions to check others against.
 //   doc_links  which contract each URL belongs to, with its label, program and state
 // Contact details printed in the documents are kept, at the product owner's instruction. Server-only.
 
 import { createHash } from "node:crypto";
+import { MODEL } from "./llm";
 import { pool } from "./pg";
 
 export interface StoredPage { num: number; text: string }
@@ -62,8 +64,11 @@ export function docSchema(): Promise<boolean> {
        create index if not exists doc_links_contract on doc_links(contract_id);
        alter table doc_urls add column if not exists via text not null default 'file';
        alter table doc_urls add column if not exists ocr_tries int not null default 0;
-       create index if not exists doc_urls_scan on doc_urls(status) where status = 'scan';`,
+       create index if not exists doc_urls_scan on doc_urls(status) where status = 'scan';
+       alter table doc_urls add column if not exists read_by text;`,
     )
+    // Scans stored before read_by existed were all read by the main model.
+    .then(() => p.query(`update doc_urls set read_by = $1 where via = 'scan' and status = 'text' and read_by is null`, [MODEL]))
     .then(() => true)
     .catch((e) => {
       console.error("[docs] couldn't create the document tables:", (e as Error).message);
@@ -75,7 +80,7 @@ export function docSchema(): Promise<boolean> {
 const clean = (s: string) => s.replace(/\u0000/g, "").replace(/[ \t]{3,}/g, "   ").replace(/\n{3,}/g, "\n\n");
 
 /** Save a document's text (or why it has none) under its URL. Identical text is stored once. */
-export async function storeDocument(url: string, result: { pages: StoredPage[]; filename?: string | null; bytes?: number | null; via?: "file" | "scan" } | { status: Exclude<DocStatus, "text">; detail: string; filename?: string | null; bytes?: number | null }): Promise<void> {
+export async function storeDocument(url: string, result: { pages: StoredPage[]; filename?: string | null; bytes?: number | null; via?: "file" | "scan"; readBy?: string } | { status: Exclude<DocStatus, "text">; detail: string; filename?: string | null; bytes?: number | null }): Promise<void> {
   const p = pool();
   if (!p || !(await docSchema())) return;
   if ("status" in result) {
@@ -101,9 +106,9 @@ export async function storeDocument(url: string, result: { pages: StoredPage[]; 
       }
     }
     await client.query(
-      `insert into doc_urls (url, hash, status, detail, filename, bytes, via) values ($1, $2, 'text', null, $3, $4, $5)
-       on conflict (url) do update set hash = excluded.hash, status = 'text', detail = null, filename = coalesce(excluded.filename, doc_urls.filename), bytes = coalesce(excluded.bytes, doc_urls.bytes), via = excluded.via, checked_at = now()`,
-      [url, hash, result.filename ?? null, result.bytes ?? null, result.via ?? "file"],
+      `insert into doc_urls (url, hash, status, detail, filename, bytes, via, read_by) values ($1, $2, 'text', null, $3, $4, $5, $6)
+       on conflict (url) do update set hash = excluded.hash, status = 'text', detail = null, filename = coalesce(excluded.filename, doc_urls.filename), bytes = coalesce(excluded.bytes, doc_urls.bytes), via = excluded.via, read_by = excluded.read_by, checked_at = now()`,
+      [url, hash, result.filename ?? null, result.bytes ?? null, result.via ?? "file", result.readBy ?? null],
     );
     await client.query("commit");
   } catch (e) {
@@ -252,21 +257,23 @@ export async function contractPages(contractId: string, question: string, limit 
 }
 
 /** How far the store has got, for /api/docs/status and the logs. */
-export async function docStoreStatus(): Promise<{ database: boolean; urls: Record<string, number>; read_from_scans: number; scans_waiting: number; linked_urls: number; contracts: number; texts: number; pages: number; database_mb: number | null; by_program: Record<string, { linked: number; text: number }> } | null> {
+export async function docStoreStatus(): Promise<{ database: boolean; urls: Record<string, number>; read_from_scans: number; scans_by_model: Record<string, number>; scans_waiting: number; linked_urls: number; contracts: number; texts: number; pages: number; database_mb: number | null; by_program: Record<string, { linked: number; text: number }> } | null> {
   const p = pool();
   if (!p || !(await docSchema())) return null;
-  const [urls, linked, texts, size, prog, scans] = await Promise.all([
+  const [urls, linked, texts, size, prog, scans, byModel] = await Promise.all([
     p.query<{ status: string; n: string }>(`select status, count(*) n from doc_urls group by status`),
     p.query<{ urls: string; contracts: string }>(`select count(distinct url) urls, count(distinct contract_id) contracts from doc_links`),
     p.query<{ texts: string; pages: string }>(`select (select count(*) from doc_text) texts, (select count(*) from doc_pages) pages`),
     p.query<{ mb: string }>(`select round(pg_database_size(current_database()) / 1048576.0) mb`),
     p.query<{ program: string; linked: string; text: string }>(`select l.program, count(distinct l.url) linked, count(distinct l.url) filter (where u.status = 'text') text from doc_links l left join doc_urls u on u.url = l.url group by l.program`),
     p.query<{ read: string; waiting: string }>(`select count(*) filter (where via = 'scan' and status = 'text') read, count(*) filter (where status = 'scan' and ocr_tries < 3) waiting from doc_urls`),
+    p.query<{ read_by: string | null; n: string }>(`select read_by, count(*) n from doc_urls where via = 'scan' and status = 'text' group by read_by`),
   ]);
   return {
     database: true,
     urls: Object.fromEntries(urls.rows.map((r) => [r.status, Number(r.n)])),
     read_from_scans: Number(scans.rows[0].read),
+    scans_by_model: Object.fromEntries(byModel.rows.map((r) => [r.read_by ?? "not recorded", Number(r.n)])),
     scans_waiting: Number(scans.rows[0].waiting),
     linked_urls: Number(linked.rows[0].urls),
     contracts: Number(linked.rows[0].contracts),

@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { AccountGate, AuthDialog } from "@/components/Account";
 import { Header } from "@/components/Header";
 import { Ledger } from "@/components/Ledger";
 import { SiteFooter } from "@/components/SiteFooter";
@@ -28,9 +29,12 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <StoreProvider>
           <Header />
           <div aria-hidden className="bp-fade" />
-          <main className="mx-auto max-w-6xl px-4 py-8">{children}</main>
+          <main className="mx-auto max-w-6xl px-4 py-8">
+            <AccountGate>{children}</AccountGate>
+          </main>
           <SiteFooter />
           <Ledger />
+          <AuthDialog />
         </StoreProvider>
       </body>
     </html>

@@ -402,6 +402,8 @@ export interface Request {
   preference_answer: "yes" | "no" | "always_ask" | null;
   created_at: string;
   outcome: "ordered" | "solicitation" | "abandoned" | null;
+  /** Who made the search: an account id, or "v:<browser id>" before signing in. Seeded requests have none. */
+  owner?: string;
   /** What the requester confirmed with the personal shopper (lib/shopper.ts): the catalog item, or null for "by quote". */
   shopper?: { listing_id: string | null; add_ons: { listing_id: string; quantity: number }[]; confirmed_at: string };
 }

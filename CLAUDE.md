@@ -16,7 +16,8 @@ Run `rehearse` against a production build: `npm run build`, then `npx next start
 
 ## How the app is built
 
-- Next.js 15 App Router. State is an in-memory `Db` (`lib/db.ts`, seeded by `lib/seed.ts`), changed only through `lib/actions.ts` via `/api/act`.
+- Next.js 15 App Router. State is an in-memory `Db` (`lib/db.ts`, seeded by `lib/seed.ts`), changed only through `lib/actions.ts` via `/api/act`. With `DATABASE_URL` set it is saved to Postgres after each change (`lib/persist.ts`); without it, nothing is saved.
+- Every route that reads or changes the store is wrapped in `withSession()` (`lib/session.ts`), which binds the visitor's agency and account to the request. A new action is account-only unless it is added to `OPEN` in `app/api/act/route.ts`.
 - `/api/state` sends the whole `Db` to the browser. Large datasets therefore stay server-only and are read lazily: the co-op directory (`lib/directory.ts`), the co-op catalog (`lib/catalog.ts`) and state rules (`lib/state-rules.ts`). Results carry only the slice a page needs. Never import those modules or their JSON into a `"use client"` component.
 - A helper used by both a server page and a client component can't live in a `"use client"` file (see `components/StateRuleBits.tsx`).
 - The UI uses USWDS-based Tailwind tokens (`tailwind.config.ts`). The theme has `error-*`, `warning-*` and `success-*` colors, plus emerald and amber; it has no `red-*`.

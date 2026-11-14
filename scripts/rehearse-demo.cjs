@@ -23,7 +23,13 @@ require('fs').mkdirSync(OUT, { recursive: true });
   const search = async (q) => { await p.goto(B + '/'); await p.locator('input[placeholder^="Describe"]').fill(q); await p.keyboard.press('Enter'); await p.waitForURL(/\/request\//); await p.waitForTimeout(1500); const yes = p.locator('button:has-text("Yes")'); if (await yes.count()) { await yes.first().click(); } await p.waitForTimeout(1500); };
   const ledgerOpts = async () => p.evaluate(() => fetch('/api/state').then(r => r.json()).then(j => [...new Set(j.db.revenue.map(e => e.option))].sort((a,b)=>a-b)));
 
-  await p.goto(B + '/'); await p.evaluate(() => fetch('/api/act', { method: 'POST', headers: { 'content-type': 'application/json' }, body: '{"action":"reset"}' })); await p.goto(B + '/');
+  // Buying, uploads and the purchasing pages need an account, so the walkthrough signs in first (creating the account on a fresh server).
+  await p.goto(B + '/');
+  await p.evaluate(async () => {
+    const auth = (op) => fetch('/api/auth', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ op, name: 'Rehearsal', email: 'rehearsal@example.gov', password: 'rehearsal-walkthrough', role: 'buyer' }) });
+    if (!(await auth('signup')).ok) await auth('signin');
+  });
+  await p.evaluate(() => fetch('/api/act', { method: 'POST', headers: { 'content-type': 'application/json' }, body: '{"action":"reset"}' })); await p.goto(B + '/');
 
   await step(1, 'Riverbend folding tables, local/MBE yes', async () => {
     await p.goto(B + '/marketplaces/riverbend'); await p.waitForTimeout(1500);

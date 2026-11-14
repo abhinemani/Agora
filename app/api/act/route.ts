@@ -3,6 +3,8 @@
 import { NextResponse } from "next/server";
 import { withSession } from "@/lib/session";
 import * as A from "@/lib/actions";
+import { currentScope } from "@/lib/db";
+import { needsAccount } from "@/lib/session";
 
 export const dynamic = "force-dynamic";
 
@@ -70,10 +72,24 @@ const handlers: Record<string, Handler> = {
   },
 };
 
+// What anyone can do without an account: search, set an agency, and use the shopper's tools.
+const OPEN = new Set(["createRequest", "setPreference", "setBuyer", "clearBuyer", "getResults", "confirmItems", "editItems", "shopperBrief", "askShopper", "dive", "diveCompare", "contractsToAsk", "askContract"]);
+// Everything else needs a signed-in person. The phrase finishes "Sign in or create a free account to ...".
+const WHY: [RegExp, string][] = [
+  [/cart/i, "use the cart"],
+  [/order/i, "place and track orders"],
+  [/quote/i, "request a quote"],
+  [/paperwork/i, "draft paperwork"],
+  [/join|invite|membership|coop/i, "work with purchasing on co-ops"],
+  [/solicitation|award|renewal|rfp/i, "build a solicitation"],
+  [/reset/i, "reset the demo"],
+];
+
 export const POST = withSession(async (req: Request) => {
   const body = await req.json().catch(() => ({}));
   const handler = handlers[body?.action];
   if (!handler) return NextResponse.json({ error: `Unknown action: ${body?.action}` }, { status: 400 });
+  if (!OPEN.has(body.action) && !currentScope()?.user) return needsAccount(WHY.find(([re]) => re.test(body.action))?.[1] ?? "do that");
   try {
     return NextResponse.json({ result: await handler(body) });
   } catch (err) {

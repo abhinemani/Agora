@@ -1,7 +1,8 @@
 // Runs the fixed test set in evals/cases.ts and compares it with the last
 // saved baseline. Run it before changing a prompt, and again after.
 //
-//   npm run eval                  every case (live cases need ANTHROPIC_API_KEY)
+//   npm run eval                  every case (live cases need ANTHROPIC_API_KEY, or
+//                                 AGORA_ANTHROPIC_API_KEY in a Claude Code cloud session)
 //   npm run eval -- --guards      only the cases that need no key
 //   npm run eval -- --only brief  cases whose id or task contains "brief"
 //   npm run eval -- --runs 3      each live case three times; it passes only if all three do
@@ -13,6 +14,7 @@
 import { existsSync, readFileSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 import { aiRecords, TASKS, type Task } from "../lib/ai-log";
+import { apiKey } from "../lib/api-key";
 import { MODEL, promptsSeen, stubModel } from "../lib/llm";
 import { CASES, fixtures, type Case } from "../evals/cases";
 
@@ -70,7 +72,7 @@ async function runOnce(c: Case, fx: Awaited<ReturnType<typeof fixtures>>): Promi
 }
 
 (async () => {
-  const key = Boolean(process.env.ANTHROPIC_API_KEY);
+  const key = Boolean(apiKey());
   const only = arg("only");
   const runs = Math.max(1, Number(arg("runs")) || 1);
   const picked = CASES.filter((c) => (!only || c.id.includes(only) || c.task.includes(only)) && (!has("guards") || c.canned !== undefined));
@@ -95,7 +97,7 @@ async function runOnce(c: Case, fx: Awaited<ReturnType<typeof fixtures>>): Promi
       if (r.unrun && kind === "live") {
         if (authFailure(r.unrun)) {
           console.error(`\nStopped: the API refused the key (${r.unrun}).`);
-          console.error("Set ANTHROPIC_API_KEY to a working key and run again. Nothing was saved.");
+          console.error("Set ANTHROPIC_API_KEY (or AGORA_ANTHROPIC_API_KEY) to a working key and run again. Nothing was saved.");
           process.exit(2);
         }
         unrun = r.unrun;
@@ -149,7 +151,7 @@ async function runOnce(c: Case, fx: Awaited<ReturnType<typeof fixtures>>): Promi
     if (unbaselined.length && key) console.log(`  ${unbaselined.length} model case${unbaselined.length === 1 ? " has" : "s have"} no baseline yet.`);
   }
   if (fresh.length) console.log(`  Failing, with no baseline to compare: ${fresh.map((r) => r.id).join(", ")}.`);
-  if (skipped.length) console.log(`\n${skipped.length} model case${skipped.length === 1 ? " was" : "s were"} skipped: ANTHROPIC_API_KEY isn't set. Only the checks were tested, not the prompts.`);
+  if (skipped.length) console.log(`\n${skipped.length} model case${skipped.length === 1 ? " was" : "s were"} skipped: neither ANTHROPIC_API_KEY nor AGORA_ANTHROPIC_API_KEY is set. Only the checks were tested, not the prompts.`);
   if (unrunnable.length) console.log(`\n${unrunnable.length} model case${unrunnable.length === 1 ? "" : "s"} didn't run because the API failed: ${unrunnable.map((r) => r.id).join(", ")}. They keep their baseline entries; run again to test them.`);
   console.log(`\n${results.filter((r) => r.pass).length} of ${results.length} cases passed.`);
 

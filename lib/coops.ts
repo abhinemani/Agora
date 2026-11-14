@@ -30,9 +30,10 @@ export function isContractLevelUrl(url: string | undefined | null): boolean {
 }
 
 /** The tracked redirect to a contract's page. */
-export function goHref(contractId: string, from: { listing?: string | null; request?: string | null } = {}): string {
+export function goHref(contractId: string, from: { listing?: string | null; request?: string | null; offering?: string | null } = {}): string {
   const q = new URLSearchParams();
   if (from.listing) q.set("listing", from.listing);
+  if (from.offering) q.set("offering", from.offering);
   if (from.request) q.set("request", from.request);
   const qs = q.toString();
   return `/go/${encodeURIComponent(contractId)}${qs ? `?${qs}` : ""}`;

@@ -1,0 +1,172 @@
+[
+  {
+    "cooperative": "Sourcewell",
+    "scope": "Current contract spreadsheet",
+    "collection_complete_for_scope": true,
+    "source_reported_count": null,
+    "retrieved_count": 1099,
+    "notes": "All nonempty awarded-contract rows imported. Contract scope is not a SKU list.",
+    "source_url": "https://cdn.sourcewell.org/reports/contract-list.xlsx",
+    "retrieved_at": "2026-11-13"
+  },
+  {
+    "cooperative": "1GPA",
+    "scope": "Public contract directory spreadsheet",
+    "collection_complete_for_scope": true,
+    "source_reported_count": null,
+    "retrieved_count": 535,
+    "notes": "All nonempty export rows; additional parties retained as metadata, not silently treated as contract holders.",
+    "source_url": "https://1gpa.org/current-vendors/",
+    "retrieved_at": "2026-11-13"
+  },
+  {
+    "cooperative": "Equalis Group",
+    "scope": "Publicly rendered contract directory",
+    "collection_complete_for_scope": true,
+    "source_reported_count": 376,
+    "retrieved_count": 376,
+    "notes": "Reconciles to the displayed 376 contracts. These are supplier contract scopes, not individual products.",
+    "source_url": "https://equalisgroup.org/purchasing-contracts",
+    "retrieved_at": "2026-11-13"
+  },
+  {
+    "cooperative": "OMNIA Partners",
+    "scope": "Website-visible contract and supplier search",
+    "collection_complete_for_scope": true,
+    "source_reported_count": 695,
+    "retrieved_count": 695,
+    "notes": "29 public search pages. Public/private and industry metadata retained. OPUS product enrichment is not a complete item feed.",
+    "source_url": "https://www.omniapartners.com/search",
+    "retrieved_at": "2026-11-13"
+  },
+  {
+    "cooperative": "OMNIA Partners",
+    "scope": "Website-visible suppliers",
+    "collection_complete_for_scope": true,
+    "source_reported_count": 657,
+    "retrieved_count": 657,
+    "notes": "Supplier cards can exist without a retrieved public-sector contract. Do not assume every supplier is eligible for every agency.",
+    "source_url": "https://www.omniapartners.com/suppliers",
+    "retrieved_at": "2026-11-13"
+  },
+  {
+    "cooperative": "NASPO ValuePoint",
+    "scope": "Public supplier-contract search index",
+    "collection_complete_for_scope": true,
+    "source_reported_count": 519,
+    "retrieved_count": 519,
+    "notes": "519 indexed supplier/portfolio records across a 61-portfolio index. Review supplier dates and participating-addendum terms before use.",
+    "source_url": "https://www.naspovaluepoint.org/suppliers/",
+    "retrieved_at": "2026-11-13"
+  },
+  {
+    "cooperative": "E&I",
+    "scope": "Contracts at a Glance table",
+    "collection_complete_for_scope": true,
+    "source_reported_count": null,
+    "retrieved_count": 263,
+    "notes": "All contract table rows imported. Product catalogs and pricing may require membership.",
+    "source_url": "https://www.eandi.org/contract-navigator/contracts-at-a-glance/",
+    "retrieved_at": "2026-11-13"
+  },
+  {
+    "cooperative": "PEPPM",
+    "scope": "Public product-line/contract table",
+    "collection_complete_for_scope": true,
+    "source_reported_count": null,
+    "retrieved_count": 628,
+    "notes": "All rows in the published table. Brand is not the awarded reseller. Contract product pages are a separate collection.",
+    "source_url": "https://www.peppm.org/contracts/",
+    "retrieved_at": "2026-11-13"
+  },
+  {
+    "cooperative": "Choice Partners",
+    "scope": "Available Contracts public table",
+    "collection_complete_for_scope": true,
+    "source_reported_count": 836,
+    "retrieved_count": 836,
+    "notes": "Full public vendor-contract table. Detail documents explicitly require login; no login used.",
+    "source_url": "https://www.choicepartners.org/available-contracts",
+    "retrieved_at": "2026-11-13"
+  },
+  {
+    "cooperative": "BuyBoard",
+    "scope": "51 advertised state vendor-contract exports",
+    "collection_complete_for_scope": true,
+    "source_reported_count": 51,
+    "retrieved_count": 51,
+    "notes": "78,385 raw state-export rows collapsed to 2,451 vendor/contract/dealer entries before contract-key consolidation. Dealer status retained; these are not all original contract holders.",
+    "source_url": "https://www.buyboard.com/vendors-by-state",
+    "retrieved_at": "2026-11-13"
+  },
+  {
+    "cooperative": "TIPS",
+    "scope": "Per-contract public awarded-vendor reports",
+    "collection_complete_for_scope": true,
+    "source_reported_count": 179,
+    "retrieved_count": 179,
+    "notes": "10,434 vendor-contract report rows across 179 of 179 directory categories. 12 count differences versus category cards are recorded in validation.json. Static ACME/demo report-page vendors excluded.",
+    "source_url": "https://www.tips-usa.com/reports",
+    "retrieved_at": "2026-11-13"
+  },
+  {
+    "cooperative": "NPPGov",
+    "scope": "All-contracts public listing",
+    "collection_complete_for_scope": true,
+    "source_reported_count": null,
+    "retrieved_count": 254,
+    "notes": "All 11 pagination pages. Unique public listing cards. Names may be marketing titles; legal-entity names and full contract details require review. Login-protected documents excluded.",
+    "source_url": "https://nppgov.com/?s=&contracts=all",
+    "retrieved_at": "2026-11-13"
+  },
+  {
+    "cooperative": "GSA MAS",
+    "scope": "Published cooperative-purchasing-flagged MAS rows",
+    "collection_complete_for_scope": true,
+    "source_reported_count": 25945,
+    "retrieved_count": 25945,
+    "notes": "25,945 of 50,906 MAS contractor/SIN rows flagged Y, consolidated to 12,473 vendor contracts. Supplier participation flag alone does not establish SIN or buyer eligibility. GSA Advantage SKUs not bulk collected.",
+    "source_url": "https://gsaelibrary.gsa.gov/elib_contracts/schedule_MAS.csv",
+    "retrieved_at": "2026-11-13"
+  },
+  {
+    "cooperative": "HGACBuy",
+    "scope": "Current contract document pages",
+    "collection_complete_for_scope": true,
+    "source_reported_count": 41,
+    "retrieved_count": 41,
+    "notes": "All 41 advertised contract document pages; supplier document bundles are links, not all parsed documents.",
+    "source_url": "https://www.hgacbuy.org/contracts",
+    "retrieved_at": "2026-11-13"
+  },
+  {
+    "cooperative": "HGACBuy",
+    "scope": "Public contract product tables",
+    "collection_complete_for_scope": true,
+    "source_reported_count": 41,
+    "retrieved_count": 41,
+    "notes": "9,611 published model, service, bundle or option rows. Supplier-column labels and price/discount semantics retained; not all rows are standalone purchasable products.",
+    "source_url": "https://www.hgacbuy.org/products-and-services",
+    "retrieved_at": "2026-11-13"
+  },
+  {
+    "cooperative": "PEPPM",
+    "scope": "Individual product listings",
+    "collection_complete_for_scope": false,
+    "source_reported_count": 3907199,
+    "retrieved_count": 26291,
+    "notes": "26,291 page-one product rows collected across contract pages. The unfiltered public search reports 3,907,199 items. This is a breadth sample, not the full SKU universe. Member-only prices excluded.",
+    "source_url": "https://www.peppm.org/contracts/item-search/",
+    "retrieved_at": "2026-11-13"
+  },
+  {
+    "cooperative": "Sourcewell",
+    "scope": "Canon SKU pricing PDF",
+    "collection_complete_for_scope": false,
+    "source_reported_count": null,
+    "retrieved_count": 6714,
+    "notes": "6,714 complete price rows parsed from 171 pages. Repeated SKUs/price contexts deduplicated only where identical. 230 price-looking rows failed the strict parser and are retained for review. No claim to all Sourcewell product catalogs.",
+    "source_url": "https://downloads.canon.com/sourcewell/downloads/Sourcewell-End-User-Pricing-April-2026.pdf",
+    "retrieved_at": "2026-11-13"
+  }
+]

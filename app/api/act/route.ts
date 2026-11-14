@@ -38,6 +38,7 @@ const handlers: Record<string, Handler> = {
   setMembership: (b) => A.setMembership(b),
   addCoop: (b) => A.addCoop(b),
   claimStorefront: (b) => A.claimStorefront(b),
+  adoptCatalogSupplier: (b) => A.adoptCatalogSupplier(b.supplierId),
   approveClaim: (b) => A.approveClaim(b.supplierId),
   actAsSupplier: (b) => A.actAsSupplier(b.supplierId),
   setSupplierPlan: (b) => A.setSupplierPlan(b),

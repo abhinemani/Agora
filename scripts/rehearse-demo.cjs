@@ -95,15 +95,19 @@ require('fs').mkdirSync(OUT, { recursive: true });
     const o = await ledgerOpts(); if (o.length < 10) throw new Error('only options ' + o.join(','));
     return o.join(',');
   });
-  await step(9, 'Crested Butte laptops: co-op match, ask purchasing', async () => {
+  await step(9, 'Crested Butte laptops: co-ops it is on, a catalog co-op it could join, ask purchasing', async () => {
     await role('Buyer'); await agency('Town of Crested Butte'); await search('laptops for the town hall');
     const sec = p.locator('#coops'); const txt = await sec.innerText();
-    if (!/A co-op you're not on fits this better/.test(txt)) throw new Error('no better-fit flag');
-    await sec.locator('button:has-text("Confirm")').click(); await p.waitForTimeout(1500);
-    await p.locator('#coops li:has-text("23026") button:has-text("Ask purchasing")').click(); await p.waitForTimeout(800);
+    // Colorado signed NASPO's addendum for Dell 23004 (not Apple 23003), and Sourcewell's roster lists the town.
+    const [on, join] = txt.split("Co-ops you could join");
+    if (!/23004/.test(on) || !/Sourcewell/.test(on)) throw new Error('Dell 23004 and Sourcewell should be under Co-ops you\'re on');
+    if (!/Equalis/.test(join)) throw new Error('no catalog co-op under Co-ops you could join');
+    await sec.locator('button:has-text("Confirm")').first().click(); await p.waitForTimeout(1500);
+    await p.locator('#coops li:has-text("Equalis") button:has-text("Ask purchasing")').first().click(); await p.waitForTimeout(800);
     await role('Procurement'); await p.goto(B + '/procurement'); await p.waitForTimeout(1000);
     const req = await p.locator('text=Requests to join a co-op contract').count();
-    return `join request on procurement page: ${req > 0}`;
+    const equalis = await p.locator('text=/Equalis Group COG-/').count();
+    return `join request on procurement page: ${req > 0}, for an Equalis catalog contract: ${equalis > 0}`;
   });
   await step(10, 'Harmon Lake register + vests', async () => {
     await p.goto(B + '/procurement/setup'); await p.waitForTimeout(800); await agency('Harmon Lake Township'); await p.goto(B + '/procurement/setup'); await p.waitForTimeout(1000);

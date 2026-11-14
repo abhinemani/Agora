@@ -77,7 +77,8 @@ export default function ProcurementHome() {
                 <div key={r.id} className="flex flex-wrap items-center justify-between gap-4 p-5">
                   <div className="min-w-0">
                     <div className="font-semibold text-navy">
-                      {coop?.name} {c?.contract_number}
+                      {coop?.name} {c?.contract_number ?? r.contract_number}
+                      {r.supplier && <span className="font-normal text-slate"> · {r.supplier}</span>}
                     </div>
                     <div className="mt-1 text-sm text-navy">
                       “{r.need}” · fit {r.fit}
@@ -86,8 +87,8 @@ export default function ProcurementHome() {
                       {r.agency} isn't on {coop?.name} yet. {c?.eligibility?.requires ? `Needs: ${c.eligibility.requires}.` : ""}
                     </div>
                   </div>
-                  {c?.source_url && (
-                    <a href={goHref(c.id)} target="_blank" rel="noreferrer" className="text-sm font-semibold text-maroon hover:underline">
+                  {(c?.source_url || r.has_link) && (
+                    <a href={goHref(r.contract_id)} target="_blank" rel="noreferrer" className="text-sm font-semibold text-maroon hover:underline">
                       How to join, on {coop?.name} ↗
                     </a>
                   )}

@@ -157,6 +157,8 @@ export interface Contract {
   relation_note?: string;
   /** Source documents: master agreement, price files, participating addenda. */
   documents?: { label: string; url: string }[];
+  /** The same contract in the co-op catalog (lib/catalog.ts), so search doesn't show it twice. */
+  catalog_id?: string;
   /** The co-op that awarded it (co-op contracts only). */
   coop_id?: string;
   /** Scope words beyond the title, e.g. the categories a master agreement covers. */
@@ -228,6 +230,11 @@ export interface Referral {
   need: string;
   fit: number;
   created_at: string;
+  /** Kept on the referral for catalog contracts, which live on the server, not in the db. */
+  contract_number?: string;
+  supplier?: string;
+  /** The contract has its own page on the co-op's site. */
+  has_link?: boolean;
 }
 
 /** A co-op contract shown in results, for traffic reporting. */
@@ -578,6 +585,8 @@ export interface Db {
   memberships: CoopMembership[];
   referrals: Referral[];
   impressions: Impression[];
+  /** Catalog and price-list documents Sovra ops sent through the contract reader (/coops/price-lists). */
+  price_list_reads: PriceListRead[];
   agency_settings: AgencySettings[];
   carts: Cart[];
   placements: Placement[];
@@ -636,4 +645,15 @@ export interface DirectoryGovernment {
   purchases?: { date: string; route: string; supplier: string; category: string; contract: string; amount: number | null; status: string; note: string; url: string }[];
   /** Which sources mention it. */
   sources: string[];
+}
+
+/** One co-op catalog document sent through the contract reader. */
+export interface PriceListRead {
+  document_id: string;
+  status: "read" | "failed";
+  /** Priced rows the reader found. */
+  items: number;
+  supplier: string;
+  message: string;
+  at: string;
 }

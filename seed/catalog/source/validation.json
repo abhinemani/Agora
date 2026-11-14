@@ -1,0 +1,4281 @@
+{
+  "tips_category_count_differences": [
+    {
+      "contract": "23010401",
+      "displayed_count": 365,
+      "award_report_count": 245
+    },
+    {
+      "contract": "24010401",
+      "displayed_count": 307,
+      "award_report_count": 236
+    },
+    {
+      "contract": "241001",
+      "displayed_count": 313,
+      "award_report_count": 279
+    },
+    {
+      "contract": "25010501",
+      "displayed_count": 159,
+      "award_report_count": 152
+    },
+    {
+      "contract": "23010402",
+      "displayed_count": 429,
+      "award_report_count": 280
+    },
+    {
+      "contract": "25010401",
+      "displayed_count": 270,
+      "award_report_count": 257
+    },
+    {
+      "contract": "25010502",
+      "displayed_count": 109,
+      "award_report_count": 101
+    },
+    {
+      "contract": "26010402",
+      "displayed_count": 474,
+      "award_report_count": 463
+    },
+    {
+      "contract": "22010702",
+      "displayed_count": 126,
+      "award_report_count": 78
+    },
+    {
+      "contract": "24010402",
+      "displayed_count": 232,
+      "award_report_count": 184
+    },
+    {
+      "contract": "22010701",
+      "displayed_count": 66,
+      "award_report_count": 63
+    },
+    {
+      "contract": "26010401",
+      "displayed_count": 500,
+      "award_report_count": 485
+    }
+  ],
+  "canon_unparsed_price_rows": [
+    {
+      "page": 7,
+      "line": "C331 Engine and Speed License Total $5,510.00 50.00% $2,755.00"
+    },
+    {
+      "page": 7,
+      "line": "C431 Engine and Speed License Total $6,640.00 41.08% $3,912.00"
+    },
+    {
+      "page": 7,
+      "line": "C521 Engine and Speed License Total $8,490.00 42.99% $4,840.00"
+    },
+    {
+      "page": 7,
+      "line": "C611 Engine and Speed License Total $9,620.00 43.06% $5,483.00"
+    },
+    {
+      "page": 8,
+      "line": "C331 Engine and Speed License Total $7,350.00 53.74% $3,400.00"
+    },
+    {
+      "page": 8,
+      "line": "C431 Engine and Speed License Total $8,480.00 31.37% $4,557.00"
+    },
+    {
+      "page": 8,
+      "line": "C521 Engine and Speed License Total $10,330.00 46.90% $5,485.00"
+    },
+    {
+      "page": 8,
+      "line": "C611 Engine and Speed License Total $11,460.00 46.53% $6,128.00"
+    },
+    {
+      "page": 11,
+      "line": "5100 Engine and Speed License Total: $52,420.00 63.92% $18,915.00"
+    },
+    {
+      "page": 11,
+      "line": "5100 Engine and Speed License Total: $32,580.00 65.00% $11,403.00"
+    },
+    {
+      "page": 11,
+      "line": "5100 Engine and Speed License Total: $39,670.00 64.00% $14,283.00"
+    },
+    {
+      "page": 17,
+      "line": "imageFORCE 520 Engine and License total $5,000.00 44.99% $2,750.40"
+    },
+    {
+      "page": 17,
+      "line": "imageFORCE 610 Engine and License total $6,500.00 49.00% $3,314.85"
+    },
+    {
+      "page": 17,
+      "line": "imageFORCE 710 Engine and License total $8,200.00 45.00% $4,510.40"
+    },
+    {
+      "page": 17,
+      "line": "imageFORCE 520 Engine and License total $6,710.00 45.00% $3,690.35"
+    },
+    {
+      "page": 17,
+      "line": "imageFORCE 610 Engine and License total $8,210.00 48.18% $4,254.80"
+    },
+    {
+      "page": 17,
+      "line": "imageFORCE 520 Engine and License total $9,910.00 45.00% $5,450.35"
+    },
+    {
+      "page": 23,
+      "line": "imageFORCE 6155 Engine and License total $21,250.00 62.00% $8,074.00"
+    },
+    {
+      "page": 23,
+      "line": "imageFORCE 6160 Engine and License total $23,370.00 62.00% $8,880.00"
+    },
+    {
+      "page": 23,
+      "line": "imageFORCE 6170 Engine and License total $31,870.00 62.00% $12,110.00"
+    },
+    {
+      "page": 25,
+      "line": "$49,589.00 70.00% $14,876.00"
+    },
+    {
+      "page": 25,
+      "line": "$58,095.00 70.00% $17,428.00"
+    },
+    {
+      "page": 25,
+      "line": "$75,097.00 70.00% $22,529.00"
+    },
+    {
+      "page": 27,
+      "line": "$49,580.00 70.00% $14,874.00"
+    },
+    {
+      "page": 27,
+      "line": "$58,090.00 70.00% $17,427.00"
+    },
+    {
+      "page": 27,
+      "line": "$75,090.00 70.00% $22,527.00"
+    },
+    {
+      "page": 32,
+      "line": "$43,653.00 70.00% $13,096.00"
+    },
+    {
+      "page": 36,
+      "line": "$73,664.00 70.00% $22,099.00"
+    },
+    {
+      "page": 36,
+      "line": "$105,039.00 70.00% $31,512.00"
+    },
+    {
+      "page": 50,
+      "line": "$237,478.00 55.00% $106,866.00"
+    },
+    {
+      "page": 50,
+      "line": "$300,057.00 55.00% $135,026.00"
+    },
+    {
+      "page": 50,
+      "line": "$362,635.00 50.00% $180,973.00"
+    },
+    {
+      "page": 50,
+      "line": "$480,978.00 49.00% $246,061.00"
+    },
+    {
+      "page": 50,
+      "line": "$291,505.00 55.00% $131,178.00"
+    },
+    {
+      "page": 50,
+      "line": "$354,084.00 55.00% $159,338.00"
+    },
+    {
+      "page": 50,
+      "line": "$416,662.00 55.00% $205,285.00"
+    },
+    {
+      "page": 51,
+      "line": "$535,005.00 55.00% $270,373.00"
+    },
+    {
+      "page": 51,
+      "line": "VarioPrint 6180 MICR TITAN Speed License and Main Engine Total: $304,444.00 54.00% $140,044.00"
+    },
+    {
+      "page": 51,
+      "line": "VarioPrint 6220 MICR TITAN Speed License and Main Engine Total: $367,023.00 52.00% $176,326.00"
+    },
+    {
+      "page": 51,
+      "line": "VarioPrint 6270 MICR TITAN Speed License and Main Engine Total: $429,601.00 49.00% $219,672.00"
+    },
+    {
+      "page": 106,
+      "line": "Maintenance Large Format Services pWT3XSV00KSF pWT3X Service Only 0 SF per mo. $17.00 9.24% $15.43"
+    },
+    {
+      "page": 106,
+      "line": "Maintenance Large Format Services pWT3XSV02KSF pWT3X Service Only 2,000 SF per mo. $145.00 5.04% $137.69"
+    },
+    {
+      "page": 106,
+      "line": "Maintenance Large Format Services pWT3XSV05KSF pWT3X Service Only 5,000 SF per mo. $319.00 5.11% $302.69"
+    },
+    {
+      "page": 106,
+      "line": "Maintenance Large Format Services pWT3XSV10KSF pWT3X Service Only 10,000 SF per mo. $494.00 5.09% $468.87"
+    },
+    {
+      "page": 107,
+      "line": "Maintenance Large Format Services pWT75SV05KSF pWT75 Service Only 5,000 SF per mo. $354.00 5.11% $335.92"
+    },
+    {
+      "page": 107,
+      "line": "Maintenance Large Format Services pWT75SV10KSF pWT75 Service Only 10,000 SF per mo. $495.00 5.04% $470.05"
+    },
+    {
+      "page": 107,
+      "line": "Maintenance Large Format Services pWT75SV15KSF pWT75 Service Only 15,000 SF per mo. $592.00 5.16% $561.45"
+    },
+    {
+      "page": 107,
+      "line": "Maintenance Large Format Services pWT75SV30KSF pWT75 Service Only 30,000 SF per mo. $850.00 5.04% $807.16"
+    },
+    {
+      "page": 107,
+      "line": "Maintenance Large Format Services pWT75SV45KSF pWT75 Service Only 45,000 SF per mo. $1,047.00 5.11% $993.52"
+    },
+    {
+      "page": 108,
+      "line": "Maintenance Large Format Services pWT75SV60KSF pWT75 Service Only 60,000 SF per mo. $1,213.00 5.08% $1,151.39"
+    },
+    {
+      "page": 142,
+      "line": "6138B083AA $384.60-$538.45 35.00% $250 - $350"
+    },
+    {
+      "page": 142,
+      "line": "Services Professional Services Third Party Equipment pick up and disposal. Based upon machine type, size, and logistics necessary. 6138B084AA $538.45-$1,384.60 35.00% $350-$900"
+    },
+    {
+      "page": 142,
+      "line": "Services Professional Services Emergency/After Hours Service Calls 6138B085AA $230.76 35.00% $150/hr"
+    },
+    {
+      "page": 142,
+      "line": "Services Professional Services Supplemental Accessory Install. Per incident. 6138B065AA $307.70 21.26% $242.28"
+    },
+    {
+      "page": 142,
+      "line": "Services Professional Services Hard Disk Drive Replacement Service 5007B004AA $592.00 35.00% $384.80"
+    },
+    {
+      "page": 142,
+      "line": "Services Professional Services Hard Disk Drive Erase Service 6138B078AA $719.00 35.00% $467.35"
+    },
+    {
+      "page": 142,
+      "line": "Services Professional Services Dealer supplied Hard Disk Drive Replacement Service- on demand (to be purchased any time) 5007B009AA $592.00 35.00% $384.80"
+    },
+    {
+      "page": 142,
+      "line": "Services Professional Services Dealer supplied Hard Disk Drive Replacement Service- lease (to be purchased at the time of ordering new equipment) 5007B010AA $592.00 35.00% $384.80"
+    },
+    {
+      "page": 142,
+      "line": "Services Professional Services Dealer supplied Hard Disk Drive Erase Service- on demand (to be purchased any time) 6138B453AA $719.00 35.00% $467.35"
+    },
+    {
+      "page": 142,
+      "line": "Services Professional Services Dealer supplied Hard Disk Drive Erase Service- lease (to be purchased at the time of ordering new equipment) 6138B454AA $719.00 35.00% $467.35"
+    },
+    {
+      "page": 142,
+      "line": "Services Professional Services On-Site Training (hourly rate) Additional Operator Training 6138B068AA $303.00 21.26% $238.58"
+    },
+    {
+      "page": 142,
+      "line": "Services Professional Services Dealer provided training 6138B009AA $1,904.00 0.00% $1,904.00"
+    },
+    {
+      "page": 142,
+      "line": "Services Professional Services Inspection Unit-B1 Installation and Training Professional Services 4181C012AA $43,000.00 35.00% $27,950.00"
+    },
+    {
+      "page": 142,
+      "line": "Services Professional Services HIGH PRODUCTION COLOR OPERATOR TRAINING BY CLIENT EDUCATION SPECIALIST 2954V855 $2,095.00 19.81% $1,679.98"
+    },
+    {
+      "page": 143,
+      "line": "2246V635 $2,679.00 12.50% $2,344.00"
+    },
+    {
+      "page": 143,
+      "line": "2195V020 $2,393.00 30.00% $1,675.00"
+    },
+    {
+      "page": 143,
+      "line": "Services Color Management Training BASIC COLOR MANAGEMENT TRAINING 2954V860 $2,095.00 0.00% $2,095.00"
+    },
+    {
+      "page": 143,
+      "line": "Services Color Management Training ADVANCED COLOR MANAGEMENT TRAINING 1481V475 $2,640.00 0.00% $2,640.00"
+    },
+    {
+      "page": 143,
+      "line": "Services EFI Professional Services Fiery JobFlow Customization Services - remote 7968A832AA $1,855.00 0.00% $1,855.00"
+    },
+    {
+      "page": 143,
+      "line": "Services EFI Professional Services Fiery Services Hourly except XF - remote 7968A833AA $232.00 0.00% $232.00"
+    },
+    {
+      "page": 143,
+      "line": "Services EFI Professional Services EFI Prof Services Daily Rate Onsite Training 7968A834AA $2,575.00 0.00% $2,575.00"
+    },
+    {
+      "page": 143,
+      "line": "Services EFI Professional Services EFI Prof Services Additional Days 7968A835AA $1,545.00 0.00% $1,545.00"
+    },
+    {
+      "page": 143,
+      "line": "Services Ecopy Services eCopy ShareScan Services for Legal (ECPY-1) 6315AL23AA $2,540.00 33.33% $1,693.00"
+    },
+    {
+      "page": 143,
+      "line": "Services Ecopy Services eCopy ShareScan Services for Healthcare (ECPY-2) 6315AL24AA $5,070.00 33.33% $3,380.00"
+    },
+    {
+      "page": 143,
+      "line": "Services VarioPrint 6000 Services INSTALL PACK VP6000: COVERS DELIVERY AND INSTALLATION 2401V944 $5,700.00 0.00% $5,700.00"
+    },
+    {
+      "page": 144,
+      "line": "2375V279 $3,680.00 0.00% $3,680.00"
+    },
+    {
+      "page": 144,
+      "line": "Services Professional Services High Capacity Stacker 2.1 with Top Cover-B2 Monthly Maintenance Charge 6267B002AA $184.62 35.00% $120.00"
+    },
+    {
+      "page": 144,
+      "line": "Services Professional Services High Capacity Stacker 2.1 with Set Finisher-B2 Monthly Maintenance Charge 6267B005AA $276.92 35.00% $180.00"
+    },
+    {
+      "page": 144,
+      "line": "Services Professional Services Paper Input Module Optional B1 Monthly Maintenance Charge 2429C010AA $184.62 35.00% $120.00"
+    },
+    {
+      "page": 144,
+      "line": "Services Professional Services Paper Input Module Optional A1 (350 x 500 mm support) Monthly Maintenance Charge 8221B033AA $184.62 35.00% $120.00"
+    },
+    {
+      "page": 144,
+      "line": "Services Professional Services Media Enhancement Module Monthly Maintenance Charge 2429C006AA $307.70 35.00% $200.00"
+    },
+    {
+      "page": 144,
+      "line": "Services Professional Services DP Link Monthly Maintenance Charge 5407B001AA $30.77 35.00% $20.00"
+    },
+    {
+      "page": 144,
+      "line": "Services Professional Services Base monthly charge for additional shift coverage 2 x 5 (2 shifts of 8 hrs x 5 days a week) 6138B088AA $466.15 35.00% $303.00"
+    },
+    {
+      "page": 145,
+      "line": "Services Professional Services Base monthly charge for additional shift coverage 3 x 5 (3 shifts of 8 hrs x 5 days a week) 6138B089AA $932.35 35.00% $606.00"
+    },
+    {
+      "page": 145,
+      "line": "Services Professional Services Base monthly charge for additional shift coverage 1 x 7 (1 shift of 8 hrs x 7 days a week) 6138B090AA $466.15 35.00% $303.00"
+    },
+    {
+      "page": 145,
+      "line": "Services Professional Services Base monthly charge for additional shift coverage 2 x 7 (2 shifts of 8 hrs x 7 days a week) 6138B091AA $932.35 35.00% $606.00"
+    },
+    {
+      "page": 145,
+      "line": "Services Professional Services Base monthly charge for additional shift coverage 3 x 7 (3 shifts of 8 hrs x 7 days a week) 6138B092AA $1,398.50 35.00% $909.00"
+    },
+    {
+      "page": 145,
+      "line": "Services Professional Services Additional End User Training Cost by Hours 6138B093AA $321.55 35.00% $209.00"
+    },
+    {
+      "page": 145,
+      "line": "Services Professional Services Additional Advanced / IT Training Cost by Hours 6138B087AA $321.55 35.00% $209.00"
+    },
+    {
+      "page": 145,
+      "line": "Services Professional Services Additional IT Support by Hours 6138B086AA $321.55 35.00% $209.00"
+    },
+    {
+      "page": 146,
+      "line": " Each $440.00 0.00% $440.00"
+    },
+    {
+      "page": 146,
+      "line": " Each $1,680.00 0.00% $1,680.00"
+    },
+    {
+      "page": 147,
+      "line": " Each $1,840.00 0.00% $1,840.00"
+    },
+    {
+      "page": 147,
+      "line": " Each $1,840.00 0.00% $1,840.00"
+    },
+    {
+      "page": 147,
+      "line": " Each $1,255.00 0.00% $1,255.00"
+    },
+    {
+      "page": 147,
+      "line": " Each $1,840.00 0.00% $1,840.00"
+    },
+    {
+      "page": 148,
+      "line": " Each $920.00 0.00% $920.00"
+    },
+    {
+      "page": 148,
+      "line": " Each $1,000.00 0.00% $1,000.00"
+    },
+    {
+      "page": 148,
+      "line": " Each $1,680.00 0.00% $1,680.00"
+    },
+    {
+      "page": 149,
+      "line": " each $160.00 0.00% $160.00"
+    },
+    {
+      "page": 149,
+      "line": " each $5,500.00 0.00% $5,500.00"
+    },
+    {
+      "page": 149,
+      "line": " each $7,500.00 0.00% $7,500.00"
+    },
+    {
+      "page": 149,
+      "line": " each $260.00 0.00% $260.00"
+    },
+    {
+      "page": 149,
+      "line": " each $695.00 0.00% $695.00"
+    },
+    {
+      "page": 150,
+      "line": " each $1,258.00 0.00% $1,258.00"
+    },
+    {
+      "page": 150,
+      "line": " each $1,352.00 0.00% $1,352.00"
+    },
+    {
+      "page": 150,
+      "line": " per hour $347.00 0.00% $347.00"
+    },
+    {
+      "page": 150,
+      "line": " per hour $250.00 0.00% $250.00"
+    },
+    {
+      "page": 150,
+      "line": " per hour $250.00 0.00% $250.00"
+    },
+    {
+      "page": 150,
+      "line": " each $1,760.00 0.00% $1,760.00"
+    },
+    {
+      "page": 150,
+      "line": " each $1,258.00 0.00% $1,258.00"
+    },
+    {
+      "page": 150,
+      "line": " each $1,352.00 0.00% $1,352.00"
+    },
+    {
+      "page": 150,
+      "line": " per hour $347.00 0.00% $347.00"
+    },
+    {
+      "page": 150,
+      "line": " each $2,400.00 0.00% $2,400.00"
+    },
+    {
+      "page": 150,
+      "line": " each $1,100.00 0.00% $1,100.00"
+    },
+    {
+      "page": 150,
+      "line": " each $1,700.00 0.00% $1,700.00"
+    },
+    {
+      "page": 151,
+      "line": " each $2,600.00 0.00% $2,600.00"
+    },
+    {
+      "page": 151,
+      "line": " each $2,000.00 0.00% $2,000.00"
+    },
+    {
+      "page": 151,
+      "line": " each $2,100.00 0.00% $2,100.00"
+    },
+    {
+      "page": 151,
+      "line": " each $3,200.00 0.00% $3,200.00"
+    },
+    {
+      "page": 151,
+      "line": " each $6,900.00 0.00% $6,900.00"
+    },
+    {
+      "page": 151,
+      "line": " each $7,350.00 0.00% $7,350.00"
+    },
+    {
+      "page": 151,
+      "line": " each $3,408.00 0.00% $3,408.00"
+    },
+    {
+      "page": 151,
+      "line": " each $5,046.00 0.00% $5,046.00"
+    },
+    {
+      "page": 151,
+      "line": " each $5,702.00 0.00% $5,702.00"
+    },
+    {
+      "page": 151,
+      "line": " each $3,045.00 0.00% $3,045.00"
+    },
+    {
+      "page": 151,
+      "line": " each $205.00 0.00% $205.00"
+    },
+    {
+      "page": 152,
+      "line": " each $205.00 0.00% $205.00"
+    },
+    {
+      "page": 152,
+      "line": " each $1,045.00 0.00% $1,045.00"
+    },
+    {
+      "page": 152,
+      "line": " each $100.00 0.00% $100.00"
+    },
+    {
+      "page": 152,
+      "line": " each $1,045.00 0.00% $1,045.00"
+    },
+    {
+      "page": 152,
+      "line": " each $1,045.00 0.00% $1,045.00"
+    },
+    {
+      "page": 152,
+      "line": " each $263.00 0.00% $263.00"
+    },
+    {
+      "page": 152,
+      "line": " each $1,045.00 0.00% $1,045.00"
+    },
+    {
+      "page": 152,
+      "line": " each $1,045.00 0.00% $1,045.00"
+    },
+    {
+      "page": 152,
+      "line": " each $210.00 0.00% $210.00"
+    },
+    {
+      "page": 152,
+      "line": " each $1,045.00 0.00% $1,045.00"
+    },
+    {
+      "page": 152,
+      "line": " each $1,045.00 0.00% $1,045.00"
+    },
+    {
+      "page": 152,
+      "line": " each $1,045.00 0.00% $1,045.00"
+    },
+    {
+      "page": 153,
+      "line": " each $1,045.00 0.00% $1,045.00"
+    },
+    {
+      "page": 153,
+      "line": " each $1,045.00 0.00% $1,045.00"
+    },
+    {
+      "page": 153,
+      "line": " each $1,045.00 0.00% $1,045.00"
+    },
+    {
+      "page": 153,
+      "line": " each $100.00 0.00% $100.00"
+    },
+    {
+      "page": 153,
+      "line": " each $1,045.00 0.00% $1,045.00"
+    },
+    {
+      "page": 153,
+      "line": " each $1,045.00 0.00% $1,045.00"
+    },
+    {
+      "page": 153,
+      "line": " each $1,045.00 0.00% $1,045.00"
+    },
+    {
+      "page": 153,
+      "line": " each $205.00 0.00% $205.00"
+    },
+    {
+      "page": 153,
+      "line": " each $205.00 0.00% $205.00"
+    },
+    {
+      "page": 153,
+      "line": " each $995.00 0.00% $995.00"
+    },
+    {
+      "page": 153,
+      "line": " each $995.00 0.00% $995.00"
+    },
+    {
+      "page": 153,
+      "line": " each $195.00 0.00% $195.00"
+    },
+    {
+      "page": 154,
+      "line": " per hour $325.00 0.00% $325.00"
+    },
+    {
+      "page": 154,
+      "line": " per hour $400.00 0.00% $400.00"
+    },
+    {
+      "page": 154,
+      "line": " per hour $268.00 10.00% $241.20"
+    },
+    {
+      "page": 154,
+      "line": " per hour $222.00 10.00% $199.80"
+    },
+    {
+      "page": 159,
+      "line": "Imaging Services Black and White Image Capture Medium (300 DPI) Per Image $0.06 19.00% $0.00"
+    },
+    {
+      "page": 159,
+      "line": "Imaging Services Black and White Image Capture High (400 DPI) Per Image $0.06 19.00% $0.00"
+    },
+    {
+      "page": 159,
+      "line": "Imaging Services Black and White Image Capture Preservation < 600 PPI Per Image $1.45 5.00% $1.00"
+    },
+    {
+      "page": 159,
+      "line": "Imaging Services Black and White Image Capture Preservation >= 600 PPI Per Image $2.61 5.00% $2.00"
+    },
+    {
+      "page": 159,
+      "line": "Imaging Services Color Image Capture Medium (300 DPI) Per Image $0.07 19.00% $0.00"
+    },
+    {
+      "page": 159,
+      "line": "Imaging Services Color Image Capture High (400 DPI) Per Image $0.08 19.00% $0.00"
+    },
+    {
+      "page": 159,
+      "line": "Imaging Services Color Image Capture Very High (600 DPI +) Per Image $0.08 19.00% $0.00"
+    },
+    {
+      "page": 159,
+      "line": "Imaging Services Color Image Capture Preservation < 600 PPI Per Image $1.45 5.00% $1.00"
+    },
+    {
+      "page": 159,
+      "line": "Imaging Services Color Image Capture Preservation >= 600 PPI Per Image $2.61 5.00% $2.00"
+    },
+    {
+      "page": 159,
+      "line": "Imaging Services Large Format Image Capture Medium (300 DPI) Per Image $1.50 19.00% $1.00"
+    },
+    {
+      "page": 159,
+      "line": "Imaging Services Large Format Image Capture High (400 DPI) Per Image $1.75 19.00% $1.00"
+    },
+    {
+      "page": 159,
+      "line": "Imaging Services Large Format Image Capture Very High (600 DPI +) Per Image $7.90 19.00% $6.00"
+    },
+    {
+      "page": 159,
+      "line": "Imaging Services Transparent Media Image Medium (1200 PPI) Per Image $4.75 19.00% $4.00"
+    },
+    {
+      "page": 159,
+      "line": "Imaging Services Transparent Media Image High (2400 PPI) Per Image $5.90 19.00% $5.00"
+    },
+    {
+      "page": 159,
+      "line": "Imaging Services Transparent Media Image Very High (4000 PPI +) Per Image $7.50 19.00% $6.00"
+    },
+    {
+      "page": 159,
+      "line": "Imaging Services Image Processing Low (200 DPI) Per Image $0.04 19.00% $0.00"
+    },
+    {
+      "page": 159,
+      "line": "Imaging Services Image Processing Medium (300 DPI) Per Image $0.04 19.00% $0.00"
+    },
+    {
+      "page": 159,
+      "line": "Imaging Services Image Processing High (400 DPI) Per Image $0.04 19.00% $0.00"
+    },
+    {
+      "page": 159,
+      "line": "Imaging Services Image Processing Very High (600 DPI +) Per Image $0.04 19.00% $0.00"
+    },
+    {
+      "page": 159,
+      "line": "Imaging Services Image Processing Preservation < 600 PPI Per Image $1.36 5.00% $1.00"
+    },
+    {
+      "page": 159,
+      "line": "Imaging Services Image Processing Preservation >= 600 PPI Per Image $1.36 5.00% $1.00"
+    },
+    {
+      "page": 159,
+      "line": "Imaging Services Microfiche Conversion Conversion of microfich to digital Images Per Image $0.06 19.00% $0.00"
+    },
+    {
+      "page": 159,
+      "line": "Imaging Services Microfilm Conversion Conversion of microfilm to digital Images Per Image $0.03 19.00% $0.00"
+    },
+    {
+      "page": 159,
+      "line": "Imaging Services Index Field - Type 1 Up to 15 Characters Per Document $0.03 19.00% $0.00"
+    },
+    {
+      "page": 159,
+      "line": "Imaging Services Index Field - Type 1 16-30 Characters Per Document $0.03 19.00% $0.00"
+    },
+    {
+      "page": 159,
+      "line": "Imaging Services Index Field - Type 1 31-45 Characters Per Document $0.03 19.00% $0.00"
+    },
+    {
+      "page": 159,
+      "line": "Imaging Services Index Field - Type 2 Up to 15 Characters Per Document $0.07 19.00% $0.00"
+    },
+    {
+      "page": 159,
+      "line": "Imaging Services Index Field - Type 2 16-30 Characters Per Document $0.12 19.00% $0.00"
+    },
+    {
+      "page": 159,
+      "line": "Imaging Services Index Field - Type 2 31-45 Characters Per Document $0.14 19.00% $0.00"
+    },
+    {
+      "page": 159,
+      "line": "Imaging Services Searchable PDF Documents Scanned images with text portions Per Image $0.03 19.00% $0.00"
+    },
+    {
+      "page": 159,
+      "line": "Imaging Services Special Document Handling Handling includes overnight vault storage services/ Solutions Per Day $2.67 19.00% $2.00"
+    },
+    {
+      "page": 159,
+      "line": "Imaging Services Special Document Handling Special handling for fragile materials Per Image $0.07 19.00% $0.00"
+    },
+    {
+      "page": 159,
+      "line": "Imaging Services Capture from Special Formats Photographic prints Per Image $0.16 19.00% $0.00"
+    },
+    {
+      "page": 159,
+      "line": "Imaging Services Capture from Special Formats Photographic negatives Per Image $0.19 19.00% $0.00"
+    },
+    {
+      "page": 159,
+      "line": "Imaging Services Capture from Special Formats Newspapers Per Image $1.07 19.00% $1.00"
+    },
+    {
+      "page": 159,
+      "line": "Imaging Services Capture from Special Formats Manuscripts Per Image $0.33 19.00% $0.00"
+    },
+    {
+      "page": 159,
+      "line": "Imaging Services Capture from Special Formats Drawings Per Image $1.34 19.00% $1.00"
+    },
+    {
+      "page": 159,
+      "line": "Imaging Services Capture from Special Formats Bound Books Per Image $0.07 19.00% $0.00"
+    },
+    {
+      "page": 159,
+      "line": "Imaging Services Enhancing Images Bit depth Per Image $0.01 19.00% $0.00"
+    },
+    {
+      "page": 159,
+      "line": "Imaging Services Enhancing Images Resolution Per Image $0.01 19.00% $0.00"
+    },
+    {
+      "page": 159,
+      "line": "Imaging Services Enhancing Images Tonal dynamic range Per Image $0.01 19.00% $0.00"
+    },
+    {
+      "page": 159,
+      "line": "Imaging Services Enhancing Images Contrast Per Image $0.01 19.00% $0.00"
+    },
+    {
+      "page": 159,
+      "line": "Imaging Services Enhancing Images Color space Per Image $0.01 19.00% $0.00"
+    },
+    {
+      "page": 159,
+      "line": "Imaging Services Delivery Media CD Per Disc $48.00 19.00% $39.00"
+    },
+    {
+      "page": 160,
+      "line": "Imaging Services Delivery Media DVD Per Disc $58.00 19.00% $47.00"
+    },
+    {
+      "page": 160,
+      "line": "Imaging Services Delivery Media USB Per Device $32.00 19.00% $26.00"
+    },
+    {
+      "page": 160,
+      "line": "Imaging Services Delivery Media Flash memory device Per Device $32.00 19.00% $26.00"
+    },
+    {
+      "page": 160,
+      "line": "Imaging Services Delivery Media Microfilm (Digital Archive Writer) Per Image $0.04 19.00% $0.00"
+    },
+    {
+      "page": 160,
+      "line": "Imaging Services Data Exchange Compatible & Secure electronic data Exchange Per gigabyte $5.00 19.00% $4.00"
+    },
+    {
+      "page": 160,
+      "line": "Imaging Services Image Repository Hosting Central hosting of digital Images including routine backups Per Image/ Per month $0.00 19.00% $0.00"
+    },
+    {
+      "page": 160,
+      "line": "Imaging Services Image Repository Hosting Redundant Hosting at alternate location Per Image/ Per month $0.00 19.00% $0.00"
+    },
+    {
+      "page": 160,
+      "line": "Imaging Services Image Repository Maintenance Image repository additions and maintenance Per Hour $32.00 15.00% $27.00"
+    },
+    {
+      "page": 160,
+      "line": "Imaging Services Adding Electronic Images to Image Library Processing Images already in electronic format Per Image $0.01 19.00% $0.00"
+    },
+    {
+      "page": 160,
+      "line": "Imaging Services Services/ Soultions Project Manager Per Hour $60.00 12.00% $53.00"
+    },
+    {
+      "page": 160,
+      "line": "Imaging Services Services/ Soultions Certified Digital Imaging Architect Per Hour $60.00 12.00% $53.00"
+    },
+    {
+      "page": 160,
+      "line": "Imaging Services Services/ Soultions Programming Support Per Hour $60.00 12.00% $53.00"
+    },
+    {
+      "page": 160,
+      "line": "Imaging Services Services/ Soultions Data Entry Per Hour $32.00 12.00% $28.00"
+    },
+    {
+      "page": 160,
+      "line": "Imaging Services Services/ Soultions Document Preparation Per Hour $25.00 12.00% $22.00"
+    },
+    {
+      "page": 160,
+      "line": "Imaging Services Services/ Soultions Advanced Document Preparation Per Hour $25.00 12.00% $22.00"
+    },
+    {
+      "page": 160,
+      "line": "Imaging Services Services/ Soultions Re-preparation Services/Solutions Per Hour $25.00 12.00% $22.00"
+    },
+    {
+      "page": 160,
+      "line": "Imaging Services Services/ Soultions Training Specialist Per Hour $50.00 12.00% $44.00"
+    },
+    {
+      "page": 160,
+      "line": "Imaging Services Desk Top Scanning Performed at Customer facility by Customer staff using Contractor's equipment Per Image $0.07 19.00% $0.00"
+    },
+    {
+      "page": 160,
+      "line": "Imaging Services Extended Storage of Source Documents Storage and security levels as per Customer SOW Per day, per box $0.03 19.00% $0.00"
+    },
+    {
+      "page": 160,
+      "line": "Imaging Services Microfilming of Documents larger than 11x17 35mm Roll Format Microfilming per image $1.80 20.00% $1.00"
+    },
+    {
+      "page": 160,
+      "line": "Imaging Services Microfilm Processing 100' rolls Microfilm Processing 16mm x 100' per roll $17.00 20.00% $14.00"
+    },
+    {
+      "page": 160,
+      "line": "Imaging Services Microfilm Processing 215'rolls Microfilm Processing 16mm x 215' per roll $25.00 20.00% $20.00"
+    },
+    {
+      "page": 160,
+      "line": "Imaging Services Microfilm Processing 35mm 100' rolls Microfilm Processing 35mm x 100' per roll $27.00 20.00% $22.00"
+    },
+    {
+      "page": 160,
+      "line": "Imaging Services Silver Microfilm Duplicates 16mm 100' rolls Silver Microfilm Duplicates 16mm 100' rolls per roll $40.00 20.00% $32.00"
+    },
+    {
+      "page": 160,
+      "line": "Imaging Services Silver Microfilm Duplicates 16mm 215' rolls Silver Microfilm Duplicates 16mm 215' rolls per roll $52.00 20.00% $42.00"
+    },
+    {
+      "page": 160,
+      "line": "Imaging Services Silver Microfilm Duplicates 35mm 100' rolls Silver Microfilm Duplicates 35mm 100' rolls per roll $76.00 20.00% $61.00"
+    },
+    {
+      "page": 160,
+      "line": "Imaging Services Diazo Microfilm Duplicates 16mm 100' rolls Diazo Microfilm Duplicates 16mm 100' rolls per roll $26.00 20.00% $21.00"
+    },
+    {
+      "page": 160,
+      "line": "Imaging Services Diazo Microfilm Duplicates 16mm 215' rolls Diazo Microfilm Duplicates 16mm 215' rolls per roll $38.00 20.00% $30.00"
+    },
+    {
+      "page": 160,
+      "line": "Imaging Services Diazo Microfilm Duplicates 35mm 100' rolls Diazo Microfilm Duplicates 35mm 100' rolls per roll $51.00 20.00% $41.00"
+    },
+    {
+      "page": 160,
+      "line": "Imaging Services Jacket Loading of 16mm Film with titling Jacket Loading of 16mm Film with titling per jacket $4.10 20.00% $3.00"
+    },
+    {
+      "page": 160,
+      "line": "Imaging Services Diazo Microfiche Duplicates Diazo Microfiche Duplicates per jacket $2.50 20.00% $2.00"
+    }
+  ],
+  "buyboard_raw_rows": 78385,
+  "buyboard_deduplicated_entries": 2451,
+  "omnia_unique_contracts": 695,
+  "omnia_unique_suppliers": 657,
+  "invalid_source_discounts": [
+    {
+      "offering_id": "off_57dedea30de0425b4f13",
+      "product_name": "Safety Vest",
+      "source_url": "https://www.hgacbuy.org/products-and-services/view-product?productid=36430",
+      "source_metadata": {
+        "manufacturer_column_as_published": "R&B Fabrications",
+        "price_as_published": "",
+        "discount_as_published": "500%",
+        "configuration_and_options_require_review": true,
+        "invalid_discount_as_published": 500.0,
+        "pricing_validation": "Out-of-range source discount withheld from normalized percentage"
+      }
+    }
+  ],
+  "SKU_title_conflicts": [
+    {
+      "product_id": "prd_904cd06b98a57df5823f",
+      "manufacturer": "3Doodler",
+      "manufacturer_sku": "160514",
+      "product_name_variants": [
+        "Start + Eco + Plastic - 75 Pack",
+        "Start + Eco Plastic Filament Neon Glow"
+      ]
+    },
+    {
+      "product_id": "prd_ef9b57152abfefa51ceb",
+      "manufacturer": "Advanced Network Devices",
+      "manufacturer_sku": "IPS-FM1",
+      "product_name_variants": [
+        "Accessories",
+        "IPS-FM1"
+      ]
+    },
+    {
+      "product_id": "prd_c8e6b1bfbbfad6cf0443",
+      "manufacturer": "Advanced Network Devices",
+      "manufacturer_sku": "IPSCM",
+      "product_name_variants": [
+        "Hardware",
+        "IPSCM"
+      ]
+    },
+    {
+      "product_id": "prd_a2ac5cc358c93719d085",
+      "manufacturer": "Advanced Network Devices",
+      "manufacturer_sku": "IPSMOD",
+      "product_name_variants": [
+        "Hardware",
+        "IPSMOD"
+      ]
+    },
+    {
+      "product_id": "prd_58f52e537a2467b8cf55",
+      "manufacturer": "Advanced Network Devices",
+      "manufacturer_sku": "IPSTROBE-I",
+      "product_name_variants": [
+        "Hardware",
+        "IPSTROBE-I"
+      ]
+    },
+    {
+      "product_id": "prd_00a647cac7e81ded35dd",
+      "manufacturer": "Advanced Network Devices",
+      "manufacturer_sku": "IPSTROBE-O",
+      "product_name_variants": [
+        "Hardware",
+        "IPSTROBE-O"
+      ]
+    },
+    {
+      "product_id": "prd_b675ee937230bc87007a",
+      "manufacturer": "Advanced Network Devices",
+      "manufacturer_sku": "IPSWDHD-MW",
+      "product_name_variants": [
+        "Hardware",
+        "IPSWDHD-MW"
+      ]
+    },
+    {
+      "product_id": "prd_4c7c64c50b30d5d9df35",
+      "manufacturer": "Advanced Network Devices",
+      "manufacturer_sku": "IPSWDHD-MW-IC",
+      "product_name_variants": [
+        "Hardware",
+        "IPSWDHD-MW-IC"
+      ]
+    },
+    {
+      "product_id": "prd_4456390ba304491d9c95",
+      "manufacturer": "Advanced Network Devices",
+      "manufacturer_sku": "IPSWS-SM",
+      "product_name_variants": [
+        "Hardware",
+        "IPSWS-SM"
+      ]
+    },
+    {
+      "product_id": "prd_ae02730b99c06c24b2f8",
+      "manufacturer": "Advanced Network Devices",
+      "manufacturer_sku": "ZONEC2",
+      "product_name_variants": [
+        "Hardware",
+        "ZONEC2"
+      ]
+    },
+    {
+      "product_id": "prd_a3fe0d4ff5005e8da684",
+      "manufacturer": "Advanced Network Devices",
+      "manufacturer_sku": "IPBTN-VIS",
+      "product_name_variants": [
+        "Hardware",
+        "IPBTN-VIS"
+      ]
+    },
+    {
+      "product_id": "prd_48f45b61c2d3ded4671a",
+      "manufacturer": "Advanced Network Devices",
+      "manufacturer_sku": "IPCSS-RWB",
+      "product_name_variants": [
+        "Hardware",
+        "IPCSS-RWB"
+      ]
+    },
+    {
+      "product_id": "prd_a20fd8f184ed20fa1697",
+      "manufacturer": "Advanced Network Devices",
+      "manufacturer_sku": "IPSWS-FM",
+      "product_name_variants": [
+        "Hardware",
+        "IPSWS-FM"
+      ]
+    },
+    {
+      "product_id": "prd_b2cac2479b3f519d30a3",
+      "manufacturer": "Advanced Network Devices",
+      "manufacturer_sku": "IPCSS-RWB-IC",
+      "product_name_variants": [
+        "Hardware",
+        "IPCSS-RWB-IC"
+      ]
+    },
+    {
+      "product_id": "prd_5aab5ef8be0c78ccb233",
+      "manufacturer": "Advanced Network Devices",
+      "manufacturer_sku": "ZONEC2-IC",
+      "product_name_variants": [
+        "Hardware",
+        "ZONEC2-IC"
+      ]
+    },
+    {
+      "product_id": "prd_ee080a4ea8a55d3ac839",
+      "manufacturer": "Advanced Network Devices",
+      "manufacturer_sku": "IPCSL-RWB-IC",
+      "product_name_variants": [
+        "Hardware",
+        "IPCSL-RWB-IC"
+      ]
+    },
+    {
+      "product_id": "prd_04db36e2abedf285ac56",
+      "manufacturer": "Advanced Network Devices",
+      "manufacturer_sku": "IPSMOD-IC",
+      "product_name_variants": [
+        "Hardware",
+        "IPSMOD-IC"
+      ]
+    },
+    {
+      "product_id": "prd_64ad38b3d42730426b0c",
+      "manufacturer": "Advanced Network Devices",
+      "manufacturer_sku": "IPCDS-RWB-U-IC",
+      "product_name_variants": [
+        "Hardware",
+        "IPCDS-RWB-U-IC"
+      ]
+    },
+    {
+      "product_id": "prd_3ddb449b93019158dff4",
+      "manufacturer": "Apptegy, Inc.",
+      "manufacturer_sku": "App27-1",
+      "product_name_variants": [
+        "Attendance Pro Implementation - Base",
+        "Community Experience Implementation - Base"
+      ]
+    },
+    {
+      "product_id": "prd_5840ac90d8b8e1c4bc3e",
+      "manufacturer": "Apptegy, Inc.",
+      "manufacturer_sku": "App27-2",
+      "product_name_variants": [
+        "Attendance Pro Implementation - Variable",
+        "Community Experience Implementation - Variable"
+      ]
+    },
+    {
+      "product_id": "prd_229c0dd737926e443072",
+      "manufacturer": "10ZiG Technology Products",
+      "manufacturer_sku": "10ZiG Technology in Catalog",
+      "product_name_variants": [
+        "Audio Visual Products",
+        "General Hardware and Software - Cloud-related Solutions Offered"
+      ]
+    },
+    {
+      "product_id": "prd_ada9f520d273aca09c68",
+      "manufacturer": "Adobe Products",
+      "manufacturer_sku": "Adobe in Catalog",
+      "product_name_variants": [
+        "Audio Visual Products",
+        "General Hardware and Software - Cloud-related Solutions Offered",
+        "General Hardware and Software - HUB Program Offered"
+      ]
+    },
+    {
+      "product_id": "prd_0f2c5d941e1a8feda3ca",
+      "manufacturer": "Adonit Products",
+      "manufacturer_sku": "Adonit in Catalog",
+      "product_name_variants": [
+        "Audio Visual Products",
+        "General Hardware and Software - Cloud-related Solutions Offered"
+      ]
+    },
+    {
+      "product_id": "prd_d194a65f4024031b0eb2",
+      "manufacturer": "Adtran Products",
+      "manufacturer_sku": "Adtran in Catalog",
+      "product_name_variants": [
+        "Audio Visual Products",
+        "General Hardware and Software - Cloud-related Solutions Offered",
+        "Refurbished Computer Systems and Parts - Networking Hardware Focused"
+      ]
+    },
+    {
+      "product_id": "prd_b5db40c1de439f407cc5",
+      "manufacturer": "Advantech Products",
+      "manufacturer_sku": "Advantech in Catalog",
+      "product_name_variants": [
+        "Audio Visual Products",
+        "General Hardware and Software",
+        "General Hardware and Software - Cloud-related Solutions Offered"
+      ]
+    },
+    {
+      "product_id": "prd_655bc9e3a1b61eb5eb30",
+      "manufacturer": "Afl Telecommunications Products",
+      "manufacturer_sku": "Afl Telecommunications in Catalog",
+      "product_name_variants": [
+        "Audio Visual Products",
+        "General Hardware and Software - Cloud-related Solutions Offered"
+      ]
+    },
+    {
+      "product_id": "prd_f804261682e75d571b5c",
+      "manufacturer": "Agora Products",
+      "manufacturer_sku": "Agora in Catalog",
+      "product_name_variants": [
+        "Audio Visual Products",
+        "General Hardware and Software - Cloud-related Solutions Offered"
+      ]
+    },
+    {
+      "product_id": "prd_6a8dbccf254c2a10ad49",
+      "manufacturer": "Aiphone Products",
+      "manufacturer_sku": "Aiphone in Catalog",
+      "product_name_variants": [
+        "Audio Visual Products",
+        "General Hardware and Software - Cloud-related Solutions Offered"
+      ]
+    },
+    {
+      "product_id": "prd_d314bac159a87ee13ad4",
+      "manufacturer": "Airgain Products",
+      "manufacturer_sku": "Airgain in Catalog",
+      "product_name_variants": [
+        "Audio Visual Products",
+        "General Hardware and Software",
+        "General Hardware and Software - Cloud-related Solutions Offered"
+      ]
+    },
+    {
+      "product_id": "prd_44ed753c19d17e783ce8",
+      "manufacturer": "Airtame Products",
+      "manufacturer_sku": "Airtame in Catalog",
+      "product_name_variants": [
+        "Audio Visual Products",
+        "General Hardware and Software",
+        "General Hardware and Software - Cloud-related Solutions Offered"
+      ]
+    },
+    {
+      "product_id": "prd_5565e9cf136b3474afe1",
+      "manufacturer": "Akg Products",
+      "manufacturer_sku": "Akg in Catalog",
+      "product_name_variants": [
+        "Audio Visual Products",
+        "General Hardware and Software - Cloud-related Solutions Offered"
+      ]
+    },
+    {
+      "product_id": "prd_d1754b428234b87ae746",
+      "manufacturer": "Akkadian Labs Products",
+      "manufacturer_sku": "Akkadian Labs in Catalog",
+      "product_name_variants": [
+        "Audio Visual Products",
+        "General Hardware and Software",
+        "General Hardware and Software - Cloud-related Solutions Offered"
+      ]
+    },
+    {
+      "product_id": "prd_c728b6c57e81ece6d8f7",
+      "manufacturer": "Ambir Technology Products",
+      "manufacturer_sku": "Ambir Technology in Catalog",
+      "product_name_variants": [
+        "Audio Visual Products",
+        "General Hardware and Software - Cloud-related Solutions Offered"
+      ]
+    },
+    {
+      "product_id": "prd_36460549c4c46ff9a9ac",
+      "manufacturer": "Ambulant Products",
+      "manufacturer_sku": "Ambulant in Catalog",
+      "product_name_variants": [
+        "Audio Visual Products",
+        "General Hardware and Software - Cloud-related Solutions Offered"
+      ]
+    },
+    {
+      "product_id": "prd_d46d44af0d972e48eb4c",
+      "manufacturer": "Amcrest Products",
+      "manufacturer_sku": "Amcrest in Catalog",
+      "product_name_variants": [
+        "Audio Visual Products",
+        "General Hardware and Software - Cloud-related Solutions Offered"
+      ]
+    },
+    {
+      "product_id": "prd_1a1cd5a680af2f5611d8",
+      "manufacturer": "AMD Products",
+      "manufacturer_sku": "AMD in Catalog",
+      "product_name_variants": [
+        "Audio Visual Products",
+        "General Hardware and Software - Cloud-related Solutions Offered"
+      ]
+    },
+    {
+      "product_id": "prd_1e7f765ab4d3a1bc2089",
+      "manufacturer": "Arrow Ent Comp Sol/IBM Group Products",
+      "manufacturer_sku": "Arrow Ent Comp Sol/IBM Group in Catalog",
+      "product_name_variants": [
+        "Audio Visual Products",
+        "General Hardware and Software - Cloud-related Solutions Offered"
+      ]
+    },
+    {
+      "product_id": "prd_cf793dc6b8df877c2d92",
+      "manufacturer": "Asus Products",
+      "manufacturer_sku": "Asus in Catalog",
+      "product_name_variants": [
+        "Audio Visual Products",
+        "Refurbished Computer Systems and Parts - Chromebook Focused"
+      ]
+    },
+    {
+      "product_id": "prd_5982d8f7a728b2a28e2b",
+      "manufacturer": "Ciena",
+      "manufacturer_sku": "170-0353-900",
+      "product_name_variants": [
+        "Cables",
+        "PRD_PN_COMMON"
+      ]
+    },
+    {
+      "product_id": "prd_ca31d989192ea8fc9529",
+      "manufacturer": "Ciena",
+      "manufacturer_sku": "170-3903-900",
+      "product_name_variants": [
+        "Hub / Switch",
+        "PRD_PN3XX"
+      ]
+    },
+    {
+      "product_id": "prd_cb494ef583e0d528a94a",
+      "manufacturer": "Ciena",
+      "manufacturer_sku": "170-3903-901",
+      "product_name_variants": [
+        "Network Device",
+        "PRD_PN3XX"
+      ]
+    },
+    {
+      "product_id": "prd_f7c7732fc3ad6edf95fa",
+      "manufacturer": "Ciena",
+      "manufacturer_sku": "170-3903-910",
+      "product_name_variants": [
+        "Hub / Switch",
+        "PRD_PN3XX"
+      ]
+    },
+    {
+      "product_id": "prd_5db3de140b66eebc7ac1",
+      "manufacturer": "Ciena",
+      "manufacturer_sku": "170-3906-901",
+      "product_name_variants": [
+        "Hub / Switch",
+        "PRD_PN3XX"
+      ]
+    },
+    {
+      "product_id": "prd_cb1d46d7e0e06811e50d",
+      "manufacturer": "Ciena",
+      "manufacturer_sku": "170-5171-900",
+      "product_name_variants": [
+        "PRD_PN5XX",
+        "Power supply"
+      ]
+    },
+    {
+      "product_id": "prd_4fcac8e81b400240990e",
+      "manufacturer": "Ciena",
+      "manufacturer_sku": "170-5171-910",
+      "product_name_variants": [
+        "Hub / Switch",
+        "PRD_PN5XX"
+      ]
+    },
+    {
+      "product_id": "prd_00aad736b31a7fa4a5e8",
+      "manufacturer": "Ciena",
+      "manufacturer_sku": "170-5171-920",
+      "product_name_variants": [
+        "Hub / Switch",
+        "PRD_PN5XX"
+      ]
+    },
+    {
+      "product_id": "prd_0f7ad4575ab9beee98ec",
+      "manufacturer": "Ciena",
+      "manufacturer_sku": "K70-2120-PN-010000500",
+      "product_name_variants": [
+        "Network Accessory",
+        "PRD_DCO"
+      ]
+    },
+    {
+      "product_id": "prd_839709125b5f0fff87d9",
+      "manufacturer": "Ciena",
+      "manufacturer_sku": "NTTC95AH",
+      "product_name_variants": [
+        "Network Cable",
+        "SRV_OEMIRM"
+      ]
+    },
+    {
+      "product_id": "prd_789c4873cdd9fc31d8d0",
+      "manufacturer": "Ciena",
+      "manufacturer_sku": "NTTC95BB",
+      "product_name_variants": [
+        "Network Cable",
+        "SRV_OEMIRM"
+      ]
+    },
+    {
+      "product_id": "prd_738c57a56cb930ba9b21",
+      "manufacturer": "Ciena",
+      "manufacturer_sku": "NTTC95BF",
+      "product_name_variants": [
+        "Network Cable",
+        "SRV_OEMIRM"
+      ]
+    },
+    {
+      "product_id": "prd_aa291ab604f7c7f6aadc",
+      "manufacturer": "Ciena",
+      "manufacturer_sku": "NTTC95BJ",
+      "product_name_variants": [
+        "Network Cable",
+        "SRV_OEMIRM"
+      ]
+    },
+    {
+      "product_id": "prd_f3612efd31efd5b8b589",
+      "manufacturer": "Ciena",
+      "manufacturer_sku": "NTTC95BK",
+      "product_name_variants": [
+        "Network Cable",
+        "SRV_OEMIRM"
+      ]
+    },
+    {
+      "product_id": "prd_6b96fedb212d4d75912d",
+      "manufacturer": "Ciena",
+      "manufacturer_sku": "NTTC97AN",
+      "product_name_variants": [
+        "Network Cable",
+        "SRV_OEMIRM"
+      ]
+    },
+    {
+      "product_id": "prd_b71d6beb7ea201314562",
+      "manufacturer": "Ciena",
+      "manufacturer_sku": "NTTC97AR",
+      "product_name_variants": [
+        "Network Cable",
+        "SRV_OEMIRM"
+      ]
+    },
+    {
+      "product_id": "prd_0623a4864b05fac33de8",
+      "manufacturer": "Ciena",
+      "manufacturer_sku": "NTTC97BH",
+      "product_name_variants": [
+        "Network Cable",
+        "SRV_OEMIRM"
+      ]
+    },
+    {
+      "product_id": "prd_0192912debcf8611ae87",
+      "manufacturer": "Ciena",
+      "manufacturer_sku": "XCVR-CEP003",
+      "product_name_variants": [
+        "Network Accessory",
+        "PRD_PN_INTEL_XCVR"
+      ]
+    },
+    {
+      "product_id": "prd_735e3dbd01a9ffa18127",
+      "manufacturer": "Ciena",
+      "manufacturer_sku": "XCVR-TDM4GE",
+      "product_name_variants": [
+        "Network Accessory",
+        "PRD_PN_INTEL_XCVR"
+      ]
+    },
+    {
+      "product_id": "prd_5a43c7f92ac57f6c4727",
+      "manufacturer": "Ciena",
+      "manufacturer_sku": "170-3928-910",
+      "product_name_variants": [
+        "Hub / Switch",
+        "PRD_PN3XX"
+      ]
+    },
+    {
+      "product_id": "prd_46509b369e84a06a6232",
+      "manufacturer": "Ciena",
+      "manufacturer_sku": "170-5144-901",
+      "product_name_variants": [
+        "Network Accessory",
+        "PRD_PN5XX"
+      ]
+    },
+    {
+      "product_id": "prd_adc81cba774a960d8583",
+      "manufacturer": "Ciena",
+      "manufacturer_sku": "180-2120-900",
+      "product_name_variants": [
+        "Network Accessory",
+        "PRD_DCO"
+      ]
+    },
+    {
+      "product_id": "prd_33f8a220d24035e06ce8",
+      "manufacturer": "Ciena",
+      "manufacturer_sku": "170-3916-906",
+      "product_name_variants": [
+        "Hub / Switch",
+        "PRD_PN3XX"
+      ]
+    },
+    {
+      "product_id": "prd_2ab8f20f79812088afa2",
+      "manufacturer": "Ciena",
+      "manufacturer_sku": "170-3841-900",
+      "product_name_variants": [
+        "Network Device",
+        "PRD_PN38XX"
+      ]
+    },
+    {
+      "product_id": "prd_3a19e157aa48868a2fad",
+      "manufacturer": "Ciena",
+      "manufacturer_sku": "NTTC52ADE6",
+      "product_name_variants": [
+        "Network Cable",
+        "SRV_OEMIRM"
+      ]
+    },
+    {
+      "product_id": "prd_9426c5d70a2ca190d9b2",
+      "manufacturer": "Ciena",
+      "manufacturer_sku": "NTTC52AJE6",
+      "product_name_variants": [
+        "Network Cable",
+        "SRV_OEMIRM"
+      ]
+    },
+    {
+      "product_id": "prd_4d327a24bf031353dab5",
+      "manufacturer": "Ciena",
+      "manufacturer_sku": "NTTC90ABE6",
+      "product_name_variants": [
+        "Network Cable",
+        "SRV_OEMIRM"
+      ]
+    },
+    {
+      "product_id": "prd_3e77b3942529daa6a41a",
+      "manufacturer": "Ciena",
+      "manufacturer_sku": "441-0045-001",
+      "product_name_variants": [
+        "Power Cables",
+        "SRV_OEMIRM"
+      ]
+    },
+    {
+      "product_id": "prd_ce076ab105bef6a7267f",
+      "manufacturer": "Ciena",
+      "manufacturer_sku": "170-3931-910",
+      "product_name_variants": [
+        "Hub / Switch",
+        "PRD_PN3XX"
+      ]
+    },
+    {
+      "product_id": "prd_4d41bbf5628e22a2a673",
+      "manufacturer": "CRESTRON ELECTRONICS, INC.",
+      "manufacturer_sku": "6510948",
+      "product_name_variants": [
+        "CEN-ODT-C-POE",
+        "DUAL TECHNOLOGY OCCUPANCY SENSOR FOR ROOM SCHEDULING MGMT"
+      ]
+    },
+    {
+      "product_id": "prd_79342ae09ef155b49fa7",
+      "manufacturer": "Ericsson",
+      "manufacturer_sku": "170704-002",
+      "product_name_variants": [
+        "Antenna",
+        "Mini black"
+      ]
+    },
+    {
+      "product_id": "prd_2b8f911642d3067dc052",
+      "manufacturer": "Ericsson",
+      "manufacturer_sku": "170700-000",
+      "product_name_variants": [
+        "Docking Station",
+        "with IBR900/IBR950"
+      ]
+    },
+    {
+      "product_id": "prd_389686f852f6ec95fa9e",
+      "manufacturer": "3Dconnexion Products",
+      "manufacturer_sku": "3Dconnexion in Catalog",
+      "product_name_variants": [
+        "General Hardware and Software",
+        "General Hardware and Software - Cloud-related Solutions Offered"
+      ]
+    },
+    {
+      "product_id": "prd_171af3e7768ca578ee74",
+      "manufacturer": "Acer",
+      "manufacturer_sku": "Acer in Catalog",
+      "product_name_variants": [
+        "General Hardware and Software",
+        "Refurbished Computer Systems and Parts - Chromebook Focused",
+        "Refurbished Computer Systems and Parts - Enterprise System Focused"
+      ]
+    },
+    {
+      "product_id": "prd_2bffee95894078239f41",
+      "manufacturer": "10ZiG Products",
+      "manufacturer_sku": "10ZiG in Catalog",
+      "product_name_variants": [
+        "General Hardware and Software",
+        "General Hardware and Software - HUB Program Offered"
+      ]
+    },
+    {
+      "product_id": "prd_80c0a6278339d464ad7d",
+      "manufacturer": "HID Global",
+      "manufacturer_sku": "ACCXXXXLAM5",
+      "product_name_variants": [
+        "ACTIVID ACTIVCLENT PER USER",
+        "ADVANCED PREMIUM SUPPORT MAINTENANCE"
+      ]
+    },
+    {
+      "product_id": "prd_75b8140788f7dab54dff",
+      "manufacturer": "HID Global",
+      "manufacturer_sku": "ACCXXXXLCM4",
+      "product_name_variants": [
+        "ACTIVID ACTIVCLIENT PER USER - CLASSIC STANDARD SUPPORT AND MAINTENANCE - FOR QT",
+        "ACTIVID ACTIVCLIENT PER USER - CLASSIC STANDARD SUPPORT AND MAINTENANCE, QTY 1-9",
+        "ACTIVID ACTIVCLIENT PER USER - CLASSIC STANDARD SUPPORT AND MAINTENANCE. ORDER Q"
+      ]
+    },
+    {
+      "product_id": "prd_48ea334738c35e8deecd",
+      "manufacturer": "HID Global",
+      "manufacturer_sku": "ACCXXXXLA",
+      "product_name_variants": [
+        "ACTIVID ACTIVCLIENT PER USER LICENSE",
+        "ACTIVID ACTIVCLIENT PER USER LICENSE - ADVANCED",
+        "ACTIVID ACTIVCLIENT PER USER LICENSE - ADVANCED, QTY BETWEEN 100 AND 500"
+      ]
+    },
+    {
+      "product_id": "prd_5f94c41fea2988ada58f",
+      "manufacturer": "MSI COMPUTER CORP. Products",
+      "manufacturer_sku": "MSI COMPUTER CORP. in Catalog",
+      "product_name_variants": [
+        "Instructional Science, Technology, Engineering, Art, and Mathematics (STEAM)",
+        "Performing Arts: Staging, Furniture, and Technology"
+      ]
+    },
+    {
+      "product_id": "prd_b4024444ae2ba1313b77",
+      "manufacturer": "PEERLESS INDUSTRIES Products",
+      "manufacturer_sku": "PEERLESS INDUSTRIES in Catalog",
+      "product_name_variants": [
+        "Instructional Science, Technology, Engineering, Art, and Mathematics (STEAM)",
+        "Performing Arts: Staging, Furniture, and Technology"
+      ]
+    },
+    {
+      "product_id": "prd_7c66d2ab344fb8e49923",
+      "manufacturer": "SCHNEIDER ELECTRIC IT CORPORATION Products",
+      "manufacturer_sku": "SCHNEIDER ELECTRIC IT CORPORATION in Catalog",
+      "product_name_variants": [
+        "Instructional Science, Technology, Engineering, Art, and Mathematics (STEAM)",
+        "Performing Arts: Staging, Furniture, and Technology"
+      ]
+    },
+    {
+      "product_id": "prd_ffeb92e993d0490da729",
+      "manufacturer": "SYNNEX INFORMATION TECH Products",
+      "manufacturer_sku": "SYNNEX INFORMATION TECH in Catalog",
+      "product_name_variants": [
+        "Instructional Science, Technology, Engineering, Art, and Mathematics (STEAM)",
+        "Performing Arts: Staging, Furniture, and Technology"
+      ]
+    },
+    {
+      "product_id": "prd_b4c581a5aa7dbb2efad8",
+      "manufacturer": "VIEWSONIC INC Products",
+      "manufacturer_sku": "VIEWSONIC INC in Catalog",
+      "product_name_variants": [
+        "Instructional Science, Technology, Engineering, Art, and Mathematics (STEAM)",
+        "Performing Arts: Staging, Furniture, and Technology"
+      ]
+    },
+    {
+      "product_id": "prd_8431541b5f0809cebac4",
+      "manufacturer": "ADESSO INNOVATION INC Products",
+      "manufacturer_sku": "ADESSO INNOVATION INC in Catalog",
+      "product_name_variants": [
+        "Instructional Science, Technology, Engineering, Art, and Mathematics (STEAM)",
+        "Performing Arts: Staging, Furniture, and Technology"
+      ]
+    },
+    {
+      "product_id": "prd_ec0f4907ac367bd5c710",
+      "manufacturer": "ASUS COMPUTER INTL Products",
+      "manufacturer_sku": "ASUS COMPUTER INTL in Catalog",
+      "product_name_variants": [
+        "Instructional Science, Technology, Engineering, Art, and Mathematics (STEAM)",
+        "Performing Arts: Staging, Furniture, and Technology"
+      ]
+    },
+    {
+      "product_id": "prd_1a025731c42033ee3c77",
+      "manufacturer": "EPSON AMERICA, INC. Products",
+      "manufacturer_sku": "EPSON AMERICA, INC. in Catalog",
+      "product_name_variants": [
+        "Instructional Science, Technology, Engineering, Art, and Mathematics (STEAM)",
+        "Performing Arts: Staging, Furniture, and Technology"
+      ]
+    },
+    {
+      "product_id": "prd_5baaea53db57ac27f05d",
+      "manufacturer": "INTEL CORPORATION Products",
+      "manufacturer_sku": "INTEL CORPORATION in Catalog",
+      "product_name_variants": [
+        "Instructional Science, Technology, Engineering, Art, and Mathematics (STEAM)",
+        "Performing Arts: Staging, Furniture, and Technology"
+      ]
+    },
+    {
+      "product_id": "prd_788a9b9cd5cd496b54f3",
+      "manufacturer": "LEXMARK Products",
+      "manufacturer_sku": "LEXMARK in Catalog",
+      "product_name_variants": [
+        "Instructional Science, Technology, Engineering, Art, and Mathematics (STEAM)",
+        "Performing Arts: Staging, Furniture, and Technology",
+        "Remanufactured Laser Toner and Ink Cartridges - Multi-Brand Cartridge Focused"
+      ]
+    },
+    {
+      "product_id": "prd_00d442a72536c6f49be3",
+      "manufacturer": "LIND ELECTRONICS Products",
+      "manufacturer_sku": "LIND ELECTRONICS in Catalog",
+      "product_name_variants": [
+        "Instructional Science, Technology, Engineering, Art, and Mathematics (STEAM)",
+        "Performing Arts: Staging, Furniture, and Technology"
+      ]
+    },
+    {
+      "product_id": "prd_10bb58f1f5c5b207855c",
+      "manufacturer": "MITAC COMPUTING TECHNOLOGY USA Products",
+      "manufacturer_sku": "MITAC COMPUTING TECHNOLOGY USA in Catalog",
+      "product_name_variants": [
+        "Instructional Science, Technology, Engineering, Art, and Mathematics (STEAM)",
+        "Performing Arts: Staging, Furniture, and Technology"
+      ]
+    },
+    {
+      "product_id": "prd_deaa194e15cadec03247",
+      "manufacturer": "IPEVO",
+      "manufacturer_sku": "5-897-3-01-00",
+      "product_name_variants": [
+        "DO-CAM",
+        "IPEVO DO-CAM creator's edition"
+      ]
+    },
+    {
+      "product_id": "prd_d96a940ffbc0764e1ce2",
+      "manufacturer": "IPEVO",
+      "manufacturer_sku": "5-880-4-01-00",
+      "product_name_variants": [
+        "IPEVO V4K",
+        "V4K"
+      ]
+    },
+    {
+      "product_id": "prd_143a88d86ff02d43f2e4",
+      "manufacturer": "IPEVO",
+      "manufacturer_sku": "5-903-3-01-00",
+      "product_name_variants": [
+        "IPEVO V4K Pro",
+        "V4K PRO"
+      ]
+    },
+    {
+      "product_id": "prd_e17d8c3858d5eaa80227",
+      "manufacturer": "IPEVO",
+      "manufacturer_sku": "5-898-4-01-00",
+      "product_name_variants": [
+        "IPEVO VZ-R",
+        "VZ-R"
+      ]
+    },
+    {
+      "product_id": "prd_cdf7c9cc077ba58e31f8",
+      "manufacturer": "IPEVO",
+      "manufacturer_sku": "5-897-E-01-00",
+      "product_name_variants": [
+        "DO-CAM",
+        "IPEVO DO-CAM"
+      ]
+    },
+    {
+      "product_id": "prd_86b92ace998301b14c05",
+      "manufacturer": "LENOVO",
+      "manufacturer_sku": "4X90U90619",
+      "product_name_variants": [
+        "CABLE_BO USB-C (VA)",
+        "CABLE_BO USB-C CABLE 1M"
+      ]
+    },
+    {
+      "product_id": "prd_aa602363ce202ab0a3dd",
+      "manufacturer": "Linewize Cloud",
+      "manufacturer_sku": "LW-T1-SMGR-1Y",
+      "product_name_variants": [
+        "LINEWIZE FILTER 1Y T1",
+        "LWZ-FILTER 1 YR TIER 1"
+      ]
+    },
+    {
+      "product_id": "prd_a79206321285c183f720",
+      "manufacturer": "Mimecast",
+      "manufacturer_sku": "M_ADV-BEC_1000_A",
+      "product_name_variants": [
+        "Add-On",
+        "Advanced BEC Protection"
+      ]
+    },
+    {
+      "product_id": "prd_309238ea753b64cdfcd6",
+      "manufacturer": "Mimecast",
+      "manufacturer_sku": "M_AWARE-BYOK_10000_A",
+      "product_name_variants": [
+        "Add-On",
+        "Aware BYOK"
+      ]
+    },
+    {
+      "product_id": "prd_6361c667378f08661fe0",
+      "manufacturer": "Mimecast",
+      "manufacturer_sku": "M_AWARE-BYOK_20000_A",
+      "product_name_variants": [
+        "Add-On",
+        "Aware BYOK"
+      ]
+    },
+    {
+      "product_id": "prd_643d21530b6f4aef7207",
+      "manufacturer": "Mimecast",
+      "manufacturer_sku": "M_AWARE-BYOK_50000_A",
+      "product_name_variants": [
+        "Add-On",
+        "Aware BYOK"
+      ]
+    },
+    {
+      "product_id": "prd_c11515327a1f6e01abf5",
+      "manufacturer": "Mimecast",
+      "manufacturer_sku": "M_AWARE-PSL_10000_A",
+      "product_name_variants": [
+        "Add-On",
+        "Aware People Set Labels"
+      ]
+    },
+    {
+      "product_id": "prd_6618208216bfa99ca835",
+      "manufacturer": "Mimecast",
+      "manufacturer_sku": "M_AWARE-PSL_20000_A",
+      "product_name_variants": [
+        "Add-On",
+        "Aware People Set Labels"
+      ]
+    },
+    {
+      "product_id": "prd_f6d877f781dedf4db569",
+      "manufacturer": "Newline",
+      "manufacturer_sku": "EPR8A00286-002",
+      "product_name_variants": [
+        "EPR8A00286-002",
+        "NEWLINE 2YR EXT WTY F/ TRUTOUCH 860"
+      ]
+    },
+    {
+      "product_id": "prd_5dd6559c065efb6d6e1f",
+      "manufacturer": "Newline",
+      "manufacturer_sku": "EPR8A00275-002",
+      "product_name_variants": [
+        "EPR8A00275-002",
+        "NEWLINE 2YR EXT WTY F/ TRUTOUCH 750"
+      ]
+    },
+    {
+      "product_id": "prd_dbb05ee401a054578799",
+      "manufacturer": "Newline",
+      "manufacturer_sku": "EPR8A50980-000",
+      "product_name_variants": [
+        "EPR8A50980-000",
+        "NEWLINE TRUTOUCH 980 WALL MOUNT"
+      ]
+    },
+    {
+      "product_id": "prd_8668c6fd0805b4022732",
+      "manufacturer": "Newline",
+      "manufacturer_sku": "EPR8A50600-000",
+      "product_name_variants": [
+        "EPR8A50600-000",
+        "NEWLINE 650/700/750/800/860/X5/X7 WM"
+      ]
+    },
+    {
+      "product_id": "prd_dd529fa28fffc512334a",
+      "manufacturer": "Newline",
+      "manufacturer_sku": "EPR8A70088-000",
+      "product_name_variants": [
+        "EPR8A70088-000",
+        "NEWLINE TRUTOUCH WIRELESS DONGLE"
+      ]
+    },
+    {
+      "product_id": "prd_d4b13b0548e87541b4c9",
+      "manufacturer": "Newline",
+      "manufacturer_sku": "EPR8A88700-000",
+      "product_name_variants": [
+        "EPR8A88700-000",
+        "NEWLINE TRULIFT BALANCEBOX 400-70"
+      ]
+    },
+    {
+      "product_id": "prd_69933510585c7679e121",
+      "manufacturer": "Newline",
+      "manufacturer_sku": "EPR8A70080-000",
+      "product_name_variants": [
+        "EPR8A70080-000",
+        "NEWLINE TRULIFT ITEACHSPIDER STAND"
+      ]
+    },
+    {
+      "product_id": "prd_e2ee6c6de819ce17375a",
+      "manufacturer": "Newline",
+      "manufacturer_sku": "EPR8A88900-000",
+      "product_name_variants": [
+        "EPR8A88900-000",
+        "NEWLINE TRULIFT BALANCEBOX 650-130"
+      ]
+    },
+    {
+      "product_id": "prd_ed2e906f2caa974c6de3",
+      "manufacturer": "Newline",
+      "manufacturer_sku": "EPR8A50688-000",
+      "product_name_variants": [
+        "EPR8A50688-000",
+        "NEWLINE TRUTOUCH OVER THE BOARD MNT"
+      ]
+    },
+    {
+      "product_id": "prd_cd41b376e784b167e3c3",
+      "manufacturer": "Newline",
+      "manufacturer_sku": "EPR8A60060-000",
+      "product_name_variants": [
+        "EPR8A60060-000",
+        "NEWLINE TRULIFT MOTORIZED MOB STAND"
+      ]
+    },
+    {
+      "product_id": "prd_822e55874c8ac69935df",
+      "manufacturer": "Newline",
+      "manufacturer_sku": "EPR8A6S512-000",
+      "product_name_variants": [
+        "EPR8A6S512-000",
+        "NEWLINE 512GB OPS HD UPG SSD"
+      ]
+    },
+    {
+      "product_id": "prd_a364ccbed765d6d92fe1",
+      "manufacturer": "Newline",
+      "manufacturer_sku": "NLSPRODL-01",
+      "product_name_variants": [
+        "NEWLINE SIGNAGE PRO DVC LIC 1Y",
+        "NLSPRODL-01"
+      ]
+    },
+    {
+      "product_id": "prd_7039e2d5b842eef0ef92",
+      "manufacturer": "Newline",
+      "manufacturer_sku": "EPR8A88666-MS",
+      "product_name_variants": [
+        "EPR8A88666-MS",
+        "NEWLINE BALANCEBOX 400-90 MIX STAND"
+      ]
+    },
+    {
+      "product_id": "prd_dd57f972baf032d02358",
+      "manufacturer": "Newline",
+      "manufacturer_sku": "FLEX",
+      "product_name_variants": [
+        "FLEX",
+        "NEWLINE 27\" AIO VIDEO DISPLAY"
+      ]
+    },
+    {
+      "product_id": "prd_2e025369cacf08a873c8",
+      "manufacturer": "Newline",
+      "manufacturer_sku": "EPR8A6S999-000",
+      "product_name_variants": [
+        "EPR8A6S999-000",
+        "NEWLINE 1TB SSD OPS HARD DRIVE UPG"
+      ]
+    },
+    {
+      "product_id": "prd_be9fbf65a6f62aceb42a",
+      "manufacturer": "Newline",
+      "manufacturer_sku": "EPR8A6184K-002",
+      "product_name_variants": [
+        "EPR8A6184K-002",
+        "NEWLINE 2Y WTY F/TRUTOUCH OBC UHDV"
+      ]
+    },
+    {
+      "product_id": "prd_616bcc3e30a8626214cb",
+      "manufacturer": "Newline",
+      "manufacturer_sku": "NLSPROSL-07",
+      "product_name_variants": [
+        "NEWLINE SIGNAGE PRO SITE LIC 7Y",
+        "NLSPROSL-07"
+      ]
+    },
+    {
+      "product_id": "prd_b09f0d86eb6c010737db",
+      "manufacturer": "Newline",
+      "manufacturer_sku": "NLSPROSL-01",
+      "product_name_variants": [
+        "NEWLINE SIGNAGE PRO SITE LIC 1Y",
+        "NLSPROSL-01"
+      ]
+    },
+    {
+      "product_id": "prd_1fda362ee9d3e9fb7147",
+      "manufacturer": "Newline",
+      "manufacturer_sku": "NLSPRODL-07",
+      "product_name_variants": [
+        "NEWLINE SIGNAGE PRO DVC LIC 7Y",
+        "NLSPRODL-07"
+      ]
+    },
+    {
+      "product_id": "prd_9f742fe33ef3a473231d",
+      "manufacturer": "Newline",
+      "manufacturer_sku": "NLSPRODL-05",
+      "product_name_variants": [
+        "NEWLINE SIGNAGE PRO DVC LIC 5Y",
+        "NLSPRODL-05"
+      ]
+    },
+    {
+      "product_id": "prd_a7e67af52b906ded526f",
+      "manufacturer": "Newline",
+      "manufacturer_sku": "NWLVC-A25",
+      "product_name_variants": [
+        "NEWLINE VOICE AMPLIFY SINGLE",
+        "NWLVC-A25"
+      ]
+    },
+    {
+      "product_id": "prd_b030e2758fd2457b4079",
+      "manufacturer": "Newline",
+      "manufacturer_sku": "EPR1B38NLC-001",
+      "product_name_variants": [
+        "EPR1B38NLC-001",
+        "NEWLINE LNCHR PWRD BY DSPLY NOTE 1"
+      ]
+    },
+    {
+      "product_id": "prd_bd690f51ea91fbcdb209",
+      "manufacturer": "Newline",
+      "manufacturer_sku": "EPR1B38NLC-PER",
+      "product_name_variants": [
+        "EPR1B38NLC-PER",
+        "NEWLINE LNCHR PWRD BY DISPLAY NOTE"
+      ]
+    },
+    {
+      "product_id": "prd_b5307777f242f04fe73d",
+      "manufacturer": "Newline",
+      "manufacturer_sku": "EPR1B38NLC-003",
+      "product_name_variants": [
+        "EPR1B38NLC-003",
+        "NWL LNCHR PWRD BY DSPLY NOTE 3"
+      ]
+    },
+    {
+      "product_id": "prd_2c262b1c1f77583c3771",
+      "manufacturer": "Newline",
+      "manufacturer_sku": "EPR8A700DV-MMS",
+      "product_name_variants": [
+        "EPR8A700DV-MMS",
+        "NEWLINE DV 135&163IN MOTORIZED HT"
+      ]
+    },
+    {
+      "product_id": "prd_2d4ebacfd070a8ad4937",
+      "manufacturer": "Newline",
+      "manufacturer_sku": "EPR8ADSXWM-860",
+      "product_name_variants": [
+        "EPR8ADSXWM-860",
+        "NEWLINE 86IN DSX SERIES WALL MOUNT"
+      ]
+    },
+    {
+      "product_id": "prd_a1ff2ec874378f911094",
+      "manufacturer": "Newline",
+      "manufacturer_sku": "EPR8ADSXWM-435",
+      "product_name_variants": [
+        "EPR8ADSXWM-435",
+        "NEWLINE 43-55IN DSX SRIES WALL MOUNT"
+      ]
+    },
+    {
+      "product_id": "prd_724130be3551dd00fdb0",
+      "manufacturer": "Newline",
+      "manufacturer_sku": "EPR8ADSXWM-650",
+      "product_name_variants": [
+        "EPR8ADSXWM-650",
+        "NEWLINE 65IN DSX SERIES WALL MOUNT"
+      ]
+    },
+    {
+      "product_id": "prd_47a0be63fae1263a850d",
+      "manufacturer": "Newline",
+      "manufacturer_sku": "EPR8ADSXWM-750",
+      "product_name_variants": [
+        "EPR8ADSXWM-750",
+        "NEWLINE 75IN DSX SERIES WALL MOUNT"
+      ]
+    },
+    {
+      "product_id": "prd_dfb4bfcaf3b3cb6e3d08",
+      "manufacturer": "Newline",
+      "manufacturer_sku": "NLSPROSL-03",
+      "product_name_variants": [
+        "NEWLINE SIGNAGE PRO SITE LIC 3Y",
+        "NLSPROSL-03"
+      ]
+    },
+    {
+      "product_id": "prd_14ef087eecbe7f229946",
+      "manufacturer": "Newline",
+      "manufacturer_sku": "PRO-PLUS-WIFI",
+      "product_name_variants": [
+        "NEWLINE NT-PLUS/Q-PRO/Z-PRO WI-FI 6",
+        "PRO-PLUS-WIFI"
+      ]
+    },
+    {
+      "product_id": "prd_d8645bdc876f15bf90bd",
+      "manufacturer": "Newline",
+      "manufacturer_sku": "EPR8A505HD-000",
+      "product_name_variants": [
+        "EPR8A505HD-000",
+        "NEWLINE 98IN HD MOBILE STAND"
+      ]
+    },
+    {
+      "product_id": "prd_6c38de6e52f2f3ee918a",
+      "manufacturer": "Newline",
+      "manufacturer_sku": "EPR8A65130-000",
+      "product_name_variants": [
+        "EPR8A65130-000",
+        "NEWLINE BB MOBILE STND 650-130 VESA"
+      ]
+    },
+    {
+      "product_id": "prd_fafe5e7aba915c5ea144",
+      "manufacturer": "Newline",
+      "manufacturer_sku": "EPR8A88800-000",
+      "product_name_variants": [
+        "EPR8A88800-000",
+        "NEWLINE BALANCEBOX 400-90 W/VESA"
+      ]
+    },
+    {
+      "product_id": "prd_5ce1219b92b0b9da3fba",
+      "manufacturer": "Newline",
+      "manufacturer_sku": "EPR8A50500-ACS",
+      "product_name_variants": [
+        "EPR8A50500-ACS",
+        "NEWLINE AC MOBLIE STAND 4 DIR LOCKED"
+      ]
+    },
+    {
+      "product_id": "prd_67b9fdd8990226cf56ce",
+      "manufacturer": "Newline",
+      "manufacturer_sku": "EPR8A88555-MS",
+      "product_name_variants": [
+        "EPR8A88555-MS",
+        "NEWLINE BB MOBILE STAND MIX"
+      ]
+    },
+    {
+      "product_id": "prd_014b23f1ebbf57c8f7b4",
+      "manufacturer": "Newline",
+      "manufacturer_sku": "NLSPROSL-05",
+      "product_name_variants": [
+        "NEWLINE SIGNAGE PRO SITE LIC 5Y",
+        "NLSPROSL-05"
+      ]
+    },
+    {
+      "product_id": "prd_6b3e6e623ea274c26fc9",
+      "manufacturer": "Newline",
+      "manufacturer_sku": "NLSPRODL-03",
+      "product_name_variants": [
+        "NEWLINE SIGNAGE PRO DVC LIC 3Y",
+        "NLSPRODL-03"
+      ]
+    },
+    {
+      "product_id": "prd_304827ceae9aad712bbf",
+      "manufacturer": "NETGEAR Products",
+      "manufacturer_sku": "NETGEAR in Catalog",
+      "product_name_variants": [
+        "Performing Arts: Staging, Furniture, and Technology",
+        "Refurbished Computer Systems and Parts - Networking Hardware Focused"
+      ]
+    },
+    {
+      "product_id": "prd_804d1661b25d9f272f54",
+      "manufacturer": "Power Technologies",
+      "manufacturer_sku": "AC-HPM-USB-BLK",
+      "product_name_variants": [
+        "AC-HPM-USB-BLK",
+        "ANYWHERE HEADPHONE W/MIC USB"
+      ]
+    },
+    {
+      "product_id": "prd_2affd1fd82d7d6d3fb05",
+      "manufacturer": "Power Technologies",
+      "manufacturer_sku": "AC-EPM-BLK",
+      "product_name_variants": [
+        "AC-EPM-BLK",
+        "ANYWHERE CART HEADSET BLACK"
+      ]
+    },
+    {
+      "product_id": "prd_1fb7e0be8e2efae9278e",
+      "manufacturer": "Power Technologies",
+      "manufacturer_sku": "AC-BASIC-HPH",
+      "product_name_variants": [
+        "AC-BASIC-HPH",
+        "ANYWHERE 3.MM BASIC HEADPHONE"
+      ]
+    },
+    {
+      "product_id": "prd_7418afa9a7ab725e462e",
+      "manufacturer": "Power Technologies",
+      "manufacturer_sku": "AC-STAND-FIXED",
+      "product_name_variants": [
+        "AC-STAND-FIXED",
+        "ANYWHERE CART FIXED STAND F/FLAT PNL"
+      ]
+    },
+    {
+      "product_id": "prd_ca2a046cb6571026da05",
+      "manufacturer": "Power Technologies",
+      "manufacturer_sku": "AC-65W",
+      "product_name_variants": [
+        "AC-65W",
+        "ANYWHERE 65W AC ADAPTER"
+      ]
+    },
+    {
+      "product_id": "prd_df41517af4c76619e8c4",
+      "manufacturer": "Power Technologies",
+      "manufacturer_sku": "CAB-PVS-B10K-D",
+      "product_name_variants": [
+        "CAB-PVS-B10K-D",
+        "PWR-TECH 10BAY SEC BATT CHARGE CBNT"
+      ]
+    },
+    {
+      "product_id": "prd_ddae5f08bf7008b56470",
+      "manufacturer": "Power Technologies",
+      "manufacturer_sku": "CRT-PLS-S36L-D-H65C",
+      "product_name_variants": [
+        "CRT-PLS-S36L-D-H65C",
+        "PWR-TECH USB-C 36-BAY CHARGE CART"
+      ]
+    },
+    {
+      "product_id": "prd_f92416c18997f44a3bd4",
+      "manufacturer": "Power Technologies",
+      "manufacturer_sku": "CAB-PVS-B10K-D10",
+      "product_name_variants": [
+        "CAB-PVS-B10K-D10",
+        "PWR-TECH PV 10BAY W/10 PWR BATT"
+      ]
+    },
+    {
+      "product_id": "prd_a754ec741ffbdaf35e87",
+      "manufacturer": "Power Technologies",
+      "manufacturer_sku": "CAB-PVS-B10K-D5",
+      "product_name_variants": [
+        "CAB-PVS-B10K-D5",
+        "PWR-TECH PV 10BAY W/5 PWR BATT"
+      ]
+    },
+    {
+      "product_id": "prd_bf39e29b300e0976c67c",
+      "manufacturer": "Power Technologies",
+      "manufacturer_sku": "AC-HPM-USB-BLK-C",
+      "product_name_variants": [
+        "AC-HPM-USB-BLK-C",
+        "ANYWHERE PREMIUM HEADSET TYPE C PLUG"
+      ]
+    },
+    {
+      "product_id": "prd_6814ff7aa91086edb909",
+      "manufacturer": "Power Technologies",
+      "manufacturer_sku": "CAB-DMS-B10R-D",
+      "product_name_variants": [
+        "CAB-DMS-B10R-D",
+        "PWR-TECH CART 10-BAY CHARGE CABINET"
+      ]
+    },
+    {
+      "product_id": "prd_b3b2d89141031206e141",
+      "manufacturer": "Power Technologies",
+      "manufacturer_sku": "CAB-PVS-B10K-D10H",
+      "product_name_variants": [
+        "CAB-PVS-B10K-D10H",
+        "POWERTECH POWERVAULT W/10BAY BATT"
+      ]
+    },
+    {
+      "product_id": "prd_da7b561c75c6af985822",
+      "manufacturer": "Power Technologies",
+      "manufacturer_sku": "AC-HPM-BLK",
+      "product_name_variants": [
+        "AC-HPM-BLK",
+        "ANYWHERE HEADPHONE WITH MICROPHONE"
+      ]
+    },
+    {
+      "product_id": "prd_2a4c63b62c30e37cb233",
+      "manufacturer": "Power Technologies",
+      "manufacturer_sku": "CRT-VRT-B15L-D",
+      "product_name_variants": [
+        "CRT-VRT-B15L-D",
+        "POWER TECHNOLOGIES 15-BAY VERT CART"
+      ]
+    },
+    {
+      "product_id": "prd_6574c73b395998a59f58",
+      "manufacturer": "Power Technologies",
+      "manufacturer_sku": "AC-HPM-3.5MC",
+      "product_name_variants": [
+        "AC-HPM-3.5MC",
+        "ANYWHERE CART ECO 3.5MM HEADSET"
+      ]
+    },
+    {
+      "product_id": "prd_51b6ef11680a607e9680",
+      "manufacturer": "Power Technologies",
+      "manufacturer_sku": "AC-12W",
+      "product_name_variants": [
+        "AC-12W",
+        "ANYWHERE CART 12W USB POWER ADAPTER"
+      ]
+    },
+    {
+      "product_id": "prd_32376a7879fd9e576676",
+      "manufacturer": "Power Technologies",
+      "manufacturer_sku": "AC-LITE",
+      "product_name_variants": [
+        "AC-LITE",
+        "ANYWHERE 30BAY SECURE CHARGING CART"
+      ]
+    },
+    {
+      "product_id": "prd_5017b7c6817dd332e84c",
+      "manufacturer": "Power Technologies",
+      "manufacturer_sku": "AC-LOCKER-24",
+      "product_name_variants": [
+        "AC-Locker-24",
+        "PWR-TECH 24-BAY CHARGING LOCKER"
+      ]
+    },
+    {
+      "product_id": "prd_ab9c3431a41b5ace5508",
+      "manufacturer": "Power Technologies",
+      "manufacturer_sku": "AC-30",
+      "product_name_variants": [
+        "AC-30",
+        "ANYWHERE 30 ECONOMICAL CHARGING CART"
+      ]
+    },
+    {
+      "product_id": "prd_c21771431b0232ac63fa",
+      "manufacturer": "Lenovo Products",
+      "manufacturer_sku": "Lenovo in Catalog",
+      "product_name_variants": [
+        "Refurbished Computer Systems and Parts - Chromebook Focused",
+        "Refurbished Computer Systems and Parts - Enterprise System Focused"
+      ]
+    },
+    {
+      "product_id": "prd_aa73cca6e6cc48284d01",
+      "manufacturer": "CTL Products",
+      "manufacturer_sku": "CTL in Catalog",
+      "product_name_variants": [
+        "Refurbished Computer Systems and Parts - Chromebook Focused",
+        "Refurbished Computer Systems and Parts - Enterprise System Focused"
+      ]
+    },
+    {
+      "product_id": "prd_2fcbef7556a3b2eaff3c",
+      "manufacturer": "Dell Products",
+      "manufacturer_sku": "Dell in Catalog",
+      "product_name_variants": [
+        "Refurbished Computer Systems and Parts - Chromebook Focused",
+        "Refurbished Computer Systems and Parts - Enterprise System Focused",
+        "Refurbished Computer Systems and Parts - Networking Hardware Focused",
+        "Remanufactured Laser Toner and Ink Cartridges - Multi-Brand Cartridge Focused"
+      ]
+    },
+    {
+      "product_id": "prd_6e610acda522d907e039",
+      "manufacturer": "HP Products",
+      "manufacturer_sku": "HP in Catalog",
+      "product_name_variants": [
+        "Refurbished Computer Systems and Parts - Chromebook Focused",
+        "Refurbished Computer Systems and Parts - Enterprise System Focused",
+        "Refurbished Computer Systems and Parts - Networking Hardware Focused"
+      ]
+    },
+    {
+      "product_id": "prd_ee92b04563ab8bdae953",
+      "manufacturer": "Samsung Products",
+      "manufacturer_sku": "Samsung in Catalog",
+      "product_name_variants": [
+        "Refurbished Computer Systems and Parts - Chromebook Focused",
+        "Refurbished Computer Systems and Parts - Enterprise System Focused",
+        "Remanufactured Laser Toner and Ink Cartridges - Multi-Brand Cartridge Focused"
+      ]
+    },
+    {
+      "product_id": "prd_5e193a9db413015f391f",
+      "manufacturer": "Apple Products",
+      "manufacturer_sku": "Apple in Catalog",
+      "product_name_variants": [
+        "Refurbished Computer Systems and Parts - Enterprise System Focused",
+        "Refurbished Computer Systems and Parts - Networking Hardware Focused"
+      ]
+    },
+    {
+      "product_id": "prd_cd41d30d0f8543ee90ee",
+      "manufacturer": "Rubrik",
+      "manufacturer_sku": "RS-BT-BE-RSCP-PE-PA",
+      "product_name_variants": [
+        "Rubrik Security Cloud - P",
+        "Software"
+      ]
+    },
+    {
+      "product_id": "prd_e4b7b1cd41b1d7242f8c",
+      "manufacturer": "Rubrik",
+      "manufacturer_sku": "RS-BT-CLE-PE-PA",
+      "product_name_variants": [
+        "Rubrik Cloud Edition; per",
+        "Software"
+      ]
+    },
+    {
+      "product_id": "prd_c5e702a89613c3f567d0",
+      "manufacturer": "Rubrik",
+      "manufacturer_sku": "RS-BT-CVAG-PE-PA",
+      "product_name_variants": [
+        "Rubrik Cloud Vault in Azu",
+        "Software"
+      ]
+    },
+    {
+      "product_id": "prd_00f609077c6d0825568c",
+      "manufacturer": "Rubrik",
+      "manufacturer_sku": "RS-BT-EUP-PE-PA",
+      "product_name_variants": [
+        "Enterprise Proactive Edit",
+        "Software"
+      ]
+    },
+    {
+      "product_id": "prd_40c1227815a82cd6f592",
+      "manufacturer": "Rubrik",
+      "manufacturer_sku": "RS-BT-EUP-RSCG-PE-PA",
+      "product_name_variants": [
+        "Rubrik Security Cloud - G",
+        "Software"
+      ]
+    },
+    {
+      "product_id": "prd_f6a56c30310979c73876",
+      "manufacturer": "Rubrik",
+      "manufacturer_sku": "RS-BT-EUP-RSCG-PE-PP",
+      "product_name_variants": [
+        "Rubrik Security Cloud - G",
+        "Software"
+      ]
+    },
+    {
+      "product_id": "prd_cc4a554f33c3abb0b160",
+      "manufacturer": "Rubrik",
+      "manufacturer_sku": "RS-BT-FE-PE-PP",
+      "product_name_variants": [
+        "Rubrik Foundation Edition",
+        "Software"
+      ]
+    },
+    {
+      "product_id": "prd_48adcd9be6f5e78b9c36",
+      "manufacturer": "Rubrik",
+      "manufacturer_sku": "RS-BT-FUP-PE-PA",
+      "product_name_variants": [
+        "Enterprise Proactive Edit",
+        "Software"
+      ]
+    },
+    {
+      "product_id": "prd_4dacfbb53116d8b9b01c",
+      "manufacturer": "Rubrik",
+      "manufacturer_sku": "RS-BT-FUP-RSCG-PE-PA",
+      "product_name_variants": [
+        "Rubrik Security Cloud - G",
+        "Software"
+      ]
+    },
+    {
+      "product_id": "prd_a292e01a1bce10cb1bbf",
+      "manufacturer": "Rubrik",
+      "manufacturer_sku": "RS-BT-FUP-RSCG-PE-PP",
+      "product_name_variants": [
+        "Rubrik Security Cloud - G",
+        "Software"
+      ]
+    },
+    {
+      "product_id": "prd_1d0a832ef1d621a5f09d",
+      "manufacturer": "Rubrik",
+      "manufacturer_sku": "RS-BT-NDA-PE-PP",
+      "product_name_variants": [
+        "Rubrik NAS Direct Archive",
+        "Software"
+      ]
+    },
+    {
+      "product_id": "prd_3a18364b604c79c20ce7",
+      "manufacturer": "Rubrik",
+      "manufacturer_sku": "RS-BT-PRE-PE-PP",
+      "product_name_variants": [
+        "Rubrik Enterprise Proacti",
+        "Software"
+      ]
+    },
+    {
+      "product_id": "prd_c1ed03e4c48335a9504e",
+      "manufacturer": "Rubrik",
+      "manufacturer_sku": "RS-BT-PRE-SC-PE-PA",
+      "product_name_variants": [
+        "Rubrik Scale Enterprise P",
+        "Software"
+      ]
+    },
+    {
+      "product_id": "prd_48d8d8efaa2cf03306da",
+      "manufacturer": "Rubrik",
+      "manufacturer_sku": "RS-FT-BE-NDSB-PE-PA",
+      "product_name_variants": [
+        "Rubrik Data Security as a",
+        "Software"
+      ]
+    },
+    {
+      "product_id": "prd_fba5135b6d3f216919d3",
+      "manufacturer": "Rubrik",
+      "manufacturer_sku": "RS-FT-BE-UCL-PE-PA",
+      "product_name_variants": [
+        "Rubrik Business Edition f",
+        "Software"
+      ]
+    },
+    {
+      "product_id": "prd_aa3e9114cc693a1adc06",
+      "manufacturer": "Rubrik",
+      "manufacturer_sku": "RS-FT-FUB-NCD-PE-PP",
+      "product_name_variants": [
+        "Business Edition Add-On f",
+        "Software"
+      ]
+    },
+    {
+      "product_id": "prd_3d54b009313f3ded2ea9",
+      "manufacturer": "Rubrik",
+      "manufacturer_sku": "RS-FT-FUE-NDS-PE-PA",
+      "product_name_variants": [
+        "Add-On from Foundation Ed",
+        "Software"
+      ]
+    },
+    {
+      "product_id": "prd_1f4d3f457155e6a11b56",
+      "manufacturer": "Rubrik",
+      "manufacturer_sku": "RS-FT-FUE-NDS-PE-PP",
+      "product_name_variants": [
+        "Add-On from Foundation Ed",
+        "Software"
+      ]
+    },
+    {
+      "product_id": "prd_6d1b5ce25a7aa1aa0892",
+      "manufacturer": "Rubrik",
+      "manufacturer_sku": "RS-FT-FUP-UCL-PE-PA",
+      "product_name_variants": [
+        "Add-On from Customer Host",
+        "Software"
+      ]
+    },
+    {
+      "product_id": "prd_6e817c3b02fc827d2258",
+      "manufacturer": "Rubrik",
+      "manufacturer_sku": "RS-FT-LAM-PE-PA",
+      "product_name_variants": [
+        "Rubrik Laminar offering;",
+        "Software"
+      ]
+    },
+    {
+      "product_id": "prd_300cdb65ac1debe461f7",
+      "manufacturer": "Rubrik",
+      "manufacturer_sku": "RS-FT-SC-NCD-PE-PP",
+      "product_name_variants": [
+        "Rubrik Scale for NAS Clou",
+        "Software"
+      ]
+    },
+    {
+      "product_id": "prd_c7e1cc558c1962e7e90b",
+      "manufacturer": "Rubrik",
+      "manufacturer_sku": "RS-FT-UCL-PE-PP",
+      "product_name_variants": [
+        "Rubrik Universal Cloud Li",
+        "Software"
+      ]
+    },
+    {
+      "product_id": "prd_c599c3bdd6fe1da68a46",
+      "manufacturer": "Rubrik",
+      "manufacturer_sku": "RS-FT-UCLF-PE-PP",
+      "product_name_variants": [
+        "Rubrik Security Cloud - P",
+        "Software"
+      ]
+    },
+    {
+      "product_id": "prd_bbbcfd9476217208dda4",
+      "manufacturer": "Rubrik",
+      "manufacturer_sku": "RS-FT-UCLG-PE-PP",
+      "product_name_variants": [
+        "Rubrik Security Cloud - G",
+        "Software"
+      ]
+    },
+    {
+      "product_id": "prd_3e97240c67493b6919b6",
+      "manufacturer": "Rubrik",
+      "manufacturer_sku": "RS-HW-SVC-PE-S2",
+      "product_name_variants": [
+        "Support",
+        "Support for R6000S-2 hard"
+      ]
+    },
+    {
+      "product_id": "prd_6aaab3ba52c2dc7e519b",
+      "manufacturer": "Rubrik",
+      "manufacturer_sku": "RS-HW-SVC-PE-S3",
+      "product_name_variants": [
+        "Support",
+        "Support for R6000S-3 hard"
+      ]
+    },
+    {
+      "product_id": "prd_957216891f8ca57ece6e",
+      "manufacturer": "Rubrik",
+      "manufacturer_sku": "RS-NRD-R6000S",
+      "product_name_variants": [
+        "Non-Returnable Disk Servi",
+        "Support"
+      ]
+    },
+    {
+      "product_id": "prd_0d2ecae6dc2f6c56b067",
+      "manufacturer": "Rubrik",
+      "manufacturer_sku": "RS-PB-EDG-PE-PP",
+      "product_name_variants": [
+        "Rubrik Edge Foundation Ed",
+        "Software"
+      ]
+    },
+    {
+      "product_id": "prd_4c4b77813a9570143e0d",
+      "manufacturer": "Rubrik",
+      "manufacturer_sku": "RS-ST-BE-NCD-PE-PP",
+      "product_name_variants": [
+        "Rubrik NAS Cloud Direct S",
+        "Software"
+      ]
+    },
+    {
+      "product_id": "prd_8498648ae76bda70496c",
+      "manufacturer": "Siklu",
+      "manufacturer_sku": "EH-MK-SM",
+      "product_name_variants": [
+        "EtherHaul",
+        "MultiHaul"
+      ]
+    },
+    {
+      "product_id": "prd_0b96330694711d836230",
+      "manufacturer": "Singlewire",
+      "manufacturer_sku": "SSF-1YR-MUA-TIER 5",
+      "product_name_variants": [
+        "InformaCast Fusion Mobile User Add-On",
+        "Software Subscription"
+      ]
+    },
+    {
+      "product_id": "prd_82159abb42ae1bcf523c",
+      "manufacturer": "Singlewire",
+      "manufacturer_sku": "SSF-1YR-MUA-TIER 7",
+      "product_name_variants": [
+        "InformaCast Fusion Mobile User Add-On",
+        "Software Subscription"
+      ]
+    },
+    {
+      "product_id": "prd_cb53bd963abde51cd7e0",
+      "manufacturer": "Singlewire",
+      "manufacturer_sku": "SSF-3YR-MUA-TIER 1",
+      "product_name_variants": [
+        "InformaCast Fusion Mobile User Add-On",
+        "Software Subscription"
+      ]
+    },
+    {
+      "product_id": "prd_410798ad641e46bc6bfe",
+      "manufacturer": "Singlewire",
+      "manufacturer_sku": "SSF-3YR-MUA-TIER 2",
+      "product_name_variants": [
+        "InformaCast Fusion Mobile User Add-On",
+        "Software Subscription"
+      ]
+    },
+    {
+      "product_id": "prd_d375bb32e00a2c7599fe",
+      "manufacturer": "Singlewire",
+      "manufacturer_sku": "SSF-3YR-MUA-TIER 3",
+      "product_name_variants": [
+        "InformaCast Fusion Mobile User Add-On",
+        "Software Subscription"
+      ]
+    },
+    {
+      "product_id": "prd_78d911456d760346a9a9",
+      "manufacturer": "Singlewire",
+      "manufacturer_sku": "SSF-3YR-MUA-TIER 4",
+      "product_name_variants": [
+        "InformaCast Fusion Mobile User Add-On",
+        "Software Subscription"
+      ]
+    },
+    {
+      "product_id": "prd_1edc6e20dd4cc8811fac",
+      "manufacturer": "Singlewire",
+      "manufacturer_sku": "SSF-3YR-MUA-TIER 5",
+      "product_name_variants": [
+        "InformaCast Fusion Mobile User Add-On",
+        "Software Subscription"
+      ]
+    },
+    {
+      "product_id": "prd_80809aa90756b0760fad",
+      "manufacturer": "Singlewire",
+      "manufacturer_sku": "SSF-3YR-MUA-TIER 7",
+      "product_name_variants": [
+        "InformaCast Fusion Mobile User Add-On",
+        "Software Subscription"
+      ]
+    },
+    {
+      "product_id": "prd_fbee974d1fe9d6d2e8ed",
+      "manufacturer": "Singlewire",
+      "manufacturer_sku": "SSF-5YR-MUA-TIER 1",
+      "product_name_variants": [
+        "InformaCast Fusion Mobile User Add-On",
+        "Software Subscription"
+      ]
+    },
+    {
+      "product_id": "prd_732ec4c2179ae21c9a1c",
+      "manufacturer": "Singlewire",
+      "manufacturer_sku": "SSF-5YR-MUA-TIER 2",
+      "product_name_variants": [
+        "InformaCast Fusion Mobile User Add-On",
+        "Software Subscription"
+      ]
+    },
+    {
+      "product_id": "prd_d11d619d3103b7938fd4",
+      "manufacturer": "Singlewire",
+      "manufacturer_sku": "SSF-5YR-MUA-TIER 3",
+      "product_name_variants": [
+        "InformaCast Fusion Mobile User Add-On",
+        "Software Subscription"
+      ]
+    },
+    {
+      "product_id": "prd_92aa6146bddb37614c33",
+      "manufacturer": "Singlewire",
+      "manufacturer_sku": "SSF-5YR-MUA-TIER 4",
+      "product_name_variants": [
+        "InformaCast Fusion Mobile User Add-On",
+        "Software Subscription"
+      ]
+    },
+    {
+      "product_id": "prd_0e100a6b2ca5fe30e508",
+      "manufacturer": "Singlewire",
+      "manufacturer_sku": "SS-1YR-MOB-TIER 1",
+      "product_name_variants": [
+        "InformaCast Mobile",
+        "Professional Services"
+      ]
+    },
+    {
+      "product_id": "prd_954decf5c58d193ac419",
+      "manufacturer": "Singlewire",
+      "manufacturer_sku": "SS-1YR-MOB-TIER 2",
+      "product_name_variants": [
+        "InformaCast Mobile",
+        "Professional Services"
+      ]
+    },
+    {
+      "product_id": "prd_86526911cd002da9b62f",
+      "manufacturer": "Singlewire",
+      "manufacturer_sku": "SS-1YR-MOB-TIER 3",
+      "product_name_variants": [
+        "InformaCast Mobile",
+        "Professional Services"
+      ]
+    },
+    {
+      "product_id": "prd_9631edd257d414520e47",
+      "manufacturer": "Singlewire",
+      "manufacturer_sku": "SS-1YR-MOB-TIER 4",
+      "product_name_variants": [
+        "InformaCast Mobile",
+        "Professional Services"
+      ]
+    },
+    {
+      "product_id": "prd_fa5b098f2dfb27e9efaa",
+      "manufacturer": "Singlewire",
+      "manufacturer_sku": "SS-1YR-MOB-TIER 5",
+      "product_name_variants": [
+        "InformaCast Mobile",
+        "Professional Services"
+      ]
+    },
+    {
+      "product_id": "prd_b7c9a2c2b4503424c6f1",
+      "manufacturer": "Singlewire",
+      "manufacturer_sku": "SS-1YR-MOB-TIER 7",
+      "product_name_variants": [
+        "InformaCast Mobile",
+        "Professional Services"
+      ]
+    },
+    {
+      "product_id": "prd_d92d48515342e97d98a9",
+      "manufacturer": "Singlewire",
+      "manufacturer_sku": "SS-3YR-MOB-TIER 1",
+      "product_name_variants": [
+        "InformaCast Mobile",
+        "Professional Services"
+      ]
+    },
+    {
+      "product_id": "prd_6d2e9c4868393a21dfde",
+      "manufacturer": "Singlewire",
+      "manufacturer_sku": "SS-3YR-MOB-TIER 2",
+      "product_name_variants": [
+        "InformaCast Mobile",
+        "Professional Services"
+      ]
+    },
+    {
+      "product_id": "prd_0914750ed6b42a0a0a0a",
+      "manufacturer": "Singlewire",
+      "manufacturer_sku": "IPTA-PG-SFW",
+      "product_name_variants": [
+        "InformaCast Paging Gateway Software Interface",
+        "Software Subscription"
+      ]
+    },
+    {
+      "product_id": "prd_0f2517fcdd9df6d23aab",
+      "manufacturer": "Singlewire",
+      "manufacturer_sku": "SS-1YR-AM-TIER 1",
+      "product_name_variants": [
+        "InformaCast Advanced Notification Subscription Licensing",
+        "Software Subscription"
+      ]
+    },
+    {
+      "product_id": "prd_8e3d16dc8a0f1411ca23",
+      "manufacturer": "Singlewire",
+      "manufacturer_sku": "SS-5YR-AM-TIER 2",
+      "product_name_variants": [
+        "InformaCast Advanced Notification Subscription Licensing",
+        "Software Subscription"
+      ]
+    },
+    {
+      "product_id": "prd_e104b9cee31718da297f",
+      "manufacturer": "Singlewire",
+      "manufacturer_sku": "SS-1YR-ICA-TIER 1",
+      "product_name_variants": [
+        "InformaCast Advanced Notification Subsciption Endpoint Licensing",
+        "Software Subscription"
+      ]
+    },
+    {
+      "product_id": "prd_2b5c5d1d3d859a4251c3",
+      "manufacturer": "Singlewire",
+      "manufacturer_sku": "SS-1YR-ICA-TIER 2",
+      "product_name_variants": [
+        "InformaCast Advanced Notification Subsciption Endpoint Licensing",
+        "Software Subscription"
+      ]
+    },
+    {
+      "product_id": "prd_ad408eb32583aa710d16",
+      "manufacturer": "Singlewire",
+      "manufacturer_sku": "SS-1YR-ICA-TIER 4",
+      "product_name_variants": [
+        "InformaCast Advanced Notification Subsciption Endpoint Licensing",
+        "Software Subscription"
+      ]
+    },
+    {
+      "product_id": "prd_167482500f6b1aed8c23",
+      "manufacturer": "Singlewire",
+      "manufacturer_sku": "SS-1YR-ICA-TIER 5",
+      "product_name_variants": [
+        "InformaCast Advanced Notification Subsciption Endpoint Licensing",
+        "Software Subscription"
+      ]
+    },
+    {
+      "product_id": "prd_5ab99ceb8055cc5650e0",
+      "manufacturer": "Singlewire",
+      "manufacturer_sku": "SS-1YR-ICA-TIER 6",
+      "product_name_variants": [
+        "InformaCast Advanced Notification Subsciption Endpoint Licensing",
+        "Software Subscription"
+      ]
+    },
+    {
+      "product_id": "prd_7fca3f0233752f219445",
+      "manufacturer": "Singlewire",
+      "manufacturer_sku": "IPTA-IC-2",
+      "product_name_variants": [
+        "InformaCast Advanced Notification Perpetual Endpoint Licensing",
+        "Software Subscription"
+      ]
+    },
+    {
+      "product_id": "prd_5143d60202003301dfe3",
+      "manufacturer": "Singlewire",
+      "manufacturer_sku": "IPTA-IC-3",
+      "product_name_variants": [
+        "InformaCast Advanced Notification Perpetual Endpoint Licensing",
+        "Software Subscription"
+      ]
+    },
+    {
+      "product_id": "prd_3b7d41535c8338e2fe80",
+      "manufacturer": "Smart Technologies",
+      "manufacturer_sku": "LUM-SW-3",
+      "product_name_variants": [
+        "LUM-SW-3",
+        "SMART LUMIO SUB 3Y"
+      ]
+    },
+    {
+      "product_id": "prd_a09180fe0aa92da4a010",
+      "manufacturer": "Smart Technologies",
+      "manufacturer_sku": "ED-SW-1",
+      "product_name_variants": [
+        "ED-SW-1",
+        "SMART LEARNING STE SUB 1Y"
+      ]
+    },
+    {
+      "product_id": "prd_6ec61a5b9834a4c87be8",
+      "manufacturer": "Smart Technologies",
+      "manufacturer_sku": "ED-SW-3",
+      "product_name_variants": [
+        "ED-SW-3",
+        "SMART LEARNING STE SUB 3Y"
+      ]
+    },
+    {
+      "product_id": "prd_bb487c3cefbc1a3e9497",
+      "manufacturer": "Smart Technologies",
+      "manufacturer_sku": "SRM-1",
+      "product_name_variants": [
+        "SMART REMOTE MGMT SUB 1Y",
+        "SRM-1-1-99",
+        "SRM-1-100-499",
+        "SRM-1-1000-2499",
+        "SRM-1-10000",
+        "SRM-1-2500-4999",
+        "SRM-1-500-999",
+        "SRM-1-5000-9999"
+      ]
+    },
+    {
+      "product_id": "prd_c30fcd6adad27badf074",
+      "manufacturer": "Smart Technologies",
+      "manufacturer_sku": "ED-SW-MOD-3",
+      "product_name_variants": [
+        "ED-SW-MOD-3",
+        "SMART RNW ADD LUMIO SUB 3Y"
+      ]
+    },
+    {
+      "product_id": "prd_75566f1104978ebbfe15",
+      "manufacturer": "Smart Technologies",
+      "manufacturer_sku": "ED-SW-MOD-2",
+      "product_name_variants": [
+        "ED-SW-MOD-2",
+        "SMART RNW SUB 2Y"
+      ]
+    },
+    {
+      "product_id": "prd_c93cd81ae26a9b733436",
+      "manufacturer": "Smart Technologies",
+      "manufacturer_sku": "ED-SW-MOD-1",
+      "product_name_variants": [
+        "ED-SW-MOD-1",
+        "SMART RNW ADD LUMIO SUB 1Y"
+      ]
+    },
+    {
+      "product_id": "prd_86e18db2eaf7ef018827",
+      "manufacturer": "Smart Technologies",
+      "manufacturer_sku": "LUM-SW-MOD-1",
+      "product_name_variants": [
+        "LUM-SW-MOD-1",
+        "SMART LUMIO STD SUB RNW 1Y"
+      ]
+    },
+    {
+      "product_id": "prd_2a8ea0b9d4a4f6e0de52",
+      "manufacturer": "Smart Technologies",
+      "manufacturer_sku": "SRM-5",
+      "product_name_variants": [
+        "SMART REMOTE MGMT SUB 5Y",
+        "SRM-5-1-99",
+        "SRM-5-100-499",
+        "SRM-5-500-999"
+      ]
+    },
+    {
+      "product_id": "prd_13705d4c9547f47b12b7",
+      "manufacturer": "Smart Technologies",
+      "manufacturer_sku": "LUM-SW-1",
+      "product_name_variants": [
+        "LUM-SW-1",
+        "SMART TECHNOLOGIES LUMIO SUB 1Y"
+      ]
+    },
+    {
+      "product_id": "prd_e88c634e81a68d28f93c",
+      "manufacturer": "Smart Technologies",
+      "manufacturer_sku": "EWY2-SBID-86-P-5Y",
+      "product_name_variants": [
+        "EWY2-SBID-86-P-5Y",
+        "SMART 2YR LIMITED WTY EXT"
+      ]
+    },
+    {
+      "product_id": "prd_0de4e21f9b751af27c79",
+      "manufacturer": "Smart Technologies",
+      "manufacturer_sku": "SRM-2",
+      "product_name_variants": [
+        "SMART REMOTE MGMT SUB 2Y",
+        "SRM-2-1-99",
+        "SRM-2-100-499",
+        "SRM-2-1000-2499",
+        "SRM-2-10000",
+        "SRM-2-2500-4999",
+        "SRM-2-500-999",
+        "SRM-2-5000-9999"
+      ]
+    },
+    {
+      "product_id": "prd_59eac6a8f9216d871373",
+      "manufacturer": "TechProtectus",
+      "manufacturer_sku": "TP-EARS3.5-BK",
+      "product_name_variants": [
+        "TP-EARS3.5-BK",
+        "TechProtectus Premium 3.5MM Earbud"
+      ]
+    },
+    {
+      "product_id": "prd_c72c954505cee81a3018",
+      "manufacturer": "TechProtectus",
+      "manufacturer_sku": "TP-H16-3.5BN",
+      "product_name_variants": [
+        "TP-H16-3.5BN",
+        "TechProtectus 3.5mm Jack Noise Cancelling rugged headphone-with a Boom Mic"
+      ]
+    },
+    {
+      "product_id": "prd_34cb623d36065611ff22",
+      "manufacturer": "TechProtectus",
+      "manufacturer_sku": "TP-H16-CIV",
+      "product_name_variants": [
+        "TP-H16-CIV",
+        "TechProtectus USB-C Noise Cancelling rugged headphone-with an Inline Mic"
+      ]
+    },
+    {
+      "product_id": "prd_ec2d0342030bcdaddbbe",
+      "manufacturer": "TechProtectus",
+      "manufacturer_sku": "TP-H16-USBIV",
+      "product_name_variants": [
+        "TP-H16-USBIV",
+        "TechProtectus USB Noise Cancelling rugged headphone-with an Inline Mic"
+      ]
+    },
+    {
+      "product_id": "prd_bee871c423f57ad449d1",
+      "manufacturer": "TechProtectus",
+      "manufacturer_sku": "TP-H16-3.5IN",
+      "product_name_variants": [
+        "TP-H16-3.5IN",
+        "TechProtectus 3.5mm Jack Noise Cancelling rugged headphone-with an Inline Mic"
+      ]
+    },
+    {
+      "product_id": "prd_49e9262298356d622a45",
+      "manufacturer": "TechProtectus",
+      "manufacturer_sku": "TP-H13H-3.5MM",
+      "product_name_variants": [
+        "TP-H13H-3.5MM",
+        "TechProtectus 3.5 MM Noise Cancelling Headset with a Boom Microphone"
+      ]
+    },
+    {
+      "product_id": "prd_5950834637ee1c38d049",
+      "manufacturer": "TechProtectus",
+      "manufacturer_sku": "TP-H13H-USB",
+      "product_name_variants": [
+        "TP-H13H-USB",
+        "TechProtectus USB Noise Cancelling Headset with volume adjuster and Microphone"
+      ]
+    },
+    {
+      "product_id": "prd_8d926594a02ad70a8322",
+      "manufacturer": "TechProtectus",
+      "manufacturer_sku": "TP-BK-VR11",
+      "product_name_variants": [
+        "TP-BK-VR11",
+        "TechProtectus Shockproof Vertical Carry case-9.7-12 inch"
+      ]
+    },
+    {
+      "product_id": "prd_0f25f29eab8dca1ead0c",
+      "manufacturer": "TechProtectus",
+      "manufacturer_sku": "TP-BK-BC13",
+      "product_name_variants": [
+        "TP-BK-BC13",
+        "TechProtectus ShockProof Rugged Briefcase 13-14 inch"
+      ]
+    },
+    {
+      "product_id": "prd_560630bd6bc2bc94cc0a",
+      "manufacturer": "TechProtectus",
+      "manufacturer_sku": "TP-BL-IP10.2F",
+      "product_name_variants": [
+        "TP-BL-IP10.2F",
+        "TechProtectUs Shockproof Handle Stand iPad 10.2'' case of 9th/ 8th/7th Gen-Blue"
+      ]
+    },
+    {
+      "product_id": "prd_208a28a4a2988c58959c",
+      "manufacturer": "TechProtectus",
+      "manufacturer_sku": "TP-BK-CC14",
+      "product_name_variants": [
+        "TP-BK-CC14",
+        "TechProtectus Always on Carrying Case with Pocket-13 to 15 inch"
+      ]
+    },
+    {
+      "product_id": "prd_4e76e87723bd1f43d457",
+      "manufacturer": "TechProtectus",
+      "manufacturer_sku": "TP-H16-CBV",
+      "product_name_variants": [
+        "TP-H16-CBV",
+        "TechProtectus USB-C Noise Cancelling rugged headphone-with a boom mic"
+      ]
+    },
+    {
+      "product_id": "prd_a25fa9e1262330a8d155",
+      "manufacturer": "TechProtectus",
+      "manufacturer_sku": "TP-BK-CC11",
+      "product_name_variants": [
+        "TP-BK-CC11",
+        "TechProtectus Always on Carrying Case with Pocket-11 to 12 inch"
+      ]
+    },
+    {
+      "product_id": "prd_f41410c0550d2459e8cd",
+      "manufacturer": "TechProtectus",
+      "manufacturer_sku": "TP-PK-IP10.2F",
+      "product_name_variants": [
+        "TP-PK-IP10.2F",
+        "TechProtectUs Shockproof Handle Stand iPad 10.2'' case of 9th/ 8th/7th Gen-Pink"
+      ]
+    },
+    {
+      "product_id": "prd_a2ef6eb61ffd1149867f",
+      "manufacturer": "TechProtectus",
+      "manufacturer_sku": "TP-H16-USBBV",
+      "product_name_variants": [
+        "TP-H16-USBBV",
+        "TechProtectus USB Noise Cancelling rugged headphone-with a boom mic"
+      ]
+    },
+    {
+      "product_id": "prd_f25059f9d4c251bb5bab",
+      "manufacturer": "TechProtectus",
+      "manufacturer_sku": "TP-K01-USBIVN",
+      "product_name_variants": [
+        "TP-K01-USBIVN",
+        "TechProtectus USB Kids Headphone with an inline Microphone"
+      ]
+    },
+    {
+      "product_id": "prd_910bf025429cdbb70b54",
+      "manufacturer": "TechProtectus",
+      "manufacturer_sku": "TP-K02-3.5BV",
+      "product_name_variants": [
+        "TP-K02-3.5BV",
+        "TechProtectus 3.5MM Kids Headphone with a Boom Microphone and Volume Control"
+      ]
+    },
+    {
+      "product_id": "prd_2a5f2df3bd2f00b5e8fc",
+      "manufacturer": "TechProtectus",
+      "manufacturer_sku": "TP-K02-3.5BVN",
+      "product_name_variants": [
+        "TP-K02-3.5BVN",
+        "TechProtectus 3.5MM Kids Headphone with a Boom Microphone"
+      ]
+    },
+    {
+      "product_id": "prd_e551682315bb297682d6",
+      "manufacturer": "TechProtectus",
+      "manufacturer_sku": "TP-K02-CBV",
+      "product_name_variants": [
+        "TP-K02-CBV",
+        "TechProtectus USB Type C Headphone with a Boom Microphone and Volume Control"
+      ]
+    },
+    {
+      "product_id": "prd_db63adb3904f2948a6aa",
+      "manufacturer": "TechProtectus",
+      "manufacturer_sku": "TP-K02-CBVN",
+      "product_name_variants": [
+        "TP-K02-CBVN",
+        "TechProtectus USB Type C Headphone with a Boom Microphone"
+      ]
+    },
+    {
+      "product_id": "prd_ecb87eadb041f20a7026",
+      "manufacturer": "TechProtectus",
+      "manufacturer_sku": "TP-K02-USBBV",
+      "product_name_variants": [
+        "TP-K02-USBBV",
+        "TechProtectus USB Headphone with a Boom Microphone and Volume Control"
+      ]
+    },
+    {
+      "product_id": "prd_7abb277e26c425c9ef05",
+      "manufacturer": "TechProtectus",
+      "manufacturer_sku": "TP-K02-USBBVN",
+      "product_name_variants": [
+        "TP-K02-USBBVN",
+        "TechProtectus USB Headphone with a Boom Microphone"
+      ]
+    },
+    {
+      "product_id": "prd_087cb9032598ef89bdad",
+      "manufacturer": "TechProtectus",
+      "manufacturer_sku": "TP-EAR-S",
+      "product_name_variants": [
+        "TP-EAR-S",
+        "TechProtectus Standard 3.5MM Earbud"
+      ]
+    },
+    {
+      "product_id": "prd_d1a2b67071b9c4afbc35",
+      "manufacturer": "TechProtectus",
+      "manufacturer_sku": "TP-CL-DE3100",
+      "product_name_variants": [
+        "TP-CL-DE3100",
+        "TechProtectus ShockProof Hardshell Chromebook case-Dell 3100/3110"
+      ]
+    },
+    {
+      "product_id": "prd_c25f8c8d02bffae7f9b2",
+      "manufacturer": "TechProtectus",
+      "manufacturer_sku": "TP-CL-DE3100-21",
+      "product_name_variants": [
+        "TP-CL-DE3100-21",
+        "TechProtectus ShockProof Hardshell Chromebook case-Dell 3100/3110 2IN1"
+      ]
+    },
+    {
+      "product_id": "prd_4f1c3c6d3f257d0834e5",
+      "manufacturer": "TechProtectus",
+      "manufacturer_sku": "TP-LN-100E3",
+      "product_name_variants": [
+        "TP-LN-100E3",
+        "TechProtectus ShockProof Hardshell Chromebook case-Lenovo 100E/W Gen3"
+      ]
+    },
+    {
+      "product_id": "prd_54e5a32da4552230b4a6",
+      "manufacturer": "TechProtectus",
+      "manufacturer_sku": "TP-LN-300E3",
+      "product_name_variants": [
+        "TP-LN-300E3",
+        "TechProtectus ShockProof Hardshell Chromebook case-Lenovo 300E/W Gen3"
+      ]
+    },
+    {
+      "product_id": "prd_1ec762d37dcf170a5bb6",
+      "manufacturer": "TechProtectus",
+      "manufacturer_sku": "TP-LN-500E3",
+      "product_name_variants": [
+        "TP-LN-500E3",
+        "TechProtectus ShockProof Hardshell Chromebook case-Lenovo 500E/W Gen3"
+      ]
+    },
+    {
+      "product_id": "prd_9a5565776af63bfefd80",
+      "manufacturer": "TechProtectus",
+      "manufacturer_sku": "TP-LN-100EW-G4",
+      "product_name_variants": [
+        "TP-LN-100EW-G4",
+        "TechProtectus ShockProof Hardshell Chromebook case-Lenovo 100E/W Gen4"
+      ]
+    },
+    {
+      "product_id": "prd_ae3d279a219d5455a1af",
+      "manufacturer": "TechProtectus",
+      "manufacturer_sku": "TP-LN-300EW-G4",
+      "product_name_variants": [
+        "TP-LN-300EW-G4",
+        "TechProtectus ShockProof Hardshell Chromebook case-Lenovo 300E/W Gen4"
+      ]
+    },
+    {
+      "product_id": "prd_f2db75c2911f60a838e7",
+      "manufacturer": "TechProtectus",
+      "manufacturer_sku": "TP-LN-500EW-G4",
+      "product_name_variants": [
+        "TP-LN-500EW-G4",
+        "TechProtectus ShockProof Hardshell Chromebook case-Lenovo 500E/W Gen4"
+      ]
+    },
+    {
+      "product_id": "prd_a0aaa476bd5e6fb5ec78",
+      "manufacturer": "TechProtectus",
+      "manufacturer_sku": "TP-LN-500EW-G4S",
+      "product_name_variants": [
+        "TP-LN-500EW-G4S",
+        "TechProtectus ShockProof Hardshell Chromebook case-Lenovo 500E Gen4S"
+      ]
+    },
+    {
+      "product_id": "prd_843e83977e44d858735f",
+      "manufacturer": "TechProtectus",
+      "manufacturer_sku": "TP-LN-14EG3",
+      "product_name_variants": [
+        "TP-LN-14EG3",
+        "TechProtectus ShockProof Hardshell Chromebook case-Lenovo 14E Gen3"
+      ]
+    },
+    {
+      "product_id": "prd_362ada1f6a563b6edb39",
+      "manufacturer": "TechProtectus",
+      "manufacturer_sku": "TP-HP-G89",
+      "product_name_variants": [
+        "TP-HP-G89",
+        "TechProtectus ShockProof Hardshell Chromebook case-HPG8/G9"
+      ]
+    },
+    {
+      "product_id": "prd_5d141cf837b7d9cc4a11",
+      "manufacturer": "TechProtectus",
+      "manufacturer_sku": "TP-HP360-G3F",
+      "product_name_variants": [
+        "TP-HP360-G3F",
+        "TechProtectus ShockProof Hardshell Chromebook case-HP X360 G3 Fortis"
+      ]
+    },
+    {
+      "product_id": "prd_918423e7cb3851e657cd",
+      "manufacturer": "TechProtectus",
+      "manufacturer_sku": "TP-HP360-G5F",
+      "product_name_variants": [
+        "TP-HP360-G5F",
+        "TechProtectus ShockProof Hardshell Chromebook case-HP X360 G5 Fortis"
+      ]
+    },
+    {
+      "product_id": "prd_20c161ef3901dc06954d",
+      "manufacturer": "TechProtectus",
+      "manufacturer_sku": "TP-HP-G10F",
+      "product_name_variants": [
+        "TP-HP-G10F",
+        "TechProtectus ShockProof Hardshell Chromebook case-HP 11.6\" Fortis G10"
+      ]
+    },
+    {
+      "product_id": "prd_8cc9698fd9a5ac19855a",
+      "manufacturer": "TechProtectus",
+      "manufacturer_sku": "TP-MS-GO123",
+      "product_name_variants": [
+        "TP-MS-GO123",
+        "TechProtectus ShockProof Hardshell Laptop case-Microsoft Surface Laptop GO3/GO2/"
+      ]
+    },
+    {
+      "product_id": "prd_8b16a3a746529300eccd",
+      "manufacturer": "TechProtectus",
+      "manufacturer_sku": "TP-CP-V2",
+      "product_name_variants": [
+        "TP-CP-V2",
+        "TechProtectus Signal Blocking Cellphone Pouch"
+      ]
+    },
+    {
+      "product_id": "prd_142f8d79fb287fac6aeb",
+      "manufacturer": "TechProtectus",
+      "manufacturer_sku": "TP-CP-LOCK",
+      "product_name_variants": [
+        "TP-CP-LOCK",
+        "TechProtectus Lockable Signal Blocking Cellphone Pouch"
+      ]
+    },
+    {
+      "product_id": "prd_d39608fde9f16a424dde",
+      "manufacturer": "TechProtectus",
+      "manufacturer_sku": "TP-BASE-P",
+      "product_name_variants": [
+        "TP-BASE-P",
+        "TechProtectus Portable Base Key for its lockable pouch"
+      ]
+    },
+    {
+      "product_id": "prd_58ad692b77f99ac0655a",
+      "manufacturer": "TekVisions, Inc.",
+      "manufacturer_sku": "WAR-WAR5YR",
+      "product_name_variants": [
+        "5 Year Warranty",
+        "RAM Mount, Locking Long Arm"
+      ]
+    },
+    {
+      "product_id": "prd_0427e150fe473738e968",
+      "manufacturer": "Transfinder",
+      "manufacturer_sku": "TF-ORTHO-01",
+      "product_name_variants": [
+        "Bing Orthoimagery",
+        "Satellite Orthoimagery"
+      ]
+    },
+    {
+      "product_id": "prd_f6445025195e3bdcb1b4",
+      "manufacturer": "Transfinder",
+      "manufacturer_sku": "TF-WAYFI-01",
+      "product_name_variants": [
+        "Wayfinder",
+        "Wayfinder Software"
+      ]
+    },
+    {
+      "product_id": "prd_039a59847753f6779faf",
+      "manufacturer": "ViewSonic",
+      "manufacturer_sku": "LCD-DMA-002",
+      "product_name_variants": [
+        "SPRING-LOADED DUAL MONITOR",
+        "VIEWSONIC SPRING-LOADED DUAL MON ARM"
+      ]
+    },
+    {
+      "product_id": "prd_bf2d71c72dce8e438a7d",
+      "manufacturer": "ViewSonic",
+      "manufacturer_sku": "VB-WPS-003",
+      "product_name_variants": [
+        "VIEWBOARD CAST DONGLE",
+        "VIEWSONIC VWBD CAST DONGLE HDMI+USBA"
+      ]
+    },
+    {
+      "product_id": "prd_757af33bebdd2987d851",
+      "manufacturer": "ViewSonic",
+      "manufacturer_sku": "TD1655",
+      "product_name_variants": [
+        "15.6IN PORTABLE TOUCH DISP WITH",
+        "VIEWSONIC 15.6\" PORTABLE TOUCH DISP"
+      ]
+    },
+    {
+      "product_id": "prd_0ed69821dccb478844b7",
+      "manufacturer": "ViewSonic",
+      "manufacturer_sku": "VP2456A",
+      "product_name_variants": [
+        "24IN FULL HD IPS MONITOR WITH",
+        "VIEWSONIC 24\" USB-C ERGO MON"
+      ]
+    },
+    {
+      "product_id": "prd_f5d0363806f8df5161ed",
+      "manufacturer": "ViewSonic",
+      "manufacturer_sku": "VA1653",
+      "product_name_variants": [
+        "15.6IN PORTABLE 1080P IPS",
+        "VIEWSONIC 15.6\" PORTABLE MON"
+      ]
+    },
+    {
+      "product_id": "prd_4b59636fdcf4e0676de9",
+      "manufacturer": "ViewSonic",
+      "manufacturer_sku": "VG2441V",
+      "product_name_variants": [
+        "24IN 1080P VIDEO CONFERENCING M",
+        "VIEWSONIC 24\" 1080P, VIDEO CON, CAM"
+      ]
+    },
+    {
+      "product_id": "prd_afc4554ccd567c5e067b",
+      "manufacturer": "ViewSonic",
+      "manufacturer_sku": "VSPF2380",
+      "product_name_variants": [
+        "PRIVACY FILTER SCREEN PROTECTOR",
+        "VIEWSONIC 24\" PRIVACY FILTER SP"
+      ]
+    },
+    {
+      "product_id": "prd_54a802703773caa52824",
+      "manufacturer": "ViewSonic",
+      "manufacturer_sku": "VX3276-4K-MHD",
+      "product_name_variants": [
+        "32IN 4K UHD 3840X2160 MONITOR",
+        "VIEWSONIC 32IN 4K UHD LED MON"
+      ]
+    },
+    {
+      "product_id": "prd_35aab0396e4fcce046d2",
+      "manufacturer": "ViewSonic",
+      "manufacturer_sku": "TD2430",
+      "product_name_variants": [
+        "24IN LCD MVA PROJ CAPACTIVE",
+        "VIEWSONIC 24IN LED MULTI-TOUCH DSPLY"
+      ]
+    },
+    {
+      "product_id": "prd_38545ad10005309ea4bb",
+      "manufacturer": "ViewSonic",
+      "manufacturer_sku": "LCD-CMK-001",
+      "product_name_variants": [
+        "UNIVERSAL CLIENT MOUNTING KIT",
+        "VIEWSONIC CLIENT MOUNTING KIT"
+      ]
+    },
+    {
+      "product_id": "prd_9eb3b440d66a4f1ea3bb",
+      "manufacturer": "ViewSonic",
+      "manufacturer_sku": "VSPF2360",
+      "product_name_variants": [
+        "PRIVACY FILTER SCREEN PROTECTOR",
+        "VIEWSONIC SCREEN PROTECTOR 23.6\""
+      ]
+    },
+    {
+      "product_id": "prd_a1175ea976da6dd11ac9",
+      "manufacturer": "ViewSonic",
+      "manufacturer_sku": "VG2451",
+      "product_name_variants": [
+        "24IN 1080P ERGONOMIC 100HZ MNTR",
+        "VIEWSONIC 24IN 1080P ERGO,DP,USB HUB"
+      ]
+    },
+    {
+      "product_id": "prd_f352607f5c891a6b11b7",
+      "manufacturer": "ViewSonic",
+      "manufacturer_sku": "MH27M1",
+      "product_name_variants": [
+        "VIEWSONIC MONITOR HOOD",
+        "VIEWSONIC MONITOR HOOD FOR 27IN VP"
+      ]
+    },
+    {
+      "product_id": "prd_37c7e9be639e8427539b",
+      "manufacturer": "Vivacity Tech",
+      "manufacturer_sku": "VT-CA-VSP-11-GD",
+      "product_name_variants": [
+        "Vivacity Tech Guardian Vertical Sleeve with Pouch - 11in - Grey",
+        "Vivacity Tech Guardian Vertical Sleeve with Pouch - 14in - Grey"
+      ]
+    },
+    {
+      "product_id": "prd_7eb51c12f09c782b4190",
+      "manufacturer": "Canon",
+      "manufacturer_sku": "1266V426",
+      "product_name_variants": [
+        "USB Key Board (Cherry)",
+        "USB Keyboard (Cherry)"
+      ]
+    },
+    {
+      "product_id": "prd_d709232b9f66092d8766",
+      "manufacturer": "Canon",
+      "manufacturer_sku": "3821V580",
+      "product_name_variants": [
+        "Control Panel Protective Film (10 pack)",
+        "imageRUNNER ADVANCE DX Series Control Panel Protective Film (10 pack)"
+      ]
+    },
+    {
+      "product_id": "prd_5b31b96adb3a0e910c38",
+      "manufacturer": "Canon",
+      "manufacturer_sku": "3999B004AA",
+      "product_name_variants": [
+        "Barcode Printing Kit-D1",
+        "Barcode Printing Kit-D1e"
+      ]
+    },
+    {
+      "product_id": "prd_d209d64b73fed07406ed",
+      "manufacturer": "Canon",
+      "manufacturer_sku": "1008B001AA",
+      "product_name_variants": [
+        "Staple-P1",
+        "Staple-P1 (For Booklet Finisher-AG1 and Convenience Stapler-A1)"
+      ]
+    },
+    {
+      "product_id": "prd_6f9e59f4405dc9d937aa",
+      "manufacturer": "Canon",
+      "manufacturer_sku": "4000C002BA",
+      "product_name_variants": [
+        "Inner Finisher-L1",
+        "Inner Finisher-L1 (not supported with C5870i)",
+        "Inner Finisher-L1 (only supported with DX 6860i / DX 6855i)"
+      ]
+    },
+    {
+      "product_id": "prd_10b97a7f68c512c4072e",
+      "manufacturer": "Canon",
+      "manufacturer_sku": "4002C002AA",
+      "product_name_variants": [
+        "Inner 2/3 Hole Puncher-D1",
+        "Inner 2/3 Hole Puncher-D1 (not supported with C5870i)",
+        "Inner 2/3 Hole Puncher-D1 (only supported with DX 6860i / DX 6855i)"
+      ]
+    },
+    {
+      "product_id": "prd_0caf27ba5ae40c50cf26",
+      "manufacturer": "Canon",
+      "manufacturer_sku": "4067C002AA",
+      "product_name_variants": [
+        "Attachment Kit for Reader",
+        "Attachment kit for Reader",
+        "Attachment kit for Reader-A2",
+        "OP Attachment Kit for Reader-A2"
+      ]
+    },
+    {
+      "product_id": "prd_cf34c4532d3c6ce33140",
+      "manufacturer": "Canon",
+      "manufacturer_sku": "3679B005AA",
+      "product_name_variants": [
+        "Remote FAX Kit-A1",
+        "Remote Fax Kit-A1e"
+      ]
+    },
+    {
+      "product_id": "prd_d516b86e7f1dea3a3414",
+      "manufacturer": "Canon",
+      "manufacturer_sku": "4039C001BA",
+      "product_name_variants": [
+        "Memory Mirroring Kit",
+        "Memory Mirroring Kit-A1"
+      ]
+    },
+    {
+      "product_id": "prd_673336dc63d2e48f4766",
+      "manufacturer": "Canon",
+      "manufacturer_sku": "4040C001AA",
+      "product_name_variants": [
+        "IC Card Reader Box for Numeric Keypad",
+        "IC Card Reader Box for Numeric Keypad-A1"
+      ]
+    },
+    {
+      "product_id": "prd_a3001d6b41961b3254af",
+      "manufacturer": "Canon",
+      "manufacturer_sku": "8930B001AA",
+      "product_name_variants": [
+        "TAB ATTACHMENT-F1",
+        "Tab Feeding Attachment-F1"
+      ]
+    },
+    {
+      "product_id": "prd_6c125fc6975a570d075e",
+      "manufacturer": "Canon",
+      "manufacturer_sku": "4705V949",
+      "product_name_variants": [
+        "Standard Power Filter 20A/120V (dealer provided item)",
+        "Standard Power Filter 20A/120V (dealer provided item) (for C265)"
+      ]
+    },
+    {
+      "product_id": "prd_784b4160359f92fd83f8",
+      "manufacturer": "Canon",
+      "manufacturer_sku": "C5100",
+      "product_name_variants": [
+        "Series 40PPM 6377C002AA imageFORCE C5140",
+        "Series 50PPM 6378C002AA imageFORCE C5100",
+        "Series 70PPM 6378C002AA imageFORCE C5100"
+      ]
+    },
+    {
+      "product_id": "prd_af3fe83041da44ed05a0",
+      "manufacturer": "Canon",
+      "manufacturer_sku": "0146C001AA",
+      "product_name_variants": [
+        "Staple Cartridge-X1",
+        "Staple Cartridge-X1 (for Staple Finisher-AB3 and Booklet Finisher-A2 with Tri-Fold)"
+      ]
+    },
+    {
+      "product_id": "prd_19a5daeb500482b940a8",
+      "manufacturer": "Canon",
+      "manufacturer_sku": "6607C001AA",
+      "product_name_variants": [
+        "Long Sheet Feeding Tray-B1",
+        "Long Sheet Feeding and Catch Tray-B1"
+      ]
+    },
+    {
+      "product_id": "prd_2412c6177cb830ced66b",
+      "manufacturer": "Canon",
+      "manufacturer_sku": "3237C001BA",
+      "product_name_variants": [
+        "Finisher Jogger Kit-A1",
+        "Jogger Kit-A1"
+      ]
+    },
+    {
+      "product_id": "prd_c21b663270e9e4e831e3",
+      "manufacturer": "Canon",
+      "manufacturer_sku": "5738B002AA",
+      "product_name_variants": [
+        "Puncher Unit-BS1",
+        "Puncher Unit-BS1 (for Staple Finisher-X1, Booklet Finisher-X1, Staple Finisher-AG1 or Booklet Finisher-AG1)"
+      ]
+    },
+    {
+      "product_id": "prd_2a680a61837f7916b0aa",
+      "manufacturer": "Canon",
+      "manufacturer_sku": "4481V135",
+      "product_name_variants": [
+        "Loose Leaf 3-Hole Punch (round) LTR-B1",
+        "Loose Leaf 3-Hole Punch A4/LTR-B1"
+      ]
+    },
+    {
+      "product_id": "prd_421518d3de780e8edc81",
+      "manufacturer": "Canon",
+      "manufacturer_sku": "0259C002AA",
+      "product_name_variants": [
+        "Loose Leaf 5-Hole Punch (round) LTR-B1",
+        "Loose Leaf 5-Hole Punch LTR-B1"
+      ]
+    },
+    {
+      "product_id": "prd_989fe19095efc9cf3afe",
+      "manufacturer": "Canon",
+      "manufacturer_sku": "4481V180",
+      "product_name_variants": [
+        "Plastic Comb 19-Hole Punch (rect) LTR-B1",
+        "Plastic Comb 19-Hole Punch LTR-B1"
+      ]
+    },
+    {
+      "product_id": "prd_58baff1a3564979e9bf0",
+      "manufacturer": "Canon",
+      "manufacturer_sku": "0259C005AA",
+      "product_name_variants": [
+        "Twin Loop 21-Hole Punch (rect) LTR-B1",
+        "Twin Loop 21-Hole Punch LTR-B1"
+      ]
+    },
+    {
+      "product_id": "prd_e95a6a256be59a60f4ae",
+      "manufacturer": "Canon",
+      "manufacturer_sku": "4481V183",
+      "product_name_variants": [
+        "Twin Loop 32-Hole Punch (sq) LTR-B1",
+        "Twin Loop 32-Hole Punch LTR-B1"
+      ]
+    },
+    {
+      "product_id": "prd_62a40a57077fb49c3e6f",
+      "manufacturer": "Canon",
+      "manufacturer_sku": "4481V200",
+      "product_name_variants": [
+        "High Durability Color Coil 44-Hole Punch (round) LTR-B1",
+        "High Durability Color Coil 44-Hole Punch LTR-B1"
+      ]
+    },
+    {
+      "product_id": "prd_e1206d93bf76e509adbe",
+      "manufacturer": "Canon",
+      "manufacturer_sku": "4481V201",
+      "product_name_variants": [
+        "High Durability Loose Leaf 3-Hole Punch (round) LTR-B1",
+        "High Durability Loose Leaf 3-Hole Punch LTR"
+      ]
+    },
+    {
+      "product_id": "prd_3861f4fdcfd790250301",
+      "manufacturer": "Canon",
+      "manufacturer_sku": "1007B001AA",
+      "product_name_variants": [
+        "Staple-N1",
+        "Staple-N1(For Staple Finisher-AG1, Booklet Finisher-AG1)"
+      ]
+    },
+    {
+      "product_id": "prd_bc8aa0534fc7dd374cc6",
+      "manufacturer": "Canon",
+      "manufacturer_sku": "4370C001AA",
+      "product_name_variants": [
+        "Envelope Attachment-H1 for Multi Drawer Paper Deck-E1",
+        "Envelope Feeder Attachment-H1"
+      ]
+    },
+    {
+      "product_id": "prd_fbf7d40cc8014bd024e3",
+      "manufacturer": "Canon",
+      "manufacturer_sku": "8929B001AA",
+      "product_name_variants": [
+        "ENVELOPE ATCHMT-G1",
+        "Envelope Feeder Attachment-G1"
+      ]
+    },
+    {
+      "product_id": "prd_a08acf9ec2dc172af9df",
+      "manufacturer": "Canon",
+      "manufacturer_sku": "5217C001AA",
+      "product_name_variants": [
+        "Stack Bypass Alignment Tray-D1",
+        "Stack Bypass D1"
+      ]
+    },
+    {
+      "product_id": "prd_f7cfc0d81a85ba66c7b2",
+      "manufacturer": "Canon",
+      "manufacturer_sku": "5219C001AA",
+      "product_name_variants": [
+        "Long Sheet Catch Tray XL-B1",
+        "Long Sheet Catch Tray-B1"
+      ]
+    },
+    {
+      "product_id": "prd_25fca5ac9db850ae771c",
+      "manufacturer": "Canon",
+      "manufacturer_sku": "8002A016AA",
+      "product_name_variants": [
+        "X-Rite i1 Basic Pro 3",
+        "X-Rite i1 Pro 3"
+      ]
+    },
+    {
+      "product_id": "prd_04c5393f513f77dbdb89",
+      "manufacturer": "Canon",
+      "manufacturer_sku": "3166B079AA",
+      "product_name_variants": [
+        "$26 650 00 0 00% $26 650 00Accessories Standard Accessories 3166B081AA Cheetah S15 Photo Set",
+        "LAMpro Cheetah S15 Set"
+      ]
+    },
+    {
+      "product_id": "prd_54a215549386c5b8e42c",
+      "manufacturer": "Canon",
+      "manufacturer_sku": "7968A626AA",
+      "product_name_variants": [
+        "Maintenance: DSF Software Sandbox Platform",
+        "Maintenance: MDSF Software Sandbox Platform for Testing Environment"
+      ]
+    },
+    {
+      "product_id": "prd_b4e08c8318afc518892e",
+      "manufacturer": "Canon",
+      "manufacturer_sku": "7968A629AA",
+      "product_name_variants": [
+        "Maintenance: ePS VDP Templates powered by DirectSmile",
+        "Maintenance: ePS VDP powered by DirectSmile"
+      ]
+    },
+    {
+      "product_id": "prd_71c2adef53049742dafa",
+      "manufacturer": "Canon",
+      "manufacturer_sku": "7968A631AA",
+      "product_name_variants": [
+        "Maintenance: Add'l ePS VDP Rendering Engine",
+        "Maintenance: ePS VDP Rendering Engine Module"
+      ]
+    },
+    {
+      "product_id": "prd_00e822606eb5104ad527",
+      "manufacturer": "Canon",
+      "manufacturer_sku": "7968A633AA",
+      "product_name_variants": [
+        "Maintenance: Add'l DirectSmile VDP license",
+        "Maintenance: StoreFront Studio"
+      ]
+    },
+    {
+      "product_id": "prd_85ec69fb44dd91059808",
+      "manufacturer": "Canon",
+      "manufacturer_sku": "7968A670AA",
+      "product_name_variants": [
+        "Maintenance: Shipping Provider Integration (per provider)",
+        "Maintenance: Shipping Provider Integration per individual shipping provider"
+      ]
+    },
+    {
+      "product_id": "prd_2c8527c79561f5f4e47c",
+      "manufacturer": "Canon",
+      "manufacturer_sku": "7968A672AA",
+      "product_name_variants": [
+        "Maintenance: Additional Print Shops (>3 Requires Quote)",
+        "Maintenance: Additional Print Shops(each, 4 or more contact Canon)"
+      ]
+    },
+    {
+      "product_id": "prd_dfb677f360645d477662",
+      "manufacturer": "Canon",
+      "manufacturer_sku": "6138B429AA",
+      "product_name_variants": [
+        "Canon Production Professional Service (Dealer)",
+        "Production Professional Services (per hour) (Dealer)"
+      ]
+    },
+    {
+      "product_id": "prd_725c95e887e361a5d48f",
+      "manufacturer": "Canon",
+      "manufacturer_sku": "3077B113AA",
+      "product_name_variants": [
+        "Annual Maintenance: VarioPrint Connector Fiery Central Solo",
+        "Fiery Central 2.0 Base Configuration annual s/w support & maintenance"
+      ]
+    },
+    {
+      "product_id": "prd_2a49113c71fbe747f99b",
+      "manufacturer": "Canon",
+      "manufacturer_sku": "3077B124AA",
+      "product_name_variants": [
+        "Canon varioPRINT DP or Oce VarioPrint 6000 - One printer license",
+        "Printer license for one Canon varioPRINT DP or Oc\u00e9 VarioPrint 6000"
+      ]
+    },
+    {
+      "product_id": "prd_d29814428598a355dc0a",
+      "manufacturer": "Canon",
+      "manufacturer_sku": "5265C001AA",
+      "product_name_variants": [
+        "Canon Ink Tank PFI-2100 MBK - Pigment Ink Tank 160ml",
+        "PFI-2100 MBK - Pigment Ink Tank 160ml"
+      ]
+    },
+    {
+      "product_id": "prd_3101d2b2ca512d3387c0",
+      "manufacturer": "Canon",
+      "manufacturer_sku": "5276C001AA",
+      "product_name_variants": [
+        "Canon Ink Tank PFI-2300 MBK - Pigment Ink Tank 330ml",
+        "PFI-2300 MBK - Pigment Ink Tank 330ml"
+      ]
+    },
+    {
+      "product_id": "prd_f43f003ad38e8bc39130",
+      "manufacturer": "Canon",
+      "manufacturer_sku": "5287C001AA",
+      "product_name_variants": [
+        "Canon Ink Tank PFI-2700 MBK - Pigment Ink Tank 700ml",
+        "PFI-2700 MBK - Pigment Ink Tank 700ml"
+      ]
+    },
+    {
+      "product_id": "prd_dc2e13e2af715d442617",
+      "manufacturer": "Canon",
+      "manufacturer_sku": "5272C001AA",
+      "product_name_variants": [
+        "Canon Ink Tank PFI-2100 O - Pigment Ink Tank 160ml",
+        "PFI-2100 O - Pigment Ink Tank 160ml"
+      ]
+    },
+    {
+      "product_id": "prd_97cd8abd7723b910d302",
+      "manufacturer": "Canon",
+      "manufacturer_sku": "5283C001AA",
+      "product_name_variants": [
+        "Canon Ink Tank PFI-2300 O - Pigment Ink Tank 330ml",
+        "PFI-2300 O - Pigment Ink Tank 330ml"
+      ]
+    },
+    {
+      "product_id": "prd_08ef9f07b687020a55fc",
+      "manufacturer": "Canon",
+      "manufacturer_sku": "5294C001AA",
+      "product_name_variants": [
+        "Canon Ink Tank PFI-2700 O- Pigment Ink Tank 700ml",
+        "PFI-2700 O- Pigment Ink Tank 700ml"
+      ]
+    },
+    {
+      "product_id": "prd_64071f74b38fea9d3b37",
+      "manufacturer": "Canon",
+      "manufacturer_sku": "4265C009CA",
+      "product_name_variants": [
+        "Additional HD for Removable HD Kit 3&4",
+        "Additional Hard Drive for Removable Hard Drive Kit 2"
+      ]
+    },
+    {
+      "product_id": "prd_5fef39ac9e4efc54cc71",
+      "manufacturer": "Canon",
+      "manufacturer_sku": "3098C007AA",
+      "product_name_variants": [
+        "IJC357 Ink White 1L",
+        "IJC357 UV Ink White 1L",
+        "IJC358 UV Ink Cyan 800 ml"
+      ]
+    },
+    {
+      "product_id": "prd_97a0091b8006fb0e640f",
+      "manufacturer": "Canon",
+      "manufacturer_sku": "5066C007AA",
+      "product_name_variants": [
+        "IJC357 UV Ink White 1L",
+        "IJC358 UV Ink White 1L"
+      ]
+    },
+    {
+      "product_id": "prd_70eb3b9006b8346ad45b",
+      "manufacturer": "Canon",
+      "manufacturer_sku": "4644V296",
+      "product_name_variants": [
+        "PRISMAelevate XL Initial IPAK",
+        "PRISMAguide Pro IPAK"
+      ]
+    },
+    {
+      "product_id": "prd_220651ad2da8d459df38",
+      "manufacturer": "Canon",
+      "manufacturer_sku": "3098C001AA",
+      "product_name_variants": [
+        "IJC357 Ink Black 2L",
+        "IJC357 UV Ink Black 800 ml"
+      ]
+    },
+    {
+      "product_id": "prd_fb637c62750863ca2748",
+      "manufacturer": "Canon",
+      "manufacturer_sku": "3098C002AA",
+      "product_name_variants": [
+        "IJC357 Ink Cyan 2L",
+        "IJC357 UV Ink Cyan 800 ml"
+      ]
+    },
+    {
+      "product_id": "prd_7f268f5c0d979b2a6cde",
+      "manufacturer": "Canon",
+      "manufacturer_sku": "3098C003AA",
+      "product_name_variants": [
+        "IJC357 Ink Magenta 2L",
+        "IJC357 UV Ink Magenta 800 ml"
+      ]
+    },
+    {
+      "product_id": "prd_726c93c3c4b598528fc3",
+      "manufacturer": "Canon",
+      "manufacturer_sku": "3098C004AA",
+      "product_name_variants": [
+        "IJC357 Ink Yellow 2L",
+        "IJC357 UV Ink Yellow 800 ml"
+      ]
+    },
+    {
+      "product_id": "prd_b3ee8c5c043418f7eab7",
+      "manufacturer": "Canon",
+      "manufacturer_sku": "3098C005AA",
+      "product_name_variants": [
+        "IJC357 Ink Light Cyan 2L",
+        "IJC357 UV Ink White 1L"
+      ]
+    },
+    {
+      "product_id": "prd_00d2640e09b9ef760f8e",
+      "manufacturer": "Canon",
+      "manufacturer_sku": "3098C006AA",
+      "product_name_variants": [
+        "IJC357 Ink Light Magenta 2L",
+        "IJC358 UV Ink Black 800 ml"
+      ]
+    },
+    {
+      "product_id": "prd_ded566b082c04027379f",
+      "manufacturer": "Canon",
+      "manufacturer_sku": "3098C008AA",
+      "product_name_variants": [
+        "IJC357 Ink Varnish 1L",
+        "IJC358 UV Ink Magenta 800 ml"
+      ]
+    },
+    {
+      "product_id": "prd_545781a04a35647a9807",
+      "manufacturer": "Canon",
+      "manufacturer_sku": "5066C004AA",
+      "product_name_variants": [
+        "IJC358 UV Ink Black 2L",
+        "IJC358 UV Ink Yellow 800 ml"
+      ]
+    },
+    {
+      "product_id": "prd_dd20697b94ef3625d343",
+      "manufacturer": "Canon",
+      "manufacturer_sku": "5066C001AA",
+      "product_name_variants": [
+        "IJC358 UV Ink Cyan 2L",
+        "IJC358 UV Ink White 1L"
+      ]
+    },
+    {
+      "product_id": "prd_d95906145d5639ef88e9",
+      "manufacturer": "Canon",
+      "manufacturer_sku": "5066C002AA",
+      "product_name_variants": [
+        "IJC357 UV Ink Black 800 ml",
+        "IJC358 UV Ink Magenta 2L"
+      ]
+    },
+    {
+      "product_id": "prd_d4e1f83cb723568b04e8",
+      "manufacturer": "Canon",
+      "manufacturer_sku": "5066C003AA",
+      "product_name_variants": [
+        "IJC357 UV Ink Cyan 800 ml",
+        "IJC358 UV Ink Yellow 2L"
+      ]
+    },
+    {
+      "product_id": "prd_c03c73c55b0894a627f9",
+      "manufacturer": "Canon",
+      "manufacturer_sku": "5066C005AA",
+      "product_name_variants": [
+        "IJC357 UV Ink Magenta 800 ml",
+        "IJC358 UV Ink Light Cyan 2L"
+      ]
+    },
+    {
+      "product_id": "prd_ae05cf6aa10223c2e132",
+      "manufacturer": "Canon",
+      "manufacturer_sku": "5066C006AA",
+      "product_name_variants": [
+        "IJC357 UV Ink Yellow 800 ml",
+        "IJC358 UV Ink Light Magenta 2L"
+      ]
+    },
+    {
+      "product_id": "prd_99cb28ef1619966a9f6d",
+      "manufacturer": "Canon",
+      "manufacturer_sku": "5595C001AA",
+      "product_name_variants": [
+        "Exchange Roller for C230/C240/M160II/M260/S150/SF400/S250N/R30/R40/RS40/R50",
+        "Exchange Roller for C240/C230/M160II/S150"
+      ]
+    },
+    {
+      "product_id": "prd_f922dba9522784347130",
+      "manufacturer": "Canon",
+      "manufacturer_sku": "9739B024AA",
+      "product_name_variants": [
+        "eCarePAK PM (On-Site Service Program) for LVP Scanner Single Event",
+        "eCarePAK PM (On-Site Service Program) for LVP Scanner Single Event Preventative Maintenance"
+      ]
+    }
+  ]
+}

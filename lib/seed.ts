@@ -11,6 +11,7 @@ import tylerNaspo from "../seed/catalogs/tyler-technologies-naspo-ar3764-2026-09
 import naspoCitizenEngagement from "../seed/catalogs/naspo-citizen-engagement-platforms.json";
 import naspoAccess from "../seed/catalogs/naspo-contract-access.json";
 import coopInsights from "../seed/coops/insights.json";
+import catalogReconcile from "../seed/catalog/reconcile.json";
 
 /** Governments the co-op directory places on each co-op (lib/directory.ts), from seed/coops/insights.json. */
 function withRosterCount(c: Coop): Coop {
@@ -538,6 +539,7 @@ export function seed(): Db {
     memberships: [{ agency: "City of Riverbend", coop_id: "coop_wspc", source: "detected", evidence: "list", confirmed: true }],
     referrals: [],
     impressions: [],
+    price_list_reads: [],
     // Harmon Lake has used four of its five free RFPs this year, so the limit shows in one click.
     agency_settings: [{ agency: "Harmon Lake Township", plan: "free", rfp_year: new Date().getFullYear(), rfp_used: 4, ad_free: false }],
     invites: [],
@@ -577,6 +579,7 @@ export function seed(): Db {
   addComputerEquipment(db);
   addNaspoParks(db);
   addNaspoLocalAdopters(db);
+  if (!process.env.AGORA_SKIP_CATALOG_CORRECTIONS) applyCatalogCorrections(db);
   for (const c of db.contracts) if (c.source === "coop_contract") c.coop_id ??= coopIdForVehicle(c.vehicle);
   fireMonthlyLines(db);
   return db;
@@ -945,6 +948,37 @@ function addNaspoCitizenEngagement(db: Db) {
         { label: "Supplier page on NASPO ValuePoint", url: a.naspo_url },
       ],
     });
+  }
+}
+
+/** Where the co-op catalog (seed/catalog/reconcile.json, built by scripts/import-catalog.ts)
+ * confirms or corrects a seeded co-op contract: dates the co-op publishes, NASPO's
+ * participating states, the co-op's own page for the contract, and contract numbers
+ * that disagree with the co-op's index (Dell's NASPO award is 23004, not 23026). Flagged
+ * differences are left alone and listed on /data. */
+function applyCatalogCorrections(db: Db) {
+  for (const c of catalogReconcile.confirmations) {
+    const contract = db.contracts.find((x) => x.id === c.contract_id);
+    if (contract) contract.catalog_id = c.catalog_contract;
+  }
+  for (const fix of catalogReconcile.corrections) {
+    if (fix.action !== "apply") continue;
+    const c = db.contracts.find((x) => x.id === fix.contract_id);
+    if (!c) continue;
+    if (fix.field === "end") c.end = fix.catalog;
+    else if (fix.field === "start") c.start = fix.catalog;
+    else if (fix.field === "states" && c.eligibility) {
+      const states = fix.catalog.split(", ");
+      c.eligibility = { ...c.eligibility, states, note: `public entities in the ${states.length} states with a participating addendum` };
+    } else if (fix.field === "source_url") {
+      if (c.source_url && !(c.documents ?? []).some((d) => d.url === c.source_url)) (c.documents ??= []).push({ label: "Earlier link", url: c.source_url });
+      c.source_url = fix.catalog;
+      (c.documents ??= []).unshift({ label: "Supplier page on the co-op's site", url: fix.catalog });
+    } else if (fix.field === "contract_number") {
+      const was = c.contract_number;
+      c.contract_number = fix.catalog;
+      c.relation_note = `${fix.note} Agora had ${was}, from the supplier's own posted document.${c.relation_note ? ` ${c.relation_note}` : ""}`;
+    }
   }
 }
 

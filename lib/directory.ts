@@ -2,7 +2,7 @@
 // IPEDS list, plus every one the public co-op rosters, agency procurement pages,
 // documented purchases, Texas DIR and the .gov registry name, one record each.
 // Records carry permanent federal IDs where one matched. Built by scripts/import-coop-data.ts into
-// seed/coops/directory.json.gz. Server only: 130,000 records stay here and the
+// seed/coops/directory.json.gz. Server only: 121,000 records stay here and the
 // browser asks /api/directory for the few it needs.
 
 import { readFileSync } from "node:fs";

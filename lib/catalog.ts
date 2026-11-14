@@ -1,4 +1,4 @@
-// The co-op catalog: 31,930 supplier contracts, 22,785 suppliers, 34,510 products
+// The co-op catalog: 31,930 supplier contracts, 22,778 suppliers, 34,619 products
 // and 12,602 price documents from 13 co-ops' public directories, captured November
 // 13, 2026 and built into seed/catalog/catalog.json.gz by scripts/import-catalog.ts.
 // Server only. Search, the co-op section, product routes, storefronts and the

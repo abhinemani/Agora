@@ -37,60 +37,65 @@
    "by_website": 4468,
    "by_name": 5718,
    "census_only": 3157,
-   "nces_only": 9084
+   "nces_only": 6245
   },
-  "matched": 41360,
-  "merged_by_id": 1638,
-  "county_offices": 262,
-  "reviewed_school_pairs": 0,
-  "reviewed_matches": 0,
+  "matched": 45529,
+  "merged_by_id": 3530,
+  "county_offices": 261,
+  "reviewed_school_pairs": 2839,
+  "reviewed_matches": 6059,
   "review_tasks": {
-   "school-pairs": 2979,
-   "gov-match": 11279
+   "school-pairs": 125,
+   "gov-match": 5213
   },
   "county_governing_bodies_merged": 190,
-  "added": 62810,
-  "confirmed_public": 1416,
-  "private_set_aside": 868,
+  "added": 55803,
+  "confirmed_public": 1541,
+  "private_set_aside": 869,
   "private_examples": [
    {
-    "name": "Samford University",
-    "state": "AL",
+    "name": "Wallace State Community College",
+    "state": "AK",
     "coops": [
+     "coop_sourcewell",
      "coop_buyboard_national",
-     "coop_eandi"
+     "coop_eandi",
+     "coop_hgacbuy",
+     "coop_mohave",
+     "coop_buyboard",
+     "coop_costars"
     ]
    },
    {
-    "name": "St Mary's College of California",
+    "name": "Soka University of America",
     "state": "CA",
     "coops": [
      "coop_eandi"
     ]
    },
    {
-    "name": "North Park University",
+    "name": "North Central College",
     "state": "IL",
     "coops": [
      "coop_eandi"
     ]
    },
    {
-    "name": "Madonna University",
+    "name": "Lawrence Technological University",
     "state": "MI",
     "coops": [
      "coop_eandi"
     ]
    },
    {
-    "name": "Manhattan University",
+    "name": "Manhattan School of Music",
     "state": "NY",
     "coops": [
      "coop_eandi"
     ]
    },
    {
-    "name": "Salus University",
+    "name": "Rosemont College",
     "state": "PA",
     "coops": [
      "coop_eandi",
@@ -98,33 +103,33 @@
     ]
    }
   ],
-  "governments_with_id": 103300,
-  "roster_governments": 61547,
-  "roster_with_id": 40411,
+  "governments_with_id": 100462,
+  "roster_governments": 59666,
+  "roster_with_id": 44591,
   "roster_by_type": {
    "tribal": {
     "all": 385,
     "with_id": 0
    },
    "special_district": {
-    "all": 17959,
-    "with_id": 6667
+    "all": 17583,
+    "with_id": 8685
    },
    "school_district": {
-    "all": 18355,
-    "with_id": 11381
+    "all": 17417,
+    "with_id": 13204
    },
    "county": {
-    "all": 3464,
-    "with_id": 2986
+    "all": 3388,
+    "with_id": 2995
    },
    "municipality": {
-    "all": 18938,
-    "with_id": 18001
+    "all": 18805,
+    "with_id": 18291
    },
    "higher_education": {
-    "all": 2388,
-    "with_id": 1376
+    "all": 2030,
+    "with_id": 1416
    },
    "state_agency": {
     "all": 58,
@@ -138,39 +143,39 @@
     "type": "tribal"
    },
    {
-    "name": "Cimarron Hills Fire Department",
-    "state": "CO",
+    "name": "District of Columbia Department of Housing and Community Development",
+    "state": "DC",
     "type": "special_district"
    },
    {
-    "name": "Village of Romeoville Parks and Recreation Department",
-    "state": "IL",
-    "type": "municipality"
+    "name": "Spring Hill Recreation Commission",
+    "state": "KS",
+    "type": "special_district"
    },
    {
-    "name": "Clinton Township",
-    "state": "MN",
-    "type": "municipality"
-   },
-   {
-    "name": "Cloudcroft Municipal School District",
-    "state": "NM",
+    "name": "Mississippi Delta Academies",
+    "state": "MS",
     "type": "school_district"
    },
    {
-    "name": "North Lincoln Fire and Rescue 1",
-    "state": "OR",
-    "type": "special_district"
+    "name": "Town of Colonie",
+    "state": "NY",
+    "type": "municipality"
    },
    {
-    "name": "North Middleton Township Police Department",
+    "name": "Dauntless Hook and ladder Ambulance League",
     "state": "PA",
     "type": "special_district"
    },
    {
-    "name": "College Mound Special Utility District",
+    "name": "Polk Township Volunteer Fire Company",
+    "state": "PA",
+    "type": "special_district"
+   },
+   {
+    "name": "City of Deer Park Crime Control Prevention District",
     "state": "TX",
-    "type": "higher_education"
+    "type": "special_district"
    }
   ],
   "merge_examples": [
@@ -183,71 +188,71 @@
     "id": "census 100208"
    },
    {
-    "name": "Hutchinson Public Schools USD 308",
-    "state": "KS",
+    "name": "Yuma Elementary School District",
+    "state": "AZ",
     "merged": [
-     "Hutchinson Unified School District 308"
+     "Yuma School District One"
     ],
-    "id": "census 179607"
+    "id": "census 177997"
    },
    {
-    "name": "Freeport Public School District",
-    "state": "NY",
+    "name": "Elgin School District U-46",
+    "state": "IL",
     "merged": [
-     "Freeport Public Schools"
+     "School District U-46"
     ],
-    "id": "census 181560"
+    "id": "census 103654"
    },
    {
-    "name": "Morgan County School District",
-    "state": "TN",
+    "name": "Holdingford Public School District 738",
+    "state": "MN",
     "merged": [
-     "Morgan County Schools"
+     "Holdingford Public Schools"
     ],
-    "id": "census 160480"
+    "id": "census 180236"
    },
    {
-    "name": "Carroll County Board of Education",
-    "state": "GA",
-    "merged": [
-     "Carroll County School District"
-    ],
-    "id": "census 210158"
-   },
-   {
-    "name": "Gloucester County Vocational Technical School District",
+    "name": "Medford Township Public School District",
     "state": "NJ",
     "merged": [
-     "Gloucester County Vocational-Technical School"
+     "Medford Township Public Schools"
     ],
-    "id": "census 117619"
+    "id": "census 117647"
    },
    {
-    "name": "Borough of Collingdale",
-    "state": "PA",
+    "name": "Dahlonegah Public School",
+    "state": "OK",
     "merged": [
-     "Collingdale Borough"
+     "Dahlonegah School"
     ],
-    "id": "census 111954"
+    "id": "census 187122"
    },
    {
-    "name": "Borough of New Wilmington",
-    "state": "PA",
+    "name": "Metro Nashville Public Schools",
+    "state": "TN",
     "merged": [
-     "New Wilmington Borough"
+     "Metropolitan Nashville Public Schools"
     ],
-    "id": "census 174008"
+    "id": "census 122109"
+   },
+   {
+    "name": "North Wyoming Community College District",
+    "state": "WY",
+    "merged": [
+     "Northern Wyoming Community College District"
+    ],
+    "id": "census 115591"
    }
   ],
   "websites": {
-   "total": 47757,
+   "total": 47439,
    "by_source": {
-    "gov": 14133,
-    "census": 20589,
+    "gov": 14132,
+    "census": 20494,
     "ipeds": 1838,
-    "nces": 11197
+    "nces": 10975
    },
-   "roster_with_website": 27694
+   "roster_with_website": 30338
   }
  },
  "workbook": {
@@ -335,36 +340,36 @@
   }
  ],
  "directory": {
-  "governments": 130183,
+  "governments": 121321,
   "from_rosters": 64229,
-  "on_a_roster": 61547,
+  "on_a_roster": 59666,
   "by_type": {
    "tribal": 515,
    "state_agency": 950,
-   "special_district": 53906,
-   "school_district": 29652,
-   "higher_education": 3202,
-   "county": 4453,
-   "municipality": 37505
+   "special_district": 51527,
+   "school_district": 24056,
+   "higher_education": 2805,
+   "county": 4370,
+   "municipality": 37098
   },
-  "inferred": 5168,
-  "with_domain": 47757,
-  "roster_with_domain": 27694,
+  "inferred": 4125,
+  "with_domain": 47439,
+  "roster_with_domain": 30338,
   "dotgov_rows": 15750,
-  "dotgov_matched": 9747,
-  "dotgov_added": 4386
+  "dotgov_matched": 9709,
+  "dotgov_added": 4423
  },
  "overlap": {
   "by_roster_count": {
-   "1": 47551,
-   "2": 10245,
-   "3": 3378,
-   "4+": 373
+   "1": 44606,
+   "2": 11011,
+   "3": 3595,
+   "4+": 454
   },
   "conservative_key_entities": 75467,
   "conservative_key_multi": 11309,
-  "entity_key_multi": 13996,
-  "on_three_or_more": 3761,
+  "entity_key_multi": 15060,
+  "on_three_or_more": 4059,
   "examples": [
    {
     "name": "Borough of Fairbanks North Star",
@@ -375,58 +380,58 @@
     "coops": 2
    },
    {
-    "name": "Fort Payne City School District",
+    "name": "Enterprise City School District",
     "state": "AL",
     "also": [
-     "Fort Payne City Board of Education"
+     "Enterprise City Board of Education"
     ],
     "coops": 2
    },
    {
-    "name": "Walker County Board of Education",
+    "name": "Saraland City Schools District",
     "state": "AL",
     "also": [
-     "Walker County Schools"
+     "Saraland City Schools"
     ],
-    "coops": 3
+    "coops": 2
    },
    {
-    "name": "City of Buckeye",
+    "name": "Antelope Union High School District 50",
     "state": "AZ",
     "also": [
-     "Buckeye, City of"
+     "Antelope UHSD No.50"
+    ],
+    "coops": 2
+   },
+   {
+    "name": "City of Coolidge",
+    "state": "AZ",
+    "also": [
+     "Coolidge, City of"
     ],
     "coops": 4
    },
    {
-    "name": "City of Winslow",
+    "name": "Cochise Technology District No.1",
     "state": "AZ",
     "also": [
-     "Winslow, City of"
-    ],
-    "coops": 3
-   },
-   {
-    "name": "Morenci Unified School District 18",
-    "state": "AZ",
-    "also": [
-     "Morenci USD No.18"
+     "Cochise Technology District"
     ],
     "coops": 2
    },
    {
-    "name": "Town of Clarkdale",
+    "name": "Hyder Elementary School District 16",
     "state": "AZ",
     "also": [
-     "Clarkdale, Town of"
+     "Hyder Elem SD No.16"
     ],
     "coops": 2
    },
    {
-    "name": "Winslow Unified School District 1",
+    "name": "Page Unified School District 8",
     "state": "AZ",
     "also": [
-     "Winslow USD No.1"
+     "Page USD No.8"
     ],
     "coops": 3
    }
@@ -435,31 +440,31 @@
  "coop_counts": {
   "coop_sourcewell": {
    "list": 0,
-   "roster": 48353,
+   "roster": 48199,
    "agency": 7,
    "purchase": 0
   },
   "coop_hgacbuy": {
    "list": 0,
-   "roster": 9671,
+   "roster": 9661,
    "agency": 5,
    "purchase": 0
   },
   "coop_buyboard_national": {
    "list": 0,
-   "roster": 4635,
+   "roster": 4628,
    "agency": 1,
    "purchase": 0
   },
   "coop_eandi": {
    "list": 0,
-   "roster": 6400,
+   "roster": 6174,
    "agency": 3,
    "purchase": 0
   },
   "coop_mohave": {
    "list": 0,
-   "roster": 488,
+   "roster": 487,
    "agency": 0,
    "purchase": 0
   },
@@ -525,13 +530,13 @@
   },
   "coop_costars": {
    "list": 0,
-   "roster": 6778,
+   "roster": 6743,
    "agency": 0,
    "purchase": 0
   },
   "coop_buyboard": {
    "list": 0,
-   "roster": 3347,
+   "roster": 3345,
    "agency": 5,
    "purchase": 0
   },
@@ -549,9 +554,9 @@
   }
  },
  "evidence": {
-  "roster": 61547,
+  "roster": 59666,
   "agency": 12,
-  "purchase": 3581,
+  "purchase": 3569,
   "id_checks": [
    {
     "agency": "Lawrence",
@@ -713,12 +718,13 @@
    "strongest": "roster"
   },
   {
-   "id": "gov_tx_north-texas-tollway-authority",
+   "id": "gov_tx_north-texas-tollway-auth",
    "name": "North Texas Tollway Authority",
    "state": "TX",
    "type": "special_district",
    "dir_sales": 50735015,
    "coops": [
+    "coop_hgacbuy",
     "coop_sourcewell",
     "coop_buyboard"
    ],
@@ -1001,6 +1007,20 @@
    "strongest": "roster"
   },
   {
+   "id": "gov_tx_san-jacinto-college-district",
+   "name": "San Jacinto College",
+   "state": "TX",
+   "type": "higher_education",
+   "dir_sales": 15324891,
+   "coops": [
+    "coop_hgacbuy",
+    "coop_sourcewell",
+    "coop_buyboard",
+    "coop_eandi"
+   ],
+   "strongest": "roster"
+  },
+  {
    "id": "gov_tx_south-texas-college",
    "name": "South Texas College",
    "state": "TX",
@@ -1009,7 +1029,8 @@
    "coops": [
     "coop_sourcewell",
     "coop_buyboard",
-    "coop_eandi"
+    "coop_eandi",
+    "coop_hgacbuy"
    ],
    "strongest": "roster"
   },
@@ -1049,7 +1070,8 @@
    "coops": [
     "coop_sourcewell",
     "coop_buyboard",
-    "coop_eandi"
+    "coop_eandi",
+    "coop_hgacbuy"
    ],
    "strongest": "roster"
   },
@@ -1127,19 +1149,6 @@
     "coop_sourcewell",
     "coop_buyboard",
     "coop_eandi"
-   ],
-   "strongest": "roster"
-  },
-  {
-   "id": "gov_tx_galveston-county",
-   "name": "Galveston County",
-   "state": "TX",
-   "type": "county",
-   "dir_sales": 12451875,
-   "coops": [
-    "coop_hgacbuy",
-    "coop_sourcewell",
-    "coop_buyboard"
    ],
    "strongest": "roster"
   }

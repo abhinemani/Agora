@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import type { DirectoryGovernment } from "@/lib/types";
 import { ENTITY_LABEL } from "@/lib/vehicles";
 
-/** Typeahead over Agora's co-op directory: 130,000 governments from the Census of Governments, NCES, IPEDS, co-op rosters, agency pages, Texas DIR and the .gov registry. */
+/** Typeahead over Agora's co-op directory: 121,000 governments from the Census of Governments, NCES, IPEDS, co-op rosters, agency pages, Texas DIR and the .gov registry. */
 export function DirectorySearch({
   onPick,
   placeholder = "Start typing your agency's name",

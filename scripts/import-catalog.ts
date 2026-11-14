@@ -508,7 +508,7 @@ let canonAdded = 0;
   const canonOffer = offerings.find((o) => o.coop === "Sourcewell" && o.status === "published_price");
   if (canonOffer)
     for (const [id, r] of Object.entries(canonRows)) {
-      if (!r.name || r.price == null || r.issue) continue;
+      if (!r.name || !r.price || r.issue) continue; // a $0.00 price is a rounded fraction of a cent
       const pid = `prd_canon_${id}`;
       products.push({ id: pid, name: r.name, maker: "Canon", mpn: r.sku, review: false });
       offerings.push({

@@ -30,6 +30,8 @@ Everything below is merged to `main` and deployed on Railway. Each batch passed 
 
 **State rules** (PR #15). The 50-state cooperative purchasing research. A **State law** note sits beside co-op contracts for the buyer's state, and turns red when a request looks like construction. All 50 states, with their sources, are at `/data#states`.
 
+**Contracts as records.** `/contracts` searches all 31,942 contracts (the co-op catalog's plus Agora's own), and every contract has a page at `/contracts/<id>` with access for the buyer's agency, how to buy under it, what it covers, the pricing on file, its documents, a six-field brief and questions answered from the documents. Result cards, storefronts and the own-contract card link to it. The brief's AI path was not exercised in the build session, which had no API key; the passage fallback was.
+
 ## Waiting on the user
 
 Nothing right now. Burke's price list and 1GPA's roster arrived as manual downloads and are loaded. They're saved in the repo (`seed/catalog/source/price-files/` and `seed/coops/source/rosters/`), so rebuilds don't need them again.
@@ -52,6 +54,10 @@ Nothing right now. Burke's price list and 1GPA's roster arrived as manual downlo
 5. **Leftover government matches.** About 5,200 roster governments still lack a federal ID (the reviewer answered "none" or wasn't confident). A second pass that can search the web would settle many of them.
 6. **Persistence.** The app's state is in memory, so a redeploy resets it. A database is needed before real pilots.
 7. **Real supplier checks.** SAM.gov's API (registrations, exclusions) needs a key, which goes through the secure credential form, never chat.
+
+8. **More readable documents.** The contract brief reads about 11,900 contracts' documents, nearly all GSA. Sourcewell's 881 price-file links, NASPO's master agreements and HGACBuy's zip bundles would widen it; HGACBuy needs an unzip step.
+9. **Compare two contracts.** The brief's six fields are the same for every contract, so a side-by-side view is a small step.
+10. **A rehearsal step for contracts.** The explorer and contract page are checked by hand, not by `npm run rehearse`.
 
 ## Watch out for
 

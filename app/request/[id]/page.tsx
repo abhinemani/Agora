@@ -19,6 +19,7 @@ import { Lock, People, Plus, Sparkle } from "@/components/icons";
 import { Badge, Button, Card, Checkbox, ErrorNote, Eyebrow, IconCircle, LinkButton, Loading, RevenueTags, SourcePill, Stars, SupplierBadges, money } from "@/components/ui";
 import { verificationSummary } from "@/lib/verification";
 import { goHref } from "@/lib/coops";
+import { contractHref } from "@/components/ContractBits";
 import type { ContractLead, Results, ResultOption, Unavailable } from "@/lib/assistant";
 import { PURCHASE_KINDS, TRANSACTION_FEE_SOURCES } from "@/lib/revenue_rules";
 
@@ -226,7 +227,7 @@ export default function RequestResults() {
             </button>
           )}
 
-          <CoopSection section={coops!} requestId={id} onMembershipChange={() => setResults(null)} refs={contractRefs} />
+          <CoopSection section={coops!} requestId={id} onMembershipChange={() => setResults(null)} refs={contractRefs} query={p.item} />
           <CatalogProducts data={results.catalog_products} requestId={id} />
 
           <div className="grid gap-4 md:grid-cols-3">
@@ -248,7 +249,7 @@ export default function RequestResults() {
       )}
 
       {results && results.no_match && showEarn && <KindBanner kind={PURCHASE_KINDS.new_need} />}
-      {results && results.no_match && <CoopSection section={coops!} requestId={id} onMembershipChange={() => setResults(null)} refs={contractRefs} />}
+      {results && results.no_match && <CoopSection section={coops!} requestId={id} onMembershipChange={() => setResults(null)} refs={contractRefs} query={p.item} />}
       {results && results.no_match && (
         <div className="mt-8">
           <CatalogProducts data={results.catalog_products} requestId={id} />
@@ -273,8 +274,8 @@ export default function RequestResults() {
                 </h2>
                 {results.contract_leads.some((c) => c.eligible) && (
                   <p className="mt-2 text-sm text-navy">
-                    The contracts listed alongside cover this kind of purchase, but Agora doesn't hold their prices yet. Ask the supplier for a quote under the contract
-                    before running a solicitation.
+                    The contracts listed alongside cover this kind of purchase, but Agora doesn't hold their prices yet. Open one for its terms and how to buy under it, and
+                    ask the supplier for a quote under the contract before running a solicitation.
                   </p>
                 )}
                 <p className="mt-2 text-sm text-slate">
@@ -520,9 +521,9 @@ function ContractLeadsCard({ leads }: { leads: ContractLead[] }) {
             <Link href={`/storefronts/${c.supplier_id}`} className="font-semibold text-navy hover:text-maroon hover:underline">
               {c.supplier}
             </Link>
-            <div className="text-slate">
+            <Link href={contractHref(c.contract_id)} className="block text-slate underline decoration-base-light underline-offset-2 hover:text-maroon">
               {c.vehicle} {c.contract_number} · {c.title}
-            </div>
+            </Link>
             <div className={c.eligible ? "text-emerald-700" : "text-maroon"}>{c.eligible ? c.reason : `Not open to you: ${c.reason.replace(/^Open to /, "open to ")}`}</div>
             {c.link_out?.has_link && (
               <a href={goHref(c.contract_id)} target="_blank" rel="noreferrer" className="font-semibold text-maroon hover:underline">
@@ -532,7 +533,15 @@ function ContractLeadsCard({ leads }: { leads: ContractLead[] }) {
           </li>
         ))}
       </ul>
-      {leads.length > 5 && <p className="mt-2 text-[11px] text-slate">And {leads.length - 5} more on the Contracts page.</p>}
+      {leads.length > 5 && (
+        <p className="mt-2 text-[11px] text-slate">
+          And {leads.length - 5} more on the{" "}
+          <Link href="/contracts" className="underline">
+            Contracts page
+          </Link>
+          .
+        </p>
+      )}
     </Card>
   );
 }

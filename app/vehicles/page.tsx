@@ -6,6 +6,7 @@ import { useStore } from "@/components/store";
 import { Badge, Card, Loading, PageTitle, SectionLabel } from "@/components/ui";
 import type { Contract } from "@/lib/types";
 import { checkEligibility, stateName } from "@/lib/vehicles";
+import Link from "next/link";
 import { useState } from "react";
 
 const BASIS: Record<NonNullable<Contract["pricing_basis"]>, string> = {
@@ -33,8 +34,12 @@ export default function Vehicles() {
 
   return (
     <div className="space-y-8">
-      <PageTitle eyebrow="Contract vehicles" title="Every contract in Agora">
-        Which contracts are loaded, who may use each one, how prices are set, and how far each has been verified.
+      <PageTitle eyebrow="Contract vehicles" title="Contracts loaded in Agora">
+        The contracts Agora holds itself: who may use each one, how prices are set, and how far each has been verified. For every co-op and federal contract as well,{" "}
+        <Link href="/contracts" className="font-semibold text-primary">
+          search all contracts
+        </Link>
+        .
         {buyer ? (
           <>
             {" "}
@@ -67,9 +72,9 @@ export default function Vehicles() {
                         <span className="font-semibold text-navy">{c.vehicle ?? c.owner}</span>
                         <span className="font-mono text-xs text-slate">{c.contract_number}</span>
                       </div>
-                      <div className="text-sm text-navy">
+                      <Link href={`/contracts/${c.id}`} className="block text-sm text-navy underline decoration-base-light underline-offset-2 hover:text-maroon">
                         {supplier?.name} · {c.title}
-                      </div>
+                      </Link>
                       <div className="text-xs text-slate">
                         {c.owner}
                         {c.master_agreement ? ` · adopted from ${c.master_agreement}` : ""}

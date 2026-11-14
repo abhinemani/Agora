@@ -21,6 +21,7 @@ const handlers: Record<string, Handler> = {
   draftPaperwork: (b) => A.draftPaperwork(b),
   contractsToAsk: () => A.contractsToAsk(),
   askContract: (b) => A.askContract(b),
+  briefContract: (b) => A.briefContract(b),
   dive: (b) => A.dive(b),
   diveCompare: (b) => A.diveCompare(b),
   placeOrder: (b) => A.placeOrder(b),

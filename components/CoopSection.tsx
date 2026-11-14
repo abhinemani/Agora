@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useState } from "react";
 import type { CoopHit, CoopSection as Section } from "@/lib/assistant";
 import { goHref } from "@/lib/coops";
+import { contractHref } from "./ContractBits";
 import { CoopLink } from "./CoopLink";
 import { CoopMemberships } from "./CoopMemberships";
 import { StateRuleNote } from "./StateRuleNote";
@@ -23,7 +24,7 @@ export function FitPill({ fit }: { fit: number }) {
 
 /** Co-op contracts for the request: the co-ops the agency belongs to, then the ones it could join. */
 /** `refs` maps a contract id to the reference number the personal shopper cites it by. */
-export function CoopSection({ section, requestId, onMembershipChange, refs }: { section: Section; requestId: string; onMembershipChange: () => void; refs?: Record<string, number> }) {
+export function CoopSection({ section, requestId, onMembershipChange, refs, query }: { section: Section; requestId: string; onMembershipChange: () => void; refs?: Record<string, number>; query?: string }) {
   const { db } = useStore();
   const buyer = db?.session.buyer ?? null;
   if (!section.hits.length) return null;
@@ -89,6 +90,14 @@ export function CoopSection({ section, requestId, onMembershipChange, refs }: { 
           <a href="/data#catalog" className="underline">
             About the co-op catalog
           </a>
+          {query && (
+            <>
+              {" · "}
+              <Link href={`/contracts?q=${encodeURIComponent(query)}`} className="font-semibold underline">
+                Search every contract for “{query}”
+              </Link>
+            </>
+          )}
         </p>
       )}
     </section>
@@ -166,7 +175,10 @@ function Hit({ h, requestId, refN }: { h: CoopHit; requestId: string; refN?: num
             <Link href={`/storefronts/${h.supplier_id}`} className="hover:text-maroon hover:underline">
               {h.supplier}
             </Link>
-            <span className="text-slate"> · {h.title}</span>
+            <span className="text-slate"> · </span>
+            <Link href={contractHref(h.contract_id)} className="text-slate underline decoration-base-light underline-offset-2 hover:text-maroon" title="Terms, documents and how to buy under this contract">
+              {h.title}
+            </Link>
           </div>
           <div className={`mt-1 text-[11px] ${h.eligible ? "text-slate" : "text-maroon"}`}>
             {h.eligible ? h.reason : `Not open to you: ${h.reason}`}
@@ -177,7 +189,10 @@ function Hit({ h, requestId, refN }: { h: CoopHit; requestId: string; refN?: num
         </div>
         <FitPill fit={h.fit} />
       </div>
-      <div className="mt-2 flex flex-wrap items-center justify-end gap-2">
+      <div className="mt-2 flex flex-wrap items-center justify-end gap-3">
+        <Link href={contractHref(h.contract_id)} className="mr-auto text-xs font-semibold text-primary hover:underline">
+          Contract details
+        </Link>
         {h.member || !buyer || h.coop_id === "gsa_mas" ? (
           h.link_out && !h.link_out.has_link && h.directory_url ? (
             <DirectoryLink h={h} />

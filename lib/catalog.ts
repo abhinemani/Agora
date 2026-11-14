@@ -91,6 +91,7 @@ interface Index {
   productById: Map<string, CatalogProduct>;
   offeringById: Map<string, CatalogOffering>;
   offeringsByProduct: Map<string, CatalogOffering[]>;
+  offeringsByContract: Map<string, CatalogOffering[]>;
   contractsBySupplier: Map<string, CatalogContract[]>;
   documentsByContract: Map<string, CatalogDocument[]>;
   supplierByKey: Map<string, CatalogSupplier>;
@@ -141,6 +142,8 @@ function load(): Index {
   const supplierById = new Map(raw.suppliers.map((s) => [s.id, s]));
   const offeringsByProduct = new Map<string, CatalogOffering[]>();
   for (const o of raw.offerings) (offeringsByProduct.get(o.product) ?? offeringsByProduct.set(o.product, []).get(o.product)!).push(o);
+  const offeringsByContract = new Map<string, CatalogOffering[]>();
+  for (const o of raw.offerings) (offeringsByContract.get(o.contract) ?? offeringsByContract.set(o.contract, []).get(o.contract)!).push(o);
   const contractsBySupplier = new Map<string, CatalogContract[]>();
   for (const c of raw.contracts) (contractsBySupplier.get(c.supplier) ?? contractsBySupplier.set(c.supplier, []).get(c.supplier)!).push(c);
   const documentsByContract = new Map<string, CatalogDocument[]>();
@@ -176,6 +179,7 @@ function load(): Index {
     productById,
     offeringById: new Map(raw.offerings.map((o) => [o.id, o])),
     offeringsByProduct,
+    offeringsByContract,
     contractsBySupplier,
     documentsByContract,
     supplierByKey,
@@ -193,6 +197,10 @@ function load(): Index {
 }
 
 export const catalogRetrieved = () => load().retrieved;
+/** The whole index, for the contract explorer and contract pages (lib/contracts.ts). Server only. */
+export type CatalogIndex = Index;
+export const catalogIndex = (): CatalogIndex => load();
+export const catalogDocumentsFor = (contractId: string) => load().documentsByContract.get(contractId) ?? [];
 export const catalogContract = (id: string | null | undefined) => (id ? (load().contractById.get(id) ?? null) : null);
 export const catalogOffering = (id: string | null | undefined) => (id ? (load().offeringById.get(id) ?? null) : null);
 export const catalogSupplierById = (id: string | null | undefined) => (id ? (load().supplierById.get(id) ?? null) : null);

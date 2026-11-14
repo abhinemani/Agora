@@ -84,7 +84,10 @@ function ProductCard({ h, requestId }: { h: CatalogProductHit; requestId: string
             <li key={r.offering_id} className="flex flex-wrap items-center justify-between gap-2 py-2">
               <div className="min-w-0 text-[11px]">
                 <div>
-                  <span className="font-semibold text-navy">{r.coop}</span> <span className="font-mono text-slate">{r.contract_number}</span>{" "}
+                  <span className="font-semibold text-navy">{r.coop}</span>{" "}
+                  <Link href={`/contracts/${r.contract_id}`} className="font-mono text-slate underline decoration-base-light underline-offset-2 hover:text-maroon" title="Contract details">
+                    {r.contract_number}
+                  </Link>{" "}
                   {buyer && r.coop_id !== "gsa_mas" && !r.member && <Badge tone="maroon">Join to use</Badge>}
                 </div>
                 <div className="text-slate">

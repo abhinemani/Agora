@@ -6,7 +6,8 @@
 // them word for word or the answer is dropped and only the passages are shown.
 // Server-only.
 
-import { existsSync, readFileSync } from "node:fs";
+import { existsSync, readdirSync, readFileSync } from "node:fs";
+import { gunzipSync } from "node:zlib";
 import { join } from "node:path";
 import * as z from "zod/v4";
 import { catalogContract, catalogDocumentsFor, catalogSupplierById, type CatalogDocument } from "./catalog";
@@ -15,11 +16,44 @@ import { extractFile } from "./parser";
 import { ungrounded } from "./shopper-ai";
 import type { Db } from "./types";
 
-/** Hosts that publish contract documents as plain files. Sites with bot walls or robots rules against fetching stay off this list. */
-const DOCUMENT_HOSTS = new Set(["s3.us-east-1.amazonaws.com", "s3.us-west-2.amazonaws.com", "www.delltechnologies.com", "files.sourcewell.org", "spo.hawaii.gov"]);
+/** Hosts that publish contract documents as plain files. Sites with bot walls or robots rules against fetching stay off this list.
+ * The state programs' hosts were checked November 14, 2026: Arkansas allows all (crawl delay 10 s, and Agora fetches one
+ * document when asked); OGS bars only admin, login and search paths; Corcraft publishes no robots.txt; NJSTART and Empire
+ * Procure Connect redirect theirs to their vendor's, which bars only /craft. */
+const DOCUMENT_HOSTS = new Set([
+  "s3.us-east-1.amazonaws.com",
+  "s3.us-west-2.amazonaws.com",
+  "www.delltechnologies.com",
+  "files.sourcewell.org",
+  "spo.hawaii.gov",
+  "sas.arkansas.gov",
+  "ogs.ny.gov",
+  "shop.corcraft.ny.gov",
+  "www.njstart.gov",
+  "empireprocureconnect.com",
+]);
+/** NJSTART and Empire Procure Connect serve attachments through a download action, not a file path. */
+const isDownload = (u: URL) => /\/bso\/external\/purchaseorder\/poSummary\.sda$/.test(u.pathname) && u.searchParams.get("mode") === "download";
+
+/** Contract documents held as text (npm run import:doctext), keyed by URL: read without fetching. Loaded per program on first use. */
+const DOCTEXT = join(process.cwd(), "seed/catalog/doctext");
+type HeldText = Record<string, { label: string; pages: Page[] }>;
+const heldText = ((globalThis as unknown as { __agoraHeldText?: { loaded: boolean; byUrl: HeldText } }).__agoraHeldText ??= { loaded: false, byUrl: {} });
+function textFor(url: string): { label: string; pages: Page[] } | null {
+  if (!heldText.loaded) {
+    heldText.loaded = true;
+    if (existsSync(DOCTEXT))
+      for (const f of readdirSync(DOCTEXT).filter((f) => f.endsWith(".json.gz")))
+        Object.assign(heldText.byUrl, (JSON.parse(gunzipSync(readFileSync(join(DOCTEXT, f))).toString("utf8")) as { documents: HeldText }).documents);
+  }
+  return heldText.byUrl[url] ?? null;
+}
 const MAX_BYTES = 15 * 1024 * 1024;
 const MAX_PAGES = 600;
 const PRICE_FILES = join(process.cwd(), "seed/catalog/source/price-files");
+
+/** Held text is checked only once the store exists, so a build without it still works. */
+const heldTextReady = () => existsSync(DOCTEXT);
 
 interface Doc {
   id: string;
@@ -27,6 +61,8 @@ interface Doc {
   /** A file Agora holds, or a document fetched from its publisher when asked. */
   path?: string;
   url?: string;
+  /** Its text is held (seed/catalog/doctext), so it's read without fetching. */
+  held?: boolean;
 }
 export interface ReadableContract {
   id: string;
@@ -60,7 +96,7 @@ const isFile = (url: string) => /\.(pdf|xlsx|xls|docx|csv)(\?|$)/i.test(url);
 const allowed = (url: string) => {
   try {
     const u = new URL(url);
-    return u.protocol === "https:" && DOCUMENT_HOSTS.has(u.host) && isFile(u.pathname);
+    return u.protocol === "https:" && DOCUMENT_HOSTS.has(u.host) && (isFile(u.pathname) || isDownload(u));
   } catch {
     return false;
   }
@@ -72,7 +108,8 @@ export function readableCatalogDocument(d: Pick<CatalogDocument, "url" | "kind">
     const u = new URL(d.url);
     if (u.protocol !== "https:") return false;
     if (u.host === "www.gsaadvantage.gov") return u.pathname.startsWith("/ref_text/") && /\.(htm|html|pdf)$/i.test(u.pathname);
-    return (DOCUMENT_HOSTS.has(u.host) || u.host === "downloads.canon.com") && isFile(u.pathname);
+    if (heldTextReady() && textFor(d.url)) return true;
+    return (DOCUMENT_HOSTS.has(u.host) || u.host === "downloads.canon.com") && (isFile(u.pathname) || isDownload(u));
   } catch {
     return false;
   }
@@ -110,15 +147,18 @@ function entryFor(db: Db, id: string): Entry | null {
   if (!cat) return listed ?? null;
   const docs: Doc[] = [...(listed?.docs ?? [])];
   for (const f of heldFiles()) if (f.coop === cat.coop && f.number === cat.number && !docs.some((d) => d.id === `file:${f.file}`)) docs.push(heldDoc(f));
-  for (const d of catalogDocumentsFor(cat.id)) if (readableCatalogDocument(d) && !docs.some((x) => x.url === d.url)) docs.push({ id: d.id, label: cat.coop_id === "gsa_mas" ? "GSA contract terms and price list" : d.label, url: d.url });
+  // Held text first (no fetch), then documents Agora may fetch.
+  const catDocs = catalogDocumentsFor(cat.id).filter((d) => readableCatalogDocument(d));
+  catDocs.sort((a, b) => Number(Boolean(textFor(b.url))) - Number(Boolean(textFor(a.url))));
+  for (const d of catDocs) if (!docs.some((x) => x.url === d.url)) docs.push({ id: d.id, label: cat.coop_id === "gsa_mas" ? "GSA contract terms and price list" : d.label, url: d.url, held: Boolean(textFor(d.url)) });
   if (!docs.length) return null;
   return {
     id,
     name: listed?.name ?? `${cat.coop} ${cat.number}`,
     supplier: listed?.supplier ?? catalogSupplierById(cat.supplier)?.name ?? "",
     title: listed?.title ?? cat.title,
-    documents: docs.slice(0, 3).map((d) => ({ label: d.label, held: Boolean(d.path) })),
-    docs: docs.slice(0, 3),
+    documents: docs.slice(0, 6).map((d) => ({ label: d.label, held: Boolean(d.path || d.held) })),
+    docs: docs.slice(0, 6),
   };
 }
 
@@ -158,6 +198,11 @@ const cache = ((globalThis as unknown as { __agoraDocText?: Map<string, Page[]> 
 async function pagesOf(doc: Doc): Promise<Page[]> {
   const have = cache.get(doc.id);
   if (have) return have;
+  const held = doc.url ? textFor(doc.url) : null;
+  if (held) {
+    cache.set(doc.id, held.pages);
+    return held.pages;
+  }
   let buffer: Buffer;
   let filename: string;
   if (doc.path) {
@@ -185,7 +230,10 @@ async function pagesOf(doc: Doc): Promise<Page[]> {
         if (buffer.length > MAX_BYTES) throw new Error("it is over 15 MB");
         from = next;
       }
-      filename = decodeURIComponent(from.pathname.split("/").pop() || "document.pdf");
+      // A download action names the file in its Content-Disposition header ("Price Sheet.xlsx").
+      const disposed = res.headers.get("content-disposition")?.match(/filename\*?=(?:UTF-8'')?"?([^";]+)"?/i)?.[1];
+      filename = disposed ? decodeURIComponent(disposed) : decodeURIComponent(from.pathname.split("/").pop() || "document.pdf");
+      if (!/\.\w{2,4}$/.test(filename)) filename += buffer.subarray(0, 4).toString("latin1") === "%PDF" ? ".pdf" : buffer.subarray(0, 2).toString("latin1") === "PK" ? ".xlsx" : "";
     } catch (e) {
       const m = (e as Error).message;
       throw new Error((e as Error).name === "AbortError" ? "its publisher took too long" : !m || m === "fetch failed" ? "its publisher couldn't be reached" : m);

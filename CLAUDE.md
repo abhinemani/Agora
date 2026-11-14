@@ -42,6 +42,7 @@ Generated data is committed so builds need no network. Re-run the importers afte
 4. `npm run import:njstart` rebuilds NJSTART's records from `seed/catalog/source/njstart/` (pass the unzipped folder of a new NJSTART export to read it in first).
    `npm run import:hawaii` rebuilds Hawaii's records from `seed/catalog/source/hawaii/` (a new download goes through `--read`, a review, then `--collect`; see the README).
    `npm run import:arkansas` rebuilds Arkansas's records from `seed/catalog/source/arkansas/` (a new download goes through `--read`, a review, `--collect` and `--prices`; see the README).
+   `npm run import:doctext -- --hawaii <dir> --arkansas <dir> --ny <dir> --njstart <dir> --epc <dir>` rebuilds the held document text from the programs' collections.
    `npm run import:epc` rebuilds Empire Procure Connect's records from `seed/catalog/source/epc/` (a new download goes through `--read`).
    `npm run import:ny` rebuilds New York's records from `seed/catalog/source/ny/` (a new download goes through `--read`).
 5. `npm run import:catalog-coops` builds the co-op catalog (`seed/catalog/catalog.json.gz`) and attaches the price rows.
@@ -61,8 +62,8 @@ The importers apply only high- and medium-confidence decisions.
 
 - Never invent a price. Every price must appear in the line it was read from (the importers enforce this). Keep each price's vintage, and label what it is: awarded bid, base price or list price. A list price is never shown as a contract price.
 - Keep discounts out until the product decision is made (see `HANDOFF.md`).
-- Drop personal contact details (officials' names, phone numbers, emails, street addresses) from every public dataset.
-- Respect each site's robots rules and bot walls. OMNIA Partners' robots.txt disallows ClaudeBot. TIPS sits behind a Cloudflare challenge. GSA Advantage disallows `/advantage/rs/`. Files from those sites come in only when a person downloads them.
+- Drop personal contact details (officials' names, phone numbers, emails, street addresses) from every public dataset. The one exception, at the product owner's instruction: contract documents' own text (`seed/catalog/doctext/`) keeps the contacts they print, so buyers can reach the contract manager.
+- Respect each site's robots rules and bot walls. OMNIA Partners' robots.txt disallows ClaudeBot. TIPS sits behind a Cloudflare challenge. GSA Advantage disallows `/advantage/rs/`. Files from those sites come in only when a person downloads them. The state programs' document hosts were checked on November 14, 2026 (see `DOCUMENT_HOSTS` in `lib/docs.ts`); check again before adding a host.
 - Real data and demo data stay labelled: Riverbend, Cedar Bend and Harmon Lake are fictional, and the demo suppliers' verification results are marked as demo.
 - State rules are research findings with source flags (`[mirror]`, `[secondary]`, …), not legal advice. Keep the flags visible.
 

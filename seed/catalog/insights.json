@@ -597,7 +597,7 @@
    "County of Ulster": 11
   },
   "suppliers": 157,
-  "documents": 534,
+  "documents": 731,
   "priced_lines": 0,
   "suppliers_shared_with_coops": 50
  },
@@ -732,7 +732,7 @@
    "percent": 0,
    "unverified": 0
   },
-  "documents": 18635,
+  "documents": 20072,
   "spent_to_date": 8073204272,
   "groups": {
    "Commodities Fleet": 323,
@@ -1567,24 +1567,24 @@
   "multi_route": 5811
  },
  "documents": {
-  "total": 34080,
+  "total": 41352,
   "by_kind": {
    "htm": 11892,
-   "unknown": 21330,
-   "pdf": 729,
+   "unknown": 22964,
+   "pdf": 5516,
    "docx": 7,
-   "xlsx": 122
+   "xlsx": 973
   },
   "by_coop": {
    "GSA MAS": 11892,
    "HGACBuy": 709,
    "Sourcewell": 1,
-   "NJSTART": 18635,
+   "NJSTART": 20072,
    "Hawaii SPO": 354,
    "Arkansas OSP": 503,
-   "NYS OGS": 1411,
-   "NY Preferred Source": 41,
-   "Empire Procure Connect": 534
+   "NYS OGS": 7036,
+   "NY Preferred Source": 54,
+   "Empire Procure Connect": 731
   }
  },
  "reconcile": {

@@ -751,6 +751,1528 @@
    "use": "All State Agencies and Non-State Agencies"
   }
  ],
+ "award_documents": [
+  {
+   "award": "23452",
+   "label": "Award Document",
+   "url": "https://online.ogs.ny.gov/purchase/spg/pdfdocs/3865023452a.pdf"
+  },
+  {
+   "award": "23452",
+   "label": "Pricing",
+   "url": "https://online.ogs.ny.gov/purchase/spg/pdfdocs/3865023452Pricing.xlsx"
+  },
+  {
+   "award": "23452",
+   "label": "Reseller Information",
+   "url": "https://online.ogs.ny.gov/purchase/spg/pdfdocs/3865023452Resellers.xlsx"
+  },
+  {
+   "award": "23452",
+   "label": "Specifications",
+   "url": "https://online.ogs.ny.gov/purchase/spg/pdfdocs/3865023452Specs.pdf"
+  },
+  {
+   "award": "23452",
+   "label": "Insurance",
+   "url": "https://online.ogs.ny.gov/purchase/spg/pdfdocs/3865023452Insurance.pdf"
+  },
+  {
+   "award": "23403",
+   "label": "Award Document",
+   "url": "https://online.ogs.ny.gov/purchase/snt/awardnotes/7200123403a.pdf"
+  },
+  {
+   "award": "23403",
+   "label": "Contract Updates",
+   "url": "https://online.ogs.ny.gov/purchase/snt/awardnotes/7200123403p.pdf"
+  },
+  {
+   "award": "23403",
+   "label": "How to Use Guidelines",
+   "url": "https://online.ogs.ny.gov/purchase/snt/awardnotes/7200123403HowToUse.pdf"
+  },
+  {
+   "award": "23451",
+   "label": "Award Document",
+   "url": "https://online.ogs.ny.gov/purchase/spg/pdfdocs/3210023451a.pdf"
+  },
+  {
+   "award": "23451",
+   "label": "Pricing",
+   "url": "https://online.ogs.ny.gov/purchase/spg/pdfdocs/3210023451Pricing.pdf"
+  },
+  {
+   "award": "23451",
+   "label": "Price Adjustments",
+   "url": "https://online.ogs.ny.gov/purchase/spg/pdfdocs/3210023451PriceAdjust.xlsx"
+  },
+  {
+   "award": "23451",
+   "label": "Specifications",
+   "url": "https://online.ogs.ny.gov/purchase/spg/pdfdocs/3210023451Spec.pdf"
+  },
+  {
+   "award": "23451",
+   "label": "Insurance",
+   "url": "https://online.ogs.ny.gov/purchase/spg/pdfdocs/3210023451Insurance.pdf"
+  },
+  {
+   "award": "23451",
+   "label": "How to Use",
+   "url": "https://online.ogs.ny.gov/purchase/spg/pdfdocs/3210023451HowToUse.pdf"
+  },
+  {
+   "award": "23449",
+   "label": "Award Document",
+   "url": "https://online.ogs.ny.gov/purchase/spg/pdfdocs/0180023449a.pdf"
+  },
+  {
+   "award": "23449",
+   "label": "Contract Updates",
+   "url": "https://online.ogs.ny.gov/purchase/spg/pdfdocs/0180023449p.pdf"
+  },
+  {
+   "award": "23449",
+   "label": "Pricing",
+   "url": "https://online.ogs.ny.gov/purchase/spg/pdfdocs/0180023449pricing.xlsx"
+  },
+  {
+   "award": "23449",
+   "label": "Price Adjustments",
+   "url": "https://online.ogs.ny.gov/purchase/spg/pdfdocs/0180023449PriceAdjust.xlsx"
+  },
+  {
+   "award": "23449",
+   "label": "Delivery Schedule",
+   "url": "https://online.ogs.ny.gov/purchase/spg/pdfdocs/0180023449DS.xlsx"
+  },
+  {
+   "award": "23449",
+   "label": "Specifications",
+   "url": "https://online.ogs.ny.gov/purchase/spg/pdfdocs/0180023449Specs.pdf"
+  },
+  {
+   "award": "23449",
+   "label": "Insurance",
+   "url": "https://online.ogs.ny.gov/purchase/spg/pdfdocs/0180023449Insurance.pdf"
+  },
+  {
+   "award": "23449",
+   "label": "FAQs",
+   "url": "https://online.ogs.ny.gov/purchase/spg/pdfdocs/0180023449FAQ.pdf"
+  },
+  {
+   "award": "23449",
+   "label": "How to Use",
+   "url": "https://online.ogs.ny.gov/purchase/spg/pdfdocs/0180023449HowtoUse.pdf"
+  },
+  {
+   "award": "23435",
+   "label": "Award Document",
+   "url": "https://online.ogs.ny.gov/purchase/snt/awardnotes/7953623435a.pdf"
+  },
+  {
+   "award": "23435",
+   "label": "How to Use",
+   "url": "https://online.ogs.ny.gov/purchase/snt/awardnotes/7953623435HowtoUse.pdf"
+  },
+  {
+   "award": "23434",
+   "label": "Award Document",
+   "url": "https://online.ogs.ny.gov/purchase/spg/pdfdocs/3155523434a.pdf"
+  },
+  {
+   "award": "23434",
+   "label": "Pricing Information",
+   "url": "https://online.ogs.ny.gov/purchase/spg/pdfdocs/3155523434pricing.pdf"
+  },
+  {
+   "award": "23433",
+   "label": "Award Document",
+   "url": "https://online.ogs.ny.gov/purchase/spg/pdfdocs/3150323433a.pdf"
+  },
+  {
+   "award": "23433",
+   "label": "Pricing",
+   "url": "https://online.ogs.ny.gov/purchase/spg/pdfdocs/3150323433Pricing.pdf"
+  },
+  {
+   "award": "23428",
+   "label": "Award Document",
+   "url": "https://online.ogs.ny.gov/purchase/spg/pdfdocs/3155523428ra.pdf"
+  },
+  {
+   "award": "23428",
+   "label": "Contract Updates",
+   "url": "https://online.ogs.ny.gov/purchase/spg/pdfdocs/3155523428p.pdf"
+  },
+  {
+   "award": "23428",
+   "label": "Insurance",
+   "url": "https://online.ogs.ny.gov/purchase/spg/pdfdocs/3155523428Insurance.pdf"
+  },
+  {
+   "award": "23392",
+   "label": "Award Document",
+   "url": "https://online.ogs.ny.gov/purchase/spg/pdfdocs/3520023392ra.pdf"
+  },
+  {
+   "award": "23392",
+   "label": "Contract Updates",
+   "url": "https://online.ogs.ny.gov/purchase/spg/pdfdocs/3520023392p.pdf"
+  },
+  {
+   "award": "23392",
+   "label": "Lots & Items Awarded",
+   "url": "https://online.ogs.ny.gov/purchase/spg/pdfdocs/3520023392Lots.xlsx"
+  },
+  {
+   "award": "23392",
+   "label": "How To Use",
+   "url": "https://online.ogs.ny.gov/purchase/spg/pdfdocs/3520023392htu.pdf"
+  },
+  {
+   "award": "23346",
+   "label": "Award Document",
+   "url": "https://online.ogs.ny.gov/purchase/spg/pdfdocs/2060023346a.pdf"
+  },
+  {
+   "award": "23346",
+   "label": "Contract Updates",
+   "url": "https://online.ogs.ny.gov/purchase/spg/pdfdocs/2060023346p.pdf"
+  },
+  {
+   "award": "23346",
+   "label": "All Authorized Reseller/Distributors",
+   "url": "https://online.ogs.ny.gov/purchase/spg/pdfdocs/2060023346Resellers.xlsx"
+  },
+  {
+   "award": "23346",
+   "label": "FAQ",
+   "url": "https://online.ogs.ny.gov/purchase/spg/pdfdocs/2060023346FAQ.pdf"
+  },
+  {
+   "award": "23346",
+   "label": "Flooring Quote Form",
+   "url": "https://online.ogs.ny.gov/purchase/spg/pdfdocs/2060023346Quote.xlsx"
+  },
+  {
+   "award": "23397",
+   "label": "Award Document",
+   "url": "https://online.ogs.ny.gov/purchase/snt/awardnotes/7200723397ra.pdf"
+  },
+  {
+   "award": "23397",
+   "label": "Contract Updates",
+   "url": "https://online.ogs.ny.gov/purchase/snt/awardnotes/7200723397p.pdf"
+  },
+  {
+   "award": "23397",
+   "label": "Base Contract/Terms & Conditions",
+   "url": "https://online.ogs.ny.gov/purchase/snt/awardnotes/7200723397TC.pdf"
+  },
+  {
+   "award": "23352",
+   "label": "Award Document",
+   "url": "https://online.ogs.ny.gov/purchase/spg/pdfdocs/1020023352ra.pdf"
+  },
+  {
+   "award": "23352",
+   "label": "Contract Updates",
+   "url": "https://online.ogs.ny.gov/purchase/spg/pdfdocs/1020023352p.pdf"
+  },
+  {
+   "award": "23352",
+   "label": "Terms & Conditions",
+   "url": "https://online.ogs.ny.gov/purchase/spg/pdfdocs/1020023352TC.pdf"
+  },
+  {
+   "award": "23352",
+   "label": "How to Use",
+   "url": "https://online.ogs.ny.gov/purchase/spg/pdfdocs/1020023352HowtoUse.pdf"
+  },
+  {
+   "award": "23417",
+   "label": "Award Document",
+   "url": "https://online.ogs.ny.gov/purchase/spg/pdfdocs/0550023417ra.pdf"
+  },
+  {
+   "award": "23417",
+   "label": "Contract Updates",
+   "url": "https://online.ogs.ny.gov/purchase/spg/pdfdocs/0550023417p.pdf"
+  },
+  {
+   "award": "23417",
+   "label": "Delivery Schedules",
+   "url": "https://online.ogs.ny.gov/purchase/spg/pdfdocs/0550023417DeliverySchedule.pdf"
+  },
+  {
+   "award": "23417",
+   "label": "Base Contract",
+   "url": "https://online.ogs.ny.gov/purchase/spg/pdfdocs/0550023417BaseContract.pdf"
+  },
+  {
+   "award": "23387",
+   "label": "Award Document",
+   "url": "https://online.ogs.ny.gov/purchase/spg/pdfdocs/3020423387ra.pdf"
+  },
+  {
+   "award": "23387",
+   "label": "Contract Updates",
+   "url": "https://online.ogs.ny.gov/purchase/spg/pdfdocs/3020423387p.pdf"
+  },
+  {
+   "award": "23387",
+   "label": "How to Use",
+   "url": "https://online.ogs.ny.gov/purchase/spg/pdfdocs/3020423387HowtoUse.pdf"
+  },
+  {
+   "award": "23353",
+   "label": "Award Document",
+   "url": "https://online.ogs.ny.gov/purchase/spg/pdfdocs/1020023353a.pdf"
+  },
+  {
+   "award": "23353",
+   "label": "How to Use",
+   "url": "https://online.ogs.ny.gov/purchase/spg/pdfdocs/1020023353HowtoUse.pdf"
+  },
+  {
+   "award": "23361",
+   "label": "Award Document",
+   "url": "https://online.ogs.ny.gov/purchase/spg/pdfdocs/4006123361a.pdf"
+  },
+  {
+   "award": "23361",
+   "label": "Contract Updates",
+   "url": "https://online.ogs.ny.gov/purchase/spg/pdfdocs/4006123361p.pdf"
+  },
+  {
+   "award": "23361",
+   "label": "How to Use",
+   "url": "https://online.ogs.ny.gov/purchase/spg/pdfdocs/4006123361howtouse.pdf"
+  },
+  {
+   "award": "23375",
+   "label": "Award Document",
+   "url": "https://online.ogs.ny.gov/purchase/spg/pdfdocs/2310623375ra.pdf"
+  },
+  {
+   "award": "23375",
+   "label": "Contract Updates",
+   "url": "https://online.ogs.ny.gov/purchase/spg/pdfdocs/2310623375p.pdf"
+  },
+  {
+   "award": "23375",
+   "label": "How to Use",
+   "url": "https://online.ogs.ny.gov/purchase/spg/pdfdocs/2310623375howtouse.pdf"
+  },
+  {
+   "award": "23374",
+   "label": "Award Document",
+   "url": "https://online.ogs.ny.gov/purchase/snt/awardnotes/7901623374a.pdf"
+  },
+  {
+   "award": "23374",
+   "label": "How to Use",
+   "url": "https://online.ogs.ny.gov/purchase/snt/awardnotes/7901623374HowtoUse.pdf"
+  },
+  {
+   "award": "23398",
+   "label": "Award Document",
+   "url": "https://online.ogs.ny.gov/purchase/spg/pdfdocs/0580023398ra.pdf"
+  },
+  {
+   "award": "23398",
+   "label": "Contract Updates",
+   "url": "https://online.ogs.ny.gov/purchase/spg/pdfdocs/0580023398p.pdf"
+  },
+  {
+   "award": "23398",
+   "label": "Base Contract",
+   "url": "https://online.ogs.ny.gov/purchase/spg/pdfdocs/0580023398BaseContract.pdf"
+  },
+  {
+   "award": "23398",
+   "label": "Delivery Schedule - State",
+   "url": "https://online.ogs.ny.gov/purchase/spg/pdfdocs/0580023398DS_State.pdf"
+  },
+  {
+   "award": "23398",
+   "label": "Delivery Schedule - Non-State",
+   "url": "https://online.ogs.ny.gov/purchase/spg/pdfdocs/0580023398DS_NonState.pdf"
+  },
+  {
+   "award": "23269",
+   "label": "Award Document",
+   "url": "https://online.ogs.ny.gov/purchase/snt/awardnotes/7360023269ra.pdf"
+  },
+  {
+   "award": "23269",
+   "label": "Contract Updates",
+   "url": "https://online.ogs.ny.gov/purchase/snt/awardnotes/7360023269p.pdf"
+  },
+  {
+   "award": "23269",
+   "label": "Mailing List by Lot",
+   "url": "https://online.ogs.ny.gov/purchase/snt/awardnotes/7360023269mailinglist.xlsx"
+  },
+  {
+   "award": "23359",
+   "label": "Award Document",
+   "url": "https://online.ogs.ny.gov/purchase/spg/pdfdocs/3060023359ra.pdf"
+  },
+  {
+   "award": "23359",
+   "label": "Contract Updates",
+   "url": "https://online.ogs.ny.gov/purchase/spg/pdfdocs/3060023359p.pdf"
+  },
+  {
+   "award": "23359",
+   "label": "How To Use",
+   "url": "https://online.ogs.ny.gov/purchase/spg/pdfdocs/3060023359HowtoUse.pdf"
+  },
+  {
+   "award": "23362",
+   "label": "Award Document",
+   "url": "https://online.ogs.ny.gov/purchase/spg/pdfdocs/3031023362ra.pdf"
+  },
+  {
+   "award": "23362",
+   "label": "Contract Updates",
+   "url": "https://online.ogs.ny.gov/purchase/spg/pdfdocs/3031023362p.pdf"
+  },
+  {
+   "award": "23362",
+   "label": "How to Use",
+   "url": "https://online.ogs.ny.gov/purchase/spg/pdfdocs/3031023362HowToUse.pdf"
+  },
+  {
+   "award": "23372",
+   "label": "Award Document",
+   "url": "https://online.ogs.ny.gov/purchase/spg/pdfdocs/3770023372a.pdf"
+  },
+  {
+   "award": "23372",
+   "label": "Contract Updates",
+   "url": "https://online.ogs.ny.gov/purchase/spg/pdfdocs/3770023372p.pdf"
+  },
+  {
+   "award": "23372",
+   "label": "Insurance Requirements",
+   "url": "https://online.ogs.ny.gov/purchase/spg/pdfdocs/3770023372Insurance.pdf"
+  },
+  {
+   "award": "23372",
+   "label": "NYS DOT Specifications",
+   "url": "https://online.ogs.ny.gov/purchase/spg/pdfdocs/3770023372Specs.pdf"
+  },
+  {
+   "award": "23354",
+   "label": "Award Document",
+   "url": "https://online.ogs.ny.gov/purchase/spg/pdfdocs/3500023354a.pdf"
+  },
+  {
+   "award": "23354",
+   "label": "Contract Updates",
+   "url": "https://online.ogs.ny.gov/purchase/spg/pdfdocs/3500023354p.pdf"
+  },
+  {
+   "award": "23354",
+   "label": "How to Use",
+   "url": "https://online.ogs.ny.gov/purchase/spg/pdfdocs/3500023354howtouse.pdf"
+  },
+  {
+   "award": "23371",
+   "label": "Award Document",
+   "url": "https://online.ogs.ny.gov/purchase/spg/pdfdocs/3150223371ra.pdf"
+  },
+  {
+   "award": "23371",
+   "label": "Contract Updates",
+   "url": "https://online.ogs.ny.gov/purchase/spg/pdfdocs/3150223371p.pdf"
+  },
+  {
+   "award": "23371",
+   "label": "How to Use Guide",
+   "url": "https://online.ogs.ny.gov/purchase/spg/pdfdocs/3150223371_HowtoUse.pdf"
+  },
+  {
+   "award": "23371",
+   "label": "Insurance",
+   "url": "https://online.ogs.ny.gov/purchase/spg/pdfdocs/3150223371_Insurance.pdf"
+  },
+  {
+   "award": "23345",
+   "label": "Award Document",
+   "url": "https://online.ogs.ny.gov/purchase/spg/pdfdocs/4062523345ra.pdf"
+  },
+  {
+   "award": "23345",
+   "label": "Contract Updates",
+   "url": "https://online.ogs.ny.gov/purchase/spg/pdfdocs/4062523345p.pdf"
+  },
+  {
+   "award": "23306",
+   "label": "Award Document",
+   "url": "https://online.ogs.ny.gov/purchase/spg/pdfdocs/4052323306ra.pdf"
+  },
+  {
+   "award": "23306",
+   "label": "Contract Updates",
+   "url": "https://online.ogs.ny.gov/purchase/spg/pdfdocs/4052323306p.pdf"
+  },
+  {
+   "award": "23306",
+   "label": "Pricing Information",
+   "url": "https://online.ogs.ny.gov/purchase/spg/pdfdocs/4052323306Pricing.xlsx"
+  },
+  {
+   "award": "23335",
+   "label": "Award Document",
+   "url": "https://online.ogs.ny.gov/purchase/spg/pdfdocs/5021123335ra.pdf"
+  },
+  {
+   "award": "23335",
+   "label": "Contract Updates",
+   "url": "https://online.ogs.ny.gov/purchase/spg/pdfdocs/5021123335p.pdf"
+  },
+  {
+   "award": "23335",
+   "label": "Price List",
+   "url": "https://online.ogs.ny.gov/purchase/spg/pdfdocs/5021123335PL_WBMason.xlsx"
+  },
+  {
+   "award": "23344",
+   "label": "Award Document",
+   "url": "https://online.ogs.ny.gov/purchase/spg/pdfdocs/0560023344ra.pdf"
+  },
+  {
+   "award": "23344",
+   "label": "Contract Updates",
+   "url": "https://online.ogs.ny.gov/purchase/spg/pdfdocs/0560023344p.pdf"
+  },
+  {
+   "award": "23344",
+   "label": "Base Contract",
+   "url": "https://online.ogs.ny.gov/purchase/spg/pdfdocs/0560023344BC_ContractPreExecution.pdf"
+  },
+  {
+   "award": "23344",
+   "label": "Delivery Schedule",
+   "url": "https://online.ogs.ny.gov/purchase/spg/pdfdocs/0560023344_DeliverySchedule.pdf"
+  },
+  {
+   "award": "23355",
+   "label": "Award Document",
+   "url": "https://online.ogs.ny.gov/purchase/snt/awardnotes/7102223355ra.pdf"
+  },
+  {
+   "award": "23355",
+   "label": "Contract Updates",
+   "url": "https://online.ogs.ny.gov/purchase/snt/awardnotes/7102223355p.pdf"
+  },
+  {
+   "award": "23355",
+   "label": "How To Use",
+   "url": "https://online.ogs.ny.gov/purchase/snt/awardnotes/7102223355_HowToUse.pdf"
+  },
+  {
+   "award": "23355",
+   "label": "Pricing",
+   "url": "https://online.ogs.ny.gov/purchase/snt/awardnotes/7102223355_Pricing.pdf"
+  },
+  {
+   "award": "23348",
+   "label": "Award Document",
+   "url": "https://online.ogs.ny.gov/purchase/spg/pdfdocs/3820723348a.pdf"
+  },
+  {
+   "award": "23348",
+   "label": "Contract Updates",
+   "url": "https://online.ogs.ny.gov/purchase/spg/pdfdocs/3820723348p.pdf"
+  },
+  {
+   "award": "23348",
+   "label": "How to Use",
+   "url": "https://online.ogs.ny.gov/purchase/spg/pdfdocs/3820723348HowToUse.pdf"
+  },
+  {
+   "award": "23331",
+   "label": "Award Document",
+   "url": "https://online.ogs.ny.gov/purchase/snt/awardnotes/5415523331ra.pdf"
+  },
+  {
+   "award": "23331",
+   "label": "Contract Updates",
+   "url": "https://online.ogs.ny.gov/purchase/snt/awardnotes/5415523331p.pdf"
+  },
+  {
+   "award": "23343",
+   "label": "Award Document",
+   "url": "https://online.ogs.ny.gov/purchase/spg/pdfdocs/0560223343ra.pdf"
+  },
+  {
+   "award": "23343",
+   "label": "Contract Updates",
+   "url": "https://online.ogs.ny.gov/purchase/spg/pdfdocs/0560223343p.pdf"
+  },
+  {
+   "award": "23343",
+   "label": "Contractor Information",
+   "url": "https://online.ogs.ny.gov/purchase/spg/pdfdocs/0560223343CI.pdf"
+  },
+  {
+   "award": "23343",
+   "label": "Delivery Schedules",
+   "url": "https://online.ogs.ny.gov/purchase/spg/pdfdocs/0560223343DeliverySchedules.pdf"
+  },
+  {
+   "award": "23343",
+   "label": "How to Use",
+   "url": "https://online.ogs.ny.gov/purchase/spg/pdfdocs/0560223343HowtoUse.pdf"
+  },
+  {
+   "award": "23343",
+   "label": "Base Contract",
+   "url": "https://online.ogs.ny.gov/purchase/spg/pdfdocs/0560223343BaseContract.pdf"
+  },
+  {
+   "award": "23319",
+   "label": "Award Document",
+   "url": "https://online.ogs.ny.gov/purchase/spg/pdfdocs/0245023319a.pdf"
+  },
+  {
+   "award": "23319",
+   "label": "Contract Updates",
+   "url": "https://online.ogs.ny.gov/purchase/spg/pdfdocs/0245023319p.pdf"
+  },
+  {
+   "award": "23319",
+   "label": "Pricing",
+   "url": "https://online.ogs.ny.gov/purchase/spg/pdfdocs/0245023319PL_BimboBakeriesUSA.xlsx"
+  },
+  {
+   "award": "23300",
+   "label": "Award Document",
+   "url": "https://online.ogs.ny.gov/purchase/spg/pdfdocs/3823523300ra.pdf"
+  },
+  {
+   "award": "23300",
+   "label": "Contract Updates",
+   "url": "https://online.ogs.ny.gov/purchase/spg/pdfdocs/3823523300p.pdf"
+  },
+  {
+   "award": "23273",
+   "label": "Award Document",
+   "url": "https://online.ogs.ny.gov/purchase/spg/pdfdocs/2300023273a.pdf"
+  },
+  {
+   "award": "23273",
+   "label": "Contract Updates",
+   "url": "https://online.ogs.ny.gov/purchase/spg/pdfdocs/2300023273p.pdf"
+  },
+  {
+   "award": "23273",
+   "label": "How to Use",
+   "url": "https://online.ogs.ny.gov/purchase/spg/pdfdocs/2300023273HowToUse.pdf"
+  },
+  {
+   "award": "23310",
+   "label": "Award Document",
+   "url": "https://online.ogs.ny.gov/purchase/snt/awardnotes/7900823310ra.pdf"
+  },
+  {
+   "award": "23310",
+   "label": "Contract Updates",
+   "url": "https://online.ogs.ny.gov/purchase/snt/awardnotes/7900823310p.pdf"
+  },
+  {
+   "award": "23310",
+   "label": "How to Use",
+   "url": "https://online.ogs.ny.gov/purchase/snt/awardnotes/7900823310HowToUse.pdf"
+  },
+  {
+   "award": "23310",
+   "label": "Terms & Conditions",
+   "url": "https://online.ogs.ny.gov/purchase/snt/awardnotes/7900823310TC.pdf"
+  },
+  {
+   "award": "23323",
+   "label": "Award Document",
+   "url": "https://online.ogs.ny.gov/purchase/spg/pdfdocs/5020823323ra.pdf"
+  },
+  {
+   "award": "23323",
+   "label": "Contract Updates",
+   "url": "https://online.ogs.ny.gov/purchase/spg/pdfdocs/5020823323p.pdf"
+  },
+  {
+   "award": "23297",
+   "label": "Award Document",
+   "url": "https://online.ogs.ny.gov/purchase/spg/pdfdocs/2310023297ra.pdf"
+  },
+  {
+   "award": "23297",
+   "label": "Contract Updates",
+   "url": "https://online.ogs.ny.gov/purchase/spg/pdfdocs/2310023297p.pdf"
+  },
+  {
+   "award": "23297",
+   "label": "Contractor Information",
+   "url": "https://online.ogs.ny.gov/purchase/spg/pdfdocs/2310023297ContractorInfo.pdf"
+  },
+  {
+   "award": "23297",
+   "label": "Historical Documents",
+   "url": "https://online.ogs.ny.gov/purchase/spg/pdfdocs/2310023297sa.pdf"
+  },
+  {
+   "award": "23251",
+   "label": "Award Document",
+   "url": "https://online.ogs.ny.gov/purchase/spg/pdfdocs/4040423251ra.pdf"
+  },
+  {
+   "award": "23251",
+   "label": "Contract Updates",
+   "url": "https://online.ogs.ny.gov/purchase/spg/pdfdocs/4040423251p.pdf"
+  },
+  {
+   "award": "23251",
+   "label": "How to Use",
+   "url": "https://online.ogs.ny.gov/purchase/spg/pdfdocs/4040423251HowToUse.pdf"
+  },
+  {
+   "award": "23313",
+   "label": "Award Document",
+   "url": "https://online.ogs.ny.gov/purchase/spg/pdfdocs/3870023313ra.pdf"
+  },
+  {
+   "award": "23313",
+   "label": "Contract Updates",
+   "url": "https://online.ogs.ny.gov/purchase/spg/pdfdocs/3870023313p.pdf"
+  },
+  {
+   "award": "23313",
+   "label": "How to Use",
+   "url": "https://online.ogs.ny.gov/purchase/spg/pdfdocs/3870023313HowToUse.pdf"
+  },
+  {
+   "award": "23313",
+   "label": "Historical Details",
+   "url": "https://online.ogs.ny.gov/purchase/spg/pdfdocs/3870023313history.pdf"
+  },
+  {
+   "award": "23295",
+   "label": "Award Document",
+   "url": "https://online.ogs.ny.gov/purchase/spg/pdfdocs/2091523295ra.pdf"
+  },
+  {
+   "award": "23295",
+   "label": "Contract Updates",
+   "url": "https://online.ogs.ny.gov/purchase/spg/pdfdocs/2091523295p.pdf"
+  },
+  {
+   "award": "23295",
+   "label": "Category Matrix",
+   "url": "https://online.ogs.ny.gov/purchase/spg/pdfdocs/2091523295Matrix.pdf"
+  },
+  {
+   "award": "23295",
+   "label": "How To Use",
+   "url": "https://online.ogs.ny.gov/purchase/spg/pdfdocs/2091523295HowToUse.pdf"
+  },
+  {
+   "award": "23295",
+   "label": "Historical Documents",
+   "url": "https://online.ogs.ny.gov/purchase/spg/pdfdocs/2091523295History.pdf"
+  },
+  {
+   "award": "23283",
+   "label": "Award Document",
+   "url": "https://online.ogs.ny.gov/purchase/spg/pdfdocs/0580023283ra.pdf"
+  },
+  {
+   "award": "23283",
+   "label": "Contract Updates",
+   "url": "https://online.ogs.ny.gov/purchase/spg/pdfdocs/0580023283p.pdf"
+  },
+  {
+   "award": "23283",
+   "label": "Base Contract",
+   "url": "https://online.ogs.ny.gov/purchase/spg/pdfdocs/0580023283BaseContract.pdf"
+  },
+  {
+   "award": "23283",
+   "label": "Delivery Schedule - State",
+   "url": "https://online.ogs.ny.gov/purchase/spg/pdfdocs/0580023283DS_state.pdf"
+  },
+  {
+   "award": "23283",
+   "label": "Delivery Schedule - Non-State",
+   "url": "https://online.ogs.ny.gov/purchase/spg/pdfdocs/0580023283DS_NonState.pdf"
+  },
+  {
+   "award": "23272",
+   "label": "Award Document",
+   "url": "https://online.ogs.ny.gov/purchase/spg/pdfdocs/5003023272ra.pdf"
+  },
+  {
+   "award": "23272",
+   "label": "Contract Updates",
+   "url": "https://online.ogs.ny.gov/purchase/spg/pdfdocs/5003023272p.pdf"
+  },
+  {
+   "award": "23254",
+   "label": "Award Document",
+   "url": "https://online.ogs.ny.gov/purchase/spg/pdfdocs/4052423254ra.pdf"
+  },
+  {
+   "award": "23254",
+   "label": "Contract Updates",
+   "url": "https://online.ogs.ny.gov/purchase/spg/pdfdocs/4052423254p.pdf"
+  },
+  {
+   "award": "23254",
+   "label": "Summary",
+   "url": "https://online.ogs.ny.gov/purchase/spg/pdfdocs/4052423254Summary.xlsx"
+  },
+  {
+   "award": "23254",
+   "label": "How to Use",
+   "url": "https://online.ogs.ny.gov/purchase/spg/pdfdocs/4052423254HowToUse.pdf"
+  },
+  {
+   "award": "23254",
+   "label": "Historical Details",
+   "url": "https://online.ogs.ny.gov/purchase/spg/pdfdocs/4052423254history.pdf"
+  },
+  {
+   "award": "23241",
+   "label": "Award Document",
+   "url": "https://online.ogs.ny.gov/purchase/spg/pdfdocs/1020123241ra.pdf"
+  },
+  {
+   "award": "23241",
+   "label": "Contract Updates",
+   "url": "https://online.ogs.ny.gov/purchase/spg/pdfdocs/1020123241p.pdf"
+  },
+  {
+   "award": "23241",
+   "label": "Contractor Information",
+   "url": "https://online.ogs.ny.gov/purchase/spg/pdfdocs/1020123241ContractorInfo.pdf"
+  },
+  {
+   "award": "23241",
+   "label": "FAQ",
+   "url": "https://online.ogs.ny.gov/purchase/spg/pdfdocs/1020123241FAQ.pdf"
+  },
+  {
+   "award": "23238",
+   "label": "Award Document",
+   "url": "https://online.ogs.ny.gov/purchase/snt/awardnotes/7900623238ra.pdf"
+  },
+  {
+   "award": "23238",
+   "label": "Contract Updates",
+   "url": "https://online.ogs.ny.gov/purchase/snt/awardnotes/7900623238pm.pdf"
+  },
+  {
+   "award": "23238",
+   "label": "Pricing Information",
+   "url": "https://online.ogs.ny.gov/purchase/snt/awardnotes/7900623238PL_AirTravelServices.pdf"
+  },
+  {
+   "award": "23239",
+   "label": "Award Document",
+   "url": "https://online.ogs.ny.gov/purchase/spg/pdfdocs/0160023239ra.pdf"
+  },
+  {
+   "award": "23239",
+   "label": "Contract Updates",
+   "url": "https://online.ogs.ny.gov/purchase/spg/pdfdocs/0160023239p.pdf"
+  },
+  {
+   "award": "23239",
+   "label": "Price Adjustments",
+   "url": "https://online.ogs.ny.gov/purchase/spg/pdfdocs/0160023239pa.pdf"
+  },
+  {
+   "award": "23239",
+   "label": "Price by Region",
+   "url": "https://online.ogs.ny.gov/purchase/spg/pdfdocs/0160023239PricebyRegion.xlsx"
+  },
+  {
+   "award": "23204",
+   "label": "Award Document",
+   "url": "https://online.ogs.ny.gov/purchase/spg/pdfdocs/0570023204ra.pdf"
+  },
+  {
+   "award": "23204",
+   "label": "Contract Updates",
+   "url": "https://online.ogs.ny.gov/purchase/spg/pdfdocs/0570023204p.pdf"
+  },
+  {
+   "award": "23204",
+   "label": "FAQ",
+   "url": "https://online.ogs.ny.gov/purchase/spg/pdfdocs/0570023204FAQ.pdf"
+  },
+  {
+   "award": "23204",
+   "label": "Historical Details",
+   "url": "https://online.ogs.ny.gov/purchase/spg/pdfdocs/0570023204Historical.pdf"
+  },
+  {
+   "award": "23166",
+   "label": "Award Document",
+   "url": "https://online.ogs.ny.gov/purchase/spg/pdfdocs/4044023166ra.pdf"
+  },
+  {
+   "award": "23166",
+   "label": "Contract Updates",
+   "url": "https://online.ogs.ny.gov/purchase/spg/pdfdocs/4044023166p.pdf"
+  },
+  {
+   "award": "23166",
+   "label": "How to Use",
+   "url": "https://online.ogs.ny.gov/purchase/spg/pdfdocs/4044023166HowToUse.pdf"
+  },
+  {
+   "award": "23166",
+   "label": "FAQ's",
+   "url": "https://online.ogs.ny.gov/purchase/spg/pdfdocs/4044023166FAQ.pdf"
+  },
+  {
+   "award": "23260",
+   "label": "Award Document",
+   "url": "https://online.ogs.ny.gov/purchase/spg/pdfdocs/2007023260ra.pdf"
+  },
+  {
+   "award": "23260",
+   "label": "Contract Updates",
+   "url": "https://online.ogs.ny.gov/purchase/spg/pdfdocs/2007023260p.pdf"
+  },
+  {
+   "award": "23260",
+   "label": "Mailing List",
+   "url": "https://online.ogs.ny.gov/purchase/spg/pdfdocs/2007023260Mailinglist.xlsx"
+  },
+  {
+   "award": "23260",
+   "label": "Historical Documents",
+   "url": "https://online.ogs.ny.gov/purchase/spg/pdfdocs/2007023260History.pdf"
+  },
+  {
+   "award": "23173",
+   "label": "Award Document",
+   "url": "https://online.ogs.ny.gov/purchase/spg/pdfdocs/3823223173ra.pdf"
+  },
+  {
+   "award": "23173",
+   "label": "Contract Updates",
+   "url": "https://online.ogs.ny.gov/purchase/spg/pdfdocs/3823223173p.pdf"
+  },
+  {
+   "award": "23173",
+   "label": "How to Use",
+   "url": "https://online.ogs.ny.gov/purchase/spg/pdfdocs/3823223173UseFAQ.pdf"
+  },
+  {
+   "award": "23245",
+   "label": "Award Document",
+   "url": "https://online.ogs.ny.gov/purchase/spg/pdfdocs/3900023245ra.pdf"
+  },
+  {
+   "award": "23245",
+   "label": "Contract Updates",
+   "url": "https://online.ogs.ny.gov/purchase/spg/pdfdocs/3900023245p.pdf"
+  },
+  {
+   "award": "23262",
+   "label": "Award Document",
+   "url": "https://online.ogs.ny.gov/purchase/spg/pdfdocs/3900023262ra.pdf"
+  },
+  {
+   "award": "23262",
+   "label": "Contract Updates",
+   "url": "https://online.ogs.ny.gov/purchase/spg/pdfdocs/3900023262p.pdf"
+  },
+  {
+   "award": "23199",
+   "label": "Award Document",
+   "url": "https://online.ogs.ny.gov/purchase/spg/pdfdocs/0245023199ra.pdf"
+  },
+  {
+   "award": "23199",
+   "label": "Contract Updates",
+   "url": "https://online.ogs.ny.gov/purchase/spg/pdfdocs/0245023199p.pdf"
+  },
+  {
+   "award": "23199",
+   "label": "Contractor Information",
+   "url": "https://online.ogs.ny.gov/purchase/spg/pdfdocs/0245023199ContractorInfo.pdf"
+  },
+  {
+   "award": "23199",
+   "label": "Historical Details",
+   "url": "https://online.ogs.ny.gov/purchase/spg/pdfdocs/0245023199History.pdf"
+  },
+  {
+   "award": "23252",
+   "label": "Award Document",
+   "url": "https://online.ogs.ny.gov/purchase/spg/pdfdocs/3860423252ra.pdf"
+  },
+  {
+   "award": "23252",
+   "label": "Contract Updates",
+   "url": "https://online.ogs.ny.gov/purchase/spg/pdfdocs/3860423252p.pdf"
+  },
+  {
+   "award": "23252",
+   "label": "Specifications",
+   "url": "https://online.ogs.ny.gov/purchase/spg/pdfdocs/3860423252Specs.pdf"
+  },
+  {
+   "award": "23252",
+   "label": "Pricing Information",
+   "url": "https://online.ogs.ny.gov/purchase/spg/pdfdocs/3860423252Pricing.pdf"
+  },
+  {
+   "award": "23252",
+   "label": "Insurance Information",
+   "url": "https://online.ogs.ny.gov/purchase/spg/pdfdocs/3860423252Insurance.pdf"
+  },
+  {
+   "award": "23252",
+   "label": "Quick Quote",
+   "url": "https://online.ogs.ny.gov/purchase/spg/pdfdocs/3860423252_QQ.xlsx"
+  },
+  {
+   "award": "23227",
+   "label": "Award Document",
+   "url": "https://online.ogs.ny.gov/purchase/spg/pdfdocs/3520523227ra.pdf"
+  },
+  {
+   "award": "23227",
+   "label": "Contract Updates",
+   "url": "https://online.ogs.ny.gov/purchase/spg/pdfdocs/3520523227p.pdf"
+  },
+  {
+   "award": "23227",
+   "label": "Contractor Information",
+   "url": "https://online.ogs.ny.gov/purchase/spg/pdfdocs/3520523227ContractorInfo.pdf"
+  },
+  {
+   "award": "23227",
+   "label": "How To Use",
+   "url": "https://online.ogs.ny.gov/purchase/spg/pdfdocs/3520523227HowToUse.pdf"
+  },
+  {
+   "award": "23286",
+   "label": "Award Document",
+   "url": "https://online.ogs.ny.gov/purchase/spg/pdfdocs/5002023286ra.pdf"
+  },
+  {
+   "award": "23286",
+   "label": "Contract Updates",
+   "url": "https://online.ogs.ny.gov/purchase/spg/pdfdocs/5002023286p.pdf"
+  },
+  {
+   "award": "23164",
+   "label": "Award Document",
+   "url": "https://online.ogs.ny.gov/purchase/spg/pdfdocs/3870823164ra.pdf"
+  },
+  {
+   "award": "23164",
+   "label": "Contract Updates",
+   "url": "https://online.ogs.ny.gov/purchase/spg/pdfdocs/3870823164p.pdf"
+  },
+  {
+   "award": "23164",
+   "label": "Pricing Information",
+   "url": "https://online.ogs.ny.gov/purchase/spg/pdfdocs/3870823164Pricing.xlsx"
+  },
+  {
+   "award": "23164",
+   "label": "Lots/Sub-Lots",
+   "url": "https://online.ogs.ny.gov/purchase/spg/pdfdocs/3870823164Lots.pdf"
+  },
+  {
+   "award": "23164",
+   "label": "Historical Documents",
+   "url": "https://online.ogs.ny.gov/purchase/spg/pdfdocs/3870823164a.pdf"
+  },
+  {
+   "award": "23198",
+   "label": "Award Document",
+   "url": "https://online.ogs.ny.gov/purchase/spg/pdfdocs/2230023198ra.pdf"
+  },
+  {
+   "award": "23198",
+   "label": "Contract Updates",
+   "url": "https://online.ogs.ny.gov/purchase/spg/pdfdocs/2230023198p.pdf"
+  },
+  {
+   "award": "23198",
+   "label": "How to Use",
+   "url": "https://online.ogs.ny.gov/purchase/spg/pdfdocs/2230023198howtouse.pdf"
+  },
+  {
+   "award": "23235",
+   "label": "Award Document",
+   "url": "https://online.ogs.ny.gov/purchase/snt/awardnotes/7570223235ra.pdf"
+  },
+  {
+   "award": "23235",
+   "label": "Contract Updates",
+   "url": "https://online.ogs.ny.gov/purchase/snt/awardnotes/7570223235pm.pdf"
+  },
+  {
+   "award": "23141",
+   "label": "Award Document",
+   "url": "https://online.ogs.ny.gov/purchase/snt/awardnotes/7720023141ra.pdf"
+  },
+  {
+   "award": "23141",
+   "label": "Contract Updates",
+   "url": "https://online.ogs.ny.gov/purchase/snt/awardnotes/7720023141pm.pdf"
+  },
+  {
+   "award": "23141",
+   "label": "How to Use",
+   "url": "https://online.ogs.ny.gov/purchase/snt/awardnotes/7720023141HowToUse.pdf"
+  },
+  {
+   "award": "23150",
+   "label": "Award Document",
+   "url": "https://online.ogs.ny.gov/purchase/snt/awardnotes/7720123150ra.pdf"
+  },
+  {
+   "award": "23150",
+   "label": "Contract Updates",
+   "url": "https://online.ogs.ny.gov/purchase/snt/awardnotes/7720123150pm.pdf"
+  },
+  {
+   "award": "23150",
+   "label": "Project Checklist",
+   "url": "https://online.ogs.ny.gov/purchase/snt/awardnotes/7720123150ProjectChecklist.xlsx"
+  },
+  {
+   "award": "23150",
+   "label": "How To Use",
+   "url": "https://online.ogs.ny.gov/purchase/snt/awardnotes/7720123150HowToUse.pdf"
+  },
+  {
+   "award": "23150",
+   "label": "Historical Details",
+   "url": "https://online.ogs.ny.gov/purchase/snt/awardnotes/7720123150History.pdf"
+  },
+  {
+   "award": "23100",
+   "label": "Award Document",
+   "url": "https://online.ogs.ny.gov/purchase/snt/awardnotes/7701723100ra.pdf"
+  },
+  {
+   "award": "23100",
+   "label": "Contract Updates",
+   "url": "https://online.ogs.ny.gov/purchase/snt/awardnotes/7701723100pm.pdf"
+  },
+  {
+   "award": "22876",
+   "label": "Award Document",
+   "url": "https://online.ogs.ny.gov/purchase/snt/awardnotes/7360022876ra.pdf"
+  },
+  {
+   "award": "22876",
+   "label": "Contract Updates",
+   "url": "https://online.ogs.ny.gov/purchase/snt/awardnotes/7360022876pm.pdf"
+  },
+  {
+   "award": "22876",
+   "label": "How To Use",
+   "url": "https://online.ogs.ny.gov/purchase/snt/awardnotes/7360022876AppendixF.pdf"
+  },
+  {
+   "award": "22876",
+   "label": "Contractor Mailing List",
+   "url": "https://online.ogs.ny.gov/purchase/snt/awardnotes/7360022876ContractorMailingList.xlsx"
+  },
+  {
+   "award": "22876",
+   "label": "Historical Details",
+   "url": "https://online.ogs.ny.gov/purchase/snt/awardnotes/7360022876HistoricalDetails.pdf"
+  },
+  {
+   "award": "22876",
+   "label": "Hardware",
+   "url": "https://online.ogs.ny.gov/purchase/snt/awardnotes/7360022876Prohibited_Hardware.xlsx"
+  },
+  {
+   "award": "22876",
+   "label": "Software",
+   "url": "https://online.ogs.ny.gov/purchase/snt/awardnotes/7360022876Prohibited_Software.xlsx"
+  },
+  {
+   "award": "22802",
+   "label": "Contractor Matrix",
+   "url": "https://online.ogs.ny.gov/purchase/snt/awardnotes/7360022802ContractorMatrix.xlsx"
+  },
+  {
+   "award": "22802",
+   "label": "Award Document",
+   "url": "https://online.ogs.ny.gov/purchase/snt/awardnotes/7360022802ra.pdf"
+  },
+  {
+   "award": "22802",
+   "label": "Contract Updates",
+   "url": "https://online.ogs.ny.gov/purchase/snt/awardnotes/7360022802pm.pdf"
+  },
+  {
+   "award": "22802",
+   "label": "Listing of Contractors & Resellers",
+   "url": "https://online.ogs.ny.gov/purchase/snt/awardnotes/7360022802ContractorsResellers.xlsx"
+  },
+  {
+   "award": "22802",
+   "label": "Historical Details",
+   "url": "https://online.ogs.ny.gov/purchase/snt/awardnotes/7360022802History.pdf"
+  },
+  {
+   "award": "23158",
+   "label": "Award Document",
+   "url": "https://online.ogs.ny.gov/purchase/snt/awardnotes/7301223158ra.pdf"
+  },
+  {
+   "award": "23158",
+   "label": "Contract Updates",
+   "url": "https://online.ogs.ny.gov/purchase/snt/awardnotes/7301223158pm.pdf"
+  },
+  {
+   "award": "23158",
+   "label": "Historical Details",
+   "url": "https://online.ogs.ny.gov/purchase/snt/awardnotes/7301223158History.pdf"
+  },
+  {
+   "award": "23167",
+   "label": "Award Document",
+   "url": "https://online.ogs.ny.gov/purchase/snt/awardnotes/7600023167ra.pdf"
+  },
+  {
+   "award": "23167",
+   "label": "Contract Updates",
+   "url": "https://online.ogs.ny.gov/purchase/snt/awardnotes/7600023167pm.pdf"
+  },
+  {
+   "award": "23167",
+   "label": "Historical Details",
+   "url": "https://online.ogs.ny.gov/purchase/snt/awardnotes/7600023167a.pdf"
+  },
+  {
+   "award": "23271",
+   "label": "Award Document",
+   "url": "https://online.ogs.ny.gov/purchase/snt/awardnotes/7100423271ra.pdf"
+  },
+  {
+   "award": "23271",
+   "label": "Contract Updates",
+   "url": "https://online.ogs.ny.gov/purchase/snt/awardnotes/7100423271pm.pdf"
+  },
+  {
+   "award": "23271",
+   "label": "Contractor Information",
+   "url": "https://online.ogs.ny.gov/purchase/snt/awardnotes/7100423271contractorinfo.pdf"
+  },
+  {
+   "award": "23106",
+   "label": "Award Document",
+   "url": "https://online.ogs.ny.gov/purchase/snt/awardnotes/7101123106ra.pdf"
+  },
+  {
+   "award": "23106",
+   "label": "Contract Updates",
+   "url": "https://online.ogs.ny.gov/purchase/snt/awardnotes/7101123106pm.pdf"
+  },
+  {
+   "award": "23106",
+   "label": "Region & Pricing Summary",
+   "url": "https://online.ogs.ny.gov/purchase/snt/awardnotes/7101123106PricingSummary.xlsx"
+  },
+  {
+   "award": "23106",
+   "label": "Regional Map & Mailing List",
+   "url": "https://online.ogs.ny.gov/purchase/snt/awardnotes/7101123106MAP_ML.xlsx"
+  },
+  {
+   "award": "23223",
+   "label": "Award Document",
+   "url": "https://online.ogs.ny.gov/purchase/snt/awardnotes/7900023223ra.pdf"
+  },
+  {
+   "award": "23223",
+   "label": "Contract Updates",
+   "url": "https://online.ogs.ny.gov/purchase/snt/awardnotes/7900023223pm.pdf"
+  },
+  {
+   "award": "23223",
+   "label": "How to Use",
+   "url": "https://online.ogs.ny.gov/purchase/snt/awardnotes/7900023223HowToUse.pdf"
+  },
+  {
+   "award": "23217",
+   "label": "Award Document",
+   "url": "https://online.ogs.ny.gov/purchase/snt/awardnotes/7900823217ra.pdf"
+  },
+  {
+   "award": "23217",
+   "label": "Contract Updates",
+   "url": "https://online.ogs.ny.gov/purchase/snt/awardnotes/7900823217p.pdf"
+  },
+  {
+   "award": "23217",
+   "label": "How to Use",
+   "url": "https://online.ogs.ny.gov/purchase/snt/awardnotes/7900823217howtoUse.pdf"
+  },
+  {
+   "award": "23111",
+   "label": "Award Document",
+   "url": "https://online.ogs.ny.gov/purchase/snt/awardnotes/7900823111ra.pdf"
+  },
+  {
+   "award": "23111",
+   "label": "Contract Updates",
+   "url": "https://online.ogs.ny.gov/purchase/snt/awardnotes/7900823111pm.pdf"
+  },
+  {
+   "award": "23111",
+   "label": "How to Use",
+   "url": "https://online.ogs.ny.gov/purchase/snt/awardnotes/7900823111HowToUse.pdf"
+  },
+  {
+   "award": "23111",
+   "label": "Historical Documents",
+   "url": "https://online.ogs.ny.gov/purchase/snt/awardnotes/7900823111History.pdf"
+  },
+  {
+   "award": "23234",
+   "label": "Award Document",
+   "url": "https://online.ogs.ny.gov/purchase/snt/awardnotes/7900823234ra.pdf"
+  },
+  {
+   "award": "23234",
+   "label": "Contract Updates",
+   "url": "https://online.ogs.ny.gov/purchase/snt/awardnotes/7900823234pm.pdf"
+  },
+  {
+   "award": "23234",
+   "label": "Pricing Information",
+   "url": "https://online.ogs.ny.gov/purchase/snt/awardnotes/7900823234pricing.pdf"
+  },
+  {
+   "award": "23246",
+   "label": "Award Document",
+   "url": "https://online.ogs.ny.gov/purchase/snt/awardnotes/7300323246ra.pdf"
+  },
+  {
+   "award": "23246",
+   "label": "Contract Updates",
+   "url": "https://online.ogs.ny.gov/purchase/snt/awardnotes/7300323246p.pdf"
+  },
+  {
+   "award": "23246",
+   "label": "Contractor Information",
+   "url": "https://online.ogs.ny.gov/purchase/snt/awardnotes/7300323246ContractorInfo.pdf"
+  },
+  {
+   "award": "23253",
+   "label": "Award Document",
+   "url": "https://online.ogs.ny.gov/purchase/snt/awardnotes/7300323253ra.pdf"
+  },
+  {
+   "award": "23253",
+   "label": "Contract Updates",
+   "url": "https://online.ogs.ny.gov/purchase/snt/awardnotes/7300323253p.pdf"
+  },
+  {
+   "award": "23253",
+   "label": "Contractor Information",
+   "url": "https://online.ogs.ny.gov/purchase/snt/awardnotes/7300323253ContractorInfo.pdf"
+  },
+  {
+   "award": "23253",
+   "label": "RFQ Template",
+   "url": "https://online.ogs.ny.gov/purchase/snt/awardnotes/7300323253Attachment11.pdf"
+  },
+  {
+   "award": "23253",
+   "label": "Mailing List & Matrix",
+   "url": "https://online.ogs.ny.gov/purchase/snt/awardnotes/7300323253MailingList_Matrix.xlsx"
+  },
+  {
+   "award": "23253",
+   "label": "How To Use/FAQs",
+   "url": "https://online.ogs.ny.gov/purchase/snt/awardnotes/7300323253howtoUse.pdf"
+  },
+  {
+   "award": "23168",
+   "label": "Award Document",
+   "url": "https://online.ogs.ny.gov/purchase/snt/awardnotes/7200223168ra.pdf"
+  },
+  {
+   "award": "23168",
+   "label": "Contract Updates",
+   "url": "https://online.ogs.ny.gov/purchase/snt/awardnotes/7200223168p.pdf"
+  },
+  {
+   "award": "23168",
+   "label": "Contractor and Pricing Information",
+   "url": "https://online.ogs.ny.gov/purchase/snt/awardnotes/7200223168CNA.pdf"
+  },
+  {
+   "award": "23168",
+   "label": "Terms & Conditions",
+   "url": "https://online.ogs.ny.gov/purchase/snt/awardnotes/7200223168TC.pdf"
+  },
+  {
+   "award": "23168",
+   "label": "How to Use",
+   "url": "https://online.ogs.ny.gov/purchase/snt/awardnotes/7200223168HowToUse.pdf"
+  },
+  {
+   "award": "23267",
+   "label": "Award Document",
+   "url": "https://online.ogs.ny.gov/purchase/snt/awardnotes/7901123267ra.pdf"
+  },
+  {
+   "award": "23267",
+   "label": "Contract Updates",
+   "url": "https://online.ogs.ny.gov/purchase/snt/awardnotes/7901123267p.pdf"
+  },
+  {
+   "award": "23267",
+   "label": "How to Use",
+   "url": "https://online.ogs.ny.gov/purchase/snt/awardnotes/7901123267HowtoUse.pdf"
+  },
+  {
+   "award": "23147",
+   "label": "Award Document",
+   "url": "https://online.ogs.ny.gov/purchase/snt/awardnotes/7903923147ra.pdf"
+  },
+  {
+   "award": "23147",
+   "label": "Contract Updates",
+   "url": "https://online.ogs.ny.gov/purchase/snt/awardnotes/7903923147pm.pdf"
+  },
+  {
+   "award": "23147",
+   "label": "Contractor Information",
+   "url": "https://online.ogs.ny.gov/purchase/snt/awardnotes/7903923147ContractorPage.pdf"
+  },
+  {
+   "award": "23147",
+   "label": "Award Summary",
+   "url": "https://online.ogs.ny.gov/purchase/snt/awardnotes/7903923147AwardSummary.xlsx"
+  },
+  {
+   "award": "23147",
+   "label": "FAQs",
+   "url": "https://online.ogs.ny.gov/purchase/snt/awardnotes/7903923147FAQ.pdf"
+  },
+  {
+   "award": "23140",
+   "label": "Award Document",
+   "url": "https://online.ogs.ny.gov/purchase/snt/awardnotes/7900423140ra.pdf"
+  },
+  {
+   "award": "23140",
+   "label": "Contract Updates",
+   "url": "https://online.ogs.ny.gov/purchase/snt/awardnotes/7900423140pm.pdf"
+  },
+  {
+   "award": "23140",
+   "label": "Pricing Information by Region",
+   "url": "https://online.ogs.ny.gov/purchase/snt/awardnotes/7900423140PriceByRegion.xlsx"
+  },
+  {
+   "award": "23140",
+   "label": "Ancillary Cost Chart",
+   "url": "https://online.ogs.ny.gov/purchase/snt/awardnotes/7900423140AncillaryCost.xlsx"
+  },
+  {
+   "award": "23140",
+   "label": "How to Use",
+   "url": "https://online.ogs.ny.gov/purchase/snt/awardnotes/7900423140HowToUse.pdf"
+  },
+  {
+   "award": "23140",
+   "label": "Project Definition",
+   "url": "https://online.ogs.ny.gov/purchase/snt/awardnotes/7900423140ProjectDefinition.xlsx"
+  },
+  {
+   "award": "23140",
+   "label": "Insurance Requirements",
+   "url": "https://online.ogs.ny.gov/purchase/snt/awardnotes/7900423140InsuranceRequirements.pdf"
+  },
+  {
+   "award": "23211",
+   "label": "Award Document",
+   "url": "https://online.ogs.ny.gov/purchase/snt/awardnotes/7900523211ra.pdf"
+  },
+  {
+   "award": "23211",
+   "label": "Contract Updates",
+   "url": "https://online.ogs.ny.gov/purchase/snt/awardnotes/7900523211pm.pdf"
+  },
+  {
+   "award": "23211",
+   "label": "FAQ",
+   "url": "https://online.ogs.ny.gov/purchase/snt/awardnotes/7900523211FAQ_TMS.pdf"
+  },
+  {
+   "award": "23211",
+   "label": "Log-In Instructions - Concur Travel",
+   "url": "https://online.ogs.ny.gov/purchase/snt/awardnotes/7900523211State2fa.pdf"
+  },
+  {
+   "award": "23211",
+   "label": "Log-In Instructions - Concur Travel",
+   "url": "https://online.ogs.ny.gov/purchase/snt/awardnotes/7900523211NonState2fa.pdf"
+  },
+  {
+   "award": "23171",
+   "label": "Award Document",
+   "url": "https://online.ogs.ny.gov/purchase/snt/awardnotes/7905023171ra.pdf"
+  },
+  {
+   "award": "23171",
+   "label": "Contract Updates",
+   "url": "https://online.ogs.ny.gov/purchase/snt/awardnotes/7905023171pm.pdf"
+  },
+  {
+   "award": "23171",
+   "label": "How To Use/FAQ",
+   "url": "https://online.ogs.ny.gov/purchase/snt/awardnotes/7905023171HowtoUse.pdf"
+  },
+  {
+   "award": "23171",
+   "label": "Insurance Requirements",
+   "url": "https://online.ogs.ny.gov/purchase/snt/awardnotes/7905023171Insurance.pdf"
+  },
+  {
+   "award": "23316",
+   "label": "Award Document",
+   "url": "https://online.ogs.ny.gov/purchase/snt/awardnotes/7200623316ra.pdf"
+  },
+  {
+   "award": "23316",
+   "label": "Contract Updates",
+   "url": "https://online.ogs.ny.gov/purchase/snt/awardnotes/7200623316p.pdf"
+  },
+  {
+   "award": "23316",
+   "label": "FAQs",
+   "url": "https://online.ogs.ny.gov/purchase/snt/awardnotes/7200623316FAQ.pdf"
+  }
+ ],
  "contracts": [
   {
    "award": "23239",

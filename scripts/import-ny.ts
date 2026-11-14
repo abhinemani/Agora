@@ -73,6 +73,10 @@ if (process.argv[2] === "--read") {
         retrieved: summary.retrieved_date,
         master_report_date: summary.centralized_master_report_date,
         awards: awards.map((a) => ({ award: a.award_number, group: a.group_number, title: a.title, type: a.type, keywords: a.keywords, url: a.award_url, use: use[a.award_number] })),
+        // Each award's own documents (how to use, pricing, contract terms), linked from its OGS page.
+        award_documents: parseCsv(readFileSync(join(dir, "NY_OGS_Downloaded_Documents.csv"), "utf8"))
+          .filter((d) => d.award_number && /^https:/.test(d.url))
+          .map((d) => ({ award: d.award_number, label: d.link_name.replace(/\s+/g, " ").trim(), url: d.url })),
         contracts: contracts.map((c) => ({
           award: c.award_number,
           group: c.group_number,
@@ -307,7 +311,9 @@ if (process.argv[2] === "--collect-prices") {
 
 interface Award { award: string; group: string; title: string; type: string; keywords: string; url: string; use: string | null }
 interface Row { award: string; group: string; number: string; contractor: string; description: string; begin: string; end: string; flags: string; page: number }
-const src = JSON.parse(readFileSync(join(OUT, "contracts.json"), "utf8")) as { retrieved: string; master_report_date: string; awards: Award[]; contracts: Row[] };
+const src = JSON.parse(readFileSync(join(OUT, "contracts.json"), "utf8")) as { retrieved: string; master_report_date: string; awards: Award[]; contracts: Row[]; award_documents?: { award: string; label: string; url: string }[] };
+const awardDocs = new Map<string, { label: string; url: string }[]>();
+for (const d of src.award_documents ?? []) (awardDocs.get(d.award) ?? awardDocs.set(d.award, []).get(d.award)!).push(d);
 const hash = (s: string, n = 16) => createHash("sha1").update(s).digest("hex").slice(0, n);
 const iso = (s: string) => {
   const m = s.match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})$/);
@@ -360,6 +366,7 @@ for (const r of src.contracts) {
     },
   });
   documents.push({ document_id: `doc_ny_${hash(`${id}|master`)}`, cooperative: COOP, url: "https://ogs.ny.gov/complete-listing-all-statewide-contracts", label: `OGS master list of statewide contracts, ${src.master_report_date} (page ${r.page})`, contract_id: id });
+  for (const d of awardDocs.get(r.award) ?? []) documents.push({ document_id: `doc_ny_${hash(`${id}|${d.url}`)}`, cooperative: COOP, url: d.url, label: d.label, contract_id: id });
 }
 
 // Prices: award 23452's net prices read by rule, and the other price files' prices kept by --collect-prices.
@@ -506,6 +513,8 @@ if (existsSync(join(OUT, "preferred.json"))) {
       });
       preferredStats.contracts++;
     }
+    // Every Corcraft record links the guide its prices come from.
+    for (const c of contracts.filter((x) => x.supplier_id === sid)) documents.push({ document_id: `doc_nyps_${hash(`${c.contract_id}|guide`)}`, cooperative: PS_PROGRAM, url: cc.source, label: "Corcraft Price & Specification Guide (prices effective October 2023, revised September 10, 2026)", contract_id: c.contract_id });
     let priced = 0, onList = 0;
     for (const r of cc.rows) {
       const cid = r.category ? `con_nyps_${hash(`Corcraft|${r.category}`, 12)}` : offList;

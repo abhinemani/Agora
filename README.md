@@ -266,6 +266,16 @@ Access follows the record: the lead county may always use its own contract (`own
 
 Also fixed: the access cache in search and the explorer keyed state contracts by program, states and the locals flag only, so contracts that differ in participants (Hawaii), quoted use (New York) or owner (EPC) could reuse another's answer within one search. The key now covers all of them.
 
+## Reading the state programs' documents
+
+"Ask a contract" and the contract brief can read every document linked to a TRX program's contracts, in two ways.
+
+**Held text.** `npm run import:doctext` stores the text Agora already has, keyed by the document's URL, in `seed/catalog/doctext/<program>.json.gz` (about 6 MB in all), with PDF pages kept so answers cite page numbers: Hawaii's 107 lists, notices and schedules; Arkansas's 97 documents with a text layer (spreadsheets as rows); New York's 307 award documents (PDFs and spreadsheets), the OGS master list, the preferred-source list and Corcraft's price guide; and each NJSTART and Empire Procure Connect contract's summary page. The documents' own contact details (contract managers, phone numbers, emails) are kept, at the product owner's instruction. `lib/docs.ts` reads held text first, without fetching, loading the stores on first use.
+
+**Live fetch.** For anything not held (NJSTART's 18,635 attachments, EPC's 534), the reader fetches the file when someone asks, from the hosts in `DOCUMENT_HOSTS`. The state hosts were added after checking their robots rules on November 14, 2026: Arkansas allows all; OGS bars only admin, login and search paths; Corcraft has no robots.txt; NJSTART and EPC redirect theirs to their vendor's, which bars only `/craft`. NJSTART and EPC serve files through a download action rather than a file path, so the reader accepts those links and takes the file type from the `Content-Disposition` name. Scanned PDFs with no text layer still can't be read (one EPC addendum in testing, 18 of Arkansas's originals).
+
+New York contracts now link their award's own documents (how to use, pricing, specifications, contract updates), NJSTART and EPC contracts link their summary pages, and Corcraft's records link its guide. Every contract in the six TRX programs has at least one readable document: 30,750 documents across 3,509 contracts.
+
 ## Co-op member lists
 
 **Co-op member lists** (account menu, or **Ledger → Co-op traffic**, at `/coops`) is where Sovra ops keeps each co-op's list of member governments. Upload a CSV or XLSX with one government per row. `lib/members.ts` finds the name, website, email and state columns by their usual headings. A website, or failing that the domain of a contact email, is what Agora matches on. A row with neither still matches by name within the same state. Rows with no name, an unknown state or nothing to match on are skipped and reported. **Add to list** merges the upload into the existing list; **Replace list** swaps the list out entirely.

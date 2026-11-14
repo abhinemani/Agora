@@ -1,0 +1,27 @@
+{
+ "hawaii": {
+  "documents": 107,
+  "pages": 1320,
+  "bytes": 2857816
+ },
+ "arkansas": {
+  "documents": 97,
+  "pages": 886,
+  "bytes": 2506866
+ },
+ "ny": {
+  "documents": 309,
+  "pages": 9091,
+  "bytes": 23336013
+ },
+ "njstart": {
+  "documents": 1438,
+  "pages": 1438,
+  "bytes": 9862029
+ },
+ "epc": {
+  "documents": 197,
+  "pages": 197,
+  "bytes": 409691
+ }
+}

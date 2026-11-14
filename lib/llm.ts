@@ -13,6 +13,9 @@ import { fingerprint, record, type Outcome, type Task } from "./ai-log";
 import { apiKey } from "./api-key";
 
 export const MODEL = "claude-sonnet-5-5";
+/** Reading scanned documents (lib/doc-ocr.ts): a smaller, cheaper model, since most scans only need to be searchable.
+ * The scans read before it changed were read by MODEL, and each stored scan records which model read it. */
+export const SCAN_MODEL = process.env.AGORA_SCAN_MODEL || "claude-haiku-5-5";
 
 let client: Anthropic | null = null;
 function getClient() {
@@ -51,8 +54,11 @@ export async function structured<T extends z.ZodType>(opts: {
   effort?: "low" | "medium" | "high";
   /** PDFs the model reads along with `user` (a scanned document's pages), base64-encoded. */
   documents?: { data: string; title?: string }[];
+  /** Another model than MODEL for this call (SCAN_MODEL). The log's fingerprint covers it, so /quality keeps them apart. */
+  model?: string;
 }): Promise<z.infer<T> | null> {
-  const meta = { task: opts.task, prompt: fingerprint(MODEL, opts.system), input: opts.about ?? "" };
+  const model = opts.model ?? MODEL;
+  const meta = { task: opts.task, prompt: fingerprint(model, opts.system), input: opts.about ?? "" };
   promptsSeen.set(opts.task, meta.prompt);
   const started = Date.now();
   const hold = (out: z.infer<T> | null) => {
@@ -74,7 +80,7 @@ export async function structured<T extends z.ZodType>(opts: {
   try {
     const res = await c.messages.parse(
       {
-        model: MODEL,
+        model,
         max_tokens: opts.maxTokens ?? 16000,
         system: opts.system,
         messages: [

@@ -7,7 +7,7 @@
 import { PDFDocument } from "pdf-lib";
 import * as z from "zod/v4";
 import type { Page } from "./docs";
-import { pieces, structured } from "./llm";
+import { pieces, SCAN_MODEL, structured } from "./llm";
 
 /** Pages per request: enough to keep the request count down, few enough that a dense run of price tables fits the answer. */
 const RUN = 10;
@@ -92,6 +92,7 @@ async function readRun(src: PDFDocument | Buffer, label: string, from: number, c
     maxTokens: 32_000,
     timeoutMs: 300_000,
     effort: "low",
+    model: SCAN_MODEL,
   });
   if (!res) {
     if (count > 1 && !Buffer.isBuffer(src)) {

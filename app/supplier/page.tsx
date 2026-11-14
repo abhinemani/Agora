@@ -8,6 +8,7 @@ import { useStore } from "@/components/store";
 import { Arrow, BadgeCheck, Globe, Lock, Search, Star } from "@/components/icons";
 import { Badge, Button, Card, ErrorNote, Eyebrow, IconCircle, LinkButton, Loading, RevenueTags, SourcePill, Stars, money } from "@/components/ui";
 import type { EdgeTier } from "@/lib/types";
+import { mayActAs } from "@/lib/suppliers";
 
 const TABS = [
   { id: "contracts", label: "Contracts" },
@@ -33,7 +34,7 @@ function Supplier() {
   const params = useSearchParams();
   const router = useRouter();
   const tab = (params.get("tab") as Tab) ?? "contracts";
-  const { db, act, role, setRole, showEarn } = useStore();
+  const { db, act, role, setRole, showEarn, user } = useStore();
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
@@ -106,12 +107,12 @@ function Supplier() {
                 </Link>
               </span>
             </div>
-            {db.suppliers.filter((x) => x.claim?.status === "verified").length > 1 && (
+            {db.suppliers.filter((x) => x.claim?.status === "verified" && mayActAs(x, user, Boolean(user?.admin))).length > 1 && (
               <label className="block text-ui-3xs text-base-dark">
                 Viewing as (demo)
                 <select value={s.id} onChange={(e) => run("actAsSupplier", { supplierId: e.target.value })} className="mt-1 block w-full !min-h-0 !py-1 text-ui-2xs">
                   {db.suppliers
-                    .filter((x) => x.claim?.status === "verified")
+                    .filter((x) => x.claim?.status === "verified" && mayActAs(x, user, Boolean(user?.admin)))
                     .map((x) => (
                       <option key={x.id} value={x.id}>
                         {x.name}

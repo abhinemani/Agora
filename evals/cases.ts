@@ -201,10 +201,21 @@ const readContract = async (fx: Fixtures, which: "contract" | "janitorial" = "co
   }
 };
 const header = { supplier_name: "Riverside Office Supply", contract_number: "RB-2024-117", owner: "City of Riverbend", owner_type: "agency", title: "Furniture", start: "", end: "", piggyback_clause_text: "", payment_terms: "", delivery_terms: "" };
-/** A row for the canned contract reading, priced with a figure taken from the document or one that isn't in it. */
-const row = (fx: Fixtures, price: number | "printed") => {
-  const printed = Number((fx.contract.pages.map((p) => p.text).join("\n").match(/\$\s?(\d+\.\d{2})/) ?? [])[1]);
-  return { sku: null, description: "Folding table", unit: "ea", unit_price: price === "printed" ? printed : price, tier_pricing: null, category: "Furniture", confidence: 0.9, source_excerpt: "Folding table", source_page: 1, source_file: fx.contract.filename, issue: null };
+/** The document's lines that print a price, with that price. */
+const pricedLines = (fx: Fixtures) =>
+  fx.contract.pages
+    .flatMap((p) => p.text.split("\n"))
+    .map((line) => ({ line: line.trim(), price: Number(line.match(/\$\s?(\d+\.\d{2})/)?.[1]) }))
+    .filter((x) => x.price > 0);
+/**
+ * A row for the canned contract reading, read from the document's first priced line. "printed" prices it as that line
+ * prints it; "elsewhere" uses a price printed on a different line; a number is a price the document doesn't print.
+ */
+const row = (fx: Fixtures, price: number | "printed" | "elsewhere") => {
+  const [first, ...rest] = pricedLines(fx);
+  const other = rest.find((x) => x.price !== first.price && !first.line.includes(String(x.price)))!;
+  const unit_price = price === "printed" ? first.price : price === "elsewhere" ? other.price : price;
+  return { sku: null, description: "Folding table", unit: "ea", unit_price, tier_pricing: null, category: "Furniture", confidence: 0.9, source_excerpt: first.line, source_page: 1, source_file: fx.contract.filename, issue: null };
 };
 
 // ------------------------------------------------------------------ the cases
@@ -320,6 +331,14 @@ export const CASES: Case[] = [
     canned: { can_answer: true, paragraphs: ["Installation is $350 per table."], refs: [1] },
     run: (fx) => ask(fx, "tables", "Does it include installation?"),
     expect: [outcome("discarded"), because(/^amount/), is("no answer shown", (v) => v === null)],
+  },
+  {
+    id: "answer.guard.quantity-as-price",
+    task: "shopper_answer",
+    title: "An answer that prices the tables at the order's quantity ($20 for 20 tables) is thrown away",
+    canned: { can_answer: true, paragraphs: ["The tables are $20 each."], refs: [] },
+    run: (fx) => ask(fx, "tables", "How much is each table?"),
+    expect: [outcome("discarded"), because(/^amount \$20 /), is("no answer shown", (v) => v === null)],
   },
   {
     id: "answer.live.total",
@@ -664,6 +683,14 @@ export const CASES: Case[] = [
     canned: (_c: Call, fx: Fixtures) => ({ header, items: [row(fx, "printed")], unresolved: [] }),
     run: readContract,
     expect: [outcome("kept"), pieces(1, 1), is<{ items: { status: string }[] }>("a row ready for review", (v) => v.items[0].status === "pending")],
+  },
+  {
+    id: "contract-parse.guard.price-from-another-line",
+    task: "contract_parse",
+    title: "A row priced with a figure printed elsewhere in the document, not on its own line, has its price removed",
+    canned: (_c: Call, fx: Fixtures) => ({ header, items: [row(fx, "printed"), row(fx, "elsewhere")], unresolved: [] }),
+    run: readContract,
+    expect: [outcome("partial"), pieces(1, 2), because(/printed on the line it was read from/), is<{ items: { status: string }[] }>("the second row sent to review", (v) => v.items[1].status === "unresolved")],
   },
   {
     id: "contract-parse.guard.invented-price",

@@ -1,9 +1,11 @@
 // In-memory store. One demo, one process: a module-level singleton kept on
 // globalThis so Next's dev-mode hot reloads don't wipe the demo mid-click.
 //
-// One thing is not shared: the agency a visitor is buying for. It is kept in
+// Two things are not shared. The agency a visitor is buying for is kept in
 // that visitor's browser (lib/session.ts) and bound to each request here, so
-// `db.session.buyer` reads the agency of whoever made the request.
+// `db.session.buyer` reads the agency of whoever made the request. The
+// storefront a supplier view acts as is kept per account (or per browser)
+// here, so one visitor switching storefronts doesn't switch everyone's.
 
 import { AsyncLocalStorage } from "node:async_hooks";
 import { apiKey } from "./api-key";
@@ -18,7 +20,10 @@ export interface Scope {
   visitor: string | null;
 }
 
-const g = globalThis as unknown as { __agoraDb?: Db; __agoraScope?: AsyncLocalStorage<Scope>; __agoraSeed?: Map<string, string> };
+const g = globalThis as unknown as { __agoraDb?: Db; __agoraScope?: AsyncLocalStorage<Scope>; __agoraSeed?: Map<string, string>; __agoraActing?: Map<string, string> };
+/** The storefront each account or browser acts as, when it has switched from the seeded one. */
+const acting = (g.__agoraActing ??= new Map<string, string>());
+const actingKey = (s: Scope | undefined) => (s?.user ? s.user.id : s?.visitor ? `v:${s.visitor}` : null);
 const scope = (g.__agoraScope ??= new AsyncLocalStorage<Scope>());
 
 /** Make `session.buyer` read and write the current request's agency. Outside a request it falls back to one shared value. */
@@ -37,12 +42,23 @@ function perVisitor(db: Db): Db {
       else shared = b;
     },
   });
+  const seededSupplier = db.session.acting_supplier_id;
+  Object.defineProperty(db.session, "acting_supplier_id", {
+    enumerable: true,
+    configurable: true,
+    get: () => acting.get(actingKey(scope.getStore()) ?? "") ?? seededSupplier,
+    set: (id: string) => {
+      const key = actingKey(scope.getStore());
+      if (key) acting.set(key, id);
+    },
+  });
   return db;
 }
 
 /** A fresh seed, with a copy of each collection as seeded so lib/persist.ts can tell what has changed since. */
 function fresh(): Db {
   const db = seed();
+  acting.clear();
   g.__agoraSeed = new Map(Object.entries(db).map(([k, v]) => [k, JSON.stringify(k === "session" ? { ...v, buyer: null } : v)]));
   return perVisitor(db);
 }

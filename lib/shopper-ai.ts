@@ -126,14 +126,19 @@ export function shopperFacts(db: Db, results: Results, plan: Plan) {
   };
 }
 
-function numbersIn(value: unknown, out: number[] = []): number[] {
-  if (typeof value === "number") out.push(value);
-  else if (Array.isArray(value)) value.forEach((v) => numbersIn(v, out));
-  else if (value && typeof value === "object") Object.values(value).forEach((v) => numbersIn(v, out));
+/** Keys whose numbers are money. A quantity, a reference number, a score or a count is never a price, so "$20 each" can't lean on an order of 20. */
+const MONEY_KEY = /price|total|amount|cost|limit|ceiling|budget|fee|spend|threshold|saving|range|min|max|message_numbers/i;
+
+/** The numbers in the facts that sit under a money key, at any depth ("range": { "min": 120, "max": 410 } counts both). */
+function numbersIn(value: unknown, out: number[] = [], money = false): number[] {
+  if (typeof value === "number") {
+    if (money) out.push(value);
+  } else if (Array.isArray(value)) value.forEach((v) => numbersIn(v, out, money));
+  else if (value && typeof value === "object") for (const [k, v] of Object.entries(value)) numbersIn(v, out, money || MONEY_KEY.test(k));
   return out;
 }
 
-/** The amounts the facts hold: every number in them, and dollar figures written out in their sentences ("$10,000 quick-buy limit"). */
+/** The amounts the facts hold: numbers under a money key, and dollar figures written out in their sentences ("$10,000 quick-buy limit"). */
 function amountsIn(facts: unknown): number[] {
   const amounts = numbersIn(facts);
   for (const m of JSON.stringify(facts).matchAll(/\$\s?([\d,]+(?:\.\d+)?)/g)) amounts.push(Number(m[1].replace(/,/g, "")));

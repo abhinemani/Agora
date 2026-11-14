@@ -5,6 +5,7 @@ import { withSession } from "@/lib/session";
 import * as A from "@/lib/actions";
 import { currentScope } from "@/lib/db";
 import { needsAccount } from "@/lib/session";
+import { isAdmin } from "@/lib/admin";
 
 export const dynamic = "force-dynamic";
 
@@ -87,11 +88,15 @@ const WHY: [RegExp, string][] = [
   [/reset/i, "reset the demo"],
 ];
 
+// What changes the demo for everyone: only an admin (lib/admin.ts), or any account on a server that saves nothing.
+const ADMIN = new Set(["reset", "approveClaim"]);
+
 export const POST = withSession(async (req: Request) => {
   const body = await req.json().catch(() => ({}));
   const handler = handlers[body?.action];
   if (!handler) return NextResponse.json({ error: `Unknown action: ${body?.action}` }, { status: 400 });
   if (!OPEN.has(body.action) && !currentScope()?.user) return needsAccount(WHY.find(([re]) => re.test(body.action))?.[1] ?? "do that");
+  if (ADMIN.has(body.action) && !isAdmin(currentScope()?.user)) return NextResponse.json({ error: "Only a Sovra admin can do that on the live site." }, { status: 403 });
   try {
     return NextResponse.json({ result: await handler(body) });
   } catch (err) {

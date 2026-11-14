@@ -482,8 +482,8 @@ export async function parseContract(files: ExtractedFile[]): Promise<ParseOutput
     const h = llm.header;
     const map: Record<string, ContractSource> = { agency: "own_contract", state: "state_contract", coop: "coop_contract", gsa: "gsa", reseller: "reseller" };
     const toDraft = (it: z.infer<typeof ItemSchema>, unresolved: boolean): DraftItem => {
-      // Trust check: a price the model returns must appear in the source text.
-      const priceSeen = it.unit_price !== null && amountAppears(allText, it.unit_price);
+      // Trust check: a price the model returns must be printed on the line it says it read the row from.
+      const priceSeen = it.unit_price !== null && priceOnItsLine(allText, it.source_excerpt, it.unit_price);
       const bad = !unresolved && it.unit_price !== null && !priceSeen;
       return {
         sku: it.sku,
@@ -499,7 +499,7 @@ export async function parseContract(files: ExtractedFile[]): Promise<ParseOutput
         status: unresolved || it.unit_price === null || bad ? "unresolved" : "pending",
         flags: [
           ...(it.issue ? [unresolved ? `Unresolved: ${it.issue}` : it.issue] : []),
-          ...(bad ? ["Unresolved: extracted price not found in the document text"] : []),
+          ...(bad ? ["Unresolved: the price isn't printed on the line it was read from"] : []),
         ],
       };
     };
@@ -522,8 +522,8 @@ export async function parseContract(files: ExtractedFile[]): Promise<ParseOutput
     };
     // The check here is the price: one the model returned that isn't in the document is blanked and the row sent to review.
     const priced = llm.items.filter((i) => i.unit_price !== null);
-    const seen = priced.filter((i) => amountAppears(allText, i.unit_price!)).length;
-    pieces(llm, `${llm.items.length} priced rows, ${llm.unresolved.length} unresolved`, seen, priced.length, "Read a price that isn't in the document");
+    const seen = priced.filter((i) => priceOnItsLine(allText, i.source_excerpt, i.unit_price!)).length;
+    pieces(llm, `${llm.items.length} priced rows, ${llm.unresolved.length} unresolved`, seen, priced.length, "Read a price that isn't printed on the line it was read from");
   }
 
   out ??= { mode: "offline", header: heuristicHeader(files), items: heuristicItems(files, fallbackCat) };
@@ -533,10 +533,18 @@ export async function parseContract(files: ExtractedFile[]): Promise<ParseOutput
   return out;
 }
 
-function amountAppears(text: string, n: number) {
-  const fixed = n.toFixed(2);
-  const withCommas = Number(n).toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-  return text.includes(fixed) || text.includes(withCommas) || text.includes(String(n));
+const flatText = (s: string) => s.toLowerCase().replace(/\s+/g, " ").trim();
+
+/**
+ * A price read from an uploaded contract stands only when it is printed on the line it was read from: the row's
+ * excerpt has to be in the document, and the price has to be one of the figures on that excerpt. Matching the price
+ * anywhere in the document let a stray "250" (a freight threshold, a page number) vouch for a row priced $250.
+ */
+export function priceOnItsLine(documentText: string, excerpt: string, price: number): boolean {
+  const line = flatText(excerpt);
+  if (line.length < 4 || !flatText(documentText).includes(line)) return false;
+  const figures = [...line.matchAll(/\d[\d,]*(?:\.\d+)?/g)].map((m) => Number(m[0].replace(/,/g, "")));
+  return figures.some((f) => Math.abs(f - price) < 0.005);
 }
 
 // ---------------------------------------------------------------- dedupe

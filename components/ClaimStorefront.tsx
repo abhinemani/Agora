@@ -8,7 +8,7 @@ import { Alert, Button, ErrorNote } from "./ui";
 
 /** "Is this your company?" Claim a storefront; a work email on the company's domain verifies at once. */
 export function ClaimStorefront({ s }: { s: Supplier }) {
-  const { act, setRole } = useStore();
+  const { act, setRole, user } = useStore();
   const [open, setOpen] = useState(false);
   const [form, setForm] = useState({ name: "", email: "" });
   const [error, setError] = useState<string | null>(null);
@@ -39,9 +39,11 @@ export function ClaimStorefront({ s }: { s: Supplier }) {
         type="info"
         heading="Claim waiting for review"
         action={
-          <Button variant="secondary" onClick={() => run("approveClaim", { supplierId: s.id })}>
-            Approve claim (Sovra ops, demo)
-          </Button>
+          user?.admin ? (
+            <Button variant="secondary" onClick={() => run("approveClaim", { supplierId: s.id })}>
+              Approve claim (Sovra ops)
+            </Button>
+          ) : undefined
         }
       >
         {s.claim.name} ({s.claim.email}) asked to manage this storefront. The email isn't on {s.website ?? "the company's website domain"}, so Sovra checks it by hand.

@@ -24,7 +24,7 @@ import type { Buyer, Cart, Category, Contract, Coop, CoopMember, Order, OrderSta
 import { BUYER_PRESETS, checkEligibility, STATES } from "./vehicles";
 import { FREE_RFP_LIMIT, settingsFor } from "./agency";
 import { parseRegister } from "./register";
-import { cartAgency, cartGroups, draftCart, glCode, needsApproval, nextStep, PURCHASER, REQUESTER } from "./orders";
+import { cartAgency, cartGroups, cartOwner, draftCart, glCode, needsApproval, nextStep, PURCHASER, REQUESTER } from "./orders";
 import { coopOf, detectCoops, isContractLevelUrl, isMember, linksOut, memberMatches, normalizeDomain } from "./coops";
 import { parseMemberList } from "./members";
 import { findGovernment } from "./directory";
@@ -655,13 +655,42 @@ export function advanceOrder(orderId: string) {
 
 // ---------------------------------------------------------------- carts
 
+/** Who is filling a cart: the signed-in account, or this browser until its visitor signs in. */
+function me(): string {
+  const s = currentScope();
+  return s?.user?.id ?? `v:${s?.visitor ?? "anonymous"}`;
+}
+
+const STALE_VISITOR_CART_MS = 30 * 86_400_000;
+
 function activeCart(db: Db) {
-  let cart = draftCart(db);
+  let cart = draftCart(db, me());
   if (!cart) {
-    cart = { id: nextId(db, "cart", "cart", 3), agency: cartAgency(db), status: "draft", lines: [], created_by: REQUESTER, user_id: currentScope()?.user?.id, holder: REQUESTER, order_ids: [], created_at: now(), updated_at: now() };
+    // Visitors' carts left untouched for 30 days go, so carts nobody will come back to don't pile up in the saved state.
+    db.carts = db.carts.filter((c) => !(c.status === "draft" && c.owner?.startsWith("v:") && Date.now() - Date.parse(c.updated_at) > STALE_VISITOR_CART_MS));
+    cart = { id: nextId(db, "cart", "cart", 3), agency: cartAgency(db), status: "draft", lines: [], created_by: REQUESTER, user_id: currentScope()?.user?.id, owner: me(), holder: REQUESTER, order_ids: [], created_at: now(), updated_at: now() };
     db.carts.unshift(cart);
   }
   return cart;
+}
+
+/** When a visitor signs in, the carts they filled in this browser become the account's, merged into any it already has open for the same agency. */
+export function adoptVisitorCarts(visitor: string, userId: string) {
+  const db = getDb();
+  for (const cart of db.carts.filter((c) => c.status === "draft" && c.owner === `v:${visitor}`)) {
+    const open = db.carts.find((c) => c !== cart && c.status === "draft" && c.agency === cart.agency && cartOwner(c) === userId);
+    if (open) {
+      for (const l of cart.lines) {
+        const have = open.lines.find((x) => x.listing_id === l.listing_id);
+        if (have) have.quantity += l.quantity;
+        else open.lines.push(l);
+      }
+      open.updated_at = now();
+      db.carts = db.carts.filter((c) => c !== cart);
+    } else {
+      Object.assign(cart, { owner: userId, user_id: userId, updated_at: now() });
+    }
+  }
 }
 
 function cartById(db: Db, id: string) {
@@ -686,7 +715,7 @@ export function addToCart(args: { listingId: string; quantity: number; requestId
 
 export function updateCartLine(args: { listingId: string; quantity: number }) {
   const db = getDb();
-  const cart = draftCart(db) ?? fail("There's no open cart.");
+  const cart = draftCart(db, me()) ?? fail("There's no open cart.");
   const qty = Math.floor(args.quantity);
   cart.lines = qty > 0 ? cart.lines.map((l) => (l.listing_id === args.listingId ? { ...l, quantity: qty } : l)) : cart.lines.filter((l) => l.listing_id !== args.listingId);
   cart.updated_at = now();
@@ -696,7 +725,7 @@ export function updateCartLine(args: { listingId: string; quantity: number }) {
 /** Hand the cart to someone who can buy: the person who needs the items is often not the card holder. */
 export function handoffCart(args: { to: string; division: string; shipTo: string; notes?: string }) {
   const db = getDb();
-  const cart = draftCart(db) ?? fail("There's no open cart.");
+  const cart = draftCart(db, me()) ?? fail("There's no open cart.");
   if (!cart.lines.length) fail("Add something to the cart first.");
   const to = args.to?.trim() || fail("Say who you're handing the cart to.");
   if (!args.division?.trim()) fail("Pick the division the purchase is for.");
@@ -710,7 +739,7 @@ export function handoffCart(args: { to: string; division: string; shipTo: string
 /** Check out: a cart where any supplier's share needs a PO goes to Purchasing first; otherwise it orders now. */
 export function submitCart() {
   const db = getDb();
-  const cart = draftCart(db) ?? fail("There's no open cart.");
+  const cart = draftCart(db, me()) ?? fail("There's no open cart.");
   const groups = cartGroups(db, cart);
   if (!groups.length) fail("Add something to the cart first.");
   const blocked = groups.find((g) => g.blocked);
@@ -778,7 +807,7 @@ export function reviseCart(cartId: string) {
   const db = getDb();
   const cart = cartById(db, cartId);
   if (cart.status !== "rejected") fail("Only a rejected cart can be revised.");
-  const open = draftCart(db);
+  const open = draftCart(db, me());
   if (open && open.id !== cart.id) {
     for (const l of cart.lines) {
       const have = open.lines.find((x) => x.listing_id === l.listing_id);
@@ -788,7 +817,8 @@ export function reviseCart(cartId: string) {
     db.carts = db.carts.filter((c) => c.id !== cart.id);
     return open;
   }
-  Object.assign(cart, { status: "draft", updated_at: now() });
+  // The person revising it takes the draft back.
+  Object.assign(cart, { status: "draft", owner: me(), updated_at: now() });
   return cart;
 }
 

@@ -452,6 +452,8 @@ export interface Cart {
   created_by: string;
   /** The account that started the cart, when someone was signed in. Used for approval notices. */
   user_id?: string;
+  /** Whose draft this is: an account id, or "v:<browser id>" for a visitor who hasn't signed in. A draft is its owner's alone. */
+  owner?: string;
   /** Who has the cart now: the requester, or whoever it was handed to. */
   holder: string;
   handoff?: { from: string; to: string; division: string; ship_to: string; notes: string; at: string };

@@ -4,7 +4,7 @@ import { NextResponse } from "next/server";
 import { AuthError, deleteUser, endSession, resetPassword, SESSION_COOKIE, sessionCookie, signIn, signUp, startSession, userByEmail, verifyEmail, type User } from "@/lib/auth";
 import { sendReset, sendVerification } from "@/lib/notify";
 import { currentScope, getDb } from "@/lib/db";
-import { forgetAccount } from "@/lib/actions";
+import { adoptVisitorCarts, forgetAccount } from "@/lib/actions";
 import { cookie, withSession } from "@/lib/session";
 
 export const dynamic = "force-dynamic";
@@ -54,6 +54,8 @@ export const POST = withSession(async (req: Request) => {
     if (!s.buyer && user.agency) s.buyer = user.agency;
     // Searches made in this browser before signing in now belong to the account.
     for (const r of getDb().requests) if (r.owner === `v:${s.visitor}`) r.owner = user.id;
+    // So does the cart they filled, merged into any the account already has open.
+    if (s.visitor) adoptVisitorCarts(s.visitor, user.id);
     const res = NextResponse.json({ result: { user: view(user), emailed } });
     res.headers.append("set-cookie", sessionCookie(await startSession(user.id)));
     return res;

@@ -83,11 +83,12 @@ const handlers: Record<string, Handler> = {
 };
 
 // What anyone can do without an account: search, set an agency, and everything public that uses the AI (the buying plan and
-// its questions, paperwork drafts, the product dive, Ask a contract and the brief). None of these keeps a record for a person.
-const OPEN = new Set(["createRequest", "setPreference", "setBuyer", "clearBuyer", "getResults", "judgeResultProducts", "confirmItems", "confirmPick", "editItems", "shopperBrief", "askShopper", "draftPaperwork", "dive", "diveCompare", "contractsToAsk", "askContract", "briefContract", "rateAnswer"]);
+// its questions, paperwork drafts, the product dive, Ask a contract and the brief), and filling a cart, which is kept for this
+// browser until checking out or handing it off asks them to sign in (it then moves to the account: app/api/auth/route.ts).
+const OPEN = new Set(["createRequest", "setPreference", "setBuyer", "clearBuyer", "getResults", "judgeResultProducts", "confirmItems", "confirmPick", "editItems", "shopperBrief", "askShopper", "draftPaperwork", "addToCart", "updateCartLine", "dive", "diveCompare", "contractsToAsk", "askContract", "briefContract", "rateAnswer"]);
 // Everything else needs a signed-in person. The phrase finishes "Sign in or create a free account to ...".
 const WHY: [RegExp, string][] = [
-  [/cart/i, "use the cart"],
+  [/cart/i, "check out or hand off this cart. Your cart comes with you"],
   [/order/i, "place and track orders"],
   [/quote/i, "request a quote"],
   [/join|invite|membership|coop/i, "work with purchasing on co-ops"],

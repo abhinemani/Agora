@@ -167,7 +167,6 @@ export function AuthDialog() {
 
 /** Parts of Loci that keep records for a person or an agency, so they need an account. Everything else is open. */
 const ACCOUNT_PATHS: [RegExp, string][] = [
-  [/^\/cart/, "use the cart"],
   [/^\/checkout/, "check out"],
   [/^\/orders/, "see your orders"],
   [/^\/procurement/, "use the purchasing pages"],

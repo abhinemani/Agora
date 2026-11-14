@@ -93,8 +93,15 @@ export const needsApproval = (groups: CartGroup[]) => groups.some((g) => g.payme
 /** The agency whose cart this session is filling. */
 export const cartAgency = (db: Pick<Db, "session" | "agency">) => db.session.buyer?.name ?? db.agency.name;
 
-export const draftCart = (db: Pick<Db, "carts" | "session" | "agency">): Cart | undefined =>
-  db.carts.find((c) => c.agency === cartAgency(db) && c.status === "draft");
+/** Whose draft a cart is. Carts made before drafts had owners belong to the account that started them. */
+export const cartOwner = (c: Pick<Cart, "owner" | "user_id">) => c.owner ?? c.user_id;
+
+/**
+ * The open cart for this session's agency. On the server, pass the owner (lib/actions.ts `me()`), since every
+ * visitor has their own draft; the browser receives only its own drafts (app/api/state/route.ts), so it can leave it out.
+ */
+export const draftCart = (db: Pick<Db, "carts" | "session" | "agency">, owner?: string): Cart | undefined =>
+  db.carts.find((c) => c.agency === cartAgency(db) && c.status === "draft" && (owner === undefined || cartOwner(c) === owner));
 
 /** Demo people: the requester who builds carts and the purchasing lead who approves them. */
 export const REQUESTER = "Dana Whitfield";

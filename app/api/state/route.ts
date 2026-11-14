@@ -3,6 +3,7 @@ import { withSession } from "@/lib/session";
 import { currentScope, getDb, hasApiKey } from "@/lib/db";
 import type { Db, OpsSummary } from "@/lib/types";
 import { isAdmin } from "@/lib/admin";
+import { cartOwner } from "@/lib/orders";
 
 export const dynamic = "force-dynamic";
 
@@ -34,7 +35,8 @@ export const GET = withSession(
   const ours = (agency: string | null | undefined) => (agency ?? db.agency.name) === home;
   const scoped: Partial<Db> = {
     invites: db.invites.filter((i) => ours(i.agency)),
-    carts: db.carts.filter((c) => ours(c.agency)),
+    // A draft cart is its owner's alone. Submitted carts are the agency's, for its signed-in people.
+    carts: db.carts.filter((c) => (c.status === "draft" ? mine.has(cartOwner(c)) : Boolean(s?.user) && ours(c.agency))),
     orders: db.orders.filter((o) => ours(o.agency)),
     quotes: db.quotes.filter((q) => ours(q.buyer?.name)),
     handoffs: db.handoffs.filter((h) => ours(h.agency)),

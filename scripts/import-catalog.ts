@@ -534,7 +534,7 @@ let canonAdded = 0;
 const priceFileStats = { rows: 0, attached: 0, unmatched: [] as string[] };
 {
   const file = join(ROOT, "seed/catalog/price-rows.json");
-  const priceRows: { coop: string; number: string; supplier: string; product: string; maker: string | null; price: number; unit: string; basis: string; vintage: string; file: string; source_url: string; page: number }[] = existsSync(file) ? JSON.parse(readFileSync(file, "utf8")) : [];
+  const priceRows: { coop: string; number: string; supplier: string; product: string; maker: string | null; price: number; list?: number; sku?: string; unit: string; basis: string; vintage: string; file: string; source_url: string; page: number }[] = existsSync(file) ? JSON.parse(readFileSync(file, "utf8")) : [];
   const NUM: Record<string, string> = { "1": "one", "2": "two", "3": "three", "4": "four", "5": "five", "6": "six", "7": "seven" };
   const STOP = new Set(["llc", "inc", "ltd", "lp", "co", "corp", "company", "companies", "dba", "the", "of", "and", "ii", "iii", "family", "enterprises", "group", "motors", "motor"]);
   // Car makes say which franchise a dealer is: Silsbee Ford and Silsbee Toyota are two companies.
@@ -574,7 +574,7 @@ const priceFileStats = { rows: 0, attached: 0, unmatched: [] as string[] };
     if (!pid) {
       pid = `prd_pf_${createHash("sha1").update(pkey).digest("hex").slice(0, 16)}`;
       productIds.set(pkey, pid);
-      products.push({ id: pid, name: r.product, maker: r.maker, mpn: null, review: false });
+      products.push({ id: pid, name: r.product, maker: r.maker, mpn: r.sku ?? null, review: false });
     }
     offerings.push({
       id: `off_pf_${createHash("sha1").update(`${r.file}|${r.page}|${r.supplier}|${r.product}`).digest("hex").slice(0, 16)}`,
@@ -582,15 +582,15 @@ const priceFileStats = { rows: 0, attached: 0, unmatched: [] as string[] };
       supplier: best.c.supplier,
       contract: best.c.id,
       coop: r.coop,
-      sku: null,
+      sku: r.sku ?? null,
       price: r.basis === "list_price" ? null : r.price,
-      list: r.basis === "list_price" ? r.price : null,
-      discount: null,
+      list: r.basis === "list_price" ? r.price : (r.list ?? null),
+      discount: r.list ? Math.round((1 - r.price / r.list) * 1000) / 10 : null,
       unit: r.unit,
       status: "published_price",
       vintage: r.vintage,
       url: r.source_url,
-      category: `${r.basis === "awarded_bid" ? "Awarded bid" : r.basis === "list_price" ? "List price" : "Base price"}, page ${r.page} of the price file`,
+      category: `${best.c.title}: ${r.basis === "awarded_bid" ? "awarded bid" : r.basis === "list_price" ? "list price" : r.basis === "net_price" ? "contract net price" : "base price"}, page ${r.page} of the price file`,
     });
     priceFileStats.attached++;
   }

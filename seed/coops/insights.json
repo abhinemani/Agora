@@ -39,19 +39,19 @@
    "census_only": 3157,
    "nces_only": 6245
   },
-  "matched": 45564,
-  "merged_by_id": 3603,
-  "county_offices": 267,
+  "matched": 45574,
+  "merged_by_id": 3724,
+  "county_offices": 269,
   "reviewed_school_pairs": 2839,
   "reviewed_matches": 6059,
   "review_tasks": {
    "school-pairs": 125,
-   "gov-match": 5401
+   "gov-match": 5496
   },
-  "county_governing_bodies_merged": 192,
-  "added": 55769,
-  "confirmed_public": 1434,
-  "private_set_aside": 870,
+  "county_governing_bodies_merged": 193,
+  "added": 55760,
+  "confirmed_public": 1439,
+  "private_set_aside": 871,
   "private_examples": [
    {
     "name": "Arizona State University",
@@ -61,6 +61,7 @@
      "coop_buyboard_national",
      "coop_eandi",
      "coop_hgacbuy",
+     "coop_1gpa",
      "coop_choice",
      "coop_mohave",
      "coop_buyboard",
@@ -105,32 +106,32 @@
    }
   ],
   "governments_with_id": 100462,
-  "roster_governments": 60080,
-  "roster_with_id": 44631,
+  "roster_governments": 60227,
+  "roster_with_id": 44640,
   "roster_by_type": {
    "tribal": {
-    "all": 386,
+    "all": 387,
     "with_id": 0
    },
    "special_district": {
-    "all": 17763,
-    "with_id": 8704
+    "all": 17794,
+    "with_id": 8706
    },
    "school_district": {
-    "all": 17524,
-    "with_id": 13220
+    "all": 17612,
+    "with_id": 13225
    },
    "county": {
-    "all": 3425,
+    "all": 3428,
     "with_id": 2995
    },
    "municipality": {
-    "all": 18862,
+    "all": 18873,
     "with_id": 18294
    },
    "higher_education": {
-    "all": 2062,
-    "with_id": 1418
+    "all": 2075,
+    "with_id": 1420
    },
    "state_agency": {
     "all": 58,
@@ -144,24 +145,24 @@
     "type": "tribal"
    },
    {
-    "name": "Government of the District of Columbia",
+    "name": "District of Columbia Housing Finance Agency",
     "state": "DC",
     "type": "special_district"
    },
    {
-    "name": "Bagdad Fire Protection District",
-    "state": "KY",
+    "name": "Wichita Airport Authority",
+    "state": "KS",
     "type": "special_district"
    },
    {
-    "name": "Confederated Salish and Kootenai Tribes",
+    "name": "Chippewa Cree Tribe",
     "state": "MT",
     "type": "tribal"
    },
    {
-    "name": "Utica Public Library",
+    "name": "Urban Assembly Institute of Math and Science for Young Women",
     "state": "NY",
-    "type": "special_district"
+    "type": "school_district"
    },
    {
     "name": "East Brandywine Fire Company",
@@ -169,14 +170,14 @@
     "type": "special_district"
    },
    {
-    "name": "Ronks Fire Company",
+    "name": "Ross Township Fire Police",
     "state": "PA",
     "type": "special_district"
    },
    {
-    "name": "Erath, County of, Texas",
+    "name": "Falls County Appraisal District",
     "state": "TX",
-    "type": "county"
+    "type": "special_district"
    }
   ],
   "merge_examples": [
@@ -249,15 +250,15 @@
    "total": 47438,
    "by_source": {
     "gov": 14131,
-    "census": 20494,
+    "census": 20495,
     "ipeds": 1838,
-    "nces": 10975
+    "nces": 10974
    },
-   "roster_with_website": 30369
+   "roster_with_website": 30379
   }
  },
  "workbook": {
-  "roster_rows": 93224,
+  "roster_rows": 94528,
   "tabs": [
    "Overview",
    "Memberships",
@@ -340,6 +341,15 @@
    "states": 48
   },
   {
+   "program": "1GPA",
+   "coop_id": "coop_1gpa",
+   "raw": 1304,
+   "kept": 1183,
+   "inferred": 841,
+   "dropped": 121,
+   "states": 43
+  },
+  {
    "program": "Mohave",
    "coop_id": "coop_mohave",
    "raw": 492,
@@ -350,36 +360,36 @@
   }
  ],
  "directory": {
-  "governments": 121676,
-  "from_rosters": 64722,
-  "on_a_roster": 60080,
+  "governments": 121810,
+  "from_rosters": 64992,
+  "on_a_roster": 60227,
   "by_type": {
-   "tribal": 516,
+   "tribal": 517,
    "state_agency": 947,
-   "special_district": 51680,
-   "school_district": 24143,
-   "higher_education": 2831,
-   "county": 4407,
-   "municipality": 37152
+   "special_district": 51708,
+   "school_district": 24225,
+   "higher_education": 2842,
+   "county": 4408,
+   "municipality": 37163
   },
-  "inferred": 4142,
+  "inferred": 4237,
   "with_domain": 47438,
-  "roster_with_domain": 30369,
+  "roster_with_domain": 30379,
   "dotgov_rows": 15750,
-  "dotgov_matched": 9713,
-  "dotgov_added": 4418
+  "dotgov_matched": 9717,
+  "dotgov_added": 4414
  },
  "overlap": {
   "by_roster_count": {
-   "1": 44753,
-   "2": 10695,
-   "3": 3304,
-   "4+": 1328
+   "1": 44747,
+   "2": 10593,
+   "3": 3324,
+   "4+": 1563
   },
   "conservative_key_entities": 75467,
   "conservative_key_multi": 11309,
-  "entity_key_multi": 15327,
-  "on_three_or_more": 4642,
+  "entity_key_multi": 15480,
+  "on_three_or_more": 4897,
   "examples": [
    {
     "name": "Borough of Fairbanks North Star",
@@ -406,45 +416,47 @@
     "coops": 3
    },
    {
-    "name": "Wynne School District",
+    "name": "Springdale Public Schools",
     "state": "AR",
     "also": [
-     "Wynne Public Schools"
-    ],
-    "coops": 2
-   },
-   {
-    "name": "City of Apache Junction",
-    "state": "AZ",
-    "also": [
-     "Apache Junction, City of"
-    ],
-    "coops": 3
-   },
-   {
-    "name": "City of Tombstone",
-    "state": "AZ",
-    "also": [
-     "Tombstone, City of"
-    ],
-    "coops": 2
-   },
-   {
-    "name": "Globe Unified School District",
-    "state": "AZ",
-    "also": [
-     "Globe Unified School District 1",
-     "Globe USD No.1"
+     "Springdale School District",
+     "Springdale School District 50"
     ],
     "coops": 4
    },
    {
-    "name": "Morenci Unified School District 18",
+    "name": "Chinle Unified School District 24",
     "state": "AZ",
     "also": [
-     "Morenci USD No.18"
+     "Chinle USD No.24",
+     "Chinle Unified School District # 24"
     ],
-    "coops": 2
+    "coops": 3
+   },
+   {
+    "name": "City of Tolleson",
+    "state": "AZ",
+    "also": [
+     "Tolleson, City of"
+    ],
+    "coops": 5
+   },
+   {
+    "name": "Gilbert Public Schools",
+    "state": "AZ",
+    "also": [
+     "Gilbert Unified School District 41",
+     "Gilbert USD No.41"
+    ],
+    "coops": 4
+   },
+   {
+    "name": "Mohave County",
+    "state": "AZ",
+    "also": [
+     "Mohave, County of, AZ"
+    ],
+    "coops": 6
    }
   ]
  },
@@ -479,6 +491,12 @@
    "agency": 7,
    "purchase": 0
   },
+  "coop_1gpa": {
+   "list": 0,
+   "roster": 1171,
+   "agency": 5,
+   "purchase": 0
+  },
   "coop_mohave": {
    "list": 0,
    "roster": 487,
@@ -496,12 +514,6 @@
    "roster": 0,
    "agency": 2,
    "purchase": 1
-  },
-  "coop_1gpa": {
-   "list": 0,
-   "roster": 0,
-   "agency": 5,
-   "purchase": 0
   },
   "coop_equalis": {
    "list": 0,
@@ -565,7 +577,7 @@
   }
  },
  "evidence": {
-  "roster": 60080,
+  "roster": 60227,
   "agency": 12,
   "purchase": 3573,
   "id_checks": [
@@ -687,6 +699,7 @@
     "coop_hgacbuy",
     "coop_sourcewell",
     "coop_buyboard",
+    "coop_1gpa",
     "coop_choice"
    ],
    "strongest": "roster"
@@ -874,6 +887,7 @@
     "coop_sourcewell",
     "coop_buyboard",
     "coop_eandi",
+    "coop_1gpa",
     "coop_choice"
    ],
    "strongest": "roster"
@@ -917,6 +931,7 @@
     "coop_sourcewell",
     "coop_buyboard",
     "coop_eandi",
+    "coop_1gpa",
     "coop_choice"
    ],
    "strongest": "roster"
@@ -944,6 +959,7 @@
     "coop_hgacbuy",
     "coop_sourcewell",
     "coop_buyboard",
+    "coop_1gpa",
     "coop_choice"
    ],
    "strongest": "roster"
@@ -1002,6 +1018,7 @@
     "coop_hgacbuy",
     "coop_buyboard",
     "coop_eandi",
+    "coop_1gpa",
     "coop_choice"
    ],
    "strongest": "roster"
@@ -1067,7 +1084,7 @@
   },
   {
    "id": "gov_tx_cypress-fairbanks-isd",
-   "name": "Cypress Fairbanks Independent School District",
+   "name": "Cypress-Fairbanks ISD",
    "state": "TX",
    "type": "school_district",
    "dir_sales": 14649376,
@@ -1076,6 +1093,7 @@
     "coop_sourcewell",
     "coop_buyboard",
     "coop_eandi",
+    "coop_1gpa",
     "coop_choice"
    ],
    "strongest": "roster"
@@ -1104,6 +1122,7 @@
     "coop_sourcewell",
     "coop_buyboard",
     "coop_eandi",
+    "coop_1gpa",
     "coop_hgacbuy"
    ],
    "strongest": "roster"
@@ -1574,11 +1593,11 @@
   },
   {
    "program": "1GPA",
-   "status": "Selected agency relationships imported",
-   "records": null,
-   "evidence": "Published local approvals and awards",
-   "next": "FAQ offers member names on request. No request made; use already published agency records instead. Selected public agency evidence is now included in Agency Relationships or Purchase Evidence; this is not a full member roster.",
-   "url": "https://1gpa.org/about-us/faq/"
+   "status": "Roster imported",
+   "records": 1304,
+   "evidence": "Published membership workbook, dated August 28, 2023",
+   "next": "A historical snapshot: a listed member may have left since. Ask 1GPA for a current list.",
+   "url": "https://www.1gpa.org"
   },
   {
    "program": "Choice Partners",

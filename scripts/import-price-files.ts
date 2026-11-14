@@ -27,7 +27,10 @@ export interface PriceRow {
   price: number;
   unit: string;
   /** What the figure is: an awarded bid, or a base price in a price schedule. */
-  basis: "awarded_bid" | "base_price" | "list_price";
+  basis: "awarded_bid" | "base_price" | "list_price" | "net_price";
+  /** The list price, when the file also gives a contract (net) price. */
+  list?: number;
+  sku?: string;
   vintage: string;
   file: string;
   source_url: string;
@@ -178,9 +181,55 @@ function sitonitFeatured(file: string, number: string, supplier: string, sourceU
   return out;
 }
 
+/**
+ * BCI Burke's OMNIA price list: part number, description, list price and net (contract) price
+ * on one line. The contract's net is list less 7%, and a row is kept only when its two prices
+ * agree with that, which drops the rows where the PDF's text layer pairs a list price with
+ * another row's net.
+ */
+function burkePriceList(file: string, number: string, supplier: string, sourceUrl: string, vintage: string, discount: number): PriceRow[] {
+  const out: PriceRow[] = [];
+  const row = /^\s*(\S+)\s{2,}(.+?)\s{2,}\$\s*([\d,]+\.\d{2})\s+\$\s*([\d,]+\.\d{2})(?:\s+\S.*?)?\s*$/;
+  let skipped = 0;
+  pdfPages(file).forEach((text, i) => {
+    for (const l of text.split("\n")) {
+      const m = l.match(row);
+      if (!m) continue;
+      const [, part, desc, listS, netS] = m;
+      const list = money(listS), net = money(netS);
+      if (Math.abs(net - Math.round(list * (100 - discount)) / 100) > 0.011) {
+        skipped++;
+        continue;
+      }
+      out.push({
+        coop: "OMNIA Partners",
+        number,
+        supplier,
+        product: `Burke ${titleCase(desc.trim().replace(/\s+/g, " "))} (part ${part})`,
+        maker: "BCI Burke",
+        price: net,
+        list,
+        sku: part,
+        unit: "each",
+        basis: "net_price",
+        vintage,
+        file,
+        source_url: sourceUrl,
+        page: i + 1,
+        line: l.trim().replace(/\s{2,}/g, "  "),
+      });
+    }
+  });
+  console.log(`Burke: ${out.length} parts kept; ${skipped} left out because their list and net don't agree`);
+  return out;
+}
+
 const SITONIT_URL = "https://s3.us-east-1.amazonaws.com/nvp/Master%20Agreements/Exemplis%2C%20LLC/November_2024_Price_List.pdf";
 
+const BURKE_URL = "https://www.omniapartners.com/api/document-download?contract=149002&filename=2027+Burke+Equipment+Price+List_OMNIA+Partners.pdf";
+
 const rows: PriceRow[] = [
+  ...burkePriceList("omnia-r220201-burke-2027-price-list.pdf", "R220201", "BCI Burke", BURKE_URL, "Burke 2027 price list (OMNIA net prices)", 7),
   ...sitonitFeatured(
     cached("naspo-ma3964-sitonit-price-list-2024-11.pdf", SITONIT_URL),
     "MA3964",

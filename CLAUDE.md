@@ -14,7 +14,7 @@ npm run smoke          # read-only check of search and the shopper tools; safe o
 npm run eval           # the fixed test set for the prompts and their checks (evals/cases.ts)
 ```
 
-Run `rehearse` against a production build: `npm run build`, then `npx next start -p 3000`, then `npm run rehearse`. All 16 steps must pass, with no page errors, before anything merges. To stop the server, run `pkill -f next-server` (`pkill -f "next start"` doesn't stop it).
+Run `rehearse` against a production build: `npm run build`, then `npx next start -p 3000`, then `npm run rehearse`. All 16 steps must pass, with no page errors, before anything merges. Run it once per merge, on the branch's final state, not once per commit. A PR that changes only docs or copy outside the app (README, `HANDOFF.md`, this file, comments) can skip `rehearse`; typecheck and build still run. Anything under `app/`, `components/`, `lib/`, `scripts/`, `seed/` or `evals/` needs the full run. To stop the server, run `pkill -f next-server` (`pkill -f "next start"` doesn't stop it).
 
 ## How the app is built
 

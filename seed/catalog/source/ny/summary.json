@@ -26,14 +26,17 @@
   }
  },
  "suppliers": 1313,
- "priced_lines": 3036,
+ "priced_lines": 5735,
  "prices": {
   "rule": 3036,
-  "reviewed": 0,
+  "reviewed": 2699,
   "by_basis": {
-   "net_price": 3036
+   "net_price": 3036,
+   "contract_price": 1580,
+   "ceiling": 396,
+   "index_adjusted": 723
   }
  },
- "with_prices": 48,
- "products": 3255
+ "with_prices": 132,
+ "products": 4233
 }

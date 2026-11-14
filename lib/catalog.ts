@@ -369,7 +369,7 @@ export function catalogCoopHits(db: Db, item: string, buyer: Buyer | null, opts:
     member: x.access.member,
     eligible: x.access.eligible,
     reason: x.access.reason,
-    note: x.c.end ? null : "End date not published in the co-op's directory.",
+    note: x.c.end || x.c.state_contract?.preferred ? null : "End date not published in the co-op's directory.",
     verification: "research_lead",
     link_out: { contract_id: x.c.id, coop: x.c.coop, has_link: Boolean(x.c.url) },
     products: matchingPriced(x.c),

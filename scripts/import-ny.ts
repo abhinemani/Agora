@@ -384,7 +384,7 @@ if (existsSync(join(OUT, "preferred.json"))) {
       contract_url: p?.catalogs?.[0] ?? ps.source,
       lead_agency: "New York preferred source (State Finance Law § 162), listed by OGS",
       source_metadata: {
-        state_contract: { state: "NY", locals: true, solicitation: `Preferred source, Section ${section}`, type_code: sec.label, group: "Preferred source" },
+        state_contract: { state: "NY", locals: true, solicitation: `the OGS preferred-source list (Section ${section})`, type_code: sec.label, group: "Preferred source" },
         preferred: sec.kind,
         preferred_section: section,
         line_items_paginated: false,

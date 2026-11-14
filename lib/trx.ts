@@ -97,6 +97,8 @@ export interface StateContractFields {
   participants?: string[];
   /** Who may use it, in the award's own words (New York's "Use of Contracts"). */
   use?: string | null;
+  /** A New York preferred source rather than a contract (State Finance Law § 162). */
+  preferred?: "approved" | "agency" | "not_approved";
 }
 export const isTrxState = (state: string | null | undefined) => Boolean(state && (TRX_STATES as readonly string[]).includes(state));
 
@@ -121,7 +123,13 @@ export function stateContractAccess(sc: StateContractFields, buyer: Buyer | null
   const where = stateLabel(sc.state);
   const program = TRX_PROGRAM[sc.state]?.coop_program ?? "the state's cooperative purchasing program";
   const counties = sc.participants ? HI_COUNTIES.filter(([, re]) => sc.participants!.some((p) => re.test(p))).map(([n]) => n) : [];
-  const open = sc.participants
+  const open = sc.preferred
+    ? sc.preferred === "approved"
+      ? `Open to ${where} public buyers, who take it before any contract under State Finance Law § 162`
+      : sc.preferred === "agency"
+        ? "Approved as a preferred source for one state agency; optional for everyone else"
+        : "Listed but not approved as a preferred source; an ordinary purchase"
+    : sc.participants
     ? counties.length
       ? `Open to the jurisdictions it lists, including ${list(counties.map((c) => (c === "Honolulu" ? "Honolulu" : c === "Hawaii County" ? "Hawaii County" : `${c} County`)))}`
       : `For ${where} state agencies only; no county is a participating jurisdiction`

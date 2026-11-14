@@ -51,7 +51,19 @@ export interface CatalogContract {
   /** One of Agora's categories, from a reviewed classification of the title. */
   category?: string;
   /** A state contract (NJSTART), not a co-op's: who may use it and the solicitation it came from. */
-  state_contract?: { state: string; locals: boolean; solicitation: string | null; type_code: string | null; group: string | null; spent: number | null; more_items: boolean };
+  state_contract?: {
+    state: string;
+    locals: boolean;
+    solicitation: string | null;
+    type_code: string | null;
+    group: string | null;
+    spent: number | null;
+    more_items: boolean;
+    /** The governments a Hawaii price list names as participating jurisdictions. */
+    participants?: string[];
+    /** The islands a Hawaii contractor serves, when the list says. */
+    islands?: string[];
+  };
   /** NIGP commodity classes and item codes: "published" from the contract's own records (NJSTART),
    * "reviewed" when the AI review chose the classes (lib/nigp.ts). */
   nigp?: { classes: string[]; codes: string[]; source: "published" | "reviewed" };
@@ -211,8 +223,8 @@ function load(): Index {
 }
 
 export const catalogRetrieved = () => load().retrieved;
-/** When NJSTART's contract list was read (scripts/import-njstart.ts). */
-export const catalogStateRetrieved = (): string | null => load().state_retrieved?.NJSTART ?? null;
+/** When each state program's contracts were read, by program name ("NJSTART", "Hawaii SPO"). */
+export const catalogStateRetrieved = (): Record<string, string> => load().state_retrieved ?? {};
 /** The whole index, for the contract explorer and contract pages (lib/contracts.ts). Server only. */
 export type CatalogIndex = Index;
 export const catalogIndex = (): CatalogIndex => load();
@@ -358,7 +370,7 @@ export function catalogCoopHits(db: Db, item: string, buyer: Buyer | null, opts:
     source: "catalog",
     end: x.c.end,
     directory_url: x.c.directory,
-    ...(x.c.state_contract ? { program: "state" as const, trx: isTrxContract(x.c), solicitation: x.c.state_contract.solicitation } : {}),
+    ...(x.c.state_contract ? { program: "state" as const, trx: isTrxContract(x.c), solicitation: x.c.state_contract.solicitation, state: x.c.state_contract.state } : {}),
   });
   const statePer = opts.state ?? 6;
   return {

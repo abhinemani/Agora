@@ -14,7 +14,7 @@
   "gsa_open_to_cities": 7132,
   "gsa_sins": 277,
   "gsa_cooperative_sins": 56,
-  "names_title_cased": 11730,
+  "names_title_cased": 11728,
   "merged_by_uei": 0,
   "parts_labelled": 4112,
   "suppliers_merged_by_review": 7,
@@ -31,9 +31,9 @@
   ]
  },
  "suppliers": {
-  "records": 25214,
-  "companies": 23590,
-  "merged_by_name": 1274,
+  "records": 25436,
+  "companies": 23657,
+  "merged_by_name": 1429,
   "merged_by_website": 343,
   "merged_by_uei": 0,
   "with_website": 13936,
@@ -48,30 +48,78 @@
      "Equalis Group",
      "GSA MAS",
      "HGACBuy",
+     "Hawaii SPO",
      "NASPO ValuePoint",
      "NJSTART",
      "OMNIA Partners",
      "Sourcewell",
      "TIPS"
     ],
-    "contracts": 25
+    "contracts": 28
    },
    {
     "id": "cat_893418876ba75fddd993",
-    "name": "Infojini",
+    "name": "Infojini Inc.",
     "coops": [
      "1GPA",
      "Choice Partners",
      "E&I",
      "Equalis Group",
      "HGACBuy",
+     "Hawaii SPO",
      "NASPO ValuePoint",
      "NJSTART",
      "OMNIA Partners",
      "Sourcewell",
      "TIPS"
     ],
-    "contracts": 17
+    "contracts": 19
+   },
+   {
+    "id": "cat_506cc6b39ec0eb5c4cec",
+    "name": "Xerox Corporation",
+    "coops": [
+     "E&I",
+     "GSA MAS",
+     "Hawaii SPO",
+     "NASPO ValuePoint",
+     "NJSTART",
+     "OMNIA Partners",
+     "PEPPM",
+     "Sourcewell",
+     "TIPS"
+    ],
+    "contracts": 14
+   },
+   {
+    "id": "cat_38f685b654efb7facba2",
+    "name": "Carahsoft Technology Corporation",
+    "coops": [
+     "BuyBoard",
+     "E&I",
+     "GSA MAS",
+     "Hawaii SPO",
+     "NASPO ValuePoint",
+     "NJSTART",
+     "PEPPM",
+     "TIPS"
+    ],
+    "contracts": 44
+   },
+   {
+    "id": "cat_0160f61b377640b33e94",
+    "name": "Ameresco Inc.",
+    "coops": [
+     "1GPA",
+     "BuyBoard",
+     "Equalis Group",
+     "GSA MAS",
+     "Hawaii SPO",
+     "OMNIA Partners",
+     "Sourcewell",
+     "TIPS"
+    ],
+    "contracts": 23
    },
    {
     "id": "cat_214328f043ee2ee86bb0",
@@ -104,19 +152,19 @@
     "contracts": 17
    },
    {
-    "id": "cat_506cc6b39ec0eb5c4cec",
-    "name": "Xerox Corporation",
+    "id": "cat_35c5eed038a31882bac8",
+    "name": "Lawson Products Inc",
     "coops": [
-     "E&I",
+     "1GPA",
+     "BuyBoard",
+     "Equalis Group",
      "GSA MAS",
+     "Hawaii SPO",
      "NASPO ValuePoint",
-     "NJSTART",
      "OMNIA Partners",
-     "PEPPM",
-     "Sourcewell",
      "TIPS"
     ],
-    "contracts": 13
+    "contracts": 11
    },
    {
     "id": "cat_8e20f8f70d834637ff5a",
@@ -134,88 +182,48 @@
     "contracts": 11
    },
    {
-    "id": "cat_38f685b654efb7facba2",
-    "name": "Carahsoft Technology Corporation",
+    "id": "cat_13ed7098617bcbe6cb96",
+    "name": "Cogent Infotech Corporation",
     "coops": [
-     "BuyBoard",
-     "E&I",
-     "GSA MAS",
-     "NASPO ValuePoint",
-     "NJSTART",
-     "PEPPM",
-     "TIPS"
-    ],
-    "contracts": 43
-   },
-   {
-    "id": "cat_0160f61b377640b33e94",
-    "name": "Ameresco Inc.",
-    "coops": [
-     "1GPA",
-     "BuyBoard",
-     "Equalis Group",
-     "GSA MAS",
-     "OMNIA Partners",
-     "Sourcewell",
-     "TIPS"
-    ],
-    "contracts": 22
-   },
-   {
-    "id": "cat_026c3bd4be5b91f30582",
-    "name": "Emergent, LLC",
-    "coops": [
-     "E&I",
-     "Equalis Group",
-     "GSA MAS",
-     "NASPO ValuePoint",
-     "OMNIA Partners",
-     "PEPPM",
-     "Sourcewell"
-    ],
-    "contracts": 22
-   },
-   {
-    "id": "cat_9cd35a0ecc2e3cd5be1d",
-    "name": "School Specialty LLC",
-    "coops": [
-     "1GPA",
-     "BuyBoard",
      "Choice Partners",
      "Equalis Group",
-     "NJSTART",
-     "NPPGov",
-     "OMNIA Partners"
-    ],
-    "contracts": 21
-   },
-   {
-    "id": "cat_98d1d1e978ed679e67be",
-    "name": "School Health Corporation",
-    "coops": [
-     "1GPA",
-     "BuyBoard",
-     "Choice Partners",
-     "Equalis Group",
-     "OMNIA Partners",
-     "Sourcewell",
-     "TIPS"
-    ],
-    "contracts": 16
-   },
-   {
-    "id": "cat_59c1de0763e8bdc6be96",
-    "name": "Honeywell",
-    "coops": [
-     "1GPA",
-     "E&I",
-     "Equalis Group",
+     "GSA MAS",
      "HGACBuy",
+     "Hawaii SPO",
+     "NASPO ValuePoint",
      "NPPGov",
+     "Sourcewell"
+    ],
+    "contracts": 10
+   },
+   {
+    "id": "cat_1369ef49157eb75828c2",
+    "name": "Steelcase Inc.",
+    "coops": [
+     "BuyBoard",
+     "E&I",
+     "GSA MAS",
+     "Hawaii SPO",
+     "NASPO ValuePoint",
+     "NJSTART",
      "OMNIA Partners",
      "Sourcewell"
     ],
-    "contracts": 11
+    "contracts": 9
+   },
+   {
+    "id": "cat_019cf5414cb30b87f973",
+    "name": "CDW Government LLC",
+    "coops": [
+     "1GPA",
+     "Choice Partners",
+     "GSA MAS",
+     "Hawaii SPO",
+     "NJSTART",
+     "PEPPM",
+     "TIPS"
+    ],
+    "contracts": 33
    }
   ],
   "merge_examples": [
@@ -231,7 +239,8 @@
     "name": "All Traffic Solutions",
     "aliases": [
      "All Traffic Solutions, LLC",
-     "All Traffic Solutions Inc."
+     "All Traffic Solutions Inc.",
+     "All Traffic Solutions, Inc."
     ]
    },
    {
@@ -250,6 +259,13 @@
     ]
    },
    {
+    "name": "American Ramp Company",
+    "aliases": [
+     "AMERICAN RAMP COMPANY",
+     "American Ramp Company, Inc."
+    ]
+   },
+   {
     "name": "AmTab Manufacturing Corporation",
     "aliases": [
      "AmTab Manufacturing",
@@ -265,17 +281,10 @@
     ]
    },
    {
-    "name": "Auctions International, Inc.",
+    "name": "AT&T Corp",
     "aliases": [
-     "Auctions International",
-     "Auctions International Inc"
-    ]
-   },
-   {
-    "name": "Avaya LLC",
-    "aliases": [
-     "Avaya",
-     "AVAYA LLC"
+     "AT&T",
+     "AT&T Corp."
     ]
    }
   ]
@@ -434,15 +443,27 @@
    "expired": 0,
    "with_states": 1437,
    "offerings": 5810
+  },
+  {
+   "coop": "Hawaii SPO",
+   "coop_id": "state_hi",
+   "contracts": 259,
+   "suppliers": 210,
+   "with_link": 77,
+   "with_end": 249,
+   "expired": 0,
+   "with_states": 259,
+   "offerings": 1911
   }
  ],
  "nigp": {
   "published": 1282,
   "reviewed": 27698,
-  "none": 4387,
-  "contracts": 33367,
+  "none": 4646,
+  "contracts": 33626,
   "coop_contracts_coded": 27698,
   "coop_contracts": 31930,
+  "state_uncoded": 414,
   "classes_used": 150,
   "priced_offerings_coded": 4572,
   "top_classes": [
@@ -496,6 +517,41 @@
    ]
   ]
  },
+ "hawaii": {
+  "source": "https://spo.hawaii.gov/for-vendors/contract-awards/price-vendor-lists/",
+  "retrieved": "2026-11-14",
+  "directory_entries": 107,
+  "checked": {
+   "families": 83,
+   "answered": 83,
+   "contractors": 259,
+   "contractors_dropped": 0,
+   "jurisdictions": 1592,
+   "jurisdictions_dropped": 0,
+   "prices": 1911,
+   "prices_dropped": 188,
+   "expires_dropped": 0
+  },
+  "families": 77,
+  "contracts": 259,
+  "open_to_counties": 225,
+  "state_only": 34,
+  "unknown_jurisdictions": 0,
+  "priced_lines": 1911,
+  "with_prices": 57,
+  "documents": 354,
+  "by_source": {
+   "Hawaii / other": 86,
+   "NASPO ValuePoint": 157,
+   "Sourcewell": 12,
+   "MMCAP": 3,
+   "RFxPremier": 1
+  },
+  "suppliers": 222,
+  "products": 1456,
+  "suppliers_shared_with_coops": 143,
+  "products_on_two_or_more_contracts": 113
+ },
  "njstart": {
   "source": "https://www.njstart.gov/bso/view/search/external/advancedSearchContractBlanket.xhtml?view=activeContracts",
   "retrieved": "2026-11-14",
@@ -536,18 +592,18 @@
   "note": "Line items are the first summary page of each contract; contracts with more item pages are flagged line_items_paginated. Attachments are linked, not downloaded.",
   "nigp_codes": 520,
   "nigp_classes": 150,
-  "suppliers_shared_with_coops": 307,
+  "suppliers_shared_with_coops": 310,
   "offerings": 5810,
   "products_on_two_or_more_contracts": 568
  },
  "products": {
-  "products": 50007,
-  "offerings": 57494,
+  "products": 51463,
+  "offerings": 59405,
   "by_status": {
    "quote": 1509,
    "published_discount": 8102,
    "member_login": 26291,
-   "published_price": 21592
+   "published_price": 23503
   },
   "by_status_coops": {
    "quote": 1509,
@@ -571,7 +627,7 @@
    "Health Management Systems Inc., THIRD PARTY LIABILITY RECOVERY SERVICES",
    "West Publishing Corporation",
    "LexisNexis Risk Solutions",
-   "Mathtech",
+   "Mathtech, Inc.",
    "The Consultants Consortium Inc.",
    "WM. R. Hill & Co. Inc.",
    "H. Schrier & Co. Inc.",
@@ -668,11 +724,11 @@
    "Maximus US Services, Inc",
    "Deloitte Consulting LLP",
    "Trigyn Technologies, Inc.",
-   "Gartner Inc.",
+   "Gartner, Inc.",
    "Tech Valley Talent LLC",
    "BerryDunn",
    "OptumInsight, Inc.",
-   "Infojini",
+   "Infojini Inc.",
    "International Consulting Acquisition Corp",
    "NTT DATA State Health Consulting, LLC",
    "Informatix Inc",
@@ -1204,6 +1260,39 @@
    "Xtreme Wash Inc",
    "Windsor Car Wash",
    "Hamilton Car Wash",
+   "Hawaii Information Consortium, LLC dba Tyler Hawaii",
+   "CR Dispatch Service, Inc. dba Security Armored Car and Courier Service of Hawaii",
+   "Oahu Plastic Bags, Inc. dba HI-V Plastic Bag Manufacturing",
+   "ODP Business Solutions, LLC",
+   "Hawaiian Airlines, Inc.",
+   "American Guard Services, Inc.",
+   "Arekat Pacific Security, Inc.",
+   "Hawaiian Telcom, Inc.",
+   "EMSS, Inc.",
+   "Panda Travel, Inc.",
+   "Oahu Publications, Inc.",
+   "All Traffic Solutions",
+   "Applied Concepts, Inc dba Stalker Radar",
+   "Conrad Enterprises, Inc.",
+   "Imperial Bag & Paper Co., LLC dba Triple F Distributing",
+   "Premium LLC",
+   "Veritiv Operating Company",
+   "Diagnostic Laboratory Services, Inc.",
+   "Straub Clinic & Hospital dba Straub Benioff Medical Center",
+   "Big Island Energy Co. LLC",
+   "GP Energy Company, LLC",
+   "Hawaii Petroleum LLC",
+   "Par Hawaii, LLC",
+   "Bromberg & Associates",
+   "Effectiff",
+   "Hanna Interpreting Services, LLC",
+   "Visual Language Professionals, LLC",
+   "Aloha Packaging & Supplies, LLC",
+   "KYD, Inc.",
+   "Y. Hata & Co., LTD",
+   "Ilio Products, LLC",
+   "Maui Chemical & Paper Products, Inc.",
+   "Rimfire Imports Inc.",
    "BCI Burke",
    "Exemplis, LLC",
    "Caldwell Country Chevrolet II LLC",
@@ -1222,20 +1311,22 @@
    "LHD Partners, LP dba Longhorn Harley-Davidson",
    "Endera Motors, LLC"
   ],
-  "multi_route": 5472
+  "multi_route": 5585
  },
  "documents": {
-  "total": 31237,
+  "total": 31591,
   "by_kind": {
    "htm": 11892,
    "unknown": 19344,
-   "pdf": 1
+   "pdf": 348,
+   "docx": 7
   },
   "by_coop": {
    "GSA MAS": 11892,
    "HGACBuy": 709,
    "Sourcewell": 1,
-   "NJSTART": 18635
+   "NJSTART": 18635,
+   "Hawaii SPO": 354
   }
  },
  "reconcile": {

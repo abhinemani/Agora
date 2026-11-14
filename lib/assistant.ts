@@ -352,6 +352,8 @@ export interface CoopHit {
   trx?: boolean;
   /** The state solicitation it was awarded under (e.g. T2187), shared by every supplier on the award. */
   solicitation?: string | null;
+  /** The state whose contract it is (state contracts only). */
+  state?: string;
 }
 
 export interface CoopSection {
@@ -361,7 +363,7 @@ export interface CoopSection {
   /** A co-op the agency isn't on fits better than every co-op it is on. */
   better: { hit: CoopHit; than: CoopHit | null } | null;
   /** The co-op catalog's share of the section: what's shown, what else matched, and the GSA lane. */
-  catalog?: { retrieved: string; more_member: number; more_other: number; gsa: CoopHit[]; gsa_total: number; state: CoopHit[]; state_total: number; state_retrieved?: string | null };
+  catalog?: { retrieved: string; more_member: number; more_other: number; gsa: CoopHit[]; gsa_total: number; state: CoopHit[]; state_total: number; state_retrieved?: Record<string, string> };
   /** What the buyer's state law says about using co-op contracts (lib/state-rules.ts). */
   state_rule?: import("./state-rules").BuyerStateRule | null;
 }

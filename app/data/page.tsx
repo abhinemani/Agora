@@ -163,6 +163,7 @@ const REVIEW_TASK: Record<string, string> = {
 export default function CoopDataPage() {
   const d = insights.directory;
   const nj = catalogInsights.njstart;
+  const hi = catalogInsights.hawaii;
   const f = insights.federal;
   const o = insights.overlap;
   const prospects = insights.prospects.slice(0, 15);
@@ -194,6 +195,7 @@ export default function CoopDataPage() {
             ["#evidence", "How we know"],
             ["#catalog", "Co-op catalog"],
             ["#njstart", "NJSTART"],
+            ["#hawaii", "Hawaii"],
             ["#nigp", "NIGP codes"],
             ["#cleanup", "Cleanup"],
             ["#states", "State rules"],
@@ -526,7 +528,7 @@ export default function CoopDataPage() {
           head={["Co-op", "Contracts", "Own page", "End date", "Products"]}
           right={[1, 2, 3, 4]}
           rows={catalogInsights.per_coop
-            .filter((c) => c.contracts && c.coop !== "NJSTART")
+            .filter((c) => c.contracts && c.coop !== "NJSTART" && c.coop !== "Hawaii SPO")
             .sort((a, b) => b.contracts - a.contracts)
             .map((c) => [
               <span key="c" className="font-bold">
@@ -621,13 +623,37 @@ export default function CoopDataPage() {
         <p className="mt-2 max-w-[72ex] text-ui-xs text-base-dark">
           How the preference works: an NJSTART contract leads when it fits within {TRX_MARGIN} points of the best co-op contract, so a far closer co-op fit still wins. Line
           items are those on each contract&apos;s first summary page; contracts with more pages say so on their own page. The {n(nj.documents)} attached documents (price
-          sheets, terms, methods of operation) are linked, not read yet. Oregon, Arkansas, Hawaii and New York are TRX states too; their state contracts aren&apos;t loaded.
+          sheets, terms, methods of operation) are linked, not read yet. Hawaii is loaded too (below); Oregon, Arkansas and New York are TRX states whose contracts aren&apos;t loaded yet.
         </p>
         <p className="mt-3 text-ui-xs text-base-dark">
           Try it: set your agency to Harmon Lake Township, New Jersey, and search for <Link href="/" className="text-primary">snow plow parts</Link> or road salt, or browse{" "}
           <Link href="/contracts?coop=NJSTART" className="text-primary">every NJSTART contract</Link>.
         </p>
       </Section>
+
+      <Section
+        id="hawaii"
+        title="Hawaii: the State Procurement Office's price & vendor lists"
+        intro={
+          <>
+            <p>
+              Hawaii is a TRX state too. Its State Procurement Office publishes {n(hi.directory_entries)} price & vendor list documents: the state&apos;s own awards (paper,
+              office supplies, envelopes, fuel, car rental, security guards) and its participating addenda to NASPO ValuePoint, Sourcewell and MMCAP contracts. Each list names
+              its participating jurisdictions, and a county may buy on it only if it is named. Agora holds {n(hi.contracts)} supplier contracts from {n(hi.families)} lists,
+              read {date(hi.retrieved)}; {n(hi.open_to_counties)} name at least one county, and {n(hi.state_only)} are for state bodies only. For a Hawaii buyer they lead
+              results, as NJSTART does in New Jersey.
+            </p>
+            <p>
+              Hawaii publishes no table of contracts, so review agents read each list and wrote down its contractors, participating jurisdictions, term and prices. A script
+              then kept only what it found in the list&apos;s own text: all {n(hi.checked.contractors)} contractors and {n(hi.checked.jurisdictions)} jurisdiction entries,
+              and {n(hi.checked.prices)} prices whose printed line carries both the price and words saying what it prices. {n(hi.checked.prices_dropped)} were dropped,
+              mostly table rows that print only numbers. Prices are by island where the list says so, and rates the list sets as ceilings are labelled as ceilings.{" "}
+              {n(hi.suppliers_shared_with_coops)} of the {n(hi.suppliers)} contractors also hold co-op contracts. The documents&apos; text isn&apos;t kept: it names
+              procurement staff.
+            </p>
+          </>
+        }
+      />
 
       <Section
         id="nigp"

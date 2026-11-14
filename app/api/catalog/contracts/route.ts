@@ -5,12 +5,14 @@
 import { NextResponse } from "next/server";
 import { exploreContracts, contractDetail, type ContractKind } from "@/lib/contracts";
 import { getDb } from "@/lib/db";
+import { withSession } from "@/lib/session";
 
 export const dynamic = "force-dynamic";
 
 const KINDS = new Set(["coop", "federal", "state", "agency", "reseller"]);
 
-export function GET(req: Request) {
+// Read-only: it changes nothing in the store, so there is nothing to save afterwards.
+export const GET = withSession((req: Request) => {
   const p = new URL(req.url).searchParams;
   const db = getDb();
   const id = p.get("id");
@@ -32,4 +34,4 @@ export function GET(req: Request) {
       limit: 25,
     }),
   );
-}
+}, { readOnly: true });

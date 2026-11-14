@@ -14,5 +14,14 @@
  },
  "certified": 392,
  "suppliers": 1310,
- "priced_lines": 0
+ "priced_lines": 3036,
+ "prices": {
+  "rule": 3036,
+  "reviewed": 0,
+  "by_basis": {
+   "net_price": 3036
+  }
+ },
+ "with_prices": 7,
+ "products": 2724
 }

@@ -12,7 +12,7 @@
 // use-of-contracts wording is kept, cut before the first contact field and checked for none.
 
 import { createHash } from "node:crypto";
-import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
+import { existsSync, mkdirSync, readdirSync, readFileSync, writeFileSync } from "node:fs";
 import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { gzipSync } from "node:zlib";
@@ -93,6 +93,120 @@ if (process.argv[2] === "--read") {
   process.exit(0);
 }
 
+// ------------------------------------------------------------------ prices
+
+// --prices <folder>: award 23452's per-contractor price workbook is a clean table (SKU, description,
+// manufacturer, list price, discount, net price), read by rule. The other price files vary by award, so
+// they're exported to text (current period only) and sharded for review agents; --collect-prices keeps
+// what is found on the row or line it came from. Contact tabs are never read.
+const PRICE_TEXT = join(ROOT, "seed/cleanup/shards/ny-price-text");
+if (process.argv[2] === "--prices") {
+  const dir = resolve(process.argv[3]);
+  // eslint-disable-next-line @typescript-eslint/no-require-imports
+  const XLSX = require("xlsx") as typeof import("xlsx");
+  const docs = parseCsv(readFileSync(join(dir, "NY_OGS_Downloaded_Documents.csv"), "utf8"));
+  const priceDocs = docs.filter((d) => /pric|rate|cost|award summary|lots/i.test(d.link_name) && !/price guide/i.test(d.link_name));
+  const cell = (v: unknown) => (v == null ? "" : String(v).replace(/\s+/g, " ").trim());
+  const rows: Record<string, unknown>[] = [];
+  mkdirSync(PRICE_TEXT, { recursive: true });
+  const shardDocs: { doc: string; award: string; label: string; text: string; url: string }[] = [];
+  for (const d of priceDocs) {
+    const file = join(dir, d.local_file);
+    if (d.file_type === "XLSX" && existsSync(file)) {
+      const wb = XLSX.readFile(file);
+      // 23452: one tab per contract ("PC71108 ..."), header row with "Net Price".
+      const pcTabs = wb.SheetNames.filter((n) => /^PC\d{5}/.test(n));
+      if (pcTabs.length) {
+        for (const tab of pcTabs) {
+          const number = tab.match(/^(PC\d{5})/)![1];
+          const g = XLSX.utils.sheet_to_json<unknown[]>(wb.Sheets[tab], { header: 1, blankrows: false });
+          const h = g.findIndex((r) => r.some((c) => /net price/i.test(cell(c))));
+          if (h < 0) continue;
+          const col = (re: RegExp) => g[h].findIndex((c) => re.test(cell(c)));
+          const [sku, cat, desc, maker, mpn, list, net] = [col(/sku|part number/i), col(/category/i), col(/description/i), col(/manufacturer name/i), col(/manufacturer part/i), col(/list price/i), col(/net price/i)];
+          for (const r of g.slice(h + 1)) {
+            const price = Number(r[net]);
+            if (!cell(r[desc]) || !(price > 0)) continue;
+            rows.push({ award: d.award_number, contract: number, item: cell(r[desc]).slice(0, 180), category: cell(r[cat]) || null, maker: cell(r[maker]) || null, sku: cell(r[mpn]) || cell(r[sku]) || null, price: Math.round(price * 100) / 100, list: Number(r[list]) > 0 ? Number(r[list]) : null, unit: null, region: null, basis: "net_price", line: `${tab} | ${cell(r[sku])} | ${cell(r[desc]).slice(0, 120)} | list ${cell(r[list])} | net ${cell(r[net])}`, file: d.local_file.replace(/^documents\//, "") });
+          }
+        }
+        continue;
+      }
+      // Other workbooks: the current period only when tabs are periods (months, date ranges, dated price lists).
+      const periodic = wb.SheetNames.filter((n) => /\b(19|20)\d\d\b|\d{1,2}\.\d{1,2}\.\d{4}|pricelist|current/i.test(n));
+      const tabs = (periodic.length >= 2 ? [wb.SheetNames.find((n) => /current/i.test(n)) ?? periodic[0]] : wb.SheetNames).filter((n) => !/contact|contractor info|dnu/i.test(n));
+      const lines: string[] = [];
+      for (const tab of tabs) {
+        lines.push(`=== sheet: ${tab}`);
+        XLSX.utils.sheet_to_json<unknown[]>(wb.Sheets[tab], { header: 1, blankrows: false }).forEach((r, i) => {
+          const t = r.map(cell).filter(Boolean).join(" | ");
+          if (t && !/@|\(\d{3}\)\s*\d{3}-\d{4}|\b\d{3}-\d{3}-\d{4}\b/.test(t)) lines.push(`r${i + 1}: ${t}`);
+        });
+      }
+      const out = join(PRICE_TEXT, `${d.local_file.replace(/^documents\//, "").replace(/\.xlsx$/i, "")}.txt`);
+      writeFileSync(out, lines.join("\n"));
+      shardDocs.push({ doc: d.local_file.replace(/^documents\//, ""), award: d.award_number, label: d.link_name, text: out, url: d.url });
+    } else if (d.file_type === "PDF" && d.text_file && existsSync(join(dir, d.text_file))) {
+      shardDocs.push({ doc: d.local_file.replace(/^documents\//, ""), award: d.award_number, label: d.link_name, text: join(dir, d.text_file), url: d.url });
+    }
+  }
+  writeFileSync(join(OUT, "prices-rule.json"), JSON.stringify({ basis: "contract net price (list less the contract discount), as published in the award's price file", rows }, null, 1) + "\n");
+  // Shards for review agents, balanced by text size, each document with its award's contracts.
+  const src0 = JSON.parse(readFileSync(join(OUT, "contracts.json"), "utf8")) as { contracts: { award: string; number: string; contractor: string }[] };
+  const sized = shardDocs.map((x) => ({ ...x, bytes: readFileSync(x.text).length, contracts: src0.contracts.filter((c) => c.award === x.award).map((c) => ({ number: c.number, contractor: c.contractor })) })).sort((a, b) => b.bytes - a.bytes);
+  const N = 4;
+  const bins = Array.from({ length: N }, () => ({ bytes: 0, docs: [] as typeof sized }));
+  for (const x of sized) {
+    const b = bins.reduce((m, y) => (y.bytes < m.bytes ? y : m));
+    b.docs.push(x);
+    b.bytes += x.bytes;
+  }
+  bins.forEach((b, i) => writeFileSync(join(ROOT, "seed/cleanup/shards", `ny-prices-${String(i + 1).padStart(2, "0")}.json`), JSON.stringify(b.docs.map(({ bytes: _b, ...x }) => x), null, 1)));
+  console.log(`${rows.length} net prices read by rule; ${shardDocs.length} documents for review in ${N} shards: ${bins.map((b) => `${b.docs.length} docs/${Math.round(b.bytes / 1000)} KB`).join(", ")}.`);
+  process.exit(0);
+}
+
+// --collect-prices: keep each reviewed price only when its line is in the document's text, prints the
+// price and words, belongs to a contract on that award, and carries no personal detail.
+if (process.argv[2] === "--collect-prices") {
+  const SH = join(ROOT, "seed/cleanup/shards");
+  const ANS = join(ROOT, "seed/cleanup/out");
+  const norm = (x: string) => x.replace(/\s+/g, " ").trim().toLowerCase();
+  const numbersIn = (line: string) => new Set((line.match(/\d[\d,]*(\.\d+)?/g) ?? []).map((n) => Number(n.replace(/,/g, ""))));
+  const kept: Record<string, unknown>[] = [];
+  const stats = { documents: 0, answered: 0, prices: 0, dropped: { not_found: 0, wrong_contract: 0, no_words: 0, personal: 0, zero: 0 } };
+  for (const f of readdirSync(SH).filter((f) => /^ny-prices-\d+\.json$/.test(f))) {
+    const docs = JSON.parse(readFileSync(join(SH, f), "utf8")) as { doc: string; award: string; text: string; url: string; contracts: { number: string }[] }[];
+    const ans = existsSync(join(ANS, f)) ? (JSON.parse(readFileSync(join(ANS, f), "utf8")) as Record<string, { period?: string; prices?: Record<string, unknown>[] }>) : {};
+    for (const d of docs) {
+      stats.documents++;
+      const a = ans[d.doc];
+      if (!a) continue;
+      stats.answered++;
+      const text = norm(readFileSync(d.text, "utf8"));
+      const numbers = new Set(d.contracts.map((c) => c.number));
+      for (const p of a.prices ?? []) {
+        const line = String(p.line ?? ""), price = Number(p.price);
+        let why: keyof typeof stats.dropped | null = null;
+        if (!(price > 0)) why = "zero";
+        else if (PERSONAL.test(`${line} ${p.item} ${p.product ?? ""}`)) why = "personal";
+        else if (!/[A-Za-z]{3,}/.test(line.replace(/^r\d+:/, ""))) why = "no_words";
+        else if (!text.includes(norm(line)) || !numbersIn(line).has(price)) why = "not_found";
+        else if (!numbers.has(String(p.contract))) why = "wrong_contract";
+        if (why) {
+          stats.dropped[why]++;
+          continue;
+        }
+        stats.prices++;
+        kept.push({ award: d.award, contract: p.contract, item: String(p.item).slice(0, 180), category: null, maker: null, sku: p.product ? String(p.product).slice(0, 80) : null, price, list: null, unit: p.unit ?? null, region: p.region ?? null, basis: p.basis ?? "contract_price", period: a.period ?? null, line: line.slice(0, 400), file: d.doc, url: d.url });
+      }
+    }
+  }
+  writeFileSync(join(OUT, "prices-reviewed.json"), JSON.stringify({ checked: stats, rows: kept }, null, 1) + "\n");
+  console.log(stats);
+  process.exit(0);
+}
+
 // ------------------------------------------------------------------ build
 
 interface Award { award: string; group: string; title: string; type: string; keywords: string; url: string; use: string | null }
@@ -152,7 +266,53 @@ for (const r of src.contracts) {
   documents.push({ document_id: `doc_ny_${hash(`${id}|master`)}`, cooperative: COOP, url: "https://ogs.ny.gov/complete-listing-all-statewide-contracts", label: `OGS master list of statewide contracts, ${src.master_report_date} (page ${r.page})`, contract_id: id });
 }
 
-writeFileSync(join(OUT, "records.json.gz"), gzipSync(JSON.stringify({ retrieved: src.retrieved, suppliers: [...suppliers.values()], contracts, products: [], offerings: [], documents }), { level: 9 }));
-const summary = { source: SOURCE, retrieved: src.retrieved, master_report_date: src.master_report_date, ...stats, suppliers: suppliers.size, priced_lines: 0 };
+// Prices: award 23452's net prices read by rule, and the other price files' prices kept by --collect-prices.
+const BASIS: Record<string, string> = { net_price: "contract net price (list less the contract discount)", contract_price: "awarded contract price", ceiling: "ceiling rate (the most an agency pays)", index_adjusted: "price set by the award's monthly index adjustment" };
+const products = new Map<string, Record<string, unknown>>();
+const offerings: Record<string, unknown>[] = [];
+const priceStats = { rule: 0, reviewed: 0, by_basis: {} as Record<string, number> };
+const contractIds = new Set(contracts.map((c) => c.contract_id as string));
+for (const [file, key] of [["prices-rule.json", "rule"], ["prices-reviewed.json", "reviewed"]] as const) {
+  if (!existsSync(join(OUT, file))) continue;
+  for (const r of (JSON.parse(readFileSync(join(OUT, file), "utf8")) as { rows: Record<string, string | number | null>[] }).rows) {
+    const cid = `con_ny_${String(r.contract).replace(/[^A-Za-z0-9]/g, "")}`;
+    if (!contractIds.has(cid)) continue;
+    const c = contracts.find((x) => x.contract_id === cid)!;
+    const name = `${r.item}${r.region ? ` (${r.region})` : ""}`.replace(/\s+/g, " ").trim().slice(0, 180);
+    const pid = `prd_ny_${hash(`${r.item}|${r.maker ?? ""}|${r.sku ?? ""}`.toLowerCase())}`;
+    if (!products.has(pid)) products.set(pid, { product_id: pid, product_name: String(r.item).slice(0, 180), manufacturer: r.maker ?? null, manufacturer_sku: r.sku ?? null, record_type: "awarded_line_item", title_conflict_requires_review: false });
+    const basis = String(r.basis ?? "contract_price");
+    priceStats[key]++;
+    priceStats.by_basis[basis] = (priceStats.by_basis[basis] ?? 0) + 1;
+    offerings.push({
+      offering_id: `off_ny_${hash(`${cid}|${r.line}|${r.price}|${r.region ?? ""}`)}`,
+      product_id: pid,
+      supplier_id: c.supplier_id,
+      contract_id: cid,
+      cooperative: COOP,
+      product_name: name,
+      vendor_sku: r.sku ?? null,
+      source_url: (r.url as string) ?? (c.contract_url as string),
+      fixed_price: r.price,
+      discount_percent: null,
+      pricing_status: "published_price",
+      unit_of_measure: r.unit ?? null,
+      source_metadata: {
+        document_vintage: `NYS OGS ${BASIS[basis] ?? "awarded price"}${r.region ? `, ${r.region}` : ""}${r.period ? `, ${r.period}` : ""}, award ${r.award} (${r.file}); read ${src.retrieved}`,
+        category_as_published: `${c.title}: ${BASIS[basis] ?? "awarded price"}`,
+        basis: basis === "net_price" ? "net_price" : "awarded_bid",
+        line: r.line,
+        ...(r.list ? { MSRP: r.list } : {}),
+      },
+    });
+  }
+}
+// What each priced contract covers, in its price file's words.
+for (const c of contracts) {
+  const items = [...new Set(offerings.filter((o) => o.contract_id === c.contract_id).map((o) => String((products.get(o.product_id as string) ?? {}).product_name ?? "")).filter(Boolean))].slice(0, 25);
+  if (items.length) c.category_labels = [...(c.category_labels as string[]), ...items];
+}
+writeFileSync(join(OUT, "records.json.gz"), gzipSync(JSON.stringify({ retrieved: src.retrieved, suppliers: [...suppliers.values()], contracts, products: [...products.values()], offerings, documents }), { level: 9 }));
+const summary = { source: SOURCE, retrieved: src.retrieved, master_report_date: src.master_report_date, ...stats, suppliers: suppliers.size, priced_lines: offerings.length, prices: priceStats, with_prices: new Set(offerings.map((o) => o.contract_id)).size, products: products.size };
 writeFileSync(join(OUT, "summary.json"), JSON.stringify(summary, null, 1) + "\n");
 console.log(JSON.stringify(summary, null, 1));

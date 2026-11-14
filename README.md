@@ -20,6 +20,8 @@ The home page (`/`) is the marketplace. It asks one question, "What are you look
 
 ## Running it
 
+`HANDOFF.md` says where the work stands and what's next; `CLAUDE.md` has the working notes for coding agents (commands, data pipeline, data rules).
+
 ```bash
 npm install
 npm run dev        # http://localhost:3000
@@ -224,7 +226,7 @@ It is New Jersey's state contract on NJSTART, 26-TELE-114629, so it is open to N
 
 ## Putting it online
 
-The easiest host is **Render**, using the `render.yaml` blueprint in this repo. Go to [dashboard.render.com](https://dashboard.render.com), choose **New → Blueprint**, connect this GitHub repo, and accept the defaults. Render will ask for `ANTHROPIC_API_KEY`; leave it blank to run offline. You'll get a public `https://riverbend-storefront.onrender.com`-style URL in a few minutes, and every push to `main` redeploys.
+The live site runs on **Railway**, which redeploys every push to `main` (`riverbend-storefront-production.up.railway.app`). Render also works, using the `render.yaml` blueprint in this repo. Go to [dashboard.render.com](https://dashboard.render.com), choose **New → Blueprint**, connect this GitHub repo, and accept the defaults. Render will ask for `ANTHROPIC_API_KEY`; leave it blank to run offline. You'll get a public `https://riverbend-storefront.onrender.com`-style URL in a few minutes, and every push to `main` redeploys.
 
 Pick a host that runs one long-lived Node server (Render, Railway, Fly.io). The demo keeps its state in memory, so serverless hosts like Vercel or Netlify can split a single click-through across instances that don't share state. On Render's free plan the service sleeps after about 15 minutes idle. The first visit afterward takes roughly a minute to wake, and the demo comes back freshly reset. Open the URL a minute before you present, or use a paid instance to keep it warm.
 
@@ -263,6 +265,10 @@ The prototype supports section 8 of the spec end to end. Switch roles with the B
 | `lib/directory.ts`, `app/api/directory/` | Server-only lookups in the co-op directory, and the API the agency typeahead calls |
 | `scripts/import-catalog.ts`, `seed/catalog/`, `lib/catalog.ts` | The co-op catalog: its source capture, the importer, and server-side contract, product, supplier and document lookups |
 | `lib/pricelists.ts`, `app/coops/price-lists/` | The price-list queue: fetching catalog documents for the contract reader, and the page that lists them |
+| `scripts/import-price-files.ts`, `seed/catalog/source/price-files/`, `seed/catalog/price-rows.json` | Item prices read from co-op price files (BuyBoard vehicle awards, Endera buses, SitOnIt furniture) |
+| `scripts/fetch-rosters.ts`, `seed/coops/source/rosters/` | Co-op rosters published after the workbook (Choice Partners; 1GPA when saved) |
+| `scripts/import-state-rules.ts`, `seed/states/source/`, `lib/state-rules.ts` | The 50-state cooperative purchasing rules and the note shown beside co-op contracts |
+| `scripts/cleanup/`, `seed/cleanup/decisions/` | The AI review pipeline and its checked, committed decisions |
 | `app/data/` | The Co-op data page |
 | `app/` | Next.js App Router pages and the `/api/state`, `/api/act`, `/api/contracts/parse` routes |
 

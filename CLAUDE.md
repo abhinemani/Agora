@@ -1,0 +1,62 @@
+# Agora: notes for Claude
+
+Agora is a procurement marketplace prototype for local governments. A buyer describes what they need, and Agora shows options across their own contracts, state contracts, co-op contracts and suppliers. It also knows which co-ops each government belongs to, what those co-ops have under contract, and what the buyer's state law allows. The README is the full product and data reference. This file covers how to work in the repo; `HANDOFF.md` covers where things stand.
+
+## Commands
+
+```bash
+npm install
+npm run dev            # http://localhost:3000
+npm run typecheck      # tsc --noEmit
+npm run build
+npm run rehearse       # 13-step demo walkthrough in Playwright; needs a server on :3000
+```
+
+Run `rehearse` against a production build: `npm run build`, then `npx next start -p 3000`, then `npm run rehearse`. All 13 steps must pass, with no page errors, before anything merges. To stop the server, run `pkill -f next-server` (`pkill -f "next start"` doesn't stop it).
+
+## How the app is built
+
+- Next.js 15 App Router. State is an in-memory `Db` (`lib/db.ts`, seeded by `lib/seed.ts`), changed only through `lib/actions.ts` via `/api/act`.
+- `/api/state` sends the whole `Db` to the browser. Large datasets therefore stay server-only and are read lazily: the co-op directory (`lib/directory.ts`), the co-op catalog (`lib/catalog.ts`) and state rules (`lib/state-rules.ts`). Results carry only the slice a page needs. Never import those modules or their JSON into a `"use client"` component.
+- A helper used by both a server page and a client component can't live in a `"use client"` file (see `components/StateRuleBits.tsx`).
+- The UI uses USWDS-based Tailwind tokens (`tailwind.config.ts`). The theme has `error-*`, `warning-*` and `success-*` colors, plus emerald and amber; it has no `red-*`.
+
+## The data pipeline
+
+Generated data is committed so builds need no network. Re-run the importers after changing a source file or a review decision, in this order:
+
+1. `npm run fetch:federal`, `fetch:gsa`, `fetch:rosters` download sources (these need network access to their hosts).
+2. `npm run import:coops` builds the co-op directory (`seed/coops/directory.json.gz`, `insights.json`).
+3. `npm run import:price-files` reads item price files into `seed/catalog/price-rows.json`. PDFs need `pdftotext` (poppler-utils). SitOnIt's 43 MB book is downloaded into a gitignored cache when missing.
+4. `npm run import:catalog-coops` builds the co-op catalog (`seed/catalog/catalog.json.gz`) and attaches the price rows.
+5. `npm run import:state-rules` builds `lib/state-rules.json` from `seed/states/source/`.
+
+**AI review.** Judgments too fuzzy for rules go through a review loop:
+
+1. The importers write tasks to `seed/cleanup/tasks/`, each with real candidates.
+2. `scripts/cleanup/prepare-shards.ts` splits them into batches.
+3. Review agents write answers to `seed/cleanup/out/`.
+4. `scripts/cleanup/collect.ts` checks every answer and writes `seed/cleanup/decisions/`, which is committed.
+5. `scripts/cleanup/audit.ts` prints a sample for a person to check.
+
+The importers apply only high- and medium-confidence decisions.
+
+## Data rules
+
+- Never invent a price. Every price must appear in the line it was read from (the importers enforce this). Keep each price's vintage, and label what it is: awarded bid, base price or list price. A list price is never shown as a contract price.
+- Keep discounts out until the product decision is made (see `HANDOFF.md`).
+- Drop personal contact details (officials' names, phone numbers, emails, street addresses) from every public dataset.
+- Respect each site's robots rules and bot walls. OMNIA Partners' robots.txt disallows ClaudeBot. TIPS sits behind a Cloudflare challenge. GSA Advantage disallows `/advantage/rs/`. Files from those sites come in only when a person downloads them.
+- Real data and demo data stay labelled: Riverbend, Cedar Bend and Harmon Lake are fictional, and the demo suppliers' verification results are marked as demo.
+- State rules are research findings with source flags (`[mirror]`, `[secondary]`, …), not legal advice. Keep the flags visible.
+
+## Shipping
+
+- The site runs on Railway, which auto-deploys `main` (domain `riverbend-storefront-production.up.railway.app`). Check deploys with the Railway tools; the deployment's status should read SUCCESS.
+- Each shipped batch: typecheck, build and rehearse, update the README (and `/data` when numbers change), commit, open a PR, merge, and confirm the deploy.
+- Don't put model names or IDs in commits, PRs or code.
+- In cloud sessions, outbound hosts are allowlisted per environment. A refused connection usually means the host needs adding.
+
+## Writing
+
+Copy and docs are plain and direct, in prose, with numbers that come from the data files rather than being typed by hand where the page can read them.

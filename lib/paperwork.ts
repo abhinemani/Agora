@@ -35,7 +35,21 @@ export function paperworkKinds(plan: Plan): PaperworkKind[] {
 
 const today = () => new Date().toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" });
 
-export function paperworkTemplate(results: Results, plan: Plan, kind: PaperworkKind): Paperwork {
+/** The signed-in person drafting the document. Their name fills the "From" line; what Agora doesn't know stays a [bracketed] blank. */
+export interface PaperworkAuthor {
+  name: string;
+  department?: string | null;
+}
+
+export function paperworkTemplate(results: Results, plan: Plan, kind: PaperworkKind, author?: PaperworkAuthor | null): Paperwork {
+  const draft = blankTemplate(results, plan, kind);
+  const name = author?.name?.trim();
+  if (!name) return draft;
+  const dept = author?.department?.trim();
+  return { ...draft, text: draft.text.replaceAll("[Your name, department]", dept ? `${name}, ${dept}` : `${name}, [department]`).replaceAll("[Your name]", name) };
+}
+
+function blankTemplate(results: Results, plan: Plan, kind: PaperworkKind): Paperwork {
   const agency = results.buyer ? `${results.buyer.name}, ${results.buyer.state}` : "[Agency]";
   const need = results.request.raw_text;
   const itemLines = plan.lines.length

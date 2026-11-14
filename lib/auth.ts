@@ -121,6 +121,18 @@ export async function startSession(userId: string): Promise<string> {
   return token;
 }
 
+/** Remove an account for good, with its sessions and email links. The person must have just given their password. */
+export async function deleteUser(args: { userId: string; email: string; password: unknown }) {
+  const stored = await byEmail(cleanEmail(args.email));
+  if (!stored || stored.id !== args.userId || !(await passwordMatches(String(args.password ?? ""), stored.password_hash))) throw new AuthError("That password isn't right.");
+  const p = pool();
+  if (!p) {
+    mem.users.delete(args.userId);
+    for (const [k, v] of mem.sessions) if (v.user_id === args.userId) mem.sessions.delete(k);
+    for (const [k, v] of mem.tokens) if (v.user_id === args.userId) mem.tokens.delete(k);
+  } else await p.query("delete from users where id = $1", [args.userId]); // sessions and email links go with it
+}
+
 export async function endSession(token: string | null) {
   if (!token) return;
   const p = pool();

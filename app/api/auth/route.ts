@@ -1,9 +1,10 @@
-// Accounts: POST { op: "signup" | "signin" | "signout" | "verify" | "resend" | "forgot" | "reset", ... }. The session travels in an HttpOnly cookie.
+// Accounts: POST { op: "signup" | "signin" | "signout" | "verify" | "resend" | "forgot" | "reset" | "delete", ... }. The session travels in an HttpOnly cookie.
 
 import { NextResponse } from "next/server";
-import { AuthError, endSession, resetPassword, SESSION_COOKIE, sessionCookie, signIn, signUp, startSession, userByEmail, verifyEmail, type User } from "@/lib/auth";
+import { AuthError, deleteUser, endSession, resetPassword, SESSION_COOKIE, sessionCookie, signIn, signUp, startSession, userByEmail, verifyEmail, type User } from "@/lib/auth";
 import { sendReset, sendVerification } from "@/lib/notify";
 import { currentScope, getDb } from "@/lib/db";
+import { forgetAccount } from "@/lib/actions";
 import { cookie, withSession } from "@/lib/session";
 
 export const dynamic = "force-dynamic";
@@ -18,6 +19,16 @@ export const POST = withSession(async (req: Request) => {
       await endSession(cookie(req, SESSION_COOKIE));
       s.user = null;
       const res = NextResponse.json({ result: { user: null } });
+      res.headers.append("set-cookie", sessionCookie(null));
+      return res;
+    }
+    if (body.op === "delete") {
+      // Deleting an account needs its password again. Searches nothing refers to and unpublished contract reads go with it.
+      if (!s.user) return NextResponse.json({ error: "Sign in first." }, { status: 401 });
+      await deleteUser({ userId: s.user.id, email: s.user.email, password: body.password });
+      const removed = forgetAccount(s.user.id);
+      s.user = null;
+      const res = NextResponse.json({ result: { user: null, removed } });
       res.headers.append("set-cookie", sessionCookie(null));
       return res;
     }

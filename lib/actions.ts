@@ -261,7 +261,9 @@ export async function askShopper(args: { requestId: string; question: string; hi
 export async function draftPaperwork(args: { requestId: string; kind: PaperworkKind }) {
   const { db, results, plan } = shopperContext(args.requestId);
   if (!paperworkKinds(plan).includes(args.kind)) fail("That document doesn't apply to this purchase.");
-  return polish(paperworkTemplate(results, plan, args.kind), shopperFacts(db, results, plan), plan.refs.map((r) => r.n));
+  const person = currentScope()?.user;
+  const author = person ? { name: person.name, department: results.request.parsed.department } : null;
+  return polish(paperworkTemplate(results, plan, args.kind, author), shopperFacts(db, results, plan), plan.refs.map((r) => r.n));
 }
 
 /** A thumbs up or down on something the model wrote, with an optional note on what was wrong. One vote per browser. */
@@ -706,8 +708,37 @@ export function listAward(solicitationId: string) {
 
 /** Read uploaded contract files. A hint (from the co-op catalog, for a queued price list) fills
  * header fields the reader couldn't find, such as the supplier a GSA catalog page belongs to. */
+/** Contract reads that were never published. Nothing shows them again, so they are dropped: all of one
+ * person's when their account is deleted, and anyone's once they are a day old. */
+export function dropUnpublishedReads(db: Db, who: { user?: string; olderThanMs?: number }) {
+  const listed = new Set(db.listings.map((l) => l.extracted_item_id).filter(Boolean));
+  const cutoff = who.olderThanMs ? Date.now() - who.olderThanMs : null;
+  const dead = new Set(
+    db.documents
+      .filter((d) => d.uploaded_by && (who.user ? d.uploaded_by === who.user : cutoff !== null && new Date(d.uploaded_at).getTime() < cutoff))
+      .filter((d) => !db.extracted.some((e) => e.document_id === d.id && (e.status === "accepted" || e.listing_id || listed.has(e.id))))
+      .map((d) => d.id),
+  );
+  if (!dead.size) return 0;
+  db.documents = db.documents.filter((d) => !dead.has(d.id));
+  db.extracted = db.extracted.filter((e) => !dead.has(e.document_id));
+  return dead.size;
+}
+
+/** What an account leaves behind when it is deleted: searches nothing else refers to, and unpublished contract reads. Orders, carts and published contracts are the agency's records and stay. */
+export function forgetAccount(userId: string) {
+  const db = getDb();
+  const used = new Set<string>();
+  const note = (rows: { request_id?: string | null }[] | undefined) => rows?.forEach((r) => r.request_id && used.add(r.request_id));
+  for (const rows of Object.values(db) as unknown[]) if (Array.isArray(rows)) note(rows as { request_id?: string | null }[]);
+  const before = db.requests.length;
+  db.requests = db.requests.filter((r) => r.owner !== userId || used.has(r.id));
+  return { requests: before - db.requests.length, reads: dropUnpublishedReads(db, { user: userId }) };
+}
+
 export async function parseUpload(files: InputFile[], role: Role, hint?: Partial<ContractHeader>) {
   const db = getDb();
+  dropUnpublishedReads(db, { olderThanMs: 24 * 60 * 60 * 1000 });
   const started = Date.now();
   const extracted = await Promise.all(files.map(extractFile));
   const parsed = await parseContract(extracted);
@@ -722,6 +753,7 @@ export async function parseUpload(files: InputFile[], role: Role, hint?: Partial
     mime_type: f.mime,
     file_hash: f.hash,
     uploaded_by_role: role,
+    ...(currentScope()?.user ? { uploaded_by: currentScope()!.user!.id } : {}),
     uploaded_at: now(),
     page_count: f.page_count,
     parse_status: "parsed",

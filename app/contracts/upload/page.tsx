@@ -4,7 +4,7 @@ import Link from "next/link";
 import { Check } from "@/components/icons";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Suspense, useEffect, useMemo, useRef, useState } from "react";
-import { post, useStore } from "@/components/store";
+import { post, readJson, useStore } from "@/components/store";
 import { Badge, Button, Card, ErrorNote, IconCircle, Loading, PageTitle, SourcePill, money } from "@/components/ui";
 import { SAMPLE_CONTRACTS, TEST_FILES } from "@/lib/samples";
 import { CATEGORIES } from "@/lib/types";
@@ -72,18 +72,38 @@ function Upload() {
     setTick(0);
     setError(null);
     try {
-      let res: ParseResult;
+      const url = "/api/contracts/parse";
+      let r: Response;
       if (body instanceof FileList) {
         const form = new FormData();
         for (const f of Array.from(body)) form.append("files", f);
         form.append("role", as);
-        const r = await fetch("/api/contracts/parse", { method: "POST", body: form });
-        const json = await r.json();
-        if (!r.ok) throw new Error(json.error);
-        res = json.result;
+        r = await fetch(url, { method: "POST", body: form });
       } else {
-        res = await post<ParseResult>("/api/contracts/parse", { ...body, role: as });
+        r = await fetch(url, { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ ...body, role: as }) });
       }
+      const started = await readJson(r);
+      if (!r.ok) throw new Error(started.error ?? "Something went wrong");
+      // The read runs in the background; ask for it until it is done. A dropped check is retried, not treated as a failure.
+      let res: ParseResult | null = null;
+      let misses = 0;
+      for (let i = 0; i < 240 && !res; i++) {
+        await new Promise((ok) => setTimeout(ok, 1500));
+        let json: Awaited<ReturnType<typeof readJson>>;
+        let ok: boolean;
+        try {
+          const check = await fetch(`${url}?job=${started.job}`);
+          json = await readJson(check);
+          ok = check.ok;
+        } catch (e) {
+          if (++misses > 5) throw e;
+          continue;
+        }
+        misses = 0;
+        if (!ok) throw new Error(json.error ?? "Something went wrong");
+        if (json.status === "done") res = json.result as ParseResult;
+      }
+      if (!res) throw new Error("This contract is taking longer than expected to read. Try again, or upload a smaller file.");
       setTick(STEPS.length);
       await new Promise((r) => setTimeout(r, 350));
       setResult(res);

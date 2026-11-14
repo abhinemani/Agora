@@ -193,6 +193,7 @@ export function Header() {
                     >
                       Sign out
                     </button>
+                    <DeleteAccount onDone={() => setOpen(false)} />
                   </>
                 ) : (
                   <>
@@ -328,5 +329,46 @@ export function Header() {
         </div>
       )}
     </header>
+  );
+}
+
+/** Delete the signed-in account, after the password is given again. Orders and published contracts stay with the agency. */
+function DeleteAccount({ onDone }: { onDone: () => void }) {
+  const { refresh } = useStore();
+  const [asking, setAsking] = useState(false);
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState<string | null>(null);
+  if (!asking)
+    return (
+      <button type="button" onClick={() => setAsking(true)} className="block min-h-[36px] text-ui-3xs text-base-dark underline hover:text-ink">
+        Delete this account
+      </button>
+    );
+  return (
+    <form
+      className="mt-1 space-y-1.5 border-t border-base-lighter pt-2"
+      onSubmit={async (e) => {
+        e.preventDefault();
+        setError(null);
+        const res = await fetch("/api/auth", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ op: "delete", password }) });
+        if (!res.ok) return setError((await res.json().catch(() => ({}))).error ?? "Couldn't delete the account. Try again.");
+        onDone();
+        await refresh();
+      }}
+    >
+      <label className="block text-ui-3xs text-base-dark">
+        Enter your password to delete this account. Orders and published contracts stay with the agency.
+        <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} autoComplete="current-password" className="mt-1 w-full !py-1 text-sm" />
+      </label>
+      {error && <div className="text-ui-3xs text-error-dark">{error}</div>}
+      <div className="flex gap-3">
+        <button type="submit" disabled={!password} className="min-h-[36px] text-ui-xs font-bold text-error-dark disabled:opacity-60">
+          Delete account
+        </button>
+        <button type="button" onClick={() => setAsking(false)} className="min-h-[36px] text-ui-xs font-bold text-primary">
+          Cancel
+        </button>
+      </div>
+    </form>
   );
 }

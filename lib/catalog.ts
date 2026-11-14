@@ -475,7 +475,7 @@ export function catalogProducts(db: Db, item: string, buyer: Buyer | null, limit
       })
       .filter((r): r is CatalogRoute => Boolean(r))
       // Routes the buyer can use first, a TRX state contract ahead of a co-op among them, then by price.
-      .sort((a, b) => Number(b.member) - Number(a.member) || Number(b.eligible) - Number(a.eligible) || Number(b.trx && b.eligible) - Number(a.trx && a.eligible) || (a.price ?? Infinity) - (b.price ?? Infinity));
+      .sort((a, b) => Number(b.member) - Number(a.member) || Number(b.eligible) - Number(a.eligible) || Number(Boolean(buyer) && b.trx && b.eligible) - Number(Boolean(buyer) && a.trx && a.eligible) || (a.price ?? Infinity) - (b.price ?? Infinity));
     return { product_id: p.id, name: p.name, maker: p.maker, mpn: p.mpn, fit, review: p.review, routes, coverage: cover.get(i) ?? 0 };
   };
   const priced = (h: CatalogProductHit) => (h.routes.some((r) => r.price != null) ? 2 : h.routes.some((r) => r.discount != null) ? 1 : 0);

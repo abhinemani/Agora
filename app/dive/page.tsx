@@ -111,7 +111,9 @@ export default function Dive() {
   };
 
   const question = state?.questions.find((q) => !skipped.includes(q.id));
-  const bestId = [...(state?.items ?? [])].filter((i) => i.usable && i.price != null).sort((x, y) => x.price! - y.price!)[0]?.id;
+  // The lowest price among the closest matches only: a cheap product that fits the need loosely isn't the one to flag.
+  const topFit = Math.max(0, ...(state?.items ?? []).map((i) => i.fit));
+  const bestId = [...(state?.items ?? [])].filter((i) => i.usable && i.price != null && i.fit >= topFit - 10).sort((x, y) => x.price! - y.price!)[0]?.id;
 
   return (
     <div className="space-y-6">

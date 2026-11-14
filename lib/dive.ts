@@ -80,7 +80,24 @@ const niceCeil = (n: number) => {
 };
 const priceOf = (i: DiveItem) => i.price ?? i.list;
 
+/** Attributes where naming one rules out the others: a request for an electric vehicle isn't met by a gasoline one. */
+const EXCLUSIVE: RegExp[][] = [[/\b(electric|battery|ev|bev)\b/, /\b(gasoline|gas|petrol|unleaded)\b/, /\bdiesel\b/, /\bhybrid\b/, /\b(propane|lpg)\b/, /\b(cng|natural gas)\b/]];
+
+/** True when the product names a different member of a group the request named, and not the one asked for. */
+export function conflictsWith(query: string, name: string): boolean {
+  const q = query.toLowerCase();
+  const n = name.toLowerCase();
+  return EXCLUSIVE.some((group) => {
+    const asked = group.filter((re) => re.test(q));
+    return asked.length > 0 && !asked.some((re) => re.test(n)) && group.some((re) => re.test(n));
+  });
+}
+
 function gather(db: Db, query: string): DiveItem[] {
+  return gatherAll(db, query).filter((i) => !conflictsWith(query, i.name));
+}
+
+function gatherAll(db: Db, query: string): DiveItem[] {
   const buyer = db.session.buyer;
   const items: DiveItem[] = [];
 

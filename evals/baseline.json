@@ -1,5 +1,5 @@
 {
-  "saved": "2026-11-14T17:41:05.556Z",
+  "saved": "2026-11-14T17:49:11.748Z",
   "model": "claude-sonnet-5-5",
   "prompts": {
     "request_parse": "cebcf585",
@@ -15,6 +15,7 @@
   },
   "cases": {
     "answer.guard.invented-price": "pass",
+    "answer.guard.quantity-as-price": "pass",
     "answer.guard.says-unknown": "pass",
     "answer.live.injection": "pass",
     "answer.live.installation": "pass",
@@ -44,6 +45,7 @@
     "contract-brief.live.award-report": "pass",
     "contract-brief.live.cost-sheet": "pass",
     "contract-parse.guard.invented-price": "pass",
+    "contract-parse.guard.price-from-another-line": "pass",
     "contract-parse.guard.printed-price": "pass",
     "contract-parse.live.furniture": "pass",
     "contract-parse.live.janitorial": "pass",

@@ -9,17 +9,20 @@ npm install
 npm run dev            # http://localhost:3000
 npm run typecheck      # tsc --noEmit
 npm run build
-npm run rehearse       # 13-step demo walkthrough in Playwright; needs a server on :3000
+npm run rehearse       # 16-step demo walkthrough in Playwright; needs a server on :3000. It resets the demo: never run it against the live site
+npm run smoke          # read-only check of search and the shopper tools; safe on the live site (npm run smoke -- <url>)
 npm run eval           # the fixed test set for the prompts and their checks (evals/cases.ts)
 ```
 
-Run `rehearse` against a production build: `npm run build`, then `npx next start -p 3000`, then `npm run rehearse`. All 13 steps must pass, with no page errors, before anything merges. To stop the server, run `pkill -f next-server` (`pkill -f "next start"` doesn't stop it).
+Run `rehearse` against a production build: `npm run build`, then `npx next start -p 3000`, then `npm run rehearse`. All 16 steps must pass, with no page errors, before anything merges. To stop the server, run `pkill -f next-server` (`pkill -f "next start"` doesn't stop it).
 
 ## How the app is built
 
 - Next.js 15 App Router. State is an in-memory `Db` (`lib/db.ts`, seeded by `lib/seed.ts`), changed only through `lib/actions.ts` via `/api/act`. With `DATABASE_URL` set it is saved to Postgres after each change (`lib/persist.ts`); without it, nothing is saved.
 - Every route that reads or changes the store is wrapped in `withSession()` (`lib/session.ts`), which binds the visitor's agency and account to the request. A new action is account-only unless it is added to `OPEN` in `app/api/act/route.ts`.
 - `/api/state` sends the whole `Db` to the browser. Large datasets therefore stay server-only and are read lazily: the co-op directory (`lib/directory.ts`), the co-op catalog (`lib/catalog.ts`) and state rules (`lib/state-rules.ts`). Results carry only the slice a page needs. Never import those modules or their JSON into a `"use client"` component.
+- The results page (`app/request/[id]/page.tsx`) reads as a record: the request as fields, one recommended route (`components/Shopper.tsx`), every priced option in one table (`components/results/OptionsTable.tsx`), then the other sources folded (`components/results/Fold.tsx`). Its copy is formal and third-person: no "your shopper", no "I". Keep new text on it that way.
+- Contract uploads are read in the background: `/api/contracts/parse` answers with a job id and the page polls for the result (`lib/parse-jobs.ts`).
 - A helper used by both a server page and a client component can't live in a `"use client"` file (see `components/StateRuleBits.tsx`).
 - TRX state contracts (`lib/trx.ts`) are the preferred route: NJSTART, Hawaii SPO, Arkansas OSP, NYS OGS (with New York's preferred sources) and Empire Procure Connect contracts lead results for their own state's buyers. Keep that preference when changing search or ranking.
 - The UI uses USWDS-based Tailwind tokens (`tailwind.config.ts`). The theme has `error-*`, `warning-*` and `success-*` colors, plus emerald and amber; it has no `red-*`.
@@ -69,7 +72,7 @@ The importers apply only high- and medium-confidence decisions.
 ## Shipping
 
 - The site runs on Railway, which auto-deploys `main` (at `agora.ethoslabs.us`; Railway's own address is `riverbend-storefront-production.up.railway.app`). Check deploys with the Railway tools; the deployment's status should read SUCCESS.
-- Each shipped batch: typecheck, build and rehearse, update the README (and `/data` when numbers change), commit, open a PR, merge, and confirm the deploy.
+- Each shipped batch: typecheck, build and rehearse, update the README (and `/data` when numbers change), commit, open a PR, merge, confirm the deploy, and run `npm run smoke -- https://agora.ethoslabs.us`.
 - Don't put model names or IDs in commits, PRs or code.
 - In cloud sessions, outbound hosts are allowlisted per environment. A refused connection usually means the host needs adding.
 

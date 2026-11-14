@@ -146,10 +146,11 @@ async function runOnce(c: Case, fx: Awaited<ReturnType<typeof fixtures>>): Promi
     };
     const o = outcomes.get(task);
     const total = o ? [...o.values()].reduce((a, b) => a + b, 0) : 0;
-    const kept = o ? `   output kept ${o.get("kept") ?? 0}/${total}${o.get("partial") ? `, in part ${o.get("partial")}` : ""}${o.get("discarded") ? `, discarded ${o.get("discarded")}` : ""}` : "";
+    const others: [string, string][] = [["partial", "in part"], ["discarded", "discarded"], ["failed", "failed"], ["none", "no model call"]];
+    const kept = o ? `   output kept ${o.get("kept") ?? 0}/${total}${others.map(([k, label]) => (o.get(k) ? `, ${label} ${o.get(k)}` : "")).join("")}` : "";
     console.log(`  ${TASKS[task].padEnd(32)} prompt ${promptsSeen.get(task) ?? "?"}   checks ${part("guard").padEnd(6)} model ${part("live").padEnd(6)}${kept}`);
   }
-  if (outcomes.size) console.log("  (output kept counts every live run's model output: kept whole, kept in part, or discarded by a check)");
+  if (outcomes.size) console.log("  (output kept counts every live run: kept whole, kept in part, discarded by a check, failed at the API, or no model call made)");
 
   // ---- against the baseline
   const base: Baseline | null = existsSync(BASELINE) ? JSON.parse(readFileSync(BASELINE, "utf8")) : null;

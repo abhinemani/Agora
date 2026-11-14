@@ -28,7 +28,12 @@ import { coopOf, detectCoops, isContractLevelUrl, isMember, linksOut, memberMatc
 import { parseMemberList } from "./members";
 import { findGovernment } from "./directory";
 import { buildPlan, defaultSelection, shopperAddOns, shopperCandidates, type ShopperSelection } from "./shopper";
-import { answerQuestion, writeBrief, type ShopperTurn } from "./shopper-ai";
+import { answerQuestion, shopperFacts, writeBrief, type ShopperTurn } from "./shopper-ai";
+import { paperworkKinds, paperworkTemplate, type PaperworkKind } from "./paperwork";
+import { polish } from "./paperwork-ai";
+import { askDocument, readableContracts } from "./docs";
+import { diveItems, diveSearch, diveVerdict, offlineDiveFilters, type DiveFilter } from "./dive";
+import { readDiveMessage, writeVerdict } from "./dive-ai";
 
 const EVIDENCE_RANK = { list: 0, roster: 1, agency: 2, purchase: 3 } as const;
 const rankEvidence = (e: keyof typeof EVIDENCE_RANK | undefined) => EVIDENCE_RANK[e ?? "list"];
@@ -247,6 +252,79 @@ export async function askShopper(args: { requestId: string; question: string; hi
   const { db, results, plan } = shopperContext(args.requestId);
   const history = (Array.isArray(args.history) ? args.history : []).slice(-4).map((t) => ({ question: String(t.question).slice(0, 500), answer: (Array.isArray(t.answer) ? t.answer : []).map((a) => String(a).slice(0, 1500)) }));
   return answerQuestion(db, results, plan, question, history);
+}
+
+/** A document drafted from the purchase file. The template is complete on its own; the model only tidies its wording. */
+export async function draftPaperwork(args: { requestId: string; kind: PaperworkKind }) {
+  const { db, results, plan } = shopperContext(args.requestId);
+  if (!paperworkKinds(plan).includes(args.kind)) fail("That document doesn't apply to this purchase.");
+  return polish(paperworkTemplate(results, plan, args.kind), shopperFacts(db, results, plan), plan.refs.map((r) => r.n));
+}
+
+// ---------------------------------------------------------------- ask a contract
+
+/** Contracts whose source documents Agora can read. */
+export function contractsToAsk() {
+  return readableContracts(getDb());
+}
+
+/** A question answered from one contract's documents, with the passages it rests on. Read-only. */
+export async function askContract(args: { contractId: string; question: string }) {
+  const question = String(args.question ?? "").trim().slice(0, 400);
+  if (!question) fail("Type a question first.");
+  return askDocument(getDb(), String(args.contractId ?? ""), question);
+}
+
+// ---------------------------------------------------------------- product dive
+
+const FILTER_KINDS = new Set(["price", "word", "not_word", "maker", "usable", "priced"]);
+function cleanFilters(input: unknown): DiveFilter[] {
+  const out: DiveFilter[] = [];
+  for (const f of Array.isArray(input) ? input.slice(0, 20) : []) {
+    if (!f || !FILTER_KINDS.has(f.kind)) continue;
+    if (f.kind === "price") {
+      const num = (v: unknown) => (typeof v === "number" && Number.isFinite(v) && v >= 0 ? v : undefined);
+      if (num(f.min) !== undefined || num(f.max) !== undefined) out.push({ kind: "price", min: num(f.min), max: num(f.max) });
+    } else if (f.kind === "usable" || f.kind === "priced") out.push({ kind: f.kind });
+    else if (typeof f.value === "string" && f.value.trim()) out.push({ kind: f.kind, value: f.value.trim().slice(0, 80) });
+  }
+  // One filter of each one-off kind; the newest wins.
+  const lastOf = (kind: string) => out.map((x) => x.kind).lastIndexOf(kind as DiveFilter["kind"]);
+  return out.filter((f, i) => !["price", "maker", "usable", "priced"].includes(f.kind) || lastOf(f.kind) === i);
+}
+
+/** One turn of the product dive. `need` starts a dive from the buyer's own words; `message` narrows an open one. Read-only. */
+export async function dive(args: { need?: string; query?: string; filters?: unknown; message?: string }) {
+  const db = getDb();
+  let query = String(args.query ?? "").trim();
+  let filters = cleanFilters(args.filters);
+  let said = "";
+  if (!query) {
+    const need = String(args.need ?? "").trim().slice(0, 300);
+    if (!need) fail("Tell me what you're looking for.");
+    // The same reader as search: the thing being bought, without the quantity or the purpose.
+    query = (await parseRequest(need, db)).parsed.item || need;
+    const first = diveSearch(db, query, []);
+    filters = cleanFilters(offlineDiveFilters(need, first).filter((f) => f.kind === "price"));
+  }
+  const message = String(args.message ?? "").trim().slice(0, 300);
+  if (message) {
+    const before = diveSearch(db, query, filters);
+    const read = (await readDiveMessage(message, before)) ?? { filters: offlineDiveFilters(message, before), reply: "" };
+    said = read.reply || (read.filters.length ? "" : "Nothing on the shortlist can be narrowed by that. Try one of the questions, or a word from a product's name.");
+    filters = cleanFilters([...filters, ...read.filters]);
+  }
+  return { state: diveSearch(db, query, filters), said };
+}
+
+/** Two or three finalists side by side, with the rule-based read and, when available, the shopper's wording of it. */
+export async function diveCompare(args: { query: string; ids: string[] }) {
+  const db = getDb();
+  const ids = (Array.isArray(args.ids) ? args.ids : []).map(String).slice(0, 3);
+  const items = diveItems(db, String(args.query ?? ""), ids);
+  if (items.length < 2) fail("Pick two or three products to compare.");
+  const verdict = diveVerdict(items);
+  return { items, verdict, written: await writeVerdict(String(args.query ?? ""), items, verdict) };
 }
 
 export function placeOrder(args: { listingId: string; quantity: number; requestId?: string | null; department: string }) {

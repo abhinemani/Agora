@@ -5,6 +5,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import type { Results } from "@/lib/assistant";
 import { buildPlan, defaultSelection, purchaseFileText, shopperAddOns, shopperCandidates, usd, type Plan, type PlanRoute, type ShopperSelection } from "@/lib/shopper";
 import type { ShopperText } from "@/lib/shopper-ai";
+import { PAPERWORK_LABEL, paperworkKinds, type Paperwork, type PaperworkKind } from "@/lib/paperwork";
 import { Annotation, BestFit, Mark, RefTag, TickFrame } from "./blueprint";
 import { useStore } from "./store";
 import { ErrorNote } from "./ui";
@@ -341,6 +342,7 @@ export function Shopper({ results, requestId, onChanged }: { results: Results; r
 
       <aside className="space-y-4">
         <PurchaseFile results={results} plan={plan} confirmedAt={confirmedAt} />
+        {confirmedAt && <PaperworkCard plan={plan} requestId={requestId} />}
         <AskBox plan={plan} requestId={requestId} enabled={llm} supplier={chosen?.supplier.name ?? null} />
       </aside>
     </section>
@@ -425,6 +427,11 @@ function RouteCard({ n, route, plan, requestId }: { n: number; route: PlanRoute;
           <a href="#coops" className={textLink}>
             See {route.hits.length === 1 ? "this contract" : "these contracts"} ↓
           </a>
+        )}
+        {route.kind === "member" && (
+          <Link href="/quote-check" className={textLink}>
+            Got a quote? Check it →
+          </Link>
         )}
         {route.kind === "join" &&
           (asked ? (
@@ -594,6 +601,87 @@ function AskBox({ plan, requestId, enabled, supplier }: { plan: Plan; requestId:
         <p className="mt-2 px-5 text-sm text-base-darker">Questions are answered by Claude and need the AI connection, which is off. The plan and the purchase file are rule-based and work without it.</p>
       )}
       <p className="px-5 pb-4 pt-1 text-ui-3xs leading-relaxed text-base-dark">Your shopper works only from Agora's contract data and shows its sources. It never guesses a price or decides on its own which contracts you can use.</p>
+    </div>
+  );
+}
+
+/** Documents drafted from the purchase file. The requester edits, then copies or downloads; nothing is sent from here. */
+function PaperworkCard({ plan, requestId }: { plan: Plan; requestId: string }) {
+  const { act } = useStore();
+  const [doc, setDoc] = useState<Paperwork | null>(null);
+  const [text, setText] = useState("");
+  const [busy, setBusy] = useState<PaperworkKind | null>(null);
+  const [error, setError] = useState<string | null>(null);
+  const [copied, setCopied] = useState(false);
+
+  const draft = async (kind: PaperworkKind) => {
+    setBusy(kind);
+    setError(null);
+    try {
+      const d = await act<Paperwork>("draftPaperwork", { requestId, kind });
+      setDoc(d);
+      setText(d.text);
+    } catch (e) {
+      setError((e as Error).message);
+    } finally {
+      setBusy(null);
+    }
+  };
+  const download = () => {
+    const url = URL.createObjectURL(new Blob([text], { type: "text/plain" }));
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `${(doc?.title ?? "draft").toLowerCase().replace(/[^a-z0-9]+/g, "-")}.txt`;
+    a.click();
+    URL.revokeObjectURL(url);
+  };
+
+  return (
+    <div className="border border-base-light bg-white">
+      <div className="border-b border-base-lighter px-5 pb-3 pt-4">
+        <div className="font-heading text-lg font-bold text-ink">Paperwork</div>
+        <Annotation className="text-base-dark">Drafted from the purchase file</Annotation>
+      </div>
+      <div className="px-5 pt-1">
+        {paperworkKinds(plan).map((k) => (
+          <button key={k} type="button" disabled={busy !== null} onClick={() => draft(k)} className="flex min-h-[44px] w-full items-center justify-between gap-3 border-b border-base-lighter text-left text-sm font-semibold text-primary last:border-b-0 hover:text-primary-dark disabled:opacity-60">
+            <span>{busy === k ? "Drafting" : `Draft the ${PAPERWORK_LABEL[k].charAt(0).toLowerCase()}${PAPERWORK_LABEL[k].slice(1)}`}</span>
+            <span aria-hidden>→</span>
+          </button>
+        ))}
+      </div>
+      <div className="px-5 pb-1">
+        <ErrorNote message={error} />
+      </div>
+      {doc && (
+        <div className="space-y-2.5 border-t border-base-lighter px-5 py-4">
+          <label htmlFor={`paperwork-${requestId}`} className="block text-sm font-bold text-ink">
+            {doc.title}
+          </label>
+          <textarea id={`paperwork-${requestId}`} value={text} onChange={(e) => setText(e.target.value)} rows={16} className="w-full font-mono text-[12px] leading-relaxed" />
+          <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
+            <button
+              type="button"
+              className={outlineBtn}
+              onClick={async () => {
+                try {
+                  await navigator.clipboard.writeText(text);
+                  setCopied(true);
+                  setTimeout(() => setCopied(false), 1800);
+                } catch {}
+              }}
+            >
+              {copied ? "Copied" : "Copy"}
+            </button>
+            <button type="button" className={textLink} onClick={download}>
+              Download →
+            </button>
+          </div>
+          <p className="text-ui-3xs leading-relaxed text-base-dark">
+            {doc.written_by === "llm" ? "Worded by your shopper from the purchase file; every figure and contract number was checked against it." : "Filled in from the purchase file."} Fill the [bracketed] blanks and read it before you send it. Agora doesn't send it for you.
+          </p>
+        </div>
+      )}
     </div>
   );
 }

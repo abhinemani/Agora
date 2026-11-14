@@ -171,8 +171,6 @@ interface Answer {
   locals_quote: string | null;
 }
 const norm = (s: string) => s.replace(/\s+/g, " ").trim().toLowerCase();
-/** Vendors that are individual people (the process-server listing), left out of the catalog. */
-const INDIVIDUALS = new Set(["martha crane", "rodney wilson"]);
 const PERSONAL = /@|\(\d{3}\)\s*\d{3}-\d{4}|\b\d{3}-\d{3}-\d{4}\b/;
 
 if (mode === "--collect") {
@@ -201,9 +199,8 @@ if (mode === "--collect") {
       // A limit to state agencies counts only with a quote from the listing's page or documents.
       const quoteOk = Boolean(a.locals_quote && !PERSONAL.test(a.locals_quote) && (page.includes(norm(a.locals_quote)) || docsText.includes(norm(a.locals_quote))));
       if (a.locals_quote && !quoteOk) stats.quotes_dropped++;
-      // Process servers contract as individuals; a person isn't given a storefront (see README).
-      const people = new Set((a as Answer & { individuals?: string[] }).individuals ?? []);
-      kept.push({ post_id: it.post_id, kind: a.kind, vendors: vendors.filter((v) => !people.has(v.name) && !INDIVIDUALS.has(norm(v.name))), locals: a.locals === "state_agencies_only" && !quoteOk ? "unstated" : a.locals, locals_quote: quoteOk ? a.locals_quote : null });
+      // Individuals who contract in their own name (the process servers) are kept: a contract holder gets a storefront.
+      kept.push({ post_id: it.post_id, kind: a.kind, vendors, locals: a.locals === "state_agencies_only" && !quoteOk ? "unstated" : a.locals, locals_quote: quoteOk ? a.locals_quote : null });
     }
   }
   writeFileSync(join(OUT, "extracted.json"), JSON.stringify({ checked: stats, listings: kept.sort((a, b) => Number(a.post_id) - Number(b.post_id)) }, null, 1) + "\n");

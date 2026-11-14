@@ -670,7 +670,7 @@ export default function CoopDataPage() {
               Arkansas is the third TRX state loaded. The Office of State Procurement lists {n(ar.listings)} statewide contracts, most of them the state&apos;s participating
               addenda to NASPO ValuePoint, Sourcewell, OMNIA Partners and MMCAP contracts. A listing often groups several vendors, so review agents split each into supplier
               contracts, and a check kept only vendor names, agreement numbers, co-op links and quotes found in the listing&apos;s own text: {n(ar.checked.vendors)} vendors,
-              none dropped. Two process servers who contract as individuals are left out. That leaves {n(ar.contracts)} supplier contracts from {n(ar.suppliers)} suppliers,{" "}
+              none dropped, including two process servers who contract as individuals and get storefronts like any contract holder. That gives {n(ar.contracts)} supplier contracts from {n(ar.suppliers)} suppliers,{" "}
               {n(ar.suppliers_shared_with_coops)} of whom also hold co-op contracts.
             </p>
             <p>

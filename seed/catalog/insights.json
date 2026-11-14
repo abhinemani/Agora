@@ -31,8 +31,8 @@
   ]
  },
  "suppliers": {
-  "records": 27117,
-  "companies": 24625,
+  "records": 27119,
+  "companies": 24627,
   "merged_by_name": 2142,
   "merged_by_website": 343,
   "merged_by_uei": 0,
@@ -477,12 +477,12 @@
   {
    "coop": "Arkansas OSP",
    "coop_id": "state_ar",
-   "contracts": 216,
-   "suppliers": 209,
+   "contracts": 218,
+   "suppliers": 211,
    "with_link": 101,
-   "with_end": 216,
+   "with_end": 218,
    "expired": 0,
-   "with_states": 216,
+   "with_states": 218,
    "offerings": 85
   },
   {
@@ -522,11 +522,11 @@
  "nigp": {
   "published": 1479,
   "reviewed": 27698,
-  "none": 6314,
-  "contracts": 35491,
+  "none": 6316,
+  "contracts": 35493,
   "coop_contracts_coded": 27698,
   "coop_contracts": 31930,
-  "state_uncoded": 2082,
+  "state_uncoded": 2084,
   "classes_used": 164,
   "priced_offerings_coded": 4572,
   "top_classes": [
@@ -657,14 +657,14 @@
    "quotes_dropped": 0
   },
   "listings": 97,
-  "contracts": 216,
-  "open_to_locals": 215,
+  "contracts": 218,
+  "open_to_locals": 217,
   "state_only": 1,
   "qualified_vendor_lists": 2,
   "mandatory": 13,
   "coop_adopted": 167,
-  "documents": 499,
-  "suppliers": 211,
+  "documents": 503,
+  "suppliers": 213,
   "priced_lines": 85,
   "price_rows": 87,
   "prices_unmatched": [
@@ -1564,13 +1564,13 @@
   "multi_route": 5810
  },
  "documents": {
-  "total": 34076,
+  "total": 34080,
   "by_kind": {
    "htm": 11892,
    "unknown": 21330,
-   "pdf": 727,
+   "pdf": 729,
    "docx": 7,
-   "xlsx": 120
+   "xlsx": 122
   },
   "by_coop": {
    "GSA MAS": 11892,
@@ -1578,7 +1578,7 @@
    "Sourcewell": 1,
    "NJSTART": 18635,
    "Hawaii SPO": 354,
-   "Arkansas OSP": 499,
+   "Arkansas OSP": 503,
    "NYS OGS": 1411,
    "NY Preferred Source": 41,
    "Empire Procure Connect": 534

@@ -30,6 +30,9 @@ const STOP = new Set(
 
 function singular(w: string) {
   if (w.length > 4 && w.endsWith("ies")) return w.slice(0, -3) + "y";
+  // "buses", "boxes", "benches", "brushes": the plural adds "es", so "school buses" meets "school bus".
+  if (w === "buses" || w === "busses") return "bus";
+  if (w.length > 4 && /(x|ch|sh)es$/.test(w)) return w.slice(0, -2);
   if (w.length > 3 && w.endsWith("s") && !w.endsWith("ss")) return w.slice(0, -1);
   return w;
 }

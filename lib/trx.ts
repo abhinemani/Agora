@@ -4,9 +4,10 @@
 // TRX contracts are the route Agora prefers. A buyer in a TRX state sees its state's
 // contracts ahead of co-op contracts: they are open to local governments through the
 // state's cooperative purchasing program, with the lowest fee of any shared contract.
-// Loaded so far: New Jersey from NJSTART (scripts/import-njstart.ts) and Hawaii from the
-// State Procurement Office's price & vendor lists (scripts/import-hawaii.ts). Oregon,
-// Arkansas and New York aren't loaded yet.
+// Loaded so far: New Jersey from NJSTART (scripts/import-njstart.ts), Hawaii from the State
+// Procurement Office's price & vendor lists (scripts/import-hawaii.ts) and Arkansas from the
+// Office of State Procurement's directory (scripts/import-arkansas.ts). Oregon and New York
+// aren't loaded yet.
 
 import type { Buyer, Contract } from "./types";
 
@@ -36,6 +37,16 @@ export const TRX_PROGRAM: Record<string, TrxProgram> = {
     steps: (c) => [
       "If your agency hasn't already, register once with the New Jersey Cooperative Purchasing Program. Purchasing will know; there's no per-contract membership.",
       `Buy from ${c.supplier || "the supplier"} under NJSTART ${c.number}${c.solicitation ? ` (awarded under ${c.solicitation})` : ""}. The state already bid it, so a local unit doesn't advertise for bids of its own (New Jersey's Local Public Contracts Law allows purchases on state contracts).`,
+    ],
+  },
+  AR: {
+    name: "Arkansas OSP",
+    coop_program: "state's participating addenda",
+    portal: "https://sas.arkansas.gov/procurement/state-contracts/",
+    data_anchor: "arkansas",
+    steps: (c) => [
+      "Arkansas state contracts and the state's participating addenda let political subdivisions (cities, counties, school districts) buy as participating entities, on the contract's own terms. Check the contract's documents for any limit before the first order.",
+      `Order from ${c.supplier || "the vendor"} citing ${c.number}${c.solicitation ? ` (${c.solicitation})` : ""} on your own purchase order. Your agency is billed for, and responsible for, its own orders.`,
     ],
   },
   HI: {

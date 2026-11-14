@@ -31,9 +31,9 @@
   ]
  },
  "suppliers": {
-  "records": 25436,
-  "companies": 23657,
-  "merged_by_name": 1429,
+  "records": 25647,
+  "companies": 23729,
+  "merged_by_name": 1568,
   "merged_by_website": 343,
   "merged_by_uei": 0,
   "with_website": 13936,
@@ -79,6 +79,7 @@
     "id": "cat_506cc6b39ec0eb5c4cec",
     "name": "Xerox Corporation",
     "coops": [
+     "Arkansas OSP",
      "E&I",
      "GSA MAS",
      "Hawaii SPO",
@@ -89,7 +90,39 @@
      "Sourcewell",
      "TIPS"
     ],
-    "contracts": 14
+    "contracts": 15
+   },
+   {
+    "id": "cat_af208adcb81b1a525476",
+    "name": "Kaplan Early Learning Company",
+    "coops": [
+     "1GPA",
+     "Arkansas OSP",
+     "BuyBoard",
+     "Choice Partners",
+     "Equalis Group",
+     "NJSTART",
+     "NPPGov",
+     "OMNIA Partners",
+     "TIPS"
+    ],
+    "contracts": 18
+   },
+   {
+    "id": "cat_1369ef49157eb75828c2",
+    "name": "Steelcase Inc.",
+    "coops": [
+     "Arkansas OSP",
+     "BuyBoard",
+     "E&I",
+     "GSA MAS",
+     "Hawaii SPO",
+     "NASPO ValuePoint",
+     "NJSTART",
+     "OMNIA Partners",
+     "Sourcewell"
+    ],
+    "contracts": 10
    },
    {
     "id": "cat_38f685b654efb7facba2",
@@ -137,21 +170,6 @@
     "contracts": 20
    },
    {
-    "id": "cat_af208adcb81b1a525476",
-    "name": "Kaplan Early Learning Company",
-    "coops": [
-     "1GPA",
-     "BuyBoard",
-     "Choice Partners",
-     "Equalis Group",
-     "NJSTART",
-     "NPPGov",
-     "OMNIA Partners",
-     "TIPS"
-    ],
-    "contracts": 17
-   },
-   {
     "id": "cat_35c5eed038a31882bac8",
     "name": "Lawson Products Inc",
     "coops": [
@@ -197,11 +215,11 @@
     "contracts": 10
    },
    {
-    "id": "cat_1369ef49157eb75828c2",
-    "name": "Steelcase Inc.",
+    "id": "cat_ar_653492f978c873f7",
+    "name": "Ricoh USA, Inc.",
     "coops": [
+     "Arkansas OSP",
      "BuyBoard",
-     "E&I",
      "GSA MAS",
      "Hawaii SPO",
      "NASPO ValuePoint",
@@ -209,21 +227,7 @@
      "OMNIA Partners",
      "Sourcewell"
     ],
-    "contracts": 9
-   },
-   {
-    "id": "cat_019cf5414cb30b87f973",
-    "name": "CDW Government LLC",
-    "coops": [
-     "1GPA",
-     "Choice Partners",
-     "GSA MAS",
-     "Hawaii SPO",
-     "NJSTART",
-     "PEPPM",
-     "TIPS"
-    ],
-    "contracts": 33
+    "contracts": 10
    }
   ],
   "merge_examples": [
@@ -454,16 +458,27 @@
    "expired": 0,
    "with_states": 259,
    "offerings": 1911
+  },
+  {
+   "coop": "Arkansas OSP",
+   "coop_id": "state_ar",
+   "contracts": 216,
+   "suppliers": 209,
+   "with_link": 101,
+   "with_end": 216,
+   "expired": 0,
+   "with_states": 216,
+   "offerings": 85
   }
  ],
  "nigp": {
   "published": 1282,
   "reviewed": 27698,
-  "none": 4646,
-  "contracts": 33626,
+  "none": 4862,
+  "contracts": 33842,
   "coop_contracts_coded": 27698,
   "coop_contracts": 31930,
-  "state_uncoded": 414,
+  "state_uncoded": 630,
   "classes_used": 150,
   "priced_offerings_coded": 4572,
   "top_classes": [
@@ -516,6 +531,37 @@
     1097
    ]
   ]
+ },
+ "arkansas": {
+  "source": "https://sas.arkansas.gov/procurement/state-contracts/",
+  "retrieved": "2026-11-14",
+  "checked": {
+   "listings": 97,
+   "answered": 97,
+   "vendors": 218,
+   "vendors_dropped": 0,
+   "outlines_dropped": 0,
+   "coop_links_dropped": 0,
+   "quotes_dropped": 0
+  },
+  "listings": 97,
+  "contracts": 216,
+  "open_to_locals": 215,
+  "state_only": 1,
+  "qualified_vendor_lists": 2,
+  "mandatory": 13,
+  "coop_adopted": 167,
+  "documents": 499,
+  "suppliers": 211,
+  "priced_lines": 85,
+  "price_rows": 87,
+  "prices_unmatched": [
+   "Superior 6, Inc. (119_SP-27-006-Official-Vehicle-Specification-and-Pricing-FY27_11.12.xlsx)",
+   "Superior 6, Inc. (119_SP-27-006-Official-Vehicle-Specification-and-Pricing-FY27_11.12.xlsx)"
+  ],
+  "with_prices": 10,
+  "products": 85,
+  "suppliers_shared_with_coops": 137
  },
  "hawaii": {
   "source": "https://spo.hawaii.gov/for-vendors/contract-awards/price-vendor-lists/",
@@ -597,13 +643,13 @@
   "products_on_two_or_more_contracts": 568
  },
  "products": {
-  "products": 51463,
-  "offerings": 59405,
+  "products": 51548,
+  "offerings": 59490,
   "by_status": {
    "quote": 1509,
    "published_discount": 8102,
    "member_login": 26291,
-   "published_price": 23503
+   "published_price": 23588
   },
   "by_status_coops": {
    "quote": 1509,
@@ -941,7 +987,7 @@
    "The Liberty Consulting Group",
    "Overland Consulting",
    "Daymark Energy Advisors, Inc.",
-   "Periscope Holdings Inc",
+   "Periscope Holdings",
    "RR Donnelley",
    "General Traffic Equipment Corp",
    "Flagpoles Inc.",
@@ -1148,7 +1194,7 @@
    "American Aluminum Accessories",
    "Kustom Signals, Inc.",
    "Rockland Custom Products",
-   "Motorola Solutions",
+   "Motorola Solutions, Inc.",
    "Nielsen Fleet Inc.",
    "Siren Tech Police and Emergency Vehicle Upfitting",
    "Peckham Materials Corp.",
@@ -1293,6 +1339,16 @@
    "Ilio Products, LLC",
    "Maui Chemical & Paper Products, Inc.",
    "Rimfire Imports Inc.",
+   "Central States Bus Sales",
+   "Masters Transportation Inc",
+   "Midwest Bus Sales",
+   "Rush Truck Centers of Arkansas",
+   "Landers CDJR",
+   "Smart Chevrolet",
+   "Bale Chevrolet",
+   "Mark McLarty Ford",
+   "Red River Ford",
+   "Superior Auto Mall",
    "BCI Burke",
    "Exemplis, LLC",
    "Caldwell Country Chevrolet II LLC",
@@ -1314,19 +1370,21 @@
   "multi_route": 5585
  },
  "documents": {
-  "total": 31591,
+  "total": 32090,
   "by_kind": {
    "htm": 11892,
    "unknown": 19344,
-   "pdf": 348,
-   "docx": 7
+   "pdf": 727,
+   "docx": 7,
+   "xlsx": 120
   },
   "by_coop": {
    "GSA MAS": 11892,
    "HGACBuy": 709,
    "Sourcewell": 1,
    "NJSTART": 18635,
-   "Hawaii SPO": 354
+   "Hawaii SPO": 354,
+   "Arkansas OSP": 499
   }
  },
  "reconcile": {

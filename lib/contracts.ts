@@ -345,7 +345,7 @@ const longDate = (d: string) => new Date(`${d}T12:00:00Z`).toLocaleDateString("e
 
 /** What an offering's number is, in plain words, by the vintage the importer gave it. */
 function offeringNote(o: CatalogOffering): string {
-  if (o.price != null && /^(NJSTART|Hawaii SPO)/.test(o.vintage ?? "")) return "Awarded state contract price";
+  if (o.price != null && /^(NJSTART|Hawaii SPO|Arkansas OSP)/.test(o.vintage ?? "")) return "Awarded state contract price";
   if (o.price != null) return /award/i.test(o.vintage ?? "") ? "Awarded bid, base model" : /net price/i.test(o.vintage ?? "") ? "Contract net price" : /base vehicle|cost sheet/i.test(o.vintage ?? "") ? "Base price, before options and delivery" : "Published price";
   if (o.list != null) return "List price, before the contract discount";
   if (o.status === "member_login") return "Price behind the co-op's member login";

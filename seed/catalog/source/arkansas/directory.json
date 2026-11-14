@@ -1,0 +1,2657 @@
+{
+ "source": "https://sas.arkansas.gov/procurement/state-contracts/",
+ "retrieved": "2026-11-14",
+ "listings": [
+  {
+   "post_id": "5971",
+   "commodity": "Equipment Rental",
+   "tracking": "",
+   "outline": "4600057404",
+   "expires": "2027-10-31",
+   "vendors": "United Rentals",
+   "description": "Forklifts, Boom Lifts, Excavators, Scissor Lifts, Compressors, Skid steers, Light Towers, Commercial & Utility Trucks, Generators, Dehumidifiers, Climate Control, Transformers, Power Distribution Panels, Pumps, Containment, Filtration Systems, Fluid Transfer, Accessories, Hose, Pipe, & Fittings, Electrical & Hand Tools, Welding, Mobile Tool Rooms, Custom Boxes, Radio & Communication Systems, Turnstiles, Safety Wearables, Shoring & Shielding, Engineered Systems, Road Plates, Confined Space Safety, Portable Restrooms, Restroom Trailers, Hand-washing Stations, Shower Trailers, Storage Containers, Ground Level Offices, Modular Buildings, Mobile Office Trailers",
+   "mandatory": false,
+   "coop": "Sourcewell 040924-URI",
+   "url": "https://sas.arkansas.gov/state_contracts/equipment-rental",
+   "documents": [
+    {
+     "label": "United Rentals Participating Addendum",
+     "url": "https://sas.arkansas.gov/wp-content/uploads/State-of-Arkansas-United-Rentals-PA-Signed-by-URNA.JP_.signed.pdf"
+    }
+   ],
+   "links": [
+    {
+     "label": "Sourcewell - United Rentals",
+     "url": "https://www.sourcewell-mn.gov/cooperative-purchasing/040924-uri"
+    },
+    {
+     "label": "United Rentals Locator",
+     "url": "https://www.unitedrentals.com/locations/ar"
+    }
+   ]
+  },
+  {
+   "post_id": "5981",
+   "commodity": "Food Distribution Services and Products",
+   "tracking": "SP-25-002-COOP US Foods",
+   "outline": "",
+   "expires": "2027-06-30",
+   "vendors": "US Foods, Inc.",
+   "description": "",
+   "mandatory": false,
+   "coop": "OMNIA Partners #42356",
+   "url": "https://sas.arkansas.gov/state_contracts/food-distribution-services-and-products",
+   "documents": [
+    {
+     "label": "US Foods, Inc Participating Addendum",
+     "url": "https://sas.arkansas.gov/wp-content/uploads/USFoods-Participating-Addendum.pdf"
+    }
+   ],
+   "links": [
+    {
+     "label": "Omnia Partners - Premier-US Foods Contract #42356",
+     "url": "https://www.omniapartners.com/suppliers/us-foods/public-sector/contract-documents#c6351:~:text=Opening%20Documents-,Food%20Distribution%20Services%20and%20Products,-North%20Carolina%20State"
+    }
+   ]
+  },
+  {
+   "post_id": "5999",
+   "commodity": "APC Network Infrastructure Solutions",
+   "tracking": "Use the relevant OA number",
+   "outline": "4600047583, 4600047710",
+   "expires": "2027-09-30",
+   "vendors": "Presidio Networked Solutions LLC, Vision Data Spaces",
+   "description": "",
+   "mandatory": false,
+   "coop": "",
+   "url": "https://sas.arkansas.gov/state_contracts/apc-network-infrastructure-solutions",
+   "documents": [
+    {
+     "label": "SP-21-0001 IFB Document",
+     "url": "https://sas.arkansas.gov/wp-content/uploads/SP-21-0001-IFB-APC-Manufactured-NCPI-Solutions.pdf"
+    },
+    {
+     "label": "Contract Pricing",
+     "url": "https://sas.arkansas.gov/wp-content/uploads/SP-21-0001-Pricing-Sheet-09.23.27.pdf"
+    }
+   ],
+   "links": []
+  },
+  {
+   "post_id": "6005",
+   "commodity": "AR Correctional Industries Catalog",
+   "tracking": "4600050726",
+   "outline": "4600050726",
+   "expires": "2027-06-30",
+   "vendors": "AR Correctional Industries",
+   "description": "",
+   "mandatory": false,
+   "coop": "N/A",
+   "url": "https://sas.arkansas.gov/state_contracts/correctional-catalog",
+   "documents": [],
+   "links": [
+    {
+     "label": "ACI Correctional Catalog",
+     "url": "http://www.acicatalog.com/"
+    }
+   ]
+  },
+  {
+   "post_id": "6036",
+   "commodity": "Scoreboards, Electronic Signs, Installation, Products and Services",
+   "tracking": "MBPO #P000000342",
+   "outline": "4600050714",
+   "expires": "2027-04-30",
+   "vendors": "Daktronics, Inc.",
+   "description": "",
+   "mandatory": false,
+   "coop": "Omnia Partners/Region 4 ESC #R220601",
+   "url": "https://sas.arkansas.gov/state_contracts/scoreboards-electronic-signs",
+   "documents": [],
+   "links": [
+    {
+     "label": "Daktronics",
+     "url": "http://www.daktronics.com/en-us"
+    },
+    {
+     "label": "Omnia Partners",
+     "url": "https://www.omniapartners.com/publicsector/suppliers/daktronics/overview"
+    }
+   ]
+  },
+  {
+   "post_id": "6085",
+   "commodity": "Wireless Data, Voice, & Accessories",
+   "tracking": "SP-20-0035",
+   "outline": "4600045706, 4600045708, 4600045707",
+   "expires": "2026-12-31",
+   "vendors": "Verizon; T-Mobile; Discount Cell, Inc.",
+   "description": "",
+   "mandatory": false,
+   "coop": "NASPO ValuePoint",
+   "url": "https://sas.arkansas.gov/state_contracts/wireless-data-voice-accessories",
+   "documents": [],
+   "links": [
+    {
+     "label": "Verizon (NASPO ValuePoint)",
+     "url": "https://www.naspovaluepoint.org/portfolio/wireless-voice-data-accessories-2019-2029/verizon-wireless/"
+    },
+    {
+     "label": "T-Mobile (NASPO ValuePoint)",
+     "url": "https://www.naspovaluepoint.org/portfolio/wireless-voice-data-accessories-2019-2029/t-mobile-usa-inc/"
+    },
+    {
+     "label": "Discount Cell, Inc. (NASPO ValuePoint)",
+     "url": "https://www.naspovaluepoint.org/portfolio/wireless-voice-data-accessories-2019-2029/discountcell-llc/"
+    }
+   ]
+  },
+  {
+   "post_id": "6102",
+   "commodity": "Utility Vehicles, Golf Vehicles",
+   "tracking": "SP-20-0054",
+   "outline": "4600046083",
+   "expires": "2026-12-31",
+   "vendors": "Clear Creek Golf Car & Vehicles LLC",
+   "description": "",
+   "mandatory": false,
+   "coop": "N/A",
+   "url": "https://sas.arkansas.gov/state_contracts/utility-vehicles-golf-vehicles",
+   "documents": [
+    {
+     "label": "Club Car Participating Addendum",
+     "url": "https://sas.arkansas.gov/wp-content/uploads/Fully-Executed-Club-Car-PA.pdf"
+    }
+   ],
+   "links": [
+    {
+     "label": "Omnia Partners C16772",
+     "url": "https://www.omniapartners.com/suppliers/club-car-inc/public-sector/contract-documents#c16772"
+    }
+   ]
+  },
+  {
+   "post_id": "6103",
+   "commodity": "Motor and Aviation Fuels",
+   "tracking": "159331",
+   "outline": "4600056524",
+   "expires": "2028-04-30",
+   "vendors": "Mansfield Oil",
+   "description": "",
+   "mandatory": false,
+   "coop": "OMNIA Partners",
+   "url": "https://sas.arkansas.gov/state_contracts/bulk-fuel",
+   "documents": [
+    {
+     "label": "Participating Addendum - Mansfield Oil",
+     "url": "https://sas.arkansas.gov/wp-content/uploads/1.-Motor-Fuels-159331-PA-completed.pdf"
+    },
+    {
+     "label": "Mansfield Oil Contact Placard",
+     "url": "https://sas.arkansas.gov/wp-content/uploads/Contact-placard.pdf"
+    },
+    {
+     "label": "Mansfield Oil Pricing",
+     "url": "https://sas.arkansas.gov/wp-content/uploads/State-of-Arkansas-pricing.pdf"
+    }
+   ],
+   "links": [
+    {
+     "label": "OMNIA Partners",
+     "url": "https://www.omniapartners.com/suppliers/mansfield-oil/public-sector/contract-documents?hsCtaAttrib=161505568109#c20108:~:text=14%2D0121-,Motor%20and%20Aviation%20Fuels%2C%20Bulk%20Fuels%2C%20and%20Related%20Products%20and%20Services,-Region%2014%20ESC"
+    },
+    {
+     "label": "Mansfield Oil",
+     "url": "https://mansfield.energy/"
+    }
+   ]
+  },
+  {
+   "post_id": "15664",
+   "commodity": "Electronic Monitoring Equipment and Services",
+   "tracking": "",
+   "outline": "4600054693",
+   "expires": "2026-11-21",
+   "vendors": "Satellite Tracking of People",
+   "description": "",
+   "mandatory": false,
+   "coop": "NASPO ValuePoint XXPSX0021",
+   "url": "https://sas.arkansas.gov/state_contracts/electronic-monitoring-equipment-services",
+   "documents": [
+    {
+     "label": "Satellite Tracking of People Pricing",
+     "url": "https://sas.arkansas.gov/wp-content/uploads/22PSX0021-STOP-Pricing.pdf"
+    }
+   ],
+   "links": [
+    {
+     "label": "NASPO - Satellite Tracking of People",
+     "url": "https://www.naspovaluepoint.org/portfolio/electronic-monitoring-2023-2029/satellite-tracking-of-people-llc/"
+    }
+   ]
+  },
+  {
+   "post_id": "16625",
+   "commodity": "Data Communications",
+   "tracking": "Use the relevant OA number",
+   "outline": "4600048977, 4600046044, 4600047971, 4600048764, 4600048595",
+   "expires": "2027-01-28",
+   "vendors": "Cisco Systems Inc, HPE; Palo Alto Networks; Extreme Networks; Juniper Networks",
+   "description": "",
+   "mandatory": false,
+   "coop": "NASPO ValuePoint",
+   "url": "https://sas.arkansas.gov/state_contracts/data_communications",
+   "documents": [
+    {
+     "label": "HPE Reseller Information",
+     "url": "https://sas.arkansas.gov/wp-content/uploads/SP-20-0051-HPE-Contact-Information-11.7.2024.pdf"
+    },
+    {
+     "label": "Palo Alto Networks Reseller Information",
+     "url": "https://sas.arkansas.gov/wp-content/uploads/SP-20-0051-Palo-Alto-Contact-Reseller-Information-04.20.2026.pdf"
+    },
+    {
+     "label": "Extreme Networks Reseller Information",
+     "url": "https://sas.arkansas.gov/wp-content/uploads/Extreme-Networks-Reseller-Information.pdf"
+    },
+    {
+     "label": "Juniper Networks Reseller Information",
+     "url": "https://sas.arkansas.gov/wp-content/uploads/SP-20-0051-Juniper-Networks-Contract-Information-01-10-24.pdf"
+    }
+   ],
+   "links": [
+    {
+     "label": "NASPO ValuePoint Documents",
+     "url": "https://www.naspovaluepoint.org/portfolio/data-communications-2019-2026/"
+    }
+   ]
+  },
+  {
+   "post_id": "16902",
+   "commodity": "Office Supplies",
+   "tracking": "SP-25-006-COOP Government Supply Services LLC",
+   "outline": "",
+   "expires": "2029-02-02",
+   "vendors": "Government Supply Services (Staples)",
+   "description": "",
+   "mandatory": false,
+   "coop": "Sourcewell 070924-SCC",
+   "url": "https://sas.arkansas.gov/state_contracts/office-supplies",
+   "documents": [
+    {
+     "label": "New User Request Form",
+     "url": "https://sas.arkansas.gov/wp-content/uploads/New-User-Form-51325.xlsx"
+    }
+   ],
+   "links": [
+    {
+     "label": "Ordering Portal",
+     "url": "https://gss.ediversitynetwork.com/webapp/wcs/stores/servlet/malllogon?storeId=10101&tpsCode=GSS"
+    },
+    {
+     "label": "Sourcewell Contract Documents",
+     "url": "https://www.sourcewell-mn.gov/cooperative-purchasing/070924-scc"
+    }
+   ]
+  },
+  {
+   "post_id": "17024",
+   "commodity": "Drug Testing Products and Services - MMCAP",
+   "tracking": "MMS2501108",
+   "outline": "4600057112",
+   "expires": "2027-10-31",
+   "vendors": "Premier BioTech Inc",
+   "description": "",
+   "mandatory": false,
+   "coop": "MMCAP MMS2501108",
+   "url": "https://sas.arkansas.gov/state_contracts/drug-testing-4",
+   "documents": [
+    {
+     "label": "Premier Biotech Participating Addendum",
+     "url": "https://sas.arkansas.gov/wp-content/uploads/Ark.-MPA_PremierBiotech_Signed.pdf"
+    }
+   ],
+   "links": [
+    {
+     "label": "MMCAP",
+     "url": "https://infuse-mn.gov/products/contracts/index.jsp"
+    }
+   ]
+  },
+  {
+   "post_id": "19133",
+   "commodity": "Playground Equipment, Installation, and Job Ordering Contract Services",
+   "tracking": "TIPS 24070201",
+   "outline": "4600055484, 4600055483",
+   "expires": "2027-10-27",
+   "vendors": "Davis Playgrounds, Inc., Swift Recreation",
+   "description": "",
+   "mandatory": false,
+   "coop": "TIPS 24070201",
+   "url": "https://sas.arkansas.gov/state_contracts/playground-equipment-installation-and-job-ordering-contract",
+   "documents": [
+    {
+     "label": "Davis Playgrounds Participating Addendum",
+     "url": "https://sas.arkansas.gov/wp-content/uploads/Davis-Playgrounds-PA-signed.pdf"
+    },
+    {
+     "label": "Swift Recreation Participating Addendum",
+     "url": "https://sas.arkansas.gov/wp-content/uploads/Swift-Recreation-LLC-PA.pdf"
+    }
+   ],
+   "links": [
+    {
+     "label": "TIPS - Davis Playgrounds",
+     "url": "https://www.tips-usa.com/vendorProfile.cfm?RecordID=94B9FC178D7595F0E7F2520D99089480"
+    },
+    {
+     "label": "TIPS - Swift Recreation",
+     "url": "https://www.tips-usa.com/vendorProfile.cfm?RecordID=9D7ECE3B5E47CE4F9B39DC2705558359"
+    }
+   ]
+  },
+  {
+   "post_id": "19204",
+   "commodity": "Fresh Bread and Related Products",
+   "tracking": "SP-21-0008",
+   "outline": "4600047987",
+   "expires": "2026-12-24",
+   "vendors": "Bimbo Bakeries USA",
+   "description": "",
+   "mandatory": false,
+   "coop": "N/A",
+   "url": "https://sas.arkansas.gov/state_contracts/sp-21-0008-fresh-bread-and-related-products",
+   "documents": [
+    {
+     "label": "Bimbo Bakeries USA Price Sheet 2025-2026",
+     "url": "https://sas.arkansas.gov/wp-content/uploads/AR-State-Renewal-2025-for-posting.pdf"
+    },
+    {
+     "label": "Non-Serviceable Cities",
+     "url": "https://sas.arkansas.gov/wp-content/uploads/Non-Serviceable-Cities.pdf"
+    }
+   ],
+   "links": []
+  },
+  {
+   "post_id": "6061",
+   "commodity": "Furniture, Furnishings, Installation, & Services",
+   "tracking": "",
+   "outline": "4600056038; 4600055831; 4600056039; 4600056041; 4600056028; 4600048239; 4600048241; 4600052625; 4600048277; 4600052908; 4600052909; 4600052913; 4600052910; 4600052911; 4600052912; 4600053017; 4600053018; 4600058313; 4600052915; 4600052916; 4600052917; 4600052918; 4600052919; 4600052920",
+   "expires": "2028-05-31",
+   "vendors": "Kimball International, The HON Company, Jasper Seating (JSI), AIS, OFS, Haworth, MillerKnoll, DIRTT, Steelcase, 9 to 5 Seating, LLC, AmTab Manufacturing, COE Distributing, Ecologic Furniture, ERG International, Fellowes, Inc, Innerplan Office Interiors, Kaplan Early Learning Company, Krueger International, LaHarpe's Office Furniture, Nightingale Corporation, Nova Solutions, Inc, Office Master, Inc, Paragon Furniture, Inc, Virco, Inc",
+   "description": "",
+   "mandatory": false,
+   "coop": "OMNIA Partners & TIPS",
+   "url": "https://sas.arkansas.gov/state_contracts/furniture",
+   "documents": [
+    {
+     "label": "City of Charlotte, Region 4 ESC TX, UC Contracts & Contact Information",
+     "url": "https://sas.arkansas.gov/wp-content/uploads/Furniture-City-of-Charlotte-Region-4-ESC-TX-Univ-of-California.xlsx"
+    },
+    {
+     "label": "TIPS Contracts & Contact Information",
+     "url": "https://sas.arkansas.gov/wp-content/uploads/Furniture-Tips-042826.xlsx"
+    },
+    {
+     "label": "OMNIA Contracts & Contact Information",
+     "url": "https://sas.arkansas.gov/wp-content/uploads/Furniture-Omnia.xlsx"
+    }
+   ],
+   "links": [
+    {
+     "label": "Omnia - AIS",
+     "url": "https://www.omniapartners.com/suppliers/ais/public-sector/contract-documents#contract-2087"
+    },
+    {
+     "label": "Omnia - Jasper Seating (JSI)",
+     "url": "https://www.omniapartners.com/suppliers/jsi/public-sector/contract-documents#contract-2105"
+    },
+    {
+     "label": "Omnia - Kimball International",
+     "url": "https://www.omniapartners.com/suppliers/kimball-international-brands-inc/public-sector/contract-documents#contract-2122"
+    },
+    {
+     "label": "Omnia - OFS",
+     "url": "https://www.omniapartners.com/suppliers/ofs-carolina/public-sector/contract-documents#contract-2089"
+    },
+    {
+     "label": "Omnia - The HON Company",
+     "url": "https://www.omniapartners.com/suppliers/hon/public-sector/contract-documents#contract-2104"
+    },
+    {
+     "label": "TIPS 230301",
+     "url": "https://www.tips-usa.com/Vendorsbycontracts.cfm?ctxcont=230301&&Comodity=Furniture,%20Furnishings,%20and%20Services"
+    },
+    {
+     "label": "OMNIA - Haworth",
+     "url": "https://www.omniapartners.com/suppliers/haworth/public-sector/contract-documents"
+    },
+    {
+     "label": "OMNIA - DIRTT",
+     "url": "https://www.omniapartners.com/suppliers/dirtt/public-sector/contract-documents"
+    },
+    {
+     "label": "OMNIA - MillerKnoll",
+     "url": "https://www.omniapartners.com/suppliers/millerknoll/public-sector/contract-documents"
+    },
+    {
+     "label": "OMNIA - Steelcase",
+     "url": "https://www.omniapartners.com/suppliers/steelcase/public-sector"
+    }
+   ]
+  },
+  {
+   "post_id": "19221",
+   "commodity": "School Buses",
+   "tracking": "SP-20-0104",
+   "outline": "4600048060, 4600048063, 4600048075, 4600050267",
+   "expires": "2026-12-31",
+   "vendors": "Master's Transportation, Central States Bus Sales, Midwest Bus Sales, Rush Truck Centers of Arkansas",
+   "description": "",
+   "mandatory": false,
+   "coop": "N/A",
+   "url": "https://sas.arkansas.gov/state_contracts/school-buses-3",
+   "documents": [
+    {
+     "label": "Contract at a Glance",
+     "url": "https://sas.arkansas.gov/wp-content/uploads/2026-Contract-At-A-Glance-School-Bus.pdf"
+    },
+    {
+     "label": "Central States Bus Sales, Inc. - Pricing",
+     "url": "https://sas.arkansas.gov/wp-content/uploads/2026-Central-States-Bus-Pricing.xlsx"
+    },
+    {
+     "label": "Masters Transportation - Pricing",
+     "url": "https://sas.arkansas.gov/wp-content/uploads/Masters-Transportation-2026-Pricing.xlsx"
+    },
+    {
+     "label": "Midwest Bus Sales, Inc. - Pricing",
+     "url": "https://sas.arkansas.gov/wp-content/uploads/Midwest-Bus-Sales-Inc.-Pricing-2026.xlsx"
+    },
+    {
+     "label": "Rush Truck Center - Pricing",
+     "url": "https://sas.arkansas.gov/wp-content/uploads/Rush-Truck-Centers-Pricing-2026-Pricing.xlsx"
+    }
+   ],
+   "links": []
+  },
+  {
+   "post_id": "21255",
+   "commodity": "Tires, Tubes and Related Services",
+   "tracking": "N/A",
+   "outline": "4600054848, 4600054899, 4600054855",
+   "expires": "2027-06-30",
+   "vendors": "The Goodyear Tire and Rubber Company; Michelin North America, Inc.; Bridgestone Firestone Inc.",
+   "description": "",
+   "mandatory": true,
+   "coop": "NASPO Value Point 24155",
+   "url": "https://sas.arkansas.gov/state_contracts/tires-2",
+   "documents": [
+    {
+     "label": "Goodyear Authorized Dealers",
+     "url": "https://sas.arkansas.gov/wp-content/uploads/NASPO_Goodyear-Nationwide-Updated_Authorized-Dealer-List.xlsx"
+    },
+    {
+     "label": "Michelin Arkansas Dealers",
+     "url": "https://sas.arkansas.gov/wp-content/uploads/Updated-Arkansas-Michelin-Dealer-List-080425.pdf"
+    },
+    {
+     "label": "Bridgestone Arkansas Dealers",
+     "url": "https://sas.arkansas.gov/wp-content/uploads/ARKANSAS-BRIDGESTONE-AUTHORIZED-DEALERS-ulpdated-9.10.2024.xlsx"
+    },
+    {
+     "label": "Emergency Roadside Provision",
+     "url": "https://sas.arkansas.gov/wp-content/uploads/State-Tire-Contract-Emergency-Provision.pdf"
+    }
+   ],
+   "links": [
+    {
+     "label": "NASPO - Goodyear",
+     "url": "https://www.naspovaluepoint.org/suppliers/goodyear-tire-rubber-co/"
+    },
+    {
+     "label": "NASPO - Michelin",
+     "url": "https://www.naspovaluepoint.org/suppliers/michelin-north-america-inc/"
+    },
+    {
+     "label": "NASPO - Bridgestone",
+     "url": "https://www.naspovaluepoint.org/suppliers/bridgestone-americas-tire-operation-llc/"
+    },
+    {
+     "label": "here",
+     "url": "https://www.dfa.arkansas.gov/office/taxes/excise-tax-administration/miscellaneous-tax/arkansas-miscellaneous-tax-laws/waste-tire-fee/"
+    }
+   ]
+  },
+  {
+   "post_id": "22144",
+   "commodity": "Body Armor and Ballistic Resistant Products",
+   "tracking": "NASPO ValuePoint",
+   "outline": "4600057416; 4600057476; 4600057415; 4600057417",
+   "expires": "2027-04-30",
+   "vendors": "GH Armor Systems Inc.; Point Blank Enterprises Inc.; Safariland LLC; United Shield International LLC",
+   "description": "",
+   "mandatory": false,
+   "coop": "NASPO ValuePoint",
+   "url": "https://sas.arkansas.gov/state_contracts/body-armor-and-ballistic-resistant-products",
+   "documents": [],
+   "links": [
+    {
+     "label": "GH Armor Systems",
+     "url": "https://www.naspovaluepoint.org/suppliers/gh-armor-systems-inc/"
+    },
+    {
+     "label": "Point Blank Enterprises",
+     "url": "https://www.naspovaluepoint.org/suppliers/point-blank-enterprises-inc/"
+    },
+    {
+     "label": "Safariland, LLC",
+     "url": "https://www.naspovaluepoint.org/suppliers/safariland-llc/"
+    },
+    {
+     "label": "United Shield International",
+     "url": "https://www.naspovaluepoint.org/suppliers/united-shield-international-llc/"
+    }
+   ]
+  },
+  {
+   "post_id": "22241",
+   "commodity": "MMCAP Medical Products Program: Henry Schein",
+   "tracking": "4600053796",
+   "outline": "4600053796",
+   "expires": "2026-12-31",
+   "vendors": "Henry Schein",
+   "description": "",
+   "mandatory": false,
+   "coop": "MMCAP INFUSE #MMS2200734",
+   "url": "https://sas.arkansas.gov/state_contracts/medical-supplies-5",
+   "documents": [],
+   "links": [
+    {
+     "label": "MMCAP",
+     "url": "https://infuse-mn.gov/products/contracts/index.jsp"
+    }
+   ]
+  },
+  {
+   "post_id": "22556",
+   "commodity": "Emergency Property Damage Mitigation Services",
+   "tracking": "SP-21-0042",
+   "outline": "Qualified Vendors List Only, Not a Contract",
+   "expires": "2027-04-30",
+   "vendors": "Qualified Vendors List – See QVL Instructions for Use",
+   "description": "",
+   "mandatory": false,
+   "coop": "",
+   "url": "https://sas.arkansas.gov/state_contracts/sp-21-0042-emergency-property-damage-mitigation-services",
+   "documents": [
+    {
+     "label": "QVL Instructions for Use",
+     "url": "https://sas.arkansas.gov/wp-content/uploads/QVL-Instructions-for-Use-033126.pdf"
+    },
+    {
+     "label": "SP-21-0042 RFQ Documents",
+     "url": "https://sas.arkansas.gov/wp-content/uploads/SP-21-0042-Combined-Solicitation-Documents.pdf"
+    }
+   ],
+   "links": []
+  },
+  {
+   "post_id": "23963",
+   "commodity": "Fleet Card and Related Services",
+   "tracking": "4600058198",
+   "outline": "4600058198",
+   "expires": "2028-09-07",
+   "vendors": "WEX Bank",
+   "description": "fleet card, fuel card, fleet, fuel, credit, card",
+   "mandatory": false,
+   "coop": "Sourcewell 030625-WEX",
+   "url": "https://sas.arkansas.gov/state_contracts/fleet-card-and-related-services",
+   "documents": [
+    {
+     "label": "WEX Bank Participating Addendum",
+     "url": "https://sas.arkansas.gov/wp-content/uploads/WEX-PA.pdf"
+    }
+   ],
+   "links": [
+    {
+     "label": "OSP Credit Card Webpage",
+     "url": "https://sas.arkansas.gov/procurement/state-credit-cards/"
+    },
+    {
+     "label": "Sourcewell - WEX Bank",
+     "url": "https://www.sourcewell-mn.gov/cooperative-purchasing/030625-WEX"
+    }
+   ]
+  },
+  {
+   "post_id": "25792",
+   "commodity": "Process Server Services",
+   "tracking": "SP-19-0050/SP-20-0119",
+   "outline": "",
+   "expires": "2027-06-14",
+   "vendors": "Pronto Process Servers, LLC; Myers Detective Agency; Four Seasons Civil Process; Frazier and Associates, Inc; Rags 'N Calico; Martha Crane; Mid-South Investigations; Rodney Wilson; Wright Investigations",
+   "description": "",
+   "mandatory": false,
+   "coop": "",
+   "url": "https://sas.arkansas.gov/state_contracts/process-server-services-2",
+   "documents": [
+    {
+     "label": "Process Servers At-A-Glance",
+     "url": "https://sas.arkansas.gov/wp-content/uploads/At-A-Glance-6.15.2026.xlsx"
+    },
+    {
+     "label": "Service Type Menu Form",
+     "url": "https://sas.arkansas.gov/wp-content/uploads/Service-Type-Menu-Form.pdf"
+    }
+   ],
+   "links": []
+  },
+  {
+   "post_id": "25895",
+   "commodity": "Passenger Vehicle and Box Truck Rentals",
+   "tracking": "",
+   "outline": "4600055993; 4600057000",
+   "expires": "2027-08-01",
+   "vendors": "The Hertz Corporation; EAN Services LLC (Enterprise Holdings Inc.)",
+   "description": "",
+   "mandatory": false,
+   "coop": "NASPO Value Point",
+   "url": "https://sas.arkansas.gov/state_contracts/vehicle-rentals",
+   "documents": [],
+   "links": [
+    {
+     "label": "NASPO - The Hertz Corporation",
+     "url": "https://www.naspovaluepoint.org/portfolio/passenger-vehicle-and-box-truck-rentals/hertz/"
+    },
+    {
+     "label": "Hertz Locations Search",
+     "url": "https://www.hertz.com/us/en/location"
+    },
+    {
+     "label": "NASPO - EAN Services LLC (Enterprise Holdings Inc.)",
+     "url": "https://www.naspovaluepoint.org/portfolio/passenger-vehicle-and-box-truck-rentals/ean-services/"
+    },
+    {
+     "label": "EAN Services LLC (Enterprise Holdings Inc.) Locations Search",
+     "url": "https://www.enterprise.com/en/car-rental-locations/us/ar.html"
+    }
+   ]
+  },
+  {
+   "post_id": "26235",
+   "commodity": "Small Package Delivery",
+   "tracking": "P000000147",
+   "outline": "4600049761",
+   "expires": "2026-11-27",
+   "vendors": "FedEx",
+   "description": "",
+   "mandatory": false,
+   "coop": "NASPO ValuePoint",
+   "url": "https://sas.arkansas.gov/state_contracts/small-package-delivery-2",
+   "documents": [],
+   "links": [
+    {
+     "label": "NASPO MA454 FedEx",
+     "url": "https://www.naspovaluepoint.org/portfolio/small-package-delivery-services/fedex-corporate-services-inc-as-agent-for-federal-express-corporation-and-fedex-ground-package-system-inc/"
+    }
+   ]
+  },
+  {
+   "post_id": "26957",
+   "commodity": "Groceries S000000068",
+   "tracking": "S000000068",
+   "outline": "4600053609",
+   "expires": "2026-12-31",
+   "vendors": "Sysco Corporation",
+   "description": "Sysco, grocery, food",
+   "mandatory": false,
+   "coop": "",
+   "url": "https://sas.arkansas.gov/state_contracts/statewide-groceries-2",
+   "documents": [
+    {
+     "label": "S000000068 Price Sheet Effective 01/05/2026",
+     "url": "https://sas.arkansas.gov/wp-content/uploads/4600053609-Sysco-Price-Changes-for-Posting.pdf"
+    }
+   ],
+   "links": []
+  },
+  {
+   "post_id": "26985",
+   "commodity": "Ammunition",
+   "tracking": "S000000047",
+   "outline": "4600050066, 4600050105",
+   "expires": "2027-01-22",
+   "vendors": "Gulf States Distributors Inc.; Precision Delta Corporation (Winchester)",
+   "description": "",
+   "mandatory": false,
+   "coop": "",
+   "url": "https://sas.arkansas.gov/state_contracts/ammunition-2",
+   "documents": [],
+   "links": []
+  },
+  {
+   "post_id": "28013",
+   "commodity": "Public Safety Communications Products, Services, and Solutions",
+   "tracking": "",
+   "outline": "4600053417, 4600049976, 4600049973, 4600050035, 4600050174, 4600050253, 4600049975, 4600056193",
+   "expires": "2026-12-31",
+   "vendors": "BK Technologies E.F. Johnson; Icom America, Inc.; JVCKenwood USA Corporation L3Harris; Motorola; Tait Communications; Valmont Telecommunications Corporation",
+   "description": "",
+   "mandatory": false,
+   "coop": "NASPO Valuepoint 00318",
+   "url": "https://sas.arkansas.gov/state_contracts/public-safety-communications-equipment-2",
+   "documents": [
+    {
+     "label": "BK Technologies Resellers",
+     "url": "https://sas.arkansas.gov/wp-content/uploads/BK-Technology-Resellers-061124.pdf"
+    },
+    {
+     "label": "EF Johnson Resellers",
+     "url": "https://sas.arkansas.gov/wp-content/uploads/EF-Johnson-Resellers-06112024.pdf"
+    },
+    {
+     "label": "ICOM America Resellers",
+     "url": "https://sas.arkansas.gov/wp-content/uploads/ICOM-America-Resellers-061124.pdf"
+    },
+    {
+     "label": "Tait Resellers",
+     "url": "https://sas.arkansas.gov/wp-content/uploads/Tait-Resellers-061124.pdf"
+    }
+   ],
+   "links": [
+    {
+     "label": "NASPO Documents - BK Technologies",
+     "url": "https://naspovaluepoint.org/portfolio/public-safety-communications-products-services-and-solutions/bk-technologies-inc/"
+    },
+    {
+     "label": "NASPO Documents - EF Johnson",
+     "url": "https://naspovaluepoint.org/portfolio/public-safety-communications-products-services-and-solutions/ef-johnson-company/"
+    },
+    {
+     "label": "NASPO Documents - ICOM",
+     "url": "https://naspovaluepoint.org/portfolio/public-safety-communications-products-services-and-solutions/icom-america/"
+    },
+    {
+     "label": "NASPO Documents - JVCKenwood",
+     "url": "https://naspovaluepoint.org/portfolio/public-safety-communications-products-services-and-solutions/jvc-kenwood-usa-corporation/"
+    },
+    {
+     "label": "NASPO Documents - L3Harris",
+     "url": "https://naspovaluepoint.org/portfolio/public-safety-communications-products-services-and-solutions/l3harris-technologies-inc/"
+    },
+    {
+     "label": "NASPO Documents - Motorola",
+     "url": "https://naspovaluepoint.org/portfolio/public-safety-communications-products-services-and-solutions/motorola-solutions/"
+    },
+    {
+     "label": "NASPO Documents - Tait",
+     "url": "https://naspovaluepoint.org/portfolio/public-safety-communications-products-services-and-solutions/tait-north-america/"
+    },
+    {
+     "label": "NASPO Documents - Valmont",
+     "url": "https://www.naspovaluepoint.org/portfolio/public-safety-communications-products-services-and-solutions/valmont-telecommunications-corporation/"
+    }
+   ]
+  },
+  {
+   "post_id": "30781",
+   "commodity": "Managed IT Staff Augmentation and SOW Services",
+   "tracking": "4600050627",
+   "outline": "4600050627",
+   "expires": "2027-09-10",
+   "vendors": "Computer Aid Inc. (CAI)",
+   "description": "",
+   "mandatory": false,
+   "coop": "Sourcewell 071321-CAI",
+   "url": "https://sas.arkansas.gov/state_contracts/managed-it-staff-augmentation-and-sow-services",
+   "documents": [
+    {
+     "label": "Arkansas Job Titles",
+     "url": "https://sas.arkansas.gov/wp-content/uploads/2022/05/Arkansas-Job-Titles.pdf"
+    },
+    {
+     "label": "CAI Contract Usage Guidelines",
+     "url": "https://sas.arkansas.gov/wp-content/uploads/2022/05/CAI-Contract-Usage-Guide-5-11-2022.pdf"
+    },
+    {
+     "label": "CAI Contract Usage Flow Chart",
+     "url": "https://sas.arkansas.gov/wp-content/uploads/2022/05/CAI-Contract-Usage-Flow-Chart.pdf"
+    }
+   ],
+   "links": [
+    {
+     "label": "Sourcewell Contract Documents",
+     "url": "https://www.sourcewell-mn.gov/cooperative-purchasing/071321-cai#tab-contract-documents"
+    }
+   ]
+  },
+  {
+   "post_id": "31934",
+   "commodity": "Walk-In Building Supplies",
+   "tracking": "SP-23-003",
+   "outline": "SP-23-003-COOP Lowe's",
+   "expires": "2026-12-31",
+   "vendors": "Lowe’s Home Center, LLC",
+   "description": "",
+   "mandatory": false,
+   "coop": "NASPO ValuePoint",
+   "url": "https://sas.arkansas.gov/state_contracts/walk-in-building-supplies",
+   "documents": [],
+   "links": [
+    {
+     "label": "NASPO ValuePoint - Lowe's Walk-In Building Contract",
+     "url": "https://www.naspovaluepoint.org/portfolio/walk-in-building-supplies-2022-2027/lowes-home-centers-llc/"
+    }
+   ]
+  },
+  {
+   "post_id": "32289",
+   "commodity": "Print Shop and Copy Paper",
+   "tracking": "S000000153/4600057875",
+   "outline": "4600057875",
+   "expires": "2027-08-30",
+   "vendors": "Printing Papers, Inc.",
+   "description": "",
+   "mandatory": false,
+   "coop": "N/A",
+   "url": "https://sas.arkansas.gov/state_contracts/print-shop-and-copy-paper",
+   "documents": [
+    {
+     "label": "Rate Sheet",
+     "url": "https://sas.arkansas.gov/wp-content/uploads/Q3-Pricing-List-July-Sept.pdf"
+    }
+   ],
+   "links": []
+  },
+  {
+   "post_id": "32582",
+   "commodity": "Shredding Services",
+   "tracking": "S000000168",
+   "outline": "4600051714",
+   "expires": "2027-09-30",
+   "vendors": "Rock Doc, LLC dba Rock Solid Shredding",
+   "description": "",
+   "mandatory": false,
+   "coop": "N/A",
+   "url": "https://sas.arkansas.gov/state_contracts/shredding-services",
+   "documents": [
+    {
+     "label": "Shredding Services Pricing and IFB",
+     "url": "https://sas.arkansas.gov/wp-content/uploads/Shredding-Services-Pricing-IFB.pdf"
+    }
+   ],
+   "links": []
+  },
+  {
+   "post_id": "32813",
+   "commodity": "Automatic External Defibrillator (AED) & Accessories",
+   "tracking": "",
+   "outline": "4600055547",
+   "expires": "2027-02-18",
+   "vendors": "Zoll Medical Corporation",
+   "description": "",
+   "mandatory": false,
+   "coop": "NASPO ValuePoint SW0300",
+   "url": "https://sas.arkansas.gov/state_contracts/aeds-and-supplies",
+   "documents": [],
+   "links": [
+    {
+     "label": "NASPO ValuePoint - Zoll Medical Corporation",
+     "url": "https://www.naspovaluepoint.org/portfolio/automatic-external-defibrillator-aed-accessories-2024-2029/zoll-medical-corporation/"
+    }
+   ]
+  },
+  {
+   "post_id": "32866",
+   "commodity": "Products and Supplies for Correctional Facilities and Incarcerated Individuals",
+   "tracking": "NASPO ValuePoint",
+   "outline": "4600056178",
+   "expires": "2026-12-18",
+   "vendors": "Bob Barker Company",
+   "description": "inmates, inmate, detention, prison",
+   "mandatory": false,
+   "coop": "NASPO 5400027173",
+   "url": "https://sas.arkansas.gov/state_contracts/inmate-detention-supplies",
+   "documents": [],
+   "links": [
+    {
+     "label": "NASPO ValuePoint - Bob Barker Company",
+     "url": "https://www.naspovaluepoint.org/suppliers/bob-barker-co-inc/"
+    }
+   ]
+  },
+  {
+   "post_id": "32872",
+   "commodity": "Automotive Parts and Supplies",
+   "tracking": "R211201",
+   "outline": "4600051739",
+   "expires": "2026-12-31",
+   "vendors": "AutoZone Parts, Inc.",
+   "description": "",
+   "mandatory": false,
+   "coop": "Omnia Partners R211201",
+   "url": "https://sas.arkansas.gov/state_contracts/automotive-parts-and-supplies-autozone",
+   "documents": [],
+   "links": [
+    {
+     "label": "Omnia Contract Documents",
+     "url": "https://www.omniapartners.com/publicsector/suppliers/autozone/contract-documentation#c51144"
+    }
+   ]
+  },
+  {
+   "post_id": "33288",
+   "commodity": "Temporary Employment Services",
+   "tracking": "NASPO ValuePoint",
+   "outline": "ATA Services - 4600051630; DatamanUSA - 4600051655",
+   "expires": "2027-08-14",
+   "vendors": "ATA Services Inc; DatamanUSA",
+   "description": "Administrative Support, Healthcare Staffing Services, Professional Services",
+   "mandatory": false,
+   "coop": "NASPO ValuePoint",
+   "url": "https://sas.arkansas.gov/state_contracts/temporary-employment-services-2",
+   "documents": [],
+   "links": [
+    {
+     "label": "ATA Contract Details",
+     "url": "https://www.naspovaluepoint.org/suppliers/ata-services-inc/"
+    },
+    {
+     "label": "DatamanUSA Contract Details",
+     "url": "https://www.naspovaluepoint.org/suppliers/datamanusa-llc/"
+    }
+   ]
+  },
+  {
+   "post_id": "33587",
+   "commodity": "QVL – K-12 Emergency Alert Mobile Application System",
+   "tracking": "SP-20-0016",
+   "outline": "N/A",
+   "expires": "2026-12-31",
+   "vendors": "Rave Mobile Safety, CrisisGo, Inc.",
+   "description": "",
+   "mandatory": false,
+   "coop": "N/A",
+   "url": "https://sas.arkansas.gov/state_contracts/qvl-k-12-emergency-notification-system",
+   "documents": [
+    {
+     "label": "Public School Notification Document",
+     "url": "https://sas.arkansas.gov/wp-content/uploads/SP-20-0016-Public-Schools-Notification-Document-12.10.2024.pdf"
+    }
+   ],
+   "links": []
+  },
+  {
+   "post_id": "33995",
+   "commodity": "Foodservice Distribution for K-12",
+   "tracking": "SP-23-001-COOP US Foods",
+   "outline": "",
+   "expires": "2027-02-01",
+   "vendors": "US Foods, Inc.",
+   "description": "",
+   "mandatory": false,
+   "coop": "Sourcewell 111621-USF",
+   "url": "https://sas.arkansas.gov/state_contracts/foodservice_distribution_k12",
+   "documents": [
+    {
+     "label": "US Foods Pricing Schedule",
+     "url": "https://sas.arkansas.gov/wp-content/uploads/Price-and-Product-Change-111621-USF_completed.pdf"
+    }
+   ],
+   "links": [
+    {
+     "label": "Sourcewell Master Agreement 111621-USF",
+     "url": "https://www.sourcewell-mn.gov/cooperative-purchasing/111621-usf#tab-contract-documents"
+    }
+   ]
+  },
+  {
+   "post_id": "34179",
+   "commodity": "Bathroom Tissue and Paper Towels",
+   "tracking": "SP-21-0057",
+   "outline": "4600052273",
+   "expires": "2027-06-30",
+   "vendors": "Imperial Bag & Paper Company dba American Paper & Twine",
+   "description": "",
+   "mandatory": true,
+   "coop": "N/A",
+   "url": "https://sas.arkansas.gov/state_contracts/bathroom-tissue-and-paper-towels-3",
+   "documents": [
+    {
+     "label": "2025-2026 Price Sheet",
+     "url": "https://sas.arkansas.gov/wp-content/uploads/2025-2026-Price-Sheet.pdf"
+    },
+    {
+     "label": "2025-2026 Specification Sheets",
+     "url": "https://sas.arkansas.gov/wp-content/uploads/2025-2026-Specification-Sheets.pdf"
+    }
+   ],
+   "links": []
+  },
+  {
+   "post_id": "34932",
+   "commodity": "Mailing Equipment, Services, and Maintenance",
+   "tracking": "CTR05933, CTR058809, CTR058805, CTR058808",
+   "outline": "4600052407, 4600051160, 4600052060, 4600051835",
+   "expires": "2027-05-14",
+   "vendors": "Francotyp Postalia Inc. dba FP Mailing Solutions; BlueCrest, Inc.; Quadient Inc.; Pitney Bowes, Inc.",
+   "description": "mail, mailing, postage, meter, meters",
+   "mandatory": false,
+   "coop": "NASPO ValuePoint",
+   "url": "https://sas.arkansas.gov/state_contracts/mailing-equipment-services-and-maintenance-2",
+   "documents": [],
+   "links": [
+    {
+     "label": "NASPO ValuePoint - FP Mailing Solutions",
+     "url": "https://www.naspovaluepoint.org/portfolio/mailing-equipment-supplies-and-maintenance-2022-2027/fp-mailing-solutions/"
+    },
+    {
+     "label": "NASPO ValuePoint - BlueCrest",
+     "url": "https://www.naspovaluepoint.org/portfolio/mailing-equipment-supplies-and-maintenance-2022-2027/bluecrest/?_ga=2.104764096.139477479.1718036388-292160598.1646079585"
+    },
+    {
+     "label": "NASPO ValuePoint - Quadient, Inc",
+     "url": "https://www.naspovaluepoint.org/portfolio/mailing-equipment-supplies-and-maintenance-2022-2027/quadient-inc/"
+    },
+    {
+     "label": "NASPO ValuePoint - Pitney Bowes, Inc.",
+     "url": "https://www.naspovaluepoint.org/portfolio/mailing-equipment-supplies-and-maintenance-2022-2027/pitney-bowes-inc/"
+    }
+   ]
+  },
+  {
+   "post_id": "35156",
+   "commodity": "Influenza Vaccines - MMCAP",
+   "tracking": "4600048006; 4600052569",
+   "outline": "4600048006; 4600052569",
+   "expires": "2026-12-31",
+   "vendors": "Sanofi Pasteur; GlaxoSmithKline",
+   "description": "",
+   "mandatory": false,
+   "coop": "MMCAP 2200727; 2200724",
+   "url": "https://sas.arkansas.gov/state_contracts/mmcap-influenza-vaccines",
+   "documents": [],
+   "links": [
+    {
+     "label": "MMCAP",
+     "url": "https://infuse-mn.gov/products/contracts/index.jsp"
+    }
+   ]
+  },
+  {
+   "post_id": "35281",
+   "commodity": "Flooring Products and Installation Services",
+   "tracking": "COG-2157A",
+   "outline": "4600056458",
+   "expires": "2028-10-31",
+   "vendors": "Mohawk Carpet Distribution LLC",
+   "description": "",
+   "mandatory": false,
+   "coop": "Equalis Group",
+   "url": "https://sas.arkansas.gov/state_contracts/flooring-products-and-installation-services",
+   "documents": [
+    {
+     "label": "Mohawk Pricing File",
+     "url": "https://sas.arkansas.gov/wp-content/uploads/State-of-Arkansas-2025.pdf"
+    }
+   ],
+   "links": [
+    {
+     "label": "Equalis Group - Mohawk",
+     "url": "https://equalisgroup.org/mohawk-group/#:~:text=Contract%23%3ACOG%2D2157A"
+    }
+   ]
+  },
+  {
+   "post_id": "35908",
+   "commodity": "Cleaning Supplies, Equipment and Custodial Related Services and Solutions",
+   "tracking": "SP-26-001-COOP HD Supply",
+   "outline": "",
+   "expires": "2027-06-30",
+   "vendors": "HD Supply (formerly Home Depot Pro International)",
+   "description": "",
+   "mandatory": false,
+   "coop": "OMNIA Partners 25-JH-011",
+   "url": "https://sas.arkansas.gov/state_contracts/cleaning-supplies-equipment-and-custodial-related-services-and-solutions",
+   "documents": [
+    {
+     "label": "Participating Addendum",
+     "url": "https://sas.arkansas.gov/wp-content/uploads/HDSupplyParticipatingAddendumSigned_4600056931.pdf"
+    }
+   ],
+   "links": [
+    {
+     "label": "Omnia Partners",
+     "url": "https://www.omniapartners.com/suppliers/hd-supply-formerly-home-depot-pro-institutional/public-sector/contract-documents#contract-2169"
+    }
+   ]
+  },
+  {
+   "post_id": "35978",
+   "commodity": "Foodservice Distribution for Government and Higher Education",
+   "tracking": "SP-23-002-COOP US Foods; SP-25-001-COOP Ben E Keith",
+   "outline": "",
+   "expires": "2027-06-03",
+   "vendors": "US Foods; Ben E Keith",
+   "description": "",
+   "mandatory": false,
+   "coop": "Sourcewell 040522",
+   "url": "https://sas.arkansas.gov/state_contracts/foodservice-distribution-for-government-and-higher-education",
+   "documents": [
+    {
+     "label": "US Foods Participating Addendum",
+     "url": "https://sas.arkansas.gov/wp-content/uploads/Executed-Participating-Addendum-5.25.2023.pdf"
+    },
+    {
+     "label": "Ben E Keith Participating Addendum",
+     "url": "https://sas.arkansas.gov/wp-content/uploads/Sourcewell-040522-BEK-PA-Fully-Executed.pdf"
+    }
+   ],
+   "links": [
+    {
+     "label": "Sourcewell - US Foods",
+     "url": "https://www.sourcewell-mn.gov/cooperative-purchasing/040522-usf#tab-contact-information"
+    },
+    {
+     "label": "Sourcewell - Ben E Keith",
+     "url": "https://www.sourcewell-mn.gov/cooperative-purchasing/040522-bek"
+    }
+   ]
+  },
+  {
+   "post_id": "35984",
+   "commodity": "Technology Solutions, Products, and Services",
+   "tracking": "Statewide - TIPS 230105",
+   "outline": "4600052737, 4600058028",
+   "expires": "2027-05-31",
+   "vendors": "Next Step Group, Inc., dba Next Step Innovation (100204739); Genesis Datacom (100204455)",
+   "description": "",
+   "mandatory": false,
+   "coop": "TIPS USA 230105",
+   "url": "https://sas.arkansas.gov/state_contracts/technology-solutions-products-and-services",
+   "documents": [
+    {
+     "label": "Pricing",
+     "url": "https://sas.arkansas.gov/wp-content/uploads/230105-Next-Step-Innovation-Pricing.pdf"
+    },
+    {
+     "label": "Genesis Datacom Participating Addendum",
+     "url": "https://sas.arkansas.gov/wp-content/uploads/Genesis-Datacom-Participating-Addendum.pdf"
+    }
+   ],
+   "links": [
+    {
+     "label": "TIPS - Next Step Innovation",
+     "url": "https://www.tips-usa.com/vendorProfile.cfm?RecordID=AE9B89CBD3E1274E75E60ED1097BE3C2"
+    },
+    {
+     "label": "TIPS - Genesis Datacom",
+     "url": "https://www.tips-usa.com/contracts/vendors/0961C01EB58F8DE6AC093453FFCDFD06"
+    }
+   ]
+  },
+  {
+   "post_id": "35988",
+   "commodity": "Electrical Lighting, Data Communications, and Security Products, Services, and Solutions",
+   "tracking": "4600057636",
+   "outline": "4600057636",
+   "expires": "2029-01-31",
+   "vendors": "Graybar Electric Company, Inc.",
+   "description": "",
+   "mandatory": false,
+   "coop": "OMNIA Partners EV2370",
+   "url": "https://sas.arkansas.gov/state_contracts/electrical-lighting-data-communications-and-security-products-and-related-products-services-and-solutions",
+   "documents": [
+    {
+     "label": "Graybar Participating Addendum",
+     "url": "https://sas.arkansas.gov/wp-content/uploads/Graybar-PA_executed.pdf"
+    }
+   ],
+   "links": [
+    {
+     "label": "OMNIA Partners EV2370",
+     "url": "https://www.omniapartners.com/suppliers/graybar/public-sector/contract-documents#contract-88"
+    }
+   ]
+  },
+  {
+   "post_id": "36126",
+   "commodity": "MMCAP Pharmaceuticals #2401062: Cardinal Health",
+   "tracking": "",
+   "outline": "4600055744",
+   "expires": "2027-07-01",
+   "vendors": "Cardinal Health",
+   "description": "",
+   "mandatory": false,
+   "coop": "MMCAP INFUSE #2401062",
+   "url": "https://sas.arkansas.gov/state_contracts/mmcap-pharmaceuticals-2401062",
+   "documents": [
+    {
+     "label": "Cardinal Health Participating Addendum",
+     "url": "https://sas.arkansas.gov/wp-content/uploads/Arkansas-MPA-signed.pdf"
+    }
+   ],
+   "links": [
+    {
+     "label": "MMCAP",
+     "url": "https://infuse-mn.gov/products/contracts/index.jsp"
+    }
+   ]
+  },
+  {
+   "post_id": "36147",
+   "commodity": "HVAC Equipment, Installation, Services & Products",
+   "tracking": "SP-21-0044 | 080824",
+   "outline": "4600053050; 4600057159; 4600057157",
+   "expires": "2027-08-31",
+   "vendors": "Trane U.S. Inc.; Daikin Applied Americas Inc; Johnson Controls Inc",
+   "description": "",
+   "mandatory": false,
+   "coop": "OMNIA Partners | HVAC Region 4; Sourcewell #080824",
+   "url": "https://sas.arkansas.gov/state_contracts/hvac-5",
+   "documents": [
+    {
+     "label": "Trane Arkansas Dealer Locations",
+     "url": "https://sas.arkansas.gov/wp-content/uploads/Trane-AR-Dealer-Locations.pdf"
+    }
+   ],
+   "links": [
+    {
+     "label": "Trane | OMNIA Partners | Contract",
+     "url": "https://www.omniapartners.com/suppliers/trane/public-sector/contract-documents#contract-1056:~:text=let%20you%20know.-,HVAC%20Products%2C%20Installation%2C%20Labor%20Based%20Solutions%2C%20and%20Related%20Products%20and%20Services,-Racine%20County%2C%20WI"
+    },
+    {
+     "label": "Daikin Applied Americas Inc | Sourcewell | Contract",
+     "url": "https://www.sourcewell-mn.gov/cooperative-purchasing/080824-DIN"
+    },
+    {
+     "label": "Johnson Controls | Sourcewell | Contract",
+     "url": "https://www.sourcewell-mn.gov/cooperative-purchasing/080824-JHN"
+    }
+   ]
+  },
+  {
+   "post_id": "36323",
+   "commodity": "MMCAP Medical Products 2200736: McKesson Medical",
+   "tracking": "4600052690",
+   "outline": "4600052690",
+   "expires": "2026-12-31",
+   "vendors": "McKesson Medical Surgical Government Solutions, LLC",
+   "description": "",
+   "mandatory": false,
+   "coop": "MMCAP INFUSE MMS2200736",
+   "url": "https://sas.arkansas.gov/state_contracts/mmcap-medical-products-2200736-mckesson-medical",
+   "documents": [],
+   "links": [
+    {
+     "label": "MMCAP",
+     "url": "https://infuse-mn.gov/products/contracts/index.jsp"
+    }
+   ]
+  },
+  {
+   "post_id": "36632",
+   "commodity": "Parks and Recreation Equipment and Installation",
+   "tracking": "4600053052; 4600053243; 4600053456",
+   "outline": "4600053052; 4600053243; 4600053456",
+   "expires": "2026-12-30",
+   "vendors": "PlayPower, Inc.; PlayCore Wisconsin, Inc DBA GameTime; Landscape Structures, Inc.",
+   "description": "",
+   "mandatory": false,
+   "coop": "NASPO ValuePoint",
+   "url": "https://sas.arkansas.gov/state_contracts/parks-and-recreation-equipment-and-installation",
+   "documents": [
+    {
+     "label": "PlayPower, Inc. AR Distributor List",
+     "url": "https://sas.arkansas.gov/wp-content/uploads/PlayPower-AR-Distributor-List-022326.pdf"
+    }
+   ],
+   "links": [
+    {
+     "label": "NASPO - PlayPower",
+     "url": "https://www.naspovaluepoint.org/portfolio/parks-and-recreation-equipment-and-installation-2023-2027/playpower-inc/"
+    },
+    {
+     "label": "NASPO - GameTime",
+     "url": "https://www.naspovaluepoint.org/portfolio/parks-and-recreation-equipment-and-installation-2023-2027/playcore-wisconsin-inc-dba-gametime/"
+    },
+    {
+     "label": "NASPO - Landscape Structures",
+     "url": "https://www.naspovaluepoint.org/portfolio/parks-and-recreation-equipment-and-installation-2023-2027/landscape-structures-inc/"
+    }
+   ]
+  },
+  {
+   "post_id": "37123",
+   "commodity": "Online Auction Services",
+   "tracking": "P000000453",
+   "outline": "4600053246",
+   "expires": "2027-08-01",
+   "vendors": "GovDeals",
+   "description": "",
+   "mandatory": false,
+   "coop": "NASPO ValuePoint",
+   "url": "https://sas.arkansas.gov/state_contracts/online-auction-services-2",
+   "documents": [],
+   "links": [
+    {
+     "label": "GovDeals",
+     "url": "http://www.govdeals.com/"
+    },
+    {
+     "label": "NASPO ValuePoint",
+     "url": "https://www.naspovaluepoint.org/portfolio/online-auction-services-2022-2026/"
+    }
+   ]
+  },
+  {
+   "post_id": "37183",
+   "commodity": "Statewide Healthcare Qualified Vendor List (QVL)",
+   "tracking": "S000000207 | S000000297 | S000000342 | S000000393",
+   "outline": "This is a Qualified Vendors Listing, not a contract.",
+   "expires": "2027-08-14",
+   "vendors": "See QVL Attachment",
+   "description": "healthcare, nursing, medical, therapist, psych, therapy, nurse",
+   "mandatory": false,
+   "coop": "",
+   "url": "https://sas.arkansas.gov/state_contracts/statewide-healthcare-services-qvl",
+   "documents": [
+    {
+     "label": "Statewide Healthcare Services QVL",
+     "url": "https://sas.arkansas.gov/wp-content/uploads/Statewide-Healthcare-Qualified-Vendor-List-FINAL-08.14.26.pdf"
+    }
+   ],
+   "links": []
+  },
+  {
+   "post_id": "38190",
+   "commodity": "MMCAP Medical Products 2200731: Concordance Healthcare Solutions",
+   "tracking": "4600053670",
+   "outline": "4600053670",
+   "expires": "2026-12-31",
+   "vendors": "Concordance Healthcare Solutions, LLC",
+   "description": "",
+   "mandatory": false,
+   "coop": "MMCAP Infuse #2200731",
+   "url": "https://sas.arkansas.gov/state_contracts/mmcap-medical-products-program",
+   "documents": [],
+   "links": [
+    {
+     "label": "MMCAP",
+     "url": "https://infuse-mn.gov/products/contracts/index.jsp"
+    }
+   ]
+  },
+  {
+   "post_id": "38301",
+   "commodity": "MMCAP Medical Products 22007333: Medline Industries, LP",
+   "tracking": "4600053701",
+   "outline": "4600053701",
+   "expires": "2026-12-31",
+   "vendors": "Medline Industries, LP",
+   "description": "",
+   "mandatory": false,
+   "coop": "MMCAP INFUSE #2200733",
+   "url": "https://sas.arkansas.gov/state_contracts/mmcap-medical-products-2200733",
+   "documents": [],
+   "links": [
+    {
+     "label": "MMCAP",
+     "url": "https://infuse-mn.gov/products/contracts/index.jsp"
+    }
+   ]
+  },
+  {
+   "post_id": "38303",
+   "commodity": "MMCAP Medical Products 2200732: Medical Solutions",
+   "tracking": "4600053204",
+   "outline": "4600053204",
+   "expires": "2026-12-31",
+   "vendors": "Medical Solutions",
+   "description": "",
+   "mandatory": false,
+   "coop": "MMCAP INFUSE #2200732",
+   "url": "https://sas.arkansas.gov/state_contracts/mmcap-medical-products-2200732",
+   "documents": [],
+   "links": [
+    {
+     "label": "MMCAP",
+     "url": "https://infuse-mn.gov/products/contracts/index.jsp"
+    }
+   ]
+  },
+  {
+   "post_id": "38662",
+   "commodity": "Software Value Added Reseller (VAR)",
+   "tracking": "Dell-CTR060024, Insight-CTR060025, SHI-CTR060028, CDWG-BPM002338",
+   "outline": "Dell-4600052434, Insight-4600052436, SHI-4600052437, CDWG-4600052435",
+   "expires": "2027-03-31",
+   "vendors": "Dell Marketing L.P., Insight Public Sector Inc, SHI International, CDWG",
+   "description": "SAAS, Publishers, Microsoft Offerings",
+   "mandatory": false,
+   "coop": "NASPO Valuepoint",
+   "url": "https://sas.arkansas.gov/state_contracts/software-var-3",
+   "documents": [],
+   "links": [
+    {
+     "label": "NASPO ValuePoint - Dell",
+     "url": "https://www.naspovaluepoint.org/suppliers/dell-marketing-lp/"
+    },
+    {
+     "label": "NASPO ValuePoint - Insight",
+     "url": "https://www.naspovaluepoint.org/suppliers/insight-public-sector-inc-2/"
+    },
+    {
+     "label": "NASPO ValuePoint - SHI",
+     "url": "https://www.naspovaluepoint.org/suppliers/shi-international-corp-2/"
+    },
+    {
+     "label": "NASPO ValuePoint - CDWG",
+     "url": "https://www.naspovaluepoint.org/suppliers/cdw-g-llc/"
+    }
+   ]
+  },
+  {
+   "post_id": "38671",
+   "commodity": "Kitchen and Serving Line Equipment, Smallware, Parts, and Design and/or Installation",
+   "tracking": "SP-24-001-COOP CKEP USA",
+   "outline": "",
+   "expires": "2029-05-31",
+   "vendors": "CKEP USA",
+   "description": "Kitchen, commercial, serving, equipment, supplies, smallware, installation",
+   "mandatory": false,
+   "coop": "OMNIA Partners 23FS4",
+   "url": "https://sas.arkansas.gov/state_contracts/kitchen-and-serving-line-equipment-smallware-parts-and-design-and-or-installation",
+   "documents": [],
+   "links": [
+    {
+     "label": "OMNIA Partners - CKEP USA",
+     "url": "https://www.omniapartners.com/suppliers/ckep/public-sector/contract-documents#contract-1926"
+    }
+   ]
+  },
+  {
+   "post_id": "39197",
+   "commodity": "Computer Equipment",
+   "tracking": "",
+   "outline": "",
+   "expires": "2027-06-30",
+   "vendors": "Apple, Dell, HP Inc., Hewlett Packard Enterprises, IBM, Lenovo, Lenovo Global Technology, Microsoft, NetApp US Public Sector Inc, Panasonic, Everpure (Pure Storage)",
+   "description": "",
+   "mandatory": false,
+   "coop": "NASPO Valuepoint",
+   "url": "https://sas.arkansas.gov/state_contracts/computer-equipment",
+   "documents": [
+    {
+     "label": "AASIS Multiple Vendor OA Instructions",
+     "url": "https://sas.arkansas.gov/wp-content/uploads/AASISMultipleVendorOAInst.pdf"
+    },
+    {
+     "label": "Apple - Contact Information",
+     "url": "https://sas.arkansas.gov/wp-content/uploads/Apple-Website-Info-1.15.2025.pdf"
+    },
+    {
+     "label": "Dell - Contact Information",
+     "url": "https://sas.arkansas.gov/wp-content/uploads/Dell-Website-Info-6.13.2026.pdf"
+    },
+    {
+     "label": "HP Inc. - Contact Information",
+     "url": "https://sas.arkansas.gov/wp-content/uploads/HP-Inc.-Website-Info-1.15.2025.pdf"
+    },
+    {
+     "label": "HPE - Contact Information",
+     "url": "https://sas.arkansas.gov/wp-content/uploads/HPE-Website-Info-9.19.2025.pdf"
+    },
+    {
+     "label": "IBM - Contact Information",
+     "url": "https://sas.arkansas.gov/wp-content/uploads/IBM-Website-Info-8.14.2026.pdf"
+    },
+    {
+     "label": "Lenovo - Contact Information",
+     "url": "https://sas.arkansas.gov/wp-content/uploads/Lenovo-Website-Info-5.12.2026.pdf"
+    },
+    {
+     "label": "LGT - Contact Information",
+     "url": "https://sas.arkansas.gov/wp-content/uploads/LGT-Website-Info-5.12.2026.pdf"
+    },
+    {
+     "label": "Microsoft - Contact Information",
+     "url": "https://sas.arkansas.gov/wp-content/uploads/Microsoft-Website-Info-6.19.2026.pdf"
+    },
+    {
+     "label": "NetApp - Contact Information",
+     "url": "https://sas.arkansas.gov/wp-content/uploads/NetApp-WEbsite-Info-5.20.2026.pdf"
+    },
+    {
+     "label": "Panasonic - Contract Information",
+     "url": "https://sas.arkansas.gov/wp-content/uploads/Panasonic-Website-Info-6.30.2026.pdf"
+    },
+    {
+     "label": "Everpure (Pure Storage) - Contact Information",
+     "url": "https://sas.arkansas.gov/wp-content/uploads/Pure-Storage-Website-Info-5-8-2024.pdf"
+    }
+   ],
+   "links": [
+    {
+     "label": "NASPO ValuePoint - Participating Addenda Search",
+     "url": "https://www.naspovaluepoint.org/participants/participant-results/?state=Arkansas"
+    },
+    {
+     "label": "NASPO ValuePoint - Apple",
+     "url": "https://www.naspovaluepoint.org/suppliers/apple-inc/"
+    },
+    {
+     "label": "NASPO ValuePoint - Dell",
+     "url": "https://www.naspovaluepoint.org/suppliers/dell-marketing-lp-2/"
+    },
+    {
+     "label": "NASPO ValuePoint - HP Inc",
+     "url": "https://www.naspovaluepoint.org/suppliers/hp-inc/"
+    },
+    {
+     "label": "NASPO ValuePoint - Hewlett Packard Enterprises",
+     "url": "https://www.naspovaluepoint.org/suppliers/hewlett-packard-enterprise-co/"
+    },
+    {
+     "label": "NASPO ValuePoint - IBM",
+     "url": "https://www.naspovaluepoint.org/suppliers/ibm-corp/"
+    },
+    {
+     "label": "NASPO ValuePoint - Lenovo",
+     "url": "https://www.naspovaluepoint.org/suppliers/lenovo-united-states-inc/"
+    },
+    {
+     "label": "NASPO ValuePoint - Lenovo Global Technology",
+     "url": "https://www.naspovaluepoint.org/suppliers/lenovo-global-technology-inc/"
+    },
+    {
+     "label": "NASPO ValuePoint - Microsoft",
+     "url": "https://www.naspovaluepoint.org/suppliers/microsoft-corp/"
+    },
+    {
+     "label": "NASPO ValuePoint - NetApp",
+     "url": "https://www.naspovaluepoint.org/suppliers/netapp-us-public-sector-inc/"
+    },
+    {
+     "label": "NASPO ValuePoint - Panasonic",
+     "url": "https://www.naspovaluepoint.org/suppliers/panasonic-connect-n-a-division-of-panasonic-corp-of-n-a/"
+    },
+    {
+     "label": "NASPO ValuePoint - Everpure, Inc (Pure Storage)",
+     "url": "https://www.naspovaluepoint.org/suppliers/everpure-inc/"
+    }
+   ]
+  },
+  {
+   "post_id": "43580",
+   "commodity": "Groundskeeping Materials – Fertilizer, Pesticide, Herbicide, Grass Seed, Related Items & Services",
+   "tracking": "4600053985",
+   "outline": "4600053985",
+   "expires": "2028-11-30",
+   "vendors": "Harrells, Inc.",
+   "description": "",
+   "mandatory": false,
+   "coop": "Omnia Partners # RH-23-037",
+   "url": "https://sas.arkansas.gov/state_contracts/lawn-maintenance-equipment-2",
+   "documents": [
+    {
+     "label": "Contract Pricing",
+     "url": "https://sas.arkansas.gov/wp-content/uploads/RFP-RH-23-037_Executed-CONTRACT-AMENDMENT-9_Fall-Price-List.pdf"
+    }
+   ],
+   "links": [
+    {
+     "label": "Omnia Contract 1948",
+     "url": "https://www.omniapartners.com/suppliers/harrells/public-sector/contract-documents#contract-1948"
+    }
+   ]
+  },
+  {
+   "post_id": "45285",
+   "commodity": "Cloud Solutions",
+   "tracking": "",
+   "outline": "4600054418; 4600054446; 4600054447; 4600047325; 4600049569",
+   "expires": "2027-01-13",
+   "vendors": "Carahsoft, SHI, Deloitte Consulting LLP, AT&T, HPE",
+   "description": "SAAS, PAAS, IAAS, XaaS",
+   "mandatory": false,
+   "coop": "NASPO ValuePoint",
+   "url": "https://sas.arkansas.gov/state_contracts/cloud-solutions-7",
+   "documents": [
+    {
+     "label": "Carahsoft Resellers",
+     "url": "https://sas.arkansas.gov/wp-content/uploads/Carahsoft-Resellers-List-04-20-2026.pdf"
+    },
+    {
+     "label": "HPE Resellers",
+     "url": "https://sas.arkansas.gov/wp-content/uploads/SP-17-0134-HPE-Contact-Information-11.18.2024.pdf"
+    }
+   ],
+   "links": [
+    {
+     "label": "NASPO Cloud Solutions Porfolio",
+     "url": "https://www.naspovaluepoint.org/portfolios/cloud-solutions-2016-2026/"
+    },
+    {
+     "label": "NASPO – Carahsoft",
+     "url": "https://www.naspovaluepoint.org/suppliers/carahsoft-technology-corporation/"
+    },
+    {
+     "label": "NASPO – SHI",
+     "url": "https://www.naspovaluepoint.org/suppliers/shi-international-corp/"
+    },
+    {
+     "label": "NASPO- Deloitte",
+     "url": "https://www.naspovaluepoint.org/suppliers/deloitte-consulting/"
+    },
+    {
+     "label": "NASPO - AT&T",
+     "url": "https://www.naspovaluepoint.org/suppliers/att-corp/"
+    },
+    {
+     "label": "NASPO - HPE",
+     "url": "https://www.naspovaluepoint.org/suppliers/hewlett-packard-enterprise-company/"
+    }
+   ]
+  },
+  {
+   "post_id": "45527",
+   "commodity": "Ag Tractors",
+   "tracking": "Sourcewell 082923",
+   "outline": "4600053973, 4600055337",
+   "expires": "2027-10-11",
+   "vendors": "Deere and Company, Kubota",
+   "description": "",
+   "mandatory": false,
+   "coop": "Sourcewell 082923-DAC, 082923-KBA",
+   "url": "https://sas.arkansas.gov/state_contracts/ag-tractors",
+   "documents": [],
+   "links": [
+    {
+     "label": "Sourcewell - Deere and Company",
+     "url": "https://stg.sourcewell-mn.gov/cooperative-purchasing/082923-DAC"
+    },
+    {
+     "label": "Sourcewell - Kubota",
+     "url": "https://www.sourcewell-mn.gov/cooperative-purchasing/082923-kba"
+    }
+   ]
+  },
+  {
+   "post_id": "45958",
+   "commodity": "Legal Database - Westlaw",
+   "tracking": "N/A",
+   "outline": "4600056606",
+   "expires": "2027-07-31",
+   "vendors": "Thomson Reuters dba West Publishing Corporation",
+   "description": "",
+   "mandatory": false,
+   "coop": "Texas DIR-CPO-5258",
+   "url": "https://sas.arkansas.gov/state_contracts/legal-database_westlaw",
+   "documents": [
+    {
+     "label": "Thomson Reuters dba West Publishing Corporation PA",
+     "url": "https://sas.arkansas.gov/wp-content/uploads/AR-PA-WestLaw-Texas-DIR-PA-OSP-080125.signed.pdf"
+    }
+   ],
+   "links": [
+    {
+     "label": "Texas DIR",
+     "url": "https://dir.texas.gov/contracts/dir-cpo-5258"
+    },
+    {
+     "label": "Thomson Reuters",
+     "url": "https://legal.thomsonreuters.com/en/support/gov/tx-dir#products-services"
+    }
+   ]
+  },
+  {
+   "post_id": "46184",
+   "commodity": "Maintenance, Repair and Operating Supplies | Home Depot",
+   "tracking": "SP-24-002-COOP The Home Depot",
+   "outline": "",
+   "expires": "2026-12-31",
+   "vendors": "Home Depot USA Inc",
+   "description": "",
+   "mandatory": false,
+   "coop": "OMNIA 16154",
+   "url": "https://sas.arkansas.gov/state_contracts/maintenance-repair-and-operating-supplies-mro",
+   "documents": [
+    {
+     "label": "Participating Addendum",
+     "url": "https://sas.arkansas.gov/wp-content/uploads/OMNIA-Home-Depot-PA-MRO-Signed.pdf"
+    }
+   ],
+   "links": [
+    {
+     "label": "OMNIA - Home Depot",
+     "url": "https://www.omniapartners.com/suppliers/the-home-depot-pro/public-sector/contract-documents#c21274:~:text=let%20you%20know.-,Maintenance%2C%20Repair%2C%20Operating%20Supplies%2C%20Industrial%20Supplies%20and%20Related%20Products%20and%20Services,-Maricopa%20County%2C%20AZ"
+    }
+   ]
+  },
+  {
+   "post_id": "46193",
+   "commodity": "Laboratory Equipment and Supplies",
+   "tracking": "NASPO ValuePoint",
+   "outline": "4600054150; 4600054158",
+   "expires": "2028-02-29",
+   "vendors": "VWR International LLC; Fisher Scientific Company LLC",
+   "description": "",
+   "mandatory": false,
+   "coop": "NASPO ValuePoint",
+   "url": "https://sas.arkansas.gov/state_contracts/laboratory-equipment-and-supplies",
+   "documents": [],
+   "links": [
+    {
+     "label": "NASPO - VWR International LLC",
+     "url": "https://www.naspovaluepoint.org/suppliers/vwr-international-llc/"
+    },
+    {
+     "label": "NASPO - Fisher Scientific Company LLC",
+     "url": "https://www.naspovaluepoint.org/suppliers/fisher-scientific-co-llc/"
+    }
+   ]
+  },
+  {
+   "post_id": "46347",
+   "commodity": "Copiers, Multi-Function Devices, and Related Software, Services, and Cloud Solutions",
+   "tracking": "",
+   "outline": "",
+   "expires": "2026-12-31",
+   "vendors": "Canon; HP, Inc; Konica Minolta Business Solutions USA Inc; Kyocera Document Solutions America Inc; Lexmark International Inc; Ricoh USA Inc; Sharp Electronics Corporation; Toshiba America Business Solutions; Xerox Corporation",
+   "description": "",
+   "mandatory": false,
+   "coop": "NASPO ValuePoint",
+   "url": "https://sas.arkansas.gov/state_contracts/copiers",
+   "documents": [
+    {
+     "label": "Copier Resellers",
+     "url": "https://sas.arkansas.gov/wp-content/uploads/Copier-Resellers-010826.xlsx"
+    }
+   ],
+   "links": [
+    {
+     "label": "NASPO - Canon",
+     "url": "https://www.naspovaluepoint.org/suppliers/canon-usa-inc/"
+    },
+    {
+     "label": "NASPO - HP, Inc",
+     "url": "https://www.naspovaluepoint.org/suppliers/hp-inc-2/"
+    },
+    {
+     "label": "NASPO - Lexmark International Inc",
+     "url": "https://www.naspovaluepoint.org/suppliers/lexmark-international-inc/"
+    },
+    {
+     "label": "NASPO - Konica Minolta Business Solutions USA Inc",
+     "url": "https://www.naspovaluepoint.org/suppliers/konica-minolta-business-solutions-usa-inc/"
+    },
+    {
+     "label": "NASPO - Kyocera Document Solutions America Inc",
+     "url": "https://www.naspovaluepoint.org/suppliers/kyocera-document-solution-america-inc/"
+    },
+    {
+     "label": "NASPO - Ricoh USA",
+     "url": "https://www.naspovaluepoint.org/suppliers/ricoh-usa-inc/"
+    },
+    {
+     "label": "NASPO - Sharp Electronics Corporation",
+     "url": "https://www.naspovaluepoint.org/suppliers/sharp-electronics-corp/"
+    },
+    {
+     "label": "NASPO - Toshiba America Business Solutions",
+     "url": "https://www.naspovaluepoint.org/suppliers/toshiba-america-business-solutions-inc/"
+    },
+    {
+     "label": "NASPO - Xerox Corporation",
+     "url": "https://www.naspovaluepoint.org/suppliers/xerox-corp/"
+    }
+   ]
+  },
+  {
+   "post_id": "46427",
+   "commodity": "Heavy Construction Equipment",
+   "tracking": "",
+   "outline": "4600054250, 4600055232, 4600056113",
+   "expires": "2027-04-14",
+   "vendors": "CNH Industrial America LLC, JA Riggs Tractor Company (JA Riggs-CAT), Deere & Company",
+   "description": "",
+   "mandatory": false,
+   "coop": "Sourcewell 011723",
+   "url": "https://sas.arkansas.gov/state_contracts/heavy-construction-equipment",
+   "documents": [
+    {
+     "label": "CNH Industrial America LLC Participating Addendum",
+     "url": "https://sas.arkansas.gov/wp-content/uploads/Signed-Heavy-Construction-011723-CNH-Industrial-America-LLC-PA-FINAL-081224.pdf"
+    },
+    {
+     "label": "JA Riggs Tractor Company Participating Addendum",
+     "url": "https://sas.arkansas.gov/wp-content/uploads/Signed-JA-Riggs-CAT-PA.pdf"
+    },
+    {
+     "label": "Deere & Company Participating Addendum",
+     "url": "https://sas.arkansas.gov/wp-content/uploads/John-Deere-PA-signed-02.13.25.pdf"
+    }
+   ],
+   "links": [
+    {
+     "label": "Sourcewell - CNH Industrial America LLC",
+     "url": "https://www.sourcewell-mn.gov/cooperative-purchasing/011723-CNH-1"
+    },
+    {
+     "label": "Sourcewell - JA Riggs Tractor Company",
+     "url": "https://www.sourcewell-mn.gov/cooperative-purchasing/011723-cat"
+    },
+    {
+     "label": "Sourcewell - Deere & Company",
+     "url": "https://www.sourcewell-mn.gov/cooperative-purchasing/011723-jdc"
+    }
+   ]
+  },
+  {
+   "post_id": "46885",
+   "commodity": "Emergency Responder Supplies, Equipment, and Services",
+   "tracking": "TIPS 240102",
+   "outline": "4600055345",
+   "expires": "2027-03-31",
+   "vendors": "Dana Safety Supply Inc",
+   "description": "",
+   "mandatory": false,
+   "coop": "TIPS 240102",
+   "url": "https://sas.arkansas.gov/state_contracts/emergency-responder-supplies-equipment-and-services",
+   "documents": [
+    {
+     "label": "Dana Safety Supply Inc Participating Addendum",
+     "url": "https://sas.arkansas.gov/wp-content/uploads/Fully-Executed-PA-Dana-Safety-Supply.pdf"
+    }
+   ],
+   "links": [
+    {
+     "label": "TIPS - Dana Safety Supply Inc",
+     "url": "https://www.tips-usa.com/vendorProfile.cfm?RecordID=28DB6DB7E7E9767017BC4283C79CE1F9#:~:text=Emergency%20Responder%20Supplies%2C%20Equipment%2C%20and%20Services"
+    }
+   ]
+  },
+  {
+   "post_id": "47476",
+   "commodity": "Police Radar/Lidar Speed Enforcement & Accident Reconstruction",
+   "tracking": "",
+   "outline": "4600055417; 4600055463; 4600055461; 4600055413",
+   "expires": "2027-08-31",
+   "vendors": "Kustom Signals Inc; Laser Technology Inc; MPH Industries; Applied Concepts dba Stalker",
+   "description": "",
+   "mandatory": false,
+   "coop": "NASPO ValuePoint 24823",
+   "url": "https://sas.arkansas.gov/state_contracts/police-radar-lidar-speed-enforcement-accident-reconstruction",
+   "documents": [],
+   "links": [
+    {
+     "label": "NASPO - Kustom Signals",
+     "url": "https://www.naspovaluepoint.org/suppliers/kustom-signals-inc/"
+    },
+    {
+     "label": "NASPO - Laser Technology",
+     "url": "https://www.naspovaluepoint.org/suppliers/laser-technology-inc/"
+    },
+    {
+     "label": "NASPO - MPH Industries",
+     "url": "https://www.naspovaluepoint.org/suppliers/mph-industries-inc/"
+    },
+    {
+     "label": "NASPO - Applied Concepts dba Stalker",
+     "url": "https://www.naspovaluepoint.org/suppliers/applied-concepts-inc-dba-stalker-radar/"
+    }
+   ]
+  },
+  {
+   "post_id": "47910",
+   "commodity": "Ambulance, Emergency, Fire Apparatus, and Specialty Vehicles & Related Equipment",
+   "tracking": "",
+   "outline": "4600055601",
+   "expires": "2028-11-20",
+   "vendors": "Farber Specialty Vehicles",
+   "description": "",
+   "mandatory": false,
+   "coop": "OMNIA MA 177718",
+   "url": "https://sas.arkansas.gov/state_contracts/ambulance-emergency-fire-apparatus-and-specialty-vehicles-related-equipment",
+   "documents": [
+    {
+     "label": "Farber Specialty Vehicles Participating Addendum",
+     "url": "https://sas.arkansas.gov/wp-content/uploads/MA-177718-Specialty-Vehicles-11.22.24-Signed-FINAL.pdf"
+    }
+   ],
+   "links": [
+    {
+     "label": "Omnia - Farber Specialty Vehicles",
+     "url": "https://www.omniapartners.com/suppliers/farber-specialty-vehicles/public-sector/contract-documents#c7521"
+    }
+   ]
+  },
+  {
+   "post_id": "48076",
+   "commodity": "Public Safety Surveillance",
+   "tracking": "",
+   "outline": "4600055586",
+   "expires": "2027-12-15",
+   "vendors": "Motorola Solutions, Inc.",
+   "description": "",
+   "mandatory": false,
+   "coop": "SOURCEWELL 101223-MOT",
+   "url": "https://sas.arkansas.gov/state_contracts/public-safety-surveillance",
+   "documents": [
+    {
+     "label": "Motorola Participating Addendum",
+     "url": "https://sas.arkansas.gov/wp-content/uploads/Signed-Motorola-PA-010925.pdf"
+    }
+   ],
+   "links": [
+    {
+     "label": "Sourcewell 101223-MOT",
+     "url": "https://www.sourcewell-mn.gov/cooperative-purchasing/101223-mot"
+    }
+   ]
+  },
+  {
+   "post_id": "48342",
+   "commodity": "HVAC Job Order Contracting",
+   "tracking": "",
+   "outline": "4600055982",
+   "expires": "2027-01-31",
+   "vendors": "Middleton Heat and Air",
+   "description": "",
+   "mandatory": false,
+   "coop": "TIPS 241001",
+   "url": "https://sas.arkansas.gov/state_contracts/hvac-job-order-contracting",
+   "documents": [
+    {
+     "label": "Middleton Heat and Air Participating Addendum",
+     "url": "https://sas.arkansas.gov/wp-content/uploads/Participating-Addendum-Middleton-Fully-Executed.pdf"
+    }
+   ],
+   "links": [
+    {
+     "label": "TIPS - Middleton Heat and Air",
+     "url": "https://www.tips-usa.com/vendorProfile.cfm?RecordID=D4244868F23A915F22DDA4FA2AE26BD7"
+    }
+   ]
+  },
+  {
+   "post_id": "48362",
+   "commodity": "eProcurement Solution and Services",
+   "tracking": "NASPO ValuePoint",
+   "outline": "4600055912",
+   "expires": "2029-12-31",
+   "vendors": "Periscope Holdings",
+   "description": "",
+   "mandatory": false,
+   "coop": "NASPO 18P 22120900000000000080",
+   "url": "https://sas.arkansas.gov/state_contracts/eprocurement-solution-and-services",
+   "documents": [],
+   "links": [
+    {
+     "label": "NASPO - Periscope Holdings",
+     "url": "https://www.naspovaluepoint.org/suppliers/periscope-holdings-inc/"
+    }
+   ]
+  },
+  {
+   "post_id": "48800",
+   "commodity": "Landscape and Grounds Maintenance Equipment",
+   "tracking": "Sourcewell 112624",
+   "outline": "4600056364, 4600056365, 4600056297, 4600056330",
+   "expires": "2029-01-31",
+   "vendors": "Ariens, Deere & Company, Kubota, The Toro Company",
+   "description": "Reel and rotary mower, mower, Zero-turn mower, Walk-behind lawn mower, Yard tool, trimmers, vacs, Utility vehicle, UTV, Sand and in-field groomer Dingo, rotary cutter, compact utility loader, Ventrac, compact tractor, Snow removal equipment, BOSS, snowplow",
+   "mandatory": false,
+   "coop": "Sourcewell 112624",
+   "url": "https://sas.arkansas.gov/state_contracts/landscape-and-grounds-maintenance-equipment",
+   "documents": [
+    {
+     "label": "Participating Addendum - Ariens",
+     "url": "https://sas.arkansas.gov/wp-content/uploads/Ariens-Sourcewell-PA-signed.pdf"
+    },
+    {
+     "label": "Participating Addendum - Deere & Company",
+     "url": "https://sas.arkansas.gov/wp-content/uploads/Deere-and-Company-PA-signed.pdf"
+    },
+    {
+     "label": "Participating Addendum - Kubota",
+     "url": "https://sas.arkansas.gov/wp-content/uploads/Kubota-PA.pdf"
+    },
+    {
+     "label": "Participating Addendum - The Toro Company",
+     "url": "https://sas.arkansas.gov/wp-content/uploads/Toro-Sourcewell-PA-signed.pdf"
+    }
+   ],
+   "links": [
+    {
+     "label": "Sourcewell - Ariens",
+     "url": "https://www.sourcewell-mn.gov/cooperative-purchasing/112624-aco"
+    },
+    {
+     "label": "Sourcewell - Deere and Company",
+     "url": "https://www.sourcewell-mn.gov/cooperative-purchasing/112624-dac"
+    },
+    {
+     "label": "Sourcewell - Kubota",
+     "url": "https://www.sourcewell-mn.gov/cooperative-purchasing/112624-KBA"
+    },
+    {
+     "label": "Sourcewell - The Toro Company",
+     "url": "https://www.sourcewell-mn.gov/cooperative-purchasing/112624-TTC"
+    }
+   ]
+  },
+  {
+   "post_id": "56030",
+   "commodity": "eSignature Software",
+   "tracking": "NASPO ValuePoint",
+   "outline": "4600054418",
+   "expires": "2027-01-13",
+   "vendors": "Carahsoft (DocuSign)",
+   "description": "",
+   "mandatory": false,
+   "coop": "NASPO ValuePoint",
+   "url": "https://sas.arkansas.gov/state_contracts/esignature-software",
+   "documents": [
+    {
+     "label": "DocuSign Contract Pricing",
+     "url": "https://sas.arkansas.gov/wp-content/uploads/DocuSign-Arkansas-State-Wide-Contract-.pdf"
+    }
+   ],
+   "links": [
+    {
+     "label": "NASPO - Carahsoft",
+     "url": "https://www.naspovaluepoint.org/suppliers/carahsoft-technology-corporation/"
+    },
+    {
+     "label": "Statewide Cloud Solutions Contract",
+     "url": "https://sas.arkansas.gov/state_contracts/cloud-solutions-7/"
+    }
+   ]
+  },
+  {
+   "post_id": "59759",
+   "commodity": "Janitorial and Sanitation Supplies, Equipment, and Related Services - Network Distribution",
+   "tracking": "OMNIA 240240-01",
+   "outline": "4600056902",
+   "expires": "2028-06-29",
+   "vendors": "Network Distribution",
+   "description": "",
+   "mandatory": false,
+   "coop": "OMNIA 240240-01",
+   "url": "https://sas.arkansas.gov/state_contracts/janitorial-and-sanitation-supplies-equipment-and-related-services",
+   "documents": [
+    {
+     "label": "Network Distribution Participating Addendum",
+     "url": "https://sas.arkansas.gov/wp-content/uploads/Arkansas-PA_-240240-01-completed.pdf"
+    }
+   ],
+   "links": [
+    {
+     "label": "OMNIA Master Agreement",
+     "url": "https://www.omniapartners.com/suppliers/network-distribution/public-sector/contract-documents#contract-2195"
+    }
+   ]
+  },
+  {
+   "post_id": "59893",
+   "commodity": "Vaccines - MMCAP",
+   "tracking": "MMS2501243",
+   "outline": "4600056981",
+   "expires": "2027-05-31",
+   "vendors": "FFF Enterprises",
+   "description": "",
+   "mandatory": false,
+   "coop": "MMCAP MMS2501243",
+   "url": "https://sas.arkansas.gov/state_contracts/vaccines-mmcap",
+   "documents": [
+    {
+     "label": "FFF Enterprises Participating Addendum",
+     "url": "https://sas.arkansas.gov/wp-content/uploads/Ark.-MPA_FFF-Enterprises_Signed.pdf"
+    }
+   ],
+   "links": [
+    {
+     "label": "MMCAP",
+     "url": "https://mmcap.mn.gov/"
+    }
+   ]
+  },
+  {
+   "post_id": "59894",
+   "commodity": "Dental Products - MMCAP",
+   "tracking": "MMS2401077",
+   "outline": "4600056599",
+   "expires": "2027-06-30",
+   "vendors": "Henry Schein",
+   "description": "",
+   "mandatory": false,
+   "coop": "MMCAP MMS2401077",
+   "url": "https://sas.arkansas.gov/state_contracts/dental-products-mmcap",
+   "documents": [
+    {
+     "label": "Henry Schein Participating Addendum",
+     "url": "https://sas.arkansas.gov/wp-content/uploads/Ark.-MPA_HenrySchein_Signed.pdf"
+    }
+   ],
+   "links": [
+    {
+     "label": "MMCAP",
+     "url": "https://members.mmcap.mn.gov/user/login?destination=/about"
+    }
+   ]
+  },
+  {
+   "post_id": "59988",
+   "commodity": "Remote Interpreting and Translating Services",
+   "tracking": "4600057409; 4600057425",
+   "outline": "4600057409; 4600057425",
+   "expires": "2027-07-28",
+   "vendors": "Linguistica; Propio LS, LLC",
+   "description": "",
+   "mandatory": false,
+   "coop": "NASPO 40-00000-24-00076AG; NASPO 40-00000-24-00076AK",
+   "url": "https://sas.arkansas.gov/state_contracts/remote-interpreting-and-translating-services",
+   "documents": [
+    {
+     "label": "Linguistica Pricing",
+     "url": "https://sas.arkansas.gov/wp-content/uploads/40-00000-24-00076AG-Linguistica-Pricing-2025-07-29.pdf"
+    },
+    {
+     "label": "Propio Pricing",
+     "url": "https://sas.arkansas.gov/wp-content/uploads/40-00000-24-00076AK-Propio-Pricing-2025-09-26.pdf"
+    }
+   ],
+   "links": [
+    {
+     "label": "NASPO - Linguistica",
+     "url": "https://www.naspovaluepoint.org/suppliers/linguistica-international-inc/"
+    },
+    {
+     "label": "NASPO - Propio",
+     "url": "https://www.naspovaluepoint.org/suppliers/propio-ls-llc/"
+    }
+   ]
+  },
+  {
+   "post_id": "60063",
+   "commodity": "Security and Fire Protection Services",
+   "tracking": "",
+   "outline": "4600057115",
+   "expires": "2028-01-20",
+   "vendors": "Everon, LLC (formerly ADT Commercial, LLC)",
+   "description": "",
+   "mandatory": false,
+   "coop": "NASPO ValuePoint",
+   "url": "https://sas.arkansas.gov/state_contracts/security-and-fire-protection",
+   "documents": [],
+   "links": [
+    {
+     "label": "NASPO - Everon, LLC",
+     "url": "https://www.naspovaluepoint.org/portfolio/security-fire-protection-services-2023-2032/everon-llc-formerly-adt-commercial-llc/"
+    }
+   ]
+  },
+  {
+   "post_id": "60148",
+   "commodity": "Procurement Support Services",
+   "tracking": "S000000411",
+   "outline": "4600058003, 4600057464, 4600057465, 4600057466, 4600057467",
+   "expires": "2027-12-31",
+   "vendors": "GLI Capital Group, dba Public Knowledge, Ikaso Consulting, The Boston Consulting Group, Gartner, Guidehouse",
+   "description": "",
+   "mandatory": false,
+   "coop": "",
+   "url": "https://sas.arkansas.gov/state_contracts/procurement-support-services",
+   "documents": [
+    {
+     "label": "S000000411 Procurement Support Services RFP",
+     "url": "https://sas.arkansas.gov/wp-content/uploads/S000000411-Statewide-Procurement-Support-Services-Revised-081525-.pdf"
+    },
+    {
+     "label": "Agency Use Instructions",
+     "url": "https://sas.arkansas.gov/wp-content/uploads/Instruction-Sheet-Final-12026.pdf"
+    },
+    {
+     "label": "Vendor Specialty Categories",
+     "url": "https://sas.arkansas.gov/wp-content/uploads/Vendor-Specialty-Categories-5.11.26.pdf"
+    },
+    {
+     "label": "Pricing & Performance Standards - BCG",
+     "url": "https://sas.arkansas.gov/wp-content/uploads/BCG-pricing-and-perf.-stds.pdf"
+    },
+    {
+     "label": "Pricing & Performance Standards - Public Knowledge (prev Civic)",
+     "url": "https://sas.arkansas.gov/wp-content/uploads/Public-knowledge-pricing-and-perf.-stds.pdf"
+    },
+    {
+     "label": "Pricing & Performance Standards - Gartner",
+     "url": "https://sas.arkansas.gov/wp-content/uploads/Gartner-pricing-and-perf.-stds.pdf"
+    },
+    {
+     "label": "Pricing & Performance Standards - Guidehouse",
+     "url": "https://sas.arkansas.gov/wp-content/uploads/Guidehouse-pricing-and-perf.-stdsv2.pdf"
+    },
+    {
+     "label": "Pricing & Performance Standards - Ikaso",
+     "url": "https://sas.arkansas.gov/wp-content/uploads/Ikaso-pricing-and-perf.-stds.pdf"
+    }
+   ],
+   "links": []
+  },
+  {
+   "post_id": "60181",
+   "commodity": "Fitness Equipment",
+   "tracking": "",
+   "outline": "4600057426",
+   "expires": "2028-07-29",
+   "vendors": "PRECOR",
+   "description": "Peloton bike, Treadmill, Elliptical, Recumbent bike, upright bike, Strength equipment, fitness, training equipment, bicycle",
+   "mandatory": false,
+   "coop": "Sourcewell 052324-PCR",
+   "url": "https://sas.arkansas.gov/state_contracts/fitness-equipment",
+   "documents": [
+    {
+     "label": "PRECOR Participating Addendum",
+     "url": "https://sas.arkansas.gov/wp-content/uploads/Precor-PA-4600057426.pdf"
+    }
+   ],
+   "links": [
+    {
+     "label": "Sourcewell - PRECOR",
+     "url": "https://www.sourcewell-mn.gov/cooperative-purchasing/052324-PCR"
+    }
+   ]
+  },
+  {
+   "post_id": "60259",
+   "commodity": "Utility, Transportation and Golf Vehicles Plus Related Accessories, Equipment, Parts and Services",
+   "tracking": "4600046083",
+   "outline": "4600046083",
+   "expires": "2026-12-31",
+   "vendors": "Club Car LLC",
+   "description": "",
+   "mandatory": false,
+   "coop": "OMNIA Partners EV2671-01",
+   "url": "https://sas.arkansas.gov/state_contracts/utility-transportation-and-golf-vehicles-plus-related-accessories-equipment-parts-and-services",
+   "documents": [],
+   "links": [
+    {
+     "label": "OMNIA - Club Car",
+     "url": "https://www.omniapartners.com/suppliers/club-car-inc/public-sector/contract-documents"
+    }
+   ]
+  },
+  {
+   "post_id": "60420",
+   "commodity": "Actuarial Services",
+   "tracking": "S000000288",
+   "outline": "4600057630; 4600057633; 4600057641; 4600057643; 4600057638; 4600057632",
+   "expires": "2027-01-31",
+   "vendors": "Lewis & Ellis, LLC; Milliman, Inc; Gabriel, Roeder, Smith, & Company; Examination Resources",
+   "description": "",
+   "mandatory": false,
+   "coop": "",
+   "url": "https://sas.arkansas.gov/state_contracts/actuarial-services",
+   "documents": [],
+   "links": []
+  },
+  {
+   "post_id": "60450",
+   "commodity": "Newspaper Legal Advertising",
+   "tracking": "EL - 26001",
+   "outline": "4600057694",
+   "expires": "2027-02-10",
+   "vendors": "WEHCO NEWSPAPERS INC",
+   "description": "",
+   "mandatory": false,
+   "coop": "",
+   "url": "https://sas.arkansas.gov/state_contracts/newspaper-legal-advertising",
+   "documents": [
+    {
+     "label": "Contract Document",
+     "url": "https://sas.arkansas.gov/wp-content/uploads/EL-260001-Arkansas-Democrat-Gazette-Contract.pdf"
+    }
+   ],
+   "links": []
+  },
+  {
+   "post_id": "60468",
+   "commodity": "Human Resource Systems and Related Products and Services",
+   "tracking": "OMNIA 24-6833",
+   "outline": "4600056979",
+   "expires": "2029-07-13",
+   "vendors": "UKG",
+   "description": "recruitment, HR, human resources, management, payroll, performance, training",
+   "mandatory": false,
+   "coop": "OMNIA 24-6833",
+   "url": "https://sas.arkansas.gov/state_contracts/human-resource-systems-and-related-products-and-services",
+   "documents": [
+    {
+     "label": "Participating Addendum",
+     "url": "https://sas.arkansas.gov/wp-content/uploads/1.-Arkansas_PA_OMNIA_24-6833-finalized.pdf"
+    }
+   ],
+   "links": [
+    {
+     "label": "OMNIA - UKG Contract",
+     "url": "https://www.omniapartners.com/suppliers/ukg/public-sector/contract-documents#contract-2207"
+    }
+   ]
+  },
+  {
+   "post_id": "60873",
+   "commodity": "Fleet Management Solutions",
+   "tracking": "4600057687",
+   "outline": "4600057687",
+   "expires": "2029-08-11",
+   "vendors": "Geotab USA, Inc",
+   "description": "GPS, Vehicle GPS, Fleet, Auto, tracking",
+   "mandatory": false,
+   "coop": "NASPO ValuePoint MA3695",
+   "url": "https://sas.arkansas.gov/state_contracts/fleet-management-solutions",
+   "documents": [
+    {
+     "label": "Geotab USA, Inc. Participating Addendum",
+     "url": "https://sas.arkansas.gov/wp-content/uploads/AR-Geotab-PA_fully-executed.pdf"
+    },
+    {
+     "label": "Geotab USA, Inc. TIJ Approval",
+     "url": "https://sas.arkansas.gov/wp-content/uploads/TIJ-Approval.pdf"
+    }
+   ],
+   "links": [
+    {
+     "label": "NASPO - Geotab USA, Inc",
+     "url": "https://www.naspovaluepoint.org/portfolio/wireless-voice-data-accessories-2019-2029/geotab/"
+    }
+   ]
+  },
+  {
+   "post_id": "60947",
+   "commodity": "Drug Testing Products and Services - MMCAP",
+   "tracking": "4600057710",
+   "outline": "4600057710",
+   "expires": "2027-10-31",
+   "vendors": "Redwood Toxicology",
+   "description": "",
+   "mandatory": false,
+   "coop": "MMCAP MMS 2501110",
+   "url": "https://sas.arkansas.gov/state_contracts/drug-testing-products-and-services",
+   "documents": [
+    {
+     "label": "Redwood Toxicology Participating Addendum",
+     "url": "https://sas.arkansas.gov/wp-content/uploads/Redwood-MPA-fully-executed.pdf"
+    }
+   ],
+   "links": [
+    {
+     "label": "MMCAP",
+     "url": "https://mmcap.mn.gov/"
+    }
+   ]
+  },
+  {
+   "post_id": "60949",
+   "commodity": "Temporary Employment Services for Priority Populations",
+   "tracking": "S000000415",
+   "outline": "4600057646",
+   "expires": "2028-02-19",
+   "vendors": "Maximus US Services, Inc",
+   "description": "",
+   "mandatory": false,
+   "coop": "",
+   "url": "https://sas.arkansas.gov/state_contracts/temporary-employment-services-for-priority-populations",
+   "documents": [
+    {
+     "label": "Maximus Pricing and Performance Standards",
+     "url": "https://sas.arkansas.gov/wp-content/uploads/Maximus-Contract-Information.pdf"
+    }
+   ],
+   "links": []
+  },
+  {
+   "post_id": "61411",
+   "commodity": "Janitorial Services",
+   "tracking": "4600058030",
+   "outline": "4600058030",
+   "expires": "2027-05-31",
+   "vendors": "Sharp Properties dba A Sharper Image",
+   "description": "",
+   "mandatory": false,
+   "coop": "",
+   "url": "https://sas.arkansas.gov/state_contracts/janitorial-services",
+   "documents": [
+    {
+     "label": "Contract Documents",
+     "url": "https://sas.arkansas.gov/wp-content/uploads/S000000473-Statewide-Janitorial-Services-Contract.pdf"
+    },
+    {
+     "label": "Pricing",
+     "url": "https://sas.arkansas.gov/wp-content/uploads/Sharp-Property-Mgt-Price-Sheet.pdf"
+    }
+   ],
+   "links": [
+    {
+     "label": "Sharp Properties dba A Sharper Image Website",
+     "url": "https://www.asharperimage.net/"
+    }
+   ]
+  },
+  {
+   "post_id": "62010",
+   "commodity": "Citizen Engagement Platforms",
+   "tracking": "4600057667",
+   "outline": "4600057667",
+   "expires": "2027-09-14",
+   "vendors": "Tyler Technologies, Inc.",
+   "description": "INA, chatbots, platform, website, Network Manager",
+   "mandatory": false,
+   "coop": "NASPO ValuePoint AR3764",
+   "url": "https://sas.arkansas.gov/state_contracts/citizen-engagement-platform",
+   "documents": [],
+   "links": [
+    {
+     "label": "NASPO - Tyler Technologies",
+     "url": "https://www.naspovaluepoint.org/portfolios/citizen-engagement-platforms/"
+    }
+   ]
+  },
+  {
+   "post_id": "62013",
+   "commodity": "Paint, Roof Coatings, Flooring, Paint Supplies & Equipment",
+   "tracking": "4600058001",
+   "outline": "4600058001",
+   "expires": "2028-09-30",
+   "vendors": "The Sherwin Williams Company",
+   "description": "",
+   "mandatory": false,
+   "coop": "OMNIA Partners | MA #02-147",
+   "url": "https://sas.arkansas.gov/state_contracts/paint-roof-coatings-flooring-paint-supplies-equipment",
+   "documents": [
+    {
+     "label": "Sherwin Williams Participating Addendum",
+     "url": "https://sas.arkansas.gov/wp-content/uploads/Sherwin-Williams-PA.JP_.signed.5.7.26.pdf"
+    }
+   ],
+   "links": [
+    {
+     "label": "OMNIA - Sherwin Williams",
+     "url": "https://www.omniapartners.com/suppliers/sherwin-williams/public-sector/contract-documents#c28719"
+    }
+   ]
+  },
+  {
+   "post_id": "62015",
+   "commodity": "Direct Purchase of Apparel, Uniforms, Accessories, Products and Services",
+   "tracking": "4600057847",
+   "outline": "4600057847",
+   "expires": "2028-09-30",
+   "vendors": "ServiceWear",
+   "description": "",
+   "mandatory": false,
+   "coop": "OMNIA Partners | MA #251002",
+   "url": "https://sas.arkansas.gov/state_contracts/direct-purchase-of-apparel-uniforms-accessories-products-and-services",
+   "documents": [
+    {
+     "label": "ServiceWear Participating Addendum",
+     "url": "https://sas.arkansas.gov/wp-content/uploads/Signed-PA-04.20.26.pdf"
+    }
+   ],
+   "links": [
+    {
+     "label": "OMNIA - ServiceWear",
+     "url": "https://www.omniapartners.com/suppliers/servicewear-apparel/public-sector/contract-documents#contract-2224"
+    }
+   ]
+  },
+  {
+   "post_id": "62026",
+   "commodity": "Facility Security",
+   "tracking": "4600057670",
+   "outline": "4600057670",
+   "expires": "2027-07-09",
+   "vendors": "Johnson Controls Fire Protection",
+   "description": "",
+   "mandatory": false,
+   "coop": "Sourcewell 121024-JHN",
+   "url": "https://sas.arkansas.gov/state_contracts/facility-security",
+   "documents": [
+    {
+     "label": "Johnson Controls Participating Addendum",
+     "url": "https://sas.arkansas.gov/wp-content/uploads/Johnson-Controls-P.A.-2026-Signed.pdf"
+    }
+   ],
+   "links": [
+    {
+     "label": "Sourcewell - Johnson Controls",
+     "url": "https://www.sourcewell-mn.gov/cooperative-purchasing/121024-jhn"
+    }
+   ]
+  },
+  {
+   "post_id": "62192",
+   "commodity": "Cloud Solutions GovGrant",
+   "tracking": "4600060092",
+   "outline": "4600060092",
+   "expires": "2027-09-15",
+   "vendors": "REI Systems Inc",
+   "description": "",
+   "mandatory": false,
+   "coop": "NASPO Valuepoint AR2472 (Cloud Solutions)",
+   "url": "https://sas.arkansas.gov/state_contracts/cloud-solutions-govgrant",
+   "documents": [
+    {
+     "label": "REI Systems Inc Participating Addendum",
+     "url": "https://sas.arkansas.gov/wp-content/uploads/Signed_REISystemsPA-AR2472-CW6090.pdf"
+    }
+   ],
+   "links": [
+    {
+     "label": "NASPO Carahsoft",
+     "url": "https://www.naspovaluepoint.org/suppliers/carahsoft-technology-corporation/"
+    }
+   ]
+  },
+  {
+   "post_id": "63269",
+   "commodity": "Debris Removal and Monitoring Services",
+   "tracking": "4600060546; 4600060510",
+   "outline": "4600060546; 4600060510",
+   "expires": "2027-07-21",
+   "vendors": "Aftermath Disaster Recovery, Inc; DRC Emergency Services",
+   "description": "",
+   "mandatory": false,
+   "coop": "NASPO MA #OK-MA-EV00000453",
+   "url": "https://sas.arkansas.gov/state_contracts/debris-removal-and-monitoring-services",
+   "documents": [],
+   "links": [
+    {
+     "label": "NASPO - Aftermath Disaster Recovery, Inc",
+     "url": "https://www.naspovaluepoint.org/suppliers/aftermath-disaster-recovery-inc/"
+    },
+    {
+     "label": "NASPO - DRC Emergency Services",
+     "url": "https://www.naspovaluepoint.org/suppliers/drc-emergency-services-llc/"
+    }
+   ]
+  },
+  {
+   "post_id": "63270",
+   "commodity": "Emergency & Disaster Response Portfolio",
+   "tracking": "Various",
+   "outline": "Various",
+   "expires": "2027-10-30",
+   "vendors": "",
+   "description": "",
+   "mandatory": false,
+   "coop": "",
+   "url": "https://sas.arkansas.gov/state_contracts/emergency-disaster-response-portfolio",
+   "documents": [],
+   "links": [
+    {
+     "label": "Debris Removal and Monitoring",
+     "url": "https://sas.arkansas.gov/state_contracts/debris-removal-and-monitoring-services/"
+    },
+    {
+     "label": "QVL - Emergency Property Damage Mitigation Services",
+     "url": "https://sas.arkansas.gov/state_contracts/sp-21-0042-emergency-property-damage-mitigation-services/"
+    }
+   ]
+  },
+  {
+   "post_id": "63272",
+   "commodity": "Golf Carts, Utility Vehicles & Mowers",
+   "tracking": "4600060502",
+   "outline": "4600060502",
+   "expires": "2029-06-29",
+   "vendors": "Ben Nelson Golf & Utility Vehicles",
+   "description": "",
+   "mandatory": false,
+   "coop": "OMNIA Partners R260201",
+   "url": "https://sas.arkansas.gov/state_contracts/golf-carts-utility-vehicles-mowers",
+   "documents": [
+    {
+     "label": "Participating Addendum",
+     "url": "https://sas.arkansas.gov/wp-content/uploads/Signed_Ben-and-Nelson-PA-Document.pdf"
+    }
+   ],
+   "links": [
+    {
+     "label": "OMNIA Partners - Ben Nelson Golf & Utility Vehicles",
+     "url": "https://www.omniapartners.com/suppliers/e-z-go-division-of-textron-inc#discover-contracts"
+    }
+   ]
+  },
+  {
+   "post_id": "63430",
+   "commodity": "Statewide Vehicles – FY2027",
+   "tracking": "SP-27-006",
+   "outline": "4600060523, 4600060524, 4600060525, 4600060526, 4600060529, 4600060530, 4600060531, 4600060559, 4600060560",
+   "expires": "2027-10-29",
+   "vendors": "Bale Chevrolet, Red River Ford, Red River Dodge, Landers CDJR, Mark McLarty Ford, Smart Auto, Smart Chevrolet, Superior 6, Superior Auto Mall",
+   "description": "",
+   "mandatory": true,
+   "coop": "",
+   "url": "https://sas.arkansas.gov/state_contracts/statewide-vehicles",
+   "documents": [
+    {
+     "label": "SP-27-006 Official Vehicle Specification and Pricing FY27",
+     "url": "https://sas.arkansas.gov/wp-content/uploads/SP-27-006-Official-Vehicle-Specification-and-Pricing-FY27_11.12.xlsx"
+    },
+    {
+     "label": "Contract at a Glance",
+     "url": "https://sas.arkansas.gov/wp-content/uploads/Contract-At-A-Glance_11.12.pdf"
+    },
+    {
+     "label": "Authorization to Solicit for Vehicle",
+     "url": "https://sas.arkansas.gov/wp-content/uploads/Authorization-to-Solicit-for-Vehicle.pdf"
+    }
+   ],
+   "links": []
+  }
+ ]
+}

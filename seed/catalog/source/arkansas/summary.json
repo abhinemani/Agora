@@ -1,0 +1,30 @@
+{
+ "source": "https://sas.arkansas.gov/procurement/state-contracts/",
+ "retrieved": "2026-11-14",
+ "checked": {
+  "listings": 97,
+  "answered": 97,
+  "vendors": 218,
+  "vendors_dropped": 0,
+  "outlines_dropped": 0,
+  "coop_links_dropped": 0,
+  "quotes_dropped": 0
+ },
+ "listings": 97,
+ "contracts": 216,
+ "open_to_locals": 215,
+ "state_only": 1,
+ "qualified_vendor_lists": 2,
+ "mandatory": 13,
+ "coop_adopted": 167,
+ "documents": 499,
+ "suppliers": 211,
+ "priced_lines": 85,
+ "price_rows": 87,
+ "prices_unmatched": [
+  "Superior 6, Inc. (119_SP-27-006-Official-Vehicle-Specification-and-Pricing-FY27_11.12.xlsx)",
+  "Superior 6, Inc. (119_SP-27-006-Official-Vehicle-Specification-and-Pricing-FY27_11.12.xlsx)"
+ ],
+ "with_prices": 10,
+ "products": 85
+}

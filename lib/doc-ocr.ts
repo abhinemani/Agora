@@ -67,7 +67,12 @@ export function checkRun(out: z.infer<typeof Schema>, count: number, first: numb
   return { kept, passed, problems };
 }
 
-async function slice(src: PDFDocument, from: number, count: number): Promise<string> {
+/** A PDF pdf-lib can't open (malformed cross-reference tables are common in scans) is sent whole, when it's short. */
+const WHOLE_MAX_PAGES = 20;
+const WHOLE_MAX_BYTES = 24 * 1024 * 1024;
+
+async function slice(src: PDFDocument | Buffer, from: number, count: number): Promise<string> {
+  if (Buffer.isBuffer(src)) return src.toString("base64");
   const out = await PDFDocument.create();
   const pages = await out.copyPages(src, Array.from({ length: count }, (_, i) => from + i));
   for (const p of pages) out.addPage(p);
@@ -75,7 +80,7 @@ async function slice(src: PDFDocument, from: number, count: number): Promise<str
 }
 
 /** Read a run of pages; a run the model can't answer whole is tried again in halves, down to one page. */
-async function readRun(src: PDFDocument, label: string, from: number, count: number, out: ScanReading): Promise<void> {
+async function readRun(src: PDFDocument | Buffer, label: string, from: number, count: number, out: ScanReading): Promise<void> {
   const first = from + 1;
   const res = await structured({
     task: "scan_text",
@@ -89,7 +94,7 @@ async function readRun(src: PDFDocument, label: string, from: number, count: num
     effort: "low",
   });
   if (!res) {
-    if (count > 1) {
+    if (count > 1 && !Buffer.isBuffer(src)) {
       const half = Math.ceil(count / 2);
       await readRun(src, label, from, half, out);
       await readRun(src, label, from + half, count - half, out);
@@ -105,8 +110,26 @@ async function readRun(src: PDFDocument, label: string, from: number, count: num
 
 /** Transcribe a scanned PDF. Throws when the file can't be opened as a PDF. */
 export async function readScan(buffer: Buffer, label: string): Promise<ScanReading> {
-  const src = await PDFDocument.load(new Uint8Array(buffer), { ignoreEncryption: true });
-  const total = Math.min(src.getPageCount(), MAX_PAGES);
+  let src: PDFDocument | Buffer;
+  let total: number;
+  try {
+    src = await PDFDocument.load(new Uint8Array(buffer), { ignoreEncryption: true });
+    total = Math.min(src.getPageCount(), MAX_PAGES);
+  } catch (e) {
+    // pdf-lib can't split it; pdf-parse (pdf.js) is more forgiving, so count its pages there and send it whole if it's short.
+    const { PDFParse } = await import("pdf-parse");
+    const parser = new PDFParse({ data: new Uint8Array(buffer) });
+    try {
+      total = (await parser.getText()).total;
+    } finally {
+      await parser.destroy();
+    }
+    if (total > WHOLE_MAX_PAGES || buffer.length > WHOLE_MAX_BYTES) throw new Error(`the file can't be split into pages (${(e as Error).message}), and at ${total} pages it is too long to send whole`);
+    const out: ScanReading = { pages: [], page_count: total, read: 0, failed_runs: 0 };
+    await readRun(buffer, label, 0, total, out);
+    out.pages.sort((a, b) => a.num - b.num);
+    return out;
+  }
   const out: ScanReading = { pages: [], page_count: total, read: 0, failed_runs: 0 };
   for (let from = 0; from < total; from += RUN) await readRun(src, label, from, Math.min(RUN, total - from), out);
   out.pages.sort((a, b) => a.num - b.num);

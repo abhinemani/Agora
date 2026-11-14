@@ -160,13 +160,13 @@ export async function scansToRead(limit: number): Promise<{ url: string; label: 
   if (!p || !(await docSchema())) return [];
   const r = await p.query<{ url: string; label: string }>(
     `select u.url, coalesce((select l.label from doc_links l where l.url = u.url limit 1), u.filename, 'Scanned document') as label
-     from doc_urls u where u.status = 'scan' and u.ocr_tries < 2 order by u.checked_at limit $1`,
+     from doc_urls u where u.status = 'scan' and u.ocr_tries < 3 order by u.checked_at limit $1`,
     [limit],
   );
   return r.rows;
 }
 
-/** A scan Claude couldn't read this time: counted, so it is tried at most twice. */
+/** A scan Claude couldn't read this time: counted, so it is tried three times at most. */
 export async function scanNotRead(url: string, detail: string): Promise<void> {
   const p = pool();
   if (!p) return;
@@ -261,7 +261,7 @@ export async function docStoreStatus(): Promise<{ database: boolean; urls: Recor
     p.query<{ texts: string; pages: string }>(`select (select count(*) from doc_text) texts, (select count(*) from doc_pages) pages`),
     p.query<{ mb: string }>(`select round(pg_database_size(current_database()) / 1048576.0) mb`),
     p.query<{ program: string; linked: string; text: string }>(`select l.program, count(distinct l.url) linked, count(distinct l.url) filter (where u.status = 'text') text from doc_links l left join doc_urls u on u.url = l.url group by l.program`),
-    p.query<{ read: string; waiting: string }>(`select count(*) filter (where via = 'scan' and status = 'text') read, count(*) filter (where status = 'scan' and ocr_tries < 2) waiting from doc_urls`),
+    p.query<{ read: string; waiting: string }>(`select count(*) filter (where via = 'scan' and status = 'text') read, count(*) filter (where status = 'scan' and ocr_tries < 3) waiting from doc_urls`),
   ]);
   return {
     database: true,

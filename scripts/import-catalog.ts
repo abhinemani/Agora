@@ -765,8 +765,8 @@ const docPriceStats = { rows: 0, attached: 0, list_prices: 0, duplicates: 0, sup
     }
     // The same checks as on the server: a price a buyer pays, printed on its line, with the item named there.
     const figures = (r.line.match(/\d[\d,]*(?:\.\d+)?/g) ?? []).map((n) => Number(n.replace(/,/g, "")));
-    const lineWords = new Set(words(r.line));
-    if (!BASIS[r.basis] || !(r.price > 0) || !figures.some((f) => Math.abs(f - r.price) < 0.005) || !words(r.item).some((w) => lineWords.has(w))) {
+    const lineText = r.line.toLowerCase();
+    if (!BASIS[r.basis] || !(r.price > 0) || !figures.some((f) => Math.abs(f - r.price) < 0.005) || !words(r.item).some((w) => lineText.includes(w))) {
       docPriceStats.rejected++;
       continue;
     }

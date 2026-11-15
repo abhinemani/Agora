@@ -729,10 +729,10 @@ const priceFileStats = { rows: 0, attached: 0, unmatched: [] as string[] };
 // contract's sheets print different prices for one item, the latest amendment's price stands (by the amendment,
 // revision and date in the sheets' names), and when the names can't say which is latest the item stays out. A row whose
 // contract has the same price on file for an item of the same name (NJSTART's line items) is the same offering.
-const docPriceStats = { rows: 0, attached: 0, list_prices: 0, duplicates: 0, superseded: 0, unclear: 0, rejected: 0, no_contract: 0 };
+const docPriceStats = { rows: 0, attached: 0, list_prices: 0, duplicates: 0, superseded: 0, unclear: 0, rejected: 0, no_contract: 0, read_in_parts: 0, mixed_sheets: 0, mixed_rows: 0 };
 {
   const file = join(SRC, "doc-prices/rows.json.gz");
-  const doc: { retrieved: string; rows: { url: string; contract_id: string; program: string; label: string; n: number; item: string; sku: string | null; unit: string | null; price: number; basis: string; note: string | null; line: string; read_on: string }[] } | null = existsSync(file)
+  const doc: { retrieved: string; rows: { url: string; contract_id: string; program: string; label: string; n: number; item: string; sku: string | null; unit: string | null; price: number; basis: string; note: string | null; line: string; read_on: string; headed?: boolean; whole?: boolean }[] } | null = existsSync(file)
     ? JSON.parse(gunzipSync(readFileSync(file)).toString("utf8"))
     : null;
   const contractById = new Map(contracts.map((c) => [c.id, c]));
@@ -756,17 +756,33 @@ const docPriceStats = { rows: 0, attached: 0, list_prices: 0, duplicates: 0, sup
     return 0;
   };
   type DocRow = NonNullable<typeof doc>["rows"][number];
+  // A long sheet read in parts without its headings sent along (before November 15's fix) may have mistaken a column:
+  // a list price read as a contract price, a weight read as a price. Only rows from sheets read whole, or read with
+  // the headings, come in. And a sheet whose rows mix list prices with contract prices disagrees with itself about its
+  // columns, so none of it comes in.
+  const basisBySheet = new Map<string, Set<string>>();
+  for (const r of doc?.rows ?? []) (basisBySheet.get(r.url) ?? basisBySheet.set(r.url, new Set()).get(r.url)!).add(r.basis === "list_price" ? "list" : "paid");
+  const mixed = new Set([...basisBySheet].filter(([, b]) => b.size > 1).map(([u]) => u));
+  docPriceStats.mixed_sheets = mixed.size;
   const valid: DocRow[] = [];
   for (const r of doc?.rows ?? []) {
     docPriceStats.rows++;
+    if (!r.headed && !r.whole) {
+      docPriceStats.read_in_parts++;
+      continue;
+    }
+    if (mixed.has(r.url)) {
+      docPriceStats.mixed_rows++;
+      continue;
+    }
     if (!contractById.has(r.contract_id)) {
       docPriceStats.no_contract++;
       continue;
     }
     // The same checks as on the server: a price a buyer pays, printed on its line, with the item named there.
     const figures = (r.line.match(/\d[\d,]*(?:\.\d+)?/g) ?? []).map((n) => Number(n.replace(/,/g, "")));
-    const lineWords = new Set(words(r.line));
-    if (!BASIS[r.basis] || !(r.price > 0) || !figures.some((f) => Math.abs(f - r.price) < 0.005) || !words(r.item).some((w) => lineWords.has(w))) {
+    const lineText = r.line.toLowerCase();
+    if (!BASIS[r.basis] || !(r.price > 0) || !figures.some((f) => Math.abs(f - r.price) < 0.005) || !words(r.item).some((w) => lineText.includes(w))) {
       docPriceStats.rejected++;
       continue;
     }
@@ -984,6 +1000,9 @@ const insights = {
     doc_price_rows: docPriceStats.rows,
     doc_price_offerings: docPriceStats.attached,
     doc_price_list_prices: docPriceStats.list_prices,
+    doc_price_read_in_parts: docPriceStats.read_in_parts,
+    doc_price_mixed_sheets: docPriceStats.mixed_sheets,
+    doc_price_mixed_rows: docPriceStats.mixed_rows,
     doc_price_duplicates: docPriceStats.duplicates,
     doc_price_superseded: docPriceStats.superseded,
     doc_price_unclear: docPriceStats.unclear,

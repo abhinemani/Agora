@@ -30,6 +30,9 @@ export const isPriceSheet = (label: string) => PRICE_LABEL.test(label) && !NOT_P
 const CHUNK = 14_000;
 /** Parts of one sheet sent to the model at once (AGORA_PRICE_PARTS); sheets read at once is AGORA_PRICE_WORKERS. */
 const PARTS_AT_ONCE = Number(process.env.AGORA_PRICE_PARTS ?? 4);
+/** How much of a sheet's opening goes with each later part: enough for a title block and the column headings. */
+const HEADING_LINES = 25;
+const HEADING_CHARS = 2_500;
 
 // ------------------------------------------------------------------ the reading and the check (pure where possible)
 
@@ -40,7 +43,8 @@ const SYSTEM =
   `- "price": the number as printed on that line, without $ or commas. If a line prints several prices (zones, tiers, years), make a row for each and say which in "note".\n` +
   `- "basis": contract_price for a fixed awarded price; net_price for a price after the contract discount; ceiling for a not-to-exceed or maximum rate; list_price for a manufacturer's or catalog list price before discount; discount when the figure is a percentage off.\n` +
   `- Skip anything that isn't an item price: totals, subtotals, quantities, estimated usage, fees, minimum orders, page numbers, dates, and blank or $0.00 price cells.\n` +
-  `- Never invent an item or a price. If the sheet has no item prices, return no rows.`;
+  `- Never invent an item or a price. If the sheet has no item prices, return no rows.\n` +
+  `- A long sheet comes in parts. Each later part starts with the sheet's opening lines under SHEET HEADING, for its title and column headings: use them to tell which column is the price and what kind of price it is (a column headed "List Price" holds list prices), but take rows only from the part itself, never from the heading.`;
 
 const RowSchema = z.object({
   item: z.string().describe("What is priced, in a few words, from the line or the row's description."),
@@ -96,6 +100,19 @@ export function chunks(text: string): string[] {
 }
 
 /** Read one sheet's text into checked rows. Each run is one model call, reported with pieces(). */
+/** The sheet's opening lines (its title and column headings), sent with every later part. */
+export function sheetHeading(text: string): string {
+  const out: string[] = [];
+  let n = 0;
+  for (const line of text.split("\n")) {
+    if (!line.trim()) continue;
+    if (n + line.length > HEADING_CHARS || out.length >= HEADING_LINES) break;
+    out.push(line);
+    n += line.length + 1;
+  }
+  return out.join("\n");
+}
+
 export async function readPriceSheet(text: string, label: string): Promise<{ rows: (PriceRow & { run: number })[]; proposed: number; dropped: Record<string, number>; examples: { why: string; item: string; price: number; line: string }[]; failed_runs: number }> {
   const examples: { why: string; item: string; price: number; line: string }[] = [];
   const kept: (PriceRow & { run: number })[] = [];
@@ -103,13 +120,17 @@ export async function readPriceSheet(text: string, label: string): Promise<{ row
   let proposed = 0;
   let failed = 0;
   const runs = chunks(text).slice(0, 60);
+  const heading = runs.length > 1 ? sheetHeading(text) : "";
   // A sheet's parts go to the model a few at a time; the rows are checked and kept in the sheet's order afterwards.
   const ask = (run: string, i: number) =>
     structured({
       task: "price_sheet",
       about: `${label}, part ${i + 1} of ${runs.length}`,
       system: SYSTEM,
-      user: `PRICE SHEET: ${label}${runs.length > 1 ? ` (part ${i + 1} of ${runs.length})` : ""}\n\n${run}`,
+      user:
+        i > 0
+          ? `PRICE SHEET: ${label} (part ${i + 1} of ${runs.length})\n\nSHEET HEADING (context only, not part of this part):\n${heading}\n\nPART ${i + 1}:\n${run}`
+          : `PRICE SHEET: ${label}${runs.length > 1 ? ` (part 1 of ${runs.length})` : ""}\n\n${run}`,
       schema: Schema,
       maxTokens: 24_000,
       timeoutMs: 240_000,
@@ -192,6 +213,7 @@ async function schema(): Promise<boolean> {
        read_at timestamptz not null default now(),
        primary key (url, n)
      );
+     alter table doc_prices add column if not exists headed boolean not null default false;
      create table if not exists doc_price_reads (
        url text primary key,
        contract_id text,
@@ -328,7 +350,7 @@ async function readOne(s: Sheet, sample: boolean, again = false): Promise<void> 
   for (const [k, v] of Object.entries(got.dropped)) state.dropped[k] = (state.dropped[k] ?? 0) + v;
   for (const [n, r] of got.rows.entries())
     await p.query(
-      `insert into doc_prices (url, contract_id, program, label, n, item, sku, unit, price, basis, note, line, model) values ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13) on conflict (url, n) do nothing`,
+      `insert into doc_prices (url, contract_id, program, label, n, item, sku, unit, price, basis, note, line, model, headed) values ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, true) on conflict (url, n) do nothing`,
       [s.url, s.contract_id, s.program, s.label, n, r.item, r.sku, r.unit, r.price, r.basis, r.note, r.line, SCAN_MODEL],
     );
   state.rows += got.rows.length;
@@ -347,15 +369,23 @@ export async function priceSheetSummary(): Promise<Record<string, unknown>> {
   return { ...state, by_program: by.rows.map((r) => ({ program: r.program, sample: r.sample, sheets: Number(r.sheets), sheets_with_rows: Number(r.with_rows), rows_kept: Number(r.rows), rows_proposed: Number(r.proposed) })) };
 }
 
-/** Kept rows a page at a time, for the export npm run import:doc-prices reads. */
+/** Kept rows a page at a time, for the export npm run import:doc-prices reads. Each says whether its sheet was read
+ * whole (short enough for one part) and whether it was read with the sheet's headings sent with every part ("headed",
+ * every reading since November 15): a row from a long sheet read without them may have mistaken its column. */
 export async function exportPrices(offset = 0, limit = 10_000): Promise<{ total: number; offset: number; rows: Record<string, unknown>[] }> {
   const p = pool();
   if (!p || !(await schema())) return { total: 0, offset, rows: [] };
   const total = Number((await p.query(`select count(*) n from doc_prices`)).rows[0].n);
   const r = await p.query(
-    `select url, contract_id, program, label, n, item, sku, unit, price::float8 as price, basis, note, line, model, to_char(read_at, 'YYYY-MM-DD') as read_on
-     from doc_prices order by contract_id, url, n offset $1 limit $2`,
-    [offset, limit],
+    `select p.url, p.contract_id, p.program, p.label, p.n, p.item, p.sku, p.unit, p.price::float8 as price, p.basis, p.note, p.line, p.model,
+       to_char(p.read_at, 'YYYY-MM-DD') as read_on, p.headed, w.whole
+     from doc_prices p
+     left join (
+       select u.url, sum(length(d.text)) + count(*) - 1 <= $3 as whole
+       from doc_urls u join doc_pages d on d.hash = u.hash where u.url in (select distinct url from doc_prices) group by u.url
+     ) w on w.url = p.url
+     order by p.contract_id, p.url, p.n offset $1 limit $2`,
+    [offset, limit, CHUNK],
   );
   return { total, offset, rows: r.rows };
 }

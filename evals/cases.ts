@@ -122,6 +122,21 @@ export async function fixtures(): Promise<Fixtures> {
 /** What the model call sees, for canned output that has to be built from the prompt (a quote copied out of a passage). */
 type Call = { task: Task; system: string; user: string };
 
+/** A long manufacturer's price list (two parts) whose only price column is headed "List Price", with a weight column
+ * beside it: a later part read without the headings could take its prices for contract prices, or a weight for a price. */
+const LONG_SHEET = [
+  "Example Faucet Co. Price List 2026",
+  "Item Number | Description | Weight (LB) | Lead-Time (Days) | List Price",
+  ...Array.from({ length: 300 }, (_, i) => `EF-${1000 + i} | Faucet part assembly, model ${100 + i} | ${(1 + (i % 9) * 0.5).toFixed(1)} | 5 | ${(25 + i * 1.37).toFixed(2)}`),
+].join("\n");
+/** The canned reading of a long sheet: three rows from the part, called list prices only when the part carries the
+ * sheet's headings (the first part has them in its own text). */
+const cannedLong = (call: { user: string }) => {
+  const part = call.user.includes("PART ") ? call.user.slice(call.user.lastIndexOf("PART ")) : call.user;
+  const headed = /List Price/.test(call.user);
+  const lines = part.split("\n").filter((l) => /^EF-\d+/.test(l)).slice(0, 3);
+  return { rows: lines.map((l) => ({ item: "Faucet part assembly", sku: l.split(" | ")[0], unit: null, price: Number(l.split(" | ")[4]), basis: headed ? "list_price" : "contract_price", note: null, line: l })) };
+};
 type SheetRows = Awaited<ReturnType<typeof readPriceSheet>>;
 const sheetRow = (item: string, price: number, line: string, basis = "contract_price") => ({ item, sku: null, unit: null, price, basis, note: null, line });
 
@@ -851,6 +866,28 @@ export const CASES: Case[] = [
       survived,
       is<SheetRows>("the four item prices", (v) => [68.4, 21.15, 412, 185].every((p) => v.rows.some((r) => r.price === p))),
       is<SheetRows>("no percentage or estimated total kept as a price", (v) => !v.rows.some((r) => r.price === 18 || r.price === 1_240_000)),
+    ],
+  },
+  {
+    id: "price-sheet.guard.heading-in-every-part",
+    task: "price_sheet",
+    title: "Every later part of a long sheet carries the sheet's column headings",
+    canned: (call: Call) => cannedLong(call),
+    run: () => readPriceSheet(LONG_SHEET, "Example Faucet Co. Price List 2026"),
+    expect: [
+      is<SheetRows>("rows from both parts, every one a list price", (v) => v.rows.some((r) => r.run === 2) && v.rows.every((r) => r.basis === "list_price")),
+    ],
+  },
+  {
+    id: "price-sheet.live.long-list-prices",
+    task: "price_sheet",
+    title: "A long list-price sheet reads as list prices in every part, and no weight is taken for a price",
+    run: () => readPriceSheet(LONG_SHEET, "Example Faucet Co. Price List 2026"),
+    expect: [
+      survived,
+      is<SheetRows>("rows from the second part", (v) => v.rows.some((r) => r.run === 2)),
+      is<SheetRows>("every row a list price", (v) => v.rows.length > 0 && v.rows.every((r) => r.basis === "list_price")),
+      is<SheetRows>("no weight or lead time read as a price", (v) => v.rows.every((r) => r.price >= 25)),
     ],
   },
 ];

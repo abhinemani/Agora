@@ -24,6 +24,8 @@ type Row = {
   note: string | null;
   line: string;
   read_on: string;
+  headed: boolean;
+  whole: boolean | null;
 };
 
 async function main() {
@@ -67,6 +69,8 @@ async function main() {
       note,
       line,
       read_on,
+      headed,
+      whole,
     }) => ({
       url,
       contract_id,
@@ -81,6 +85,8 @@ async function main() {
       note,
       line,
       read_on,
+      headed: Boolean(headed),
+      whole: Boolean(whole),
     }),
   );
   const dir = join(process.cwd(), "seed/catalog/source/doc-prices");

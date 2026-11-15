@@ -336,13 +336,16 @@ export function diveSearch(db: Db, query: string, filters: DiveFilter[], opts: D
   const matched = pool.filter((i) => filters.every((f) => passes(i, f)));
   // What the buyer can use comes first; with no agency set, what any buyer could use comes before one state's
   // contracts, as on the results page. Then the product that is the thing asked for (a swing before a swing hanger),
-  // whole items before parts, a real price, fit, the name that says it most squarely, and the lower price.
+  // and for an agency, its own state's contract before a co-op's, as on the results page. Then whole items before
+  // parts, a real price, fit, the name that says it most squarely, and the lower price.
   const anyone = !db.session.buyer;
+  const ownState = (i: DiveItem) => Number(!anyone && i.usable && i.state);
   const ranked = [...matched].sort(
     (a, b) =>
       Number(b.usable) - Number(a.usable) ||
       (anyone ? Number(a.state) - Number(b.state) : 0) ||
       b.kind_match - a.kind_match ||
+      ownState(b) - ownState(a) ||
       Number(a.part) - Number(b.part) ||
       Number(b.price != null) - Number(a.price != null) || b.fit - a.fit || b.cover - a.cover || (priceOf(a) ?? Infinity) - (priceOf(b) ?? Infinity) || a.name.localeCompare(b.name),
   );

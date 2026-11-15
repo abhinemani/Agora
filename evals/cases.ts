@@ -21,7 +21,8 @@ import { readFileSync, rmSync } from "node:fs";
 import { join } from "node:path";
 import * as A from "../lib/actions";
 import type { AiRecord, Outcome, Task } from "../lib/ai-log";
-import { parseRequest, tokens } from "../lib/assistant";
+import { buildResults, offlineParse, parseRequest, tokens } from "../lib/assistant";
+import type { Request } from "../lib/types";
 import { getDb } from "../lib/db";
 import { conflictsWith, diveSearch, type DiveItem, type DiveState } from "../lib/dive";
 
@@ -505,6 +506,37 @@ export const CASES: Case[] = [
     expect: [is<DiveState>("priced toner on the shortlist", (v) => v.items.some((i) => /toner/i.test(i.name) && i.price != null))],
   },
   {
+    id: "dive-read.guard.own-state-first",
+    task: "dive_read",
+    title: "A New Jersey buyer's toner shortlist opens with NJSTART's toner, ahead of the co-ops' (state contracts lead for their own state)",
+    canned: {},
+    run: async () => {
+      A.setBuyer({ name: "Test city, NJ", state: "NJ", entity_type: "municipality", population: null });
+      // With the kinds the request is read as, as the dive searches it.
+      const v = diveSearch(getDb(), "toner for the copier", [], { kinds: ["toner", "toner cartridge"] });
+      A.setBuyer({ name: "City of Riverbend", state: "OR", entity_type: "municipality", population: null });
+      return v;
+    },
+    expect: [is<DiveState>("the first product is on New Jersey's own contract and open to the buyer", (v) => Boolean(v.items[0]?.state && v.items[0]?.usable && /NJSTART/.test(v.items[0]?.program ?? "")))],
+  },
+  {
+    id: "results.guard.work-words",
+    task: "dive_read",
+    title: "A service request gets no priced options that share only a word for the kind of work, and software requests keep theirs",
+    canned: {},
+    run: async () => {
+      const options = (item: string) => {
+        const request: Request = { id: "eval", raw_text: item, parsed: { item, quantity: 1, category: null, deadline: null, department: "", est_total: 0 }, parse_mode: "offline", preference_answer: null, created_at: "", outcome: null };
+        return buildResults(getDb(), request).groups.flatMap((g) => g.options.map((o) => o.listing.title));
+      };
+      return Object.fromEntries(["elevator maintenance", "janitorial services", "temporary staffing", "permitting software", "computer-aided dispatch"].map((i) => [i, options(i)]));
+    },
+    expect: [
+      is<Record<string, string[]>>("nothing for elevators, janitors or temps", (v) => !v["elevator maintenance"].length && !v["janitorial services"].length && !v["temporary staffing"].length),
+      is<Record<string, string[]>>("permitting and dispatch software still priced", (v) => v["permitting software"].some((t) => /permit/i.test(t)) && v["computer-aided dispatch"].some((t) => /dispatch/i.test(t))),
+    ],
+  },
+  {
     id: "dive-read.guard.cad-both-ways",
     task: "dive_read",
     title: "Computer-aided dispatch and CAD find the same dispatch listings",
@@ -526,7 +558,8 @@ export const CASES: Case[] = [
           else getDb().session.buyer = null;
           const found =
             requestKind(e) === "product"
-              ? diveSearch(getDb(), e, []).items.filter((i) => i.price != null && i.kind_match > 0).length
+              ? // The front door searches the item it reads from the request ("crew cab pickups"), as offline parsing reads it.
+                diveSearch(getDb(), offlineParse(e, getDb()).item || e, []).items.filter((i) => i.price != null && i.kind_match > 0).length
               : catalogCoopHits(getDb(), e, b, {}).hits.filter((h) => h.fit >= 70).length;
           if (!found) empty.push(`${e} as ${b?.state ?? "no agency"}`);
         }

@@ -21,7 +21,7 @@
   "suppliers_merged_by_review": 7,
   "contracts_categorized": 18460,
   "products_renamed_by_review": 223,
-  "products_coded_by_review": 7303,
+  "products_coded_by_review": 14412,
   "canon_rows_added": 109,
   "price_file_rows": 12263,
   "price_file_offerings": 12181,
@@ -332,7 +332,7 @@
    "with_end": 1099,
    "expired": 0,
    "with_states": 0,
-   "offerings": 565
+   "offerings": 694
   },
   {
    "coop": "TIPS",
@@ -354,7 +354,7 @@
    "with_end": 695,
    "expired": 0,
    "with_states": 0,
-   "offerings": 882
+   "offerings": 1484
   },
   {
    "coop": "BuyBoard",
@@ -453,7 +453,7 @@
    "with_end": 519,
    "expired": 9,
    "with_states": 468,
-   "offerings": 326
+   "offerings": 324
   },
   {
    "coop": "GSA MAS",
@@ -475,7 +475,7 @@
    "with_end": 1437,
    "expired": 0,
    "with_states": 1437,
-   "offerings": 2173
+   "offerings": 2139
   },
   {
    "coop": "Hawaii SPO",
@@ -486,7 +486,7 @@
    "with_end": 249,
    "expired": 0,
    "with_states": 259,
-   "offerings": 933
+   "offerings": 942
   },
   {
    "coop": "Arkansas OSP",
@@ -508,7 +508,7 @@
    "with_end": 1411,
    "expired": 0,
    "with_states": 1411,
-   "offerings": 1216
+   "offerings": 1713
   },
   {
    "coop": "NY Preferred Source",
@@ -553,7 +553,7 @@
   "coop_contracts": 19457,
   "state_uncoded": 2085,
   "classes_used": 180,
-  "priced_offerings_coded": 773,
+  "priced_offerings_coded": 765,
   "top_classes": [
    [
     "920",
@@ -836,7 +836,7 @@
   "nigp_codes": 520,
   "nigp_classes": 150,
   "suppliers_shared_with_coops": 307,
-  "offerings": 2173,
+  "offerings": 2139,
   "products_on_two_or_more_contracts": 37
  },
  "stash": {
@@ -845,8 +845,8 @@
    "offerings": 69528,
    "priced_offerings": 32117
   },
-  "products": 53193,
-  "offerings": 61811,
+  "products": 52005,
+  "offerings": 60610,
   "by_reason": {
    "peppm": {
     "products": 21413,
@@ -861,28 +861,28 @@
     "offerings": 667
    },
    "burke_parts": {
-    "products": 10083,
-    "offerings": 10083
+    "products": 8900,
+    "offerings": 8900
    },
    "crash_parts": {
-    "products": 2724,
-    "offerings": 3036
+    "products": 192,
+    "offerings": 195
    },
    "canon_extras": {
-    "products": 3022,
-    "offerings": 3028
+    "products": 2299,
+    "offerings": 2304
    },
    "rates": {
-    "products": 4042,
-    "offerings": 7159
+    "products": 3524,
+    "offerings": 6490
    },
    "reviewed_parts": {
-    "products": 1406,
-    "offerings": 1464
+    "products": 4526,
+    "offerings": 4881
    },
    "reviewed_services": {
-    "products": 361,
-    "offerings": 472
+    "products": 1009,
+    "offerings": 1271
    }
   },
   "by_program": {
@@ -895,36 +895,36 @@
     "stashed": 21413
    },
    "Sourcewell": {
-    "kept": 565,
-    "stashed": 3030
+    "kept": 693,
+    "stashed": 2902
    },
    "NJSTART": {
-    "kept": 2097,
-    "stashed": 3200
+    "kept": 2063,
+    "stashed": 3234
    },
    "Hawaii SPO": {
-    "kept": 757,
-    "stashed": 699
+    "kept": 766,
+    "stashed": 690
    },
    "Arkansas OSP": {
     "kept": 85,
     "stashed": 0
    },
    "NYS OGS": {
-    "kept": 206,
-    "stashed": 3496
+    "kept": 691,
+    "stashed": 3011
    },
    "NY Preferred Source": {
     "kept": 946,
     "stashed": 728
    },
    "OMNIA Partners": {
-    "kept": 882,
-    "stashed": 10574
+    "kept": 1484,
+    "stashed": 9972
    },
    "NASPO ValuePoint": {
-    "kept": 326,
-    "stashed": 29
+    "kept": 324,
+    "stashed": 31
    },
    "BuyBoard": {
     "kept": 138,
@@ -948,13 +948,13 @@
   }
  },
  "products": {
-  "products": 6169,
-  "offerings": 7717,
+  "products": 7357,
+  "offerings": 8918,
   "by_status": {
-   "published_price": 7717
+   "published_price": 8918
   },
   "by_status_coops": {
-   "published_price": 2143
+   "published_price": 2872
   },
   "priced_suppliers": [
    "Canon USA",
@@ -966,7 +966,6 @@
    "Foods Galore Inc",
    "Robbins Sales Company Inc.",
    "Wise Star Commodities LLC",
-   "Acecomm",
    "Permedion Inc.",
    "Advanced Commodities Inc",
    "The Wyman Center, Inc.",
@@ -1006,7 +1005,6 @@
    "JESCO Inc",
    "Carman Dodge Inc",
    "Paramus Ford Inc.",
-   "Valk Manufacturing Company",
    "Avery Dennison",
    "3M Company",
    "Jamac Frozen Food Corp",
@@ -1051,7 +1049,6 @@
    "Esquire Graphics",
    "National Food Trading Corp",
    "L D Kallman Inc",
-   "HHAeXchange",
    "Cream O Land Dairies LLC",
    "Hy-Point Dairy",
    "Bind rite robbinsville",
@@ -1093,7 +1090,6 @@
    "Daxwell",
    "Asphalt Paving Systems LLC",
    "Jet Vac Equipment",
-   "Jersey Environmental Solutions LLC",
    "Environmental Professionals Associate",
    "Phamatech Inc.",
    "Oahu Plastic Bags, Inc. dba HI-V Plastic Bag Manufacturing",
@@ -1125,6 +1121,12 @@
    "Mark McLarty Ford",
    "Red River Ford",
    "Superior Auto Mall",
+   "Actus Manufacturing Inc Dba Addco Acquisition LLC",
+   "Eberl Iron Works, Inc.",
+   "Elderlee Inc",
+   "Systems Roadways Inc",
+   "TrafFix Devices",
+   "Work Zone Equipment Ny Inc",
    "Matthews Bus Alliance Inc",
    "Fenton Mobility Products Inc",
    "Coach and Equipment Bus Sales, Inc.",
@@ -1212,7 +1214,7 @@
    "CNH Industrial America, LLC, dba New Holland Agriculture",
    "Smitty's Vending, Inc."
   ],
-  "multi_route": 299
+  "multi_route": 302
  },
  "documents": {
   "total": 35321,

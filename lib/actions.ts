@@ -246,6 +246,17 @@ export function confirmItems(args: { requestId: string; listingId: string | null
   return request;
 }
 
+/** The front door's handoff: confirm a product the buyer picked on the homepage when the results for the new request
+ * offer it, so the page opens on the buying plan. Null, not an error, when they don't: the page opens on the confirm step. */
+export function confirmPick(args: { requestId: string; listingId: string; quantity: number }) {
+  try {
+    return confirmItems({ requestId: args.requestId, listingId: args.listingId, quantity: args.quantity });
+  } catch (e) {
+    if (e instanceof ActionError) return null;
+    throw e;
+  }
+}
+
 /** Reopen the confirm step. */
 export function editItems(requestId: string) {
   const db = getDb();
@@ -336,17 +347,34 @@ function cleanFilters(input: unknown): DiveFilter[] {
   return out.filter((f, i) => !["price", "maker", "usable", "priced"].includes(f.kind) || lastOf(f.kind) === i);
 }
 
+/** What the front door needs beside the shortlist to show how a purchase would be bought: the agency's quick-buy
+ * limit and, for the buyer's state, the research finding on quotes and formal bids with its source. */
+function buyingContext(db: ReturnType<typeof getDb>, need: string) {
+  const buyer = db.session.buyer;
+  const rule = stateRuleFor(buyer, need);
+  return {
+    limit: db.agency.quick_buy_threshold,
+    // The limit Loci holds is the home agency's; for anyone else it stands in as a typical one.
+    limit_is_theirs: Boolean(buyer && buyer.name === db.agency.name),
+    rule: rule ? { state: rule.code, quotes: rule.quotes, formal_bid: rule.formal_bid, source: rule.threshold_source, researched: rule.researched } : null,
+  };
+}
+
 /** One turn of the product dive. `need` starts a dive from the buyer's own words; `message` narrows an open one. Read-only. */
 export async function dive(args: { need?: string; query?: string; filters?: unknown; message?: string }) {
   const db = getDb();
   let query = String(args.query ?? "").trim();
   let filters = cleanFilters(args.filters);
   let said = "";
+  // Read from the buyer's words when a dive starts: how many, and whether they said so ("a police SUV" counts as one).
+  let quantity: { value: number; stated: boolean } | null = null;
   if (!query) {
     const need = String(args.need ?? "").trim().slice(0, 300);
     if (!need) fail("Tell me what you're looking for.");
     // The same reader as search: the thing being bought, without the quantity or the purpose.
-    query = (await parseRequest(need, db)).parsed.item || need;
+    const parsed = (await parseRequest(need, db)).parsed;
+    query = parsed.item || need;
+    quantity = { value: parsed.quantity, stated: parsed.quantity > 1 || /^\s*(?:(?:i|we)\s+need\s+)?(?:a|an|one|1)\b/i.test(need) };
     const first = diveSearch(db, query, []);
     filters = cleanFilters(offlineDiveFilters(need, first).filter((f) => f.kind === "price"));
   }
@@ -357,7 +385,7 @@ export async function dive(args: { need?: string; query?: string; filters?: unkn
     said = read.reply || (read.filters.length ? "" : "Nothing on the shortlist can be narrowed by that. Try one of the questions, or a word from a product's name.");
     filters = cleanFilters([...filters, ...read.filters]);
   }
-  return { state: diveSearch(db, query, filters), said };
+  return { state: diveSearch(db, query, filters), said, quantity, context: buyingContext(db, String(args.need ?? query)) };
 }
 
 /** Two or three finalists side by side, with the rule-based read and, when available, the shopper's wording of it. */

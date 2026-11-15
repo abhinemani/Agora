@@ -4,7 +4,7 @@ Where Loci stands as of November 14, 2026, what's waiting, and what was decided 
 
 ## What's live
 
-Everything below is merged to `main` and deployed on Railway. Each batch passed typecheck, build and the rehearsal (16 steps since the results-page rebuild).
+Everything below is merged to `main` and deployed on Railway. Each batch passed typecheck, build and the rehearsal (17 steps since the front door).
 
 **The co-op directory.** It holds 121,810 governments, one record each. 60,227 are on at least one co-op roster, and 45,574 are tied to a permanent federal ID (Census, NCES district or IPEDS college). The rosters come from Sourcewell, HGACBuy, E&I, COSTARS, BuyBoard (Texas and National), Mohave, Choice Partners and 1GPA (an August 2023 snapshot). County offices point to their county.
 
@@ -63,6 +63,8 @@ Everything below is merged to `main` and deployed on Railway. Each batch passed 
 **The results page, rebuilt.** A results page now reads as a record: the request as labelled fields, one recommended route with its price, eligibility, requirement and lead time, every priced option in one table, and the other sources folded to a row each. A close match skips the item confirmation; a weak one still asks first. With no agency selected, state contracts no longer lead. The page's copy is formal, with no "your shopper". The laptop search went from about six screens to three on a desktop. In the same batch: Find a product drops products that contradict the request, Ask a contract offers price questions for price files, the memo is signed with the account's name, contract uploads are read in the background, an account can be deleted, the rehearsal covers the three shopper tools (steps 14 to 16), and `npm run smoke` checks the live site without changing it.
 
 Two things in that batch were left as they are, on purpose. The route's summary is still worded by the same prompt and rules, so with a key it can read more conversationally than the page around it; changing the prompt needs an eval run with a key. And "Shopper" remains the name of the header item and its three tools.
+
+**The front door: the home page asks before it answers.** A product request no longer jumps from the search box to one guessed item. The home page opens the product dive in place: who is buying, how many (read from the request when it says), then the dive's questions, with each card's total and route against the quick-buy limit. A **None of these fit?** panel recommends a quote under a contract, informal quotes or a solicitation from the estimated total, and quotes the state's rules with their sources. Picking a product opens its route in place. Loci's own listings go on to the plan already confirmed. Software, services and construction requests, and requests with no product in the catalog, still go straight to results. The address keeps the shortlist. The rehearsal's homepage searches click **See full results**, and step 17 walks the new flow. The design proposal with mockups was published as an artifact in the build session. Left open: the agency question comes first whenever no agency is set; `/dive` stays as **Find a product**; and contract-shaped requests (Fig. 4 of the proposal) need their own shortlist of contracts and questions before they can be narrowed here.
 
 **Accounts, saved data and email** (PRs #22, #23 and #26). Each visitor's agency lives in their own browser. People can create an account with an email and password. Search and the shopper's tools are open to everyone; anything that keeps a record needs an account. State is saved to a Postgres database on Railway, so a redeploy no longer loses it. Loci sends confirmation links, password-reset links and approval notices through Resend from `agora.ethoslabs.us`. Real delivery was not tested in the build session, which had no Resend key.
 
@@ -125,6 +127,8 @@ The product dive narrows by words in product names, so its questions are sometim
 - **Bundles**: a playground or a fleet order is many parts. Let the dive assemble a set and price the whole thing, which is where the quick-buy meter and the quote check meet.
 
 Worth doing after item 2, since attributes only matter for products that have a price.
+
+The front door made one weakness of the dive's matching plain. Fit scores saturate at 100 when a single word matches, so "a swing set" pulls in swing hangers, a solar lamp and an NJSTART forklift named "Swing, Pivot Mast" ($82,084), all scored 100. Once an agency is set, ranking puts anything usable and priced ahead of a better match, so the forklift can lead. The way-out estimate now uses the middle 80% of prices to blunt this. The real fix is in matching: weigh how much of the request a name covers, and use the attributes above.
 
 ## Smaller things worth doing
 

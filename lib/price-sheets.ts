@@ -208,10 +208,10 @@ async function schema(): Promise<boolean> {
   return true;
 }
 
-/** Start the price-sheet reading if AGORA_PRICE_SHEETS asks for it ("sample", "all" or a number of sheets). */
+/** Start the price-sheet reading if AGORA_PRICE_SHEETS asks for it ("sample", "all", "restore" or a number of sheets). */
 export function startPriceSheets(): void {
   const mode = process.env.AGORA_PRICE_SHEETS ?? "";
-  if (!(["sample", "all"].includes(mode) || /^\d+$/.test(mode)) || state.phase !== "off" || !pool()) return;
+  if (!(["sample", "all", "restore"].includes(mode) || /^\d+$/.test(mode)) || state.phase !== "off" || !pool()) return;
   state.mode = mode;
   state.phase = "waiting";
   setTimeout(() => {
@@ -223,11 +223,14 @@ export function startPriceSheets(): void {
   }, 120_000);
 }
 
-interface Sheet { url: string; contract_id: string; program: string; label: string; links: number; via: string; read_by: string | null; filename: string | null }
+interface Sheet { url: string; contract_id: string; program: string; label: string; links: number; via: string; read_by: string | null; filename: string | null; before_last?: boolean }
 
 /** The run itself (startPriceSheets calls it after a pause; exported for tests). */
-/** "sample", "all", or a number of sheets not yet read ("500"), after which the run stops. */
-type Mode = "sample" | "all" | `${number}`;
+/** "sample", "all", a number of sheets not yet read ("500"), after which the run stops, or "restore": the unread
+ * sheets that come before the last sheet read in the reading order (md5 of the URL). Every run takes sheets in that
+ * order, so those are sheets whose rows were cleared and never read again (on November 15 a re-read was stopped after
+ * it had cleared 159 sheets). */
+type Mode = "sample" | "all" | "restore" | `${number}`;
 export async function runPriceSheets(mode: Mode): Promise<void> {
   if (!modelOn()) {
     state.phase = "off";
@@ -239,7 +242,8 @@ export async function runPriceSheets(mode: Mode): Promise<void> {
   // Every stored document labelled as prices on these programs' contracts, not yet read.
   const found = (
     await p.query<Sheet>(
-      `select u.url, min(l.contract_id) contract_id, min(l.program) program, min(l.label) label, count(distinct l.contract_id)::int links, u.via, u.read_by, u.filename
+      `select u.url, min(l.contract_id) contract_id, min(l.program) program, min(l.label) label, count(distinct l.contract_id)::int links, u.via, u.read_by, u.filename,
+         md5(u.url) <= (select max(md5(r.url)) from doc_price_reads r) as before_last
        from doc_urls u join doc_links l on l.url = u.url
        where u.status = 'text' and l.program = any($1)
          and not exists (select 1 from doc_price_reads r where r.url = u.url)
@@ -250,7 +254,8 @@ export async function runPriceSheets(mode: Mode): Promise<void> {
   ).rows;
   const fresh = found.filter((s) => isPriceSheet(s.label));
   // Sheets read before list prices were kept, whose list prices were dropped: read again, ahead of the rest and not
-  // counted against a number of sheets. Clearing their records puts them back among the unread.
+  // counted against a number of sheets. Each one's old rows are cleared just before it is read (readOne), so a run
+  // stopped part way loses nothing.
   const LIST_DROPPED = "a list price, not what a buyer pays";
   const again = (await p.query<{ url: string }>(`select url from doc_price_reads where dropped ? $1`, [LIST_DROPPED])).rows.map((r) => r.url);
   let reread: Sheet[] = [];
@@ -262,13 +267,11 @@ export async function runPriceSheets(mode: Mode): Promise<void> {
         [again],
       )
     ).rows;
-    await p.query(`delete from doc_prices where url = any($1)`, [again]);
-    await p.query(`delete from doc_price_reads where url = any($1)`, [again]);
     console.log(`[prices] reading ${reread.length} sheets again for their list prices`);
   }
   const all = fresh;
   const sheets =
-    [...reread, ...(mode === "sample" ? [...all.filter((s) => s.program === "NJSTART").slice(0, 25), ...all.filter((s) => s.program === "OregonBuys").slice(0, 15)] : mode === "all" ? all : all.slice(0, Number(mode)))];
+    [...reread, ...(mode === "restore" ? all.filter((s) => s.before_last) : mode === "sample" ? [...all.filter((s) => s.program === "NJSTART").slice(0, 25), ...all.filter((s) => s.program === "OregonBuys").slice(0, 15)] : mode === "all" ? all : all.slice(0, Number(mode)))];
   state.planned = sheets.length;
   state.phase = "reading";
   console.log(`[prices] reading ${sheets.length} price sheets (${mode})`);
@@ -277,7 +280,7 @@ export async function runPriceSheets(mode: Mode): Promise<void> {
     while (next < sheets.length) {
       const s = sheets[next++];
       for (let i = 0; i < 40 && process.memoryUsage().heapUsed / 1048576 > 2500; i++) await new Promise((r) => setTimeout(r, 15_000));
-      await readOne(s, mode === "sample" && !reread.includes(s)).catch((e) => {
+      await readOne(s, mode === "sample" && !reread.includes(s), reread.includes(s)).catch((e) => {
         state.last_error = (e as Error).message;
       });
       state.done++;
@@ -288,8 +291,10 @@ export async function runPriceSheets(mode: Mode): Promise<void> {
   console.log(`[prices] done: ${state.rows} rows from ${state.done} sheets`);
 }
 
-async function readOne(s: Sheet, sample: boolean): Promise<void> {
+async function readOne(s: Sheet, sample: boolean, again = false): Promise<void> {
   const p = pool()!;
+  // A sheet read again: its old rows go just before it is read, so the new reading replaces them.
+  if (again) await p.query(`delete from doc_prices where url = $1`, [s.url]);
   const record = (fields: { rows?: number; proposed?: number; dropped?: Record<string, number>; error?: string }) =>
     p.query(
       `insert into doc_price_reads (url, contract_id, program, label, sample, rows, proposed, dropped, error) values ($1, $2, $3, $4, $5, $6, $7, $8, $9)

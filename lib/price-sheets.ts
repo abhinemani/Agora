@@ -9,7 +9,7 @@
 // linked to more than one contract is passed over, since its rows can't be pinned to one supplier.
 //
 // It runs on the server when AGORA_PRICE_SHEETS is set: "sample" reads 25 NJSTART and 15 OregonBuys sheets and reports
-// the yield; "all" reads every one not read yet. Rows go to the doc_prices table, /api/docs/status reports progress
+// the yield; "all" reads every one not read yet; a number ("500") reads that many not read yet, then stops. Rows go to the doc_prices table, /api/docs/status reports progress
 // under price_sheets, and /api/docs/prices exports the rows for npm run import:doc-prices. Server-only.
 
 import * as z from "zod/v4";
@@ -208,14 +208,14 @@ async function schema(): Promise<boolean> {
   return true;
 }
 
-/** Start the price-sheet reading if AGORA_PRICE_SHEETS asks for it ("sample" or "all"). */
+/** Start the price-sheet reading if AGORA_PRICE_SHEETS asks for it ("sample", "all" or a number of sheets). */
 export function startPriceSheets(): void {
   const mode = process.env.AGORA_PRICE_SHEETS ?? "";
-  if (!["sample", "all"].includes(mode) || state.phase !== "off" || !pool()) return;
+  if (!(["sample", "all"].includes(mode) || /^\d+$/.test(mode)) || state.phase !== "off" || !pool()) return;
   state.mode = mode;
   state.phase = "waiting";
   setTimeout(() => {
-    runPriceSheets(mode as "sample" | "all").catch((e) => {
+    runPriceSheets(mode as Mode).catch((e) => {
       state.phase = "stopped";
       state.last_error = (e as Error).message;
       console.error("[prices] stopped:", (e as Error).message);
@@ -226,7 +226,9 @@ export function startPriceSheets(): void {
 interface Sheet { url: string; contract_id: string; program: string; label: string; links: number; via: string; read_by: string | null; filename: string | null }
 
 /** The run itself (startPriceSheets calls it after a pause; exported for tests). */
-export async function runPriceSheets(mode: "sample" | "all"): Promise<void> {
+/** "sample", "all", or a number of sheets not yet read ("500"), after which the run stops. */
+type Mode = "sample" | "all" | `${number}`;
+export async function runPriceSheets(mode: Mode): Promise<void> {
   if (!modelOn()) {
     state.phase = "off";
     state.last_error = "no API key";
@@ -247,7 +249,8 @@ export async function runPriceSheets(mode: "sample" | "all"): Promise<void> {
     )
   ).rows;
   const all = found.filter((s) => isPriceSheet(s.label));
-  const sheets = mode === "sample" ? [...all.filter((s) => s.program === "NJSTART").slice(0, 25), ...all.filter((s) => s.program === "OregonBuys").slice(0, 15)] : all;
+  const sheets =
+    mode === "sample" ? [...all.filter((s) => s.program === "NJSTART").slice(0, 25), ...all.filter((s) => s.program === "OregonBuys").slice(0, 15)] : mode === "all" ? all : all.slice(0, Number(mode));
   state.planned = sheets.length;
   state.phase = "reading";
   console.log(`[prices] reading ${sheets.length} price sheets (${mode})`);

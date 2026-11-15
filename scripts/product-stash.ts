@@ -61,6 +61,9 @@ export function stashReason(o: StashOffering, p: StashProduct, contractTitle: st
   if (o.coop === "HGACBuy") return "hgacbuy";
   if (o.price == null && o.list == null) return "no_price";
   if (SERVICE_AWARD.test(contractTitle) || RATE_UNIT.test(o.unit ?? "")) return "rates";
+  // Canon's own price-file sections say what a line is: software, services and maintenance plans are not products a
+  // buyer searches for here, whatever role a reviewer gave them (reviewers split on licences: item or accessory).
+  if (o.coop === "Sourcewell" && /canon/i.test(p.maker ?? "") && /^(Software|Services|Maintenance|Speed License)\b/.test(o.category ?? "")) return "canon_extras";
   if (p.role === "item" || p.role === "consumable") return null;
   if (p.role === "part" || p.role === "accessory") return "reviewed_parts";
   if (p.role === "rate" || p.role === "service") return "reviewed_services";

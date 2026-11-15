@@ -1,21 +1,21 @@
-/** Shared pieces of Agora's blueprint system: the mark, the best-fit badge, a corner-tick
+/** Shared pieces of Loci's blueprint system: the mark, the best-fit badge, a corner-tick
  * frame, and the mono annotation label. Colors come from theme tokens, so dark mode works. */
 
-/** Agora's mark: two sets of corner ticks closing in on one solid square. Every contract
+/** Loci's mark: two sets of corner ticks closing in on one solid square. Every contract
  * on the outside, the one that fits in the middle. `working` animates the inner ticks
- * closing in, the one motion Agora uses while it searches. */
+ * closing in, the one motion Loci uses while it searches. */
 export function Mark({ className = "h-9 w-9", working = false, onDark = false }: { className?: string; working?: boolean; onDark?: boolean }) {
   return (
     <svg viewBox="0 0 32 32" className={`shrink-0 ${className}`} aria-hidden>
-      <path d="M2.5 9V2.5H9M23 2.5H29.5V9M29.5 23V29.5H23M9 29.5H2.5V23" fill="none" className={onDark ? "stroke-[rgba(255,255,255,0.35)]" : "stroke-primary-light/60"} strokeWidth="1.6" strokeLinecap="square" />
+      <path d="M2.5 9V2.5H9M23 2.5H29.5V9M29.5 23V29.5H23M9 29.5H2.5V23" fill="none" className={onDark ? "stroke-[rgba(255,255,255,0.35)]" : "stroke-[var(--mark-outer)]"} strokeWidth="1.6" strokeLinecap="square" />
       <path
         d="M8 13V8H13M19 8H24V13M24 19V24H19M13 24H8V19"
         fill="none"
-        className={`${onDark ? "stroke-[#9DC2E8]" : "stroke-primary-light"} ${working ? "mark-closing" : ""}`}
+        className={`${onDark ? "stroke-[#9DC2E8]" : "stroke-[var(--mark-inner)]"} ${working ? "mark-closing" : ""}`}
         strokeWidth="2"
         strokeLinecap="square"
       />
-      <rect x="13" y="13" width="6" height="6" className={onDark ? "fill-[#fff]" : "fill-primary-darker"} />
+      <rect x="13" y="13" width="6" height="6" className={onDark ? "fill-[#fff]" : "fill-[var(--mark-core)]"} />
     </svg>
   );
 }

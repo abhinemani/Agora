@@ -215,7 +215,7 @@ export default function Dive() {
               </button>
             )}
             <p className="mt-1 text-ui-3xs leading-relaxed text-base-dark">
-              Products, prices and who can buy them come from Agora's catalog and contract records. {llm ? "Your shopper reads what you type and words the comparison." : "The AI connection is off, so typed messages are read by simple rules: a budget, or a word from a product's name."}
+              Products, prices and who can buy them come from Loci's catalog and contract records. {llm ? "Your shopper reads what you type and words the comparison." : "The AI connection is off, so typed messages are read by simple rules: a budget, or a word from a product's name."}
             </p>
           </div>
         </section>
@@ -343,7 +343,7 @@ export default function Dive() {
                           [
                             ["Price", (i: DiveItem) => (i.price != null ? usd(i.price) : i.list != null ? `List ${usd(i.list)}` : "Not loaded")],
                             ["What it is", (i: DiveItem) => i.price_note],
-                            ["Price source", (i: DiveItem) => i.vintage ?? "Listing in Agora"],
+                            ["Price source", (i: DiveItem) => i.vintage ?? "Listing in Loci"],
                             ["Supplier", (i: DiveItem) => i.supplier],
                             ["Contract", (i: DiveItem) => `${i.program} ${i.contract_number ?? ""}`],
                             ["Can you buy it", (i: DiveItem) => i.access],

@@ -59,7 +59,7 @@ export function StateRuleNote({ rule }: { rule: BuyerStateRule }) {
         </dd>
       </dl>
       <p className="mt-1.5 text-[11px] text-slate">
-        From Agora's 50-state research of {new Date(rule.researched + "T12:00:00").toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" })}. Not legal advice; confirm flagged items against the code.{" "}
+        From Loci's 50-state research of {new Date(rule.researched + "T12:00:00").toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" })}. Not legal advice; confirm flagged items against the code.{" "}
         <Link href={`/data#state-${rule.code}`} className="font-semibold text-navy underline">
           Sources for {rule.state}
         </Link>

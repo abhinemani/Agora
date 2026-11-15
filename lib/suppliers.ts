@@ -6,7 +6,7 @@ import { normalizeDomain } from "./coops";
 import type { Buyer, Category, Db, Listing, Supplier, SupplierPlan } from "./types";
 
 export const PLANS: Record<SupplierPlan, { name: string; price: number; includes: string[] }> = {
-  basic: { name: "Basic storefront", price: 0, includes: ["Your contracts and products, as Agora found them", "Agency reviews"] },
+  basic: { name: "Basic storefront", price: 0, includes: ["Your contracts and products, as Loci found them", "Agency reviews"] },
   profile: { name: "Profile", price: 500, includes: ["Everything in Basic", "Your own tagline and description", "Targeted sponsored placements"] },
   profile_catalog: { name: "Profile with catalog", price: 1500, includes: ["Everything in Profile", "Publish your own catalog or price list", "Featured product lines on your storefront"] },
 };

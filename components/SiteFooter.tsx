@@ -22,7 +22,7 @@ export function SiteFooter() {
           <div className="col-span-2 flex items-center gap-3 border-b border-base-light p-4 sm:col-span-1 sm:border-b-0">
             <Mark className="h-8 w-8" />
             <div className="min-w-0">
-              <div className="text-ui-sm font-bold leading-tight text-ink">Agora</div>
+              <div className="font-logo text-[1.15rem] font-semibold leading-tight tracking-[-0.015em] text-ink">Loci</div>
               <div className="font-mono text-[11px] uppercase tracking-[0.14em] text-base-dark">Sheet A-01 · Cooperative purchasing concept</div>
             </div>
           </div>

@@ -145,7 +145,7 @@ export function DataLookup() {
                   ))}
                 </ul>
               ) : (
-                <p className="mt-2 text-ui-xs text-base-darker">None found on the rosters Agora holds, so every co-op shows under &quot;Co-ops you could join.&quot;</p>
+                <p className="mt-2 text-ui-xs text-base-darker">None found on the rosters Loci holds, so every co-op shows under &quot;Co-ops you could join.&quot;</p>
               )}
             </div>
             <div className="space-y-4">

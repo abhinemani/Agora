@@ -84,7 +84,7 @@ export async function writeVerdict(need: string, items: DiveItem[], verdict: Div
     task: "dive_verdict",
     about: `${need}: ${items.map((i) => i.name).join(" / ")}`,
     system:
-      `You are "your personal shopper" in Agora, a procurement marketplace for local governments. A government employee is comparing products. Work only from the FACTS.\n` +
+      `You are "your personal shopper" in Loci, a procurement marketplace for local governments. A government employee is comparing products. Work only from the FACTS.\n` +
       `- Never recommend a product the agency can't buy today over one it can, and never decide eligibility yourself: it is in the facts.\n` +
       `- Never state a price that isn't in the facts and never do arithmetic to make a new one. A list price is not what the agency pays; say so if you mention one.\n` +
       `- When the prices are different kinds (awarded bid, net price, list price), say they can't be compared directly.\n` +

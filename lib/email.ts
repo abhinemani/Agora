@@ -2,7 +2,7 @@
 // the app carries on: accounts still work, and people simply don't get the
 // confirmation, reset or approval messages. Server-only.
 
-const FROM = () => process.env.EMAIL_FROM || "Agora <no-reply@agora.ethoslabs.us>";
+const FROM = () => process.env.EMAIL_FROM || "Loci <no-reply@agora.ethoslabs.us>";
 
 export const canSendEmail = () => Boolean(process.env.RESEND_API_KEY);
 
@@ -34,7 +34,7 @@ function html(e: Email) {
     ? `<p style="margin:22px 0"><a href="${esc(e.action.url)}" style="display:inline-block;background:#005ea2;color:#ffffff;font:bold 15px Arial,sans-serif;text-decoration:none;padding:12px 20px;border-radius:4px">${esc(e.action.label)}</a></p>` +
       `<p style="margin:0 0 14px;font:13px/1.5 Arial,sans-serif;color:#565c65">Or paste this link into your browser:<br>${esc(e.action.url)}</p>`
     : "";
-  return `<div style="max-width:560px;margin:0 auto;padding:24px"><div style="border-top:4px solid #73b3e7;padding-top:20px"><p style="margin:0 0 18px;font:bold 20px Arial,sans-serif;color:#162e51">Agora</p>${p}${button}<p style="margin:24px 0 0;font:12px/1.5 Arial,sans-serif;color:#565c65">You're getting this because of an account at agora.ethoslabs.us. If that wasn't you, you can ignore this message.</p></div></div>`;
+  return `<div style="max-width:560px;margin:0 auto;padding:24px"><div style="border-top:4px solid #73b3e7;padding-top:20px"><p style="margin:0 0 18px;font:bold 20px Arial,sans-serif;color:#162e51">Loci</p>${p}${button}<p style="margin:24px 0 0;font:12px/1.5 Arial,sans-serif;color:#565c65">You're getting this because of an account at agora.ethoslabs.us. If that wasn't you, you can ignore this message.</p></div></div>`;
 }
 
 /** Send one message. Never throws: a failure is logged and reported as false. */

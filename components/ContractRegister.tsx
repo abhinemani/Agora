@@ -53,7 +53,7 @@ export function ContractRegister() {
         <div className="max-w-xl">
           <div className="text-base font-semibold text-navy">{buyer.name}'s contracts</div>
           <p className="mt-1 text-sm text-slate">
-            Upload your contract register as a CSV or XLSX, one contract per row. Agora reads the title, vendor, number, category, dates, not-to-exceed amount and link. These
+            Upload your contract register as a CSV or XLSX, one contract per row. Loci reads the title, vendor, number, category, dates, not-to-exceed amount and link. These
             contracts are visible only to {buyer.name}.
           </p>
         </div>

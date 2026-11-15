@@ -41,7 +41,7 @@ function Browse() {
 
   return (
     <div>
-      <PageTitle eyebrow="Browse by category" title="Everything in Agora">
+      <PageTitle eyebrow="Browse by category" title="Everything in Loci">
         Asking is usually faster, but here's the full shelf, labeled by source.
       </PageTitle>
       <div className="grid gap-6 md:grid-cols-4">

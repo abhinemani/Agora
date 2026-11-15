@@ -55,10 +55,10 @@ export function AuthDialog() {
       const json = await res.json();
       if (!res.ok) throw new Error(json.error ?? "Something went wrong");
       if (mode === "forgot") {
-        setNotice({ text: `If there's an Agora account for ${form.email}, we've sent it a link to choose a new password. The link lasts one hour.`, signedIn: false });
+        setNotice({ text: `If there's a Loci account for ${form.email}, we've sent it a link to choose a new password. The link lasts one hour.`, signedIn: false });
         return;
       }
-      // Open on the side of Agora the person signed up for.
+      // Open on the side of Loci the person signed up for.
       if (mode === "signup") {
         setRole(json.result.user.role);
         if (json.result.emailed) {
@@ -80,7 +80,7 @@ export function AuthDialog() {
         <div className="flex items-center gap-3 bg-[#0F3D73] px-5 py-4">
           <Mark className="h-8 w-8" onDark working={busy} />
           <h2 id="auth-title" className="font-heading text-lg font-bold text-white">
-            {notice ? "Check your email" : mode === "signin" ? "Sign in to Agora" : mode === "signup" ? "Create your Agora account" : "Reset your password"}
+            {notice ? "Check your email" : mode === "signin" ? "Sign in to Loci" : mode === "signup" ? "Create your Loci account" : "Reset your password"}
           </h2>
         </div>
         {notice && (
@@ -154,7 +154,7 @@ export function AuthDialog() {
             )}
           </div>
           <p className="border-t border-base-lighter pt-3 text-sm text-ink">
-            {mode === "signin" ? "New to Agora?" : "Already have an account?"}{" "}
+            {mode === "signin" ? "New to Loci?" : "Already have an account?"}{" "}
             <button type="button" onClick={() => (setMode(mode === "signin" ? "signup" : "signin"), setError(null))} className="font-bold text-primary hover:text-primary-dark">
               {mode === "signin" ? "Create a free account" : "Sign in"}
             </button>
@@ -165,7 +165,7 @@ export function AuthDialog() {
   );
 }
 
-/** Parts of Agora that keep records for a person or an agency, so they need an account. Everything else is open. */
+/** Parts of Loci that keep records for a person or an agency, so they need an account. Everything else is open. */
 const ACCOUNT_PATHS: [RegExp, string][] = [
   [/^\/cart/, "use the cart"],
   [/^\/checkout/, "check out"],
@@ -188,7 +188,7 @@ export function AccountGate({ children }: { children: React.ReactNode }) {
     <div className="mx-auto max-w-xl border border-primary-darker bg-white">
       <div className="flex items-center gap-3 bg-[#0F3D73] px-5 py-4">
         <Mark className="h-8 w-8" onDark />
-        <h1 className="font-heading text-lg font-bold text-white">This part of Agora needs an account</h1>
+        <h1 className="font-heading text-lg font-bold text-white">This part of Loci needs an account</h1>
       </div>
       <div className="space-y-3 px-5 py-5">
         <p className="text-sm text-ink">Sign in or create a free account to {need[1]}. It keeps your carts, orders and paperwork with you and your agency.</p>

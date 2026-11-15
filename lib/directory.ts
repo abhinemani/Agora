@@ -1,4 +1,4 @@
-// Agora's co-op directory: every government the Census of Governments, NCES and
+// Loci's co-op directory: every government the Census of Governments, NCES and
 // IPEDS list, plus every one the public co-op rosters, agency procurement pages,
 // documented purchases, Texas DIR and the .gov registry name, one record each.
 // Records carry permanent federal IDs where one matched. Built by scripts/import-coop-data.ts into

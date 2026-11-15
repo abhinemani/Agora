@@ -128,7 +128,7 @@ export function defaultSelection(results: Results, request: Request): ShopperSel
   return { listing_id: shopperCandidates(results)[0]?.listing.id ?? null, quantity: request.parsed.quantity, add_ons: [] };
 }
 
-/** The plan for one order. `agencyName` is the agency whose quick-buy limit Agora holds. */
+/** The plan for one order. `agencyName` is the agency whose quick-buy limit Loci holds. */
 export function buildPlan(args: { results: Results; listings: Listing[]; limit: number; agencyName: string; selection: ShopperSelection }): Plan {
   const { results, listings, limit, selection } = args;
   const refs = shopperRefs(results);
@@ -190,7 +190,7 @@ export function buildPlan(args: { results: Results; listings: Listing[]; limit: 
     summary = `${possessive(supplier!)} price isn't on a contract, and **${usd(total!)}** is over ${limit_phrase}. An order this size needs a contract or a solicitation.`;
   } else if (payment === "coop_site") {
     headline = `Published price, ordered on ${chosen!.link_out!.coop}'s site.`;
-    summary = `${supplier} lists this at a published price: **${usd(total!)} in all**. The contract belongs to ${chosen!.link_out!.coop}, so the order is placed on its contract page, not in Agora.`;
+    summary = `${supplier} lists this at a published price: **${usd(total!)} in all**. The contract belongs to ${chosen!.link_out!.coop}, so the order is placed on its contract page, not in Loci.`;
   } else if (members.length) {
     headline = "This one starts with a quote.";
     const kindWord = members.every((h) => h.program === "state") ? "state contract" : members.some((h) => h.program === "state") ? "contract" : "co-op contract";
@@ -215,7 +215,7 @@ export function buildPlan(args: { results: Results; listings: Listing[]; limit: 
         : payment === "po"
           ? "Over the quick-buy limit, so the cart will route it for approval."
           : payment === "coop_site"
-            ? "Agora links to the contract page and records the visit."
+            ? "Loci links to the contract page and records the visit."
             : "Too large for an off-contract purchase.";
     routes.push({ kind: "priced", recommended: payment !== "needs_contract", title, body: `${what}. ${usd(total!)} in all. ${then}`, refs: refNums([`listing:${chosen.listing.id}`]), hits: [] });
   }
@@ -235,7 +235,7 @@ export function buildPlan(args: { results: Results; listings: Listing[]; limit: 
       kind: "member",
       recommended: !routes.some((r) => r.recommended),
       title: `Get a quote through ${coopNames(members)}`,
-      body: `${memberIntro(members)} ${noPrices(members) ? "Agora holds no prices for " + (members.length === 1 ? "it" : "them") + ", so the price comes by quote." : "Some of their products are priced in the results below."}`,
+      body: `${memberIntro(members)} ${noPrices(members) ? "Loci holds no prices for " + (members.length === 1 ? "it" : "them") + ", so the price comes by quote." : "Some of their products are priced in the results below."}`,
       refs: refNums(members.map((h) => `contract:${h.contract_id}`)),
       hits: members,
     });
@@ -255,7 +255,7 @@ export function buildPlan(args: { results: Results; listings: Listing[]; limit: 
       kind: "coops",
       recommended: !routes.some((r) => r.recommended),
       title: "Co-op contracts that cover this",
-      body: `${hitNames(open)}. Set your agency and Agora will show which of these you're already on.`,
+      body: `${hitNames(open)}. Set your agency and Loci will show which of these you're already on.`,
       refs: refNums(open.map((h) => `contract:${h.contract_id}`)),
       hits: open,
     });
@@ -312,7 +312,7 @@ export function purchaseFileText(results: Results, plan: Plan, confirmedAt: stri
   const r = results.request;
   const out = [
     "PURCHASE FILE",
-    `Prepared in Agora on ${new Date().toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" })}`,
+    `Prepared in Loci on ${new Date().toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" })}`,
     "",
     `Agency: ${results.buyer ? `${results.buyer.name}, ${results.buyer.state}` : "Not set"}`,
     `Request: "${r.raw_text}"`,
@@ -333,7 +333,7 @@ export function purchaseFileText(results: Results, plan: Plan, confirmedAt: stri
     "Sources:",
     ...plan.refs.map((x) => `  Ref ${x.n}: ${x.label}`),
     "",
-    "Eligibility and prices come from Agora's contract records. This file is a record of the search, not legal advice.",
+    "Eligibility and prices come from Loci's contract records. This file is a record of the search, not legal advice.",
   ];
   return out.join("\n");
 }

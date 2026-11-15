@@ -584,7 +584,7 @@ export function dedupe(db: Db, items: ExtractedItem[], supplierName: string) {
     if (match && it.duplicate_of_row == null) {
       it.duplicate_of_listing_id = match.id;
       it.replace_existing = true;
-      it.flags.push(`Already in Agora as "${match.title}" at $${match.unit_price.toFixed(2)} (matched on ${bySku ? "SKU" : "description"})`);
+      it.flags.push(`Already in Loci as "${match.title}" at $${match.unit_price.toFixed(2)} (matched on ${bySku ? "SKU" : "description"})`);
     }
   }
 }

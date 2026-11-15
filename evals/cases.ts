@@ -1,4 +1,4 @@
-// The fixed test set for Agora's prompts. `npm run eval` runs it; the runner
+// The fixed test set for Loci's prompts. `npm run eval` runs it; the runner
 // is scripts/eval.ts.
 //
 // There are two kinds of case, and every task has both.
@@ -142,7 +142,7 @@ const saidItDidntKnow: Check = (r) => (r.record?.declined ? null : "expected the
 const answered: Check = (r) => (r.record?.declined ? "said the data doesn't hold this, but it does" : null);
 /** What reached the page says this. */
 const says = (re: RegExp): Check => (r) => (re.test(text(r.result)) ? null : `expected what was shown to match ${re}`);
-/** No sentence vouches for a supplier outright. A sentence that hedges or negates ("Agora can't say whether it is reliable") is fine. */
+/** No sentence vouches for a supplier outright. A sentence that hedges or negates ("Loci can't say whether it is reliable") is fine. */
 const neverVouches: Check = (r) => {
   const vouch = /\b(trustworthy|reliable|reputable|safe to (use|buy from)|good supplier|can be trusted|recommend (them|it|this supplier))\b/i;
   const hedge = /\b(not|n't|cannot|whether|if|no way|unable|unknown|unverified|isn't|aren't|can't|don't|doesn't|won't|only|until|before)\b/i;
@@ -322,8 +322,8 @@ export const CASES: Case[] = [
   {
     id: "answer.guard.says-unknown",
     task: "shopper_answer",
-    title: "An answer that says Agora doesn't hold something is kept and counted as such",
-    canned: { can_answer: false, paragraphs: ["Agora doesn't hold what this contract says about installation. Purchasing or the supplier would know."], refs: [] },
+    title: "An answer that says Loci doesn't hold something is kept and counted as such",
+    canned: { can_answer: false, paragraphs: ["Loci doesn't hold what this contract says about installation. Purchasing or the supplier would know."], refs: [] },
     run: (fx) => ask(fx, "tables", "Does it include installation?"),
     expect: [outcome("kept"), saidItDidntKnow],
   },
@@ -385,6 +385,14 @@ export const CASES: Case[] = [
     title: "Asked about a price that isn't on file, answers with the one that is",
     run: (fx) => ask(fx, "tables", "Can I get these tables for $200 each?"),
     expect: [outcome("kept"), neverSays(/\$200\b/), says(/264|5,280/)],
+  },
+
+  {
+    id: "answer.live.product-name",
+    task: "shopper_answer",
+    title: "Names the marketplace Loci, never by its old name",
+    run: (fx) => ask(fx, "tables", "What's the name of this marketplace, and where do these prices come from?"),
+    expect: [outcome("kept"), says(/\bLoci\b/), neverSays(/\bAgora\b/i)],
   },
 
   // ---- Reading a product-dive message

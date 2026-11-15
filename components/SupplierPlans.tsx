@@ -72,7 +72,7 @@ export function SupplierPlans({ s }: { s: Supplier }) {
       {plan !== "basic" && (
         <section>
           <h2 className="font-heading text-heading-md font-bold text-ink">Your storefront's description</h2>
-          <p className="mt-1 text-ui-xs text-base-dark">Shown at the top of your storefront, in place of what Agora wrote from your contracts.</p>
+          <p className="mt-1 text-ui-xs text-base-dark">Shown at the top of your storefront, in place of what Loci wrote from your contracts.</p>
           <form
             className="mt-4 max-w-2xl space-y-3"
             onSubmit={async (e) => {
@@ -157,7 +157,7 @@ export function SupplierPlans({ s }: { s: Supplier }) {
         <Card className="p-5">
           <h2 className="font-heading text-heading-md font-bold text-ink">Listing fee</h2>
           <p className="mt-1 text-ui-xs text-base-dark">
-            {s.name} sells off contract, for purchases under an agency's quick-buy limit. Your listings appear in Agora while your listing fee ($150 a year) is current.
+            {s.name} sells off contract, for purchases under an agency's quick-buy limit. Your listings appear in Loci while your listing fee ($150 a year) is current.
           </p>
           <div className="mt-3 flex flex-wrap items-center gap-3">
             <span className={`text-ui-xs ${listingFeeCurrent(s) ? "text-success-darker" : "text-error-dark"}`}>

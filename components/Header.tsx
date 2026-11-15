@@ -105,7 +105,7 @@ export function Header() {
     <header className={`sticky top-0 z-30 border-b border-base-lighter bg-white ${scrolled ? "shadow-1" : ""}`}>
       <div aria-hidden className="bp-ruler" />
       <div className="mx-auto flex h-16 max-w-6xl md:h-20 items-stretch gap-4 px-4 sm:gap-8">
-        <Link href={current.home} className="flex items-center no-underline" aria-label="Agora home">
+        <Link href={current.home} className="flex items-center no-underline" aria-label="Loci home">
           <Logo />
         </Link>
         <nav className="hidden min-w-0 items-stretch gap-1 overflow-x-auto sm:gap-2 md:flex" aria-label="Main">
@@ -257,7 +257,7 @@ export function Header() {
                   <span className="tabular-nums text-base-dark">{compact(total)}</span>
                 </button>
                 <Link role="menuitem" href="/model" onClick={() => setOpen(false)} className="flex min-h-12 items-center px-4 text-ui-xs text-ink no-underline hover:bg-base-lightest">
-                  How Agora earns
+                  How Loci earns
                 </Link>
                 <Link role="menuitem" href="/coops" onClick={() => setOpen(false)} className="flex min-h-12 items-center px-4 text-ui-xs text-ink no-underline hover:bg-base-lightest">
                   Co-op member lists

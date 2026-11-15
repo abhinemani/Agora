@@ -22,7 +22,7 @@ export function rfpsLeft(s: AgencySettings): number | null {
   return s.plan === "paid" ? null : Math.max(0, FREE_RFP_LIMIT - s.rfp_used);
 }
 
-/** Contracts an agency added to Agora from its own contract register. */
+/** Contracts an agency added to Loci from its own contract register. */
 export const registerContracts = (db: Pick<Db, "contracts">, agency: string | null | undefined): Contract[] =>
   agency ? db.contracts.filter((c) => c.register_of === agency) : [];
 

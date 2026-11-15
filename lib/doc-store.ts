@@ -6,7 +6,7 @@
 //   doc_text   one row per distinct text (keyed by its hash): many contracts share an attachment, and many
 //              attachments repeat the same standard terms, so identical text is stored once
 //   doc_pages  that text by page (and part, for long pages), with a tsvector and a GIN index
-//   doc_urls   each document URL Agora has tried: its text's hash, or why it couldn't be read; for a scan, which model
+//   doc_urls   each document URL Loci has tried: its text's hash, or why it couldn't be read; for a scan, which model
 //              read it (read_by). Scans read by the main model are the reference transcriptions to check others against.
 //   doc_links  which contract each URL belongs to, with its label, program and state
 // Contact details printed in the documents are kept, at the product owner's instruction. Server-only.
@@ -146,7 +146,7 @@ export async function storedPages(url: string): Promise<StoredPage[] | null> {
 }
 
 /** URLs already settled: stored, or tried and not worth trying again yet (failures are retried after a day, three times
- * at most). Files of a type Agora didn't read, or over the size limit, are tried again after each deploy, three times
+ * at most). Files of a type Loci didn't read, or over the size limit, are tried again after each deploy, three times
  * at most, since a newer version may read them. */
 export async function settledUrls(): Promise<Set<string>> {
   const p = pool();

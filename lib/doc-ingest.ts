@@ -3,7 +3,7 @@
 //
 // It starts a minute after the server does, when DATABASE_URL is set, and picks up where it left off after a
 // restart: documents already stored, or tried and not worth retrying yet, are skipped. First it records which
-// contract links to which document; then it stores the text Agora already holds (seed/catalog/doctext), which
+// contract links to which document; then it stores the text Loci already holds (seed/catalog/doctext), which
 // needs no fetching; then it fetches the rest from their publishers, two at a time per host with a pause between
 // requests, price sheets first. Alongside, scanned PDFs (no text layer) are read by Claude (lib/doc-ocr.ts) when an
 // API key is set, six at a time, up to AGORA_OCR_PAGE_LIMIT pages in all (default 150,000; AGORA_OCR=off turns
@@ -88,7 +88,7 @@ async function run(): Promise<void> {
   for (const d of docs) if (!settled.has(d.url) && !labels.has(d.url)) labels.set(d.url, d.label);
   console.log(`[ingest] ${docs.length} document links on TRX contracts, ${new Set(docs.map((d) => d.url)).size} URLs, ${labels.size} still to store`);
 
-  // Text Agora already holds.
+  // Text Loci already holds.
   state.phase = "held";
   const toFetch: string[] = [];
   for (const url of labels.keys()) {

@@ -35,7 +35,7 @@ export function paperworkKinds(plan: Plan): PaperworkKind[] {
 
 const today = () => new Date().toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" });
 
-/** The signed-in person drafting the document. Their name fills the "From" line; what Agora doesn't know stays a [bracketed] blank. */
+/** The signed-in person drafting the document. Their name fills the "From" line; what Loci doesn't know stays a [bracketed] blank. */
 export interface PaperworkAuthor {
   name: string;
   department?: string | null;
@@ -107,14 +107,14 @@ function blankTemplate(results: Results, plan: Plan, kind: PaperworkKind): Paper
         "",
         `I'm looking to buy: "${need}".`,
         "",
-        `Agora shows a contract that covers it on a co-op ${results.buyer?.name ?? "we"} ${results.buyer ? "isn't" : "aren't"} on yet:`,
+        `Loci shows a contract that covers it on a co-op ${results.buyer?.name ?? "we"} ${results.buyer ? "isn't" : "aren't"} on yet:`,
         `  ${h.coop} ${h.contract_number}, ${h.supplier}: ${h.title}`,
         `  Who can use it: ${h.reason}`,
-        ...(better ? ["  Agora rates it a better fit for this request than anything on our current co-ops. That compares scope, not price."] : []),
-        ...(h.verification === "research_lead" ? ["  Agora marks this contract a research lead: its current term isn't confirmed."] : []),
+        ...(better ? ["  Loci rates it a better fit for this request than anything on our current co-ops. That compares scope, not price."] : []),
+        ...(h.verification === "research_lead" ? ["  Loci marks this contract a research lead: its current term isn't confirmed."] : []),
         "",
-        member ? `What we can use today instead: ${member.hits.map((x) => `${x.coop} ${x.contract_number} (${x.supplier})`).join("; ")}.` : "Nothing on our current co-ops covers this, as far as Agora shows.",
-        plan.total !== null ? `For reference, the priced option open to us today comes to ${usd(plan.total)}.` : "Agora holds no prices for these contracts, so I can't say yet which would cost less.",
+        member ? `What we can use today instead: ${member.hits.map((x) => `${x.coop} ${x.contract_number} (${x.supplier})`).join("; ")}.` : "Nothing on our current co-ops covers this, as far as Loci shows.",
+        plan.total !== null ? `For reference, the priced option open to us today comes to ${usd(plan.total)}.` : "Loci holds no prices for these contracts, so I can't say yet which would cost less.",
         "",
         `Could you tell me whether we can use ${h.coop}, and what it would take?`,
         "",
@@ -155,7 +155,7 @@ function blankTemplate(results: Results, plan: Plan, kind: PaperworkKind): Paper
       "5. Sources",
       ...sources,
       "",
-      "Eligibility and prices above come from Agora's contract records as of the date of this memo. Confirm the contract's current term and any local requirements before ordering.",
+      "Eligibility and prices above come from Loci's contract records as of the date of this memo. Confirm the contract's current term and any local requirements before ordering.",
     ].join("\n"),
   };
 }

@@ -7,8 +7,8 @@ import { StoreProvider } from "@/components/store";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Agora: find what your agency needs",
-  description: "Agora: one marketplace where any city, county, or district can search state and cooperative contracts, see which it may use, and buy.",
+  title: "Loci: find what your agency needs",
+  description: "Loci: one marketplace where any city, county, or district can search state and cooperative contracts, see which it may use, and buy.",
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
@@ -23,7 +23,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
-        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,400;0,600;0,700;1,400&family=Merriweather:wght@400;700&family=Roboto+Mono:wght@400;700&display=swap" />
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,400;0,600;0,700;1,400&family=Merriweather:wght@400;700&family=Roboto+Mono:wght@400;700&family=Newsreader:opsz,wght@6..72,600&display=swap" />
       </head>
       <body className="min-h-screen overflow-x-clip antialiased">
         <StoreProvider>

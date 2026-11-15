@@ -101,14 +101,14 @@ export function CoopRoutesSection({ data, name }: { data: CatalogStorefront; nam
   );
 }
 
-/** The co-op routes behind one of Agora's own suppliers, when the catalog knows it. */
+/** The co-op routes behind one of Loci's own suppliers, when the catalog knows it. */
 export function CoopRoutes({ supplierId, name }: { supplierId: string; name: string }) {
   const data = useStorefront(supplierId.startsWith("cat_") ? `id=${encodeURIComponent(supplierId)}` : `for=${encodeURIComponent(supplierId)}`);
   if (!data) return null;
   return <CoopRoutesSection data={data} name={name} />;
 }
 
-/** A storefront Agora built from a supplier's public co-op contracts, before anyone claimed it. */
+/** A storefront Loci built from a supplier's public co-op contracts, before anyone claimed it. */
 export function CatalogStorefrontPage({ id }: { id: string }) {
   const { act, refresh } = useStore();
   const data = useStorefront(`id=${encodeURIComponent(id)}`);
@@ -133,9 +133,9 @@ export function CatalogStorefrontPage({ id }: { id: string }) {
           {s.aliases.length > 0 && ` · also listed as ${s.aliases.slice(0, 3).join(", ")}`}
         </p>
         <Card className="mt-5 max-w-3xl p-5">
-          <div className="text-sm font-semibold text-navy">Agora built this page from {s.name}'s public co-op contracts.</div>
+          <div className="text-sm font-semibold text-navy">Loci built this page from {s.name}'s public co-op contracts.</div>
           <p className="mt-1 text-sm text-slate">
-            Nobody from {s.name} has claimed it yet, and Agora hasn't run its supplier checks. Claiming it adds the company's own description, catalog and certifications.
+            Nobody from {s.name} has claimed it yet, and Loci hasn't run its supplier checks. Claiming it adds the company's own description, catalog and certifications.
           </p>
           <Button
             className="mt-3"

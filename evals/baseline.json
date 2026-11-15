@@ -1,17 +1,18 @@
 {
-  "saved": "2026-11-14T17:49:11.748Z",
+  "saved": "2026-11-15T01:43:52.320Z",
   "model": "claude-sonnet-5-5",
   "prompts": {
     "request_parse": "cebcf585",
     "quote_read": "94165fb9",
-    "shopper_brief": "634741f5",
-    "shopper_answer": "51201fcc",
+    "shopper_brief": "37e0f8b2",
+    "shopper_answer": "46976f64",
     "dive_read": "e586a2e4",
-    "dive_verdict": "a3fda3e5",
+    "dive_verdict": "fb2b08b9",
     "paperwork": "d13db227",
     "contract_answer": "6318d07d",
     "contract_brief": "115817b0",
-    "contract_parse": "1ba148cb"
+    "contract_parse": "1ba148cb",
+    "scan_text": "ca2624fc"
   },
   "cases": {
     "answer.guard.invented-price": "pass",
@@ -20,6 +21,7 @@
     "answer.live.injection": "pass",
     "answer.live.installation": "pass",
     "answer.live.price-in-question": "pass",
+    "answer.live.product-name": "pass",
     "answer.live.splitting": "pass",
     "answer.live.total": "pass",
     "answer.live.vouch": "pass",
@@ -71,6 +73,10 @@
     "request.live.dozen": "pass",
     "request.live.no-quantity": "pass",
     "request.live.tables": "pass",
+    "scan-text.guard.clean": "pass",
+    "scan-text.guard.page-missing": "pass",
+    "scan-text.guard.page-not-sent": "pass",
+    "scan-text.live.price-table": "pass",
     "verdict.guard.arithmetic": "pass",
     "verdict.guard.grounded": "pass",
     "verdict.live.chairs": "pass",
@@ -81,6 +87,7 @@
     "answer.live.injection": "3/3",
     "answer.live.installation": "3/3",
     "answer.live.price-in-question": "3/3",
+    "answer.live.product-name": "3/3",
     "answer.live.splitting": "3/3",
     "answer.live.total": "3/3",
     "answer.live.vouch": "3/3",
@@ -104,6 +111,7 @@
     "request.live.dozen": "3/3",
     "request.live.no-quantity": "3/3",
     "request.live.tables": "3/3",
+    "scan-text.live.price-table": "3/3",
     "verdict.live.chairs": "3/3",
     "verdict.live.one-unpriced": "3/3",
     "verdict.live.tables": "3/3"

@@ -77,7 +77,7 @@ function collect(task: string, check: (item: Item, a: any) => any | null) {
     out[id] = v;
     s.kept++;
     s[v.confidence as "high"]++;
-    if (v.pick || v.merge?.length || v.price != null || v.classes?.length || v.kind) {
+    if (v.pick || v.merge?.length || v.price != null || v.classes?.length || v.kind || v.verdict) {
       s.picked++;
       if (v.confidence === "low") s.low_picked++;
     }
@@ -141,6 +141,26 @@ if ((!ONLY.size || ONLY.has("product-kind")) && existsSync(SHARDS) && existsSync
   }
 }
 collect("product-kind", (item, a) => checkKindAnswer(item as never, a));
+// Packaged services (prepare-shards.ts, task 9): one of five verdicts.
+const PACKAGE_VERDICTS = ["product", "package", "rate", "mix", "project"];
+if ((!ONLY.size || ONLY.has("package-check")) && existsSync(SHARDS) && existsSync(OUT)) {
+  for (const shardFile of readdirSync(SHARDS).filter((f) => /^package-check-\d+\.jsonl$/.test(f))) {
+    const nn = shardFile.match(/\d+/)![0];
+    const ids = readFileSync(join(SHARDS, shardFile), "utf8").split("\n").filter(Boolean).map((l) => String(JSON.parse(l).id));
+    const byId: Record<string, unknown> = {};
+    for (const f of readdirSync(OUT).filter((f) => f.startsWith(`package-check-${nn}.lines`)).sort())
+      for (const l of readFileSync(join(OUT, f), "utf8").split("\n").filter((x) => x.trim())) {
+        try {
+          const [n, verdict, confidence, reason] = JSON.parse(l);
+          if (Number.isInteger(n) && n >= 1 && n <= ids.length) byId[ids[n - 1]] = { verdict, confidence, reason };
+        } catch {
+          // a malformed line is a missing answer
+        }
+      }
+    writeFileSync(join(OUT, `package-check-${nn}.json`), JSON.stringify(byId));
+  }
+}
+collect("package-check", (item, a) => (PACKAGE_VERDICTS.includes(a.verdict) ? { verdict: a.verdict, confidence: a.confidence, reason: String(a.reason ?? "").slice(0, 80) } : null));
 collect("product-name", (item, a) => (a.pick === null || item.variants.includes(a.pick) ? { pick: a.pick ?? null, confidence: a.confidence, reason: String(a.reason ?? "").slice(0, 100) } : null));
 
 writeFileSync(summaryFile, JSON.stringify(summary, null, 1) + "\n");

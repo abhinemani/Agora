@@ -53,6 +53,13 @@ const nigpPicks = reviewed<{ classes: string[]; confidence: string }>("nigp");
 const productKinds = reviewed<{ kind: string; role: KindRole; aliases: string[]; confidence: string }>("product-kind");
 // Low-confidence answers aren't applied, with one exception: a doubtful "not a whole item" can still keep a product out
 // of the catalog (scripts/product-stash.ts). Doubt removes a product; it never adds one.
+// The packaged-service review (task package-check): every verdict, with whether it was confident.
+const packageVerdicts: Record<string, { verdict: string; sure: boolean }> = (() => {
+  const path = join(ROOT, "seed/cleanup/decisions/package-check.json");
+  if (!existsSync(path)) return {};
+  const all = JSON.parse(readFileSync(path, "utf8")) as Record<string, { verdict: string; confidence: string }>;
+  return Object.fromEntries(Object.entries(all).map(([k, d]) => [k, { verdict: d.verdict, sure: d.confidence !== "low" }]));
+})();
 const doubtfulRoles: Record<string, KindRole> = (() => {
   const path = join(ROOT, "seed/cleanup/decisions/product-kind.json");
   if (!existsSync(path)) return {};
@@ -902,7 +909,7 @@ if (!INCLUDE_STASHED) {
   const firstReason = new Map<string, StashReason>();
   for (const o of offerings) {
     const p = productOf.get(o.product);
-    const why = p ? stashReason(o, { ...(p as typeof p & { role?: KindRole }), doubtful_role: doubtfulRoles[productKindKey(p.name)] }, titleOf.get(o.contract) ?? "") : null;
+    const why = p ? stashReason(o, { ...(p as typeof p & { role?: KindRole }), doubtful_role: doubtfulRoles[productKindKey(p.name)], package: packageVerdicts[productKindKey(p.name)] }, titleOf.get(o.contract) ?? "") : null;
     if (!why) {
       keptOfferings.push(o);
       keptProducts.add(o.product);

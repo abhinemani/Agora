@@ -199,5 +199,33 @@ if (wanted("product-kind")) {
   counts["product-kind"] = items.length;
 }
 
+// 9. Packaged services: the product owner's rule is that a service sold as a fixed package (a 3-year service plan, an
+// installation package, remediation per document) counts as a product, while hourly and other time-based rates, lines
+// that mix goods with labor, and one agency's own project line items do not. The product-kind review's "service" lines,
+// and state-program items whose names read like project billing, are asked which they are. Run on the catalog built with
+// AGORA_INCLUDE_STASHED=1, after the product-kind review.
+if (wanted("package-check")) {
+  const kinds: Record<string, { role: string; confidence: string }> = existsSync(join(ROOT, "seed/cleanup/decisions/product-kind.json")) ? JSON.parse(readFileSync(join(ROOT, "seed/cleanup/decisions/product-kind.json"), "utf8")) : {};
+  const RATE_UNIT = /^(hours?|hr|hourly|minutes?|days?|weeks?|months?|monthly|quarter|years?|annual|task|fare|miles?|trip|visit|per person|per page|kwh|btu|therm|acre)\b/i;
+  const PROJECT = /\b(payments?|deliverables?|implementation|development|phase|project|one-time cost|bid solicitation section|rfp section)\b/i;
+  const STATE = new Set(["NJSTART", "Hawaii SPO", "OregonBuys", "NYS OGS", "NY Preferred Source", "Arkansas OSP", "Empire Procure Connect"]);
+  const contractById = new Map<string, Item>(catalog.contracts.map((c: Item) => [c.id, c]));
+  const firstOffer = new Map<string, Item>();
+  for (const o of catalog.offerings) if (!firstOffer.has(o.product) && (o.price != null || o.list != null)) firstOffer.set(o.product, o);
+  const picked = new Map<string, Item>();
+  for (const p of catalog.products) {
+    const key = productKindKey(p.name);
+    const k = kinds[key];
+    const o = firstOffer.get(p.id);
+    if (!k || k.confidence === "low" || !o || picked.has(key) || RATE_UNIT.test(o.unit ?? "")) continue;
+    const isService = k.role === "service";
+    const projectish = (k.role === "item" || k.role === "consumable") && STATE.has(o.coop) && (PROJECT.test(p.name) || (o.price ?? 0) >= 100000);
+    if (!isService && !projectish) continue;
+    const c: Item = contractById.get(o.contract) ?? {};
+    picked.set(key, { id: key, name: p.name, contract: String(c.title ?? "").slice(0, 90), program: o.coop, unit: o.unit ?? undefined, price: o.price ?? o.list, coded_as: k.role });
+  }
+  shard("package-check", [...picked.values()], 450);
+}
+
 if (!ONLY.size) writeFileSync(join(OUT, "index.json"), JSON.stringify({ categories: CATEGORIES, counts }, null, 1));
 console.log(counts);

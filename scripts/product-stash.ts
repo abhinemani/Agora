@@ -23,6 +23,9 @@ export interface StashProduct {
   role?: string;
   /** The review's role when it was not confident: used only to keep a product out, never to let one in. */
   doubtful_role?: string;
+  /** The packaged-service review's verdict (task package-check): product, package, rate, mix or project, and whether
+   * it was confident. Only service lines and project-like state-program lines carry one. */
+  package?: { verdict: string; sure: boolean };
 }
 
 /** The reasons, in the order they are tested. The keys are stable (summary.json, /data); the text is what a reader sees. */
@@ -36,6 +39,7 @@ export const STASH_REASONS = {
   rates: "Rate lines, not products: hourly and monthly rates, fares, per-minute calls, rentals, fees and multi-year service prices",
   reviewed_parts: "Parts and accessories, by the AI review: a component or an add-on of something else (a swing hanger, a copier finisher, a vehicle option)",
   reviewed_services: "Rates and services, by the AI review: hourly and per-unit rates, installation, training, a study",
+  not_a_package: "Service lines that are not a fixed package, by the packaged-service review: time-based rates, goods mixed with labor, and one agency's own project line items",
   reviewed_doubtful: "Products the AI review thought, without confidence, were a part, an accessory, a rate or a service (doubt keeps a product out; it never lets one in)",
 } as const;
 export type StashReason = keyof typeof STASH_REASONS;
@@ -63,10 +67,19 @@ export function stashReason(o: StashOffering, p: StashProduct, contractTitle: st
   if (o.coop === "PEPPM") return "peppm";
   if (o.coop === "HGACBuy") return "hgacbuy";
   if (o.price == null && o.list == null) return "no_price";
-  if (SERVICE_AWARD.test(contractTitle) || RATE_UNIT.test(o.unit ?? "")) return "rates";
-  // Canon's own price-file sections say what a line is: software, services and maintenance plans are not products a
-  // buyer searches for here, whatever role a reviewer gave them (reviewers split on licences: item or accessory).
-  if (o.coop === "Sourcewell" && /canon/i.test(p.maker ?? "") && /^(Software|Services|Maintenance|Speed License)\b/.test(o.category ?? "")) return "canon_extras";
+  if (RATE_UNIT.test(o.unit ?? "")) return "rates";
+  // Canon's own price-file sections say what a line is: software licences stay out, whatever role a reviewer gave them
+  // (reviewers split on licences: item or accessory). Its service and maintenance plans are judged as packages below.
+  if (o.coop === "Sourcewell" && /canon/i.test(p.maker ?? "") && /^(Software|Speed License)\b/.test(o.category ?? "")) return "canon_extras";
+  // The product owner's rule: a service sold as a fixed package counts as a product; a time-based rate, goods mixed
+  // with labor, or one agency's project line does not. A doubtful "not a package" keeps the line out too.
+  if (p.package) {
+    const ok = p.package.verdict === "product" || p.package.verdict === "package";
+    if (!ok) return "not_a_package";
+    if (p.package.sure) return null;
+  }
+  // Awards that are services through and through (fares, moving, staffing): out unless the review found a package.
+  if (SERVICE_AWARD.test(contractTitle)) return "rates";
   if (p.role === "item" || p.role === "consumable") return null;
   if (p.role === "part" || p.role === "accessory") return "reviewed_parts";
   if (p.role === "rate" || p.role === "service") return "reviewed_services";

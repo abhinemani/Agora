@@ -7,7 +7,7 @@ import { extractFile } from "./parser";
 
 /** What a person waits for when they ask a question; the background ingest takes larger files. */
 export const READER_MAX_BYTES = 15 * 1024 * 1024;
-export const INGEST_MAX_BYTES = 40 * 1024 * 1024;
+export const INGEST_MAX_BYTES = 100 * 1024 * 1024;
 const MAX_PAGES = 600;
 
 export const docError = (message: string, status: string) => Object.assign(new Error(message), { status });
@@ -63,7 +63,11 @@ export async function downloadDocument(url: string, maxBytes = READER_MAX_BYTES)
 function extensionOf(buffer: Buffer): string {
   const head = buffer.subarray(0, 8);
   if (head.subarray(0, 4).toString("latin1") === "%PDF") return ".pdf";
-  if (head.subarray(0, 2).toString("latin1") === "PK") return buffer.includes("word/document.xml") ? ".docx" : ".xlsx";
+  if (head.subarray(0, 2).toString("latin1") === "PK")
+    return buffer.includes("word/document.xml") ? ".docx" : buffer.includes("ppt/presentation.xml") ? ".pptx" : buffer.includes("xl/workbook") ? ".xlsx" : ".zip";
+  if (head[0] === 0xff && head[1] === 0xd8 && head[2] === 0xff) return ".jpg";
+  if (head.subarray(0, 4).equals(Buffer.from([0x89, 0x50, 0x4e, 0x47]))) return ".png";
+  if (head.subarray(0, 5).toString("latin1") === "{\\rtf") return ".rtf";
   // An old Office file (Word 97-2003 or Excel 97-2003) is an OLE compound file.
   if (head.equals(Buffer.from([0xd0, 0xcf, 0x11, 0xe0, 0xa1, 0xb1, 0x1a, 0xe1]))) return buffer.includes(Buffer.from("W\0o\0r\0d\0D\0o\0c\0u\0m\0e\0n\0t", "latin1")) ? ".doc" : ".xls";
   return "";
@@ -104,6 +108,14 @@ export async function readBuffer(buffer: Buffer, filename: string): Promise<Page
     if (text.replace(/\s/g, "").length < 40) throw docError("it has almost no text", "failed");
     return [{ num: 1, text }];
   }
+  // An image is a one-page scan: the scan reader (lib/doc-ocr.ts) wraps it in a PDF and reads it.
+  if (/\.(jpe?g|png)$/i.test(filename)) throw docError("it is an image of a page", "scan");
+  if (/\.(pptx|ppsx)$/i.test(filename)) return slides(buffer);
+  if (/\.zip$/i.test(filename)) return zipped(buffer);
+  if (/\.rtf$/i.test(filename)) return plain(rtfText(buffer.toString("latin1")));
+  if (/\.(txt|text)$/i.test(filename)) return plain(buffer.toString("utf8"));
+  // Macro-enabled and binary workbooks read like any workbook.
+  if (/\.(xlsm|xlsb)$/i.test(filename)) filename = filename.replace(/\.xls[mb]$/i, ".xlsx");
   if (!/\.(xlsx|xls|csv|docx|htm|html)$/i.test(filename)) throw docError(`Agora doesn't read ${filename.split(".").pop()?.toUpperCase() || "this kind of"} files`, "unsupported");
   try {
     const file = await extractFile({ filename, buffer, keep: false });
@@ -111,4 +123,91 @@ export async function readBuffer(buffer: Buffer, filename: string): Promise<Page
   } catch (e) {
     throw docError((e as Error).message.replace(/\.$/, ""), /scanned/i.test((e as Error).message) ? "scan" : "failed");
   }
+}
+
+/** Plain text as one page, when there is enough of it to search. */
+function plain(text: string): Page[] {
+  if (text.replace(/\s/g, "").length < 40) throw docError("it has almost no text", "failed");
+  return [{ num: 1, text }];
+}
+
+/** The words of an RTF file. A small parser, since RTF nests groups: tables of fonts, colors and styles, pictures and
+ * other "destinations" are skipped whole; \par and \line become line breaks, \tab and \cell tabs; \'hh escapes decoded. */
+function rtfText(rtf: string): string {
+  const SKIP = /^(fonttbl|colortbl|stylesheet|info|pict|themedata|colorschememapping|latentstyles|datastore|xmlnstbl|listtable|listoverridetable|rsidtbl|generator|header|footer|headerl|headerr|footerl|footerr|object|fldinst|bkmkstart|bkmkend)$/;
+  const stack: boolean[] = [];
+  let skip = false;
+  let out = "";
+  for (let i = 0; i < rtf.length; ) {
+    const c = rtf[i];
+    if (c === "{") {
+      stack.push(skip);
+      i++;
+    } else if (c === "}") {
+      skip = stack.pop() ?? false;
+      i++;
+    } else if (c === "\\") {
+      const m = rtf.slice(i, i + 40).match(/^\\([a-z]+)(-?\d+)? ?|^\\'([0-9a-f]{2})|^\\([^a-z])/i);
+      if (!m) {
+        i++;
+        continue;
+      }
+      i += m[0].length;
+      if (m[3]) {
+        if (!skip) out += String.fromCharCode(parseInt(m[3], 16));
+      } else if (m[4]) {
+        if (m[4] === "*") skip = true;
+        else if (!skip) out += m[4] === "~" ? " " : "\\{}".includes(m[4]) ? m[4] : "";
+      } else if (SKIP.test(m[1])) skip = true;
+      else if (!skip) out += m[1] === "par" || m[1] === "line" || m[1] === "row" ? "\n" : m[1] === "tab" || m[1] === "cell" ? "\t" : "";
+    } else {
+      if (!skip && c !== "\r" && c !== "\n") out += c;
+      i++;
+    }
+  }
+  return out.replace(/[ \t]+\n/g, "\n").replace(/\n{3,}/g, "\n\n").trim();
+}
+
+/** A PowerPoint deck's text, one page per slide, in slide order. */
+async function slides(buffer: Buffer): Promise<Page[]> {
+  const { default: JSZip } = await import("jszip");
+  const zip = await JSZip.loadAsync(buffer);
+  const names = Object.keys(zip.files)
+    .filter((n) => /^ppt\/slides\/slide\d+\.xml$/.test(n))
+    .sort((a, b) => Number(a.match(/(\d+)\.xml$/)![1]) - Number(b.match(/(\d+)\.xml$/)![1]));
+  const pages: Page[] = [];
+  for (const [i, n] of names.entries()) {
+    const xml = await zip.files[n].async("string");
+    const text = xml
+      .split(/<\/a:p>/)
+      .map((para) => [...para.matchAll(/<a:t>([^<]*)<\/a:t>/g)].map((m) => decodeXml(m[1])).join(""))
+      .filter((t) => t.trim())
+      .join("\n");
+    if (text.trim()) pages.push({ num: i + 1, text });
+  }
+  if (!pages.length) throw docError("the deck has no text on its slides", "failed");
+  return pages;
+}
+const decodeXml = (s: string) => s.replace(/&lt;/g, "<").replace(/&gt;/g, ">").replace(/&quot;/g, '"').replace(/&apos;/g, "'").replace(/&amp;/g, "&");
+
+/** The readable files inside a zip, each read as it would be on its own, as one run of pages headed by the file's name.
+ * Scans and files Agora can't read inside are passed over; zips inside zips aren't opened. */
+async function zipped(buffer: Buffer): Promise<Page[]> {
+  const { default: JSZip } = await import("jszip");
+  const zip = await JSZip.loadAsync(buffer);
+  const entries = Object.values(zip.files).filter((f) => !f.dir && !/(^|\/)(__MACOSX|\.)/.test(f.name) && !/\.zip$/i.test(f.name)).slice(0, 40);
+  const pages: Page[] = [];
+  let passedOver = 0;
+  for (const f of entries) {
+    const inner = await f.async("nodebuffer");
+    if (inner.length > INGEST_MAX_BYTES) continue;
+    try {
+      const name = f.name.split("/").pop()!;
+      for (const p of await readBuffer(inner, /\.\w{2,5}$/.test(name) ? name : name + extensionOf(inner))) pages.push({ num: pages.length + 1, text: `[${f.name}, page ${p.num}]\n${p.text}` });
+    } catch {
+      passedOver++;
+    }
+  }
+  if (!pages.length) throw docError(passedOver ? `none of the ${passedOver} files inside could be read` : "the zip holds no file Agora reads", "unsupported");
+  return pages;
 }

@@ -109,6 +109,15 @@ async function readRun(src: PDFDocument | Buffer, label: string, from: number, c
   out.read += kept.length;
 }
 
+/** An image of a page (a JPG or PNG attachment) as a one-page PDF, so the scan reader can read it like any scan. */
+export async function imageToPdf(buffer: Buffer, filename: string): Promise<Buffer> {
+  const doc = await PDFDocument.create();
+  const img = /\.png$/i.test(filename) ? await doc.embedPng(new Uint8Array(buffer)) : await doc.embedJpg(new Uint8Array(buffer));
+  const page = doc.addPage([img.width, img.height]);
+  page.drawImage(img, { x: 0, y: 0, width: img.width, height: img.height });
+  return Buffer.from(await doc.save());
+}
+
 /** Transcribe a scanned PDF. Throws when the file can't be opened as a PDF. */
 export async function readScan(buffer: Buffer, label: string): Promise<ScanReading> {
   let src: PDFDocument | Buffer;

@@ -13,7 +13,7 @@
 import { catalogTrxDocuments } from "./catalog";
 import { databaseMb, docSchema, linkDocuments, scanNotRead, scanPagesRead, scansToRead, settledUrls, storeDocument } from "./doc-store";
 import { downloadDocument, fetchDocument, INGEST_MAX_BYTES } from "./doc-fetch";
-import { readScan } from "./doc-ocr";
+import { imageToPdf, readScan } from "./doc-ocr";
 import { modelOn, SCAN_MODEL } from "./llm";
 import { fetchable, heldPages } from "./docs";
 import { hasDatabase } from "./pg";
@@ -162,8 +162,10 @@ async function readScans(stillFetching: () => boolean): Promise<void> {
   const one = async (url: string, label: string): Promise<boolean> => {
     let unanswered = false;
     try {
-      const { buffer, filename } = await downloadDocument(url, INGEST_MAX_BYTES);
-      if (!/\.pdf$/i.test(filename)) throw new Error(`${filename} isn't a PDF`);
+      const { buffer: raw, filename } = await downloadDocument(url, INGEST_MAX_BYTES);
+      const image = /\.(jpe?g|png)$/i.test(filename);
+      if (!image && !/\.pdf$/i.test(filename)) throw new Error(`${filename} isn't a PDF or an image`);
+      const buffer = image ? await imageToPdf(raw, filename) : raw;
       const got = await readScan(buffer, label);
       unanswered = got.failed_runs > 0;
       if (!got.pages.length) throw new Error(got.failed_runs ? "Claude couldn't read it" : "no page had readable text");

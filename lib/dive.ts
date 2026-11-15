@@ -48,6 +48,11 @@ export interface DiveItem {
   kind_match: number;
   /** A part or an accessory of something else, by the AI review: ranked below whole items. */
   part: boolean;
+  /** What the product is, from the AI review (scripts/product-kind.ts), when coded. */
+  kind: string | null;
+  /** How the model judged the product against the request (lib/dive-ai.ts), with its reason, when it judged it. */
+  fit_verdict?: FitVerdict;
+  fit_reason?: string;
   /** Sold only under a state program's contract (NJSTART, Hawaii SPO, …): open to that state's buyers. */
   state: boolean;
   routes: number;
@@ -60,7 +65,33 @@ export interface DiveQuestion {
   options: { label: string; count: number; filter: DiveFilter }[];
 }
 
+export type FitVerdict = "fits" | "partly" | "no";
+
+/** What the model read the request as (lib/dive-ai.ts): the catalog's kinds it means and other words for it. */
+export interface DiveReading {
+  read_as: string | null;
+  kinds: string[];
+  terms: string[];
+  log_id?: string;
+}
+
+/** How a search is widened and ranked beyond the request's own words. */
+export interface DiveSearchOptions {
+  /** Kinds the request was read as: their products are on the shortlist even when no word of the request is in their names. */
+  kinds?: string[];
+  /** Other words the catalog may use for the request ("defibrillator" for "AED"). */
+  terms?: string[];
+  /** How many products to return: 12 for the page; more when the model will judge them first. */
+  limit?: number;
+}
+
 export interface DiveState {
+  /** The request as the model read it, when it did. */
+  reading?: DiveReading | null;
+  /** The log id of the fit judgment shown on the cards, for feedback. */
+  fit_log?: string | null;
+  /** Products the model judged not to be what was asked for, kept off the shortlist but listed with their reasons. */
+  set_aside?: DiveItem[];
   query: string;
   filters: DiveFilter[];
   /** Products that matched the need before any narrowing. */
@@ -99,7 +130,8 @@ const EXCLUSIVE: RegExp[][] = [[/\b(electric|battery|ev|bev)\b/, /\b(gasoline|ga
 
 /** True when the product names a different member of a group the request named, and not the one asked for. */
 export function conflictsWith(query: string, name: string): boolean {
-  const q = query.toLowerCase();
+  // A ruled-out attribute isn't one asked for: "pickup (non-diesel)" or "not electric" asks for neither.
+  const q = query.toLowerCase().replace(/\b(?:no|not|non|without|except|excluding)[\s-]+(?:an?\s+)?[a-z]+/g, " ");
   const n = name.toLowerCase();
   return EXCLUSIVE.some((group) => {
     const asked = group.filter((re) => re.test(q));
@@ -107,11 +139,11 @@ export function conflictsWith(query: string, name: string): boolean {
   });
 }
 
-function gather(db: Db, query: string): DiveItem[] {
-  return gatherAll(db, query).filter((i) => !conflictsWith(query, i.name));
+function gather(db: Db, query: string, opts: DiveSearchOptions = {}): DiveItem[] {
+  return gatherAll(db, query, opts).filter((i) => !conflictsWith(query, i.name));
 }
 
-function gatherAll(db: Db, query: string): DiveItem[] {
+function gatherAll(db: Db, query: string, opts: DiveSearchOptions = {}): DiveItem[] {
   const buyer = db.session.buyer;
   const items: DiveItem[] = [];
   const asked = requestTokens(query);
@@ -142,6 +174,7 @@ function gatherAll(db: Db, query: string): DiveItem[] {
       fit: o.fit,
       cover: coverage(asked, l.title),
       kind_match: kindMatch(asked, [tokens(namePhrase(l.title))]),
+      kind: null,
       part: false,
       state: false,
       routes: 1,
@@ -149,7 +182,14 @@ function gatherAll(db: Db, query: string): DiveItem[] {
   }
 
   // The co-op catalog: every product with every contract that sells it. The best route stands for the product.
-  for (const h of catalogProducts(db, query, buyer, 600).hits) {
+  // The request's own words, with the kinds it was read as; then each other word for it, merged by product.
+  const hits = new Map<string, ReturnType<typeof catalogProducts>["hits"][number]>();
+  for (const [n, q] of [query, ...(opts.terms ?? [])].entries())
+    for (const h of catalogProducts(db, q, buyer, n ? 200 : 600, n ? {} : { kinds: opts.kinds }).hits) {
+      const have = hits.get(h.product_id);
+      hits.set(h.product_id, have ? { ...have, fit: Math.max(have.fit, h.fit), kind_match: Math.max(have.kind_match, h.kind_match) } : h);
+    }
+  for (const h of hits.values()) {
     const usable = (r: (typeof h.routes)[number]) => r.eligible && (!buyer || r.member || r.coop_id === "gsa_mas");
     const r = [...h.routes].sort((a, b) => Number(usable(b)) - Number(usable(a)) || Number(b.price != null) - Number(a.price != null) || (a.price ?? Infinity) - (b.price ?? Infinity))[0];
     const basis = /award/i.test(r.vintage ?? "") ? "Awarded bid, base model" : /net price/i.test(r.vintage ?? "") ? "Contract net price" : /base vehicle|cost sheet/i.test(r.vintage ?? "") ? "Base price, before options and delivery" : "Published price";
@@ -175,6 +215,7 @@ function gatherAll(db: Db, query: string): DiveItem[] {
       fit: h.fit,
       cover: coverage(asked, h.name),
       kind_match: h.kind_match,
+      kind: h.kind,
       part: h.role === "part" || h.role === "accessory",
       state: r.trx,
       routes: h.routes.length,
@@ -258,9 +299,9 @@ function questionsFor(items: DiveItem[], filters: DiveFilter[], query: string, h
 }
 
 /** The shortlist for a need, narrowed by the buyer's answers. */
-export function diveSearch(db: Db, query: string, filters: DiveFilter[]): DiveState {
+export function diveSearch(db: Db, query: string, filters: DiveFilter[], opts: DiveSearchOptions = {}): DiveState {
   const q = query.trim().slice(0, 200);
-  const pool = q ? gather(db, q) : [];
+  const pool = q ? gather(db, q, opts) : [];
   const matched = pool.filter((i) => filters.every((f) => passes(i, f)));
   // What the buyer can use comes first; with no agency set, what any buyer could use comes before one state's
   // contracts, as on the results page. Then the product that is the thing asked for (a swing before a swing hanger),
@@ -286,7 +327,7 @@ export function diveSearch(db: Db, query: string, filters: DiveFilter[]): DiveSt
     filters,
     pool: pool.length,
     matched: matched.length,
-    items: ranked.slice(0, 12),
+    items: ranked.slice(0, opts.limit ?? 12),
     questions,
     price_range: prices.length ? { min: Math.min(...prices), max: Math.max(...prices) } : null,
     pay_range: !pays.length ? null : pays.length > 5 ? { min: at(0.1), max: at(0.9) } : { min: pays[0], max: pays[pays.length - 1] },
@@ -296,9 +337,37 @@ export function diveSearch(db: Db, query: string, filters: DiveFilter[]): DiveSt
   };
 }
 
+/** The shortlist reordered by the model's fit verdicts, then cut to the 12 the page shows. What the buyer can use still
+ * comes first (and, with no agency set, what any buyer can use); within that, products judged to fit come before
+ * those that partly fit or weren't judged. Otherwise the rules' order stands. Products judged not to fit are set aside,
+ * listed apart with their reasons, unless nothing else is left. */
+export function applyFit(state: DiveState, fits: Map<string, { fit: FitVerdict; reason: string }>, anyone: boolean, show = 12): DiveState {
+  const rank = (i: DiveItem) => (i.fit_verdict === "fits" ? 2 : i.fit_verdict === "no" ? 0 : 1);
+  const items = state.items.map((i) => {
+    const f = fits.get(i.id);
+    return f ? { ...i, fit_verdict: f.fit, fit_reason: f.reason } : i;
+  });
+  const order = new Map(items.map((i, n) => [i.id, n]));
+  items.sort(
+    (a, b) => Number(b.usable) - Number(a.usable) || (anyone ? Number(a.state) - Number(b.state) : 0) || rank(b) - rank(a) || order.get(a.id)! - order.get(b.id)!,
+  );
+  const fitting = items.filter((i) => i.fit_verdict !== "no");
+  if (!fitting.length) return { ...state, items: items.slice(0, show), set_aside: [] };
+  return { ...state, items: fitting.slice(0, show), set_aside: items.filter((i) => i.fit_verdict === "no") };
+}
+
+/** How many products on the shortlist have each word in their names, and how many there are: what a must-have or a
+ * ruled-out word can narrow by. */
+export function diveWordCounts(db: Db, query: string, opts: DiveSearchOptions = {}): { words: Map<string, number>; pool: number } {
+  const pool = query.trim() ? gather(db, query.trim().slice(0, 200), opts) : [];
+  const words = new Map<string, number>();
+  for (const i of pool) for (const w of diveWords(i.name)) words.set(w, (words.get(w) ?? 0) + 1);
+  return { words, pool: pool.length };
+}
+
 /** Items by id, for the comparison. Looked up through the same search so eligibility is current. */
-export function diveItems(db: Db, query: string, ids: string[]): DiveItem[] {
-  const pool = gather(db, query.trim().slice(0, 200));
+export function diveItems(db: Db, query: string, ids: string[], opts: DiveSearchOptions = {}): DiveItem[] {
+  const pool = gather(db, query.trim().slice(0, 200), opts);
   return ids.map((id) => pool.find((i) => i.id === id)).filter((i): i is DiveItem => Boolean(i));
 }
 

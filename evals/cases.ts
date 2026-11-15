@@ -23,7 +23,7 @@ import * as A from "../lib/actions";
 import type { AiRecord, Outcome, Task } from "../lib/ai-log";
 import { parseRequest, tokens } from "../lib/assistant";
 import { getDb } from "../lib/db";
-import { diveSearch, type DiveItem, type DiveState } from "../lib/dive";
+import { conflictsWith, diveSearch, type DiveItem, type DiveState } from "../lib/dive";
 
 import { catalogCoopHits } from "../lib/catalog";
 import { EXAMPLES, requestKind } from "../lib/front-door";
@@ -226,7 +226,16 @@ const draftIn = (user: string) => user.replace(/^DRAFT\n/, "");
 
 const brief = (fx: Fixtures, id: keyof Pick<Fixtures, "tables" | "manyTables" | "playground">) => A.shopperBrief(fx[id]);
 const ask = (fx: Fixtures, id: keyof Pick<Fixtures, "tables" | "manyTables" | "playground">, question: string) => A.askShopper({ requestId: fx[id], question });
-const narrow = (state: DiveState, message: string) => A.dive({ query: state.query, filters: [], message });
+const narrow = (state: DiveState, message: string) => A.dive({ query: state.query, filters: [], message, judge: false });
+/** A dive started from the buyer's words, judged in the same turn. */
+const start = (need: string) => A.dive({ need, judge: true });
+type DiveTurn = { state: DiveState };
+const reading = (v: unknown) => (v as DiveTurn).state.reading;
+const shown = (v: unknown) => (v as DiveTurn).state.items;
+/** Canned fit verdicts for every product the judge is shown: `pick` decides each one from its number and name. */
+const cannedFits = (pick: (n: number, name: string) => { fit: string; reason: string }) => (call: { user: string }) => ({
+  products: [...call.user.matchAll(/^(\d+)\. ([^|\n]+)/gm)].map((m) => ({ n: Number(m[1]), ...pick(Number(m[1]), m[2].trim()) })),
+});
 const compare = (fx: Fixtures, query = fx.chairs.query, items = fx.finalists) => A.diveCompare({ query, ids: items.map((i) => i.id) });
 const filters = (v: unknown) => (v as { state: DiveState }).state.filters;
 /** A fresh copy of the contract fixture: the reader caches by file hash, and a cached read makes no model call. */
@@ -537,6 +546,107 @@ export const CASES: Case[] = [
     title: "Asked for something the shortlist can't be narrowed by, sets no price and says so",
     run: (fx) => narrow(fx.chairs, "ones with a ten-year warranty"),
     expect: [is("no price filter and nothing narrowed", (v) => filters(v).length === 0)],
+  },
+
+  // ---- Reading what a buyer wants
+  {
+    id: "dive-understand.guard.grounded",
+    task: "dive_understand",
+    title: "Only kinds the catalog offered, words that find products and requirements on the shortlist are kept",
+    canned: { kinds: ["police vehicle", "starship"], search_terms: ["police interceptor utility", "teleporter"], must_have: ["zzyzx"], must_not: ["electric"], read_as: "Police SUVs, electric ruled out." },
+    run: () => start("A police SUV, not electric"),
+    expect: [
+      outcome("partial"),
+      is("the offered kind kept and the invented one dropped", (v) => JSON.stringify(reading(v)?.kinds) === JSON.stringify(["police vehicle"])),
+      is("the invented search term dropped", (v) => !reading(v)?.terms.includes("teleporter")),
+      is("electric ruled out, and the word no product has dropped", (v) => filters(v).some((f) => f.kind === "not_word" && f.value === "electric") && !filters(v).some((f) => f.kind === "word" && f.value === "zzyzx")),
+    ],
+  },
+  {
+    id: "dive-understand.guard.price",
+    task: "dive_understand",
+    title: "A reading that names a price the buyer never gave isn't shown",
+    canned: { kinds: ["police vehicle"], search_terms: [], must_have: [], must_not: [], read_as: "Police SUVs under $45,000." },
+    run: () => start("A police SUV"),
+    expect: [outcome("partial"), is("no reading line", (v) => reading(v)?.read_as === null)],
+  },
+  {
+    id: "dive-understand.live.police-suv",
+    task: "dive_understand",
+    title: "Reads a police SUV as the catalog's police vehicle kinds",
+    run: () => start("A police SUV for the chief"),
+    expect: [survived, is("a police kind", (v) => (reading(v)?.kinds ?? []).some((k) => /police|pursuit|interceptor|special service/.test(k)))],
+  },
+  {
+    id: "dive-understand.live.requirements",
+    task: "dive_understand",
+    title: "Turns a stated requirement and an exclusion into filters",
+    run: () => start("a crew cab pickup, not diesel"),
+    expect: [survived, is("crew required, diesel ruled out", (v) => filters(v).some((f) => f.kind === "word" && f.value === "crew") && filters(v).some((f) => f.kind === "not_word" && f.value === "diesel"))],
+  },
+  {
+    id: "dive-understand.live.no-shared-word",
+    task: "dive_understand",
+    title: "Finds climbers for a request that never says climber",
+    run: () => start("something for kids to climb on at the park"),
+    expect: [survived, is("a climber kind", (v) => (reading(v)?.kinds ?? []).some((k) => /climb/.test(k)))],
+  },
+
+  {
+    id: "dive-understand.guard.negation",
+    task: "dive_understand",
+    title: "A ruled-out fuel isn't read as the one asked for: a non-diesel pickup keeps the gasoline trucks",
+    canned: {},
+    run: async () => ({ nonDiesel: conflictsWith("crew cab pickup truck (non-diesel)", "Ford F-150, 3.3L gasoline"), electric: conflictsWith("electric vehicle", "Ford F-150, 3.3L gasoline") }),
+    expect: [is<{ nonDiesel: boolean; electric: boolean }>("gasoline kept for non-diesel, dropped for electric", (v) => !v.nonDiesel && v.electric)],
+  },
+
+  // ---- Judging how products fit
+  {
+    id: "dive-fit.guard.kept",
+    task: "dive_fit",
+    title: "Verdicts with plain reasons are shown on every product judged",
+    canned: cannedFits(() => ({ fit: "fits", reason: "A police SUV, as asked" })),
+    run: () => start("A police SUV"),
+    expect: [outcome("kept"), is("every shown product judged", (v) => shown(v).length > 0 && shown(v).every((i) => i.fit_verdict === "fits" && i.fit_reason === "A police SUV, as asked"))],
+  },
+  {
+    id: "dive-fit.guard.figures",
+    task: "dive_fit",
+    title: "A reason with a price, or a figure that isn't in the product or the request, is dropped",
+    canned: cannedFits((n) => ({ fit: "fits", reason: n === 1 ? "A police SUV for $45,000" : n === 2 ? "A police SUV with 900 horsepower" : "A police SUV, as asked" })),
+    run: () => start("A police SUV"),
+    expect: [outcome("partial"), is("no reason with the price or the stray figure", (v) => shown(v).some((i) => i.fit_reason) && !shown(v).some((i) => /\$|900 horsepower/.test(i.fit_reason ?? "")))],
+  },
+  {
+    id: "dive-fit.guard.order",
+    task: "dive_fit",
+    title: "A product judged not to fit moves below those that do",
+    canned: cannedFits((n) => (n === 1 ? { fit: "no", reason: "Not what was asked" } : { fit: "fits", reason: "As asked" })),
+    run: async () => {
+      const before = await A.dive({ need: "A police SUV", judge: false });
+      const after = await A.dive({ query: before.state.query, filters: before.state.filters, judge: true });
+      return { first: before.state.items[0]?.id, after: after.state.items.map((i) => i.id), verdicts: after.state.items.map((i) => i.fit_verdict) };
+    },
+    expect: [outcome("kept"), is<{ first: string; after: string[]; verdicts: string[] }>("the rules' first product now after every fitting one", (v) => v.after.indexOf(v.first) === -1 || v.verdicts.slice(0, v.after.indexOf(v.first)).every((f) => f === "fits") && v.verdicts[v.after.indexOf(v.first)] === "no")],
+  },
+  {
+    id: "dive-fit.live.suv-not-sedan",
+    task: "dive_fit",
+    title: "Judges police SUVs to fit and a sedan or a pickup not to",
+    run: () => start("A police SUV"),
+    expect: [
+      survived,
+      is("at least three police SUVs judged to fit", (v) => shown(v).filter((i) => i.fit_verdict === "fits").length >= 3),
+      is("no sedan or pickup judged to fit", (v) => !shown(v).some((i) => /charger|silverado|f-150/i.test(i.name) && i.fit_verdict === "fits")),
+    ],
+  },
+  {
+    id: "dive-fit.live.hanger-not-swing",
+    task: "dive_fit",
+    title: "A swing hanger is not judged to be a swing",
+    run: () => start("a swing for the park"),
+    expect: [survived, is("no hanger judged to fit", (v) => !shown(v).some((i) => /hanger/i.test(i.name) && i.fit_verdict === "fits"))],
   },
 
   // ---- Comparing products

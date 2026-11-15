@@ -18,6 +18,8 @@ export const TASKS = {
   shopper_answer: "Answering about a purchase",
   dive_read: "Reading a product-dive message",
   dive_verdict: "Comparing products",
+  dive_understand: "Reading what a buyer wants",
+  dive_fit: "Judging how products fit",
   paperwork: "Wording paperwork",
   quote_read: "Reading a quote",
   contract_answer: "Answering from a contract",

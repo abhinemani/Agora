@@ -13,6 +13,8 @@ import { Mark } from "./blueprint";
 import { Arrow } from "./icons";
 import { post, useStore } from "./store";
 import { ErrorNote } from "./ui";
+import { Feedback } from "./Feedback";
+import { FitLine, SetAside } from "./FitLine";
 import { goHref } from "@/lib/coops";
 import type { DiveFilter, DiveItem, DiveQuestion, DiveState } from "@/lib/dive";
 import { offRamp, routeFor, ROUTE_LABEL, toSearch, type FrontDoorUrl, type OffRampPath, type Route } from "@/lib/front-door";
@@ -38,6 +40,8 @@ interface DiveResponse {
   said: string;
   quantity: { value: number; stated: boolean } | null;
   context: Context;
+  /** The model hasn't judged every product on the shortlist yet: ask again with judge: true for the rest. */
+  fit_pending?: boolean;
 }
 interface Turn {
   who: "you" | "loci";
@@ -92,6 +96,9 @@ export function FrontDoor({ initial, onNewSearch }: { initial: FrontDoorUrl; onN
   const [leaving, setLeaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const started = useRef(false);
+  // The model's fit judgment arrives after the shortlist; this holds which shortlist it was asked about.
+  const [judging, setJudging] = useState(false);
+  const latest = useRef<string | null>(null);
 
   const say = (who: Turn["who"], t: string) => setTurns((ts) => [...ts, { who, text: t }]);
 
@@ -132,6 +139,9 @@ export function FrontDoor({ initial, onNewSearch }: { initial: FrontDoorUrl; onN
   const turn = async (body: Record<string, unknown>, mine?: string) => {
     setBusy(true);
     setError(null);
+    // A judgment still in flight is about the shortlist before this turn: it must not overwrite what this turn shows.
+    latest.current = null;
+    setJudging(false);
     if (mine) say("you", mine);
     try {
       const res = await post<DiveResponse>("/api/act", { action: "dive", ...body });
@@ -147,6 +157,18 @@ export function FrontDoor({ initial, onNewSearch }: { initial: FrontDoorUrl; onN
       }
       remember(res.state, n);
       say("loci", [res.said, summary(res.state)].filter(Boolean).join(" "));
+      // The shortlist shows at once; the model's fit judgment follows and reorders it, unless the buyer has moved on.
+      if (res.fit_pending) {
+        const asked = JSON.stringify([res.state.query, res.state.filters]);
+        latest.current = asked;
+        setJudging(true);
+        void post<DiveResponse>("/api/act", { action: "dive", query: res.state.query, filters: res.state.filters, judge: true })
+          .then((j) => {
+            if (latest.current === asked) setState(j.state);
+          })
+          .catch(() => undefined)
+          .finally(() => latest.current === asked && setJudging(false));
+      }
     } catch (e) {
       setError((e as Error).message);
     } finally {
@@ -158,16 +180,16 @@ export function FrontDoor({ initial, onNewSearch }: { initial: FrontDoorUrl; onN
     if (started.current) return;
     started.current = true;
     say("you", initial.need);
-    void (initial.query ? turn({ query: initial.query, filters: initial.filters ?? [] }) : turn({ need: initial.need }));
+    void (initial.query ? turn({ query: initial.query, filters: initial.filters ?? [], judge: false }) : turn({ need: initial.need, judge: false }));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const narrow = (filters: DiveFilter[], mine: string) => state && turn({ query: state.query, filters }, mine);
+  const narrow = (filters: DiveFilter[], mine: string) => state && turn({ query: state.query, filters, judge: false }, mine);
   const send = () => {
     if (!state || !text.trim() || busy) return;
     const m = text.trim();
     setText("");
-    void turn({ query: state.query, filters: state.filters, message: m }, m);
+    void turn({ query: state.query, filters: state.filters, message: m, judge: false }, m);
   };
   const setQuantity = (n: number) => {
     setQty(n);
@@ -364,7 +386,7 @@ export function FrontDoor({ initial, onNewSearch }: { initial: FrontDoorUrl; onN
             <div className="border border-primary-darker bg-white p-4">
               <div className="text-body-md font-bold text-ink">Who's buying?</div>
               <div className="mt-3">
-                <BuyerPicker compact onDone={(b) => b && state && void turn({ query: state.query, filters: state.filters }, `Buying for ${b.name}, ${b.state}`)} />
+                <BuyerPicker compact onDone={(b) => b && state && void turn({ query: state.query, filters: state.filters, judge: false }, `Buying for ${b.name}, ${b.state}`)} />
               </div>
               <button type="button" onClick={() => setAgencySkipped(true)} className={`${linkBtn} lg:hidden`}>
                 Skip: show every contract →
@@ -378,10 +400,19 @@ export function FrontDoor({ initial, onNewSearch }: { initial: FrontDoorUrl; onN
             <>
               {rampLoud && ramp && <OffRampPanel id="none-fit" ramp={ramp} state={state} quantity={n} limit={limit} ctx={ctx} busy={working} onOpen={openRequest} isRec={ref} />}
 
+              {state.reading?.read_as && (
+                <div className="flex flex-wrap items-center gap-x-3 gap-y-1 border-l-4 border-primary bg-white px-3 py-2 text-ui-2xs text-base-darker">
+                  <span>
+                    <span className="font-bold text-ink">Read as:</span> {state.reading.read_as}
+                  </span>
+                  <Feedback id={state.reading.log_id} className="ml-auto" />
+                </div>
+              )}
               <div className="flex flex-wrap items-center gap-2">
                 <span className={`${label} text-base-dark`}>
                   {state.matched} of {state.pool} match
                 </span>
+                {judging && <span className="text-ui-3xs text-base-dark">Checking how each one fits…</span>}
                 {buyer && (
                   <span className="inline-flex min-h-[32px] items-center bg-primary-lighter px-2 text-ui-2xs font-bold text-primary-darker" title="Change the agency from the account menu">
                     {buyer.name}, {buyer.state}
@@ -410,7 +441,7 @@ export function FrontDoor({ initial, onNewSearch }: { initial: FrontDoorUrl; onN
                 const total = i.price != null ? i.price * n : null;
                 const route = routeFor(total, limit);
                 return (
-                  <article key={i.id} className="grid grid-cols-[minmax(0,1fr)_auto] gap-x-4 gap-y-2 border border-base-lighter bg-white px-4 py-3.5">
+                  <article key={i.id} className={`grid grid-cols-[minmax(0,1fr)_auto] gap-x-4 gap-y-2 border border-base-lighter px-4 py-3.5 ${i.fit_verdict === "no" ? "bg-base-lightest" : "bg-white"}`}>
                     <div className="flex min-w-0 flex-col gap-1.5">
                       <span className="flex flex-wrap items-center gap-2">
                         <span className="text-body-md font-bold text-ink">{i.name}</span>
@@ -425,6 +456,7 @@ export function FrontDoor({ initial, onNewSearch }: { initial: FrontDoorUrl; onN
                         {i.routes > 1 && <span>{i.routes} contracts sell it</span>}
                       </span>
                       <span className={`text-ui-2xs ${i.usable ? "text-success-darker" : "text-base-dark"}`}>{i.access}</span>
+                      {i.fit_verdict && <FitLine verdict={i.fit_verdict} reason={i.fit_reason} />}
                     </div>
                     <div className="text-right text-ui-2xs text-base-dark">
                       <div className="text-lg font-bold tabular-nums text-ink">
@@ -454,6 +486,13 @@ export function FrontDoor({ initial, onNewSearch }: { initial: FrontDoorUrl; onN
                 );
               })}
               {state.matched > state.items.length && <p className="text-ui-2xs text-base-dark">Showing the top {state.items.length}. Answer another question to narrow the other {state.matched - state.items.length}.</p>}
+              <SetAside items={state.set_aside ?? []} />
+              {state.fit_log && (
+                <p className="flex flex-wrap items-center gap-x-3 gap-y-1 text-ui-3xs text-base-dark">
+                  <span>Fit is judged by AI from each product's name and kind. Prices and who can buy come from the contracts.</span>
+                  <Feedback id={state.fit_log} />
+                </p>
+              )}
 
               {ramp && !rampLoud &&
                 (rampOpen ? (
@@ -702,3 +741,4 @@ function RouteStage({
     </section>
   );
 }
+

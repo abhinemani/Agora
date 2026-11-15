@@ -61,8 +61,14 @@ const authFailure = (reason: string) => /\b(401|403)\b|authentication_error|perm
 async function runOnce(c: Case, fx: Awaited<ReturnType<typeof fixtures>>): Promise<{ problems: string[]; outcome: string | null; output: string | null; unrun?: string }> {
   // A contract brief is cached per contract; each case needs its own reading.
   (globalThis as unknown as { __agoraBriefs?: Map<string, unknown> }).__agoraBriefs?.clear();
+  // The dive keeps what the model read and judged between turns; each case starts without it.
+  delete (globalThis as unknown as { __agoraDiveAI?: unknown }).__agoraDiveAI;
   const before = aiRecords().length;
-  stubModel(c.canned === undefined ? null : (call) => (typeof c.canned === "function" ? (c.canned as (call: unknown, fx: unknown) => unknown)(call, fx) : c.canned));
+  // A guard case's canned output answers its own task. Any other call the case makes on the way (the dive reads the
+  // request and judges fit around a message it narrows by) gets no model, as offline.
+  stubModel(
+    c.canned === undefined ? null : (call) => (call.task !== c.task ? null : typeof c.canned === "function" ? (c.canned as (call: unknown, fx: unknown) => unknown)(call, fx) : c.canned),
+  );
   try {
     const result = await c.run(fx);
     const record = aiRecords()

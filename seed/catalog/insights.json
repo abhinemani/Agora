@@ -30,12 +30,16 @@
    "BuyBoard 724-23: Randall Reed's Prestige Ford",
    "BuyBoard 724-23: Silsbee Toyota"
   ],
-  "doc_price_rows": 0,
-  "doc_price_offerings": 0,
-  "doc_price_duplicates": 0,
-  "doc_price_superseded": 0,
-  "doc_price_unclear": 0,
-  "doc_price_rejected": 0
+  "doc_price_rows": 38438,
+  "doc_price_offerings": 2490,
+  "doc_price_list_prices": 493,
+  "doc_price_read_in_parts": 35820,
+  "doc_price_mixed_sheets": 20,
+  "doc_price_mixed_rows": 13,
+  "doc_price_duplicates": 28,
+  "doc_price_superseded": 31,
+  "doc_price_unclear": 16,
+  "doc_price_rejected": 40
  },
  "suppliers": {
   "records": 16016,
@@ -470,7 +474,7 @@
    "with_end": 1437,
    "expired": 0,
    "with_states": 1437,
-   "offerings": 5810
+   "offerings": 7669
   },
   {
    "coop": "Hawaii SPO",
@@ -536,7 +540,7 @@
    "with_end": 651,
    "expired": 0,
    "with_states": 651,
-   "offerings": 0
+   "offerings": 631
   }
  ],
  "nigp": {
@@ -831,17 +835,17 @@
   "nigp_codes": 520,
   "nigp_classes": 150,
   "suppliers_shared_with_coops": 307,
-  "offerings": 5810,
+  "offerings": 7669,
   "products_on_two_or_more_contracts": 568
  },
  "products": {
-  "products": 56924,
-  "offerings": 67038,
+  "products": 59362,
+  "offerings": 69528,
   "by_status": {
    "quote": 2176,
    "published_discount": 8102,
    "member_login": 26291,
-   "published_price": 30469
+   "published_price": 32959
   },
   "by_status_coops": {
    "quote": 1509,
@@ -1641,7 +1645,35 @@
    "Rush Truck Centers of Texas, LP",
    "Chastang Enterprises Houston LLC dba Chastang Ford",
    "LHD Partners, LP dba Longhorn Harley-Davidson",
-   "Endera Motors, LLC"
+   "Endera Motors, LLC",
+   "Fit-Rite Uniform Co. Inc.",
+   "Smiths Detection Inc",
+   "Laboratory Disposable Products Inc",
+   "Promega Corporation",
+   "Luccasbakery",
+   "Clarke Mosquito Control",
+   "Bay Product Development LLC",
+   "Ironbound Supply Co. Inc.",
+   "Fearless Solutions LLC",
+   "Hologic Sales and Service, LLC",
+   "Marturano Recreation Company Inc",
+   "Kompan",
+   "George Ely Associates Inc.",
+   "Ben Shaffer Recreation Inc.",
+   "Liberty Parks and Playgrounds Inc",
+   "Taylor Oil Company",
+   "Specialized Elevator Corp",
+   "MAXIMUS, Inc.",
+   "Microsoft Corporation",
+   "Childers Meat Co., Inc",
+   "Garten Services Inc",
+   "Bluesun, Inc.",
+   "Tyree Oil Inc",
+   "Viavi Solutions Inc",
+   "CNH Industrial America, LLC, dba New Holland Agriculture",
+   "DPI Security",
+   "Smitty's Vending, Inc.",
+   "A-Z Exterior Services; Manchester Unlimited LLC"
   ],
   "multi_route": 5811
  },

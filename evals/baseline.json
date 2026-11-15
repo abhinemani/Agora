@@ -1,5 +1,5 @@
 {
-  "saved": "2026-11-15T06:03:23.890Z",
+  "saved": "2026-11-15T06:19:16.700Z",
   "model": "claude-sonnet-5-5",
   "prompts": {
     "request_parse": "cebcf585",
@@ -68,6 +68,7 @@
     "price-sheet.guard.heading-in-every-part": "pass",
     "price-sheet.guard.item-elsewhere": "pass",
     "price-sheet.guard.not-on-line": "pass",
+    "price-sheet.guard.percent-unit": "pass",
     "price-sheet.live.long-list-prices": "pass",
     "price-sheet.live.state-sheet": "pass",
     "quote.guard.as-printed": "pass",

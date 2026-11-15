@@ -635,6 +635,12 @@ export default function CoopDataPage() {
           items are those on each contract&apos;s first summary page; contracts with more pages say so on their own page. The {n(nj.documents)} attached documents (price
           sheets, terms, methods of operation) are being read into Loci&apos;s document store on the server, so search and contract questions reach their text, and each contract&apos;s summary page is held as text. Hawaii, Arkansas, New York and Oregon are loaded too (below).
         </p>
+        <p className="mt-2 max-w-[72ex] text-ui-xs text-base-dark">
+          Item prices from price sheets: Claude read {n(catalogInsights.cleanup.doc_price_rows)} rows from NJSTART&apos;s and OregonBuys&apos; price sheets, each
+          checked against the line it is printed on. {n(catalogInsights.cleanup.doc_price_offerings)} are in the catalog, {n(catalogInsights.cleanup.doc_price_list_prices)}{" "}
+          of them list prices shown before the contract discount, from sheets short enough to be read whole. {n(catalogInsights.cleanup.doc_price_read_in_parts)} rows
+          from long sheets, read in parts before the column headings went with every part, wait to be read again.
+        </p>
         <p className="mt-3 text-ui-xs text-base-dark">
           Try it: set your agency to Harmon Lake Township, New Jersey, and search for <Link href="/" className="text-primary">snow plow parts</Link> or road salt, or browse{" "}
           <Link href="/contracts?coop=NJSTART" className="text-primary">every NJSTART contract</Link>.

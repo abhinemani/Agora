@@ -890,4 +890,17 @@ export const CASES: Case[] = [
       is<SheetRows>("no weight or lead time read as a price", (v) => v.rows.every((r) => r.price >= 25)),
     ],
   },
+  {
+    id: "price-sheet.guard.percent-unit",
+    task: "price_sheet",
+    title: "A figure whose unit is a percentage, or whose line is a markup, is dropped",
+    canned: {
+      rows: [
+        { item: "Carpenter", sku: null, unit: "PCNT", price: 13331.67, basis: "contract_price", note: null, line: "21  Carpenter  PCNT   13331.67" },
+        { item: "Rock salt, bulk", sku: null, unit: "Ton", price: 68.4, basis: "contract_price", note: null, line: "1 | 4410-22 | Rock salt, bulk, delivered | Ton | $68.40" },
+      ],
+    },
+    run: () => readPriceSheet(`${PRICE_SHEET}\n21  Carpenter  PCNT   13331.67`, "Price Schedule"),
+    expect: [outcome("partial"), pieces(1, 2), because(/a markup or percentage/), is<SheetRows>("only the rock salt row", (v) => v.rows.length === 1 && v.rows[0].price === 68.4)],
+  },
 ];

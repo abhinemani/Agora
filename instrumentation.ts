@@ -6,4 +6,7 @@ export async function register() {
   // A one-time check of the scan model against the main model's readings, when AGORA_SCAN_COMPARE asks for one.
   const { startScanComparison } = await import("./lib/scan-compare");
   startScanComparison();
+  // Item prices from the price sheets, when AGORA_PRICE_SHEETS asks for them (lib/price-sheets.ts).
+  const { startPriceSheets } = await import("./lib/price-sheets");
+  startPriceSheets();
 }

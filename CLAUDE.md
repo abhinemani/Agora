@@ -53,6 +53,7 @@ Generated data is committed so builds need no network. Re-run the importers afte
    `npm run import:epc` rebuilds Empire Procure Connect's records from `seed/catalog/source/epc/` (a new download goes through `--read`).
    `npm run import:ny` rebuilds New York's records from `seed/catalog/source/ny/` (a new download goes through `--read`).
    `npm run import:oregon` rebuilds Oregon's records from `seed/catalog/source/oregon/` (after `fetch:oregon`, pass `--read`).
+   `npm run import:doc-prices` pulls the item prices the server read from the state programs' price sheets (`lib/price-sheets.ts`, run with `AGORA_PRICE_SHEETS`) into `seed/catalog/source/doc-prices/`.
 5. `npm run import:catalog-coops` builds the co-op catalog (`seed/catalog/catalog.json.gz`) and attaches the price rows.
 6. `npm run import:state-rules` builds `lib/state-rules.json` from `seed/states/source/`.
 

@@ -25,6 +25,7 @@ import { coopIdForVehicle, normalizeDomain } from "../lib/coops";
 import { seed } from "../lib/seed";
 import { STATES } from "../lib/vehicles";
 import { STASH_REASONS, stashReason, type StashReason } from "./product-stash";
+import { productKindKey, type KindRole } from "./product-kind";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const SRC = join(ROOT, "seed/catalog/source");
@@ -49,6 +50,22 @@ const categoryPicks = reviewed<{ pick: string; confidence: string }>("category")
 const canonRows = reviewed<{ name: string | null; sku: string | null; list: number | null; discount: number | null; price: number | null; unit: string | null; issue: string | null; confidence: string; page: number; line: string }>("canon-rows");
 const productNames = reviewed<{ pick: string | null; confidence: string }>("product-name");
 const nigpPicks = reviewed<{ classes: string[]; confidence: string }>("nigp");
+const productKinds = reviewed<{ kind: string; role: KindRole; aliases: string[]; confidence: string }>("product-kind");
+// Low-confidence answers aren't applied, with one exception: a doubtful "not a whole item" can still keep a product out
+// of the catalog (scripts/product-stash.ts). Doubt removes a product; it never adds one.
+// The packaged-service review (task package-check): every verdict, with whether it was confident.
+const packageVerdicts: Record<string, { verdict: string; sure: boolean }> = (() => {
+  const path = join(ROOT, "seed/cleanup/decisions/package-check.json");
+  if (!existsSync(path)) return {};
+  const all = JSON.parse(readFileSync(path, "utf8")) as Record<string, { verdict: string; confidence: string }>;
+  return Object.fromEntries(Object.entries(all).map(([k, d]) => [k, { verdict: d.verdict, sure: d.confidence !== "low" }]));
+})();
+const doubtfulRoles: Record<string, KindRole> = (() => {
+  const path = join(ROOT, "seed/cleanup/decisions/product-kind.json");
+  if (!existsSync(path)) return {};
+  const all = JSON.parse(readFileSync(path, "utf8")) as Record<string, { role: KindRole; confidence: string }>;
+  return Object.fromEntries(Object.entries(all).filter(([, d]) => d.confidence === "low").map(([k, d]) => [k, d.role]));
+})();
 
 interface RawSupplier {
   supplier_id: string;
@@ -730,7 +747,7 @@ const priceFileStats = { rows: 0, attached: 0, unmatched: [] as string[] };
 // contract's sheets print different prices for one item, the latest amendment's price stands (by the amendment,
 // revision and date in the sheets' names), and when the names can't say which is latest the item stays out. A row whose
 // contract has the same price on file for an item of the same name (NJSTART's line items) is the same offering.
-const docPriceStats = { rows: 0, attached: 0, list_prices: 0, duplicates: 0, superseded: 0, unclear: 0, rejected: 0, no_contract: 0, read_in_parts: 0, mixed_sheets: 0, mixed_rows: 0 };
+const docPriceStats = { rows: 0, attached: 0, list_prices: 0, duplicates: 0, superseded: 0, unclear: 0, rejected: 0, no_contract: 0, read_in_parts: 0, mixed_sheets: 0, mixed_rows: 0, off_column_sheets: 0, off_column_rows: 0 };
 {
   const file = join(SRC, "doc-prices/rows.json.gz");
   const doc: { retrieved: string; rows: { url: string; contract_id: string; program: string; label: string; n: number; item: string; sku: string | null; unit: string | null; price: number; basis: string; note: string | null; line: string; read_on: string; headed?: boolean; whole?: boolean }[] } | null = existsSync(file)
@@ -765,6 +782,21 @@ const docPriceStats = { rows: 0, attached: 0, list_prices: 0, duplicates: 0, sup
   for (const r of doc?.rows ?? []) (basisBySheet.get(r.url) ?? basisBySheet.set(r.url, new Set()).get(r.url)!).add(r.basis === "list_price" ? "list" : "paid");
   const mixed = new Set([...basisBySheet].filter(([, b]) => b.size > 1).map(([u]) => u));
   docPriceStats.mixed_sheets = mixed.size;
+  // A sheet that prices an item more than ten times above or below the same item's awarded price on file, on the same
+  // contract, has read the wrong column (a quantity or a square footage as the price), so none of it comes in. NJSTART's
+  // "T2580 Price Schedule.xlsx" read carpet shampooing at $31,000 a square foot against the award's $0.25.
+  const offColumn = new Set<string>();
+  for (const r of doc?.rows ?? []) {
+    if (r.basis === "list_price") continue;
+    const mine = new Set(words(r.item));
+    for (const x of onFile.get(r.contract_id) ?? []) {
+      const theirs = new Set(words(x.name));
+      const both = [...mine].filter((w) => theirs.has(w)).length;
+      const alike = both / (new Set([...mine, ...theirs]).size || 1) >= 0.6;
+      if (alike && x.price > 0 && (r.price / x.price > 10 || x.price / r.price > 10)) offColumn.add(r.url);
+    }
+  }
+  docPriceStats.off_column_sheets = offColumn.size;
   const valid: DocRow[] = [];
   for (const r of doc?.rows ?? []) {
     docPriceStats.rows++;
@@ -774,6 +806,10 @@ const docPriceStats = { rows: 0, attached: 0, list_prices: 0, duplicates: 0, sup
     }
     if (mixed.has(r.url)) {
       docPriceStats.mixed_rows++;
+      continue;
+    }
+    if (offColumn.has(r.url)) {
+      docPriceStats.off_column_rows++;
       continue;
     }
     if (!contractById.has(r.contract_id)) {
@@ -859,6 +895,19 @@ const docPriceStats = { rows: 0, attached: 0, list_prices: 0, duplicates: 0, sup
   }
 }
 
+// ------------------------------------------------------------------ what each product is
+// The AI review's answer for each product name (scripts/product-kind.ts): its kind, its role and other names buyers
+// use for it. Only high- and medium-confidence answers are applied; search falls back to the name for the rest.
+let kindsApplied = 0;
+for (const p of products as (typeof products[number] & { kind?: string; role?: KindRole; aliases?: string[] })[]) {
+  const k = productKinds[productKindKey(p.name)];
+  if (!k) continue;
+  p.kind = k.kind;
+  p.role = k.role;
+  if (k.aliases.length) p.aliases = k.aliases;
+  kindsApplied++;
+}
+
 // ------------------------------------------------------------------ the product stash
 // Products that can't show what Loci is for are stashed, not served (scripts/product-stash.ts has the rule and the
 // reasons): no price, a rate line, a component part. An offering goes by its own reason; a product goes when none of
@@ -879,7 +928,7 @@ if (!INCLUDE_STASHED) {
   const firstReason = new Map<string, StashReason>();
   for (const o of offerings) {
     const p = productOf.get(o.product);
-    const why = p ? stashReason(o, p, titleOf.get(o.contract) ?? "") : null;
+    const why = p ? stashReason(o, { ...(p as typeof p & { role?: KindRole }), doubtful_role: doubtfulRoles[productKindKey(p.name)], package: packageVerdicts[productKindKey(p.name)] }, titleOf.get(o.contract) ?? "") : null;
     if (!why) {
       keptOfferings.push(o);
       keptProducts.add(o.product);
@@ -1052,6 +1101,7 @@ const insights = {
     suppliers_merged_by_review: mergedByReview,
     contracts_categorized: categorized,
     products_renamed_by_review: renamedByReview,
+    products_coded_by_review: kindsApplied,
     canon_rows_added: canonAdded,
     price_file_rows: priceFileStats.rows,
     price_file_offerings: priceFileStats.attached,
@@ -1066,6 +1116,8 @@ const insights = {
     doc_price_superseded: docPriceStats.superseded,
     doc_price_unclear: docPriceStats.unclear,
     doc_price_rejected: docPriceStats.rejected,
+    doc_price_off_column_sheets: docPriceStats.off_column_sheets,
+    doc_price_off_column_rows: docPriceStats.off_column_rows,
   },
   suppliers: {
     records: rawSuppliers.length,

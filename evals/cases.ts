@@ -21,9 +21,12 @@ import { readFileSync, rmSync } from "node:fs";
 import { join } from "node:path";
 import * as A from "../lib/actions";
 import type { AiRecord, Outcome, Task } from "../lib/ai-log";
-import { parseRequest } from "../lib/assistant";
+import { parseRequest, tokens } from "../lib/assistant";
 import { getDb } from "../lib/db";
 import { diveSearch, type DiveItem, type DiveState } from "../lib/dive";
+
+import { catalogCoopHits } from "../lib/catalog";
+import { EXAMPLES, requestKind } from "../lib/front-door";
 import type { ContractAnswer, ContractBrief } from "../lib/docs";
 import type { Paperwork } from "../lib/paperwork";
 import { extractFile, parseContract, UPLOAD_DIR, type ExtractedFile } from "../lib/parser";
@@ -466,6 +469,59 @@ export const CASES: Case[] = [
     title: "Reads a model code and an exclusion from the shortlist's words",
     run: (fx) => narrow(fx.vans, "T-250 only, not the ProMaster"),
     expect: [survived, is("t-250 required, promaster excluded", (v) => filters(v).some((f) => f.kind === "word" && f.value === "t-250") && filters(v).some((f) => f.kind === "not_word" && f.value === "promaster"))],
+  },
+  {
+    id: "dive-read.guard.kind-before-mention",
+    task: "dive_read",
+    title: "A swing leads the shortlist for a swing, ahead of swing hangers (the review's kinds rank what a product is)",
+    canned: {},
+    // The front door reads "a swing for the park" as the item "swing" before it searches.
+    run: async () => diveSearch(getDb(), "swing", []),
+    expect: [is<DiveState>("a whole swing first, and no hanger in the top three", (v) => /swing/i.test(v.items[0]?.name ?? "") && !/hanger/i.test(v.items[0]?.name ?? "") && !v.items.slice(0, 3).some((i) => /hanger/i.test(i.name)))],
+  },
+  {
+    id: "dive-read.guard.contract-title",
+    task: "dive_read",
+    title: "Toner for the copier finds Canon toner for an Ohio buyer (product matching reads the contract's title)",
+    canned: {},
+    run: async () => {
+      A.setBuyer({ name: "City of Dayton", state: "OH", entity_type: "municipality", population: null });
+      const v = diveSearch(getDb(), "toner for the copier", []);
+      A.setBuyer({ name: "City of Riverbend", state: "OR", entity_type: "municipality", population: null });
+      return v;
+    },
+    expect: [is<DiveState>("priced toner on the shortlist", (v) => v.items.some((i) => /toner/i.test(i.name) && i.price != null))],
+  },
+  {
+    id: "dive-read.guard.cad-both-ways",
+    task: "dive_read",
+    title: "Computer-aided dispatch and CAD find the same dispatch listings",
+    canned: {},
+    run: async () => ({ long: tokens("computer-aided dispatch system"), short: tokens("CAD software"), listing: tokens("Computer-aided dispatch: police, one jurisdiction") }),
+    expect: [is<{ long: string[]; short: string[]; listing: string[] }>("both spellings share the listing's word", (v) => v.long.includes("cad") && v.short.includes("cad") && v.listing.includes("cad"))],
+  },
+  {
+    id: "front-door.guard.examples",
+    task: "dive_read",
+    title: "Every homepage example finds something for a visitor with no agency and for buyers in four states",
+    canned: {},
+    run: async () => {
+      const buyers = [null, ...["OR", "TX", "NY", "OH"].map((state) => ({ name: `Test city, ${state}`, state, entity_type: "municipality" as const, population: null }))];
+      const empty: string[] = [];
+      for (const e of EXAMPLES)
+        for (const b of buyers) {
+          if (b) A.setBuyer(b);
+          else getDb().session.buyer = null;
+          const found =
+            requestKind(e) === "product"
+              ? diveSearch(getDb(), e, []).items.filter((i) => i.price != null && i.kind_match > 0).length
+              : catalogCoopHits(getDb(), e, b, {}).hits.filter((h) => h.fit >= 70).length;
+          if (!found) empty.push(`${e} as ${b?.state ?? "no agency"}`);
+        }
+      A.setBuyer({ name: "City of Riverbend", state: "OR", entity_type: "municipality", population: null });
+      return empty;
+    },
+    expect: [is<string[]>("no example that comes up empty", (v) => v.length === 0)],
   },
   {
     id: "dive-read.guard.toner-not-ton",

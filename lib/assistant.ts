@@ -25,7 +25,7 @@ export const SOURCE_LABEL: Record<Source, string> = {
 // ---------------------------------------------------------------- tokenizing
 
 const STOP = new Set(
-  "a an the of for and or with to in on at by from some new need needs we our my i us please get buy order want ft in x unit units each dozen box boxes case cases pack packs pk set sets ea about around approx roughly online software".split(" "),
+  "a an the of for and or with to in on at by from some new need needs we our my i us please get buy order want ft in x unit units each dozen box boxes case cases pack packs pk set sets ea about around approx roughly online software system systems solution solutions".split(" "),
 );
 
 function singular(w: string) {
@@ -52,9 +52,12 @@ function stem(w: string) {
   return s;
 }
 
+/** Phrases catalogs write both ways, folded to one form on both sides of every comparison, so a request for
+ * "computer-aided dispatch" meets "Enterprise CAD" and "Computer-aided dispatch: police" alike. */
+const SAME_PHRASE: [RegExp, string][] = [[/\bcomputer[- ]aided[- ]dispatch\b/g, " cad "]];
+
 export function tokens(text: string): string[] {
-  return text
-    .toLowerCase()
+  return SAME_PHRASE.reduce((t, [re, to]) => t.replace(re, to), text.toLowerCase())
     .replace(/[^a-z0-9\s-]/g, " ")
     .split(/[\s-]+/)
     .filter((w) => w && !STOP.has(w) && !/^\d+$/.test(w))
@@ -62,6 +65,25 @@ export function tokens(text: string): string[] {
 }
 
 export type Weights = Map<string, number>;
+
+/** The phrase a name opens with, as a stand-in for its kind when no review has coded one: "Folding table, 6 ft" is a
+ * folding table, "Truck, Pickup, Class 1" is a truck. Parenthesized part numbers are dropped. */
+export function namePhrase(name: string): string {
+  return name.replace(/\([^)]*\)/g, " ").split(/,|:|;| - | – |\bwith\b|\bfor\b|\bw\/ /i)[0].trim();
+}
+
+/** How squarely a product is the thing asked for, 0 to 1. Each phrase is a way to say what the product is (its kind,
+ * then other names buyers use); a phrase counts only when its head word, the last one, is in the request, so a
+ * "swing hanger" is not a swing, and then by the share of its words the request names. The best phrase decides. */
+export function kindMatch(itemTokens: string[], phrases: string[][]): number {
+  const asked = new Set(itemTokens.flatMap((w) => [w, ...(SAME_AS[w] ?? [])]));
+  let best = 0;
+  for (const p of phrases) {
+    if (!p.length || !asked.has(p[p.length - 1])) continue;
+    best = Math.max(best, p.filter((w) => asked.has(w)).length / p.length);
+  }
+  return Math.round(best * 20) / 20;
+}
 
 function score(itemTokens: string[], title: string, weights?: Weights) {
   const t = new Set(tokens(title));
@@ -568,7 +590,7 @@ function fmtDate(d: Date) {
 const listingText = (l: Listing) => `${l.title} ${l.keywords ?? ""}`;
 
 export function estimateTotal(db: Db, item: string, quantity: number) {
-  const itemTokens = tokens(expand(item));
+  const itemTokens = tokens(item);
   const weights = idf(db.listings, listingText);
   const { rows } = bestMatches(itemTokens, db.listings, listingText, weights);
   if (!rows.length) return 0;
@@ -583,20 +605,15 @@ export function estimateTotal(db: Db, item: string, quantity: number) {
   return Math.round(prices[Math.floor(prices.length / 2)] * quantity * 100) / 100;
 }
 
-/** Common phrases buyers use for products catalogs name by abbreviation. */
-const SYNONYMS: [RegExp, string][] = [
-  [/computer[- ]aided dispatch/gi, "CAD"],
-];
-const expand = (item: string) => SYNONYMS.reduce((t, [re, to]) => t.replace(re, to), item);
-/** The words a request is matched on, synonyms spelled out ("CAD" → "computer aided dispatch"). */
-export const requestTokens = (item: string) => tokens(expand(item));
+/** Requests for phrases catalogs abbreviate read as the abbreviation too, for the category hints. */
+const expand = (item: string) => item.replace(/computer[- ]aided[- ]dispatch/gi, "CAD $&");
+/** The words a request is matched on. Phrases written two ways are folded to one by tokens(). */
+export const requestTokens = (item: string) => tokens(item);
 
 export function buildResults(db: Db, request: Request): Results {
   const { parsed } = request;
-  const itemTokens = tokens(expand(parsed.item));
-  // Product names use plain words ("Computer-aided dispatch: police"), so names
-  // are scored on the buyer's own words and the spelled-out synonyms too.
-  const nameTokens = [...new Set([...itemTokens, ...tokens(parsed.item), ...tokens(parsed.item.replace(/\bCAD\b/gi, "computer aided dispatch"))])];
+  const itemTokens = tokens(parsed.item);
+  const nameTokens = itemTokens;
   const favor = request.preference_answer === "yes";
   const limit = db.agency.quick_buy_threshold;
 

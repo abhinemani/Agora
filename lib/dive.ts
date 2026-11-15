@@ -5,7 +5,7 @@
 // every answer is a real filter. The model only helps read free text and word
 // the comparison (lib/dive-ai.ts). Server-only: it reads the co-op catalog.
 
-import { buildResults, coverage, requestTokens } from "./assistant";
+import { buildResults, coverage, kindMatch, namePhrase, requestTokens, tokens } from "./assistant";
 import { catalogProducts } from "./catalog";
 import type { Db, Request } from "./types";
 
@@ -44,6 +44,12 @@ export interface DiveItem {
   /** Share of the product's name the request covers, in steps of 0.05: "Folding table" names a folding table more
    * squarely than a long description that mentions one. Breaks ties between equal fits. */
   cover: number;
+  /** How squarely the product is the thing asked for, 0 to 1: a swing is, a swing hanger isn't. */
+  kind_match: number;
+  /** A part or an accessory of something else, by the AI review: ranked below whole items. */
+  part: boolean;
+  /** Sold only under a state program's contract (NJSTART, Hawaii SPO, …): open to that state's buyers. */
+  state: boolean;
   routes: number;
 }
 
@@ -135,6 +141,9 @@ function gatherAll(db: Db, query: string): DiveItem[] {
       access: o.member === false ? "On a co-op you'd need to join" : "Open to you",
       fit: o.fit,
       cover: coverage(asked, l.title),
+      kind_match: kindMatch(asked, [tokens(namePhrase(l.title))]),
+      part: false,
+      state: false,
       routes: 1,
     });
   }
@@ -165,6 +174,9 @@ function gatherAll(db: Db, query: string): DiveItem[] {
       access: !r.eligible ? `Not open to you: ${r.reason}` : !buyer ? r.reason : r.member || r.coop_id === "gsa_mas" ? "On a co-op you're on" : "On a co-op you'd need to join",
       fit: h.fit,
       cover: coverage(asked, h.name),
+      kind_match: h.kind_match,
+      part: h.role === "part" || h.role === "accessory",
+      state: r.trx,
       routes: h.routes.length,
     });
   }
@@ -250,10 +262,17 @@ export function diveSearch(db: Db, query: string, filters: DiveFilter[]): DiveSt
   const q = query.trim().slice(0, 200);
   const pool = q ? gather(db, q) : [];
   const matched = pool.filter((i) => filters.every((f) => passes(i, f)));
-  // What the buyer can use comes first, then a real price, then fit, then the name that says it most squarely, then
-  // the lower price.
+  // What the buyer can use comes first; with no agency set, what any buyer could use comes before one state's
+  // contracts, as on the results page. Then the product that is the thing asked for (a swing before a swing hanger),
+  // whole items before parts, a real price, fit, the name that says it most squarely, and the lower price.
+  const anyone = !db.session.buyer;
   const ranked = [...matched].sort(
-    (a, b) => Number(b.usable) - Number(a.usable) || Number(b.price != null) - Number(a.price != null) || b.fit - a.fit || b.cover - a.cover || (priceOf(a) ?? Infinity) - (priceOf(b) ?? Infinity) || a.name.localeCompare(b.name),
+    (a, b) =>
+      Number(b.usable) - Number(a.usable) ||
+      (anyone ? Number(a.state) - Number(b.state) : 0) ||
+      b.kind_match - a.kind_match ||
+      Number(a.part) - Number(b.part) ||
+      Number(b.price != null) - Number(a.price != null) || b.fit - a.fit || b.cover - a.cover || (priceOf(a) ?? Infinity) - (priceOf(b) ?? Infinity) || a.name.localeCompare(b.name),
   );
   const prices = matched.map(priceOf).filter((p): p is number => p != null);
   const pays = matched.map((i) => i.price).filter((p): p is number => p != null).sort((a, b) => a - b);

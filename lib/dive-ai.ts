@@ -12,9 +12,9 @@ import type { DiveFilter, DiveItem, DiveState, DiveVerdict, FitVerdict } from ".
 
 /** The request reader's instructions (task dive_understand). */
 const UNDERSTAND_SYSTEM =
-  `You read what a government buyer typed into a product search, and say what they mean in the catalog's own terms. KINDS lists the kinds of product the catalog has that might match, with how many of each and one example.\n` +
+  `You read what a government buyer typed into a product search, and say what they mean in the catalog's own terms. KINDS lists the kinds of product the catalog has that might match, with how many of each, other names the catalog uses for them, and one example.\n` +
       `- kinds: the kinds from KINDS that are the thing the buyer wants, not its parts, add-ons or supplies, spelled exactly as listed. At most 4. None if nothing in KINDS is what they want.\n` +
-      `- search_terms: up to 3 other words or short phrases a catalog might use for what they want and that aren't in their words: a synonym, the full name of an abbreviation, the plain name for a brand name. Empty if none.\n` +
+      `- search_terms: up to 3 words or short phrases a product's name in this catalog would use for what they want, when they aren't in the buyer's words: the "also called" names in KINDS show how the catalog words things, so prefer those. A buyer's own synonym the catalog doesn't use finds nothing. Empty if none.\n` +
       `- must_have: single words a product's name would contain to meet a requirement the buyer stated ("crew cab" gives "crew", "electric" gives "electric"). Only requirements they stated, and never the kind of thing itself.\n` +
       `- must_not: single words for things they ruled out ("not diesel" gives "diesel").\n` +
       `- read_as: one short sentence in the third person saying what Loci is looking for, like "Police pursuit vehicles and SUVs, diesel ruled out." No prices unless the buyer gave one.`;
@@ -140,7 +140,7 @@ const UnderstandSchema = z.object({
 type UnderstandOut = z.infer<typeof UnderstandSchema>;
 
 /** The kinds a request could mean, as the catalog lists them (lib/catalog.ts catalogKindCandidates). */
-export type KindCandidate = { kind: string; count: number; example: string };
+export type KindCandidate = { kind: string; count: number; example: string; aliases?: string[] };
 
 /** Ask the model what a request means in the catalog's terms. The answer is checked by checkNeed once the shortlist is
  * known, so the two can run alongside the request reader. Null when the model is unavailable. */
@@ -149,7 +149,7 @@ export async function askNeed(need: string, candidates: KindCandidate[]): Promis
     task: "dive_understand",
     about: need,
     system: UNDERSTAND_SYSTEM,
-    user: `REQUEST: ${need}\nKINDS:\n${candidates.map((c) => `${c.kind} (${c.count}): e.g. ${c.example.slice(0, 70)}`).join("\n") || "(none)"}`,
+    user: `REQUEST: ${need}\nKINDS:\n${candidates.map((c) => `${c.kind} (${c.count})${c.aliases?.length ? `, also called ${c.aliases.join(", ")}` : ""}: e.g. ${c.example.slice(0, 70)}`).join("\n") || "(none)"}`,
     schema: UnderstandSchema,
     maxTokens: 700,
     timeoutMs: 20_000,
@@ -182,9 +182,14 @@ export function checkNeed(
   const filters: DiveFilter[] = [...must.map((value) => ({ kind: "word" as const, value })), ...mustNot.map((value) => ({ kind: "not_word" as const, value }))];
   const readAs = out.read_as.trim().slice(0, 200);
   const bad = readAs ? ungrounded(readAs, [], { need }, []) : null;
-  const asked = out.kinds.length + out.search_terms.length + out.must_have.length + out.must_not.length + (readAs ? 1 : 0);
-  const passed = kinds.length + terms.length + must.length + mustNot.length + (readAs && !bad ? 1 : 0);
-  const log_id = pieces(out, JSON.stringify(out), passed, asked, bad ?? "Named a kind, word or term the catalog doesn't have");
+  // A search word that finds nothing is a harmless guess the check filters out, not a failure: it isn't counted. What is
+  // counted is what could mislead: a kind that wasn't offered, a requirement no product has, a "read as" with a stray
+  // figure. The dropped words are noted with the output.
+  const missed = out.search_terms.filter((t) => !terms.includes(t.toLowerCase().trim()));
+  const asked = out.kinds.length + out.must_have.length + out.must_not.length + (readAs ? 1 : 0);
+  const passed = kinds.length + must.length + mustNot.length + (readAs && !bad ? 1 : 0);
+  const output = JSON.stringify(out) + (missed.length ? ` (words that found nothing: ${missed.join(", ")})` : "");
+  const log_id = pieces(out, output, passed, asked, bad ?? "Named a kind or a requirement the catalog doesn't have");
   return { kinds, terms, filters, read_as: readAs && !bad ? readAs : null, log_id };
 }
 

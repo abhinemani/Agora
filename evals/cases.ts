@@ -580,6 +580,21 @@ export const CASES: Case[] = [
     ],
   },
   {
+    id: "dive-understand.guard.missed-word",
+    task: "dive_understand",
+    title: "A search word that finds nothing is dropped without marking the reading partial",
+    canned: { kinds: ["police vehicle"], search_terms: ["zzyzx cruiser"], must_have: [], must_not: [], read_as: "Police SUVs." },
+    run: () => start("A police SUV"),
+    expect: [outcome("kept"), is("the word dropped and the reading kept", (v) => !reading(v)?.terms.includes("zzyzx cruiser") && reading(v)?.read_as === "Police SUVs.")],
+  },
+  {
+    id: "dive-understand.live.catalog-words",
+    task: "dive_understand",
+    title: "Reads a request in the buyer's words (garbage bags) as the catalog's kind (trash bags)",
+    run: () => start("garbage bags for the parks crew"),
+    expect: [survived, is("a trash bag kind", (v) => (reading(v)?.kinds ?? []).some((k) => /trash|can liner|garbage/.test(k)))],
+  },
+  {
     id: "dive-understand.guard.price",
     task: "dive_understand",
     title: "A reading that names a price the buyer never gave isn't shown",

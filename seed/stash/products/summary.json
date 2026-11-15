@@ -1,0 +1,103 @@
+{
+ "retrieved": "2026-11-13",
+ "served": {
+  "products": 7938,
+  "offerings": 9653
+ },
+ "before": {
+  "products": 59362,
+  "offerings": 69528,
+  "priced_offerings": 32117
+ },
+ "products": 51424,
+ "offerings": 59875,
+ "by_reason": {
+  "peppm": {
+   "products": 21413,
+   "offerings": 26291
+  },
+  "hgacbuy": {
+   "products": 9611,
+   "offerings": 9611
+  },
+  "no_price": {
+   "products": 531,
+   "offerings": 667
+  },
+  "burke_parts": {
+   "products": 10083,
+   "offerings": 10083
+  },
+  "crash_parts": {
+   "products": 2724,
+   "offerings": 3036
+  },
+  "canon_extras": {
+   "products": 3022,
+   "offerings": 3028
+  },
+  "rates": {
+   "products": 4040,
+   "offerings": 7159
+  }
+ },
+ "by_program": {
+  "HGACBuy": {
+   "kept": 0,
+   "stashed": 9611
+  },
+  "PEPPM": {
+   "kept": 0,
+   "stashed": 21413
+  },
+  "Sourcewell": {
+   "kept": 573,
+   "stashed": 3022
+  },
+  "NJSTART": {
+   "kept": 2790,
+   "stashed": 2507
+  },
+  "Hawaii SPO": {
+   "kept": 1051,
+   "stashed": 405
+  },
+  "Arkansas OSP": {
+   "kept": 85,
+   "stashed": 0
+  },
+  "NYS OGS": {
+   "kept": 228,
+   "stashed": 3474
+  },
+  "NY Preferred Source": {
+   "kept": 1143,
+   "stashed": 531
+  },
+  "OMNIA Partners": {
+   "kept": 1373,
+   "stashed": 10083
+  },
+  "NASPO ValuePoint": {
+   "kept": 355,
+   "stashed": 0
+  },
+  "BuyBoard": {
+   "kept": 138,
+   "stashed": 0
+  },
+  "OregonBuys": {
+   "kept": 202,
+   "stashed": 378
+  }
+ },
+ "reasons": {
+  "peppm": "PEPPM items: no price (behind the member login), a sample of each contract, many named only by a category or a part number",
+  "hgacbuy": "HGACBuy items: no price (a discount with no list price to apply it to, or by quote)",
+  "no_price": "Items with no price of any kind",
+  "burke_parts": "Burke playground components and structure parts (everything but the freestanding items, part numbers 550 to 599)",
+  "crash_parts": "New York's crash-mitigation award: replacement parts for barriers and attenuators",
+  "canon_extras": "Canon software licences, service plans, installation and accessories",
+  "rates": "Rate lines, not products: hourly and monthly rates, fares, per-minute calls, rentals, fees and multi-year service prices"
+ }
+}

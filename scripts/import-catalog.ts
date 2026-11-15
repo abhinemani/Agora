@@ -24,6 +24,7 @@ import { gunzipSync, gzipSync } from "node:zlib";
 import { coopIdForVehicle, normalizeDomain } from "../lib/coops";
 import { seed } from "../lib/seed";
 import { STATES } from "../lib/vehicles";
+import { STASH_REASONS, stashReason, type StashReason } from "./product-stash";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const SRC = join(ROOT, "seed/catalog/source");
@@ -858,6 +859,63 @@ const docPriceStats = { rows: 0, attached: 0, list_prices: 0, duplicates: 0, sup
   }
 }
 
+// ------------------------------------------------------------------ the product stash
+// Products that can't show what Loci is for are stashed, not served (scripts/product-stash.ts has the rule and the
+// reasons): no price, a rate line, a component part. An offering goes by its own reason; a product goes when none of
+// its offerings is left. Their rows stay in the source files, and AGORA_INCLUDE_STASHED=1 brings them back.
+const INCLUDE_STASHED = process.env.AGORA_INCLUDE_STASHED === "1";
+const productStash = {
+  before: { products: products.length, offerings: offerings.length, priced_offerings: offerings.filter((o) => o.price != null).length },
+  products: 0,
+  offerings: 0,
+  by_reason: Object.fromEntries(Object.keys(STASH_REASONS).map((k) => [k, { products: 0, offerings: 0 }])) as Record<StashReason, { products: number; offerings: number }>,
+  by_program: {} as Record<string, { kept: number; stashed: number }>,
+};
+if (!INCLUDE_STASHED) {
+  const productOf = new Map(products.map((p) => [p.id, p]));
+  const titleOf = new Map(contracts.map((c) => [c.id, c.title]));
+  const keptOfferings: Offering[] = [];
+  const keptProducts = new Set<string>();
+  const firstReason = new Map<string, StashReason>();
+  for (const o of offerings) {
+    const p = productOf.get(o.product);
+    const why = p ? stashReason(o, p, titleOf.get(o.contract) ?? "") : null;
+    if (!why) {
+      keptOfferings.push(o);
+      keptProducts.add(o.product);
+      continue;
+    }
+    productStash.offerings++;
+    productStash.by_reason[why].offerings++;
+    if (!firstReason.has(o.product)) firstReason.set(o.product, why);
+  }
+  const programOf = new Map<string, string>();
+  for (const o of offerings) if (!programOf.has(o.product)) programOf.set(o.product, o.coop);
+  for (const p of products) {
+    const tally = (productStash.by_program[programOf.get(p.id) ?? "?"] ??= { kept: 0, stashed: 0 });
+    if (keptProducts.has(p.id)) tally.kept++;
+    else {
+      tally.stashed++;
+      productStash.products++;
+      productStash.by_reason[firstReason.get(p.id)!].products++;
+    }
+  }
+  const keptRows = products.filter((p) => keptProducts.has(p.id));
+  offerings.length = 0;
+  for (const o of keptOfferings) offerings.push(o);
+  products.length = 0;
+  for (const p of keptRows) products.push(p);
+  // A storefront counts the products it can show.
+  const shown = new Map<string, number>();
+  for (const o of offerings) shown.set(o.supplier, (shown.get(o.supplier) ?? 0) + 1);
+  for (const s of suppliers) s.products = shown.get(s.id) ?? 0;
+}
+mkdirSync(join(ROOT, "seed/stash/products"), { recursive: true });
+writeFileSync(
+  join(ROOT, "seed/stash/products/summary.json"),
+  JSON.stringify({ retrieved: RETRIEVED, served: { products: products.length, offerings: offerings.length }, ...productStash, reasons: STASH_REASONS }, null, 1) + "\n",
+);
+
 // ------------------------------------------------------------------ documents: the price-list reader's queue
 
 const documents = rawDocuments.map((d) => {
@@ -1064,6 +1122,7 @@ const insights = {
     offerings: offerings.filter((o) => o.coop === "NJSTART").length,
     products_on_two_or_more_contracts: Object.values(offerings.filter((o) => o.coop === "NJSTART").reduce<Record<string, Set<string>>>((m, o) => ((m[o.product] ??= new Set()).add(o.contract), m), {})).filter((x) => x.size > 1).length,
   },
+  stash: { ...productStash, reasons: STASH_REASONS },
   products: {
     products: products.length,
     offerings: offerings.length,
@@ -1088,6 +1147,7 @@ writeFileSync(join(ROOT, "seed/catalog/insights.json"), JSON.stringify(insights,
 console.log(`Cleanup: ${JSON.stringify(insights.cleanup)}`);
 console.log(`Suppliers: ${rawSuppliers.length.toLocaleString()} records → ${suppliers.length.toLocaleString()} companies (${mergedByName} merged by name, ${mergedByWebsite} by website); ${multiCoop.length.toLocaleString()} on 2+ co-ops.`);
 console.log(`Contracts: ${contracts.length.toLocaleString()}; ${contracts.filter((c) => c.url).length.toLocaleString()} with their own link; ${contracts.filter((c) => c.end && c.end < today).length} expired.`);
+console.log(`Stash: ${productStash.products.toLocaleString()} products (${productStash.offerings.toLocaleString()} offerings) stashed ${JSON.stringify(Object.fromEntries(Object.entries(productStash.by_reason).map(([k, v]) => [k, v.products])))}.`);
 console.log(`Products: ${products.length.toLocaleString()} in ${offerings.length.toLocaleString()} offerings ${JSON.stringify(insights.products.by_status)}; ${insights.products.multi_route} on 2+ contracts.`);
 console.log(`Documents: ${documents.length.toLocaleString()} ${JSON.stringify(insights.documents.by_kind)}.`);
 console.log(`Reconcile: ${confirmations.length} seeded contracts found; ${insights.reconcile.applied} fixes to apply, ${insights.reconcile.flagged} flagged.`);

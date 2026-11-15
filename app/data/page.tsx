@@ -580,12 +580,21 @@ export default function CoopDataPage() {
 
         <h3 className="mt-8 text-ui-md font-bold text-ink">Products and prices</h3>
         <p className="mt-1 max-w-[72ex] text-body-sm text-base-darker">
-          Products are concentrated in three places. Canon&apos;s Sourcewell price file gives {n(catalogInsights.products.by_status_coops.published_price ?? 0)} rows a real price
-          (April 2026, with list price and discount). HGACBuy publishes {n(catalogInsights.products.by_status_coops.published_discount ?? 0)} discounts without the base prices to
-          apply them to. PEPPM lists {n(catalogInsights.products.by_status.member_login ?? 0)} technology items whose prices sit behind a member login.{" "}
-          {n(catalogInsights.products.multi_route)} products are sold on two or more contracts, which is where &quot;every way to buy it&quot; earns its keep. Loci shows a
-          discount as a discount and a blank price as unknown, never as a price.
+          Loci serves {n(catalogInsights.products.products)} products in {n(catalogInsights.products.offerings)} offerings, each with a price or a labelled list price.
+          Another {n(catalogInsights.stash.products)} are stashed, not served, because they could not show what Loci is for: they have no price, they are a rate
+          and not a product, or they are a component of something else. Their rows stay in the source files (seed/stash/products/ explains the rule and how to bring
+          them back), and their contracts still appear in search. {n(catalogInsights.products.multi_route)} products are sold on two or more contracts. Loci shows a
+          list price as a list price and a blank price as unknown, never as a price.
         </p>
+        <ul className="mt-3 max-w-[72ex] list-disc pl-5 text-body-sm text-base-darker">
+          {(Object.keys(catalogInsights.stash.by_reason) as (keyof typeof catalogInsights.stash.by_reason)[])
+            .filter((k) => catalogInsights.stash.by_reason[k].products > 0)
+            .map((k) => (
+              <li key={k}>
+                {n(catalogInsights.stash.by_reason[k].products)}: {catalogInsights.stash.reasons[k]}.
+              </li>
+            ))}
+        </ul>
         <p className="mt-3 text-ui-xs text-base-dark">
           Try it: search for <Link href="/" className="text-primary">playground equipment</Link> as the Town of Crested Butte, browse{" "}
           <Link href="/storefronts" className="text-primary">every supplier on a co-op contract</Link>, or open the{" "}

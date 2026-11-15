@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { Mark } from "./blueprint";
 import { useStore } from "./store";
 
@@ -35,6 +36,12 @@ export function SiteFooter() {
         </div>
         <p className="mt-4 text-ui-3xs leading-relaxed text-base-dark">
           Tyler and Maximus prices from NASPO ValuePoint and NJSTART price files · NASPO awards from naspovaluepoint.org · Sourcewell prices require a vendor quote
+        </p>
+        <p className="mt-2 text-ui-3xs text-base-dark">
+          <Link href="/guide" className="font-bold text-primary">
+            Guide
+          </Link>
+          : how to use Loci, what its terms mean and where its data comes from.
         </p>
       </div>
     </footer>

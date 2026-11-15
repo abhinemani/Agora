@@ -1,5 +1,5 @@
 {
-  "saved": "2026-11-15T14:09:27.860Z",
+  "saved": "2026-11-15T16:10:17.102Z",
   "model": "claude-sonnet-5-5",
   "prompts": {
     "request_parse": "cebcf585",
@@ -13,7 +13,9 @@
     "contract_brief": "115817b0",
     "contract_parse": "1ba148cb",
     "scan_text": "ca2624fc",
-    "price_sheet": "4e171015"
+    "price_sheet": "4e171015",
+    "dive_understand": "4679c865",
+    "dive_fit": "0cb0f8bc"
   },
   "cases": {
     "answer.guard.invented-price": "pass",
@@ -52,6 +54,11 @@
     "contract-parse.guard.printed-price": "pass",
     "contract-parse.live.furniture": "pass",
     "contract-parse.live.janitorial": "pass",
+    "dive-fit.guard.figures": "pass",
+    "dive-fit.guard.kept": "pass",
+    "dive-fit.guard.order": "pass",
+    "dive-fit.live.hanger-not-swing": "pass",
+    "dive-fit.live.suv-not-sedan": "pass",
     "dive-read.guard.cad-both-ways": "pass",
     "dive-read.guard.contract-title": "pass",
     "dive-read.guard.kept": "pass",
@@ -62,6 +69,12 @@
     "dive-read.live.model-code": "pass",
     "dive-read.live.not-on-shortlist": "pass",
     "dive-read.live.word-and-price": "pass",
+    "dive-understand.guard.grounded": "pass",
+    "dive-understand.guard.negation": "pass",
+    "dive-understand.guard.price": "pass",
+    "dive-understand.live.no-shared-word": "pass",
+    "dive-understand.live.police-suv": "pass",
+    "dive-understand.live.requirements": "pass",
     "front-door.guard.examples": "pass",
     "paperwork.guard.dropped-number": "pass",
     "paperwork.guard.filled-blank": "pass",

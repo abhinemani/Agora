@@ -203,7 +203,11 @@ require('fs').mkdirSync(OUT, { recursive: true });
     if (!/\b40\b/.test(chips)) throw new Error('the quantity in the request was not read');
     if (!/40 × \$[\d,.]+ = \$/.test(chips)) throw new Error('no order total on the cards');
     const skip = p.locator('section[aria-label=Conversation] button:has-text("Skip: show every contract")'); if (await skip.count()) await skip.click();
-    const opt = p.locator('section[aria-label=Conversation] div.flex-col > button').first(); await opt.click(); await p.waitForTimeout(2500);
+    // The dive asks a question when the shortlist has enough to split; when the request's own requirements (read by the
+    // model) already narrowed it, a filter from the request stands in for the answer.
+    const opts = p.locator('section[aria-label=Conversation] div.flex-col > button');
+    if (await opts.count()) { await opts.first().click(); await p.waitForTimeout(2500); }
+    else if (!(await p.locator('section[aria-label=Shortlist] button[aria-label^="Remove "]').count())) throw new Error('nothing narrowed the shortlist: no question asked and no filter read from the request');
     if (!/[?&]f=/.test(p.url())) throw new Error('the answer is not kept in the address');
     const strip = p.locator('button:has-text("See the options")'); if (await strip.count()) await strip.click();
     const ramp = await p.locator('#none-fit').innerText();

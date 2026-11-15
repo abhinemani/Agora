@@ -7,6 +7,10 @@ import { BestFit, Mark, TickFrame } from "@/components/blueprint";
 import { ShopperTabs } from "@/components/ShopperTabs";
 import { post, useStore } from "@/components/store";
 import { ErrorNote } from "@/components/ui";
+import { FitLine, SetAside } from "@/components/FitLine";
+
+/** Which shortlist the fit judgment in flight was asked about: a newer turn makes it stale. */
+let latest: string | null = null;
 import { goHref } from "@/lib/coops";
 import type { DiveFilter, DiveItem, DiveState, DiveVerdict } from "@/lib/dive";
 import type { ShopperText } from "@/lib/shopper-ai";
@@ -56,12 +60,22 @@ export default function Dive() {
     setBusy(true);
     setError(null);
     setCompare(null);
+    // A judgment still in flight is about the shortlist before this turn: it must not overwrite what this turn shows.
+    latest = null;
     if (mine) say("you", mine);
     try {
-      const res = await post<{ state: DiveState; said: string }>("/api/act", { action: "dive", ...body });
+      const res = await post<{ state: DiveState; said: string; fit_pending?: boolean }>("/api/act", { action: "dive", ...body, judge: false });
       setState(res.state);
       setPicks((p) => p.filter((id) => res.state.items.some((i) => i.id === id)));
       say("shopper", [res.said, summary(res.state)].filter(Boolean).join(" "));
+      // The model's fit judgment follows and reorders the shortlist, unless the buyer has moved on.
+      if (res.fit_pending) {
+        const asked = JSON.stringify([res.state.query, res.state.filters]);
+        latest = asked;
+        void post<{ state: DiveState }>("/api/act", { action: "dive", query: res.state.query, filters: res.state.filters, judge: true })
+          .then((j) => latest === asked && setState(j.state))
+          .catch(() => undefined);
+      }
     } catch (e) {
       setError((e as Error).message);
     } finally {
@@ -274,6 +288,7 @@ export default function Dive() {
                           {i.routes > 1 && <span>{i.routes} contracts sell it</span>}
                         </span>
                         <span className={`text-ui-2xs ${i.usable ? "text-success-darker" : "text-base-dark"}`}>{i.access}</span>
+                        {i.fit_verdict && <FitLine verdict={i.fit_verdict} reason={i.fit_reason} />}
                       </span>
                     </label>
                     <div className="text-right text-ui-2xs text-base-dark">
@@ -297,6 +312,13 @@ export default function Dive() {
                 );
               })}
               {state.matched > state.items.length && <p className="text-ui-2xs text-base-dark">Showing the top {state.items.length}. Answer another question to narrow the other {state.matched - state.items.length}.</p>}
+              <SetAside items={state.set_aside ?? []} />
+              {state.fit_log && (
+                <p className="flex flex-wrap items-center gap-x-3 gap-y-1 text-ui-3xs text-base-dark">
+                  <span>Fit is judged by AI from each product's name and kind. Prices and who can buy come from the contracts.</span>
+                  <Feedback id={state.fit_log} />
+                </p>
+              )}
 
               {state.items.length > 0 && (
                 <div className="flex flex-wrap items-center gap-x-4 gap-y-2 border-t border-base-lighter pt-4">

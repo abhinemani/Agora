@@ -77,6 +77,7 @@ export function rowProblem(row: PriceRow, text: string, normText = norm(text)): 
   if (!same.length) return "the price isn't on its line";
   // A percentage is a discount whatever the model called it.
   if (same.every((f) => f.pct)) return "the figure is a percentage";
+  if (/^\s*(pcnt|pct|percent|%)/i.test(row.unit ?? "") || /\b(markup|mark-up|percentage)\b/i.test(row.line)) return "a markup or percentage, not a price";
   if (!/[a-z]{3,}/i.test(row.line)) return "the line has no words";
   if (/^[\W\d]*(grand |sub|estimated[a-z ]*)?total\b/i.test(row.line) || /\bestimated (annual |contract )?(total|usage|quantity|spend)\b/i.test(row.line)) return "a total, not an item price";
   const words = itemWords(row.item);

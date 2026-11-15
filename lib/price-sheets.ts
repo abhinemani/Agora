@@ -5,7 +5,8 @@
 //
 // The model (SCAN_MODEL) only proposes rows; the check decides. A row stands only when its line is in the sheet's
 // stored text word for word, the price is one of the figures on that line, a word of the item's name is on the line
-// too, and the sheet says it is a price a buyer pays (contract, net or ceiling), not a list price or a discount. A sheet
+// too, and the figure is a price, not a discount. List prices are kept as list prices (basis list_price), never as what
+// a buyer pays: the catalog shows them as "List $X · before the contract discount". A sheet
 // linked to more than one contract is passed over, since its rows can't be pinned to one supplier.
 //
 // It runs on the server when AGORA_PRICE_SHEETS is set: "sample" reads 25 NJSTART and 15 OregonBuys sheets and reports
@@ -64,7 +65,6 @@ const figuresOn = (line: string) => [...line.matchAll(/(\d[\d,]*(?:\.\d+)?)(\s*%
  * pass `normText` (the same text through norm) when checking many rows against one text. */
 export function rowProblem(row: PriceRow, text: string, normText = norm(text)): string | null {
   if (!(row.price > 0)) return "no price";
-  if (row.basis === "list_price") return "a list price, not what a buyer pays";
   if (row.basis === "discount") return "a discount, not a price";
   const line = norm(row.line);
   if (line.length < 4) return "no line";
@@ -248,9 +248,27 @@ export async function runPriceSheets(mode: Mode): Promise<void> {
       [PROGRAMS],
     )
   ).rows;
-  const all = found.filter((s) => isPriceSheet(s.label));
+  const fresh = found.filter((s) => isPriceSheet(s.label));
+  // Sheets read before list prices were kept, whose list prices were dropped: read again, ahead of the rest and not
+  // counted against a number of sheets. Clearing their records puts them back among the unread.
+  const LIST_DROPPED = "a list price, not what a buyer pays";
+  const again = (await p.query<{ url: string }>(`select url from doc_price_reads where dropped ? $1`, [LIST_DROPPED])).rows.map((r) => r.url);
+  let reread: Sheet[] = [];
+  if (again.length) {
+    reread = (
+      await p.query<Sheet>(
+        `select u.url, min(l.contract_id) contract_id, min(l.program) program, min(l.label) label, count(distinct l.contract_id)::int links, u.via, u.read_by, u.filename
+         from doc_urls u join doc_links l on l.url = u.url where u.url = any($1) group by u.url, u.via, u.read_by, u.filename`,
+        [again],
+      )
+    ).rows;
+    await p.query(`delete from doc_prices where url = any($1)`, [again]);
+    await p.query(`delete from doc_price_reads where url = any($1)`, [again]);
+    console.log(`[prices] reading ${reread.length} sheets again for their list prices`);
+  }
+  const all = fresh;
   const sheets =
-    mode === "sample" ? [...all.filter((s) => s.program === "NJSTART").slice(0, 25), ...all.filter((s) => s.program === "OregonBuys").slice(0, 15)] : mode === "all" ? all : all.slice(0, Number(mode));
+    [...reread, ...(mode === "sample" ? [...all.filter((s) => s.program === "NJSTART").slice(0, 25), ...all.filter((s) => s.program === "OregonBuys").slice(0, 15)] : mode === "all" ? all : all.slice(0, Number(mode)))];
   state.planned = sheets.length;
   state.phase = "reading";
   console.log(`[prices] reading ${sheets.length} price sheets (${mode})`);
@@ -259,7 +277,7 @@ export async function runPriceSheets(mode: Mode): Promise<void> {
     while (next < sheets.length) {
       const s = sheets[next++];
       for (let i = 0; i < 40 && process.memoryUsage().heapUsed / 1048576 > 2500; i++) await new Promise((r) => setTimeout(r, 15_000));
-      await readOne(s, mode === "sample").catch((e) => {
+      await readOne(s, mode === "sample" && !reread.includes(s)).catch((e) => {
         state.last_error = (e as Error).message;
       });
       state.done++;

@@ -814,7 +814,7 @@ export const CASES: Case[] = [
   {
     id: "price-sheet.guard.not-on-line",
     task: "price_sheet",
-    title: "A price that isn't on its line, a line the sheet doesn't print, a discount and a list price are all dropped",
+    title: "A price that isn't on its line, a line the sheet doesn't print and a discount are dropped; a list price is kept as a list price",
     canned: {
       rows: [
         sheetRow("Calcium chloride flake", 21.15, "2 | 4410-31 | Calcium chloride flake, 50 lb bag | Bag | $21.15"),
@@ -827,12 +827,11 @@ export const CASES: Case[] = [
     run: () => readPriceSheet(PRICE_SHEET, "State-Supplied Price Sheet"),
     expect: [
       outcome("partial"),
-      pieces(1, 5),
+      pieces(2, 5),
       because(/the price isn't on its line/),
       because(/the line isn't in the sheet/),
       because(/the figure is a percentage/),
-      because(/a list price/),
-      is<SheetRows>("only the calcium chloride row", (v) => v.rows.length === 1 && v.rows[0].price === 21.15),
+      is<SheetRows>("the calcium chloride row, and rock salt kept as a list price", (v) => v.rows.length === 2 && v.rows.some((r) => r.price === 21.15 && r.basis === "contract_price") && v.rows.some((r) => r.price === 68.4 && r.basis === "list_price")),
     ],
   },
   {

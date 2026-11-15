@@ -729,7 +729,7 @@ const priceFileStats = { rows: 0, attached: 0, unmatched: [] as string[] };
 // contract's sheets print different prices for one item, the latest amendment's price stands (by the amendment,
 // revision and date in the sheets' names), and when the names can't say which is latest the item stays out. A row whose
 // contract has the same price on file for an item of the same name (NJSTART's line items) is the same offering.
-const docPriceStats = { rows: 0, attached: 0, duplicates: 0, superseded: 0, unclear: 0, rejected: 0, no_contract: 0 };
+const docPriceStats = { rows: 0, attached: 0, list_prices: 0, duplicates: 0, superseded: 0, unclear: 0, rejected: 0, no_contract: 0 };
 {
   const file = join(SRC, "doc-prices/rows.json.gz");
   const doc: { retrieved: string; rows: { url: string; contract_id: string; program: string; label: string; n: number; item: string; sku: string | null; unit: string | null; price: number; basis: string; note: string | null; line: string; read_on: string }[] } | null = existsSync(file)
@@ -740,7 +740,8 @@ const docPriceStats = { rows: 0, attached: 0, duplicates: 0, superseded: 0, uncl
   const onFile = new Map<string, { price: number; name: string }[]>();
   for (const o of offerings) if (o.price != null) (onFile.get(o.contract) ?? onFile.set(o.contract, []).get(o.contract)!).push({ price: o.price, name: productName.get(o.product) ?? "" });
   const words = (t: string) => (t.toLowerCase().match(/[a-z][a-z0-9]{2,}/g) ?? []);
-  const BASIS: Record<string, string> = { contract_price: "contract price", net_price: "contract net price", ceiling: "not-to-exceed rate" };
+  // A list price is kept as a list price (shown "List $X · before the contract discount"), never as the price.
+  const BASIS: Record<string, string> = { contract_price: "contract price", net_price: "contract net price", ceiling: "not-to-exceed rate", list_price: "list price" };
   const when = (d: string) => new Date(`${d}T12:00:00Z`).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric", timeZone: "UTC" });
   /** How late a sheet is, from its name: amendment, then revision, then a date (2.27.26 or 2026-02-27). */
   const lateness = (label: string): number[] => {
@@ -806,7 +807,8 @@ const docPriceStats = { rows: 0, attached: 0, duplicates: 0, superseded: 0, uncl
       const both = [...mine].filter((w) => theirs.has(w)).length;
       return both / (new Set([...mine, ...theirs]).size || 1) >= 0.6;
     };
-    if ((onFile.get(c.id) ?? []).some((x) => Math.abs(x.price - r.price) < 0.005 && alike(x.name))) {
+    const isList = r.basis === "list_price";
+    if (!isList && (onFile.get(c.id) ?? []).some((x) => Math.abs(x.price - r.price) < 0.005 && alike(x.name))) {
       docPriceStats.duplicates++;
       continue;
     }
@@ -825,8 +827,8 @@ const docPriceStats = { rows: 0, attached: 0, duplicates: 0, superseded: 0, uncl
       contract: c.id,
       coop: c.coop,
       sku: r.sku,
-      price: r.price,
-      list: null,
+      price: isList ? null : r.price,
+      list: isList ? r.price : null,
       discount: null,
       unit: r.unit,
       status: "published_price",
@@ -835,6 +837,7 @@ const docPriceStats = { rows: 0, attached: 0, duplicates: 0, superseded: 0, uncl
       category: `${c.title}: ${BASIS[r.basis]}, from the price sheet "${r.label}": ${r.line.slice(0, 160)}`,
     });
     docPriceStats.attached++;
+    if (isList) docPriceStats.list_prices++;
   }
 }
 
@@ -980,6 +983,7 @@ const insights = {
     price_file_unmatched: priceFileStats.unmatched,
     doc_price_rows: docPriceStats.rows,
     doc_price_offerings: docPriceStats.attached,
+    doc_price_list_prices: docPriceStats.list_prices,
     doc_price_duplicates: docPriceStats.duplicates,
     doc_price_superseded: docPriceStats.superseded,
     doc_price_unclear: docPriceStats.unclear,

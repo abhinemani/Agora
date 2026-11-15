@@ -7,7 +7,9 @@ import { extractFile } from "./parser";
 
 /** What a person waits for when they ask a question; the background ingest takes larger files. */
 export const READER_MAX_BYTES = 15 * 1024 * 1024;
-export const INGEST_MAX_BYTES = 100 * 1024 * 1024;
+export const INGEST_MAX_BYTES = 40 * 1024 * 1024;
+/** Spreadsheets swell many times over when read, so they get a lower limit than other files. */
+const SHEET_MAX_BYTES = 20 * 1024 * 1024;
 const MAX_PAGES = 600;
 
 export const docError = (message: string, status: string) => Object.assign(new Error(message), { status });
@@ -114,6 +116,7 @@ export async function readBuffer(buffer: Buffer, filename: string): Promise<Page
   if (/\.zip$/i.test(filename)) return zipped(buffer);
   if (/\.rtf$/i.test(filename)) return plain(rtfText(buffer.toString("latin1")));
   if (/\.(txt|text)$/i.test(filename)) return plain(buffer.toString("utf8"));
+  if (/\.(xlsx|xlsm|xlsb|xls|csv)$/i.test(filename) && buffer.length > SHEET_MAX_BYTES) throw docError(`it is a spreadsheet over ${mb(SHEET_MAX_BYTES)}`, "too_large");
   // Macro-enabled and binary workbooks read like any workbook.
   if (/\.(xlsm|xlsb)$/i.test(filename)) filename = filename.replace(/\.xls[mb]$/i, ".xlsx");
   if (!/\.(xlsx|xls|csv|docx|htm|html)$/i.test(filename)) throw docError(`Agora doesn't read ${filename.split(".").pop()?.toUpperCase() || "this kind of"} files`, "unsupported");

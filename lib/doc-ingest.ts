@@ -11,7 +11,7 @@
 // AGORA_DOC_INGEST=off turns all of it off. Server-only.
 
 import { catalogTrxDocuments } from "./catalog";
-import { databaseMb, docSchema, linkDocuments, scanNotRead, scanPagesRead, scansToRead, settledUrls, storeDocument } from "./doc-store";
+import { databaseMb, docSchema, linkDocuments, markAttempt, markScanAttempt, scanNotRead, scanPagesRead, scansToRead, settledUrls, storeDocument } from "./doc-store";
 import { downloadDocument, fetchDocument, INGEST_MAX_BYTES } from "./doc-fetch";
 import { imageToPdf, readScan } from "./doc-ocr";
 import { modelOn, SCAN_MODEL } from "./llm";
@@ -44,6 +44,11 @@ const PAUSE_MS = Number(process.env.AGORA_DOC_PAUSE_MS ?? 1500);
 const FETCH_LIMIT = Number(process.env.AGORA_DOC_FETCH_LIMIT ?? Infinity);
 const OCR_PAGE_LIMIT = Number(process.env.AGORA_OCR_PAGE_LIMIT ?? 150_000);
 const OCR_WORKERS = Number(process.env.AGORA_OCR_WORKERS ?? 6);
+/** The web server shares this process: don't open another file while the heap is this full (Node stops near 4 GB). */
+const HEAP_PAUSE_MB = Number(process.env.AGORA_DOC_HEAP_PAUSE_MB ?? 2500);
+async function roomToRead(): Promise<void> {
+  for (let i = 0; i < 40 && process.memoryUsage().heapUsed / 1048576 > HEAP_PAUSE_MB; i++) await sleep(15_000);
+}
 /** Price sheets and price lists first: they're what search most needs. */
 const priority = (label: string) => (/price|pricing|cost|rate|catalog|bid sheet|ps final|offer/i.test(label) ? 0 : /method of operation|terms|contract|agreement|specification|scope/i.test(label) ? 1 : 2);
 
@@ -119,7 +124,9 @@ async function run(): Promise<void> {
     while (!stop) {
       const url = urls.shift();
       if (!url) return;
+      await roomToRead();
       try {
+        await markAttempt(url);
         const got = await fetchDocument(url, INGEST_MAX_BYTES);
         await storeDocument(url, got);
         state.stored++;
@@ -161,7 +168,9 @@ async function readScans(stillFetching: () => boolean): Promise<void> {
   /** Read one scan. Returns true when the model left a run unanswered (a rate limit, an outage), so the worker backs off. */
   const one = async (url: string, label: string): Promise<boolean> => {
     let unanswered = false;
+    await roomToRead();
     try {
+      await markScanAttempt(url);
       const { buffer: raw, filename } = await downloadDocument(url, INGEST_MAX_BYTES);
       const image = /\.(jpe?g|png)$/i.test(filename);
       if (!image && !/\.pdf$/i.test(filename)) throw new Error(`${filename} isn't a PDF or an image`);

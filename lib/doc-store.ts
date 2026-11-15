@@ -86,7 +86,7 @@ export async function storeDocument(url: string, result: { pages: StoredPage[]; 
   if ("status" in result) {
     await p.query(
       `insert into doc_urls (url, status, detail, filename, bytes) values ($1, $2, $3, $4, $5)
-       on conflict (url) do update set status = excluded.status, detail = excluded.detail, filename = coalesce(excluded.filename, doc_urls.filename), bytes = coalesce(excluded.bytes, doc_urls.bytes), tries = doc_urls.tries + 1, checked_at = now()`,
+       on conflict (url) do update set status = excluded.status, detail = excluded.detail, filename = coalesce(excluded.filename, doc_urls.filename), bytes = coalesce(excluded.bytes, doc_urls.bytes), checked_at = now()`,
       [url, result.status, result.detail.slice(0, 300), result.filename ?? null, result.bytes ?? null],
     );
     return;
@@ -171,11 +171,33 @@ export async function scansToRead(limit: number): Promise<{ url: string; label: 
   return r.rows;
 }
 
-/** A scan Claude couldn't read this time: counted, so it is tried three times at most. */
+/** Record that the server is about to read this URL, before it does. If reading it brings the server down, the restart
+ * finds it marked failed within the day and passes it over instead of crashing on it again. Each attempt counts toward
+ * the three tries; a read that finishes overwrites the mark with its result. */
+export async function markAttempt(url: string): Promise<void> {
+  const p = pool();
+  if (!p || !(await docSchema())) return;
+  await p.query(
+    `insert into doc_urls (url, status, detail, tries) values ($1, 'failed', 'the server stopped while reading it', 1)
+     on conflict (url) do update set status = 'failed', detail = 'the server stopped while reading it', tries = doc_urls.tries + 1, checked_at = now()
+     where doc_urls.status <> 'text'`,
+    [url],
+  );
+}
+
+/** The same for a scan, before Claude reads it: counted up front, so a scan that brings the server down isn't retried
+ * in a loop, and each scan is tried three times at most. */
+export async function markScanAttempt(url: string): Promise<void> {
+  const p = pool();
+  if (!p) return;
+  await p.query(`update doc_urls set ocr_tries = ocr_tries + 1, detail = 'the server stopped while reading it', checked_at = now() where url = $1`, [url]);
+}
+
+/** Why a scan Claude tried couldn't be read (its try was counted when it started). */
 export async function scanNotRead(url: string, detail: string): Promise<void> {
   const p = pool();
   if (!p) return;
-  await p.query(`update doc_urls set ocr_tries = ocr_tries + 1, detail = $2, checked_at = now() where url = $1`, [url, detail.slice(0, 300)]);
+  await p.query(`update doc_urls set detail = $2, checked_at = now() where url = $1`, [url, detail.slice(0, 300)]);
 }
 
 /** Pages read from scans so far, for the spending cap. */

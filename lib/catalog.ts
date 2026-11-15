@@ -645,3 +645,128 @@ export function priceListQueue(opts: { coop?: string; kind?: string; q?: string;
 }
 
 export const catalogDocument = (id: string) => load().documents.find((d) => d.id === id) ?? null;
+
+// ------------------------------------------------------------------ browsing by category
+
+/** A catalog product on the browse page: its best price on file and the contract that carries it. */
+export interface BrowseItem {
+  product_id: string;
+  name: string;
+  maker: string | null;
+  mpn: string | null;
+  /** The lowest price a buyer would pay across its contracts, or null when none publishes one. */
+  price: number | null;
+  unit: string | null;
+  /** What the price is and when it's from, as the source labels it. */
+  vintage: string | null;
+  program: string;
+  /** A state program's contract (a TRX one when trx), or a co-op's. */
+  kind: "state" | "coop";
+  trx: boolean;
+  contract_id: string;
+  contract_number: string;
+  supplier: string;
+  supplier_id: string;
+  /** How many current contracts carry it. */
+  contracts: number;
+}
+export interface BrowseCategory {
+  name: string;
+  products: number;
+  priced: number;
+  contracts: number;
+}
+
+const BROWSE_ORDER = ["Office supplies", "Furniture", "Janitorial", "IT hardware", "Software and services", "Facilities and MRO", "Fleet and parts", "Public works materials", "Safety and uniforms", "Professional services", "Other"];
+/** NIGP classes that settle a category on their own (the classes state programs print). */
+const NIGP_CATEGORY: [RegExp, string][] = [
+  [/^(420|425)$/, "Furniture"],
+  [/^(485|486)$/, "Janitorial"],
+  [/^(600|615|620|630|640|645|655)$/, "Office supplies"],
+  [/^(204|205|206|207|280|725|840)$/, "IT hardware"],
+  [/^(208|209|920|915|962)$/, "Software and services"],
+  [/^(060|065|070|071|075|405|570|928|968)$/, "Fleet and parts"],
+  [/^(150|395|525|575|650|659|670|745|750|760|765|910|913)$/, "Public works materials"],
+  [/^(200|201|340|345|680)$/, "Safety and uniforms"],
+  [/^(918|924|925|946|948|952|958|961|975|988|990)$/, "Professional services"],
+  [/^(035|155|285|450|470|485|720|740|780|909|914|936)$/, "Facilities and MRO"],
+];
+/** Words on the line a source filed a price under ("OFFICE FURNITURE", "Restroom products"). */
+const WORD_CATEGORY: [RegExp, string][] = [
+  [/furniture|seating|chair|desk|\btables?\b|bookcase|filing cabinet|lockers?/i, "Furniture"],
+  [/janitorial|cleaning|cleaner|restroom|trash|mop|broom|paper towel|tissue|soap|disinfect/i, "Janitorial"],
+  [/office supplies|stationery|paper\b|envelope|toner|ink\b|pens?\b|pencil|binder|folder|label/i, "Office supplies"],
+  [/computer|laptop|desktop|monitor|printer|server|network|tablet|telecom|phone/i, "IT hardware"],
+  [/software|license|subscription|saas|cloud/i, "Software and services"],
+  [/vehicle|truck|\bbus(es)?\b|tires?\b|fleet|automotive|auto parts|fuel|diesel|gasoline/i, "Fleet and parts"],
+  [/salt|deicer|asphalt|aggregate|concrete|pipe|culvert|road|highway|sign(s|age)?\b|traffic|playground|park/i, "Public works materials"],
+  [/safety|uniform|apparel|textile|glove|vest|boots?\b|helmet|protective|first aid/i, "Safety and uniforms"],
+  [/consult|staffing|services?\b|engineering|audit|training|legal|appraisal|inspection/i, "Professional services"],
+  [/hvac|plumbing|electrical|lighting|lamp|hardware|tools?\b|maintenance|repair|mro|lumber|paint/i, "Facilities and MRO"],
+];
+/** A product's category: its contract's, else the contract's NIGP class, else the words its price was filed under. */
+function browseCategoryOf(c: CatalogContract, o?: CatalogOffering): string {
+  if (c.category && c.category !== "Other" && BROWSE_ORDER.includes(c.category)) return c.category;
+  for (const cls of c.nigp?.classes ?? []) for (const [re, cat] of NIGP_CATEGORY) if (re.test(cls)) return cat;
+  const text = `${o?.category ?? ""} ${c.title}`;
+  for (const [re, cat] of WORD_CATEGORY) if (re.test(text)) return cat;
+  return "Other";
+}
+
+interface BrowseIndex {
+  categories: BrowseCategory[];
+  /** Each category's products, priced first, then by name. */
+  byCategory: Map<string, BrowseItem[]>;
+}
+function browseIndex(): BrowseIndex {
+  const g = globalThis as unknown as { __agoraBrowse?: BrowseIndex };
+  if (g.__agoraBrowse) return g.__agoraBrowse;
+  const idx = load();
+  const byCategory = new Map<string, BrowseItem[]>(BROWSE_ORDER.map((c) => [c, []]));
+  const contractsIn = new Map<string, number>(BROWSE_ORDER.map((c) => [c, 0]));
+  // Counted the way the contract explorer filters them (its category field), so the browse page's link lands on the same number.
+  for (const c of idx.contracts) if (!expired(c) && c.category && contractsIn.has(c.category)) contractsIn.set(c.category, contractsIn.get(c.category)! + 1);
+  for (const p of idx.products) {
+    const offers = (idx.offeringsByProduct.get(p.id) ?? []).filter((o) => {
+      const c = idx.contractById.get(o.contract);
+      return c && !expired(c);
+    });
+    if (!offers.length) continue;
+    // The best route: the lowest payable price, else the first listing.
+    const priced = offers.filter((o) => o.price != null).sort((a, b) => a.price! - b.price!);
+    const best = priced[0] ?? offers[0];
+    const c = idx.contractById.get(best.contract)!;
+    const cat = browseCategoryOf(c, best);
+    byCategory.get(cat)!.push({
+      product_id: p.id,
+      name: p.name,
+      maker: p.maker,
+      mpn: p.mpn,
+      price: best.price,
+      unit: best.unit,
+      vintage: best.vintage,
+      program: c.coop,
+      kind: c.state_contract ? "state" : "coop",
+      trx: isTrxContract(c),
+      contract_id: c.id,
+      contract_number: c.number,
+      supplier: idx.supplierById.get(best.supplier)?.name ?? "",
+      supplier_id: best.supplier,
+      contracts: new Set(offers.map((o) => o.contract)).size,
+    });
+  }
+  for (const list of byCategory.values()) list.sort((a, b) => Number(b.price != null) - Number(a.price != null) || a.name.localeCompare(b.name));
+  const categories = BROWSE_ORDER.map((name) => ({ name, products: byCategory.get(name)!.length, priced: byCategory.get(name)!.filter((x) => x.price != null).length, contracts: contractsIn.get(name) ?? 0 }));
+  return (g.__agoraBrowse = { categories, byCategory });
+}
+
+/** Every category with its product and contract counts. */
+export const catalogBrowseCategories = (): BrowseCategory[] => browseIndex().categories;
+
+/** One category's products, a page at a time, optionally filtered by words in the name, maker, part number or supplier. */
+export function catalogBrowse(category: string, q: string, offset: number, limit: number): { total: number; items: BrowseItem[] } {
+  const list = browseIndex().byCategory.get(category) ?? [];
+  const words = q.toLowerCase().split(/\s+/).filter(Boolean);
+  const matching = words.length ? list.filter((x) => words.every((w) => `${x.name} ${x.maker ?? ""} ${x.mpn ?? ""} ${x.supplier}`.toLowerCase().includes(w))) : list;
+  return { total: matching.length, items: matching.slice(offset, offset + limit) };
+}

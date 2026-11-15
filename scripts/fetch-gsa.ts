@@ -4,11 +4,11 @@
 //   npm run fetch:gsa
 //
 // Needs network access to www.gsaelibrary.gsa.gov and gsaelibrary.gsa.gov. Writes:
-//   seed/catalog/source/gsa-sins.json             every MAS Special Item Number (SIN): its
+//   seed/stash/gsa/gsa-sins.json                 every MAS Special Item Number (SIN): its
 //                                                 title, description, and whether state and
 //                                                 local governments may buy it through GSA
 //                                                 cooperative purchasing
-//   seed/catalog/source/gsa-mas-contracts.csv.gz  one row per contract and SIN: contract
+//   seed/stash/gsa/gsa-mas-contracts.csv.gz      one row per contract and SIN: contract
 //                                                 number, vendor, SIN, subcategory, end dates,
 //                                                 company website and SAM UEI
 //
@@ -20,7 +20,8 @@ import { fileURLToPath } from "node:url";
 import { gzipSync } from "node:zlib";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
-const OUT = join(ROOT, "seed/catalog/source");
+// GSA is stashed, not served (see scripts/import-catalog.ts): its files live in seed/stash/gsa/.
+const OUT = join(ROOT, "seed/stash/gsa");
 const SUMMARY = "https://www.gsaelibrary.gsa.gov/ElibMain/scheduleSummary.do?scheduleNumber=MAS";
 const CONTRACTS = "https://gsaelibrary.gsa.gov/elib_contracts/schedule_MAS.csv";
 

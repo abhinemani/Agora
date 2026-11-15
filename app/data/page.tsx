@@ -114,7 +114,7 @@ const NEEDS = [
   },
   {
     title: "What's on each co-op's contracts",
-    body: `Started: the co-op catalog now brings ${catalogInsights.source_counts.contracts.toLocaleString()} contracts from 13 co-ops into search (see "The co-op catalog" above). Still missing: contract pages for TIPS, BuyBoard and 1GPA, end dates for GSA, Choice Partners, PEPPM and NPPGov, and price files for nearly every co-op but Canon on Sourcewell.`,
+    body: `Started: the co-op catalog now brings ${catalogInsights.source_counts.contracts.toLocaleString()} contracts from 13 co-ops into search (see "The co-op catalog" above). Still missing: contract pages for TIPS, BuyBoard and 1GPA, end dates for Choice Partners, PEPPM and NPPGov, and price files for nearly every co-op but Canon on Sourcewell.`,
     status: "Started",
   },
   {
@@ -520,7 +520,9 @@ export default function CoopDataPage() {
               {n(catalogInsights.source_counts.documents)} links to price documents.
             </p>
             <p>
-              Loci uses it in four places. Search adds the best-fitting catalog contracts to the co-op section, split by the agency&apos;s memberships, with GSA in its own lane.
+              Loci uses it in four places. Search adds the best-fitting catalog contracts to the co-op section, split by the agency&apos;s memberships. GSA&apos;s{" "}
+              {n(catalogInsights.cleanup.gsa_stashed)} schedule contracts are stashed, not served: they brought no products and crowded search, and they can be brought back
+              (seed/stash/gsa/ explains how).
               Product search shows catalog items with every contract that sells them. Every supplier on a co-op contract gets a storefront ready to claim. And the price-list
               queue sends the linked documents through Loci&apos;s contract reader. Nothing in the catalog is buyable in Loci: orders happen on the co-op&apos;s site.
             </p>
@@ -773,7 +775,7 @@ export default function CoopDataPage() {
               Purchasing offices file what they buy under NIGP commodity codes, so Loci tags contracts with them too. {n(catalogInsights.nigp.published + catalogInsights.nigp.reviewed)} of{" "}
               {n(catalogInsights.nigp.contracts)} contracts carry at least one. NJSTART prints codes on its line items, so its {n(catalogInsights.nigp.published)} coded contracts
               and {n(catalogInsights.nigp.priced_offerings_coded)} prices carry the state&apos;s own codes. No co-op publishes codes, so the other{" "}
-              {n(catalogInsights.nigp.reviewed)} took classes from the AI review: each co-op contract title and GSA SIN was offered the {n(nj.nigp_classes)} classes NJSTART&apos;s
+              {n(catalogInsights.nigp.reviewed)} took classes from the AI review: each co-op contract title was offered the {n(nj.nigp_classes)} classes NJSTART&apos;s
               records name, with their descriptions, and the reviewer chose up to three or none. Only high- and medium-confidence answers are applied, and contract pages say
               which codes were printed and which were reviewed.
             </p>
@@ -799,9 +801,7 @@ export default function CoopDataPage() {
               nothing and is fully repeatable. The second sends what the rules couldn&apos;t settle to an AI reviewer, with real candidates to choose among.
             </p>
             <p>
-              Rules did most of the work. GSA titles every contract &quot;Multiple Award Schedule,&quot; so {n(catalogInsights.cleanup.gsa_described)} GSA contracts are now
-              described by their SINs, from GSA&apos;s own SIN list. Each has its end date, and {n(catalogInsights.cleanup.gsa_open_to_cities)} carry at least one of the{" "}
-              {n(catalogInsights.cleanup.gsa_cooperative_sins)} SINs GSA opens to state and local governments; the rest are marked not open. {n(catalogInsights.cleanup.names_title_cased)}{" "}
+              Rules did most of the work. {n(catalogInsights.cleanup.names_title_cased)}{" "}
               ALL CAPS supplier names were title-cased, {n(catalogInsights.cleanup.parts_labelled)} products named only by a part number now carry their maker, and{" "}
               {n(f.county_offices ?? 0)} county offices (sheriffs, district attorneys, clerks) point at their county, while {n(f.county_governing_bodies_merged ?? 0)} county
               commissions merged into the county they govern.

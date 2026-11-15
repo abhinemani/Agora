@@ -531,7 +531,7 @@ export default function AdminPage() {
     return (
       <div className="mx-auto max-w-xl space-y-3">
         <PageTitle title="Site admin" />
-        <Alert type="info" heading="This page is for Agora's admins">
+        <Alert type="info" heading="This page is for Loci's admins">
           {user.verified ? "Your account isn't an admin. An existing admin can make it one from this page." : "Admins need a confirmed email address. Confirm yours from the link we sent, then ask an existing admin."}
         </Alert>
       </div>

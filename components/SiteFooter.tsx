@@ -43,6 +43,12 @@ export function SiteFooter() {
           </Link>
           : how to use Loci, what its terms mean and where its data comes from.
         </p>
+        <p className="mt-2 text-ui-3xs text-base-dark">
+          <Link href="/admin" className="font-bold text-primary">
+            Site admin
+          </Link>
+          : accounts, supplier claims and the demo, for Loci&apos;s admins.
+        </p>
       </div>
     </footer>
   );

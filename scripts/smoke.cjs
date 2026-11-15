@@ -20,7 +20,10 @@ const B = process.argv[2] || 'http://localhost:3000';
   const main = () => p.locator('main').innerText();
 
   await check('Search: the request is read into fields', async () => {
+    // A product request opens the front door first; "See full results" makes the request.
     await p.goto(B + '/'); await p.locator('input[placeholder^="Describe"]').fill('laptops for the town hall'); await p.keyboard.press('Enter');
+    await p.waitForFunction(() => location.pathname.startsWith('/request/') || document.querySelector('section[aria-label=Shortlist] article'), null, { timeout: 60000 });
+    if (!new URL(p.url()).pathname.startsWith('/request/')) await p.locator('button:has-text("See full results")').click();
     await p.waitForURL(/\/request\//, { timeout: 60000 });
     await p.locator('#options').or(p.locator('text=Confirm the item')).first().waitFor({ timeout: 60000 });
     const txt = await main();

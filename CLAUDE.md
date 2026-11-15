@@ -9,12 +9,12 @@ npm install
 npm run dev            # http://localhost:3000
 npm run typecheck      # tsc --noEmit
 npm run build
-npm run rehearse       # 16-step demo walkthrough in Playwright; needs a server on :3000. It resets the demo: never run it against the live site
+npm run rehearse       # 17-step demo walkthrough in Playwright; needs a server on :3000. It resets the demo: never run it against the live site
 npm run smoke          # read-only check of search and the shopper tools; safe on the live site (npm run smoke -- <url>)
 npm run eval           # the fixed test set for the prompts and their checks (evals/cases.ts)
 ```
 
-Run `rehearse` against a production build: `npm run build`, then `npx next start -p 3000`, then `npm run rehearse`. All 16 steps must pass, with no page errors, before anything merges. To stop the server, run `pkill -f next-server` (`pkill -f "next start"` doesn't stop it).
+Run `rehearse` against a production build: `npm run build`, then `npx next start -p 3000`, then `npm run rehearse`. All 17 steps must pass, with no page errors, before anything merges. To stop the server, run `pkill -f next-server` (`pkill -f "next start"` doesn't stop it).
 
 ## How the app is built
 
@@ -23,6 +23,7 @@ The product was renamed from Agora to Loci. Everything a visitor or the model re
 - Next.js 15 App Router. State is an in-memory `Db` (`lib/db.ts`, seeded by `lib/seed.ts`), changed only through `lib/actions.ts` via `/api/act`. With `DATABASE_URL` set it is saved to Postgres after each change (`lib/persist.ts`); without it, nothing is saved.
 - Every route that reads or changes the store is wrapped in `withSession()` (`lib/session.ts`), which binds the visitor's agency and account to the request. A new action is account-only unless it is added to `OPEN` in `app/api/act/route.ts`; one that changes the demo for everyone goes in `ADMIN` there (`lib/admin.ts` says who is an admin).
 - `/api/state` sends the `Db` to the browser, cut to what the visitor's agency may see (`app/api/state/route.ts`). A new collection that holds an agency's or a person's records needs a line there. Large datasets stay server-only and are read lazily: the co-op directory (`lib/directory.ts`), the co-op catalog (`lib/catalog.ts`) and state rules (`lib/state-rules.ts`). Results carry only the slice a page needs. Never import those modules or their JSON into a `"use client"` component.
+- The home page's search is a guided one for products (`components/FrontDoor.tsx`, rules in `lib/front-door.ts`): it narrows with the product dive in place and keeps its state in the address. Software, services and construction requests go straight to the results page. Its copy speaks as Loci, in the third person.
 - The results page (`app/request/[id]/page.tsx`) reads as a record: the request as fields, one recommended route (`components/Shopper.tsx`), every priced option in one table (`components/results/OptionsTable.tsx`), then the other sources folded (`components/results/Fold.tsx`). Its copy is formal and third-person: no "your shopper", no "I". Keep new text on it that way.
 - Contract uploads are read in the background: `/api/contracts/parse` answers with a job id and the page polls for the result (`lib/parse-jobs.ts`).
 - TRX documents' text lives in Postgres (`lib/doc-store.ts`), filled on the server by `lib/doc-ingest.ts` from `instrumentation.ts`; fetching and reading a document is `lib/doc-fetch.ts`. Search results, the explorer and Ask a contract use it when `DATABASE_URL` is set; without it they work as before. Scanned PDFs are read by Claude in the same job (`lib/doc-ocr.ts`, task `scan_text`), on the smaller `SCAN_MODEL` in `lib/llm.ts`; each records the model that read it (`read_by`), and the main model's readings are the reference set. Watch `/api/docs/status` after a deploy. Ingest stops at `AGORA_DOC_DB_LIMIT_MB` (4,000 by default); raise it when the Postgres volume grows.

@@ -7,6 +7,7 @@ import { BlueprintBackdrop, DimensionFrame } from "@/components/BlueprintBackdro
 import { BuyerPicker } from "@/components/BuyerPicker";
 import { Annotation } from "@/components/blueprint";
 import { CategoryIcon } from "@/components/CategoryIcon";
+import { FrontDoor } from "@/components/FrontDoor";
 import { HeroPreview } from "@/components/HeroPreview";
 import { TwoProducts } from "@/components/TwoProducts";
 import { Arrow, Search } from "@/components/icons";
@@ -14,8 +15,12 @@ import { useStore } from "@/components/store";
 import { ErrorNote, Loading, money } from "@/components/ui";
 import type { Listing, Request } from "@/lib/types";
 import { CATEGORIES } from "@/lib/types";
+import { fromSearch, requestKind, toSearch, type FrontDoorUrl } from "@/lib/front-door";
 
-const EXAMPLES = ["Computer-aided dispatch", "Jury management software", "Resident engagement platform", "40 folding tables", "Permitting software", "Project manager hours"];
+/** Examples of each kind: products open the guided search, contract-shaped requests go to the results page. */
+const EXAMPLES = ["40 folding tables", "A police SUV", "Task chairs for the clerk's office", "Permitting software", "Computer-aided dispatch", "Project manager hours"];
+const KIND_TAG = { product: "Product", contract: "Contract" } as const;
+const STEPS = ["Who's buying", "How many", "Which one", "How to buy it"];
 /** The worked example: one request, three contracts. */
 const PREVIEW = ["lst_001", "lst_014", "lst_021"];
 
@@ -38,6 +43,22 @@ export default function Home() {
     };
   }, []);
   const input = useRef<HTMLInputElement>(null);
+  // The guided search, when the address holds a request (/?q=…). Back and forward move between it and the hero.
+  const [door, setDoor] = useState<{ url: FrontDoorUrl; key: number } | null>(null);
+  useEffect(() => {
+    const sync = () => setDoor((d) => {
+      const url = fromSearch(window.location.search);
+      return url ? { url, key: (d?.key ?? 0) + 1 } : null;
+    });
+    sync();
+    window.addEventListener("popstate", sync);
+    return () => window.removeEventListener("popstate", sync);
+  }, []);
+  const openDoor = (need: string) => {
+    window.history.pushState(null, "", `/${toSearch({ need })}`);
+    setDoor((d) => ({ url: { need }, key: (d?.key ?? 0) + 1 }));
+    window.scrollTo(0, 0);
+  };
 
   useEffect(() => {
     if (role !== "buyer") setRole("buyer");
@@ -67,6 +88,8 @@ export default function Home() {
       input.current?.focus();
       return;
     }
+    // Products are narrowed here first; software, services and construction go to the results page and its contracts.
+    if (requestKind(q) === "product") return openDoor(q.trim());
     setBusy(true);
     setError(null);
     try {
@@ -78,6 +101,25 @@ export default function Home() {
     }
   };
 
+  if (door)
+    return (
+      <FrontDoor
+        key={door.key}
+        initial={door.url}
+        onNewSearch={(need) => {
+          if (need) {
+            if (requestKind(need) === "product") return openDoor(need);
+            window.history.pushState(null, "", "/");
+            setDoor(null);
+            return void submit(need);
+          }
+          window.history.pushState(null, "", "/");
+          setDoor(null);
+          setText("");
+        }}
+      />
+    );
+
   return (
     <div className="pb-8">
       {/* Hero: one question, one box, drawn as a blueprint. Full bleed, out of main's padding. */}
@@ -87,7 +129,7 @@ export default function Home() {
           <div className="text-ui-2xs font-bold text-[#A8CBF2]">Government buying, simplified</div>
           <h1 className="mx-auto mt-5 max-w-3xl font-heading text-[clamp(2rem,4.4vw,3.4rem)] font-bold leading-[1.12] text-[#fff]">What are you looking to buy?</h1>
           <p className="mx-auto mt-4 max-w-xl text-base leading-relaxed text-[#D3E3F6]">
-            Search state and cooperative contracts in one place. Loci shows which ones your agency can use, what they cost, and how to buy.
+            Describe it in your own words. Loci asks a few questions, then shows what your agency can buy on state and cooperative contracts, and how to buy it.
           </p>
           <div className="mx-auto mt-14 max-w-3xl">
             <DimensionFrame working={busy} label={busy ? `FIG. 2 · CHECKING ${n(contractCount)} CONTRACTS` : `FIG. 2 · SEARCH ${n(contractCount)} CONTRACTS`}>
@@ -114,20 +156,30 @@ export default function Home() {
                   disabled={busy}
                   className="inline-flex shrink-0 items-center justify-center gap-1.5 self-stretch bg-[#13294B] px-5 py-3.5 text-ui-xs font-bold text-[#fff] transition hover:bg-[#0B1E38] active:bg-black disabled:opacity-70 sm:px-7 sm:py-0"
                 >
-                  {busy ? "Searching…" : "Find solutions"} <Arrow className="hidden h-4 w-4 sm:block" />
+                  {busy ? "Searching…" : "Start"} <Arrow className="hidden h-4 w-4 sm:block" />
                 </button>
               </form>
             </DimensionFrame>
           </div>
-          <div className="mx-auto mt-8 flex max-w-3xl flex-wrap justify-center gap-2.5">
+          {/* What happens after Start, in the same words as the steps on the next screen. */}
+          <ol aria-label="What happens next" className="mx-auto mt-5 flex max-w-3xl flex-wrap justify-center gap-x-5 gap-y-2 text-[13px] text-[#D3E3F6]">
+            {STEPS.map((s, i) => (
+              <li key={s} className="flex items-center gap-2">
+                <span className="border border-[rgba(255,255,255,0.5)] px-1.5 py-1 font-mono text-[10.5px] font-bold leading-none text-[#fff]">{i + 1}</span>
+                {s}
+              </li>
+            ))}
+          </ol>
+          <div className="mx-auto mt-7 flex max-w-3xl flex-wrap justify-center gap-2.5">
             {EXAMPLES.map((e) => (
               <button
                 key={e}
                 onClick={() => submit(e)}
                 disabled={busy}
-                className="rounded-full border border-[rgba(255,255,255,0.4)] bg-[rgba(255,255,255,0.05)] px-3.5 py-1.5 text-ui-2xs text-[#fff] transition hover:border-[rgba(255,255,255,0.8)] hover:bg-[rgba(255,255,255,0.15)] disabled:opacity-60"
+                className="inline-flex items-center gap-2 rounded-full border border-[rgba(255,255,255,0.4)] bg-[rgba(255,255,255,0.05)] px-3.5 py-1.5 text-ui-2xs text-[#fff] transition hover:border-[rgba(255,255,255,0.8)] hover:bg-[rgba(255,255,255,0.15)] disabled:opacity-60"
               >
                 {e}
+                <span className="font-mono text-[9.5px] uppercase tracking-[0.1em] text-[#A8CBF2]">{KIND_TAG[requestKind(e)]}</span>
               </button>
             ))}
           </div>

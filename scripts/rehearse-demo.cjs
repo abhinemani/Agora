@@ -1,6 +1,6 @@
 const { chromium } = require('playwright');
 const B = process.argv[2] || 'http://localhost:3000';
-// Runs the README demo path (steps 1–16) in a real browser against a running
+// Runs the README demo path (steps 1–17) in a real browser against a running
 // server and reports PASS/FAIL per step. Usage: npm run build && npm start, then
 // node scripts/rehearse-demo.cjs [base-url]. Failure screenshots go to ./rehearsal/.
 const OUT = require('path').join(process.cwd(), 'rehearsal') + '/';
@@ -20,7 +20,9 @@ require('fs').mkdirSync(OUT, { recursive: true });
   const menu = async () => { await p.locator('button[aria-haspopup="menu"]').click(); };
   const role = async (r) => { await menu(); await p.getByRole('menuitemradio', { name: new RegExp(r) }).click(); await p.waitForTimeout(800); };
   const agency = async (name) => { await menu(); await p.getByRole('menuitem', { name: /Your agency/ }).click(); await p.locator(`button:has-text("${name}")`).first().click(); await p.waitForTimeout(800); };
-  const search = async (q) => { await p.goto(B + '/'); await p.locator('input[placeholder^="Describe"]').fill(q); await p.keyboard.press('Enter'); await p.waitForURL(/\/request\//); await p.waitForTimeout(1500); const yes = p.locator('button:has-text("Yes")'); if (await yes.count()) { await yes.first().click(); } await p.waitForTimeout(1500); };
+  // The homepage narrows product requests in place (the front door); contract-shaped ones go straight to results.
+  // Either way this lands on the results page: from the front door, by "See full results".
+  const search = async (q) => { await p.goto(B + '/'); await p.locator('input[placeholder^="Describe"]').fill(q); await p.keyboard.press('Enter'); await p.waitForFunction(() => location.pathname.startsWith('/request/') || location.search.startsWith('?q='), null, { timeout: 60000 }); if (!new URL(p.url()).pathname.startsWith('/request/')) { await p.locator('button:has-text("See full results")').click(); } await p.waitForURL(/\/request\//, { timeout: 60000 }); await p.waitForTimeout(1500); const yes = p.locator('button:has-text("Yes")'); if (await yes.count()) { await yes.first().click(); } await p.waitForTimeout(1500); };
   // The other sources on a results page are folded; open one before reading it.
   const openFold = async (id) => { const b = p.locator(`#${id} > h3 > button[aria-expanded="false"]`); if (await b.count()) { await b.click(); await p.waitForTimeout(400); } };
   const ledgerOpts = async () => p.evaluate(() => fetch('/api/state').then(r => r.json()).then(j => [...new Set(j.db.revenue.map(e => e.option))].sort((a,b)=>a-b)));
@@ -191,6 +193,27 @@ require('fs').mkdirSync(OUT, { recursive: true });
     await p.waitForSelector('text=/Lines read/i', { timeout: 90000 });
     const txt = await p.locator('main').innerText();
     return (txt.match(/\d+ of \d+ checked lines[^.\n]*/i) || ['report shown'])[0];
+  });
+  await step(17, 'Front door: folding tables asked, narrowed, routed, with a way out', async () => {
+    await p.goto(B + '/'); await p.waitForTimeout(800);
+    await p.locator('input[placeholder^="Describe"]').fill('40 folding tables for the rec center'); await p.keyboard.press('Enter');
+    await p.waitForSelector('text=/\\d+ OF \\d+ MATCH/i', { timeout: 60000 });
+    if (new URL(p.url()).pathname !== '/') throw new Error('a product request left the homepage: ' + p.url());
+    const chips = await p.locator('section[aria-label=Shortlist]').innerText();
+    if (!/\b40\b/.test(chips)) throw new Error('the quantity in the request was not read');
+    if (!/40 × \$[\d,.]+ = \$/.test(chips)) throw new Error('no order total on the cards');
+    const skip = p.locator('section[aria-label=Conversation] button:has-text("Skip: show every contract")'); if (await skip.count()) await skip.click();
+    const opt = p.locator('section[aria-label=Conversation] div.flex-col > button').first(); await opt.click(); await p.waitForTimeout(2500);
+    if (!/[?&]f=/.test(p.url())) throw new Error('the answer is not kept in the address');
+    const strip = p.locator('button:has-text("See the options")'); if (await strip.count()) await strip.click();
+    const ramp = await p.locator('#none-fit').innerText();
+    if (!/Recommended/i.test(ramp) || !/Draft a solicitation/i.test(ramp)) throw new Error('the way out is missing a path or a recommendation');
+    await p.locator('button:has-text("Choose this one")').first().click();
+    const route = await p.locator('section[aria-label=Route]').innerText();
+    if (!/HOW IT.S BOUGHT/i.test(route)) throw new Error('no route for the chosen product');
+    await p.locator('section[aria-label=Route] button:has-text("Start the purchase file"), section[aria-label=Route] button:has-text("Plan this purchase")').first().click();
+    await p.waitForURL(/\/request\//, { timeout: 60000 });
+    return (chips.match(/\d+ OF \d+ MATCH/i) || ['matched'])[0] + ' · ' + (ramp.match(/RECOMMENDED\s+([^\n]+)/i) || ['', 'a path'])[1].trim();
   });
   console.log(results.join('\n'));
   console.log('page errors:', [...new Set(errors)].slice(0, 8));

@@ -60,6 +60,11 @@ export interface DiveState {
   items: DiveItem[];
   questions: DiveQuestion[];
   price_range: { min: number; max: number } | null;
+  /** The typical range of prices a buyer would pay (no list prices): the middle 80% of priced matches once there are
+   * more than five, so one stray match (a forklift named "swing mast" among swing sets) doesn't set the estimate. */
+  pay_range: { min: number; max: number } | null;
+  /** Contracts that sell a match but carry no price for it: the buyer asks the supplier for a quote under the contract. Usable ones first. */
+  by_quote: { contract_id: string; program: string; contract_number: string | null; supplier: string; usable: boolean }[];
   buyer: string | null;
   /** Candidate filters the free-text reader may pick from. */
   vocabulary: { words: string[]; makers: string[] };
@@ -244,6 +249,11 @@ export function diveSearch(db: Db, query: string, filters: DiveFilter[]): DiveSt
     (a, b) => Number(b.usable) - Number(a.usable) || Number(b.price != null) - Number(a.price != null) || b.fit - a.fit || (priceOf(a) ?? Infinity) - (priceOf(b) ?? Infinity) || a.name.localeCompare(b.name),
   );
   const prices = matched.map(priceOf).filter((p): p is number => p != null);
+  const pays = matched.map((i) => i.price).filter((p): p is number => p != null).sort((a, b) => a - b);
+  const at = (q: number) => pays[Math.round((pays.length - 1) * q)];
+  const quoted = new Map<string, DiveState["by_quote"][number]>();
+  for (const i of [...matched].sort((a, b) => Number(b.usable) - Number(a.usable) || b.fit - a.fit))
+    if (i.price == null && i.contract_id && !quoted.has(i.contract_id)) quoted.set(i.contract_id, { contract_id: i.contract_id, program: i.program, contract_number: i.contract_number, supplier: i.supplier, usable: i.usable });
   const { questions, words, makers } = questionsFor(matched, filters, q, Boolean(db.session.buyer));
   return {
     query: q,
@@ -253,6 +263,8 @@ export function diveSearch(db: Db, query: string, filters: DiveFilter[]): DiveSt
     items: ranked.slice(0, 12),
     questions,
     price_range: prices.length ? { min: Math.min(...prices), max: Math.max(...prices) } : null,
+    pay_range: !pays.length ? null : pays.length > 5 ? { min: at(0.1), max: at(0.9) } : { min: pays[0], max: pays[pays.length - 1] },
+    by_quote: [...quoted.values()].slice(0, 4),
     buyer: db.session.buyer?.name ?? null,
     vocabulary: { words, makers },
   };

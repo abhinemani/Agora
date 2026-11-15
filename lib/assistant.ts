@@ -113,8 +113,16 @@ export function coverage(itemTokens: string[], title: string) {
   return Math.round((hit / t.length) * 20) / 20;
 }
 
+/** Words for the kind of work, not the thing worked on: "maintenance" in "elevator maintenance", "services" in
+ * "janitorial services", "staffing" in "temporary staffing". */
+const WORK_WORDS = new Set(tokens("service services maintenance repair repairs support staff staffing training installation management consulting professional"));
+
 function bestMatches<T>(itemTokens: string[], rows: T[], titleOf: (r: T) => string, weights?: Weights) {
-  let scored = rows.map((r) => ({ r, s: score(itemTokens, titleOf(r), weights), n: score(itemTokens, titleOf(r)) }));
+  // A match shares a word for the thing asked for: a software line priced with "annual maintenance" is no match for
+  // elevator maintenance. A request made only of such words ("maintenance services") is matched on them.
+  const subject = itemTokens.filter((w) => !WORK_WORDS.has(w));
+  const candidates = subject.length && subject.length < itemTokens.length ? rows.filter((r) => score(subject, titleOf(r)) > 0) : rows;
+  let scored = candidates.map((r) => ({ r, s: score(itemTokens, titleOf(r), weights), n: score(itemTokens, titleOf(r)) }));
   if (weights) {
     // Breadth first: products matching more of the request's words beat one rare
     // word ("open data platform" over "turnkey portal" for "open data portal").
@@ -214,7 +222,7 @@ function itemPhrase(text: string) {
     .trim();
 }
 
-function offlineParse(text: string, db: Db): Omit<ParsedRequest, "est_total"> {
+export function offlineParse(text: string, db: Db): Omit<ParsedRequest, "est_total"> {
   const qtyNum = text.match(/\b(\d[\d,]*)\b(?!\s*(st|nd|rd|th)\b)/);
   const qtyWord = text.toLowerCase().match(/\b(a|an|one|two|three|four|five|six|ten|twelve|twenty|dozen)\b/);
   // Whichever comes first wins: "two 24 inch monitors" is 2, "40 folding tables" is 40.

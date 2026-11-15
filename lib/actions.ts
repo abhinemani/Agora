@@ -464,8 +464,16 @@ function resultCandidates(db: Db, request: Request, n: number): { hits: CatalogP
       merged.set(h.product_id, have ? { ...have, fit: Math.max(have.fit, h.fit), kind_match: Math.max(have.kind_match, h.kind_match) } : h);
     }
   }
+  // As in the dive: what the buyer can use first (with no agency, what anyone can use before one state's contracts),
+  // then the thing asked for, then an agency's own state contract before a co-op's.
+  const buyer = db.session.buyer;
+  const usable = (h: CatalogProductHit) => Number(h.routes.some((r) => r.eligible && (!buyer || r.member || r.coop_id === "gsa_mas")));
+  const stateOnly = (h: CatalogProductHit) => Number(!buyer && h.routes.every((r) => r.trx));
+  const ownState = (h: CatalogProductHit) => Number(Boolean(buyer) && h.routes.some((r) => r.trx && r.eligible));
   const order = [...merged.keys()];
-  const hits = [...merged.values()].sort((a, b) => b.kind_match - a.kind_match || b.fit - a.fit || order.indexOf(a.product_id) - order.indexOf(b.product_id));
+  const hits = [...merged.values()].sort(
+    (a, b) => usable(b) - usable(a) || stateOnly(a) - stateOnly(b) || b.kind_match - a.kind_match || ownState(b) - ownState(a) || b.fit - a.fit || order.indexOf(a.product_id) - order.indexOf(b.product_id),
+  );
   return { hits: hits.slice(0, n), total: Math.max(total, merged.size) };
 }
 

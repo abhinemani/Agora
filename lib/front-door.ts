@@ -11,10 +11,13 @@ const CONTRACT_SHAPED =
   /\b(software|saas|platform|system|systems|portal|app|application|services?|consult\w*|consultants?|hours|staffing|staff augmentation|engineering|architect\w*|design services|construction|construct|renovat\w*|retrofit|install\w*|maintenance|repair|repairs|janitorial|landscaping|audit|study|assessment|training|management|hosting|subscription|licen[cs]es?|implementation|program management|project manager|dispatch|computer-aided|cad|erp|crm|gis|permitting|licensing|records management|case management|payroll|e-?procurement|cybersecurity|cloud|gps|avl|telematics|tracking|fleet management)\b/i;
 
 /** The homepage's examples: products open the guided search, contract-shaped requests go to the results page. Each one
- * returns priced or fitting results for any buyer, with or without an agency: the products are on co-op contracts open
- * nationwide (BuyBoard's police vehicles, Canon's toner on Sourcewell, Burke's benches on OMNIA), and the contracts are
- * on co-ops every state can use. The eval case "front-door.guard.examples" runs each one as several states. */
-export const EXAMPLES = ["A police SUV", "Toner for the copier", "Park benches", "Permitting software", "Computer-aided dispatch", "Fleet GPS tracking"];
+ * returns priced or fitting results for any buyer, with or without an agency, and each shows something the others
+ * don't. "A police SUV" has the fit judge set sedans and civilian SUVs aside, with the same vehicle on several contracts.
+ * "Crew cab pickups, no diesel" is read into a filter and a ruled-out word. "6 picnic tables" puts a quantity against the
+ * P-card limit, some under it and some over. "Computer-aided dispatch" and "Permitting software" have priced options
+ * on co-op contracts. "Elevator maintenance" has state contracts that lead for New York, New Jersey and Oregon buyers,
+ * and co-op contracts for everyone else. The eval case "front-door.guard.examples" runs each one as several states. */
+export const EXAMPLES = ["A police SUV", "Crew cab pickups, no diesel", "6 picnic tables for the park", "Computer-aided dispatch", "Permitting software", "Elevator maintenance"];
 
 export type RequestKind = "product" | "contract";
 export function requestKind(text: string): RequestKind {

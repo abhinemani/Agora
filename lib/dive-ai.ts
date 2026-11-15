@@ -187,7 +187,10 @@ const FitSchema = z.object({
 /** The model's judgment of how each product fits the request, from what each product is (name, kind, maker, unit),
  * never from its price or who can buy it. A reason is kept only with no price or percentage in it and no figure that
  * isn't in the product's name or the request. Null when the model is unavailable. */
-export async function judgeFit(need: string, readAs: string | null, items: DiveItem[]): Promise<{ fits: Map<string, { fit: FitVerdict; reason: string }>; log_id?: string } | null> {
+/** What the judge is told about a product: what it is, never its price or who can buy it. */
+export type FitInput = Pick<DiveItem, "id" | "name" | "kind" | "maker" | "unit">;
+
+export async function judgeFit(need: string, readAs: string | null, items: FitInput[]): Promise<{ fits: Map<string, { fit: FitVerdict; reason: string }>; log_id?: string } | null> {
   if (!items.length) return null;
   const out = await structured({
     task: "dive_fit",

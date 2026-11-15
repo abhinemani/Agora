@@ -68,7 +68,15 @@ export default function RequestResults() {
 
   const load = useCallback(async () => {
     try {
-      setResults(await act<Results>("getResults", { requestId: id }));
+      const r = await act<Results>("getResults", { requestId: id });
+      setResults(r);
+      // The model's reading of the request and its fit verdicts on the products follow in a second call, so the page
+      // doesn't wait for them. Only the product section changes; a reset of the results (a new agency) drops them.
+      if (r.catalog_pending) {
+        void act<{ catalog_products: Results["catalog_products"] | null }>("judgeResultProducts", { requestId: id })
+          .then((j) => setResults((cur) => (cur === r ? { ...cur, catalog_products: j.catalog_products ?? undefined, catalog_pending: false } : cur)))
+          .catch(() => undefined);
+      }
     } catch (e) {
       setError((e as Error).message);
     }

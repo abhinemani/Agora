@@ -649,6 +649,50 @@ export const CASES: Case[] = [
     expect: [survived, is("no hanger judged to fit", (v) => !shown(v).some((i) => /hanger/i.test(i.name) && i.fit_verdict === "fits"))],
   },
 
+  // ---- The same two steps on the results page's products
+  {
+    id: "results-fit.guard.set-aside",
+    task: "dive_fit",
+    title: "On the results page, a product judged not to fit is set aside and the rest carry their verdicts",
+    canned: cannedFits((n) => (n === 1 ? { fit: "no", reason: "Not what was asked" } : { fit: "fits", reason: "As asked" })),
+    run: async () => {
+      const { request } = await A.createRequest("a police SUV");
+      const before = A.getResults(request.id).catalog_products?.hits ?? [];
+      const after = (await A.judgeResultProducts({ requestId: request.id })).catalog_products;
+      return { first: before[0]?.product_id, hits: after?.hits ?? [], aside: after?.set_aside ?? [] };
+    },
+    expect: [
+      outcome("kept"),
+      is<{ first: string; hits: { product_id: string; fit_verdict?: string }[]; aside: { product_id: string }[] }>(
+        "the first product set aside and every shown one judged to fit",
+        (v) => v.aside.some((h) => h.product_id === v.first) && !v.hits.some((h) => h.product_id === v.first) && v.hits.length > 0 && v.hits.every((h) => h.fit_verdict === "fits"),
+      ),
+    ],
+  },
+  {
+    id: "results-fit.live.police-suv",
+    task: "dive_fit",
+    title: "On the results page, police SUVs are judged to fit and pickups are not",
+    run: async () => {
+      const { request } = await A.createRequest("A police SUV");
+      return (await A.judgeResultProducts({ requestId: request.id })).catalog_products;
+    },
+    expect: [
+      survived,
+      is<{ hits: { name: string; fit_verdict?: string }[] } | null>("at least three judged to fit, and no pickup among them", (v) => (v?.hits ?? []).filter((h) => h.fit_verdict === "fits").length >= 3 && !(v?.hits ?? []).some((h) => /silverado|ram \d|f-150/i.test(h.name) && h.fit_verdict === "fits")),
+    ],
+  },
+  {
+    id: "results-understand.live.no-shared-word",
+    task: "dive_understand",
+    title: "On the results page, a request that names no product still finds climbers",
+    run: async () => {
+      const { request } = await A.createRequest("something for kids to climb on at the park");
+      return (await A.judgeResultProducts({ requestId: request.id })).catalog_products;
+    },
+    expect: [survived, is<{ hits: { name: string }[] } | null>("climbing products", (v) => (v?.hits ?? []).some((h) => /climb/i.test(h.name)))],
+  },
+
   // ---- Comparing products
   {
     id: "verdict.guard.grounded",

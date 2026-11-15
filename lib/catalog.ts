@@ -489,6 +489,9 @@ export interface CatalogProductHit {
   role: CatalogProduct["role"] | null;
   /** Its kind from the AI review, when coded. */
   kind: string | null;
+  /** How the model judged it against the request (lib/dive-ai.ts), with its reason, on the results page. */
+  fit_verdict?: "fits" | "partly" | "no";
+  fit_reason?: string;
 }
 
 /** Products in the catalog that match a request, each with every contract that sells it. */

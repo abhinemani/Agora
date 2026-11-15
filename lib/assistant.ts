@@ -446,7 +446,19 @@ export interface Results {
   /** Matching contracts past their end date, hidden unless the buyer asks. */
   expired: Unavailable[];
   /** Products in the co-op catalog that match, each with every contract that sells it (lib/catalog.ts). */
-  catalog_products?: { hits: CatalogProductHit[]; total: number; retrieved: string };
+  catalog_products?: {
+    hits: CatalogProductHit[];
+    total: number;
+    retrieved: string;
+    /** The request as the model read it, when it did (lib/dive-ai.ts). */
+    reading?: { read_as: string | null; log_id?: string } | null;
+    /** The log id of the fit judgment on the cards, for feedback. */
+    fit_log?: string | null;
+    /** Products the model judged not to be what was asked for, listed apart with their reasons. */
+    set_aside?: CatalogProductHit[];
+  };
+  /** The model hasn't read the request or judged the products yet: the page asks for that with judgeResultProducts. */
+  catalog_pending?: boolean;
 }
 
 export interface ContractLead {

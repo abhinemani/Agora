@@ -1,5 +1,5 @@
 {
-  "saved": "2026-11-15T16:10:17.102Z",
+  "saved": "2026-11-15T17:06:46.960Z",
   "model": "claude-sonnet-5-5",
   "prompts": {
     "request_parse": "cebcf585",
@@ -99,6 +99,9 @@
     "request.live.dozen": "pass",
     "request.live.no-quantity": "pass",
     "request.live.tables": "pass",
+    "results-fit.guard.set-aside": "pass",
+    "results-fit.live.police-suv": "pass",
+    "results-understand.live.no-shared-word": "pass",
     "scan-text.guard.clean": "pass",
     "scan-text.guard.page-missing": "pass",
     "scan-text.guard.page-not-sent": "pass",

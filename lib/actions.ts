@@ -1,8 +1,8 @@
 // Every state change in the demo goes through here, so revenue events fire in
 // exactly one place per action.
 
-import { buildResults, estimateTotal, finishCoopSection, findSimilarSolicitation, mentionsPreference, parseRequest, ruleFor } from "./assistant";
-import { catalogContract, catalogCoopHits, catalogKindCandidates, catalogOffering, catalogProducts, catalogRetrieved, catalogStateRetrieved, catalogSupplierById, materializeSupplier } from "./catalog";
+import { buildResults, estimateTotal, finishCoopSection, findSimilarSolicitation, mentionsPreference, parseRequest, ruleFor, type Results } from "./assistant";
+import { catalogContract, catalogCoopHits, catalogKindCandidates, catalogOffering, catalogProducts, catalogRetrieved, catalogStateRetrieved, catalogSupplierById, materializeSupplier, type CatalogProductHit } from "./catalog";
 import { stateRuleFor } from "./state-rules";
 import { currentScope, getDb, nextId, resetDb } from "./db";
 import { isAdmin } from "./admin";
@@ -185,8 +185,11 @@ export function getResults(requestId: string) {
     results.coops = { ...section, catalog: { retrieved: catalogRetrieved(), more_member: cat.more_member, more_other: cat.more_other, gsa: cat.gsa, gsa_total: cat.gsa_total, state: cat.state, state_total: cat.state_total, state_retrieved: catalogStateRetrieved() } };
   }
   results.coops = { ...results.coops, state_rule: stateRuleFor(db.session.buyer, `${request.raw_text} ${request.parsed.item}`) };
-  const products = catalogProducts(db, request.parsed.item, db.session.buyer);
-  if (products.hits.length) results.catalog_products = { ...products, retrieved: catalogRetrieved() };
+  // Products on co-op and state contracts, with the model's reading of the request and its fit verdicts where it has
+  // made them (from the dive, or from this page's second call, judgeResultProducts).
+  const { products, pending } = resultProducts(db, request);
+  if (products) results.catalog_products = products;
+  results.catalog_pending = pending;
 
   // Option 5: one impression per sponsoring supplier per results page. Keyed on
   // the request so re-renders and refreshes don't bill twice.
@@ -394,16 +397,7 @@ export async function dive(args: { need?: string; query?: string; filters?: unkn
     query = parsed.item || need;
     quantity = { value: parsed.quantity, stated: parsed.quantity > 1 || /^\s*(?:(?:i|we)\s+need\s+)?(?:a|an|one|1)\b/i.test(need) };
     let readFilters: DiveFilter[] = [];
-    if (asked) {
-      const finds = (t: string) => catalogProducts(db, t, null, 1).total > 0;
-      const prelim = checkNeedKinds(asked.kinds, offered.map((o) => o.kind));
-      const { words, pool } = diveWordCounts(db, query, { kinds: prelim, terms: asked.search_terms.filter(finds).slice(0, 3) });
-      const read = checkNeed(asked, need, { offered: offered.map((o) => o.kind), finds, words, pool });
-      reading = { need, kinds: read.kinds, terms: read.terms, read_as: read.read_as, log_id: read.log_id };
-      readFilters = read.filters;
-      m.reads.set(query.toLowerCase(), reading);
-      cap(m.reads, 500);
-    }
+    if (asked) ({ reading, filters: readFilters } = settleReading(db, need, query, asked, offered));
     const first = diveSearch(db, query, [], reading ?? {});
     filters = cleanFilters([...offlineDiveFilters(need, first).filter((f) => f.kind === "price"), ...readFilters]);
   }
@@ -444,6 +438,102 @@ export async function dive(args: { need?: string; query?: string; filters?: unkn
   state.reading = reading ? { read_as: reading.read_as, kinds: reading.kinds, terms: reading.terms, log_id: reading.log_id } : null;
   state.fit_log = fits.size ? fitLog : null;
   return { state, said, quantity, context: buyingContext(db, String(args.need ?? query)), fit_pending: !judging && unjudged.length > 0 && modelOn() };
+}
+
+/** Check the model's reading of a request against the catalog (lib/dive-ai.ts checkNeed), remember it by the request's
+ * item, and return it with the filters it implies. */
+function settleReading(db: Db, need: string, item: string, asked: NonNullable<Awaited<ReturnType<typeof askNeed>>>, offered: { kind: string }[]) {
+  const finds = (t: string) => catalogProducts(db, t, null, 1).total > 0;
+  const prelim = checkNeedKinds(asked.kinds, offered.map((o) => o.kind));
+  const { words, pool } = diveWordCounts(db, item, { kinds: prelim, terms: asked.search_terms.filter(finds).slice(0, 3) });
+  const read = checkNeed(asked, need, { offered: offered.map((o) => o.kind), finds, words, pool });
+  const reading = { need, kinds: read.kinds, terms: read.terms, read_as: read.read_as, log_id: read.log_id };
+  const m = memo();
+  m.reads.set(item.trim().toLowerCase(), reading);
+  cap(m.reads, 500);
+  return { reading, filters: read.filters };
+}
+
+/** The products on the results page, before the fit judgment is applied: the request's item with the kinds it was read
+ * as, merged with what each other word for it finds, the product that is the kind asked for first. */
+function resultCandidates(db: Db, request: Request, n: number): { hits: CatalogProductHit[]; total: number } {
+  const item = request.parsed.item;
+  const reading = memo().reads.get(item.trim().toLowerCase());
+  const merged = new Map<string, CatalogProductHit>();
+  let total = 0;
+  for (const [i, q] of [item, ...(reading?.terms ?? [])].entries()) {
+    const r = catalogProducts(db, q, db.session.buyer, i ? 8 : n, i ? {} : { kinds: reading?.kinds });
+    if (!i) total = r.total;
+    for (const h of r.hits) {
+      const have = merged.get(h.product_id);
+      merged.set(h.product_id, have ? { ...have, fit: Math.max(have.fit, h.fit), kind_match: Math.max(have.kind_match, h.kind_match) } : h);
+    }
+  }
+  const order = [...merged.keys()];
+  const hits = [...merged.values()].sort((a, b) => b.kind_match - a.kind_match || b.fit - a.fit || order.indexOf(a.product_id) - order.indexOf(b.product_id));
+  return { hits: hits.slice(0, n), total: Math.max(total, merged.size) };
+}
+
+/** The results page's products, with the model's reading and fit verdicts applied where it has made them: products
+ * judged to fit first, those judged not to fit set aside with their reasons (unless nothing else is left). */
+function resultProducts(db: Db, request: Request): { products: Results["catalog_products"]; pending: boolean } {
+  const key = request.parsed.item.trim().toLowerCase();
+  const m = memo();
+  const reading = m.reads.get(key);
+  const { hits, total } = resultCandidates(db, request, 16);
+  let fitLog: string | null = null;
+  const judged = hits.map((h) => {
+    const f = m.fits.get(`${key}|c:${h.product_id}`);
+    if (!f) return h;
+    fitLog ??= f.log_id ?? null;
+    return { ...h, fit_verdict: f.fit, fit_reason: f.reason };
+  });
+  const rank = (h: CatalogProductHit) => (h.fit_verdict === "fits" ? 2 : h.fit_verdict === "no" ? 0 : 1);
+  const ordered = judged.map((h, i) => ({ h, i })).sort((a, b) => rank(b.h) - rank(a.h) || a.i - b.i).map((x) => x.h);
+  const fitting = ordered.filter((h) => h.fit_verdict !== "no");
+  const shown = (fitting.length ? fitting : ordered).slice(0, 8);
+  const pending = modelOn() && (!reading || hits.some((h) => !m.fits.has(`${key}|c:${h.product_id}`)));
+  if (!shown.length) return { products: undefined, pending };
+  return {
+    products: {
+      hits: shown,
+      total,
+      retrieved: catalogRetrieved(),
+      reading: reading ? { read_as: reading.read_as, log_id: reading.log_id } : null,
+      fit_log: fitLog,
+      set_aside: fitting.length ? ordered.filter((h) => h.fit_verdict === "no") : [],
+    },
+    pending,
+  };
+}
+
+/** The results page's second call: read the request in the catalog's terms if the model hasn't yet, judge the top
+ * products it hasn't judged, and return the product section again. Read-only. */
+export async function judgeResultProducts(args: { requestId: string }) {
+  const db = getDb();
+  const request = db.requests.find((r) => r.id === args.requestId) ?? fail("Request not found");
+  const item = request.parsed.item;
+  const key = item.trim().toLowerCase();
+  const m = memo();
+  if (!m.reads.has(key)) {
+    const offered = catalogKindCandidates(db, request.raw_text, 60);
+    const asked = await askNeed(request.raw_text, offered);
+    if (asked) settleReading(db, request.raw_text, item, asked, offered);
+  }
+  const reading = m.reads.get(key);
+  const unjudged = resultCandidates(db, request, 16).hits.filter((h) => !m.fits.has(`${key}|c:${h.product_id}`));
+  if (unjudged.length) {
+    const judged = await judgeFit(
+      reading?.need ?? request.raw_text,
+      reading?.read_as ?? null,
+      unjudged.map((h) => ({ id: `c:${h.product_id}`, name: h.name, kind: h.kind, maker: h.maker, unit: h.routes[0]?.unit ?? null })),
+    );
+    if (judged) {
+      for (const [id, f] of judged.fits) m.fits.set(`${key}|${id}`, { ...f, log_id: judged.log_id });
+      cap(m.fits, 5000);
+    }
+  }
+  return { catalog_products: resultProducts(db, request).products ?? null };
 }
 
 /** The kinds a reading names that were offered, before the full check: the shortlist the must-have words are checked

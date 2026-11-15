@@ -6,6 +6,8 @@ import type { Results } from "@/lib/assistant";
 import type { CatalogProductHit, CatalogRoute } from "@/lib/catalog";
 import { goHref } from "@/lib/coops";
 import { FitPill } from "./CoopSection";
+import { Feedback } from "./Feedback";
+import { FitLine, SetAside } from "./FitLine";
 import { useStore } from "./store";
 import { Badge, money } from "./ui";
 
@@ -40,6 +42,14 @@ export function CatalogProducts({ data, requestId }: { data: Results["catalog_pr
         </div>
         <span className="text-xs text-slate">{data.total} matching</span>
       </div>
+      {data.reading?.read_as && (
+        <div className="mt-3 flex flex-wrap items-center gap-x-3 gap-y-1 border-l-4 border-primary bg-white px-3 py-2 text-xs text-slate">
+          <span>
+            <span className="font-bold text-ink">Read as:</span> {data.reading.read_as}
+          </span>
+          <Feedback id={data.reading.log_id} className="ml-auto" />
+        </div>
+      )}
       <ul className="mt-3 grid gap-3 lg:grid-cols-2">
         {shown.map((h) => (
           <ProductCard key={h.product_id} h={h} requestId={requestId} />
@@ -50,6 +60,15 @@ export function CatalogProducts({ data, requestId }: { data: Results["catalog_pr
           Show {data.hits.length - shown.length} more
         </button>
       )}
+      <div className="mt-3 space-y-2">
+        <SetAside items={(data.set_aside ?? []).map((h) => ({ id: h.product_id, name: h.name, fit_reason: h.fit_reason }))} />
+        {data.fit_log && (
+          <p className="flex flex-wrap items-center gap-x-3 gap-y-1 text-[11px] text-slate">
+            <span>Fit is judged by AI from each product's name and kind. Prices and who can buy come from the contracts.</span>
+            <Feedback id={data.fit_log} />
+          </p>
+        )}
+      </div>
     </section>
   );
 }
@@ -74,8 +93,13 @@ function ProductCard({ h, requestId }: { h: CatalogProductHit; requestId: string
               <Badge tone="amber">Name varies by source: check the SKU</Badge>
             </div>
           )}
+          {h.fit_verdict && (
+            <div className="mt-1.5">
+              <FitLine verdict={h.fit_verdict} reason={h.fit_reason} />
+            </div>
+          )}
         </div>
-        <FitPill fit={h.fit} />
+        {!h.fit_verdict && <FitPill fit={h.fit} />}
       </div>
       <ul className="mt-3 divide-y divide-base-lighter border-t border-base-lighter">
         {routes.map((r) => {

@@ -94,7 +94,8 @@ export function chunks(text: string): string[] {
 }
 
 /** Read one sheet's text into checked rows. Each run is one model call, reported with pieces(). */
-export async function readPriceSheet(text: string, label: string): Promise<{ rows: (PriceRow & { run: number })[]; proposed: number; dropped: Record<string, number>; failed_runs: number }> {
+export async function readPriceSheet(text: string, label: string): Promise<{ rows: (PriceRow & { run: number })[]; proposed: number; dropped: Record<string, number>; examples: { why: string; item: string; price: number; line: string }[]; failed_runs: number }> {
+  const examples: { why: string; item: string; price: number; line: string }[] = [];
   const kept: (PriceRow & { run: number })[] = [];
   const dropped: Record<string, number> = {};
   let proposed = 0;
@@ -127,6 +128,7 @@ export async function readPriceSheet(text: string, label: string): Promise<{ row
       seen.add(key);
       if (problem) {
         dropped[problem] = (dropped[problem] ?? 0) + 1;
+        if (examples.filter((x) => x.why === problem).length < 3) examples.push({ why: problem, item: r.item, price: r.price, line: r.line.slice(0, 200) });
         why.push(problem);
         continue;
       }
@@ -135,7 +137,7 @@ export async function readPriceSheet(text: string, label: string): Promise<{ row
     }
     pieces(out, `${good} of ${out.rows.length} rows kept`, good, out.rows.length, [...new Set(why)].join("; "), { declined: !out.rows.length });
   }
-  return { rows: kept, proposed, dropped, failed_runs: failed };
+  return { rows: kept, proposed, dropped, examples, failed_runs: failed };
 }
 
 // ------------------------------------------------------------------ the run on the server

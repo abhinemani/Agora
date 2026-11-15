@@ -166,17 +166,17 @@ export function BlueprintBackdrop({
       </svg>
 
       {/* Title block: the catalog's real counts */}
-      <svg viewBox="1124 514 282 90" className="absolute bottom-7 right-6 w-[200px] opacity-[0.7] md:bottom-5 md:w-[270px] md:opacity-[0.55]">
+      <svg viewBox="1044 514 362 90" className="absolute bottom-7 right-6 w-[240px] opacity-[0.7] md:bottom-5 md:w-[340px] md:opacity-[0.55]">
         <g {...ink}>
-          <rect x="1130" y="520" width="270" height="78" />
-          <path d="M1130 546 H1400 M1130 572 H1400 M1262 520 V598" />
+          <rect x="1050" y="520" width="350" height="78" />
+          <path d="M1050 546 H1400 M1050 572 H1400 M1222 520 V598" />
           <g fill={LINE} stroke="none">
-            <text x="1142" y="538">LOCI</text>
-            <text x="1274" y="538">SHEET A-01</text>
-            <text x="1142" y="564">{contracts} CONTRACTS</text>
-            <text x="1274" y="564">{suppliers} SUPPLIERS</text>
-            <text x="1142" y="590">{products.toLocaleString()} PRODUCTS</text>
-            <text x="1274" y="590">{vehicles} VEHICLES</text>
+            <text x="1062" y="538">LOCI</text>
+            <text x="1234" y="538">SHEET A-01</text>
+            <text x="1062" y="564">{contracts.toLocaleString()} CONTRACTS</text>
+            <text x="1234" y="564">{suppliers.toLocaleString()} SUPPLIERS</text>
+            <text x="1062" y="590">{products.toLocaleString()} PRODUCTS</text>
+            <text x="1234" y="590">{vehicles} PROGRAMS</text>
           </g>
         </g>
       </svg>

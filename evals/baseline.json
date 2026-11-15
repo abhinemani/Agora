@@ -1,5 +1,5 @@
 {
-  "saved": "2026-11-15T18:25:48.567Z",
+  "saved": "2026-11-15T18:57:38.996Z",
   "model": "claude-sonnet-5-5",
   "prompts": {
     "request_parse": "cebcf585",
@@ -14,7 +14,7 @@
     "contract_parse": "1ba148cb",
     "scan_text": "ca2624fc",
     "price_sheet": "4e171015",
-    "dive_understand": "4679c865",
+    "dive_understand": "85ecbf3b",
     "dive_fit": "0cb0f8bc"
   },
   "cases": {
@@ -73,8 +73,10 @@
     "dive-specs.guard.question": "pass",
     "dive-specs.live.fuel": "pass",
     "dive-understand.guard.grounded": "pass",
+    "dive-understand.guard.missed-word": "pass",
     "dive-understand.guard.negation": "pass",
     "dive-understand.guard.price": "pass",
+    "dive-understand.live.catalog-words": "pass",
     "dive-understand.live.no-shared-word": "pass",
     "dive-understand.live.police-suv": "pass",
     "dive-understand.live.requirements": "pass",

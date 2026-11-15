@@ -156,7 +156,7 @@ interface Index {
   /** Products by the review's kind, lowercased: "pickup truck" → the products that are one. */
   pByKind: Map<string, number[]>;
   /** Every kind with its products' count, the words of the kind and its aliases, and one product's name. */
-  kindList: { kind: string; count: number; words: Set<string>; example: string }[];
+  kindList: { kind: string; count: number; words: Set<string>; aliases: Set<string>; example: string }[];
   pIndex: Map<string, number[]>;
   pWeights: Weights;
 }
@@ -229,14 +229,15 @@ function load(): Index {
   });
   const pKinds = raw.products.map((p) => (p.kind ? [p.kind, ...(p.aliases ?? [])] : [namePhrase(p.name)]).map((x) => tokens(x)));
   const pByKind = new Map<string, number[]>();
-  const kinds = new Map<string, { kind: string; count: number; words: Set<string>; example: string }>();
+  const kinds = new Map<string, { kind: string; count: number; words: Set<string>; aliases: Set<string>; example: string }>();
   raw.products.forEach((p, i) => {
     if (!p.kind) return;
     const k = p.kind.toLowerCase();
     (pByKind.get(k) ?? pByKind.set(k, []).get(k)!).push(i);
-    const e = kinds.get(k) ?? kinds.set(k, { kind: k, count: 0, words: new Set<string>(), example: p.name }).get(k)!;
+    const e = kinds.get(k) ?? kinds.set(k, { kind: k, count: 0, words: new Set<string>(), aliases: new Set<string>(), example: p.name }).get(k)!;
     e.count++;
     for (const w of tokens(`${p.kind} ${(p.aliases ?? []).join(" ")}`)) e.words.add(w);
+    for (const a of p.aliases ?? []) if (e.aliases.size < 6) e.aliases.add(a.toLowerCase());
   });
   const kindList = [...kinds.values()];
   const pWeights = weightsFor(raw.products.map((_, i) => new Set([...pTitle[i], ...pScope[i]])));
@@ -585,7 +586,7 @@ export function catalogProducts(db: Db, item: string, buyer: Buyer | null, limit
 /** Kinds of product in the catalog that a request could mean, for the model to choose among (lib/dive-ai.ts): those
  * whose kind or aliases share a word with the request, rarer words first, then those of the products the request's own
  * words find. Each with how many products are that kind and one product's name. */
-export function catalogKindCandidates(db: Db, text: string, limit = 60): { kind: string; count: number; example: string }[] {
+export function catalogKindCandidates(db: Db, text: string, limit = 60): { kind: string; count: number; example: string; aliases: string[] }[] {
   const idx = load();
   const ask = new Set(requestTokens(text).flatMap((w) => [w, ...(SAME_AS[w] ?? [])]));
   const score = new Map<string, number>();
@@ -599,7 +600,7 @@ export function catalogKindCandidates(db: Db, text: string, limit = 60): { kind:
   return [...score.entries()]
     .sort((a, b) => b[1] - a[1] || byKind.get(b[0])!.count - byKind.get(a[0])!.count)
     .slice(0, limit)
-    .map(([k]) => ({ kind: k, count: byKind.get(k)!.count, example: byKind.get(k)!.example }));
+    .map(([k]) => ({ kind: k, count: byKind.get(k)!.count, example: byKind.get(k)!.example, aliases: [...byKind.get(k)!.aliases].slice(0, 4) }));
 }
 
 /** A state contract's awarded line prices, stashed lines included: what a newly read price sheet is checked against. */

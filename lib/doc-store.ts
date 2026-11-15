@@ -146,14 +146,14 @@ export async function storedPages(url: string): Promise<StoredPage[] | null> {
 }
 
 /** URLs already settled: stored, or tried and not worth trying again yet (failures are retried after a day, three times
- * at most). Old Word files and files over 15 MB, which earlier versions couldn't take, get another try. */
+ * at most). Files of a type Agora didn't read, or over the size limit, are tried again after each deploy, three times
+ * at most, since a newer version may read them. */
 export async function settledUrls(): Promise<Set<string>> {
   const p = pool();
   if (!p || !(await docSchema())) return new Set();
   const r = await p.query<{ url: string }>(
     `select url from doc_urls
-     where not (status = 'unsupported' and detail like '%DOC files%' and tries < 3)
-       and not (status = 'too_large' and detail like '%15 MB%' and tries < 3)
+     where not (status in ('unsupported', 'too_large') and tries < 3)
        and (status <> 'failed' or tries >= 3 or checked_at > now() - interval '1 day')`,
   );
   return new Set(r.rows.map((x) => x.url));
@@ -257,10 +257,10 @@ export async function contractPages(contractId: string, question: string, limit 
 }
 
 /** How far the store has got, for /api/docs/status and the logs. */
-export async function docStoreStatus(): Promise<{ database: boolean; urls: Record<string, number>; read_from_scans: number; scans_by_model: Record<string, number>; scans_waiting: number; linked_urls: number; contracts: number; texts: number; pages: number; database_mb: number | null; by_program: Record<string, { linked: number; text: number }> } | null> {
+export async function docStoreStatus(): Promise<{ database: boolean; urls: Record<string, number>; problems: Record<string, { by_type: Record<string, number>; reasons: Record<string, number> }>; read_from_scans: number; scans_by_model: Record<string, number>; scans_waiting: number; linked_urls: number; contracts: number; texts: number; pages: number; database_mb: number | null; by_program: Record<string, { linked: number; text: number }> } | null> {
   const p = pool();
   if (!p || !(await docSchema())) return null;
-  const [urls, linked, texts, size, prog, scans, byModel] = await Promise.all([
+  const [urls, linked, texts, size, prog, scans, byModel, types, reasons] = await Promise.all([
     p.query<{ status: string; n: string }>(`select status, count(*) n from doc_urls group by status`),
     p.query<{ urls: string; contracts: string }>(`select count(distinct url) urls, count(distinct contract_id) contracts from doc_links`),
     p.query<{ texts: string; pages: string }>(`select (select count(*) from doc_text) texts, (select count(*) from doc_pages) pages`),
@@ -268,10 +268,21 @@ export async function docStoreStatus(): Promise<{ database: boolean; urls: Recor
     p.query<{ program: string; linked: string; text: string }>(`select l.program, count(distinct l.url) linked, count(distinct l.url) filter (where u.status = 'text') text from doc_links l left join doc_urls u on u.url = l.url group by l.program`),
     p.query<{ read: string; waiting: string }>(`select count(*) filter (where via = 'scan' and status = 'text') read, count(*) filter (where status = 'scan' and ocr_tries < 3) waiting from doc_urls`),
     p.query<{ read_by: string | null; n: string }>(`select read_by, count(*) n from doc_urls where via = 'scan' and status = 'text' group by read_by`),
+    // The documents that haven't become text, by file type and by reason (counts only).
+    p.query<{ status: string; ext: string; n: string }>(
+      `select status, coalesce(lower(substring(filename from '\\.([A-Za-z0-9]{1,5})$')), 'unknown') ext, count(*) n from doc_urls where status <> 'text' group by 1, 2 order by 3 desc`,
+    ),
+    p.query<{ status: string; reason: string; n: string }>(
+      `select status, regexp_replace(left(coalesce(detail, ''), 120), '[0-9]+', 'N', 'g') reason, count(*) n from doc_urls where status <> 'text' group by 1, 2 order by 3 desc limit 40`,
+    ),
   ]);
+  const problems: Record<string, { by_type: Record<string, number>; reasons: Record<string, number> }> = {};
+  for (const r of types.rows) ((problems[r.status] ??= { by_type: {}, reasons: {} }).by_type[r.ext] = Number(r.n));
+  for (const r of reasons.rows) ((problems[r.status] ??= { by_type: {}, reasons: {} }).reasons[r.reason || "(none)"] = Number(r.n));
   return {
     database: true,
     urls: Object.fromEntries(urls.rows.map((r) => [r.status, Number(r.n)])),
+    problems,
     read_from_scans: Number(scans.rows[0].read),
     scans_by_model: Object.fromEntries(byModel.rows.map((r) => [r.read_by ?? "not recorded", Number(r.n)])),
     scans_waiting: Number(scans.rows[0].waiting),

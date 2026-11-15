@@ -7,7 +7,7 @@ import { useStore } from "./store";
 /** What a detected membership rests on, weakest to strongest (see /data). */
 const EVIDENCE = { list: "on a member list", roster: "on published roster", agency: "agency lists it", purchase: "bought through it" } as const;
 const EVIDENCE_HINT = {
-  list: "On a member list uploaded to Agora",
+  list: "On a member list uploaded to Loci",
   roster: "Listed on the co-op's published member roster. Registration only; it doesn't show the agency buys through it.",
   agency: "The agency's own procurement page or purchasing guide names this co-op.",
   purchase: "A published approval or award shows the agency bought through this co-op.",
@@ -37,7 +37,7 @@ export function CoopMemberships({ onChange }: { onChange?: () => void }) {
       <a href="/data#evidence" className="text-[10px] text-slate underline">how we know</a>
       {!mine.length && (
         <span className="text-slate">
-          none found on the rosters Agora holds{buyer.domain ? ` (${buyer.domain})` : ""}. That isn't proof it's not a member: TIPS, OMNIA and others don't publish full rosters.
+          none found on the rosters Loci holds{buyer.domain ? ` (${buyer.domain})` : ""}. That isn't proof it's not a member: TIPS, OMNIA and others don't publish full rosters.
         </span>
       )}
       {mine.map((m) => {

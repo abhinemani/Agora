@@ -132,7 +132,7 @@ export function GsaContracts({ section, requestId, refs }: SectionProps) {
   );
 }
 
-/** TRX state contracts for this request: the route Agora prefers, so they sit above every co-op. One block per state. */
+/** TRX state contracts for this request: the route Loci prefers, so they sit above every co-op. One block per state. */
 function StateLane({ hits, total, retrieved, requestId, refs }: { hits: CoopHit[]; total: number; retrieved?: Record<string, string>; requestId: string; refs?: Record<string, number> }) {
   const states = [...new Set(hits.map((h) => h.state ?? ""))];
   return (
@@ -189,7 +189,7 @@ function StateBlock({ first, state, hits, more, retrieved, requestId, refs }: { 
       <p className="mt-3 text-[11px] text-slate">
         From {program}&apos;s published contracts{date ? `, retrieved ${new Date(`${date}T12:00:00Z`).toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" })}` : ""}. Prices are the state&apos;s awarded line items.{" "}
         <a href={`/data#${p?.data_anchor ?? "njstart"}`} className="underline">
-          About {program} in Agora
+          About {program} in Loci
         </a>
       </p>
     </section>
@@ -292,7 +292,7 @@ function Hit({ h, requestId, refN }: { h: CoopHit; requestId: string; refN?: num
           </div>
           <div className={`mt-1 text-[11px] ${h.eligible ? "text-slate" : "text-maroon"}`}>
             {h.eligible ? h.reason : `Not open to you: ${h.reason}`}
-            {h.products > 0 && ` · ${h.products} matching product${h.products === 1 ? "" : "s"} in Agora`}
+            {h.products > 0 && ` · ${h.products} matching product${h.products === 1 ? "" : "s"} in Loci`}
             {h.end && ` · through ${new Date(`${h.end}T12:00:00Z`).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })}`}
           </div>
           {h.found_in && (
@@ -315,7 +315,7 @@ function Hit({ h, requestId, refN }: { h: CoopHit; requestId: string; refN?: num
           ) : h.link_out ? (
             <CoopLink contractId={h.contract_id} coop={h.coop} hasLink={h.link_out.has_link} requestId={requestId} disabled={!h.eligible} />
           ) : (
-            <span className="text-[11px] text-slate">Buy in Agora from the results above</span>
+            <span className="text-[11px] text-slate">Buy in Loci from the results above</span>
           )
         ) : (
           <>

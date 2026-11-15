@@ -70,7 +70,7 @@ export default function Home() {
           <div className="text-ui-2xs font-bold text-[#A8CBF2]">Government buying, simplified</div>
           <h1 className="mx-auto mt-5 max-w-3xl font-heading text-[clamp(2rem,4.4vw,3.4rem)] font-bold leading-[1.12] text-[#fff]">What are you looking to buy?</h1>
           <p className="mx-auto mt-4 max-w-xl text-base leading-relaxed text-[#D3E3F6]">
-            Search state and cooperative contracts in one place. Agora shows which ones your agency can use, what they cost, and how to buy.
+            Search state and cooperative contracts in one place. Loci shows which ones your agency can use, what they cost, and how to buy.
           </p>
           <div className="mx-auto mt-14 max-w-3xl">
             <DimensionFrame working={busy} label={busy ? `FIG. 2 · CHECKING ${db.contracts.length} CONTRACTS` : `FIG. 2 · SEARCH ${db.contracts.length} CONTRACTS`}>
@@ -144,7 +144,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* The drawing's legend: what Agora searches. */}
+      {/* The drawing's legend: what Loci searches. */}
       <section className="mx-[calc(50%-50vw)] mb-12 border-b border-line bg-white px-5 py-6">
         <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-center gap-x-7 gap-y-2">
           <span className="text-sm font-semibold text-ink">Searching {db.contracts.length} contracts from</span>
@@ -162,7 +162,7 @@ export default function Home() {
           <Annotation fig={3}>One request, every contract</Annotation>
           <h2 className="mt-3 text-[1.9rem] font-bold leading-tight text-ink">Stop checking five portals for the same folding table.</h2>
           <p className="mt-3 text-[15px] leading-relaxed text-slate">
-            Agora reads {db.contracts.length} contracts from {suppliers} suppliers, {products.toLocaleString()} products in all, and lines them up side by side. Tell it your agency
+            Loci reads {db.contracts.length} contracts from {suppliers} suppliers, {products.toLocaleString()} products in all, and lines them up side by side. Tell it your agency
             and it hides the ones you can't use; leave it blank and it shows who each contract is open to.
           </p>
           <dl className="mt-6 grid grid-cols-3 border border-base-lighter">
@@ -217,11 +217,11 @@ export default function Home() {
       <section className="relative mt-14 overflow-hidden bg-[#0F3D73] bg-[linear-gradient(rgba(255,255,255,0.05)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.05)_1px,transparent_1px)] bg-[length:16px_16px] p-8 text-[#fff] sm:p-10">
         <div className="max-w-2xl">
           <Annotation fig={5} className="text-[#A8CBF2]">
-            Built on Agora
+            Built on Loci
           </Annotation>
           <h2 className="mt-3 text-[1.8rem] font-bold leading-tight">A marketplace for your city. A storefront for your company.</h2>
           <p className="mt-3 text-[15px] leading-relaxed text-[#D3E3F6]">
-            Searching Agora is free. A city can run its own marketplace on it, with its contracts and rules; a supplier can run a storefront in it, with its catalog and
+            Searching Loci is free. A city can run its own marketplace on it, with its contracts and rules; a supplier can run a storefront in it, with its catalog and
             reviews. Riverbend's marketplace is live as an example.
           </p>
         </div>

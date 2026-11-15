@@ -45,7 +45,7 @@ export default function ContractPage() {
   }, [id, buyerKey, memberships]);
 
   if (c === undefined) return <Loading label="Opening the contract" />;
-  if (!c) return <ErrorNote message="That contract isn't in Agora. It may have been removed from its program's directory." />;
+  if (!c) return <ErrorNote message="That contract isn't in Loci. It may have been removed from its program's directory." />;
   const a = ACCESS_LINE[c.access](c);
 
   return (
@@ -58,7 +58,7 @@ export default function ContractPage() {
           <span className={`${label} text-primary`}>{c.kind_label}</span>
           <span className="font-bold text-ink">{c.program}</span>
           {c.trx && (
-            <span title="A state contract on the TRX program, which Sovra supports. Agora lists it ahead of co-op contracts for that state's buyers.">
+            <span title="A state contract on the TRX program, which Sovra supports. Loci lists it ahead of co-op contracts for that state's buyers.">
               <Badge tone="green">TRX</Badge>
             </span>
           )}
@@ -122,7 +122,7 @@ export default function ContractPage() {
               </Link>
               {c.agora_copy && (
                 <Link href={`/contracts/${c.agora_copy}`} className="text-ui-xs font-bold text-primary hover:underline">
-                  This contract with prices loaded in Agora →
+                  This contract with prices loaded in Loci →
                 </Link>
               )}
             </div>
@@ -236,7 +236,7 @@ function Covers({ c }: { c: ContractDetail }) {
           <p className="mt-0.5 max-w-[75ch] text-ui-2xs text-base-darker">
             {c.nigp.source === "published"
               ? `As ${c.program} prints them on the contract's line items.`
-              : "Classes chosen by Agora's AI review from the NIGP classes in New Jersey's public records; the program doesn't publish codes. Check before relying on them."}
+              : "Classes chosen by Loci's AI review from the NIGP classes in New Jersey's public records; the program doesn't publish codes. Check before relying on them."}
           </p>
           <ul className="mt-2 flex flex-wrap gap-1.5">
             {(c.nigp.codes.length ? c.nigp.codes : c.nigp.classes).map((x) => (
@@ -359,7 +359,7 @@ function Field({ f }: { f: BriefField }) {
             <Quote p={f.passage} />
           </>
         )}
-        {!f.summary && !f.passage && <p className="text-ui-xs text-base-darker">The documents Agora read don't say.</p>}
+        {!f.summary && !f.passage && <p className="text-ui-xs text-base-darker">The documents Loci read don't say.</p>}
       </dd>
     </div>
   );
@@ -410,8 +410,8 @@ function Documents({ c }: { c: ContractDetail }) {
       {!canRead && (
         <p className="mt-2 max-w-[75ch] text-body-sm text-base-darker">
           {c.documents.length
-            ? "Agora links to this contract's documents but can't read them yet, so there's no summary. Open them on the publisher's site."
-            : `Agora has no document for this contract: the ${c.program} directory lists it without one, or its site doesn't allow automated reading. ${c.link ? "The contract's own page has the documents." : ""}`}
+            ? "Loci links to this contract's documents but can't read them yet, so there's no summary. Open them on the publisher's site."
+            : `Loci has no document for this contract: the ${c.program} directory lists it without one, or its site doesn't allow automated reading. ${c.link ? "The contract's own page has the documents." : ""}`}
         </p>
       )}
       {c.documents.length > 0 && (
@@ -434,7 +434,7 @@ function Documents({ c }: { c: ContractDetail }) {
             <div className="min-w-0 flex-1">
               <div className={`${label} text-primary`}>Contract brief</div>
               <p className="text-ui-xs text-base-darker">
-                Agora can read {c.readable.map((d) => `${d.label}${d.held ? " (held by Agora)" : ""}`).join(" and ")}. The brief asks the same six questions of every contract, and each answer quotes the page it rests on.
+                Loci can read {c.readable.map((d) => `${d.label}${d.held ? " (held by Loci)" : ""}`).join(" and ")}. The brief asks the same six questions of every contract, and each answer quotes the page it rests on.
               </p>
             </div>
             {!brief && (

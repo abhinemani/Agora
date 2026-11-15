@@ -1,6 +1,6 @@
-# Agora: notes for Claude
+# Loci: notes for Claude
 
-Agora is a procurement marketplace prototype for local governments. A buyer describes what they need, and Agora shows options across their own contracts, state contracts, co-op contracts and suppliers. It also knows which co-ops each government belongs to, what those co-ops have under contract, and what the buyer's state law allows. The README is the full product and data reference. This file covers how to work in the repo; `HANDOFF.md` covers where things stand.
+Loci is a procurement marketplace prototype for local governments. A buyer describes what they need, and Loci shows options across their own contracts, state contracts, co-op contracts and suppliers. It also knows which co-ops each government belongs to, what those co-ops have under contract, and what the buyer's state law allows. The README is the full product and data reference. This file covers how to work in the repo; `HANDOFF.md` covers where things stand.
 
 ## Commands
 
@@ -17,6 +17,8 @@ npm run eval           # the fixed test set for the prompts and their checks (ev
 Run `rehearse` against a production build: `npm run build`, then `npx next start -p 3000`, then `npm run rehearse`. All 16 steps must pass, with no page errors, before anything merges. To stop the server, run `pkill -f next-server` (`pkill -f "next start"` doesn't stop it).
 
 ## How the app is built
+
+The product was renamed from Agora to Loci. Everything a visitor or the model reads says Loci. Names that only look like the old name keep it on purpose, so sessions, settings and links keep working: code identifiers (`buy_in_agora`, `__agora*` globals), the `agora_*` cookies, the `AGORA_*` environment variables, the package name, the repository and the `agora.ethoslabs.us` domain. The wordmark is Newsreader Semibold (`font-logo`), nudged down 0.15em in `components/Logo.tsx` so the letters sit on the mark's center line. The mark's colors are the `--mark-*` tokens in `app/globals.css`, with pale blues in dark mode.
 
 - Next.js 15 App Router. State is an in-memory `Db` (`lib/db.ts`, seeded by `lib/seed.ts`), changed only through `lib/actions.ts` via `/api/act`. With `DATABASE_URL` set it is saved to Postgres after each change (`lib/persist.ts`); without it, nothing is saved.
 - Every route that reads or changes the store is wrapped in `withSession()` (`lib/session.ts`), which binds the visitor's agency and account to the request. A new action is account-only unless it is added to `OPEN` in `app/api/act/route.ts`; one that changes the demo for everyone goes in `ADMIN` there (`lib/admin.ts` says who is an admin).

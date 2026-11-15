@@ -342,7 +342,7 @@ export interface CoopHit {
   note: string | null;
   verification: Contract["verification"];
   link_out: LinkOut | null;
-  /** Products Agora holds for this contract that match the request. */
+  /** Products Loci holds for this contract that match the request. */
   products: number;
   /** "catalog": from the co-op catalog (lib/catalog.ts), a co-op's own contract directory. */
   source?: "catalog";
@@ -351,7 +351,7 @@ export interface CoopHit {
   directory_url?: string | null;
   /** "state": a state contract (NJSTART), not a co-op's. */
   program?: "state";
-  /** A state contract in a TRX state, the route Agora prefers for that state's buyers (lib/trx.ts). */
+  /** A state contract in a TRX state, the route Loci prefers for that state's buyers (lib/trx.ts). */
   trx?: boolean;
   /** The state solicitation it was awarded under (e.g. T2187), shared by every supplier on the award. */
   solicitation?: string | null;
@@ -365,7 +365,7 @@ export interface CoopHit {
 
 export interface CoopSection {
   hits: CoopHit[];
-  /** The agency has told Agora (or Agora detected) at least one membership. */
+  /** The agency has told Loci (or Loci detected) at least one membership. */
   memberships_known: boolean;
   /** A co-op the agency isn't on fits better than every co-op it is on. */
   better: { hit: CoopHit; than: CoopHit | null } | null;
@@ -461,7 +461,7 @@ function ownContracts(db: Db, itemTokens: string[], buyer: Buyer | null) {
   return { hits: hits.sort((a, b) => b.fit - a.fit), expired };
 }
 
-/** Co-op contracts covering the request: by their own scope, or by the products Agora holds for them. */
+/** Co-op contracts covering the request: by their own scope, or by the products Loci holds for them. */
 function coopSection(db: Db, itemTokens: string[], buyer: Buyer | null, matched: Listing[]): CoopSection {
   const agency = buyer?.name ?? null;
   const cWeights = idf(db.contracts, (c) => contractText(db, c));
@@ -599,7 +599,7 @@ export function buildResults(db: Db, request: Request): Results {
   const favor = request.preference_answer === "yes";
   const limit = db.agency.quick_buy_threshold;
 
-  // Agora searches every listing; a city marketplace is a view onto the same catalog.
+  // Loci searches every listing; a city marketplace is a view onto the same catalog.
   // Off-contract listings appear only while the supplier's listing fee is current.
   const catalog = db.listings.filter((l) => listingVisible(db, l));
   const weights = idf(db.listings, listingText);

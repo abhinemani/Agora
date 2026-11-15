@@ -66,7 +66,7 @@ export default function QualityPage() {
 
   return (
     <div className="space-y-8">
-      <PageTitle eyebrow="How Agora checks itself" title="AI quality">
+      <PageTitle eyebrow="How Loci checks itself" title="AI quality">
         <p className="max-w-[72ex] text-body-sm text-base-darker">
           The model writes buying plans, reads quotes and answers from contracts. Before anything it writes is shown, a check compares it with the data: a figure that isn't on file, or a quote that isn't in the document word for word, and the output is
           thrown away and the rule-based version shown instead. This page counts how often that happens, and what people marked right or wrong.

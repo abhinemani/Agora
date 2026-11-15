@@ -3,11 +3,11 @@
 // 13, 2026 and built into seed/catalog/catalog.json.gz by scripts/import-catalog.ts.
 // It also holds NJSTART, New Jersey's state contracts (scripts/import-njstart.ts):
 // 1,437 contracts and 5,810 awarded prices, as the state program "NJSTART" with a
-// state_contract field. They are the TRX route Agora prefers for New Jersey buyers.
+// state_contract field. They are the TRX route Loci prefers for New Jersey buyers.
 // Server only. Search, the co-op section, product routes, storefronts and the
 // price-list queue ask it for the few records they need.
 //
-// Nothing here is buyable in Agora. Catalog contracts link out to the co-op, prices
+// Nothing here is buyable in Loci. Catalog contracts link out to the co-op, prices
 // carry their source and vintage, and eligibility is never assumed: a co-op contract
 // is "Join to use" until the agency is on the co-op, and GSA's cooperative-purchasing
 // flag doesn't settle which schedules a city may use.
@@ -50,7 +50,7 @@ export interface CatalogContract {
   renewal: string | null;
   /** GSA SINs open to state and local governments through cooperative purchasing (GSA's SIN list). */
   coop_sins?: { code: string; title: string }[];
-  /** One of Agora's categories, from a reviewed classification of the title. */
+  /** One of Loci's categories, from a reviewed classification of the title. */
   category?: string;
   /** A state contract (NJSTART), not a co-op's: who may use it and the solicitation it came from. */
   state_contract?: {
@@ -76,7 +76,7 @@ export interface CatalogContract {
    * "reviewed" when the AI review chose the classes (lib/nigp.ts). */
   nigp?: { classes: string[]; codes: string[]; source: "published" | "reviewed" };
 }
-/** A state program in a TRX state: the route Agora prefers for that state's buyers (lib/trx.ts). */
+/** A state program in a TRX state: the route Loci prefers for that state's buyers (lib/trx.ts). */
 export const isTrxContract = (c: Pick<CatalogContract, "state_contract"> | null | undefined) => Boolean(c?.state_contract && isTrxState(c.state_contract.state));
 export interface CatalogProduct {
   id: string;
@@ -317,7 +317,7 @@ export interface CatalogCoopResult {
 }
 
 /** Catalog contracts covering a request, as co-op hits: the best few on the agency's co-ops,
- * the best few it could join, and GSA separately. Contracts Agora already seeds are skipped. */
+ * the best few it could join, and GSA separately. Contracts Loci already seeds are skipped. */
 export function catalogCoopHits(db: Db, item: string, buyer: Buyer | null, opts: { perSide?: number; gsa?: number; state?: number; minFit?: number; category?: string | null; docHits?: Map<string, DocumentHit> } = {}): CatalogCoopResult {
   const idx = load();
   const itemTokens = requestTokens(item);
@@ -361,7 +361,7 @@ export function catalogCoopHits(db: Db, item: string, buyer: Buyer | null, opts:
   const best = new Map<string, (typeof scored)[number]>();
   // Item prices on file break ties: a buyer can check a quote against them.
   const pricedOn = (c: CatalogContract) => (idx.offeringsByContract.get(c.id) ?? []).filter((o) => o.price != null).length;
-  /** Priced items on the contract whose names share a word with the request: "N matching products in Agora". */
+  /** Priced items on the contract whose names share a word with the request: "N matching products in Loci". */
   const asked = new Set(itemTokens.flatMap((w) => [w, ...(SAME_AS[w] ?? [])]));
   const matchingPriced = (c: CatalogContract) =>
     (idx.offeringsByContract.get(c.id) ?? []).filter((o) => o.price != null && tokens(idx.productById.get(o.product)?.name ?? "").some((w) => asked.has(w))).length;
@@ -438,7 +438,7 @@ export interface CatalogRoute {
   member: boolean;
   eligible: boolean;
   reason: string;
-  /** On a TRX state contract (NJSTART): the route Agora prefers for that state's buyers. */
+  /** On a TRX state contract (NJSTART): the route Loci prefers for that state's buyers. */
   trx: boolean;
 }
 export interface CatalogProductHit {
@@ -559,7 +559,7 @@ export function catalogStorefront(db: Db, id: string): CatalogStorefront | null 
   return { supplier: s, contracts, products: { total: new Set(offers.map((o) => o.product)).size, priced: offers.filter((o) => o.price != null).length, sample }, retrieved: idx.retrieved };
 }
 
-/** The catalog's record for one of Agora's own suppliers: by website, then by company name. */
+/** The catalog's record for one of Loci's own suppliers: by website, then by company name. */
 export function catalogSupplierFor(s: Pick<AgoraSupplier, "name" | "website">): CatalogSupplier | null {
   const idx = load();
   // The company's own name first: a website can be shared with a subsidiary (Tyler Federal uses tylertech.com).
@@ -584,7 +584,7 @@ export function searchCatalogSuppliers(q: string, limit = 10): CatalogSupplier[]
     .slice(0, limit);
 }
 
-/** Turn a catalog supplier into an Agora supplier record, so it can be claimed and managed like any other. */
+/** Turn a catalog supplier into a Loci supplier record, so it can be claimed and managed like any other. */
 export function materializeSupplier(db: Db, id: string): AgoraSupplier | null {
   const existing = db.suppliers.find((s) => s.id === id);
   if (existing) return existing;
@@ -616,7 +616,7 @@ export interface QueueItem extends CatalogDocument {
   supplier_id: string;
   contract_number: string;
   title: string;
-  /** Agora can read this kind of document today. */
+  /** Loci can read this kind of document today. */
   readable: boolean;
 }
 

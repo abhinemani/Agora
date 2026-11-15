@@ -53,7 +53,7 @@ export function BuyerPicker({ onDone, onClose, compact = false }: { onDone?: (b:
             )}
           </div>
           <p className="mt-1 text-sm text-slate">
-            Agora searches every contract by default. Contracts are open to different buyers (NJSTART to New Jersey public entities, Sourcewell to members nationwide), so
+            Loci searches every contract by default. Contracts are open to different buyers (NJSTART to New Jersey public entities, Sourcewell to members nationwide), so
             setting your agency shows only the ways you can actually buy.
           </p>
 
@@ -69,7 +69,7 @@ export function BuyerPicker({ onDone, onClose, compact = false }: { onDone?: (b:
               className={`rounded-lg border p-3 text-left transition hover:border-navy/40 ${!current ? "border-primary bg-primary-lighter" : "border-line bg-white"}`}
             >
               <div className="text-sm font-semibold text-navy">Any agency</div>
-              <div className="text-[11px] text-slate">Every contract in Agora</div>
+              <div className="text-[11px] text-slate">Every contract in Loci</div>
               <div className="mt-1 text-xs text-slate">Shows who each contract is open to</div>
             </button>
             {BUYER_PRESETS.map(({ buyer, blurb }) => {

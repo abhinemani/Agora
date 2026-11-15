@@ -318,7 +318,7 @@ export function Shopper({ results, requestId, onChanged, options, children }: { 
                 <button type="button" disabled={busy} onClick={confirm} className={primaryBtn}>
                   Confirm item
                 </button>
-                <span className="min-w-0 flex-[1_1_260px] text-ui-2xs text-base-dark">Items, SKUs and prices come from the price lists in Agora. None of them are generated.</span>
+                <span className="min-w-0 flex-[1_1_260px] text-ui-2xs text-base-dark">Items, SKUs and prices come from the price lists in Loci. None of them are generated.</span>
               </div>
             </div>
 
@@ -641,13 +641,13 @@ function AskBox({ plan, requestId, enabled, supplier }: { plan: Plan; requestId:
               <div className="flex items-start gap-3.5">
                 <span aria-hidden className="relative mt-1 h-[9px] w-[9px] shrink-0 bg-[#162E51] shadow-[0_0_0_5px_rgb(var(--us-white))]" />
                 <div className="min-w-0 flex-1 space-y-2">
-                  <div className={`${label} text-primary`}>Agora</div>
+                  <div className={`${label} text-primary`}>Loci</div>
                   {t.status === "pending" && (
                     <div className="flex items-center gap-2 text-sm text-base-dark">
                       <Mark className="h-5 w-5" working /> Checking the contract data
                     </div>
                   )}
-                  {t.status === "failed" && <p className="text-sm text-ink">No answer could be drawn from Agora's data. The route and sources on this page still stand.</p>}
+                  {t.status === "failed" && <p className="text-sm text-ink">No answer could be drawn from Loci's data. The route and sources on this page still stand.</p>}
                   {t.answer?.paragraphs.map((p, j) => (
                     <p key={j} className="text-sm leading-relaxed text-ink">
                       <Rich text={p} />
@@ -697,7 +697,7 @@ function AskBox({ plan, requestId, enabled, supplier }: { plan: Plan; requestId:
       ) : (
         <p className="mt-2 px-5 text-sm text-base-darker">Questions are answered by Claude and need the AI connection, which is off. The route and the purchase file are rule-based and work without it.</p>
       )}
-      <p className="px-5 pb-4 pt-1 text-ui-3xs leading-relaxed text-base-dark">Answers draw only on Agora's contract data and cite their sources. Prices are never estimated, and eligibility is decided by the contract rules, not by the answer.</p>
+      <p className="px-5 pb-4 pt-1 text-ui-3xs leading-relaxed text-base-dark">Answers draw only on Loci's contract data and cite their sources. Prices are never estimated, and eligibility is decided by the contract rules, not by the answer.</p>
     </div>
   );
 }
@@ -775,7 +775,7 @@ function PaperworkCard({ plan, requestId }: { plan: Plan; requestId: string }) {
             </button>
           </div>
           <p className="text-ui-3xs leading-relaxed text-base-dark">
-            {doc.written_by === "llm" ? "Worded by Claude from the purchase file; every figure and contract number was checked against it." : "Filled in from the purchase file."} Fill the [bracketed] blanks and read it before you send it. Agora doesn't send it for you.
+            {doc.written_by === "llm" ? "Worded by Claude from the purchase file; every figure and contract number was checked against it." : "Filled in from the purchase file."} Fill the [bracketed] blanks and read it before you send it. Loci doesn't send it for you.
           </p>
           <Feedback key={doc.log_id} id={doc.log_id} />
         </div>

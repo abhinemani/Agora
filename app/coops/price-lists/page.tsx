@@ -14,7 +14,7 @@ interface Page {
 
 const KIND: Record<string, string> = { htm: "Web page", pdf: "PDF", xlsx: "Spreadsheet", xls: "Spreadsheet", csv: "CSV", docx: "Word", unknown: "Document bundle" };
 
-/** Sovra ops: the co-op catalog's price lists and catalog pages, waiting to be read into Agora. */
+/** Sovra ops: the co-op catalog's price lists and catalog pages, waiting to be read into Loci. */
 export default function PriceListQueue() {
   const { db } = useStore();
   const [coop, setCoop] = useState("");
@@ -44,7 +44,7 @@ export default function PriceListQueue() {
   return (
     <div className="mx-auto max-w-5xl space-y-6">
       <PageTitle title="Price-list queue">
-        The co-op catalog points to {total.toLocaleString()} published price lists and catalog pages that Agora hasn't read yet. Sending one through the contract reader pulls
+        The co-op catalog points to {total.toLocaleString()} published price lists and catalog pages that Loci hasn't read yet. Sending one through the contract reader pulls
         out its priced rows for review, the same way an uploaded contract is read. Nothing publishes until the rows are checked.
       </PageTitle>
 

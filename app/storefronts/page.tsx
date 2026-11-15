@@ -27,7 +27,7 @@ export default function Storefronts() {
         <div className="text-[11px] font-extrabold uppercase text-maroon/80">Storefronts</div>
         <h1 className="mt-3 text-[clamp(2rem,4vw,2.8rem)] font-extrabold leading-[1.1] text-navy">Every supplier, and everything they sell.</h1>
         <p className="mt-3 text-base leading-relaxed text-slate">
-          A storefront is a supplier's own page in Agora: its catalog, the contracts you can buy it through, its certifications, and what other agencies say about it.
+          A storefront is a supplier's own page in Loci: its catalog, the contracts you can buy it through, its certifications, and what other agencies say about it.
         </p>
       </div>
 

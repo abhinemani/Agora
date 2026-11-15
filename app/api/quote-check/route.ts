@@ -1,4 +1,4 @@
-// Check a vendor's quote against the prices Agora holds: multipart { file }, or JSON { text } or { sample: true }.
+// Check a vendor's quote against the prices Loci holds: multipart { file }, or JSON { text } or { sample: true }.
 
 import { NextResponse } from "next/server";
 import { getDb } from "@/lib/db";

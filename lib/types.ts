@@ -1,4 +1,4 @@
-// Data model for the Agora prototype. Mirrors section 5 of the build spec.
+// Data model for the Loci prototype. Mirrors section 5 of the build spec.
 
 export type Source =
   | "own_contract"
@@ -25,7 +25,7 @@ export interface Buyer {
   population: number | null;
   /** Website domain, matched against co-op member lists to detect memberships. */
   domain?: string;
-  /** The government's id in Agora's co-op directory (lib/directory.ts), when picked from it. */
+  /** The government's id in Loci's co-op directory (lib/directory.ts), when picked from it. */
   directory_id?: string;
 }
 
@@ -151,7 +151,7 @@ export interface Contract {
   master_agreement?: string;
   /** Route covers every product the supplier sells (e.g. a discount-off-list co-op award). */
   covers_supplier_catalog?: boolean;
-  /** A state's participating addendum to another contract in Agora, at that contract's published prices. */
+  /** A state's participating addendum to another contract in Loci, at that contract's published prices. */
   adopts?: string;
   /** Plain-language note on how this contract relates to others, shown on product pages. */
   relation_note?: string;
@@ -169,9 +169,9 @@ export interface Contract {
   ceiling?: number;
 }
 
-/** A purchasing cooperative. Agora sends buyers to its contract pages rather
+/** A purchasing cooperative. Loci sends buyers to its contract pages rather
  * than selling through it, so the co-op sees the traffic, unless the co-op has
- * agreed to let its members buy inside Agora. */
+ * agreed to let its members buy inside Loci. */
 export interface Coop {
   id: string;
   name: string;
@@ -188,7 +188,7 @@ export interface Coop {
   member_list_updated_at?: string;
   /** How agencies get on it: a membership, or their state signing a participating addendum (NASPO ValuePoint). */
   access?: "membership" | "state_addendum";
-  /** Members may check out or request quotes in Agora. Off unless the co-op has agreed. */
+  /** Members may check out or request quotes in Loci. Off unless the co-op has agreed. */
   buy_in_agora: boolean;
   /** Plain-language status shown to Sovra ops. */
   note: string;
@@ -201,7 +201,7 @@ export interface CoopMember {
   state?: string;
 }
 
-/** How Agora knows about a membership, weakest to strongest. A roster listing says the
+/** How Loci knows about a membership, weakest to strongest. A roster listing says the
  * agency registered; the agency's own pages say it uses the co-op; a purchase shows it bought. */
 export type MembershipEvidence = "list" | "roster" | "agency" | "purchase";
 
@@ -210,7 +210,7 @@ export interface CoopMembership {
   agency: string;
   coop_id: string;
   source: "detected" | "manual";
-  /** What the detection rests on. "list" is a member list uploaded to Agora (or a demo list). */
+  /** What the detection rests on. "list" is a member list uploaded to Loci (or a demo list). */
   evidence?: MembershipEvidence;
   /** The member ID the co-op or the agency published, when there is one. */
   member_id?: string;
@@ -329,7 +329,7 @@ export interface ExtractedItem {
   listing_id: string | null;
   /** Parser notes shown to the reviewer, e.g. why confidence is low. */
   flags: string[];
-  /** Existing Agora listing this row appears to duplicate. */
+  /** Existing Loci listing this row appears to duplicate. */
   duplicate_of_listing_id?: string | null;
   /** Earlier row in the same upload this row duplicates. */
   duplicate_of_row?: number | null;
@@ -637,7 +637,7 @@ export interface Db {
   counters: Record<string, number>;
 }
 
-/** One government in Agora's co-op directory (lib/directory.ts), as the browser sees it. */
+/** One government in Loci's co-op directory (lib/directory.ts), as the browser sees it. */
 export interface DirectoryGovernment {
   id: string;
   name: string;

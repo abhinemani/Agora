@@ -9,7 +9,7 @@ const MARKETPLACES = [
 ];
 
 const INCLUDED = [
-  ["Its own address and brand", "A marketplace at the city's own address, in its colors, that staff use instead of the public Agora search."],
+  ["Its own address and brand", "A marketplace at the city's own address, in its colors, that staff use instead of the public Loci search."],
   ["Its contracts first", "The city's own awards alongside the state and co-op contracts it may use, with the rest hidden."],
   ["Its rules", "Quick-buy limits, approvals, preferred suppliers, and local or MBE preferences applied on every search."],
   ["Its calendar", "Renewals coming due, reorders, and capital-plan purchases on one page."],
@@ -20,9 +20,9 @@ export default function Marketplaces() {
     <div className="space-y-12 pb-8">
       <div className="max-w-2xl pt-6">
         <div className="text-[11px] font-extrabold uppercase text-maroon/80">City marketplaces</div>
-        <h1 className="mt-3 text-[clamp(2rem,4vw,2.8rem)] font-extrabold leading-[1.1] text-navy">Agora, as your city's own marketplace.</h1>
+        <h1 className="mt-3 text-[clamp(2rem,4vw,2.8rem)] font-extrabold leading-[1.1] text-navy">Loci, as your city's own marketplace.</h1>
         <p className="mt-3 text-base leading-relaxed text-slate">
-          Anyone can search Agora for free. A city marketplace is a white-labeled Agora that a city, county, or district runs for its own staff: its contracts, its rules, its
+          Anyone can search Loci for free. A city marketplace is a white-labeled Loci that a city, county, or district runs for its own staff: its contracts, its rules, its
           brand, on top of the same shared catalog.
         </p>
       </div>

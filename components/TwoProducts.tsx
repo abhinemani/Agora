@@ -8,7 +8,7 @@ export function TwoProducts({ dark = false }: { dark?: boolean }) {
     {
       eyebrow: "For agencies",
       title: "City marketplace",
-      body: "A white-labeled Agora for one city, county, or district: its own contracts, rules, approvals and brand, for its own staff.",
+      body: "A white-labeled Loci for one city, county, or district: its own contracts, rules, approvals and brand, for its own staff.",
       price: "Subscription paid by the agency",
       href: "/marketplaces",
       cta: "See city marketplaces",
@@ -16,7 +16,7 @@ export function TwoProducts({ dark = false }: { dark?: boolean }) {
     {
       eyebrow: "For suppliers",
       title: "Storefront",
-      body: "A supplier's own page in Agora: its catalog, contracts, certifications, and reviews, shown to every agency allowed to buy from it.",
+      body: "A supplier's own page in Loci: its catalog, contracts, certifications, and reviews, shown to every agency allowed to buy from it.",
       price: "Basic page free; featured storefront on the Edge Position supplier plan",
       href: "/storefronts",
       cta: "Browse storefronts",
@@ -27,7 +27,7 @@ export function TwoProducts({ dark = false }: { dark?: boolean }) {
       {!dark && (
         <>
           <h2 className="text-xl font-bold tracking-tight text-ink">Two products on one marketplace</h2>
-          <p className="mt-1 text-sm text-slate">Searching Agora is free. Agencies and suppliers each pay for their own presence on it.</p>
+          <p className="mt-1 text-sm text-slate">Searching Loci is free. Agencies and suppliers each pay for their own presence on it.</p>
         </>
       )}
       <div className={`grid gap-4 md:grid-cols-2 ${dark ? "" : "mt-5"}`}>

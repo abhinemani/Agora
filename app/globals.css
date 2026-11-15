@@ -56,7 +56,7 @@ button:focus-visible {
   .cart-bump { animation: none; }
 }
 
-/* Agora's one motion: the mark's inner ticks close in on the center while a search runs. */
+/* Loci's one motion: the mark's inner ticks close in on the center while a search runs. */
 @keyframes mark-close {
   0%, 100% { transform: scale(1.32); opacity: 0.45; }
   55% { transform: scale(1); opacity: 1; }
@@ -103,4 +103,24 @@ button:focus-visible {
   background-size: 100% 100%, 80px 80px, 80px 80px, 16px 16px, 16px 16px, 100% 100%;
   background-repeat: no-repeat, repeat, repeat, repeat, repeat, no-repeat;
   background-position: 0 0, -1px -1px, -1px -1px, -1px -1px, -1px -1px, 0 0;
+}
+
+/* The mark's colors. Light mode keeps the theme's primary-light ticks and primary-darker core;
+   dark mode uses pale blues, since the dark theme's mid blue clashes with the near-black header. */
+:root {
+  --mark-outer: rgb(115 179 231 / 0.6);
+  --mark-inner: rgb(115 179 231);
+  --mark-core: rgb(22 46 81);
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --mark-outer: rgb(157 194 232 / 0.45);
+    --mark-inner: rgb(157 194 232);
+    --mark-core: rgb(217 232 246);
+  }
+}
+:root[data-theme="dark"] {
+  --mark-outer: rgb(157 194 232 / 0.45);
+  --mark-inner: rgb(157 194 232);
+  --mark-core: rgb(217 232 246);
 }

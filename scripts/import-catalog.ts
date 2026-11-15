@@ -103,11 +103,22 @@ interface RawDocument {
   contract_id: string;
 }
 
-const rawSuppliers = jsonl<RawSupplier>("suppliers");
-const rawContracts = jsonl<RawContract>("contracts");
-const rawProducts = jsonl<RawProduct>("products");
-const rawOfferings = jsonl<RawOffering>("offerings");
-const rawDocuments = jsonl<RawDocument>("documents");
+// GSA's schedule contracts are stashed, not served: they brought 12,473 contracts and no products, more noise than help
+// in search. Their rows stay in the source files and GSA's own files are in seed/stash/gsa/; AGORA_INCLUDE_GSA=1 brings
+// them back (then rebuild with npm run import:catalog-coops).
+const INCLUDE_GSA = process.env.AGORA_INCLUDE_GSA === "1";
+const GSA_DIR = join(ROOT, "seed/stash/gsa");
+/** How many GSA contracts the stash keeps out, for /data. */
+const gsaStashed = INCLUDE_GSA ? 0 : jsonl<RawContract>("contracts").filter((c) => c.cooperative === "GSA MAS").length;
+const notGsa = <T extends { cooperative?: string; cooperatives?: string[] }>(rows: T[]): T[] =>
+  INCLUDE_GSA ? rows : rows.filter((r) => r.cooperative !== "GSA MAS" && !(r.cooperatives && r.cooperatives.length === 1 && r.cooperatives[0] === "GSA MAS"));
+const rawSuppliers = notGsa(jsonl<RawSupplier>("suppliers"));
+const rawContracts = notGsa(jsonl<RawContract>("contracts"));
+const rawOfferings = notGsa(jsonl<RawOffering>("offerings"));
+const rawDocuments = notGsa(jsonl<RawDocument>("documents"));
+// Products belong to offerings: keep those something still offers.
+const offered = new Set(rawOfferings.map((o) => o.product_id));
+const rawProducts = jsonl<RawProduct>("products").filter((p) => INCLUDE_GSA || offered.has(p.product_id));
 
 // NJSTART, New Jersey's state contracts (npm run import:njstart), in the same raw shapes.
 // They join the catalog as a state program, not a co-op: lib/catalog.ts gives them their
@@ -162,7 +173,7 @@ const njSummary = existsSync(join(SRC, "njstart/summary.json")) ? JSON.parse(rea
 // ------------------------------------------------------------------ GSA's own data (npm run fetch:gsa)
 
 /** Every MAS Special Item Number: title, description, and whether state and local governments may use it. */
-const gsaSins = (JSON.parse(readFileSync(join(SRC, "gsa-sins.json"), "utf8")) as { sins: Record<string, { title: string; description: string; cooperative: boolean }> }).sins;
+const gsaSins = INCLUDE_GSA ? (JSON.parse(readFileSync(join(GSA_DIR, "gsa-sins.json"), "utf8")) as { sins: Record<string, { title: string; description: string; cooperative: boolean }> }).sins : {};
 interface GsaContract {
   sins: Set<string>;
   subs: Set<string>;
@@ -173,7 +184,7 @@ interface GsaContract {
 }
 const gsaByContract = new Map<string, GsaContract>();
 {
-  const text = gunzipSync(readFileSync(join(SRC, "gsa-mas-contracts.csv.gz"))).toString("utf8");
+  const text = INCLUDE_GSA ? gunzipSync(readFileSync(join(GSA_DIR, "gsa-mas-contracts.csv.gz"))).toString("utf8") : "";
   const lines = text.split("\n").filter(Boolean);
   const parse = (line: string) => {
     const out: string[] = [];
@@ -192,7 +203,7 @@ const gsaByContract = new Map<string, GsaContract>();
     out.push(cur);
     return out;
   };
-  const head = parse(lines[0]);
+  const head = lines.length ? parse(lines[0]) : [];
   const ix = (n: string) => head.indexOf(n);
   for (const line of lines.slice(1)) {
     const r = parse(line);
@@ -841,6 +852,7 @@ const insights = {
     gsa_open_to_cities: contracts.filter((c) => c.coop === "GSA MAS" && c.coop_sins?.length).length,
     gsa_sins: Object.keys(gsaSins).length,
     gsa_cooperative_sins: Object.values(gsaSins).filter((x) => x.cooperative).length,
+    gsa_stashed: gsaStashed,
     names_title_cased: titleCased,
     merged_by_uei: mergedByUei,
     parts_labelled: partLabelled,

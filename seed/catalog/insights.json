@@ -1,24 +1,25 @@
 {
  "retrieved": "2026-11-13",
  "source_counts": {
-  "suppliers": 24094,
-  "contracts": 31930,
+  "suppliers": 12430,
+  "contracts": 19457,
   "products": 34510,
   "offerings": 39394,
-  "documents": 12602
+  "documents": 710
  },
  "cleanup": {
-  "gsa_contracts": 12473,
-  "gsa_described": 12442,
-  "gsa_with_end": 12473,
-  "gsa_open_to_cities": 7132,
-  "gsa_sins": 277,
-  "gsa_cooperative_sins": 56,
-  "names_title_cased": 12497,
+  "gsa_contracts": 0,
+  "gsa_described": 0,
+  "gsa_with_end": 0,
+  "gsa_open_to_cities": 0,
+  "gsa_sins": 0,
+  "gsa_cooperative_sins": 0,
+  "gsa_stashed": 12473,
+  "names_title_cased": 1522,
   "merged_by_uei": 0,
   "parts_labelled": 4112,
   "suppliers_merged_by_review": 7,
-  "contracts_categorized": 30860,
+  "contracts_categorized": 18460,
   "products_renamed_by_review": 223,
   "canon_rows_added": 109,
   "price_file_rows": 12263,
@@ -31,13 +32,13 @@
   ]
  },
  "suppliers": {
-  "records": 27680,
-  "companies": 24952,
-  "merged_by_name": 2378,
-  "merged_by_website": 343,
+  "records": 16016,
+  "companies": 13992,
+  "merged_by_name": 1943,
+  "merged_by_website": 74,
   "merged_by_uei": 0,
-  "with_website": 13939,
-  "on_two_or_more_coops": 1502,
+  "with_website": 2661,
+  "on_two_or_more_coops": 1499,
   "most_coops": [
    {
     "id": "cat_19ab651278e93c73f19b",
@@ -57,7 +58,7 @@
      "Sourcewell",
      "TIPS"
     ],
-    "contracts": 30
+    "contracts": 28
    },
    {
     "id": "cat_506cc6b39ec0eb5c4cec",
@@ -77,7 +78,7 @@
      "Sourcewell",
      "TIPS"
     ],
-    "contracts": 19
+    "contracts": 18
    },
    {
     "id": "cat_893418876ba75fddd993",
@@ -99,7 +100,7 @@
     "contracts": 21
    },
    {
-    "id": "cat_1369ef49157eb75828c2",
+    "id": "cat_35bb5ed33c7b211b8558",
     "name": "Steelcase Inc.",
     "coops": [
      "Arkansas OSP",
@@ -114,7 +115,7 @@
      "OregonBuys",
      "Sourcewell"
     ],
-    "contracts": 12
+    "contracts": 10
    },
    {
     "id": "cat_af208adcb81b1a525476",
@@ -134,23 +135,6 @@
     "contracts": 20
    },
    {
-    "id": "cat_0c11c4053dbf3c589550",
-    "name": "The HON Company LLC",
-    "coops": [
-     "Arkansas OSP",
-     "BuyBoard",
-     "Empire Procure Connect",
-     "GSA MAS",
-     "Hawaii SPO",
-     "NASPO ValuePoint",
-     "NJSTART",
-     "NYS OGS",
-     "OMNIA Partners",
-     "OregonBuys"
-    ],
-    "contracts": 10
-   },
-   {
     "id": "cat_5f1d721967eb2067c67b",
     "name": "Quadient, Inc.",
     "coops": [
@@ -165,7 +149,7 @@
      "OregonBuys",
      "Sourcewell"
     ],
-    "contracts": 9
+    "contracts": 8
    },
    {
     "id": "cat_38f685b654efb7facba2",
@@ -181,7 +165,7 @@
      "PEPPM",
      "TIPS"
     ],
-    "contracts": 45
+    "contracts": 43
    },
    {
     "id": "cat_214328f043ee2ee86bb0",
@@ -197,7 +181,7 @@
      "NYS OGS",
      "TIPS"
     ],
-    "contracts": 22
+    "contracts": 21
    },
    {
     "id": "cat_600cb69888925391fb41",
@@ -213,7 +197,7 @@
      "OregonBuys",
      "Sourcewell"
     ],
-    "contracts": 17
+    "contracts": 13
    },
    {
     "id": "cat_612adbb6eda4e52f36c5",
@@ -229,7 +213,7 @@
      "OregonBuys",
      "Sourcewell"
     ],
-    "contracts": 13
+    "contracts": 12
    },
    {
     "id": "cat_35c5eed038a31882bac8",
@@ -245,7 +229,23 @@
      "OregonBuys",
      "TIPS"
     ],
-    "contracts": 13
+    "contracts": 12
+   },
+   {
+    "id": "cat_b4c3da702cbc8ec9ab46",
+    "name": "Everon LLC",
+    "coops": [
+     "1GPA",
+     "Equalis Group",
+     "Hawaii SPO",
+     "NASPO ValuePoint",
+     "NYS OGS",
+     "OMNIA Partners",
+     "OregonBuys",
+     "Sourcewell",
+     "TIPS"
+    ],
+    "contracts": 11
    }
   ],
   "merge_examples": [
@@ -268,7 +268,6 @@
    {
     "name": "Altec Industries",
     "aliases": [
-     "ALTEC INDUSTRIES, INC.",
      "Altec Industries Inc",
      "ALTEC INDUSTRIES INC"
     ]
@@ -277,8 +276,7 @@
     "name": "Ameresco Inc.",
     "aliases": [
      "Ameresco",
-     "Ameresco, Inc.",
-     "AMERESCO FEDERAL SOLUTIONS, INC."
+     "Ameresco, Inc."
     ]
    },
    {
@@ -297,18 +295,18 @@
     ]
    },
    {
-    "name": "Anchortex Corporation",
-    "aliases": [
-     "ANCHORTEX CORP",
-     "ANCHORTEX CORPORATION"
-    ]
-   },
-   {
     "name": "AT&T Corp",
     "aliases": [
      "AT&T",
      "AT&T Corp.",
      "AT&T CORP"
+    ]
+   },
+   {
+    "name": "Auctions International, Inc.",
+    "aliases": [
+     "Auctions International",
+     "Auctions International Inc"
     ]
    }
   ]
@@ -449,19 +447,19 @@
   {
    "coop": "GSA MAS",
    "coop_id": "gsa_mas",
-   "contracts": 12473,
-   "suppliers": 11944,
-   "with_link": 12473,
-   "with_end": 12473,
+   "contracts": 0,
+   "suppliers": 0,
+   "with_link": 0,
+   "with_end": 0,
    "expired": 0,
-   "with_states": 12473,
+   "with_states": 0,
    "offerings": 0
   },
   {
    "coop": "NJSTART",
    "coop_id": "state_nj",
    "contracts": 1437,
-   "suppliers": 1119,
+   "suppliers": 1120,
    "with_link": 1437,
    "with_end": 1437,
    "expired": 0,
@@ -494,7 +492,7 @@
    "coop": "NYS OGS",
    "coop_id": "state_ny",
    "contracts": 1411,
-   "suppliers": 1299,
+   "suppliers": 1302,
    "with_link": 39,
    "with_end": 1411,
    "expired": 0,
@@ -537,62 +535,62 @@
  ],
  "nigp": {
   "published": 2130,
-  "reviewed": 27698,
-  "none": 6317,
-  "contracts": 36145,
-  "coop_contracts_coded": 27698,
-  "coop_contracts": 31930,
+  "reviewed": 16034,
+  "none": 5508,
+  "contracts": 23672,
+  "coop_contracts_coded": 16034,
+  "coop_contracts": 19457,
   "state_uncoded": 2085,
   "classes_used": 180,
   "priced_offerings_coded": 4572,
   "top_classes": [
    [
     "920",
-    8461
-   ],
-   [
-    "918",
-    4348
-   ],
-   [
-    "208",
-    3105
-   ],
-   [
-    "204",
-    3006
+    2604
    ],
    [
     "909",
-    2983
+    2528
    ],
    [
-    "209",
-    1757
+    "204",
+    2238
+   ],
+   [
+    "208",
+    2067
    ],
    [
     "785",
-    1632
+    1542
    ],
    [
-    "925",
-    1607
+    "918",
+    888
+   ],
+   [
+    "340",
+    885
    ],
    [
     "680",
-    1550
+    845
    ],
    [
     "910",
-    1289
+    775
    ],
    [
-    "958",
-    1157
+    "420",
+    766
    ],
    [
-    "915",
-    1117
+    "425",
+    745
+   ],
+   [
+    "805",
+    713
    ]
   ]
  },
@@ -652,7 +650,7 @@
   },
   "members_retrieved": "2026-11-14",
   "note": "Line items are the summary page's; most agreements print $0 placeholders and keep prices in attached price sheets, which are linked, not read.",
-  "suppliers_shared_with_coops": 235
+  "suppliers_shared_with_coops": 213
  },
  "epc": {
   "source": "https://empireprocureconnect.info/empire-procure-connect-home",
@@ -673,7 +671,7 @@
   "suppliers": 157,
   "documents": 731,
   "priced_lines": 0,
-  "suppliers_shared_with_coops": 50
+  "suppliers_shared_with_coops": 49
  },
  "new_york": {
   "source": "https://ogs.ny.gov/procurement/ogs-centralized-contracts-list",
@@ -718,7 +716,7 @@
   },
   "with_prices": 133,
   "products": 5376,
-  "suppliers_shared_with_coops": 534
+  "suppliers_shared_with_coops": 446
  },
  "arkansas": {
   "source": "https://sas.arkansas.gov/procurement/state-contracts/",
@@ -749,7 +747,7 @@
   ],
   "with_prices": 10,
   "products": 85,
-  "suppliers_shared_with_coops": 142
+  "suppliers_shared_with_coops": 139
  },
  "hawaii": {
   "source": "https://spo.hawaii.gov/for-vendors/contract-awards/price-vendor-lists/",
@@ -783,7 +781,7 @@
   },
   "suppliers": 222,
   "products": 1456,
-  "suppliers_shared_with_coops": 146,
+  "suppliers_shared_with_coops": 143,
   "products_on_two_or_more_contracts": 113
  },
  "njstart": {
@@ -826,7 +824,7 @@
   "note": "Line items are the first summary page of each contract; contracts with more item pages are flagged line_items_paginated. Attachments are linked, not downloaded.",
   "nigp_codes": 520,
   "nigp_classes": 150,
-  "suppliers_shared_with_coops": 355,
+  "suppliers_shared_with_coops": 307,
   "offerings": 5810,
   "products_on_two_or_more_contracts": 568
  },
@@ -1226,7 +1224,7 @@
    "Arawak Paving Company Inc.",
    "B & E Supply Corp",
    "Summit Paper Company",
-   "Myers and Stauffer, LC",
+   "Myers and Stauffer LC",
    "Channel Fish Processing Co. Inc",
    "Garden State Pavement Solutions LLC",
    "Flemington Aluminum and Brass Inc",
@@ -1385,6 +1383,7 @@
    "Motorola Solutions",
    "Nielsen Fleet Inc.",
    "Siren Tech Police and Emergency Vehicle Upfitting",
+   "Idemia Identity & Security USA LLC",
    "Peckham Materials Corp.",
    "Innovative Municipal Products US Inc",
    "Waverly Industries LLC",
@@ -1455,7 +1454,7 @@
    "Jet Vac Equipment",
    "KNOWiNK LLC",
    "Ronin Security Solutions LLC",
-   "Aon Cyber Solutions",
+   "Aon Consulting Inc.",
    "Aetna",
    "OptumRx",
    "Tdec",
@@ -1550,10 +1549,10 @@
    "Accenture, LLP",
    "Berry Dunn Mcneil & Parker LLC Dba Berrydunn",
    "The Boston Consulting Group, Inc.",
-   "Eagle Hill Consulting, LLC",
+   "Eagle Hill Consulting LLC",
    "Integris Performance Advisors",
    "LOGIC20/20 Inc",
-   "McKinsey & Company",
+   "McKinsey & Company Inc. Washington D.C.",
    "Southwest Airlines",
    "American Airlines Inc",
    "All States Construction Inc Dba Gorman Construction",
@@ -1621,7 +1620,7 @@
    "Lincoln Moving & Storage of Buffalo Inc",
    "Corcraft",
    "BCI Burke Company, LLC",
-   "Exemplis, LLC",
+   "Exemplis LLC",
    "Caldwell Country Chevrolet II LLC",
    "Five Star Chevrolet",
    "The Sewell Family of Companies, Inc.",
@@ -1641,16 +1640,14 @@
   "multi_route": 5811
  },
  "documents": {
-  "total": 47213,
+  "total": 35321,
   "by_kind": {
-   "htm": 11892,
    "unknown": 28825,
    "pdf": 5516,
    "docx": 7,
    "xlsx": 973
   },
   "by_coop": {
-   "GSA MAS": 11892,
    "HGACBuy": 709,
    "Sourcewell": 1,
    "NJSTART": 20072,

@@ -27,7 +27,7 @@ function Explorer() {
   const [typed, setTyped] = useState(q);
   const [kind, setKind] = useState<ContractKind | "">((params.get("kind") as ContractKind | null) ?? "");
   const [coop, setCoop] = useState(params.get("coop") ?? "");
-  const [category, setCategory] = useState("");
+  const [category, setCategory] = useState(params.get("category") ?? "");
   const [usable, setUsable] = useState(false);
   const [priced, setPriced] = useState(false);
   const [readable, setReadable] = useState(false);

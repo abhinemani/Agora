@@ -58,8 +58,8 @@ export default function PriceListQueue() {
           <div className="text-ui-xs text-base-dark">read this session, {done.reduce((n, r) => n + r.items, 0).toLocaleString()} priced rows found</div>
         </Card>
         <Card className="p-4">
-          <div className="font-heading text-heading-md font-bold text-ink">{(page.counts["GSA MAS|htm"] ?? 0).toLocaleString()}</div>
-          <div className="text-ui-xs text-base-dark">GSA Advantage catalog pages, the bulk of the queue</div>
+          <div className="font-heading text-heading-md font-bold text-ink">{new Set(Object.keys(page.counts).map((k) => k.split("|")[0])).size}</div>
+          <div className="text-ui-xs text-base-dark">co-ops and state programs with documents in the queue</div>
         </Card>
       </div>
 

@@ -29,7 +29,13 @@
    "BuyBoard 724-23: Rockdale Country Ford",
    "BuyBoard 724-23: Randall Reed's Prestige Ford",
    "BuyBoard 724-23: Silsbee Toyota"
-  ]
+  ],
+  "doc_price_rows": 0,
+  "doc_price_offerings": 0,
+  "doc_price_duplicates": 0,
+  "doc_price_superseded": 0,
+  "doc_price_unclear": 0,
+  "doc_price_rejected": 0
  },
  "suppliers": {
   "records": 16016,

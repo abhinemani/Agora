@@ -80,7 +80,7 @@ async function slice(src: PDFDocument | Buffer, from: number, count: number): Pr
 }
 
 /** Read a run of pages; a run the model can't answer whole is tried again in halves, down to one page. */
-async function readRun(src: PDFDocument | Buffer, label: string, from: number, count: number, out: ScanReading): Promise<void> {
+async function readRun(src: PDFDocument | Buffer, label: string, from: number, count: number, out: ScanReading, model = SCAN_MODEL): Promise<void> {
   const first = from + 1;
   const res = await structured({
     task: "scan_text",
@@ -92,13 +92,13 @@ async function readRun(src: PDFDocument | Buffer, label: string, from: number, c
     maxTokens: 32_000,
     timeoutMs: 300_000,
     effort: "low",
-    model: SCAN_MODEL,
+    model,
   });
   if (!res) {
     if (count > 1 && !Buffer.isBuffer(src)) {
       const half = Math.ceil(count / 2);
-      await readRun(src, label, from, half, out);
-      await readRun(src, label, from + half, count - half, out);
+      await readRun(src, label, from, half, out, model);
+      await readRun(src, label, from + half, count - half, out, model);
     } else out.failed_runs++;
     return;
   }
@@ -119,7 +119,8 @@ export async function imageToPdf(buffer: Buffer, filename: string): Promise<Buff
 }
 
 /** Transcribe a scanned PDF. Throws when the file can't be opened as a PDF. */
-export async function readScan(buffer: Buffer, label: string): Promise<ScanReading> {
+/** Transcribe a scanned PDF with the scan model, or another (the main model re-reads scanned price sheets). */
+export async function readScan(buffer: Buffer, label: string, model = SCAN_MODEL): Promise<ScanReading> {
   let src: PDFDocument | Buffer;
   let total: number;
   try {
@@ -136,12 +137,12 @@ export async function readScan(buffer: Buffer, label: string): Promise<ScanReadi
     }
     if (total > WHOLE_MAX_PAGES || buffer.length > WHOLE_MAX_BYTES) throw new Error(`the file can't be split into pages (${(e as Error).message}), and at ${total} pages it is too long to send whole`);
     const out: ScanReading = { pages: [], page_count: total, read: 0, failed_runs: 0 };
-    await readRun(buffer, label, 0, total, out);
+    await readRun(buffer, label, 0, total, out, model);
     out.pages.sort((a, b) => a.num - b.num);
     return out;
   }
   const out: ScanReading = { pages: [], page_count: total, read: 0, failed_runs: 0 };
-  for (let from = 0; from < total; from += RUN) await readRun(src, label, from, Math.min(RUN, total - from), out);
+  for (let from = 0; from < total; from += RUN) await readRun(src, label, from, Math.min(RUN, total - from), out, model);
   out.pages.sort((a, b) => a.num - b.num);
   return out;
 }

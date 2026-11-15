@@ -22,6 +22,7 @@
     "import:epc": "tsx scripts/import-epc.ts",
     "import:oregon": "tsx scripts/import-oregon.ts",
     "import:doctext": "tsx scripts/import-doctext.ts",
+    "import:doc-prices": "NODE_USE_ENV_PROXY=1 tsx scripts/import-doc-prices.ts",
     "import:catalog-coops": "tsx scripts/import-catalog.ts",
     "fetch:federal": "NODE_USE_ENV_PROXY=1 tsx scripts/fetch-federal-ids.ts",
     "fetch:gsa": "NODE_USE_ENV_PROXY=1 tsx scripts/fetch-gsa.ts",

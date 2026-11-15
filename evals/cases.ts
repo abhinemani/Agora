@@ -29,6 +29,7 @@ import type { Paperwork } from "../lib/paperwork";
 import { extractFile, parseContract, UPLOAD_DIR, type ExtractedFile } from "../lib/parser";
 import { checkQuote, sampleQuote, type QuoteLine, type QuoteReport } from "../lib/quote-check";
 import { readScan, type ScanReading } from "../lib/doc-ocr";
+import { readPriceSheet } from "../lib/price-sheets";
 import type { ShopperText } from "../lib/shopper-ai";
 
 // ------------------------------------------------------------------ fixtures
@@ -36,6 +37,19 @@ import type { ShopperText } from "../lib/shopper-ai";
 const ENDERA = "file:naspo-204521-endera-attachment-d.xlsx";
 /** A two-page scanned amendment with no text layer (built for the scan cases; see the cases). */
 const scanSample = () => readFileSync(join(process.cwd(), "evals/fixtures/scan-sample.pdf"));
+
+/** A state-supplied price sheet as its text is stored: contract prices, a list price with a discount, a total row. */
+const PRICE_SHEET = [
+  "T9999 26DPP00001 State-Supplied Price Sheet",
+  "Vendor: Example Supply Co. | Contract term 01/01/2026 - 12/31/2027",
+  "Line | Item | Description | Unit | Price",
+  "1 | 4410-22 | Rock salt, bulk, delivered | Ton | $68.40",
+  "2 | 4410-31 | Calcium chloride flake, 50 lb bag | Bag | $21.15",
+  "3 | 7720-05 | Snow plow cutting edge, 10 ft | Each | $412.00",
+  "4 | Manufacturer catalog, all other items | List price less 18% | | ",
+  "5 | Hourly plowing, 10-wheel truck with operator | Hour | $185.00",
+  "Estimated annual total | | | | $1,240,000.00",
+].join("\n");
 const BUYBOARD = "file:buyboard-724-23-award-report.pdf";
 
 export interface Fixtures {
@@ -107,6 +121,9 @@ export async function fixtures(): Promise<Fixtures> {
 
 /** What the model call sees, for canned output that has to be built from the prompt (a quote copied out of a passage). */
 type Call = { task: Task; system: string; user: string };
+
+type SheetRows = Awaited<ReturnType<typeof readPriceSheet>>;
+const sheetRow = (item: string, price: number, line: string, basis = "contract_price") => ({ item, sku: null, unit: null, price, basis, note: null, line });
 
 export interface Run {
   /** What the page would have received. */
@@ -782,6 +799,59 @@ export const CASES: Case[] = [
       says(/\$?64\.50/),
       says(/\$?412\.75/),
       is<ScanReading>("page 1 read, with no page numbered outside the file", (v) => v.pages.some((p) => p.num === 1) && v.pages.every((p) => p.num >= 1 && p.num <= 2)),
+    ],
+  },
+  // ---- Reading a price sheet
+  // PRICE_SHEET above: four priced items, a catalog line priced only as a percentage off list, and an estimated total.
+  {
+    id: "price-sheet.guard.clean",
+    task: "price_sheet",
+    title: "Rows whose prices are printed on their own lines are kept",
+    canned: { rows: [sheetRow("Rock salt, bulk", 68.4, "1 | 4410-22 | Rock salt, bulk, delivered | Ton | $68.40"), sheetRow("Hourly plowing, 10-wheel truck", 185, "5 | Hourly plowing, 10-wheel truck with operator | Hour | $185.00")] },
+    run: () => readPriceSheet(PRICE_SHEET, "State-Supplied Price Sheet"),
+    expect: [outcome("kept"), pieces(2, 2), is<SheetRows>("both rows kept", (v) => v.rows.length === 2)],
+  },
+  {
+    id: "price-sheet.guard.not-on-line",
+    task: "price_sheet",
+    title: "A price that isn't on its line, a line the sheet doesn't print, a discount and a list price are all dropped",
+    canned: {
+      rows: [
+        sheetRow("Calcium chloride flake", 21.15, "2 | 4410-31 | Calcium chloride flake, 50 lb bag | Bag | $21.15"),
+        sheetRow("Snow plow cutting edge", 41.2, "3 | 7720-05 | Snow plow cutting edge, 10 ft | Each | $412.00"),
+        sheetRow("Snow plow blade", 950, "6 | Snow plow blade, 11 ft | Each | $950.00"),
+        sheetRow("Manufacturer catalog items", 18, "4 | Manufacturer catalog, all other items | List price less 18% | |", "net_price"),
+        sheetRow("Rock salt, bulk", 68.4, "1 | 4410-22 | Rock salt, bulk, delivered | Ton | $68.40", "list_price"),
+      ],
+    },
+    run: () => readPriceSheet(PRICE_SHEET, "State-Supplied Price Sheet"),
+    expect: [
+      outcome("partial"),
+      pieces(1, 5),
+      because(/the price isn't on its line/),
+      because(/the line isn't in the sheet/),
+      because(/the figure is a percentage/),
+      because(/a list price/),
+      is<SheetRows>("only the calcium chloride row", (v) => v.rows.length === 1 && v.rows[0].price === 21.15),
+    ],
+  },
+  {
+    id: "price-sheet.guard.item-elsewhere",
+    task: "price_sheet",
+    title: "A row naming an item its line doesn't mention is dropped",
+    canned: { rows: [sheetRow("Traffic cones", 68.4, "1 | 4410-22 | Rock salt, bulk, delivered | Ton | $68.40")] },
+    run: () => readPriceSheet(PRICE_SHEET, "State-Supplied Price Sheet"),
+    expect: [outcome("discarded"), because(/the item isn't named on its line/)],
+  },
+  {
+    id: "price-sheet.live.state-sheet",
+    task: "price_sheet",
+    title: "Reads every item price on a price sheet, and no percentage or total as a price",
+    run: () => readPriceSheet(PRICE_SHEET, "State-Supplied Price Sheet"),
+    expect: [
+      survived,
+      is<SheetRows>("the four item prices", (v) => [68.4, 21.15, 412, 185].every((p) => v.rows.some((r) => r.price === p))),
+      is<SheetRows>("no percentage or estimated total kept as a price", (v) => !v.rows.some((r) => r.price === 18 || r.price === 1_240_000)),
     ],
   },
 ];

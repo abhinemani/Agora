@@ -24,6 +24,7 @@ export const TASKS = {
   contract_brief: "Briefing a contract",
   contract_parse: "Reading an uploaded contract",
   scan_text: "Reading a scanned document",
+  price_sheet: "Reading a price sheet",
 } as const;
 export type Task = keyof typeof TASKS;
 

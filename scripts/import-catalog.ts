@@ -723,6 +723,121 @@ const priceFileStats = { rows: 0, attached: 0, unmatched: [] as string[] };
   priceFileStats.unmatched = [...new Set(priceFileStats.unmatched)];
 }
 
+// Item prices read from the state programs' price sheets on the server (lib/price-sheets.ts), brought into the
+// repository by npm run import:doc-prices. Each row names its catalog contract, and its price was checked there against
+// the line it is printed on; it is checked again here. Amendments often reprint a contract's whole schedule: when a
+// contract's sheets print different prices for one item, the latest amendment's price stands (by the amendment,
+// revision and date in the sheets' names), and when the names can't say which is latest the item stays out. A row whose
+// contract has the same price on file for an item of the same name (NJSTART's line items) is the same offering.
+const docPriceStats = { rows: 0, attached: 0, duplicates: 0, superseded: 0, unclear: 0, rejected: 0, no_contract: 0 };
+{
+  const file = join(SRC, "doc-prices/rows.json.gz");
+  const doc: { retrieved: string; rows: { url: string; contract_id: string; program: string; label: string; n: number; item: string; sku: string | null; unit: string | null; price: number; basis: string; note: string | null; line: string; read_on: string }[] } | null = existsSync(file)
+    ? JSON.parse(gunzipSync(readFileSync(file)).toString("utf8"))
+    : null;
+  const contractById = new Map(contracts.map((c) => [c.id, c]));
+  const productName = new Map(products.map((p) => [p.id, p.name.toLowerCase()]));
+  const onFile = new Map<string, { price: number; name: string }[]>();
+  for (const o of offerings) if (o.price != null) (onFile.get(o.contract) ?? onFile.set(o.contract, []).get(o.contract)!).push({ price: o.price, name: productName.get(o.product) ?? "" });
+  const words = (t: string) => (t.toLowerCase().match(/[a-z][a-z0-9]{2,}/g) ?? []);
+  const BASIS: Record<string, string> = { contract_price: "contract price", net_price: "contract net price", ceiling: "not-to-exceed rate" };
+  const when = (d: string) => new Date(`${d}T12:00:00Z`).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric", timeZone: "UTC" });
+  /** How late a sheet is, from its name: amendment, then revision, then a date (2.27.26 or 2026-02-27). */
+  const lateness = (label: string): number[] => {
+    const amd = Number(label.match(/\bam(?:en)?d(?:ment)?\.?\s*(?:no\.?\s*)?(\d+)/i)?.[1] ?? 0);
+    const rev = Number(label.match(/\brev(?:ision)?\.?\s*(\d+)/i)?.[1] ?? 0);
+    const d = label.match(/\b(\d{1,2})[./-](\d{1,2})[./-](\d{2}|\d{4})\b/);
+    const date = d ? Number(`${d[3].length === 2 ? `20${d[3]}` : d[3]}${d[1].padStart(2, "0")}${d[2].padStart(2, "0")}`) : 0;
+    return [amd, rev, date];
+  };
+  const later = (a: number[], b: number[]) => {
+    for (let i = 0; i < a.length; i++) if (a[i] !== b[i]) return a[i] - b[i];
+    return 0;
+  };
+  type DocRow = NonNullable<typeof doc>["rows"][number];
+  const valid: DocRow[] = [];
+  for (const r of doc?.rows ?? []) {
+    docPriceStats.rows++;
+    if (!contractById.has(r.contract_id)) {
+      docPriceStats.no_contract++;
+      continue;
+    }
+    // The same checks as on the server: a price a buyer pays, printed on its line, with the item named there.
+    const figures = (r.line.match(/\d[\d,]*(?:\.\d+)?/g) ?? []).map((n) => Number(n.replace(/,/g, "")));
+    const lineWords = new Set(words(r.line));
+    if (!BASIS[r.basis] || !(r.price > 0) || !figures.some((f) => Math.abs(f - r.price) < 0.005) || !words(r.item).some((w) => lineWords.has(w))) {
+      docPriceStats.rejected++;
+      continue;
+    }
+    valid.push(r);
+  }
+  // Only a contract's latest sheet stands: amendments reprint the schedule, and an older sheet's line can wrap or read
+  // differently from the newer one's, so no item-by-item match can be trusted to catch every superseded price. Sheets
+  // the names can't rank (unnumbered attachments) stand together, unless they print different prices on the same line.
+  const byContract = new Map<string, DocRow[]>();
+  for (const r of valid) (byContract.get(r.contract_id) ?? byContract.set(r.contract_id, []).get(r.contract_id)!).push(r);
+  const standing: DocRow[] = [];
+  const lineKey = (r: DocRow) => (r.line.toLowerCase().match(/[a-z]{2,}/g) ?? []).join(" ");
+  for (const rows of byContract.values()) {
+    const latest = rows.reduce((m, r) => (later(lateness(r.label), m) > 0 ? lateness(r.label) : m), lateness(rows[0].label));
+    const top = rows.filter((r) => later(lateness(r.label), latest) === 0);
+    docPriceStats.superseded += rows.length - top.length;
+    const lines = new Map<string, DocRow[]>();
+    for (const r of top) (lines.get(lineKey(r)) ?? lines.set(lineKey(r), []).get(lineKey(r))!).push(r);
+    for (const same of lines.values()) {
+      const sheets = new Set(same.map((r) => r.url));
+      if (sheets.size > 1 && new Set(same.map((r) => r.price)).size > 1) {
+        docPriceStats.unclear += same.length;
+        continue;
+      }
+      // The same line on several tied sheets (copies of one file): one sheet's rows.
+      const first = same[0].url;
+      standing.push(...same.filter((r) => r.url === first));
+      docPriceStats.duplicates += same.filter((r) => r.url !== first).length;
+    }
+  }
+  const productIds = new Map<string, string>();
+  for (const r of standing) {
+    const c = contractById.get(r.contract_id)!;
+    // Most of the words of both names shared: the same item, not a neighbouring zone or size at the same price.
+    const mine = new Set(words(`${r.item} ${r.note ?? ""}`));
+    const alike = (name: string) => {
+      const theirs = new Set(words(name));
+      const both = [...mine].filter((w) => theirs.has(w)).length;
+      return both / (new Set([...mine, ...theirs]).size || 1) >= 0.6;
+    };
+    if ((onFile.get(c.id) ?? []).some((x) => Math.abs(x.price - r.price) < 0.005 && alike(x.name))) {
+      docPriceStats.duplicates++;
+      continue;
+    }
+    const name = `${r.item}${r.note ? ` (${r.note})` : ""}`.slice(0, 200);
+    const pkey = `${c.id}|${name.toLowerCase()}|${r.sku ?? ""}`;
+    let pid = productIds.get(pkey);
+    if (!pid) {
+      pid = `prd_dp_${createHash("sha1").update(pkey).digest("hex").slice(0, 16)}`;
+      productIds.set(pkey, pid);
+      products.push({ id: pid, name, maker: null, mpn: r.sku, review: false });
+    }
+    offerings.push({
+      id: `off_dp_${createHash("sha1").update(`${r.url}|${r.n}`).digest("hex").slice(0, 16)}`,
+      product: pid,
+      supplier: c.supplier,
+      contract: c.id,
+      coop: c.coop,
+      sku: r.sku,
+      price: r.price,
+      list: null,
+      discount: null,
+      unit: r.unit,
+      status: "published_price",
+      vintage: `${BASIS[r.basis][0].toUpperCase()}${BASIS[r.basis].slice(1)} on "${r.label}", read ${when(r.read_on)}`,
+      url: r.url,
+      category: `${c.title}: ${BASIS[r.basis]}, from the price sheet "${r.label}": ${r.line.slice(0, 160)}`,
+    });
+    docPriceStats.attached++;
+  }
+}
+
 // ------------------------------------------------------------------ documents: the price-list reader's queue
 
 const documents = rawDocuments.map((d) => {
@@ -863,6 +978,12 @@ const insights = {
     price_file_rows: priceFileStats.rows,
     price_file_offerings: priceFileStats.attached,
     price_file_unmatched: priceFileStats.unmatched,
+    doc_price_rows: docPriceStats.rows,
+    doc_price_offerings: docPriceStats.attached,
+    doc_price_duplicates: docPriceStats.duplicates,
+    doc_price_superseded: docPriceStats.superseded,
+    doc_price_unclear: docPriceStats.unclear,
+    doc_price_rejected: docPriceStats.rejected,
   },
   suppliers: {
     records: rawSuppliers.length,

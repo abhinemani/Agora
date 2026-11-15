@@ -1,5 +1,5 @@
 {
-  "saved": "2026-11-15T01:43:52.320Z",
+  "saved": "2026-11-15T03:30:07.954Z",
   "model": "claude-sonnet-5-5",
   "prompts": {
     "request_parse": "cebcf585",
@@ -12,7 +12,8 @@
     "contract_answer": "6318d07d",
     "contract_brief": "115817b0",
     "contract_parse": "1ba148cb",
-    "scan_text": "ca2624fc"
+    "scan_text": "ca2624fc",
+    "price_sheet": "ff4ea73c"
   },
   "cases": {
     "answer.guard.invented-price": "pass",
@@ -63,6 +64,10 @@
     "paperwork.guard.unchanged": "pass",
     "paperwork.live.memo": "pass",
     "paperwork.live.memo-over-limit": "pass",
+    "price-sheet.guard.clean": "pass",
+    "price-sheet.guard.item-elsewhere": "pass",
+    "price-sheet.guard.not-on-line": "pass",
+    "price-sheet.live.state-sheet": "pass",
     "quote.guard.as-printed": "pass",
     "quote.guard.corrected-price": "pass",
     "quote.guard.invented-part": "pass",
@@ -106,6 +111,7 @@
     "dive-read.live.word-and-price": "3/3",
     "paperwork.live.memo": "3/3",
     "paperwork.live.memo-over-limit": "3/3",
+    "price-sheet.live.state-sheet": "3/3",
     "quote.live.messy-layout": "3/3",
     "quote.live.sample": "3/3",
     "request.live.dozen": "3/3",

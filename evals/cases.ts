@@ -25,7 +25,10 @@ import { parseRequest, tokens } from "../lib/assistant";
 import { getDb } from "../lib/db";
 import { conflictsWith, diveSearch, type DiveItem, type DiveState } from "../lib/dive";
 
-import { catalogCoopHits } from "../lib/catalog";
+import { catalogAwardedPrices, catalogCoopHits } from "../lib/catalog";
+import { offColumn } from "../lib/price-check";
+import { fitKey } from "../lib/dive-memo";
+import { gunzipSync } from "node:zlib";
 import { EXAMPLES, requestKind } from "../lib/front-door";
 import type { ContractAnswer, ContractBrief } from "../lib/docs";
 import type { Paperwork } from "../lib/paperwork";
@@ -548,6 +551,20 @@ export const CASES: Case[] = [
     expect: [is("no price filter and nothing narrowed", (v) => filters(v).length === 0)],
   },
 
+  {
+    id: "price-sheet.guard.wrong-column",
+    task: "price_sheet",
+    title: "Of the stored price sheets, only the one read with quantities as prices is more than tenfold off its awards",
+    canned: {},
+    run: async () => {
+      const d = JSON.parse(gunzipSync(readFileSync(join(process.cwd(), "seed/catalog/source/doc-prices/rows.json.gz"))).toString("utf8")) as { rows: { url: string; label: string; contract_id: string; item: string; price: number; basis: string }[] };
+      const bySheet = new Map<string, typeof d.rows>();
+      for (const r of d.rows) (bySheet.get(r.url) ?? bySheet.set(r.url, []).get(r.url)!).push(r);
+      return [...bySheet.values()].filter((rows) => offColumn(rows, catalogAwardedPrices(rows[0].contract_id))).map((rows) => rows[0].label);
+    },
+    expect: [is<string[]>("only T2580 Price Schedule.xlsx flagged", (v) => v.length === 1 && v[0] === "T2580 Price Schedule.xlsx")],
+  },
+
   // ---- Reading what a buyer wants
   {
     id: "dive-understand.guard.grounded",
@@ -647,6 +664,38 @@ export const CASES: Case[] = [
     title: "A swing hanger is not judged to be a swing",
     run: () => start("a swing for the park"),
     expect: [survived, is("no hanger judged to fit", (v) => !shown(v).some((i) => /hanger/i.test(i.name) && i.fit_verdict === "fits"))],
+  },
+
+  // ---- Specs read from products' own descriptions
+  {
+    id: "dive-specs.guard.question",
+    task: "dive_read",
+    title: "Task chairs are asked about arms, and answering narrows to chairs with those arms",
+    canned: {},
+    run: async () => {
+      const all = diveSearch(getDb(), "task chair", []);
+      const armless = diveSearch(getDb(), "task chair", [{ kind: "spec", key: "arms", value: "none" }]);
+      return { asked: all.questions.some((q) => q.id === "spec:arms" && q.options.some((o) => o.label === "No arms")), narrowed: armless.matched > 0 && armless.matched < all.matched && armless.items.every((i) => i.specs?.arms?.value === "none") };
+    },
+    expect: [is<{ asked: boolean; narrowed: boolean }>("an arms question, and an armless shortlist", (v) => v.asked && v.narrowed)],
+  },
+  {
+    id: "dive-specs.guard.memo-key",
+    task: "dive_fit",
+    title: "A saved verdict is keyed by what the judge read: a product whose specs change is judged again",
+    canned: {},
+    run: async () => {
+      const p = { id: "c:x", name: "Dodge RAM 1500 Crew Cab", kind: "pickup truck", maker: "Dodge", unit: "vehicle" };
+      return { same: fitKey("pickup", p) === fitKey("Pickup ", { ...p }), changed: fitKey("pickup", p) !== fitKey("pickup", { ...p, specs: { cab: { value: "crew" } } }) };
+    },
+    expect: [is<{ same: boolean; changed: boolean }>("same key for the same product, a new one when its specs change", (v) => v.same && v.changed)],
+  },
+  {
+    id: "dive-specs.live.fuel",
+    task: "dive_fit",
+    title: "With specs in view, a pickup read as diesel is not judged to fit a request that rules diesel out",
+    run: () => start("a crew cab pickup, not diesel"),
+    expect: [survived, is("no diesel pickup judged to fit", (v) => !shown(v).some((i) => i.specs?.fuel?.value === "diesel" && i.fit_verdict === "fits") && shown(v).some((i) => i.fit_verdict === "fits"))],
   },
 
   // ---- The same two steps on the results page's products

@@ -7,7 +7,7 @@ import type { CatalogProductHit, CatalogRoute } from "@/lib/catalog";
 import { goHref } from "@/lib/coops";
 import { FitPill } from "./CoopSection";
 import { Feedback } from "./Feedback";
-import { FitLine, SetAside } from "./FitLine";
+import { FitLine, SetAside, SpecLine } from "./FitLine";
 import { useStore } from "./store";
 import { Badge, money } from "./ui";
 
@@ -93,6 +93,9 @@ function ProductCard({ h, requestId }: { h: CatalogProductHit; requestId: string
               <Badge tone="amber">Name varies by source: check the SKU</Badge>
             </div>
           )}
+          <div className="mt-1">
+            <SpecLine specs={h.specs} />
+          </div>
           {h.fit_verdict && (
             <div className="mt-1.5">
               <FitLine verdict={h.fit_verdict} reason={h.fit_reason} />

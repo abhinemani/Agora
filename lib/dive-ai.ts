@@ -4,9 +4,31 @@
 // number it uses must be in what the buyer wrote or in the product data.
 
 import * as z from "zod/v4";
-import { discarded, kept, pieces, structured } from "./llm";
+import { fingerprint } from "./ai-log";
+import { discarded, kept, MODEL, pieces, structured } from "./llm";
+import { specsLine, type Specs } from "./specs";
 import { ungrounded, type ShopperText } from "./shopper-ai";
 import type { DiveFilter, DiveItem, DiveState, DiveVerdict, FitVerdict } from "./dive";
+
+/** The request reader's instructions (task dive_understand). */
+const UNDERSTAND_SYSTEM =
+  `You read what a government buyer typed into a product search, and say what they mean in the catalog's own terms. KINDS lists the kinds of product the catalog has that might match, with how many of each and one example.\n` +
+      `- kinds: the kinds from KINDS that are the thing the buyer wants, not its parts, add-ons or supplies, spelled exactly as listed. At most 4. None if nothing in KINDS is what they want.\n` +
+      `- search_terms: up to 3 other words or short phrases a catalog might use for what they want and that aren't in their words: a synonym, the full name of an abbreviation, the plain name for a brand name. Empty if none.\n` +
+      `- must_have: single words a product's name would contain to meet a requirement the buyer stated ("crew cab" gives "crew", "electric" gives "electric"). Only requirements they stated, and never the kind of thing itself.\n` +
+      `- must_not: single words for things they ruled out ("not diesel" gives "diesel").\n` +
+      `- read_as: one short sentence in the third person saying what Loci is looking for, like "Police pursuit vehicles and SUVs, diesel ruled out." No prices unless the buyer gave one.`;
+
+/** The fit judge's instructions (task dive_fit). */
+const FIT_SYSTEM =
+  `You check how well each product on a shortlist fits what a government buyer asked for. You know each product's name, kind, maker and unit, and nothing else: judge from those, never from price or availability, which Loci handles elsewhere.\n` +
+      `For every product give:\n` +
+      `- fit: "fits" if it is the thing asked for and meets every requirement the buyer stated; "partly" if it is the right kind of thing but a stated requirement isn't met or can't be told from its name, or it is closely related (an add-on, a different size class) a buyer might still want; "no" if it isn't what was asked for.\n` +
+      `- reason: at most 10 words, in the third person, naming what in the product decides it, like "A pursuit-rated Tahoe, as asked", "A swing hanger, not a swing" or "Crew cab, but diesel was ruled out". No prices, no percentages, and no figures that aren't in the product's name or the request.`;
+
+/** Versions of the two prompts: a reading or verdict saved under one is not used under another (lib/dive-memo.ts). */
+export const READ_VERSION = fingerprint(MODEL, UNDERSTAND_SYSTEM);
+export const FIT_VERSION = fingerprint(MODEL, FIT_SYSTEM);
 
 const ReadSchema = z.object({
   include_words: z.array(z.string()).describe("Words from WORDS the product must have."),
@@ -126,13 +148,7 @@ export async function askNeed(need: string, candidates: KindCandidate[]): Promis
   return structured({
     task: "dive_understand",
     about: need,
-    system:
-      `You read what a government buyer typed into a product search, and say what they mean in the catalog's own terms. KINDS lists the kinds of product the catalog has that might match, with how many of each and one example.\n` +
-      `- kinds: the kinds from KINDS that are the thing the buyer wants, not its parts, add-ons or supplies, spelled exactly as listed. At most 4. None if nothing in KINDS is what they want.\n` +
-      `- search_terms: up to 3 other words or short phrases a catalog might use for what they want and that aren't in their words: a synonym, the full name of an abbreviation, the plain name for a brand name. Empty if none.\n` +
-      `- must_have: single words a product's name would contain to meet a requirement the buyer stated ("crew cab" gives "crew", "electric" gives "electric"). Only requirements they stated, and never the kind of thing itself.\n` +
-      `- must_not: single words for things they ruled out ("not diesel" gives "diesel").\n` +
-      `- read_as: one short sentence in the third person saying what Loci is looking for, like "Police pursuit vehicles and SUVs, diesel ruled out." No prices unless the buyer gave one.`,
+    system: UNDERSTAND_SYSTEM,
     user: `REQUEST: ${need}\nKINDS:\n${candidates.map((c) => `${c.kind} (${c.count}): e.g. ${c.example.slice(0, 70)}`).join("\n") || "(none)"}`,
     schema: UnderstandSchema,
     maxTokens: 700,
@@ -188,19 +204,20 @@ const FitSchema = z.object({
  * never from its price or who can buy it. A reason is kept only with no price or percentage in it and no figure that
  * isn't in the product's name or the request. Null when the model is unavailable. */
 /** What the judge is told about a product: what it is, never its price or who can buy it. */
-export type FitInput = Pick<DiveItem, "id" | "name" | "kind" | "maker" | "unit">;
+export type FitInput = Pick<DiveItem, "id" | "name" | "kind" | "maker" | "unit"> & { specs?: Specs };
+
+/** A product as the judge reads it, one line. A saved verdict is keyed by this line, so a product whose name, kind or
+ * specs change is judged again. */
+export const fitInputLine = (i: FitInput) =>
+  `${i.name}${i.kind ? ` | kind: ${i.kind}` : ""}${i.maker ? ` | maker: ${i.maker}` : ""}${i.unit ? ` | unit: ${i.unit}` : ""}${i.specs && specsLine(i.specs) ? ` | specs: ${specsLine(i.specs)}` : ""}`;
 
 export async function judgeFit(need: string, readAs: string | null, items: FitInput[]): Promise<{ fits: Map<string, { fit: FitVerdict; reason: string }>; log_id?: string } | null> {
   if (!items.length) return null;
   const out = await structured({
     task: "dive_fit",
     about: `${need}: ${items.length} products`,
-    system:
-      `You check how well each product on a shortlist fits what a government buyer asked for. You know each product's name, kind, maker and unit, and nothing else: judge from those, never from price or availability, which Loci handles elsewhere.\n` +
-      `For every product give:\n` +
-      `- fit: "fits" if it is the thing asked for and meets every requirement the buyer stated; "partly" if it is the right kind of thing but a stated requirement isn't met or can't be told from its name, or it is closely related (an add-on, a different size class) a buyer might still want; "no" if it isn't what was asked for.\n` +
-      `- reason: at most 10 words, in the third person, naming what in the product decides it, like "A pursuit-rated Tahoe, as asked", "A swing hanger, not a swing" or "Crew cab, but diesel was ruled out". No prices, no percentages, and no figures that aren't in the product's name or the request.`,
-    user: `REQUEST: ${need}${readAs ? `\nREAD AS: ${readAs}` : ""}\nPRODUCTS:\n${items.map((i, n) => `${n + 1}. ${i.name}${i.kind ? ` | kind: ${i.kind}` : ""}${i.maker ? ` | maker: ${i.maker}` : ""}${i.unit ? ` | unit: ${i.unit}` : ""}`).join("\n")}`,
+    system: FIT_SYSTEM,
+    user: `REQUEST: ${need}${readAs ? `\nREAD AS: ${readAs}` : ""}\nPRODUCTS:\n${items.map((i, n) => `${n + 1}. ${fitInputLine(i)}`).join("\n")}`,
     schema: FitSchema,
     maxTokens: 2500,
     timeoutMs: 25_000,

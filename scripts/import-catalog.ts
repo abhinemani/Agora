@@ -26,6 +26,8 @@ import { seed } from "../lib/seed";
 import { STATES } from "../lib/vehicles";
 import { STASH_REASONS, stashReason, type StashReason } from "./product-stash";
 import { productKindKey, type KindRole } from "./product-kind";
+import type { Specs } from "./product-specs";
+import { offColumn as offColumnCheck } from "../lib/price-check";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const SRC = join(ROOT, "seed/catalog/source");
@@ -51,6 +53,7 @@ const canonRows = reviewed<{ name: string | null; sku: string | null; list: numb
 const productNames = reviewed<{ pick: string | null; confidence: string }>("product-name");
 const nigpPicks = reviewed<{ classes: string[]; confidence: string }>("nigp");
 const productKinds = reviewed<{ kind: string; role: KindRole; aliases: string[]; confidence: string }>("product-kind");
+const productSpecs = reviewed<{ specs: Specs; confidence: string }>("product-specs");
 // Low-confidence answers aren't applied, with one exception: a doubtful "not a whole item" can still keep a product out
 // of the catalog (scripts/product-stash.ts). Doubt removes a product; it never adds one.
 // The packaged-service review (task package-check): every verdict, with whether it was confident.
@@ -786,16 +789,9 @@ const docPriceStats = { rows: 0, attached: 0, list_prices: 0, duplicates: 0, sup
   // contract, has read the wrong column (a quantity or a square footage as the price), so none of it comes in. NJSTART's
   // "T2580 Price Schedule.xlsx" read carpet shampooing at $31,000 a square foot against the award's $0.25.
   const offColumn = new Set<string>();
-  for (const r of doc?.rows ?? []) {
-    if (r.basis === "list_price") continue;
-    const mine = new Set(words(r.item));
-    for (const x of onFile.get(r.contract_id) ?? []) {
-      const theirs = new Set(words(x.name));
-      const both = [...mine].filter((w) => theirs.has(w)).length;
-      const alike = both / (new Set([...mine, ...theirs]).size || 1) >= 0.6;
-      if (alike && x.price > 0 && (r.price / x.price > 10 || x.price / r.price > 10)) offColumn.add(r.url);
-    }
-  }
+  const bySheet = new Map<string, DocRow[]>();
+  for (const r of doc?.rows ?? []) (bySheet.get(r.url) ?? bySheet.set(r.url, []).get(r.url)!).push(r);
+  for (const [url, rows] of bySheet) if (offColumnCheck(rows, onFile.get(rows[0].contract_id) ?? [])) offColumn.add(url);
   docPriceStats.off_column_sheets = offColumn.size;
   const valid: DocRow[] = [];
   for (const r of doc?.rows ?? []) {
@@ -907,6 +903,25 @@ for (const p of products as (typeof products[number] & { kind?: string; role?: K
   if (k.aliases.length) p.aliases = k.aliases;
   kindsApplied++;
 }
+// Specs read by the AI review (scripts/product-specs.ts): the fit judge, the cards and the dive's questions read them.
+let specsApplied = 0;
+for (const p of products as (typeof products[number] & { specs?: Specs })[]) {
+  const sp = productSpecs[productKindKey(p.name)]?.specs;
+  if (sp && Object.keys(sp).length) {
+    p.specs = sp;
+    specsApplied++;
+  }
+}
+
+// ------------------------------------------------------------------ awarded line prices, for the server's sheet check
+// Every state contract's awarded line prices (not those read from its price sheets), stashed lines included: the
+// server's price-sheet reader checks a newly read sheet against them (lib/price-check.ts) before any row is stored.
+const awarded: Record<string, [string, number][]> = {};
+{
+  const nameOf = new Map(products.map((p) => [p.id, p.name]));
+  for (const o of offerings)
+    if (o.price != null && STATE_PROGRAMS.has(o.coop) && !o.id.startsWith("off_dp_")) (awarded[o.contract] ??= []).push([nameOf.get(o.product) ?? "", o.price]);
+}
 
 // ------------------------------------------------------------------ the product stash
 // Products that can't show what Loci is for are stashed, not served (scripts/product-stash.ts has the rule and the
@@ -972,7 +987,7 @@ const documents = rawDocuments.map((d) => {
   return { id: d.document_id, contract: d.contract_id, coop: d.cooperative, url: d.url, label: d.label, kind: ext === "html" ? "htm" : ext };
 });
 
-const catalog = { version: 1, retrieved: RETRIEVED, state_retrieved: Object.fromEntries(STATE_SOURCES.map((s) => [s.program, s.retrieved])), suppliers, contracts, products, offerings, documents };
+const catalog = { version: 1, retrieved: RETRIEVED, state_retrieved: Object.fromEntries(STATE_SOURCES.map((s) => [s.program, s.retrieved])), suppliers, contracts, products, offerings, documents, awarded };
 mkdirSync(join(ROOT, "seed/catalog"), { recursive: true });
 writeFileSync(join(ROOT, "seed/catalog/catalog.json.gz"), gzipSync(JSON.stringify(catalog), { level: 9 }));
 
@@ -1102,6 +1117,7 @@ const insights = {
     contracts_categorized: categorized,
     products_renamed_by_review: renamedByReview,
     products_coded_by_review: kindsApplied,
+    products_with_specs: specsApplied,
     canon_rows_added: canonAdded,
     price_file_rows: priceFileStats.rows,
     price_file_offerings: priceFileStats.attached,

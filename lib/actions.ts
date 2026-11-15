@@ -37,7 +37,9 @@ import { askDocument, contractBrief, readableContracts } from "./docs";
 import { searchDocuments, type DocumentHit } from "./doc-store";
 import { hasDatabase } from "./pg";
 import { applyFit, diveItems, diveSearch, diveVerdict, diveWordCounts, offlineDiveFilters, type DiveFilter, type DiveReading, type FitVerdict } from "./dive";
-import { askNeed, checkNeed, judgeFit, readDiveMessage, writeVerdict } from "./dive-ai";
+import { askNeed, checkNeed, judgeFit, readDiveMessage, writeVerdict, type FitInput } from "./dive-ai";
+import { fitNow, loadFits, loadReading, readingNow, saveFits, saveReading } from "./dive-memo";
+import { isSpecKey } from "./specs";
 import { modelOn } from "./llm";
 import { rate } from "./ai-log";
 
@@ -335,7 +337,7 @@ export async function briefContract(args: { contractId: string }) {
 
 // ---------------------------------------------------------------- product dive
 
-const FILTER_KINDS = new Set(["price", "word", "not_word", "maker", "usable", "priced"]);
+const FILTER_KINDS = new Set(["price", "word", "not_word", "maker", "usable", "priced", "spec"]);
 function cleanFilters(input: unknown): DiveFilter[] {
   const out: DiveFilter[] = [];
   for (const f of Array.isArray(input) ? input.slice(0, 20) : []) {
@@ -344,11 +346,16 @@ function cleanFilters(input: unknown): DiveFilter[] {
       const num = (v: unknown) => (typeof v === "number" && Number.isFinite(v) && v >= 0 ? v : undefined);
       if (num(f.min) !== undefined || num(f.max) !== undefined) out.push({ kind: "price", min: num(f.min), max: num(f.max) });
     } else if (f.kind === "usable" || f.kind === "priced") out.push({ kind: f.kind });
+    else if (f.kind === "spec") {
+      if (typeof f.key === "string" && isSpecKey(f.key) && typeof f.value === "string" && f.value.trim()) out.push({ kind: "spec", key: f.key, value: f.value.trim().slice(0, 40) });
+    }
     else if (typeof f.value === "string" && f.value.trim()) out.push({ kind: f.kind, value: f.value.trim().slice(0, 80) });
   }
   // One filter of each one-off kind; the newest wins.
   const lastOf = (kind: string) => out.map((x) => x.kind).lastIndexOf(kind as DiveFilter["kind"]);
-  return out.filter((f, i) => !["price", "maker", "usable", "priced"].includes(f.kind) || lastOf(f.kind) === i);
+  // A spec filter is one per key: a newer answer about the cab replaces the last.
+  const lastSpec = (key: string) => out.map((x): string => (x.kind === "spec" ? x.key : "")).lastIndexOf(key);
+  return out.filter((f, i) => (f.kind === "spec" ? lastSpec(f.key) === i : !["price", "maker", "usable", "priced"].includes(f.kind) || lastOf(f.kind) === i));
 }
 
 /** What the front door needs beside the shortlist to show how a purchase would be bought: the agency's quick-buy
@@ -364,14 +371,6 @@ function buyingContext(db: ReturnType<typeof getDb>, need: string) {
   };
 }
 
-/** What the model made of a dive's request and products, kept between turns so narrowing doesn't ask again: the reading
- * by the request's item, and each product's fit by the request and product. In memory; a restart asks again. */
-type DiveMemo = { reads: Map<string, DiveReading & { need: string }>; fits: Map<string, { fit: FitVerdict; reason: string; log_id?: string }> };
-const memo = (): DiveMemo => ((globalThis as unknown as { __agoraDiveAI?: DiveMemo }).__agoraDiveAI ??= { reads: new Map(), fits: new Map() });
-const cap = <K, V>(m: Map<K, V>, n: number) => {
-  while (m.size > n) m.delete(m.keys().next().value as K);
-};
-
 /** One turn of the product dive. `need` starts a dive from the buyer's own words; `message` narrows an open one. Read-only.
  *
  * When the model is available it does two things the rules can't (lib/dive-ai.ts). It reads the request in the
@@ -380,13 +379,12 @@ const cap = <K, V>(m: Map<K, V>, n: number) => {
  * reorders the shortlist: what fits comes first, what doesn't comes last. Prices and eligibility stay the rules'. */
 export async function dive(args: { need?: string; query?: string; filters?: unknown; message?: string; judge?: boolean }) {
   const db = getDb();
-  const m = memo();
   let query = String(args.query ?? "").trim();
   let filters = cleanFilters(args.filters);
   let said = "";
   // Read from the buyer's words when a dive starts: how many, and whether they said so ("a police SUV" counts as one).
   let quantity: { value: number; stated: boolean } | null = null;
-  let reading = query ? (m.reads.get(query.toLowerCase()) ?? null) : null;
+  let reading = query ? ((await loadReading(query)) ?? null) : null;
   if (!query) {
     const need = String(args.need ?? "").trim().slice(0, 300);
     if (!need) fail("Tell me what you're looking for.");
@@ -414,21 +412,20 @@ export async function dive(args: { need?: string; query?: string; filters?: unkn
   // page can show the shortlist and ask again for the rest.
   let state = diveSearch(db, query, filters, { ...search, limit: 16 });
   const need = reading?.need ?? query;
-  const key = (id: string) => `${query.toLowerCase()}|${id}`;
-  const unjudged = state.items.filter((i) => !m.fits.has(key(i.id)));
+  await loadFits(query, state.items);
+  const unjudged = state.items.filter((i) => !fitNow(query, i));
   let fitLog: string | null = null;
   const judging = args.judge !== false;
   if (unjudged.length && judging) {
     const judged = await judgeFit(need, reading?.read_as ?? null, unjudged);
     if (judged) {
-      for (const [id, f] of judged.fits) m.fits.set(key(id), { ...f, log_id: judged.log_id });
-      cap(m.fits, 5000);
+      saveFits(query, unjudged.filter((i) => judged.fits.has(i.id)).map((i) => [i, { ...judged.fits.get(i.id)!, log_id: judged.log_id }]));
       fitLog = judged.log_id ?? null;
     }
   }
   const fits = new Map<string, { fit: FitVerdict; reason: string }>();
   for (const i of state.items) {
-    const f = m.fits.get(key(i.id));
+    const f = fitNow(query, i);
     if (f) {
       fits.set(i.id, f);
       fitLog ??= f.log_id ?? null;
@@ -448,9 +445,7 @@ function settleReading(db: Db, need: string, item: string, asked: NonNullable<Aw
   const { words, pool } = diveWordCounts(db, item, { kinds: prelim, terms: asked.search_terms.filter(finds).slice(0, 3) });
   const read = checkNeed(asked, need, { offered: offered.map((o) => o.kind), finds, words, pool });
   const reading = { need, kinds: read.kinds, terms: read.terms, read_as: read.read_as, log_id: read.log_id };
-  const m = memo();
-  m.reads.set(item.trim().toLowerCase(), reading);
-  cap(m.reads, 500);
+  saveReading(item, reading);
   return { reading, filters: read.filters };
 }
 
@@ -458,7 +453,7 @@ function settleReading(db: Db, need: string, item: string, asked: NonNullable<Aw
  * as, merged with what each other word for it finds, the product that is the kind asked for first. */
 function resultCandidates(db: Db, request: Request, n: number): { hits: CatalogProductHit[]; total: number } {
   const item = request.parsed.item;
-  const reading = memo().reads.get(item.trim().toLowerCase());
+  const reading = readingNow(item);
   const merged = new Map<string, CatalogProductHit>();
   let total = 0;
   for (const [i, q] of [item, ...(reading?.terms ?? [])].entries()) {
@@ -474,16 +469,18 @@ function resultCandidates(db: Db, request: Request, n: number): { hits: CatalogP
   return { hits: hits.slice(0, n), total: Math.max(total, merged.size) };
 }
 
+/** A catalog product as the fit judge reads it: the same id the dive gives it, so their verdicts are shared. */
+const fitInputOf = (h: CatalogProductHit): FitInput => ({ id: `c:${h.product_id}`, name: h.name, kind: h.kind, maker: h.maker, unit: h.routes[0]?.unit ?? null, specs: h.specs });
+
 /** The results page's products, with the model's reading and fit verdicts applied where it has made them: products
  * judged to fit first, those judged not to fit set aside with their reasons (unless nothing else is left). */
 function resultProducts(db: Db, request: Request): { products: Results["catalog_products"]; pending: boolean } {
-  const key = request.parsed.item.trim().toLowerCase();
-  const m = memo();
-  const reading = m.reads.get(key);
+  const item = request.parsed.item;
+  const reading = readingNow(item);
   const { hits, total } = resultCandidates(db, request, 16);
   let fitLog: string | null = null;
   const judged = hits.map((h) => {
-    const f = m.fits.get(`${key}|c:${h.product_id}`);
+    const f = fitNow(item, fitInputOf(h));
     if (!f) return h;
     fitLog ??= f.log_id ?? null;
     return { ...h, fit_verdict: f.fit, fit_reason: f.reason };
@@ -492,7 +489,7 @@ function resultProducts(db: Db, request: Request): { products: Results["catalog_
   const ordered = judged.map((h, i) => ({ h, i })).sort((a, b) => rank(b.h) - rank(a.h) || a.i - b.i).map((x) => x.h);
   const fitting = ordered.filter((h) => h.fit_verdict !== "no");
   const shown = (fitting.length ? fitting : ordered).slice(0, 8);
-  const pending = modelOn() && (!reading || hits.some((h) => !m.fits.has(`${key}|c:${h.product_id}`)));
+  const pending = modelOn() && (!reading || hits.some((h) => !fitNow(item, fitInputOf(h))));
   if (!shown.length) return { products: undefined, pending };
   return {
     products: {
@@ -513,25 +510,18 @@ export async function judgeResultProducts(args: { requestId: string }) {
   const db = getDb();
   const request = db.requests.find((r) => r.id === args.requestId) ?? fail("Request not found");
   const item = request.parsed.item;
-  const key = item.trim().toLowerCase();
-  const m = memo();
-  if (!m.reads.has(key)) {
+  if (!(await loadReading(item))) {
     const offered = catalogKindCandidates(db, request.raw_text, 60);
     const asked = await askNeed(request.raw_text, offered);
     if (asked) settleReading(db, request.raw_text, item, asked, offered);
   }
-  const reading = m.reads.get(key);
-  const unjudged = resultCandidates(db, request, 16).hits.filter((h) => !m.fits.has(`${key}|c:${h.product_id}`));
+  const reading = readingNow(item);
+  const candidates = resultCandidates(db, request, 16).hits.map(fitInputOf);
+  await loadFits(item, candidates);
+  const unjudged = candidates.filter((p) => !fitNow(item, p));
   if (unjudged.length) {
-    const judged = await judgeFit(
-      reading?.need ?? request.raw_text,
-      reading?.read_as ?? null,
-      unjudged.map((h) => ({ id: `c:${h.product_id}`, name: h.name, kind: h.kind, maker: h.maker, unit: h.routes[0]?.unit ?? null })),
-    );
-    if (judged) {
-      for (const [id, f] of judged.fits) m.fits.set(`${key}|${id}`, { ...f, log_id: judged.log_id });
-      cap(m.fits, 5000);
-    }
+    const judged = await judgeFit(reading?.need ?? request.raw_text, reading?.read_as ?? null, unjudged);
+    if (judged) saveFits(item, unjudged.filter((p) => judged.fits.has(p.id)).map((p) => [p, { ...judged.fits.get(p.id)!, log_id: judged.log_id }]));
   }
   return { catalog_products: resultProducts(db, request).products ?? null };
 }
@@ -548,7 +538,7 @@ export async function diveCompare(args: { query: string; ids: string[] }) {
   const db = getDb();
   const ids = (Array.isArray(args.ids) ? args.ids : []).map(String).slice(0, 3);
   // The same widened search the shortlist came from, so a product found by a kind or another word can be compared.
-  const reading = memo().reads.get(String(args.query ?? "").trim().toLowerCase());
+  const reading = await loadReading(String(args.query ?? ""));
   const items = diveItems(db, String(args.query ?? ""), ids, reading ? { kinds: reading.kinds, terms: reading.terms } : {});
   if (items.length < 2) fail("Pick two or three products to compare.");
   const verdict = diveVerdict(items);

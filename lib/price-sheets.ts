@@ -19,6 +19,8 @@ import { docSchema, storeDocument } from "./doc-store";
 import { imageToPdf, readScan } from "./doc-ocr";
 import { MODEL, modelOn, pieces, SCAN_MODEL, structured } from "./llm";
 import { pool } from "./pg";
+import { catalogAwardedPrices } from "./catalog";
+import { offColumn } from "./price-check";
 
 const PROGRAMS = ["NJSTART", "OregonBuys", "Empire Procure Connect"];
 /** Labels that mark a price sheet or price list. */
@@ -179,7 +181,7 @@ export async function readPriceSheet(text: string, label: string): Promise<{ row
 
 // ------------------------------------------------------------------ the run on the server
 
-const state = ((globalThis as unknown as { __agoraPriceSheets?: { mode: string; phase: string; planned: number; done: number; rescanned: number; rows: number; proposed: number; skipped_shared: number; dropped: Record<string, number>; last_error: string | null } }).__agoraPriceSheets ??= {
+const state = ((globalThis as unknown as { __agoraPriceSheets?: { mode: string; phase: string; planned: number; done: number; rescanned: number; rows: number; proposed: number; skipped_shared: number; off_column: number; dropped: Record<string, number>; last_error: string | null } }).__agoraPriceSheets ??= {
   mode: "off",
   phase: "off",
   planned: 0,
@@ -188,6 +190,7 @@ const state = ((globalThis as unknown as { __agoraPriceSheets?: { mode: string; 
   rows: 0,
   proposed: 0,
   skipped_shared: 0,
+  off_column: 0,
   dropped: {},
   last_error: null,
 });
@@ -347,6 +350,14 @@ async function readOne(s: Sheet, sample: boolean, again = false): Promise<void> 
     return;
   }
   const got = await readPriceSheet(text, s.label);
+  // A sheet that prices an item more than ten times off its awarded price on the same contract read the wrong column:
+  // none of it is stored (lib/price-check.ts; the importer checks again).
+  const off = offColumn(got.rows, catalogAwardedPrices(s.contract_id));
+  if (off) {
+    state.off_column++;
+    await record({ proposed: got.proposed, error: `read the wrong column: ${off.item} at ${off.price} against the award's ${off.awarded}` });
+    return;
+  }
   state.proposed += got.proposed;
   for (const [k, v] of Object.entries(got.dropped)) state.dropped[k] = (state.dropped[k] ?? 0) + v;
   for (const [n, r] of got.rows.entries())

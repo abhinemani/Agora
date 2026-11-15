@@ -15,6 +15,7 @@ import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { CATEGORIES } from "../../lib/types";
 import { checkKindAnswer } from "../product-kind";
+import { checkSpecs } from "../product-specs";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "../..");
 const SHARDS = join(ROOT, "seed/cleanup/shards");
@@ -77,7 +78,7 @@ function collect(task: string, check: (item: Item, a: any) => any | null) {
     out[id] = v;
     s.kept++;
     s[v.confidence as "high"]++;
-    if (v.pick || v.merge?.length || v.price != null || v.classes?.length || v.kind || v.verdict) {
+    if (v.pick || v.merge?.length || v.price != null || v.classes?.length || v.kind || v.verdict || (v.specs && Object.keys(v.specs).length)) {
       s.picked++;
       if (v.confidence === "low") s.low_picked++;
     }
@@ -161,6 +162,30 @@ if ((!ONLY.size || ONLY.has("package-check")) && existsSync(SHARDS) && existsSyn
   }
 }
 collect("package-check", (item, a) => (PACKAGE_VERDICTS.includes(a.verdict) ? { verdict: a.verdict, confidence: a.confidence, reason: String(a.reason ?? "").slice(0, 80) } : null));
+// Specs (scripts/product-specs.ts): answered by line number, [line, {key: value}, confidence]; every value is checked
+// against the product's record, and a product with no grounded spec is recorded as having none.
+if ((!ONLY.size || ONLY.has("product-specs")) && existsSync(SHARDS) && existsSync(OUT)) {
+  for (const shardFile of readdirSync(SHARDS).filter((f) => /^product-specs-\d+\.jsonl$/.test(f))) {
+    const nn = shardFile.match(/\d+/)![0];
+    const ids = readFileSync(join(SHARDS, shardFile), "utf8").split("\n").filter(Boolean).map((l) => String(JSON.parse(l).id));
+    const byId: Record<string, unknown> = {};
+    for (const f of readdirSync(OUT).filter((f) => f.startsWith(`product-specs-${nn}.lines`)).sort())
+      for (const l of readFileSync(join(OUT, f), "utf8").split("\n").filter((x) => x.trim())) {
+        try {
+          const [n, specs, confidence] = JSON.parse(l);
+          if (Number.isInteger(n) && n >= 1 && n <= ids.length) byId[ids[n - 1]] = { specs, confidence };
+        } catch {
+          // a malformed line is a missing answer
+        }
+      }
+    writeFileSync(join(OUT, `product-specs-${nn}.json`), JSON.stringify(byId));
+  }
+}
+collect("product-specs", (item, a) => {
+  if (!a || typeof a.specs !== "object") return null;
+  const specs = checkSpecs(item as never, a.specs);
+  return { specs, confidence: a.confidence, asked: Object.keys(a.specs ?? {}).length, kept: Object.keys(specs).length };
+});
 collect("product-name", (item, a) => (a.pick === null || item.variants.includes(a.pick) ? { pick: a.pick ?? null, confidence: a.confidence, reason: String(a.reason ?? "").slice(0, 100) } : null));
 
 writeFileSync(summaryFile, JSON.stringify(summary, null, 1) + "\n");

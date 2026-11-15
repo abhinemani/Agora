@@ -7,6 +7,7 @@
 
 import { buildResults, coverage, kindMatch, namePhrase, requestTokens, tokens } from "./assistant";
 import { catalogProducts } from "./catalog";
+import { SPEC_KEYS, SPEC_QUESTION, specText, type SpecKey, type Specs } from "./specs";
 import type { Db, Request } from "./types";
 
 export type DiveFilter =
@@ -15,7 +16,8 @@ export type DiveFilter =
   | { kind: "not_word"; value: string }
   | { kind: "maker"; value: string }
   | { kind: "usable" }
-  | { kind: "priced" };
+  | { kind: "priced" }
+  | { kind: "spec"; key: SpecKey; value: string };
 
 export interface DiveItem {
   /** "c:<catalog product id>" or "l:<listing id>". */
@@ -50,6 +52,8 @@ export interface DiveItem {
   part: boolean;
   /** What the product is, from the AI review (scripts/product-kind.ts), when coded. */
   kind: string | null;
+  /** Its specs, read by the AI review from its own words (scripts/product-specs.ts). */
+  specs?: Specs;
   /** How the model judged the product against the request (lib/dive-ai.ts), with its reason, when it judged it. */
   fit_verdict?: FitVerdict;
   fit_reason?: string;
@@ -216,6 +220,7 @@ function gatherAll(db: Db, query: string, opts: DiveSearchOptions = {}): DiveIte
       cover: coverage(asked, h.name),
       kind_match: h.kind_match,
       kind: h.kind,
+      ...(h.specs ? { specs: h.specs } : {}),
       part: h.role === "part" || h.role === "accessory",
       state: r.trx,
       routes: h.routes.length,
@@ -241,11 +246,13 @@ function passes(i: DiveItem, f: DiveFilter): boolean {
       return i.usable;
     case "priced":
       return i.price != null;
+    case "spec":
+      return i.specs?.[f.key]?.value === f.value;
   }
 }
 
 export const filterLabel = (f: DiveFilter) =>
-  f.kind === "price" ? (f.min === undefined ? `Up to ${usd(f.max!)}` : f.max === undefined ? `${usd(f.min)} and up` : `${usd(f.min)} to ${usd(f.max)}`) : f.kind === "word" ? f.value : f.kind === "not_word" ? `Not ${f.value}` : f.kind === "maker" ? f.value : f.kind === "usable" ? "Can buy today" : "Has a price";
+  f.kind === "price" ? (f.min === undefined ? `Up to ${usd(f.max!)}` : f.max === undefined ? `${usd(f.min)} and up` : `${usd(f.min)} to ${usd(f.max)}`) : f.kind === "word" ? f.value : f.kind === "not_word" ? `Not ${f.value}` : f.kind === "maker" ? f.value : f.kind === "usable" ? "Can buy today" : f.kind === "spec" ? specText(f.key, f.value) : "Has a price";
 
 const cap = (w: string) => w.charAt(0).toUpperCase() + w.slice(1);
 
@@ -278,6 +285,30 @@ function questionsFor(items: DiveItem[], filters: DiveFilter[], query: string, h
       const options = bands.map((filter) => ({ label: filterLabel(filter), filter, count: count(filter) })).filter((o) => useful(o.count));
       if (options.length >= 2) questions.push({ id: "budget", text: "What's the most you'd spend on each?", why: `Prices here run from ${usd(prices[0])} to ${usd(prices[prices.length - 1])}.`, options });
     }
+    // Specs the shortlist differs on, read by the AI review: a cab, an age range, a back height. At most two, the
+    // ones that split the shortlist most evenly, asked before the words in names.
+    const specQs: { q: DiveQuestion; balance: number }[] = [];
+    for (const key of Object.keys(SPEC_KEYS) as SpecKey[]) {
+      if (filters.some((f) => f.kind === "spec" && f.key === key)) continue;
+      const counts = new Map<string, number>();
+      for (const i of items) {
+        const v = i.specs?.[key]?.value;
+        if (v) counts.set(v, (counts.get(v) ?? 0) + 1);
+      }
+      const values = [...counts.entries()].filter(([, c]) => useful(c)).sort((a, b) => b[1] - a[1]).slice(0, 5);
+      const covered = values.reduce((t, [, c]) => t + c, 0);
+      if (values.length < 2 || covered < Math.max(3, n * 0.3)) continue;
+      specQs.push({
+        q: {
+          id: `spec:${key}`,
+          text: SPEC_QUESTION[key],
+          why: `${covered} of these ${n} say, from the products' own descriptions.`,
+          options: values.map(([value, count]) => ({ label: specText(key, value), count, filter: { kind: "spec", key, value } as DiveFilter })),
+        },
+        balance: Math.abs(values[0][1] - covered / values.length) / covered,
+      });
+    }
+    questions.push(...specQs.sort((a, b) => a.balance - b.balance).slice(0, 2).map((x) => x.q));
     if (splitters.length >= 2) {
       const options = splitters.slice(0, 5).map(([w, c]) => ({ label: cap(w), count: c, filter: { kind: "word", value: w } as DiveFilter }));
       questions.push({ id: `words:${options.map((o) => o.label).join(",")}`, text: "Which of these describes what you need?", why: "These words separate the products on the shortlist.", options });

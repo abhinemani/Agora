@@ -17,6 +17,7 @@ import { readFileSync } from "node:fs";
 import { join } from "node:path";
 import { gunzipSync } from "node:zlib";
 import { fitScoreSets, kindMatch, namePhrase, requestTokens, SAME_AS, tokens, type CoopHit, type Weights } from "./assistant";
+import type { Specs } from "./specs";
 import { isMember, normalizeDomain } from "./coops";
 import type { DocumentHit } from "./doc-store";
 import { orcppMember } from "./orcpp";
@@ -91,6 +92,8 @@ export interface CatalogProduct {
   role?: "item" | "part" | "accessory" | "consumable" | "rate" | "service";
   /** Other names buyers use for it: "can liner" for a trash bag. */
   aliases?: string[];
+  /** Its specs, read by the AI review from its own words (scripts/product-specs.ts). */
+  specs?: Specs;
 }
 export interface CatalogOffering {
   id: string;
@@ -121,6 +124,8 @@ export interface CatalogDocument {
 
 interface Index {
   retrieved: string;
+  /** Each state contract's awarded line prices, stashed lines included, for the price-sheet check (lib/price-check.ts). */
+  awarded?: Record<string, [string, number][]>;
   state_retrieved?: Record<string, string>;
   suppliers: CatalogSupplier[];
   contracts: CatalogContract[];
@@ -186,7 +191,7 @@ function load(): Index {
   if (g.__agoraCatalog) return g.__agoraCatalog;
   const raw = JSON.parse(gunzipSync(readFileSync(join(process.cwd(), "seed/catalog/catalog.json.gz"))).toString("utf8")) as Pick<
     Index,
-    "retrieved" | "state_retrieved" | "suppliers" | "contracts" | "products" | "offerings" | "documents"
+    "retrieved" | "state_retrieved" | "suppliers" | "contracts" | "products" | "offerings" | "documents" | "awarded"
   >;
   const supplierById = new Map(raw.suppliers.map((s) => [s.id, s]));
   const offeringsByProduct = new Map<string, CatalogOffering[]>();
@@ -489,6 +494,8 @@ export interface CatalogProductHit {
   role: CatalogProduct["role"] | null;
   /** Its kind from the AI review, when coded. */
   kind: string | null;
+  /** Its specs from the AI review, when read. */
+  specs?: Specs;
   /** How the model judged it against the request (lib/dive-ai.ts), with its reason, on the results page. */
   fit_verdict?: "fits" | "partly" | "no";
   fit_reason?: string;
@@ -550,7 +557,7 @@ export function catalogProducts(db: Db, item: string, buyer: Buyer | null, limit
       .filter((r): r is CatalogRoute => Boolean(r))
       // Routes the buyer can use first, a TRX state contract ahead of a co-op among them, then by price.
       .sort((a, b) => Number(b.member) - Number(a.member) || Number(b.eligible) - Number(a.eligible) || Number(Boolean(buyer) && b.trx && b.eligible) - Number(Boolean(buyer) && a.trx && a.eligible) || (a.price ?? Infinity) - (b.price ?? Infinity));
-    return { product_id: p.id, name: p.name, maker: p.maker, mpn: p.mpn, fit, review: p.review, routes, coverage: cover.get(i) ?? 0, kind_match: chosen.has((p.kind ?? "").toLowerCase()) ? 1 : kindMatch(itemTokens, idx.pKinds[i]), role: p.role ?? null, kind: p.kind ?? null };
+    return { product_id: p.id, name: p.name, maker: p.maker, mpn: p.mpn, fit, review: p.review, routes, coverage: cover.get(i) ?? 0, kind_match: chosen.has((p.kind ?? "").toLowerCase()) ? 1 : kindMatch(itemTokens, idx.pKinds[i]), role: p.role ?? null, kind: p.kind ?? null, ...(p.specs ? { specs: p.specs } : {}) };
   };
   const priced = (h: CatalogProductHit) => (h.routes.some((r) => r.price != null) ? 2 : h.routes.some((r) => r.discount != null) ? 1 : 0);
   // The same product listed under several SKUs is one card with every route.
@@ -594,6 +601,9 @@ export function catalogKindCandidates(db: Db, text: string, limit = 60): { kind:
     .slice(0, limit)
     .map(([k]) => ({ kind: k, count: byKind.get(k)!.count, example: byKind.get(k)!.example }));
 }
+
+/** A state contract's awarded line prices, stashed lines included: what a newly read price sheet is checked against. */
+export const catalogAwardedPrices = (contractId: string): { name: string; price: number }[] => (load().awarded?.[contractId] ?? []).map(([name, price]) => ({ name, price }));
 
 /** Whether a kind is one the catalog's products have. */
 export const catalogHasKind = (kind: string) => load().pByKind.has(kind.toLowerCase());

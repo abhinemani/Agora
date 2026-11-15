@@ -2,6 +2,7 @@
 // /dive's product cards.
 
 import type { FitVerdict } from "@/lib/dive";
+import { specPhrases, type Specs } from "@/lib/specs";
 
 const FIT_LABEL: Record<FitVerdict, string> = { fits: "Fits", partly: "Partly fits", no: "Doesn't fit" };
 
@@ -33,4 +34,11 @@ export function SetAside({ items }: { items: { id: string; name: string; fit_rea
       </ul>
     </details>
   );
+}
+
+/** A product's specs as read from its own description, in a short line: "Crew cab · 4WD · Gasoline". */
+export function SpecLine({ specs }: { specs?: Specs }) {
+  const phrases = specPhrases(specs);
+  if (!phrases.length) return null;
+  return <span className="text-ui-2xs text-base-darker">{phrases.join(" · ")}</span>;
 }

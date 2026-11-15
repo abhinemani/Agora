@@ -7,7 +7,8 @@ import { BestFit, Mark, TickFrame } from "@/components/blueprint";
 import { ShopperTabs } from "@/components/ShopperTabs";
 import { post, useStore } from "@/components/store";
 import { ErrorNote } from "@/components/ui";
-import { FitLine, SetAside } from "@/components/FitLine";
+import { FitLine, SetAside, SpecLine } from "@/components/FitLine";
+import { specText } from "@/lib/specs";
 
 /** Which shortlist the fit judgment in flight was asked about: a newer turn makes it stale. */
 let latest: string | null = null;
@@ -18,7 +19,7 @@ import type { ShopperText } from "@/lib/shopper-ai";
 const label = "font-mono text-[11px] uppercase tracking-[0.14em]";
 const usd = (n: number) => `$${n.toLocaleString("en-US", { maximumFractionDigits: n < 100 ? 2 : 0 })}`;
 const chip = (f: DiveFilter) =>
-  f.kind === "price" ? (f.min === undefined ? `Up to ${usd(f.max!)}` : f.max === undefined ? `${usd(f.min)} and up` : `${usd(f.min)} to ${usd(f.max)}`) : f.kind === "word" ? f.value : f.kind === "not_word" ? `Not ${f.value}` : f.kind === "maker" ? f.value : f.kind === "usable" ? "Can buy today" : "Has a price";
+  f.kind === "price" ? (f.min === undefined ? `Up to ${usd(f.max!)}` : f.max === undefined ? `${usd(f.min)} and up` : `${usd(f.min)} to ${usd(f.max)}`) : f.kind === "word" ? f.value : f.kind === "not_word" ? `Not ${f.value}` : f.kind === "maker" ? f.value : f.kind === "usable" ? "Can buy today" : f.kind === "spec" ? specText(f.key, f.value) : "Has a price";
 
 const STARTERS = ["A swing set for a neighborhood park", "Task chairs for the clerk's office", "A police SUV", "Folding tables for the rec center"];
 
@@ -287,6 +288,7 @@ export default function Dive() {
                           </span>
                           {i.routes > 1 && <span>{i.routes} contracts sell it</span>}
                         </span>
+                        <SpecLine specs={i.specs} />
                         <span className={`text-ui-2xs ${i.usable ? "text-success-darker" : "text-base-dark"}`}>{i.access}</span>
                         {i.fit_verdict && <FitLine verdict={i.fit_verdict} reason={i.fit_reason} />}
                       </span>

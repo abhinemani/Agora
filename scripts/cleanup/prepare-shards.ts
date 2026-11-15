@@ -227,5 +227,31 @@ if (wanted("package-check")) {
   shard("package-check", [...picked.values()], 450);
 }
 
+// 10. Each served product's specs (scripts/product-specs.ts): one item per distinct name, with its kind from the
+// product-kind review. Run on the served catalog (no flag). Incremental like product-kind: names already answered are
+// skipped, and new shards are numbered after the existing ones.
+if (wanted("product-specs")) {
+  const decided: Record<string, unknown> = existsSync(join(ROOT, "seed/cleanup/decisions/product-specs.json")) ? JSON.parse(readFileSync(join(ROOT, "seed/cleanup/decisions/product-specs.json"), "utf8")) : {};
+  const contractById = new Map<string, Item>(catalog.contracts.map((c: Item) => [c.id, c]));
+  const firstOffer = new Map<string, Item>();
+  for (const o of catalog.offerings) if (!firstOffer.has(o.product)) firstOffer.set(o.product, o);
+  const queued = new Set<string>();
+  for (const f of readdirSync(OUT).filter((f) => /^product-specs-\d+\.jsonl$/.test(f)))
+    for (const l of readFileSync(join(OUT, f), "utf8").split("\n").filter(Boolean)) queued.add(String(JSON.parse(l).id));
+  const fresh = new Map<string, Item>();
+  for (const p of catalog.products) {
+    const key = productKindKey(p.name);
+    if (fresh.has(key) || key in decided || queued.has(key)) continue;
+    const o = firstOffer.get(p.id) ?? {};
+    const c: Item = contractById.get(o.contract) ?? {};
+    fresh.set(key, { id: key, name: p.name, maker: p.maker ?? undefined, kind: p.kind ?? undefined, contract: String(c.title ?? "").slice(0, 80), section: o.category ? String(o.category).split(":")[0].slice(0, 100) : undefined, unit: o.unit ?? undefined });
+  }
+  const last = Math.max(0, ...readdirSync(OUT).filter((f) => /^product-specs-\d+\.jsonl$/.test(f)).map((f) => Number(f.match(/\d+/)![0])));
+  const items = [...fresh.values()];
+  for (let i = 0; i * 500 < items.length; i++)
+    writeFileSync(join(OUT, `product-specs-${String(last + i + 1).padStart(2, "0")}.jsonl`), items.slice(i * 500, (i + 1) * 500).map((x) => JSON.stringify(x)).join("\n") + "\n");
+  counts["product-specs"] = items.length;
+}
+
 if (!ONLY.size) writeFileSync(join(OUT, "index.json"), JSON.stringify({ categories: CATEGORIES, counts }, null, 1));
 console.log(counts);

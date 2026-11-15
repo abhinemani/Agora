@@ -14,7 +14,8 @@ import { Arrow } from "./icons";
 import { post, useStore } from "./store";
 import { ErrorNote } from "./ui";
 import { Feedback } from "./Feedback";
-import { FitLine, SetAside } from "./FitLine";
+import { FitLine, SetAside, SpecLine } from "./FitLine";
+import { specText } from "@/lib/specs";
 import { goHref } from "@/lib/coops";
 import type { DiveFilter, DiveItem, DiveQuestion, DiveState } from "@/lib/dive";
 import { offRamp, routeFor, ROUTE_LABEL, toSearch, type FrontDoorUrl, type OffRampPath, type Route } from "@/lib/front-door";
@@ -27,7 +28,7 @@ const outlineBtn =
   "inline-flex min-h-[44px] items-center rounded-md bg-white px-4 text-ui-xs font-bold leading-none text-primary no-underline shadow-[inset_0_0_0_2px_theme(colors.primary.DEFAULT)] hover:text-primary-dark disabled:opacity-60";
 const usd = (n: number) => `$${n.toLocaleString("en-US", { maximumFractionDigits: n < 100 ? 2 : 0 })}`;
 const chip = (f: DiveFilter) =>
-  f.kind === "price" ? (f.min === undefined ? `Up to ${usd(f.max!)}` : f.max === undefined ? `${usd(f.min)} and up` : `${usd(f.min)} to ${usd(f.max)}`) : f.kind === "word" ? f.value : f.kind === "not_word" ? `Not ${f.value}` : f.kind === "maker" ? f.value : f.kind === "usable" ? "Can buy today" : "Has a price";
+  f.kind === "price" ? (f.min === undefined ? `Up to ${usd(f.max!)}` : f.max === undefined ? `${usd(f.min)} and up` : `${usd(f.min)} to ${usd(f.max)}`) : f.kind === "word" ? f.value : f.kind === "not_word" ? `Not ${f.value}` : f.kind === "maker" ? f.value : f.kind === "usable" ? "Can buy today" : f.kind === "spec" ? specText(f.key, f.value) : "Has a price";
 const QUANTITIES = [1, 10, 25, 50, 100];
 
 interface Context {
@@ -455,6 +456,7 @@ export function FrontDoor({ initial, onNewSearch }: { initial: FrontDoorUrl; onN
                         </span>
                         {i.routes > 1 && <span>{i.routes} contracts sell it</span>}
                       </span>
+                      <SpecLine specs={i.specs} />
                       <span className={`text-ui-2xs ${i.usable ? "text-success-darker" : "text-base-dark"}`}>{i.access}</span>
                       {i.fit_verdict && <FitLine verdict={i.fit_verdict} reason={i.fit_reason} />}
                     </div>

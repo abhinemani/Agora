@@ -1,5 +1,5 @@
 {
-  "saved": "2026-11-15T17:06:46.960Z",
+  "saved": "2026-11-15T18:25:48.567Z",
   "model": "claude-sonnet-5-5",
   "prompts": {
     "request_parse": "cebcf585",
@@ -69,6 +69,9 @@
     "dive-read.live.model-code": "pass",
     "dive-read.live.not-on-shortlist": "pass",
     "dive-read.live.word-and-price": "pass",
+    "dive-specs.guard.memo-key": "pass",
+    "dive-specs.guard.question": "pass",
+    "dive-specs.live.fuel": "pass",
     "dive-understand.guard.grounded": "pass",
     "dive-understand.guard.negation": "pass",
     "dive-understand.guard.price": "pass",
@@ -87,6 +90,7 @@
     "price-sheet.guard.item-elsewhere": "pass",
     "price-sheet.guard.not-on-line": "pass",
     "price-sheet.guard.percent-unit": "pass",
+    "price-sheet.guard.wrong-column": "pass",
     "price-sheet.live.long-list-prices": "pass",
     "price-sheet.live.state-sheet": "pass",
     "quote.guard.as-printed": "pass",

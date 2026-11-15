@@ -747,7 +747,7 @@ const priceFileStats = { rows: 0, attached: 0, unmatched: [] as string[] };
 // contract's sheets print different prices for one item, the latest amendment's price stands (by the amendment,
 // revision and date in the sheets' names), and when the names can't say which is latest the item stays out. A row whose
 // contract has the same price on file for an item of the same name (NJSTART's line items) is the same offering.
-const docPriceStats = { rows: 0, attached: 0, list_prices: 0, duplicates: 0, superseded: 0, unclear: 0, rejected: 0, no_contract: 0, read_in_parts: 0, mixed_sheets: 0, mixed_rows: 0 };
+const docPriceStats = { rows: 0, attached: 0, list_prices: 0, duplicates: 0, superseded: 0, unclear: 0, rejected: 0, no_contract: 0, read_in_parts: 0, mixed_sheets: 0, mixed_rows: 0, off_column_sheets: 0, off_column_rows: 0 };
 {
   const file = join(SRC, "doc-prices/rows.json.gz");
   const doc: { retrieved: string; rows: { url: string; contract_id: string; program: string; label: string; n: number; item: string; sku: string | null; unit: string | null; price: number; basis: string; note: string | null; line: string; read_on: string; headed?: boolean; whole?: boolean }[] } | null = existsSync(file)
@@ -782,6 +782,21 @@ const docPriceStats = { rows: 0, attached: 0, list_prices: 0, duplicates: 0, sup
   for (const r of doc?.rows ?? []) (basisBySheet.get(r.url) ?? basisBySheet.set(r.url, new Set()).get(r.url)!).add(r.basis === "list_price" ? "list" : "paid");
   const mixed = new Set([...basisBySheet].filter(([, b]) => b.size > 1).map(([u]) => u));
   docPriceStats.mixed_sheets = mixed.size;
+  // A sheet that prices an item more than ten times above or below the same item's awarded price on file, on the same
+  // contract, has read the wrong column (a quantity or a square footage as the price), so none of it comes in. NJSTART's
+  // "T2580 Price Schedule.xlsx" read carpet shampooing at $31,000 a square foot against the award's $0.25.
+  const offColumn = new Set<string>();
+  for (const r of doc?.rows ?? []) {
+    if (r.basis === "list_price") continue;
+    const mine = new Set(words(r.item));
+    for (const x of onFile.get(r.contract_id) ?? []) {
+      const theirs = new Set(words(x.name));
+      const both = [...mine].filter((w) => theirs.has(w)).length;
+      const alike = both / (new Set([...mine, ...theirs]).size || 1) >= 0.6;
+      if (alike && x.price > 0 && (r.price / x.price > 10 || x.price / r.price > 10)) offColumn.add(r.url);
+    }
+  }
+  docPriceStats.off_column_sheets = offColumn.size;
   const valid: DocRow[] = [];
   for (const r of doc?.rows ?? []) {
     docPriceStats.rows++;
@@ -791,6 +806,10 @@ const docPriceStats = { rows: 0, attached: 0, list_prices: 0, duplicates: 0, sup
     }
     if (mixed.has(r.url)) {
       docPriceStats.mixed_rows++;
+      continue;
+    }
+    if (offColumn.has(r.url)) {
+      docPriceStats.off_column_rows++;
       continue;
     }
     if (!contractById.has(r.contract_id)) {
@@ -1097,6 +1116,8 @@ const insights = {
     doc_price_superseded: docPriceStats.superseded,
     doc_price_unclear: docPriceStats.unclear,
     doc_price_rejected: docPriceStats.rejected,
+    doc_price_off_column_sheets: docPriceStats.off_column_sheets,
+    doc_price_off_column_rows: docPriceStats.off_column_rows,
   },
   suppliers: {
     records: rawSuppliers.length,

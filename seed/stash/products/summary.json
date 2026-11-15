@@ -1,16 +1,16 @@
 {
  "retrieved": "2026-11-13",
  "served": {
-  "products": 7245,
-  "offerings": 8806
+  "products": 8141,
+  "offerings": 10029
  },
  "before": {
-  "products": 59362,
-  "offerings": 69528,
-  "priced_offerings": 32117
+  "products": 59336,
+  "offerings": 69502,
+  "priced_offerings": 32091
  },
- "products": 52117,
- "offerings": 60722,
+ "products": 51195,
+ "offerings": 59473,
  "by_reason": {
   "peppm": {
    "products": 21413,
@@ -33,24 +33,28 @@
    "offerings": 77
   },
   "canon_extras": {
-   "products": 2121,
-   "offerings": 2124
+   "products": 1634,
+   "offerings": 1635
   },
   "rates": {
-   "products": 3462,
-   "offerings": 6418
+   "products": 3292,
+   "offerings": 6066
   },
   "reviewed_parts": {
-   "products": 4526,
-   "offerings": 4881
+   "products": 4538,
+   "offerings": 4893
   },
   "reviewed_services": {
-   "products": 1009,
-   "offerings": 1271
+   "products": 288,
+   "offerings": 383
+  },
+  "not_a_package": {
+   "products": 419,
+   "offerings": 443
   },
   "reviewed_doubtful": {
-   "products": 527,
-   "offerings": 541
+   "products": 552,
+   "offerings": 566
   }
  },
  "by_program": {
@@ -63,24 +67,24 @@
    "stashed": 21413
   },
   "Sourcewell": {
-   "kept": 693,
-   "stashed": 2902
+   "kept": 1140,
+   "stashed": 2455
   },
   "NJSTART": {
-   "kept": 2014,
-   "stashed": 3283
+   "kept": 2251,
+   "stashed": 3020
   },
   "Hawaii SPO": {
-   "kept": 766,
-   "stashed": 690
+   "kept": 857,
+   "stashed": 599
   },
   "Arkansas OSP": {
    "kept": 85,
    "stashed": 0
   },
   "NYS OGS": {
-   "kept": 690,
-   "stashed": 3012
+   "kept": 696,
+   "stashed": 3006
   },
   "NY Preferred Source": {
    "kept": 946,
@@ -99,8 +103,8 @@
    "stashed": 0
   },
   "OregonBuys": {
-   "kept": 167,
-   "stashed": 413
+   "kept": 282,
+   "stashed": 298
   }
  },
  "reasons": {
@@ -113,6 +117,7 @@
   "rates": "Rate lines, not products: hourly and monthly rates, fares, per-minute calls, rentals, fees and multi-year service prices",
   "reviewed_parts": "Parts and accessories, by the AI review: a component or an add-on of something else (a swing hanger, a copier finisher, a vehicle option)",
   "reviewed_services": "Rates and services, by the AI review: hourly and per-unit rates, installation, training, a study",
+  "not_a_package": "Service lines that are not a fixed package, by the packaged-service review: time-based rates, goods mixed with labor, and one agency's own project line items",
   "reviewed_doubtful": "Products the AI review thought, without confidence, were a part, an accessory, a rate or a service (doubt keeps a product out; it never lets one in)"
  }
 }

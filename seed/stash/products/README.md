@@ -1,6 +1,6 @@
 # Products, stashed
 
-Loci serves 7,245 catalog products and keeps 52,117 out. The catalog had 59,362, and most could not show what Loci is for, which is search and fit analysis: 37,411 of its 69,528 offerings had no price, and thousands more were rate lines or component parts that crowded every search.
+Loci serves 8,141 catalog products and keeps 51,195 out. The catalog had 59,336, and most could not show what Loci is for, which is search and fit analysis: 37,411 of its 69,502 offerings had no price, and thousands more were rate lines or component parts that crowded every search.
 
 A product stays live when it has a price a buyer could act on (or a labelled list price), a name that says what it is, and is something bought by the unit. The rule is `scripts/product-stash.ts`; the catalog importer applies it and writes `summary.json` here on every run. The numbers below are from that file as of the last run.
 
@@ -11,22 +11,23 @@ A product stays live when it has a price a buyer could act on (or a labelled lis
 | Items with no price of any kind | 531 |
 | Burke playground components the review did not code (by part-number family: everything but 550 to 599) | 8,841 |
 | Items on New York's crash-mitigation award the review did not code | 76 |
-| Canon licences, service plans and accessories the review did not code | 2,121 |
-| Rate lines, not products: hourly and monthly rates, fares, per-minute calls, rentals, fees and multi-year service prices | 3,462 |
-| Parts and accessories, by the AI review: a component or an add-on of something else (a swing hanger, a copier finisher, a vehicle option) | 4,526 |
-| Rates and services, by the AI review: hourly and per-unit rates, installation, training, a study | 1,009 |
-| Products the AI review thought, without confidence, were a part, an accessory, a rate or a service (doubt keeps a product out; it never lets one in) | 527 |
+| Canon licences, service plans and accessories the review did not code | 1,634 |
+| Rate lines, not products: hourly and monthly rates, fares, per-minute calls, rentals, fees and multi-year service prices | 3,292 |
+| Parts and accessories, by the AI review: a component or an add-on of something else (a swing hanger, a copier finisher, a vehicle option) | 4,538 |
+| Rates and services, by the AI review: hourly and per-unit rates, installation, training, a study | 288 |
+| Service lines that are not a fixed package, by the packaged-service review: time-based rates, goods mixed with labor, and one agency's own project line items | 419 |
+| Products the AI review thought, without confidence, were a part, an accessory, a rate or a service (doubt keeps a product out; it never lets one in) | 552 |
 
 | Program | Served | Stashed |
 |---|---|---|
-| NJSTART | 2,014 | 3,283 |
+| NJSTART | 2,251 | 3,020 |
 | OMNIA Partners | 1,422 | 10,034 |
+| Sourcewell | 1,140 | 2,455 |
 | NY Preferred Source | 946 | 728 |
-| Hawaii SPO | 766 | 690 |
-| Sourcewell | 693 | 2,902 |
-| NYS OGS | 690 | 3,012 |
+| Hawaii SPO | 857 | 599 |
+| NYS OGS | 696 | 3,006 |
 | NASPO ValuePoint | 324 | 31 |
-| OregonBuys | 167 | 413 |
+| OregonBuys | 282 | 298 |
 | BuyBoard | 138 | 0 |
 | Arkansas OSP | 85 | 0 |
 | HGACBuy | 0 | 9,611 |

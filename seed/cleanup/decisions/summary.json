@@ -94,5 +94,17 @@
   "low": 1773,
   "picked": 15900,
   "low_picked": 1773
+ },
+ "package-check": {
+  "items": 1807,
+  "answered": 1807,
+  "kept": 1807,
+  "invalid": 0,
+  "missing": 0,
+  "high": 1021,
+  "medium": 723,
+  "low": 63,
+  "picked": 1807,
+  "low_picked": 63
  }
 }

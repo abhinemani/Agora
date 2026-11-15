@@ -21,6 +21,8 @@ export interface StashProduct {
   mpn: string | null;
   /** What the AI review found the product to be (scripts/product-kind.ts), when it was confident. */
   role?: string;
+  /** The review's role when it was not confident: used only to keep a product out, never to let one in. */
+  doubtful_role?: string;
 }
 
 /** The reasons, in the order they are tested. The keys are stable (summary.json, /data); the text is what a reader sees. */
@@ -34,6 +36,7 @@ export const STASH_REASONS = {
   rates: "Rate lines, not products: hourly and monthly rates, fares, per-minute calls, rentals, fees and multi-year service prices",
   reviewed_parts: "Parts and accessories, by the AI review: a component or an add-on of something else (a swing hanger, a copier finisher, a vehicle option)",
   reviewed_services: "Rates and services, by the AI review: hourly and per-unit rates, installation, training, a study",
+  reviewed_doubtful: "Products the AI review thought, without confidence, were a part, an accessory, a rate or a service (doubt keeps a product out; it never lets one in)",
 } as const;
 export type StashReason = keyof typeof STASH_REASONS;
 
@@ -67,6 +70,7 @@ export function stashReason(o: StashOffering, p: StashProduct, contractTitle: st
   if (p.role === "item" || p.role === "consumable") return null;
   if (p.role === "part" || p.role === "accessory") return "reviewed_parts";
   if (p.role === "rate" || p.role === "service") return "reviewed_services";
+  if (!p.role && p.doubtful_role && p.doubtful_role !== "item" && p.doubtful_role !== "consumable") return "reviewed_doubtful";
   if (o.coop === "OMNIA Partners" && /burke/i.test(p.maker ?? "")) {
     // Burke numbers its parts by family: under 200 are bolts, posts and panels; 200 to 549 and 600 up are pieces of a
     // play structure; 550 to 599 stand on their own (swings, spinners, benches, tables, bike racks, ball games).

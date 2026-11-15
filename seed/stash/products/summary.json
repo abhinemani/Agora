@@ -1,16 +1,16 @@
 {
  "retrieved": "2026-11-13",
  "served": {
-  "products": 7357,
-  "offerings": 8918
+  "products": 7245,
+  "offerings": 8806
  },
  "before": {
   "products": 59362,
   "offerings": 69528,
   "priced_offerings": 32117
  },
- "products": 52005,
- "offerings": 60610,
+ "products": 52117,
+ "offerings": 60722,
  "by_reason": {
   "peppm": {
    "products": 21413,
@@ -25,20 +25,20 @@
    "offerings": 667
   },
   "burke_parts": {
-   "products": 8900,
-   "offerings": 8900
+   "products": 8841,
+   "offerings": 8841
   },
   "crash_parts": {
-   "products": 192,
-   "offerings": 195
+   "products": 76,
+   "offerings": 77
   },
   "canon_extras": {
-   "products": 2299,
-   "offerings": 2304
+   "products": 2121,
+   "offerings": 2124
   },
   "rates": {
-   "products": 3524,
-   "offerings": 6490
+   "products": 3462,
+   "offerings": 6418
   },
   "reviewed_parts": {
    "products": 4526,
@@ -47,6 +47,10 @@
   "reviewed_services": {
    "products": 1009,
    "offerings": 1271
+  },
+  "reviewed_doubtful": {
+   "products": 527,
+   "offerings": 541
   }
  },
  "by_program": {
@@ -63,8 +67,8 @@
    "stashed": 2902
   },
   "NJSTART": {
-   "kept": 2063,
-   "stashed": 3234
+   "kept": 2014,
+   "stashed": 3283
   },
   "Hawaii SPO": {
    "kept": 766,
@@ -75,16 +79,16 @@
    "stashed": 0
   },
   "NYS OGS": {
-   "kept": 691,
-   "stashed": 3011
+   "kept": 690,
+   "stashed": 3012
   },
   "NY Preferred Source": {
    "kept": 946,
    "stashed": 728
   },
   "OMNIA Partners": {
-   "kept": 1484,
-   "stashed": 9972
+   "kept": 1422,
+   "stashed": 10034
   },
   "NASPO ValuePoint": {
    "kept": 324,
@@ -108,6 +112,7 @@
   "canon_extras": "Canon licences, service plans and accessories the review did not code",
   "rates": "Rate lines, not products: hourly and monthly rates, fares, per-minute calls, rentals, fees and multi-year service prices",
   "reviewed_parts": "Parts and accessories, by the AI review: a component or an add-on of something else (a swing hanger, a copier finisher, a vehicle option)",
-  "reviewed_services": "Rates and services, by the AI review: hourly and per-unit rates, installation, training, a study"
+  "reviewed_services": "Rates and services, by the AI review: hourly and per-unit rates, installation, training, a study",
+  "reviewed_doubtful": "Products the AI review thought, without confidence, were a part, an accessory, a rate or a service (doubt keeps a product out; it never lets one in)"
  }
 }

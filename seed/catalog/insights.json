@@ -354,7 +354,7 @@
    "with_end": 695,
    "expired": 0,
    "with_states": 0,
-   "offerings": 1484
+   "offerings": 1422
   },
   {
    "coop": "BuyBoard",
@@ -475,7 +475,7 @@
    "with_end": 1437,
    "expired": 0,
    "with_states": 1437,
-   "offerings": 2139
+   "offerings": 2090
   },
   {
    "coop": "Hawaii SPO",
@@ -508,7 +508,7 @@
    "with_end": 1411,
    "expired": 0,
    "with_states": 1411,
-   "offerings": 1713
+   "offerings": 1712
   },
   {
    "coop": "NY Preferred Source",
@@ -553,7 +553,7 @@
   "coop_contracts": 19457,
   "state_uncoded": 2085,
   "classes_used": 180,
-  "priced_offerings_coded": 765,
+  "priced_offerings_coded": 745,
   "top_classes": [
    [
     "920",
@@ -836,7 +836,7 @@
   "nigp_codes": 520,
   "nigp_classes": 150,
   "suppliers_shared_with_coops": 307,
-  "offerings": 2139,
+  "offerings": 2090,
   "products_on_two_or_more_contracts": 37
  },
  "stash": {
@@ -845,8 +845,8 @@
    "offerings": 69528,
    "priced_offerings": 32117
   },
-  "products": 52005,
-  "offerings": 60610,
+  "products": 52117,
+  "offerings": 60722,
   "by_reason": {
    "peppm": {
     "products": 21413,
@@ -861,20 +861,20 @@
     "offerings": 667
    },
    "burke_parts": {
-    "products": 8900,
-    "offerings": 8900
+    "products": 8841,
+    "offerings": 8841
    },
    "crash_parts": {
-    "products": 192,
-    "offerings": 195
+    "products": 76,
+    "offerings": 77
    },
    "canon_extras": {
-    "products": 2299,
-    "offerings": 2304
+    "products": 2121,
+    "offerings": 2124
    },
    "rates": {
-    "products": 3524,
-    "offerings": 6490
+    "products": 3462,
+    "offerings": 6418
    },
    "reviewed_parts": {
     "products": 4526,
@@ -883,6 +883,10 @@
    "reviewed_services": {
     "products": 1009,
     "offerings": 1271
+   },
+   "reviewed_doubtful": {
+    "products": 527,
+    "offerings": 541
    }
   },
   "by_program": {
@@ -899,8 +903,8 @@
     "stashed": 2902
    },
    "NJSTART": {
-    "kept": 2063,
-    "stashed": 3234
+    "kept": 2014,
+    "stashed": 3283
    },
    "Hawaii SPO": {
     "kept": 766,
@@ -911,16 +915,16 @@
     "stashed": 0
    },
    "NYS OGS": {
-    "kept": 691,
-    "stashed": 3011
+    "kept": 690,
+    "stashed": 3012
    },
    "NY Preferred Source": {
     "kept": 946,
     "stashed": 728
    },
    "OMNIA Partners": {
-    "kept": 1484,
-    "stashed": 9972
+    "kept": 1422,
+    "stashed": 10034
    },
    "NASPO ValuePoint": {
     "kept": 324,
@@ -944,17 +948,18 @@
    "canon_extras": "Canon licences, service plans and accessories the review did not code",
    "rates": "Rate lines, not products: hourly and monthly rates, fares, per-minute calls, rentals, fees and multi-year service prices",
    "reviewed_parts": "Parts and accessories, by the AI review: a component or an add-on of something else (a swing hanger, a copier finisher, a vehicle option)",
-   "reviewed_services": "Rates and services, by the AI review: hourly and per-unit rates, installation, training, a study"
+   "reviewed_services": "Rates and services, by the AI review: hourly and per-unit rates, installation, training, a study",
+   "reviewed_doubtful": "Products the AI review thought, without confidence, were a part, an accessory, a rate or a service (doubt keeps a product out; it never lets one in)"
   }
  },
  "products": {
-  "products": 7357,
-  "offerings": 8918,
+  "products": 7245,
+  "offerings": 8806,
   "by_status": {
-   "published_price": 8918
+   "published_price": 8806
   },
   "by_status_coops": {
-   "published_price": 2872
+   "published_price": 2810
   },
   "priced_suppliers": [
    "Canon USA",
@@ -966,7 +971,6 @@
    "Foods Galore Inc",
    "Robbins Sales Company Inc.",
    "Wise Star Commodities LLC",
-   "Permedion Inc.",
    "Advanced Commodities Inc",
    "The Wyman Center, Inc.",
    "idaho freez pak corp",
@@ -1001,7 +1005,6 @@
    "Mes Service Company LLC",
    "Hanover Uniform Company",
    "Galls LLC dba Action Uniform Co., LLC",
-   "Gainwell Technologies, LLC",
    "JESCO Inc",
    "Carman Dodge Inc",
    "Paramus Ford Inc.",
@@ -1013,8 +1016,6 @@
    "Flagpoles Inc.",
    "Ciocca FMFL Inc./Dba Ciocca Parts Warehouse",
    "Gregory Packaging",
-   "Conduent State & Local Solutions, Inc.",
-   "Meyercord Revenue Inc",
    "Mullen Marketing LLC",
    "Chicago Meat Group Inc.",
    "Marcus Food Company",
@@ -1023,7 +1024,6 @@
    "Walter R. Earle - Burlington, Inc.",
    "WB Mason",
    "Hudson Motors Partnership",
-   "Truveris",
    "Plastic Express, Inc",
    "Walkenhorsts",
    "TSP Maintenance Supply LLC",
@@ -1037,13 +1037,11 @@
    "B & E Supply Corp",
    "Summit Paper Company",
    "Channel Fish Processing Co. Inc",
-   "Parsons Environment & Infrastructure Group Inc.",
    "South Jersey Paper Products",
    "Imperial Bag & Paper Co., LLC",
    "AT Bucks County, LLC",
    "Pellegrino Chevrolet",
    "IDEMIA Civil Identity NA LLC",
-   "YoungWilliams",
    "Traffic Safety Service LLC",
    "RoadBlock Solutions, Inc.",
    "Esquire Graphics",
@@ -1078,10 +1076,10 @@
    "Arborchem Products Division of Asplundh Tree Expert LLC.",
    "Zeigler Bros Inc",
    "Maid-Rite Specialty Foods Inc",
-   "Calero",
    "Trace Pheasantry Inc",
    "Mahantongo Game Farms LLC",
    "Surys Inc.",
+   "Conduent State & Local Solutions, Inc.",
    "Universal Coffee Corp",
    "Consumer Wellness Solutions, LLC",
    "Idemia Identity & Security USA LLC",
@@ -1205,7 +1203,6 @@
    "Kompan",
    "George Ely Associates Inc.",
    "Ben Shaffer Recreation Inc.",
-   "Gold Type Business Machines Inc",
    "Taylor Oil Company",
    "N E Auto & Truck Parts",
    "Childers Meat Co., Inc",

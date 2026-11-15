@@ -271,6 +271,11 @@ export function Header() {
                 <Link role="menuitem" href="/quality" onClick={() => setOpen(false)} className="flex min-h-12 items-center px-4 text-ui-xs text-ink no-underline hover:bg-base-lightest">
                   AI quality
                 </Link>
+                {user?.admin && (
+                  <Link role="menuitem" href="/admin" onClick={() => setOpen(false)} className="flex min-h-12 items-center px-4 text-ui-xs font-bold text-ink no-underline hover:bg-base-lightest">
+                    Site admin
+                  </Link>
+                )}
                 <Link role="menuitem" href="/coops/price-lists" onClick={() => setOpen(false)} className="flex min-h-12 items-center px-4 text-ui-xs text-ink no-underline hover:bg-base-lightest">
                   Price-list queue
                 </Link>

@@ -6,6 +6,8 @@ import * as A from "@/lib/actions";
 import { currentScope } from "@/lib/db";
 import { needsAccount } from "@/lib/session";
 import { isAdmin } from "@/lib/admin";
+import { logAdmin } from "@/lib/admin-log";
+import { getDb } from "@/lib/db";
 
 export const dynamic = "force-dynamic";
 
@@ -80,14 +82,15 @@ const handlers: Record<string, Handler> = {
   },
 };
 
-// What anyone can do without an account: search, set an agency, and use the shopper's tools.
-const OPEN = new Set(["createRequest", "setPreference", "setBuyer", "clearBuyer", "getResults", "judgeResultProducts", "confirmItems", "confirmPick", "editItems", "shopperBrief", "askShopper", "dive", "diveCompare", "contractsToAsk", "askContract", "briefContract", "rateAnswer"]);
+// What anyone can do without an account: search, set an agency, and everything public that uses the AI (the buying plan and
+// its questions, paperwork drafts, the product dive, Ask a contract and the brief), and filling a cart, which is kept for this
+// browser until checking out or handing it off asks them to sign in (it then moves to the account: app/api/auth/route.ts).
+const OPEN = new Set(["createRequest", "setPreference", "setBuyer", "clearBuyer", "getResults", "judgeResultProducts", "confirmItems", "confirmPick", "editItems", "shopperBrief", "askShopper", "draftPaperwork", "addToCart", "updateCartLine", "dive", "diveCompare", "contractsToAsk", "askContract", "briefContract", "rateAnswer"]);
 // Everything else needs a signed-in person. The phrase finishes "Sign in or create a free account to ...".
 const WHY: [RegExp, string][] = [
-  [/cart/i, "use the cart"],
+  [/cart/i, "check out or hand off this cart. Your cart comes with you"],
   [/order/i, "place and track orders"],
   [/quote/i, "request a quote"],
-  [/paperwork/i, "draft paperwork"],
   [/join|invite|membership|coop/i, "work with purchasing on co-ops"],
   [/solicitation|award|renewal|rfp/i, "build a solicitation"],
   [/reset/i, "reset the demo"],
@@ -103,7 +106,9 @@ export const POST = withSession(async (req: Request) => {
   if (!OPEN.has(body.action) && !currentScope()?.user) return needsAccount(WHY.find(([re]) => re.test(body.action))?.[1] ?? "do that");
   if (ADMIN.has(body.action) && !isAdmin(currentScope()?.user)) return NextResponse.json({ error: "Only a Sovra admin can do that on the live site." }, { status: 403 });
   try {
-    return NextResponse.json({ result: await handler(body) });
+    const result = await handler(body);
+    if (ADMIN.has(body.action)) await logAdmin(currentScope()?.user, body.action === "reset" ? "Reset the demo" : "Approved a supplier claim", body.action === "approveClaim" ? (getDb().suppliers.find((x) => x.id === body.supplierId)?.name ?? body.supplierId) : null);
+    return NextResponse.json({ result });
   } catch (err) {
     const status = err instanceof A.ActionError ? 400 : 500;
     if (status === 500) console.error(err);

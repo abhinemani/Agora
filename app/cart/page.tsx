@@ -16,23 +16,26 @@ const TABS: { id: Tab; label: string }[] = [
 ];
 
 export default function CartPage() {
-  const { db } = useStore();
+  const { db, user } = useStore();
   const [tab, setTab] = useState<Tab>("draft");
   if (!db) return <Loading />;
   const agency = cartAgency(db);
-  const carts = db.carts.filter((c) => c.agency === agency);
+  // The open cart is the person's own, whatever agency they're buying for (the server sends only theirs).
+  // Carts sent on for approval are the agency's.
+  const carts = db.carts.filter((c) => c.agency === agency && c.status !== "draft");
   const count = (t: Tab) => carts.filter((c) => c.status === t).length;
-  const draft = carts.find((c) => c.status === "draft");
+  const draft = db.carts.find((c) => c.status === "draft");
 
   return (
     <div className="space-y-6">
-      <PageTitle title={`${agency}'s carts`}>
+      <PageTitle title={user ? `${agency}'s carts` : "Your cart"}>
         Collect everything for a purchase in one cart. Loci splits it by supplier and pays each share the right way: P-card under the{" "}
         {money(db.agency.quick_buy_threshold, false)} quick-buy limit, a PO at or over it.
       </PageTitle>
 
       <div className="flex flex-wrap border-b border-base-lighter" role="tablist">
-        {TABS.map((t) => {
+        {/* Carts sent for approval are the agency's, kept for signed-in people; a visitor has only the cart they're filling. */}
+        {TABS.filter((t) => user || t.id === "draft").map((t) => {
           const n = t.id === "draft" ? (draft?.lines.length ?? 0) : count(t.id);
           const on = tab === t.id;
           return (
@@ -77,7 +80,7 @@ function EmptyCart() {
 }
 
 function DraftCart({ cart }: { cart: Cart }) {
-  const { db, act } = useStore();
+  const { db, act, user } = useStore();
   const [handing, setHanding] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
@@ -117,10 +120,12 @@ function DraftCart({ cart }: { cart: Cart }) {
                 With <span className="font-semibold">{cart.holder}</span>, handed over by {cart.handoff.from}. For {cart.handoff.division}, deliver to {cart.handoff.ship_to}.
                 {cart.handoff.notes && <span className="mt-1 block text-slate">“{cart.handoff.notes}”</span>}
               </>
-            ) : (
+            ) : user ? (
               <>
                 With <span className="font-semibold">{cart.holder}</span>, who built it.
               </>
+            ) : (
+              <>Kept in this browser. You'll be asked to sign in or create a free account when you check out or hand it off, and the cart comes with you.</>
             )}
           </div>
           <p className="mt-3 text-xs text-slate">

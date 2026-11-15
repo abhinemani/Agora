@@ -74,9 +74,11 @@ Two things in that batch were left as they are, on purpose. The route's summary 
 
 **Accounts, saved data and email** (PRs #22, #23 and #26). Each visitor's agency lives in their own browser. People can create an account with an email and password. Search and the shopper's tools are open to everyone; anything that keeps a record needs an account. State is saved to a Postgres database on Railway, so a redeploy no longer loses it. Loci sends confirmation links, password-reset links and approval notices through Resend from `agora.ethoslabs.us`. Real delivery was not tested in the build session, which had no Resend key.
 
+**Site admin** (`/admin`). Admins manage accounts (role, confirmation, reset and confirmation links, sign out everywhere, make admin, suspend, delete), review supplier claims (approve or reject), reset the demo and see which services the server has. Every admin action is logged with who made it. Admins can now be granted in the app; `AGORA_ADMIN_EMAILS` names the root admins, whom the page can't change. Tested in the build session against a local Postgres as well as in memory. README **Site admin**.
+
 ## Waiting on the user
 
-**Name the admins on Railway.** Resetting the demo and approving supplier claims now need an admin on the live site: a confirmed account whose email is in `AGORA_ADMIN_EMAILS` (comma-separated). Until that variable is set on Railway, nobody can do either there.
+**Name the admins on Railway.** Resetting the demo, approving supplier claims and the Site admin pages (`/admin`) need an admin on the live site. The first admins are the root admins: confirmed accounts whose email is in `AGORA_ADMIN_EMAILS` (comma-separated). Until that variable is set on Railway, nobody is an admin there. Once one root admin is in, they can make other confirmed accounts admins from `/admin`.
 
 Otherwise nothing. Burke's price list and 1GPA's roster arrived as manual downloads and are loaded. They're saved in the repo (`seed/catalog/source/price-files/` and `seed/coops/source/rosters/`), so rebuilds don't need them again.
 

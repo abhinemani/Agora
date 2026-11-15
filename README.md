@@ -193,6 +193,8 @@ Listings without an ID are joined by `entityKey` in `lib/coops.ts`, the same fun
 
 **What it changes in the app.** "Your agency" now offers a search over every government in the directory. Picking one, or setting an agency the directory recognizes by website or by name and state, brings in its co-ops as detected memberships. Each carries its **evidence**: on a published roster, named on the agency's own procurement pages, or bought through it (an approved award or DIR sales). The membership strip in results shows the evidence and the member ID where one was published. Loci now tracks 19 real co-ops, up from two. An uploaded member list can't remove a membership that rests on stronger evidence. Ten NASPO Parks and Recreation awards are in search as quote-only research leads, and `Eligibility.adopters` lets a local government with its own addendum (San Joaquin County, City of Albany) use a portfolio its state hasn't signed.
 
+**Guide** (`/guide`, in the account menu and the footer) is the short version for a buyer: how to use Loci in five steps, what its terms mean (routes, eligibility and paying, price kinds, and the evidence and flags behind what it says), where the contracts, prices, member lists and state rules come from, and the questions asked first. Its counts and dates are read from `seed/coops/insights.json`, `seed/catalog/insights.json` and `lib/state-rules.json`, and it links to the Co-op data page for the full account.
+
 **Co-op data** (`/data`, in the account menu) explains all of this for leadership. It covers what's in the workbook, the five ways Loci uses it, a live agency lookup, the evidence ladder, documented purchases, a prospect list (the largest DIR buyers already on several co-ops), cautions (including six NASPO awards whose addendum states disagree with Loci's seed) and the data still needed, led by a government ID spine.
 
 **State rules.** Whether a city or school district may buy off a co-op contract is a matter of state law. Loci's 50-state research of November 13, 2026 (`seed/states/source/`: the report and its summary workbook) covers, for each state:
@@ -474,6 +476,7 @@ The prototype supports section 8 of the spec end to end. Switch roles with the B
 | `scripts/import-state-rules.ts`, `seed/states/source/`, `lib/state-rules.ts` | The 50-state cooperative purchasing rules and the note shown beside co-op contracts |
 | `scripts/cleanup/`, `seed/cleanup/decisions/` | The AI review pipeline and its checked, committed decisions |
 | `app/data/` | The Co-op data page |
+| `app/guide/` | The Guide: how to use Loci, its terms, its sources and common questions |
 | `app/` | Next.js App Router pages and the `/api/state`, `/api/act`, `/api/contracts/parse` routes |
 
 ## Contract parsing

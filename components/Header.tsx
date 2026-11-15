@@ -256,6 +256,9 @@ export function Header() {
                   Sovra revenue
                   <span className="tabular-nums text-base-dark">{compact(total)}</span>
                 </button>
+                <Link role="menuitem" href="/guide" onClick={() => setOpen(false)} className="flex min-h-12 items-center px-4 text-ui-xs text-ink no-underline hover:bg-base-lightest">
+                  Guide
+                </Link>
                 <Link role="menuitem" href="/model" onClick={() => setOpen(false)} className="flex min-h-12 items-center px-4 text-ui-xs text-ink no-underline hover:bg-base-lightest">
                   How Loci earns
                 </Link>

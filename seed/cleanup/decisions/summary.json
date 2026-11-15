@@ -82,5 +82,17 @@
   "low": 399,
   "picked": 2726,
   "low_picked": 347
+ },
+ "product-kind": {
+  "items": 7687,
+  "answered": 7687,
+  "kept": 7650,
+  "invalid": 37,
+  "missing": 0,
+  "high": 5295,
+  "medium": 1777,
+  "low": 578,
+  "picked": 7650,
+  "low_picked": 578
  }
 }

@@ -1,6 +1,7 @@
-// The co-op catalog: 31,930 supplier contracts, 22,778 suppliers, 34,619 products
-// and 12,602 price documents from 13 co-ops' public directories, captured November
-// 13, 2026 and built into seed/catalog/catalog.json.gz by scripts/import-catalog.ts.
+// The co-op catalog: supplier contracts, suppliers, products and price documents from 13 co-ops' public directories,
+// captured November 13, 2026, and the state programs' records, built into seed/catalog/catalog.json.gz by
+// scripts/import-catalog.ts. Current counts are in seed/catalog/insights.json (and on /data); most captured products
+// are stashed, not served (scripts/product-stash.ts).
 // It also holds NJSTART, New Jersey's state contracts (scripts/import-njstart.ts):
 // 1,437 contracts and 5,810 awarded prices, as the state program "NJSTART" with a
 // state_contract field. They are the TRX route Loci prefers for New Jersey buyers.
@@ -15,7 +16,7 @@
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
 import { gunzipSync } from "node:zlib";
-import { fitScoreSets, requestTokens, SAME_AS, tokens, type CoopHit, type Weights } from "./assistant";
+import { fitScoreSets, kindMatch, namePhrase, requestTokens, SAME_AS, tokens, type CoopHit, type Weights } from "./assistant";
 import { isMember, normalizeDomain } from "./coops";
 import type { DocumentHit } from "./doc-store";
 import { orcppMember } from "./orcpp";
@@ -84,6 +85,12 @@ export interface CatalogProduct {
   maker: string | null;
   mpn: string | null;
   review: boolean;
+  /** What the product is, from the AI review (scripts/product-kind.ts): "pickup truck", "swing hanger". */
+  kind?: string;
+  /** Whether it is a whole item, a part, an accessory or a consumable. */
+  role?: "item" | "part" | "accessory" | "consumable" | "rate" | "service";
+  /** Other names buyers use for it: "can liner" for a trash bag. */
+  aliases?: string[];
 }
 export interface CatalogOffering {
   id: string;
@@ -139,6 +146,8 @@ interface Index {
   cWeights: Weights;
   pTitle: Set<string>[];
   pScope: Set<string>[];
+  /** Each product's ways of saying what it is, tokenized: its kind and aliases, or the phrase its name opens with. */
+  pKinds: string[][][];
   pIndex: Map<string, number[]>;
   pWeights: Weights;
 }
@@ -201,11 +210,15 @@ function load(): Index {
   const cWeights = weightsFor(raw.contracts.map((_, i) => new Set([...cTitle[i], ...cScope[i]])));
   const productById = new Map(raw.products.map((p) => [p.id, p]));
   const pTitle = raw.products.map((p) => new Set(tokens(p.name)));
+  // A product's wider scope: its maker, the price-sheet section it is printed under, and the title of every contract
+  // that sells it. "Copiers, printers, MFDs" is how Canon's toner meets a request for "toner for the copier".
   const pScope = raw.products.map((p) => {
     const offers = offeringsByProduct.get(p.id) ?? [];
-    const cats = [...new Set(offers.map((o) => o.category ?? contractById.get(o.contract)?.title ?? ""))].join(" ");
-    return new Set(tokens(`${p.maker ?? ""} ${cats}`));
+    const cats = [...new Set(offers.flatMap((o) => [o.category ?? "", contractById.get(o.contract)?.title ?? ""]))].join(" ");
+    // The review's kind and the other names buyers use count as scope: a "park bench" request meets an outdoor bench.
+    return new Set(tokens(`${p.maker ?? ""} ${cats} ${p.kind ?? ""} ${(p.aliases ?? []).join(" ")}`));
   });
+  const pKinds = raw.products.map((p) => (p.kind ? [p.kind, ...(p.aliases ?? [])] : [namePhrase(p.name)]).map((x) => tokens(x)));
   const pWeights = weightsFor(raw.products.map((_, i) => new Set([...pTitle[i], ...pScope[i]])));
 
   g.__agoraCatalog = {
@@ -227,6 +240,7 @@ function load(): Index {
     cWeights,
     pTitle,
     pScope,
+    pKinds,
     pIndex: invert(raw.products.map((_, i) => [pTitle[i], pScope[i]])),
     pWeights,
   };
@@ -452,6 +466,10 @@ export interface CatalogProductHit {
   routes: CatalogRoute[];
   /** Share of the product's name the request covers, for ranking. */
   coverage: number;
+  /** How squarely the product is the thing asked for, 0 to 1 (kindMatch in lib/assistant.ts). */
+  kind_match: number;
+  /** Its role from the AI review, when coded: a part or an accessory ranks below the whole item. */
+  role: CatalogProduct["role"] | null;
 }
 
 /** Products in the catalog that match a request, each with every contract that sells it. */
@@ -503,7 +521,7 @@ export function catalogProducts(db: Db, item: string, buyer: Buyer | null, limit
       .filter((r): r is CatalogRoute => Boolean(r))
       // Routes the buyer can use first, a TRX state contract ahead of a co-op among them, then by price.
       .sort((a, b) => Number(b.member) - Number(a.member) || Number(b.eligible) - Number(a.eligible) || Number(Boolean(buyer) && b.trx && b.eligible) - Number(Boolean(buyer) && a.trx && a.eligible) || (a.price ?? Infinity) - (b.price ?? Infinity));
-    return { product_id: p.id, name: p.name, maker: p.maker, mpn: p.mpn, fit, review: p.review, routes, coverage: cover.get(i) ?? 0 };
+    return { product_id: p.id, name: p.name, maker: p.maker, mpn: p.mpn, fit, review: p.review, routes, coverage: cover.get(i) ?? 0, kind_match: kindMatch(itemTokens, idx.pKinds[i]), role: p.role ?? null };
   };
   const priced = (h: CatalogProductHit) => (h.routes.some((r) => r.price != null) ? 2 : h.routes.some((r) => r.discount != null) ? 1 : 0);
   // The same product listed under several SKUs is one card with every route.
@@ -517,10 +535,14 @@ export function catalogProducts(db: Db, item: string, buyer: Buyer | null, limit
       const ids = new Set(have.routes.map((r) => r.offering_id));
       have.routes.push(...h.routes.filter((r) => !ids.has(r.offering_id)));
       have.fit = Math.max(have.fit, h.fit);
+      have.kind_match = Math.max(have.kind_match, h.kind_match);
     }
   }
+  // The product that is the thing asked for first (a swing before a swing hanger), then fit, then whole items before
+  // parts and accessories, then the name that says it most squarely.
+  const whole = (h: CatalogProductHit) => (h.role === "part" || h.role === "accessory" ? 0 : 1);
   const hits = [...merged.values()]
-    .sort((a, b) => b.fit - a.fit || b.coverage - a.coverage || priced(b) - priced(a) || b.routes.length - a.routes.length || a.name.localeCompare(b.name));
+    .sort((a, b) => b.kind_match - a.kind_match || b.fit - a.fit || whole(b) - whole(a) || b.coverage - a.coverage || priced(b) - priced(a) || b.routes.length - a.routes.length || a.name.localeCompare(b.name));
   return { hits: hits.slice(0, limit), total: hits.length };
 }
 

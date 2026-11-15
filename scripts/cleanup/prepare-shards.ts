@@ -14,6 +14,9 @@ import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { gunzipSync } from "node:zlib";
 import { CATEGORIES } from "../../lib/types";
+import { productKindKey } from "../product-kind";
+
+type Item = Record<string, any>;
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "../..");
 const OUT = join(ROOT, "seed/cleanup/shards");
@@ -88,7 +91,9 @@ for (const c of catalog.contracts) {
   t.n++;
   titles.set(k, t);
 }
-const sins = JSON.parse(readFileSync(join(ROOT, "seed/catalog/source/gsa-sins.json"), "utf8")).sins as Record<string, { title: string; description: string }>;
+// GSA's SINs moved to the stash with GSA (seed/stash/gsa/).
+const sinsPath = [join(ROOT, "seed/catalog/source/gsa-sins.json"), join(ROOT, "seed/stash/gsa/gsa-sins.json")].find((f) => existsSync(f));
+const sins = (wanted("category") && sinsPath ? JSON.parse(readFileSync(sinsPath, "utf8")).sins : {}) as Record<string, { title: string; description: string }>;
 shard(
   "category",
   [
@@ -103,7 +108,8 @@ shard(
 // (seed/catalog/source/njstart/nigp.json), or none.
 {
   const nigp = JSON.parse(readFileSync(join(ROOT, "seed/catalog/source/njstart/nigp.json"), "utf8")) as { classes: Record<string, { items: string[] }> };
-  const sinsAll = JSON.parse(readFileSync(join(ROOT, "seed/catalog/source/gsa-sins.json"), "utf8")).sins as Record<string, { title: string; description: string }>;
+  // GSA's SINs moved to the stash with GSA; read them only when the NIGP review runs.
+  const sinsAll = (wanted("nigp") && sinsPath ? JSON.parse(readFileSync(sinsPath, "utf8")).sins : {}) as Record<string, { title: string; description: string }>;
   const ts = new Map<string, { title: string; labels: Set<string>; coops: Set<string> }>();
   for (const c of catalog.contracts) {
     if (c.coop === "GSA MAS" || c.state_contract) continue;
@@ -128,7 +134,7 @@ shard(
 
 // 5. Canon price-file rows the capture's parser couldn't read.
 const validation = JSON.parse(readFileSync(join(ROOT, "seed/catalog/source/validation.json"), "utf8"));
-shard(
+if (wanted("canon-rows")) shard(
   "canon-rows",
   (validation.canon_unparsed_price_rows as { page: number; line: string }[]).map((r, i) => ({ id: `canon-${i + 1}`, page: r.page, line: r.line })),
   300,
@@ -136,11 +142,37 @@ shard(
 
 // 6. Products whose sources name them differently: pick the clearest name among the variants.
 const rawProducts = gz(join(ROOT, "seed/catalog/source/products.jsonl.gz")).split("\n").filter(Boolean).map((l) => JSON.parse(l));
-shard(
+if (wanted("product-name")) shard(
   "product-name",
   rawProducts.filter((p) => p.title_conflict_requires_review).map((p) => ({ id: p.product_id, maker: p.manufacturer, mpn: p.manufacturer_sku, variants: p.product_name_variants.slice(0, 6) })),
   400,
 );
+
+// 8. What each served product is: its kind ("pickup truck"), its role (a whole item, a part, a rate), and other names
+// buyers use for it. One item per distinct name; the answer applies to every product of that name. The kind must be
+// made of words the product's own record uses (collect.ts checks), so a reviewer names it, it never invents it.
+if (wanted("product-kind")) {
+  const contractById = new Map<string, Item>(catalog.contracts.map((c: Item) => [c.id, c]));
+  const offersByProduct = new Map<string, Item[]>();
+  for (const o of catalog.offerings) (offersByProduct.get(o.product) ?? offersByProduct.set(o.product, []).get(o.product)!).push(o);
+  const byName = new Map<string, Item>();
+  for (const p of catalog.products) {
+    const key = productKindKey(p.name);
+    if (byName.has(key)) continue;
+    const o = (offersByProduct.get(p.id) ?? [])[0] ?? {};
+    const c: Item = contractById.get(o.contract) ?? {};
+    byName.set(key, {
+      id: key,
+      name: p.name,
+      maker: p.maker ?? undefined,
+      contract: String(c.title ?? "").slice(0, 90),
+      section: o.category ? String(o.category).split(":")[0].slice(0, 70) : undefined,
+      unit: o.unit ?? undefined,
+      price: o.price ?? o.list ?? undefined,
+    });
+  }
+  shard("product-kind", [...byName.values()], 500);
+}
 
 if (!ONLY.size) writeFileSync(join(OUT, "index.json"), JSON.stringify({ categories: CATEGORIES, counts }, null, 1));
 console.log(counts);

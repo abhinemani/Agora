@@ -1,16 +1,16 @@
 {
  "retrieved": "2026-11-13",
  "served": {
-  "products": 7938,
-  "offerings": 9653
+  "products": 7575,
+  "offerings": 9181
  },
  "before": {
   "products": 59362,
   "offerings": 69528,
   "priced_offerings": 32117
  },
- "products": 51424,
- "offerings": 59875,
+ "products": 51787,
+ "offerings": 60347,
  "by_reason": {
   "peppm": {
    "products": 21413,
@@ -37,8 +37,12 @@
    "offerings": 3028
   },
   "rates": {
-   "products": 4040,
+   "products": 4042,
    "offerings": 7159
+  },
+  "reviewed_services": {
+   "products": 361,
+   "offerings": 472
   }
  },
  "by_program": {
@@ -55,12 +59,12 @@
    "stashed": 3022
   },
   "NJSTART": {
-   "kept": 2790,
-   "stashed": 2507
+   "kept": 2480,
+   "stashed": 2817
   },
   "Hawaii SPO": {
-   "kept": 1051,
-   "stashed": 405
+   "kept": 1008,
+   "stashed": 448
   },
   "Arkansas OSP": {
    "kept": 85,
@@ -87,8 +91,8 @@
    "stashed": 0
   },
   "OregonBuys": {
-   "kept": 202,
-   "stashed": 378
+   "kept": 192,
+   "stashed": 388
   }
  },
  "reasons": {
@@ -98,6 +102,7 @@
   "burke_parts": "Burke playground components and structure parts (everything but the freestanding items, part numbers 550 to 599)",
   "crash_parts": "New York's crash-mitigation award: replacement parts for barriers and attenuators",
   "canon_extras": "Canon software licences, service plans, installation and accessories",
-  "rates": "Rate lines, not products: hourly and monthly rates, fares, per-minute calls, rentals, fees and multi-year service prices"
+  "rates": "Rate lines, not products: hourly and monthly rates, fares, per-minute calls, rentals, fees and multi-year service prices",
+  "reviewed_services": "Rates and services the AI review found among the rest (installation, training, a study), which the patterns above missed"
  }
 }

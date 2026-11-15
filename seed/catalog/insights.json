@@ -21,6 +21,7 @@
   "suppliers_merged_by_review": 7,
   "contracts_categorized": 18460,
   "products_renamed_by_review": 223,
+  "products_coded_by_review": 7303,
   "canon_rows_added": 109,
   "price_file_rows": 12263,
   "price_file_offerings": 12181,
@@ -474,7 +475,7 @@
    "with_end": 1437,
    "expired": 0,
    "with_states": 1437,
-   "offerings": 2976
+   "offerings": 2565
   },
   {
    "coop": "Hawaii SPO",
@@ -485,7 +486,7 @@
    "with_end": 249,
    "expired": 0,
    "with_states": 259,
-   "offerings": 1235
+   "offerings": 1184
   },
   {
    "coop": "Arkansas OSP",
@@ -540,7 +541,7 @@
    "with_end": 651,
    "expired": 0,
    "with_states": 651,
-   "offerings": 253
+   "offerings": 243
   }
  ],
  "nigp": {
@@ -552,7 +553,7 @@
   "coop_contracts": 19457,
   "state_uncoded": 2085,
   "classes_used": 180,
-  "priced_offerings_coded": 1274,
+  "priced_offerings_coded": 975,
   "top_classes": [
    [
     "920",
@@ -792,7 +793,7 @@
   "suppliers": 222,
   "products": 1456,
   "suppliers_shared_with_coops": 143,
-  "products_on_two_or_more_contracts": 92
+  "products_on_two_or_more_contracts": 88
  },
  "njstart": {
   "source": "https://www.njstart.gov/bso/view/search/external/advancedSearchContractBlanket.xhtml?view=activeContracts",
@@ -835,8 +836,8 @@
   "nigp_codes": 520,
   "nigp_classes": 150,
   "suppliers_shared_with_coops": 307,
-  "offerings": 2976,
-  "products_on_two_or_more_contracts": 64
+  "offerings": 2565,
+  "products_on_two_or_more_contracts": 44
  },
  "stash": {
   "before": {
@@ -844,8 +845,8 @@
    "offerings": 69528,
    "priced_offerings": 32117
   },
-  "products": 51424,
-  "offerings": 59875,
+  "products": 51787,
+  "offerings": 60347,
   "by_reason": {
    "peppm": {
     "products": 21413,
@@ -872,8 +873,12 @@
     "offerings": 3028
    },
    "rates": {
-    "products": 4040,
+    "products": 4042,
     "offerings": 7159
+   },
+   "reviewed_services": {
+    "products": 361,
+    "offerings": 472
    }
   },
   "by_program": {
@@ -890,12 +895,12 @@
     "stashed": 3022
    },
    "NJSTART": {
-    "kept": 2790,
-    "stashed": 2507
+    "kept": 2480,
+    "stashed": 2817
    },
    "Hawaii SPO": {
-    "kept": 1051,
-    "stashed": 405
+    "kept": 1008,
+    "stashed": 448
    },
    "Arkansas OSP": {
     "kept": 85,
@@ -922,8 +927,8 @@
     "stashed": 0
    },
    "OregonBuys": {
-    "kept": 202,
-    "stashed": 378
+    "kept": 192,
+    "stashed": 388
    }
   },
   "reasons": {
@@ -933,14 +938,15 @@
    "burke_parts": "Burke playground components and structure parts (everything but the freestanding items, part numbers 550 to 599)",
    "crash_parts": "New York's crash-mitigation award: replacement parts for barriers and attenuators",
    "canon_extras": "Canon software licences, service plans, installation and accessories",
-   "rates": "Rate lines, not products: hourly and monthly rates, fares, per-minute calls, rentals, fees and multi-year service prices"
+   "rates": "Rate lines, not products: hourly and monthly rates, fares, per-minute calls, rentals, fees and multi-year service prices",
+   "reviewed_services": "Rates and services the AI review found among the rest (installation, training, a study), which the patterns above missed"
   }
  },
  "products": {
-  "products": 7938,
-  "offerings": 9653,
+  "products": 7575,
+  "offerings": 9181,
   "by_status": {
-   "published_price": 9653
+   "published_price": 9181
   },
   "by_status_coops": {
    "published_price": 2671
@@ -948,7 +954,6 @@
   "priced_suppliers": [
    "Canon USA",
    "AGS Scientific, Inc.",
-   "The Consultants Consortium Inc.",
    "WM. R. Hill & Co. Inc.",
    "H. Schrier & Co. Inc.",
    "Shaver Foods LLC",
@@ -956,9 +961,7 @@
    "Foods Galore Inc",
    "Robbins Sales Company Inc.",
    "Wise Star Commodities LLC",
-   "ACF Technologies",
    "Acecomm",
-   "Mercadien P.C. Certified Public Accountants",
    "Permedion Inc.",
    "Advanced Commodities Inc",
    "The Wyman Center, Inc.",
@@ -967,10 +970,8 @@
    "The Knotts Company, Inc",
    "VariTech Industries",
    "National Highway Products, Inc",
-   "Maryville Inc.",
    "S&S Signs and Safety Equipment Inc",
    "Eastern Metal of Elmira, Inc",
-   "CFG Health Systems LLC",
    "Campbell Foundry Company",
    "Intelligent Traffic Supply Products LLC",
    "Signal Control Products LLC",
@@ -1000,7 +1001,6 @@
    "JESCO Inc",
    "Carman Dodge Inc",
    "Paramus Ford Inc.",
-   "FLM Reprographics Inc",
    "Greelco Inc.",
    "Valk Manufacturing Company",
    "Chemung Supply Corporation",
@@ -1010,20 +1010,11 @@
    "3M Company",
    "Jamac Frozen Food Corp",
    "Route 23 Automall LLC",
-   "AMA Consulting LLC",
-   "Microassist, Inc.",
-   "New Editions Consulting, Inc.",
-   "Optimal Solutions Group",
-   "RGM Incorporated",
-   "VarnerMiller, LLC",
-   "3XB Health LLC",
-   "Periscope Holdings, Inc.",
    "RR Donnelley",
    "General Traffic Equipment Corp",
    "Flagpoles Inc.",
    "Ciocca FMFL Inc./Dba Ciocca Parts Warehouse",
    "Gregory Packaging",
-   "InClime",
    "Conduent State & Local Solutions, Inc.",
    "Meyercord Revenue Inc",
    "Mullen Marketing LLC",
@@ -1052,108 +1043,62 @@
    "Parsons Environment & Infrastructure Group Inc.",
    "South Jersey Paper Products",
    "Imperial Bag & Paper Co., LLC",
-   "ams logistics",
    "AT Bucks County, LLC",
-   "Pioneer Credit Recovery Inc.",
    "Pellegrino Chevrolet",
    "IDEMIA Civil Identity NA LLC",
    "YoungWilliams",
    "Traffic Safety Service LLC",
    "RoadBlock Solutions, Inc.",
    "Esquire Graphics",
-   "Kroll Government Solutions,LLC",
-   "Kelmar Associates LLC",
-   "Audit Services US LLC",
-   "Eecs LLC",
    "National Food Trading Corp",
    "E O Habhegger Co Inc",
-   "Mon Ami, Inc.",
    "L D Kallman Inc",
    "HHAeXchange",
    "Cream O Land Dairies LLC",
    "Hy-Point Dairy",
-   "State of New York",
    "Bind rite robbinsville",
    "Miller Auto Leasing",
    "Port Royal Sales LTD",
    "Churchfield Trading Company Inc",
-   "Prometric LLC",
    "Jones & Bartlett Learning LLC",
    "Standard Fusee Corp",
    "Pemberton Electrical Supply Company L.L.C.",
    "Central Poly-Bag Corp.",
    "All American Poly",
-   "Meridian Property Services Inc.",
-   "QTC Commercial Services, LLC d/b/a IMX Medical Management Services",
-   "CliftonLarsonAllen LLP",
-   "VRC Companies LLC",
    "NRG Business Marketing LLC",
-   "Association for Choices in Community Supports and Employment Services",
    "EB Fence LLC",
    "Consolidated Steel & Aluminum Fence Co., Inc.",
-   "Idemia Identity & Security USA LLC",
+   "Association for Choices in Community Supports and Employment Services",
    "Peckham Materials Corp.",
    "Innovative Municipal Products US Inc",
    "Waverly Industries LLC",
-   "JH Buehrer",
-   "Rosenberg & Associates",
-   "Guy J. Renzi & Associates Inc.",
-   "state shorthand reporting service, inc.",
-   "Degnan & Bateman",
-   "University of Cincinnati Research Institute",
    "Trius Inc",
    "Bruno Specialty Foods Inc.",
-   "Businessolver.com, Inc",
-   "Public Partnerships LLC",
-   "Maximus US Services, Inc",
    "Gabrielli Kenworth of NJ LLC",
    "HK Truck Services Inc",
    "General Highway Products Inc.",
    "Eastern Lift Truck Co. Inc.",
    "Cherry Valley Tractor Sales",
    "Deere & Company",
-   "National Fuel Oil Inc.",
-   "Petroleum Traders Corp",
-   "Americold Logistics, LLC",
    "Arborchem Products Division of Asplundh Tree Expert LLC.",
    "Zeigler Bros Inc",
    "Maid-Rite Specialty Foods Inc",
-   "Eastern Landscape Contractors, Inc.",
-   "The Dana Group LLC",
    "Calero",
-   "East Coast Emergency Lighting Inc",
    "Emergency Accessories & Installations",
-   "Approved Storage & Waste Hauling Inc",
    "Trace Pheasantry Inc",
    "Mahantongo Game Farms LLC",
    "Surys Inc.",
    "Universal Coffee Corp",
    "Consumer Wellness Solutions, LLC",
+   "Idemia Identity & Security USA LLC",
    "Gabrielli Truck Sales of NJ, Inc.",
    "H A Dehart & Son Inc",
    "Daxwell",
    "Asphalt Paving Systems LLC",
    "Jet Vac Equipment",
    "Jersey Environmental Solutions LLC",
-   "Tdec",
-   "Island Peer Review Organization Inc.",
-   "Maximus Federal Services, Inc.",
-   "Volunteers of America Delaware Valley Inc",
-   "Health Management Systems Inc., THIRD PARTY LIABILITY RECOVERY SERVICES",
    "Environmental Professionals Associate",
-   "Wash Rite Inc",
-   "Auto Super Wash Inc",
-   "Accu Wash Inc",
-   "WZ Inc",
-   "Jersey Auto Spa Car Wash",
-   "Broad St Car Wash",
-   "WPDT LLC DBA Casino Carwash",
    "Phamatech Inc.",
-   "Auto Shine Plus Inc",
-   "Xtreme Wash Inc",
-   "Windsor Car Wash",
-   "Hamilton Car Wash",
-   "CR Dispatch Service, Inc. dba Security Armored Car and Courier Service of Hawaii",
    "Oahu Plastic Bags, Inc. dba HI-V Plastic Bag Manufacturing",
    "ODP Business Solutions, LLC",
    "EMSS, Inc.",
@@ -1163,13 +1108,10 @@
    "Imperial Bag & Paper Co., LLC dba Triple F Distributing",
    "Premium LLC",
    "Veritiv Operating Company",
-   "Diagnostic Laboratory Services, Inc.",
    "Big Island Energy Co. LLC",
    "GP Energy Company, LLC",
    "Hawaii Petroleum LLC",
    "Par Hawaii, LLC",
-   "Bromberg & Associates",
-   "Effectiff",
    "Hanna Interpreting Services, LLC",
    "Aloha Packaging & Supplies, LLC",
    "KYD, Inc.",
@@ -1257,7 +1199,6 @@
    "Smiths Detection Inc",
    "Laboratory Disposable Products Inc",
    "Promega Corporation",
-   "FM Generator Inc.",
    "Luccasbakery",
    "Clarke Mosquito Control",
    "Bay Product Development LLC",
@@ -1267,19 +1208,16 @@
    "Kompan",
    "George Ely Associates Inc.",
    "Ben Shaffer Recreation Inc.",
-   "Liberty Parks and Playgrounds Inc",
    "Gold Type Business Machines Inc",
    "Taylor Oil Company",
    "N E Auto & Truck Parts",
-   "Microsoft Corporation",
    "Childers Meat Co., Inc",
-   "Garten Services Inc",
    "Tyree Oil Inc",
    "Viavi Solutions Inc",
    "CNH Industrial America, LLC, dba New Holland Agriculture",
    "Smitty's Vending, Inc."
   ],
-  "multi_route": 339
+  "multi_route": 315
  },
  "documents": {
   "total": 35321,

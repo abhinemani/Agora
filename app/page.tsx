@@ -15,10 +15,8 @@ import { useStore } from "@/components/store";
 import { ErrorNote, Loading, money } from "@/components/ui";
 import type { Listing, Request } from "@/lib/types";
 import { CATEGORIES } from "@/lib/types";
-import { fromSearch, requestKind, toSearch, type FrontDoorUrl } from "@/lib/front-door";
+import { EXAMPLES, fromSearch, requestKind, toSearch, type FrontDoorUrl } from "@/lib/front-door";
 
-/** Examples of each kind: products open the guided search, contract-shaped requests go to the results page. */
-const EXAMPLES = ["40 folding tables", "A police SUV", "Task chairs for the clerk's office", "Permitting software", "Computer-aided dispatch", "Project manager hours"];
 const KIND_TAG = { product: "Product", contract: "Contract" } as const;
 const STEPS = ["Who's buying", "How many", "Which one", "How to buy it"];
 /** The worked example: one request, three contracts. */

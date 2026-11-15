@@ -14,6 +14,7 @@ import { existsSync, readdirSync, readFileSync, writeFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { CATEGORIES } from "../../lib/types";
+import { checkKindAnswer } from "../product-kind";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "../..");
 const SHARDS = join(ROOT, "seed/cleanup/shards");
@@ -76,7 +77,7 @@ function collect(task: string, check: (item: Item, a: any) => any | null) {
     out[id] = v;
     s.kept++;
     s[v.confidence as "high"]++;
-    if (v.pick || v.merge?.length || v.price != null || v.classes?.length) {
+    if (v.pick || v.merge?.length || v.price != null || v.classes?.length || v.kind) {
       s.picked++;
       if (v.confidence === "low") s.low_picked++;
     }
@@ -119,6 +120,27 @@ collect("nigp", (item, a) => {
   if (!picks || picks.length > 3 || !picks.every((x) => nigpClasses.has(x as string))) return null;
   return { classes: picks, confidence: a.confidence, reason: String(a.reason ?? "").slice(0, 100) };
 });
+// What each product is (scripts/product-kind.ts): the kind's words must all come from the product's own record.
+// Reviewers answer by line number ([line, kind, role, aliases, confidence] in product-kind-NN.lines*.jsonl); turn
+// those into answers keyed by item id first. An answer whose line number is out of range is dropped.
+if ((!ONLY.size || ONLY.has("product-kind")) && existsSync(SHARDS) && existsSync(OUT)) {
+  for (const shardFile of readdirSync(SHARDS).filter((f) => /^product-kind-\d+\.jsonl$/.test(f))) {
+    const nn = shardFile.match(/\d+/)![0];
+    const ids = readFileSync(join(SHARDS, shardFile), "utf8").split("\n").filter(Boolean).map((l) => String(JSON.parse(l).id));
+    const byId: Record<string, unknown> = {};
+    for (const f of readdirSync(OUT).filter((f) => f.startsWith(`product-kind-${nn}.lines`)).sort())
+      for (const l of readFileSync(join(OUT, f), "utf8").split("\n").filter((x) => x.trim())) {
+        try {
+          const [n, kind, role, aliases, confidence] = JSON.parse(l);
+          if (Number.isInteger(n) && n >= 1 && n <= ids.length) byId[ids[n - 1]] = { kind, role, aliases, confidence };
+        } catch {
+          // a malformed line is a missing answer
+        }
+      }
+    writeFileSync(join(OUT, `product-kind-${nn}.json`), JSON.stringify(byId));
+  }
+}
+collect("product-kind", (item, a) => checkKindAnswer(item as never, a));
 collect("product-name", (item, a) => (a.pick === null || item.variants.includes(a.pick) ? { pick: a.pick ?? null, confidence: a.confidence, reason: String(a.reason ?? "").slice(0, 100) } : null));
 
 writeFileSync(summaryFile, JSON.stringify(summary, null, 1) + "\n");

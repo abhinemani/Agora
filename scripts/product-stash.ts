@@ -19,6 +19,8 @@ export interface StashProduct {
   name: string;
   maker: string | null;
   mpn: string | null;
+  /** What the AI review found the product to be (scripts/product-kind.ts), when it was confident. */
+  role?: string;
 }
 
 /** The reasons, in the order they are tested. The keys are stable (summary.json, /data); the text is what a reader sees. */
@@ -30,6 +32,7 @@ export const STASH_REASONS = {
   crash_parts: "New York's crash-mitigation award: replacement parts for barriers and attenuators",
   canon_extras: "Canon software licences, service plans, installation and accessories",
   rates: "Rate lines, not products: hourly and monthly rates, fares, per-minute calls, rentals, fees and multi-year service prices",
+  reviewed_services: "Rates and services the AI review found among the rest (installation, training, a study), which the patterns above missed",
 } as const;
 export type StashReason = keyof typeof STASH_REASONS;
 
@@ -63,5 +66,6 @@ export function stashReason(o: StashOffering, p: StashProduct, contractTitle: st
     if (!(section === "" || CANON_KEEP.test(section)) || RATE_NAME.test(p.name) || /\b(install|installation|ecarepak|license|licence)\b/i.test(p.name)) return "canon_extras";
   }
   if (SERVICE_AWARD.test(contractTitle) || RATE_UNIT.test(o.unit ?? "") || RATE_NAME.test(p.name)) return "rates";
+  if (p.role === "rate" || p.role === "service") return "reviewed_services";
   return null;
 }

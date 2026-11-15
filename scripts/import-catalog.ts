@@ -25,6 +25,7 @@ import { coopIdForVehicle, normalizeDomain } from "../lib/coops";
 import { seed } from "../lib/seed";
 import { STATES } from "../lib/vehicles";
 import { STASH_REASONS, stashReason, type StashReason } from "./product-stash";
+import { productKindKey, type KindRole } from "./product-kind";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const SRC = join(ROOT, "seed/catalog/source");
@@ -49,6 +50,7 @@ const categoryPicks = reviewed<{ pick: string; confidence: string }>("category")
 const canonRows = reviewed<{ name: string | null; sku: string | null; list: number | null; discount: number | null; price: number | null; unit: string | null; issue: string | null; confidence: string; page: number; line: string }>("canon-rows");
 const productNames = reviewed<{ pick: string | null; confidence: string }>("product-name");
 const nigpPicks = reviewed<{ classes: string[]; confidence: string }>("nigp");
+const productKinds = reviewed<{ kind: string; role: KindRole; aliases: string[]; confidence: string }>("product-kind");
 
 interface RawSupplier {
   supplier_id: string;
@@ -859,6 +861,19 @@ const docPriceStats = { rows: 0, attached: 0, list_prices: 0, duplicates: 0, sup
   }
 }
 
+// ------------------------------------------------------------------ what each product is
+// The AI review's answer for each product name (scripts/product-kind.ts): its kind, its role and other names buyers
+// use for it. Only high- and medium-confidence answers are applied; search falls back to the name for the rest.
+let kindsApplied = 0;
+for (const p of products as (typeof products[number] & { kind?: string; role?: KindRole; aliases?: string[] })[]) {
+  const k = productKinds[productKindKey(p.name)];
+  if (!k) continue;
+  p.kind = k.kind;
+  p.role = k.role;
+  if (k.aliases.length) p.aliases = k.aliases;
+  kindsApplied++;
+}
+
 // ------------------------------------------------------------------ the product stash
 // Products that can't show what Loci is for are stashed, not served (scripts/product-stash.ts has the rule and the
 // reasons): no price, a rate line, a component part. An offering goes by its own reason; a product goes when none of
@@ -879,7 +894,7 @@ if (!INCLUDE_STASHED) {
   const firstReason = new Map<string, StashReason>();
   for (const o of offerings) {
     const p = productOf.get(o.product);
-    const why = p ? stashReason(o, p, titleOf.get(o.contract) ?? "") : null;
+    const why = p ? stashReason(o, p as typeof p & { role?: KindRole }, titleOf.get(o.contract) ?? "") : null;
     if (!why) {
       keptOfferings.push(o);
       keptProducts.add(o.product);
@@ -1052,6 +1067,7 @@ const insights = {
     suppliers_merged_by_review: mergedByReview,
     contracts_categorized: categorized,
     products_renamed_by_review: renamedByReview,
+    products_coded_by_review: kindsApplied,
     canon_rows_added: canonAdded,
     price_file_rows: priceFileStats.rows,
     price_file_offerings: priceFileStats.attached,

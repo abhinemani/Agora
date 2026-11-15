@@ -6,7 +6,7 @@
 import * as z from "zod/v4";
 import { discarded, kept, pieces, structured } from "./llm";
 import { ungrounded, type ShopperText } from "./shopper-ai";
-import type { DiveFilter, DiveItem, DiveState, DiveVerdict } from "./dive";
+import type { DiveFilter, DiveItem, DiveState, DiveVerdict, FitVerdict } from "./dive";
 
 const ReadSchema = z.object({
   include_words: z.array(z.string()).describe("Words from WORDS the product must have."),
@@ -104,4 +104,122 @@ export async function writeVerdict(need: string, items: DiveItem[], verdict: Div
     return null;
   }
   return { headline: out.headline.trim(), paragraphs, refs: [], log_id: kept(out, text) };
+}
+
+// ------------------------------------------------------------------ reading a request in the catalog's terms
+
+const UnderstandSchema = z.object({
+  kinds: z.array(z.string()).describe("Kinds from KINDS that are the thing the buyer wants, spelled exactly as listed. At most 4."),
+  search_terms: z.array(z.string()).describe("Up to 3 other words or short phrases a catalog might use for it, not already in the request."),
+  must_have: z.array(z.string()).describe("Single words a product's name must contain to meet a requirement the buyer stated."),
+  must_not: z.array(z.string()).describe("Single words for things the buyer ruled out."),
+  read_as: z.string().describe("One short sentence, third person, saying what Loci is looking for."),
+});
+type UnderstandOut = z.infer<typeof UnderstandSchema>;
+
+/** The kinds a request could mean, as the catalog lists them (lib/catalog.ts catalogKindCandidates). */
+export type KindCandidate = { kind: string; count: number; example: string };
+
+/** Ask the model what a request means in the catalog's terms. The answer is checked by checkNeed once the shortlist is
+ * known, so the two can run alongside the request reader. Null when the model is unavailable. */
+export async function askNeed(need: string, candidates: KindCandidate[]): Promise<UnderstandOut | null> {
+  return structured({
+    task: "dive_understand",
+    about: need,
+    system:
+      `You read what a government buyer typed into a product search, and say what they mean in the catalog's own terms. KINDS lists the kinds of product the catalog has that might match, with how many of each and one example.\n` +
+      `- kinds: the kinds from KINDS that are the thing the buyer wants, not its parts, add-ons or supplies, spelled exactly as listed. At most 4. None if nothing in KINDS is what they want.\n` +
+      `- search_terms: up to 3 other words or short phrases a catalog might use for what they want and that aren't in their words: a synonym, the full name of an abbreviation, the plain name for a brand name. Empty if none.\n` +
+      `- must_have: single words a product's name would contain to meet a requirement the buyer stated ("crew cab" gives "crew", "electric" gives "electric"). Only requirements they stated, and never the kind of thing itself.\n` +
+      `- must_not: single words for things they ruled out ("not diesel" gives "diesel").\n` +
+      `- read_as: one short sentence in the third person saying what Loci is looking for, like "Police pursuit vehicles and SUVs, diesel ruled out." No prices unless the buyer gave one.`,
+    user: `REQUEST: ${need}\nKINDS:\n${candidates.map((c) => `${c.kind} (${c.count}): e.g. ${c.example.slice(0, 70)}`).join("\n") || "(none)"}`,
+    schema: UnderstandSchema,
+    maxTokens: 700,
+    timeoutMs: 20_000,
+  });
+}
+
+/** The reading after its checks: kinds the catalog lists and offered, other words that find products, and must-have and
+ * ruled-out words that are in some product's name on the shortlist (a must-have that every product has narrows
+ * nothing). Reports what survived to the log. */
+export function checkNeed(
+  out: UnderstandOut,
+  need: string,
+  ctx: { offered: string[]; finds: (term: string) => boolean; words: Map<string, number>; pool: number },
+): { kinds: string[]; terms: string[]; filters: DiveFilter[]; read_as: string | null; log_id?: string } {
+  const offered = new Set(ctx.offered.map((k) => k.toLowerCase()));
+  const kinds = [...new Set(out.kinds.map((k) => k.toLowerCase().trim()))].filter((k) => offered.has(k)).slice(0, 4);
+  const said = new Set(need.toLowerCase().match(/[a-z0-9-]+/g) ?? []);
+  const terms = [...new Set(out.search_terms.map((t) => t.toLowerCase().trim()))]
+    .filter((t) => /^[a-z0-9][a-z0-9 '\-]{1,40}$/.test(t) && t.split(" ").length <= 3 && !t.split(" ").every((w) => said.has(w)) && ctx.finds(t))
+    .slice(0, 3);
+  const word = (w: string) => w.toLowerCase().trim();
+  // A must-have is a requirement beyond the thing itself: a word every chosen kind has ("folding" when the kind is
+  // "folding table") isn't one, while one only some have ("electric" among "electric sport utility vehicle" and "suv")
+  // is what separates them.
+  const inEvery = (w: string) => kinds.length > 0 && kinds.every((k) => k.split(/[\s-]+/).includes(w));
+  const must = [...new Set(out.must_have.map(word))].filter((w) => /^[a-z][a-z0-9-]{2,}$/.test(w) && !inEvery(w) && (ctx.words.get(w) ?? 0) > 0 && (ctx.words.get(w) ?? 0) < ctx.pool);
+  // A ruled-out word is kept when a product on the shortlist has it, or when the buyer wrote it: "not diesel" stands as
+  // the buyer's own words even where no diesel is on offer.
+  const mustNot = [...new Set(out.must_not.map(word))].filter((w) => /^[a-z][a-z0-9-]{2,}$/.test(w) && ((ctx.words.get(w) ?? 0) > 0 || said.has(w)) && !must.includes(w));
+  const filters: DiveFilter[] = [...must.map((value) => ({ kind: "word" as const, value })), ...mustNot.map((value) => ({ kind: "not_word" as const, value }))];
+  const readAs = out.read_as.trim().slice(0, 200);
+  const bad = readAs ? ungrounded(readAs, [], { need }, []) : null;
+  const asked = out.kinds.length + out.search_terms.length + out.must_have.length + out.must_not.length + (readAs ? 1 : 0);
+  const passed = kinds.length + terms.length + must.length + mustNot.length + (readAs && !bad ? 1 : 0);
+  const log_id = pieces(out, JSON.stringify(out), passed, asked, bad ?? "Named a kind, word or term the catalog doesn't have");
+  return { kinds, terms, filters, read_as: readAs && !bad ? readAs : null, log_id };
+}
+
+// ------------------------------------------------------------------ judging fit
+
+const FitSchema = z.object({
+  products: z.array(
+    z.object({
+      n: z.number().int().describe("The product's number in PRODUCTS."),
+      fit: z.enum(["fits", "partly", "no"]),
+      reason: z.string().describe("At most 10 words, third person, naming what in the product decides it."),
+    }),
+  ),
+});
+
+/** The model's judgment of how each product fits the request, from what each product is (name, kind, maker, unit),
+ * never from its price or who can buy it. A reason is kept only with no price or percentage in it and no figure that
+ * isn't in the product's name or the request. Null when the model is unavailable. */
+export async function judgeFit(need: string, readAs: string | null, items: DiveItem[]): Promise<{ fits: Map<string, { fit: FitVerdict; reason: string }>; log_id?: string } | null> {
+  if (!items.length) return null;
+  const out = await structured({
+    task: "dive_fit",
+    about: `${need}: ${items.length} products`,
+    system:
+      `You check how well each product on a shortlist fits what a government buyer asked for. You know each product's name, kind, maker and unit, and nothing else: judge from those, never from price or availability, which Loci handles elsewhere.\n` +
+      `For every product give:\n` +
+      `- fit: "fits" if it is the thing asked for and meets every requirement the buyer stated; "partly" if it is the right kind of thing but a stated requirement isn't met or can't be told from its name, or it is closely related (an add-on, a different size class) a buyer might still want; "no" if it isn't what was asked for.\n` +
+      `- reason: at most 10 words, in the third person, naming what in the product decides it, like "A pursuit-rated Tahoe, as asked", "A swing hanger, not a swing" or "Crew cab, but diesel was ruled out". No prices, no percentages, and no figures that aren't in the product's name or the request.`,
+    user: `REQUEST: ${need}${readAs ? `\nREAD AS: ${readAs}` : ""}\nPRODUCTS:\n${items.map((i, n) => `${n + 1}. ${i.name}${i.kind ? ` | kind: ${i.kind}` : ""}${i.maker ? ` | maker: ${i.maker}` : ""}${i.unit ? ` | unit: ${i.unit}` : ""}`).join("\n")}`,
+    schema: FitSchema,
+    maxTokens: 2500,
+    timeoutMs: 25_000,
+  });
+  if (!out) return null;
+  const fits = new Map<string, { fit: FitVerdict; reason: string }>();
+  const figures = (t: string): string[] => [...(t.match(/\d+(?:[.,/]\d+)*/g) ?? [])];
+  let bad: string | null = null;
+  for (const p of out.products) {
+    const item = items[p.n - 1];
+    if (!item || fits.has(item.id)) continue;
+    const reason = p.reason.trim().replace(/\s+/g, " ");
+    const why =
+      !reason || reason.length > 140
+        ? "A reason was empty or too long"
+        : (ungrounded(reason, [], {}, []) ?? (figures(reason).find((f) => !figures(`${item.name} ${need}`).includes(f)) ? `A reason has a figure that isn't in the product or the request: ${reason}` : null));
+    if (why) {
+      bad ??= why;
+      continue;
+    }
+    fits.set(item.id, { fit: p.fit, reason });
+  }
+  const log_id = pieces(out, JSON.stringify(out.products.map((p) => [p.n, p.fit, p.reason])), fits.size, items.length, bad ?? "Left a product unjudged, or judged one twice");
+  return { fits, log_id };
 }

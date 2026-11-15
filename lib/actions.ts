@@ -2,7 +2,7 @@
 // exactly one place per action.
 
 import { buildResults, estimateTotal, finishCoopSection, findSimilarSolicitation, mentionsPreference, parseRequest, ruleFor } from "./assistant";
-import { catalogContract, catalogCoopHits, catalogOffering, catalogProducts, catalogRetrieved, catalogStateRetrieved, catalogSupplierById, materializeSupplier } from "./catalog";
+import { catalogContract, catalogCoopHits, catalogKindCandidates, catalogOffering, catalogProducts, catalogRetrieved, catalogStateRetrieved, catalogSupplierById, materializeSupplier } from "./catalog";
 import { stateRuleFor } from "./state-rules";
 import { currentScope, getDb, nextId, resetDb } from "./db";
 import { isAdmin } from "./admin";
@@ -36,8 +36,9 @@ import { tellPurchasing, tellRequester } from "./notify";
 import { askDocument, contractBrief, readableContracts } from "./docs";
 import { searchDocuments, type DocumentHit } from "./doc-store";
 import { hasDatabase } from "./pg";
-import { diveItems, diveSearch, diveVerdict, offlineDiveFilters, type DiveFilter } from "./dive";
-import { readDiveMessage, writeVerdict } from "./dive-ai";
+import { applyFit, diveItems, diveSearch, diveVerdict, diveWordCounts, offlineDiveFilters, type DiveFilter, type DiveReading, type FitVerdict } from "./dive";
+import { askNeed, checkNeed, judgeFit, readDiveMessage, writeVerdict } from "./dive-ai";
+import { modelOn } from "./llm";
 import { rate } from "./ai-log";
 
 const EVIDENCE_RANK = { list: 0, roster: 1, agency: 2, purchase: 3 } as const;
@@ -360,39 +361,105 @@ function buyingContext(db: ReturnType<typeof getDb>, need: string) {
   };
 }
 
-/** One turn of the product dive. `need` starts a dive from the buyer's own words; `message` narrows an open one. Read-only. */
-export async function dive(args: { need?: string; query?: string; filters?: unknown; message?: string }) {
+/** What the model made of a dive's request and products, kept between turns so narrowing doesn't ask again: the reading
+ * by the request's item, and each product's fit by the request and product. In memory; a restart asks again. */
+type DiveMemo = { reads: Map<string, DiveReading & { need: string }>; fits: Map<string, { fit: FitVerdict; reason: string; log_id?: string }> };
+const memo = (): DiveMemo => ((globalThis as unknown as { __agoraDiveAI?: DiveMemo }).__agoraDiveAI ??= { reads: new Map(), fits: new Map() });
+const cap = <K, V>(m: Map<K, V>, n: number) => {
+  while (m.size > n) m.delete(m.keys().next().value as K);
+};
+
+/** One turn of the product dive. `need` starts a dive from the buyer's own words; `message` narrows an open one. Read-only.
+ *
+ * When the model is available it does two things the rules can't (lib/dive-ai.ts). It reads the request in the
+ * catalog's own terms: the kinds of product it means, other words for it, and the requirements it states, which become
+ * removable filters. And it judges how each product near the top of the shortlist fits, with a short reason, which
+ * reorders the shortlist: what fits comes first, what doesn't comes last. Prices and eligibility stay the rules'. */
+export async function dive(args: { need?: string; query?: string; filters?: unknown; message?: string; judge?: boolean }) {
   const db = getDb();
+  const m = memo();
   let query = String(args.query ?? "").trim();
   let filters = cleanFilters(args.filters);
   let said = "";
   // Read from the buyer's words when a dive starts: how many, and whether they said so ("a police SUV" counts as one).
   let quantity: { value: number; stated: boolean } | null = null;
+  let reading = query ? (m.reads.get(query.toLowerCase()) ?? null) : null;
   if (!query) {
     const need = String(args.need ?? "").trim().slice(0, 300);
     if (!need) fail("Tell me what you're looking for.");
-    // The same reader as search: the thing being bought, without the quantity or the purpose.
-    const parsed = (await parseRequest(need, db)).parsed;
+    // The same reader as search (the thing being bought, without the quantity or the purpose), and alongside it the
+    // model's reading of the request in the catalog's terms.
+    const offered = catalogKindCandidates(db, need, 60);
+    const [{ parsed }, asked] = await Promise.all([parseRequest(need, db), askNeed(need, offered)]);
     query = parsed.item || need;
     quantity = { value: parsed.quantity, stated: parsed.quantity > 1 || /^\s*(?:(?:i|we)\s+need\s+)?(?:a|an|one|1)\b/i.test(need) };
-    const first = diveSearch(db, query, []);
-    filters = cleanFilters(offlineDiveFilters(need, first).filter((f) => f.kind === "price"));
+    let readFilters: DiveFilter[] = [];
+    if (asked) {
+      const finds = (t: string) => catalogProducts(db, t, null, 1).total > 0;
+      const prelim = checkNeedKinds(asked.kinds, offered.map((o) => o.kind));
+      const { words, pool } = diveWordCounts(db, query, { kinds: prelim, terms: asked.search_terms.filter(finds).slice(0, 3) });
+      const read = checkNeed(asked, need, { offered: offered.map((o) => o.kind), finds, words, pool });
+      reading = { need, kinds: read.kinds, terms: read.terms, read_as: read.read_as, log_id: read.log_id };
+      readFilters = read.filters;
+      m.reads.set(query.toLowerCase(), reading);
+      cap(m.reads, 500);
+    }
+    const first = diveSearch(db, query, [], reading ?? {});
+    filters = cleanFilters([...offlineDiveFilters(need, first).filter((f) => f.kind === "price"), ...readFilters]);
   }
+  const search = reading ? { kinds: reading.kinds, terms: reading.terms } : {};
   const message = String(args.message ?? "").trim().slice(0, 300);
   if (message) {
-    const before = diveSearch(db, query, filters);
+    const before = diveSearch(db, query, filters, search);
     const read = (await readDiveMessage(message, before)) ?? { filters: offlineDiveFilters(message, before), reply: "" };
     said = read.reply || (read.filters.length ? "" : "Nothing on the shortlist can be narrowed by that. Try one of the questions, or a word from a product's name.");
     filters = cleanFilters([...filters, ...read.filters]);
   }
-  return { state: diveSearch(db, query, filters), said, quantity, context: buyingContext(db, String(args.need ?? query)) };
+  // The rules' top 16, judged by the model where it hasn't judged them for this request yet, then cut to 12. With
+  // judge: false the turn returns at once with the judgments already made, and says whether more are to come, so a
+  // page can show the shortlist and ask again for the rest.
+  let state = diveSearch(db, query, filters, { ...search, limit: 16 });
+  const need = reading?.need ?? query;
+  const key = (id: string) => `${query.toLowerCase()}|${id}`;
+  const unjudged = state.items.filter((i) => !m.fits.has(key(i.id)));
+  let fitLog: string | null = null;
+  const judging = args.judge !== false;
+  if (unjudged.length && judging) {
+    const judged = await judgeFit(need, reading?.read_as ?? null, unjudged);
+    if (judged) {
+      for (const [id, f] of judged.fits) m.fits.set(key(id), { ...f, log_id: judged.log_id });
+      cap(m.fits, 5000);
+      fitLog = judged.log_id ?? null;
+    }
+  }
+  const fits = new Map<string, { fit: FitVerdict; reason: string }>();
+  for (const i of state.items) {
+    const f = m.fits.get(key(i.id));
+    if (f) {
+      fits.set(i.id, f);
+      fitLog ??= f.log_id ?? null;
+    }
+  }
+  state = fits.size ? applyFit(state, fits, !db.session.buyer) : { ...state, items: state.items.slice(0, 12) };
+  state.reading = reading ? { read_as: reading.read_as, kinds: reading.kinds, terms: reading.terms, log_id: reading.log_id } : null;
+  state.fit_log = fits.size ? fitLog : null;
+  return { state, said, quantity, context: buyingContext(db, String(args.need ?? query)), fit_pending: !judging && unjudged.length > 0 && modelOn() };
+}
+
+/** The kinds a reading names that were offered, before the full check: the shortlist the must-have words are checked
+ * against is built from them. */
+function checkNeedKinds(kinds: string[], offered: string[]): string[] {
+  const o = new Set(offered.map((k) => k.toLowerCase()));
+  return [...new Set(kinds.map((k) => k.toLowerCase().trim()))].filter((k) => o.has(k)).slice(0, 4);
 }
 
 /** Two or three finalists side by side, with the rule-based read and, when available, the shopper's wording of it. */
 export async function diveCompare(args: { query: string; ids: string[] }) {
   const db = getDb();
   const ids = (Array.isArray(args.ids) ? args.ids : []).map(String).slice(0, 3);
-  const items = diveItems(db, String(args.query ?? ""), ids);
+  // The same widened search the shortlist came from, so a product found by a kind or another word can be compared.
+  const reading = memo().reads.get(String(args.query ?? "").trim().toLowerCase());
+  const items = diveItems(db, String(args.query ?? ""), ids, reading ? { kinds: reading.kinds, terms: reading.terms } : {});
   if (items.length < 2) fail("Pick two or three products to compare.");
   const verdict = diveVerdict(items);
   return { items, verdict, written: await writeVerdict(String(args.query ?? ""), items, verdict) };

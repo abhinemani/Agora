@@ -148,6 +148,10 @@ interface Index {
   pScope: Set<string>[];
   /** Each product's ways of saying what it is, tokenized: its kind and aliases, or the phrase its name opens with. */
   pKinds: string[][][];
+  /** Products by the review's kind, lowercased: "pickup truck" → the products that are one. */
+  pByKind: Map<string, number[]>;
+  /** Every kind with its products' count, the words of the kind and its aliases, and one product's name. */
+  kindList: { kind: string; count: number; words: Set<string>; example: string }[];
   pIndex: Map<string, number[]>;
   pWeights: Weights;
 }
@@ -219,6 +223,17 @@ function load(): Index {
     return new Set(tokens(`${p.maker ?? ""} ${cats} ${p.kind ?? ""} ${(p.aliases ?? []).join(" ")}`));
   });
   const pKinds = raw.products.map((p) => (p.kind ? [p.kind, ...(p.aliases ?? [])] : [namePhrase(p.name)]).map((x) => tokens(x)));
+  const pByKind = new Map<string, number[]>();
+  const kinds = new Map<string, { kind: string; count: number; words: Set<string>; example: string }>();
+  raw.products.forEach((p, i) => {
+    if (!p.kind) return;
+    const k = p.kind.toLowerCase();
+    (pByKind.get(k) ?? pByKind.set(k, []).get(k)!).push(i);
+    const e = kinds.get(k) ?? kinds.set(k, { kind: k, count: 0, words: new Set<string>(), example: p.name }).get(k)!;
+    e.count++;
+    for (const w of tokens(`${p.kind} ${(p.aliases ?? []).join(" ")}`)) e.words.add(w);
+  });
+  const kindList = [...kinds.values()];
   const pWeights = weightsFor(raw.products.map((_, i) => new Set([...pTitle[i], ...pScope[i]])));
 
   g.__agoraCatalog = {
@@ -241,6 +256,8 @@ function load(): Index {
     pTitle,
     pScope,
     pKinds,
+    pByKind,
+    kindList,
     pIndex: invert(raw.products.map((_, i) => [pTitle[i], pScope[i]])),
     pWeights,
   };
@@ -470,18 +487,27 @@ export interface CatalogProductHit {
   kind_match: number;
   /** Its role from the AI review, when coded: a part or an accessory ranks below the whole item. */
   role: CatalogProduct["role"] | null;
+  /** Its kind from the AI review, when coded. */
+  kind: string | null;
 }
 
 /** Products in the catalog that match a request, each with every contract that sells it. */
-export function catalogProducts(db: Db, item: string, buyer: Buyer | null, limit = 8): { hits: CatalogProductHit[]; total: number } {
+export function catalogProducts(db: Db, item: string, buyer: Buyer | null, limit = 8, opts: { kinds?: string[] } = {}): { hits: CatalogProductHit[]; total: number } {
   const idx = load();
   const itemTokens = requestTokens(item);
-  if (!itemTokens.length) return { hits: [], total: 0 };
+  // Kinds the request was read as (lib/dive-ai.ts): their products are candidates even when no word of the request is
+  // in their names, and they are what was asked for.
+  const chosen = new Set((opts.kinds ?? []).map((k) => k.toLowerCase()).filter((k) => idx.pByKind.has(k)));
+  if (!itemTokens.length && !chosen.size) return { hits: [], total: 0 };
   const found: { i: number; fit: number }[] = [];
+  const seen = new Set<number>();
   for (const i of candidates(idx.pIndex, itemTokens)) {
+    seen.add(i);
     const fit = fitScoreSets(itemTokens, idx.pTitle[i], idx.pScope[i], idx.pWeights);
-    if (fit >= 70) found.push({ i, fit });
+    const isKind = chosen.has((idx.products[i].kind ?? "").toLowerCase());
+    if (fit >= 70 || isKind) found.push({ i, fit: isKind ? Math.max(fit, 90) : fit });
   }
+  for (const k of chosen) for (const i of idx.pByKind.get(k) ?? []) if (!seen.has(i)) found.push({ i, fit: 90 });
   // Among equal fits, the product the request names most squarely: "Dell Rugged Laptop" before a
   // trailer whose long description mentions laptops.
   const ask = new Set(itemTokens);
@@ -521,7 +547,7 @@ export function catalogProducts(db: Db, item: string, buyer: Buyer | null, limit
       .filter((r): r is CatalogRoute => Boolean(r))
       // Routes the buyer can use first, a TRX state contract ahead of a co-op among them, then by price.
       .sort((a, b) => Number(b.member) - Number(a.member) || Number(b.eligible) - Number(a.eligible) || Number(Boolean(buyer) && b.trx && b.eligible) - Number(Boolean(buyer) && a.trx && a.eligible) || (a.price ?? Infinity) - (b.price ?? Infinity));
-    return { product_id: p.id, name: p.name, maker: p.maker, mpn: p.mpn, fit, review: p.review, routes, coverage: cover.get(i) ?? 0, kind_match: kindMatch(itemTokens, idx.pKinds[i]), role: p.role ?? null };
+    return { product_id: p.id, name: p.name, maker: p.maker, mpn: p.mpn, fit, review: p.review, routes, coverage: cover.get(i) ?? 0, kind_match: chosen.has((p.kind ?? "").toLowerCase()) ? 1 : kindMatch(itemTokens, idx.pKinds[i]), role: p.role ?? null, kind: p.kind ?? null };
   };
   const priced = (h: CatalogProductHit) => (h.routes.some((r) => r.price != null) ? 2 : h.routes.some((r) => r.discount != null) ? 1 : 0);
   // The same product listed under several SKUs is one card with every route.
@@ -545,6 +571,29 @@ export function catalogProducts(db: Db, item: string, buyer: Buyer | null, limit
     .sort((a, b) => b.kind_match - a.kind_match || b.fit - a.fit || whole(b) - whole(a) || b.coverage - a.coverage || priced(b) - priced(a) || b.routes.length - a.routes.length || a.name.localeCompare(b.name));
   return { hits: hits.slice(0, limit), total: hits.length };
 }
+
+/** Kinds of product in the catalog that a request could mean, for the model to choose among (lib/dive-ai.ts): those
+ * whose kind or aliases share a word with the request, rarer words first, then those of the products the request's own
+ * words find. Each with how many products are that kind and one product's name. */
+export function catalogKindCandidates(db: Db, text: string, limit = 60): { kind: string; count: number; example: string }[] {
+  const idx = load();
+  const ask = new Set(requestTokens(text).flatMap((w) => [w, ...(SAME_AS[w] ?? [])]));
+  const score = new Map<string, number>();
+  for (const k of idx.kindList) {
+    let s = 0;
+    for (const w of k.words) if (ask.has(w)) s += idx.pWeights.get(w) ?? 1;
+    if (s > 0) score.set(k.kind, s);
+  }
+  for (const h of catalogProducts(db, text, null, 80).hits) if (h.kind) score.set(h.kind.toLowerCase(), Math.max(score.get(h.kind.toLowerCase()) ?? 0, 0.5));
+  const byKind = new Map(idx.kindList.map((k) => [k.kind, k]));
+  return [...score.entries()]
+    .sort((a, b) => b[1] - a[1] || byKind.get(b[0])!.count - byKind.get(a[0])!.count)
+    .slice(0, limit)
+    .map(([k]) => ({ kind: k, count: byKind.get(k)!.count, example: byKind.get(k)!.example }));
+}
+
+/** Whether a kind is one the catalog's products have. */
+export const catalogHasKind = (kind: string) => load().pByKind.has(kind.toLowerCase());
 
 // ------------------------------------------------------------------ suppliers and storefronts
 

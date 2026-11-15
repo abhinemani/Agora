@@ -56,7 +56,13 @@ export default function ContractPage() {
         </Link>
         <div className="mt-4 flex flex-wrap items-center gap-x-2.5 gap-y-1 text-ui-xs text-base-darker">
           <span className={`${label} text-primary`}>{c.kind_label}</span>
-          <span className="font-bold text-ink">{c.program}</span>
+          {c.program_href ? (
+            <Link href={c.program_href} className="font-bold text-ink underline decoration-base-light underline-offset-2 hover:text-primary">
+              {c.program}
+            </Link>
+          ) : (
+            <span className="font-bold text-ink">{c.program}</span>
+          )}
           {c.trx && (
             <span title="A state contract on the TRX program, which Sovra supports. Loci lists it ahead of co-op contracts for that state's buyers.">
               <Badge tone="green">TRX</Badge>
@@ -135,7 +141,7 @@ export default function ContractPage() {
 
         <aside className="space-y-6">
           <dl className="divide-y divide-base-lighter border-y border-base-lighter text-ui-xs">
-            <Fact k="Program" v={c.program} />
+            <Fact k="Program" v={c.program_href ? <Link href={c.program_href} className="text-ink underline decoration-base-light underline-offset-2 hover:text-primary">{c.program}</Link> : c.program} />
             <Fact k="Contract" v={<span className="font-mono">{c.number}</span>} />
             <Fact
               k="Supplier"

@@ -312,6 +312,8 @@ export interface ContractDetail {
   nigp: { source: "published" | "reviewed"; classes: { code: string; label: string | null }[]; codes: { code: string; label: string | null }[] } | null;
   kind_label: string;
   program: string;
+  /** The program's page in Loci (/programs/…), when the catalog holds the program. */
+  program_href: string | null;
   number: string;
   title: string;
   supplier: string;
@@ -356,7 +358,7 @@ const possessive = (name: string) => (/s$/i.test(name) ? `${name}'` : `${name}'s
 const longDate = (d: string) => new Date(`${d}T12:00:00Z`).toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" });
 
 /** What an offering's number is, in plain words, by the vintage the importer gave it. */
-function offeringNote(o: CatalogOffering): string {
+export function offeringNote(o: CatalogOffering): string {
   if (o.price != null && /^NY Preferred Source: Corcraft/.test(o.vintage ?? "")) return "Corcraft price guide price, dock delivered";
   if (o.price != null && /^(NJSTART|Hawaii SPO|Arkansas OSP|NYS OGS|Empire Procure Connect|OregonBuys)/.test(o.vintage ?? "")) return "Awarded state contract price";
   if (o.price != null) return /award/i.test(o.vintage ?? "") ? "Awarded bid, base model" : /net price/i.test(o.vintage ?? "") ? "Contract net price" : /base vehicle|cost sheet/i.test(o.vintage ?? "") ? "Base price, before options and delivery" : "Published price";
@@ -470,6 +472,7 @@ function catalogDetail(db: Db, c: CatalogContract, itemQuery: string): ContractD
         }
       : null,
     program,
+    program_href: `/programs/${encodeURIComponent(c.coop_id)}`,
     number: c.number,
     title: c.title,
     supplier,
@@ -534,6 +537,7 @@ function agoraDetail(db: Db, c: Contract, itemQuery: string): ContractDetail {
     solicitation: null,
     nigp: null,
     program,
+    program_href: coop && catalogIndex().contracts.some((x) => x.coop_id === coop.id) ? `/programs/${encodeURIComponent(coop.id)}` : null,
     number: c.contract_number,
     title: c.title,
     supplier,

@@ -23,6 +23,7 @@ const NAV: Record<Role, { href: string; label: string }[]> = {
     { href: "/dive", label: "Shopper" },
     { href: "/browse", label: "Browse" },
     { href: "/storefronts", label: "Storefronts" },
+    { href: "/programs", label: "Programs" },
     { href: "/contracts", label: "Contracts" },
     { href: "/requests", label: "Requests" },
     { href: "/marketplaces", label: "For cities" },

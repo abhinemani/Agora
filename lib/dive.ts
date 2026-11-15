@@ -5,7 +5,7 @@
 // every answer is a real filter. The model only helps read free text and word
 // the comparison (lib/dive-ai.ts). Server-only: it reads the co-op catalog.
 
-import { buildResults } from "./assistant";
+import { buildResults, coverage, requestTokens } from "./assistant";
 import { catalogProducts } from "./catalog";
 import type { Db, Request } from "./types";
 
@@ -41,6 +41,9 @@ export interface DiveItem {
   usable: boolean;
   access: string;
   fit: number;
+  /** Share of the product's name the request covers, in steps of 0.05: "Folding table" names a folding table more
+   * squarely than a long description that mentions one. Breaks ties between equal fits. */
+  cover: number;
   routes: number;
 }
 
@@ -105,6 +108,7 @@ function gather(db: Db, query: string): DiveItem[] {
 function gatherAll(db: Db, query: string): DiveItem[] {
   const buyer = db.session.buyer;
   const items: DiveItem[] = [];
+  const asked = requestTokens(query);
 
   // Loci's own listings, through the same matching and eligibility rules as search results.
   const request: Request = { id: "dive", raw_text: query, parsed: { item: query, quantity: 1, category: null, deadline: null, department: "", est_total: 0 }, parse_mode: "offline", preference_answer: null, created_at: "", outcome: null };
@@ -130,6 +134,7 @@ function gatherAll(db: Db, query: string): DiveItem[] {
       usable: o.member !== false,
       access: o.member === false ? "On a co-op you'd need to join" : "Open to you",
       fit: o.fit,
+      cover: coverage(asked, l.title),
       routes: 1,
     });
   }
@@ -159,6 +164,7 @@ function gatherAll(db: Db, query: string): DiveItem[] {
       usable: usable(r),
       access: !r.eligible ? `Not open to you: ${r.reason}` : !buyer ? r.reason : r.member || r.coop_id === "gsa_mas" ? "On a co-op you're on" : "On a co-op you'd need to join",
       fit: h.fit,
+      cover: coverage(asked, h.name),
       routes: h.routes.length,
     });
   }
@@ -244,9 +250,10 @@ export function diveSearch(db: Db, query: string, filters: DiveFilter[]): DiveSt
   const q = query.trim().slice(0, 200);
   const pool = q ? gather(db, q) : [];
   const matched = pool.filter((i) => filters.every((f) => passes(i, f)));
-  // What the buyer can use comes first, then a real price, then fit, then the lower price.
+  // What the buyer can use comes first, then a real price, then fit, then the name that says it most squarely, then
+  // the lower price.
   const ranked = [...matched].sort(
-    (a, b) => Number(b.usable) - Number(a.usable) || Number(b.price != null) - Number(a.price != null) || b.fit - a.fit || (priceOf(a) ?? Infinity) - (priceOf(b) ?? Infinity) || a.name.localeCompare(b.name),
+    (a, b) => Number(b.usable) - Number(a.usable) || Number(b.price != null) - Number(a.price != null) || b.fit - a.fit || b.cover - a.cover || (priceOf(a) ?? Infinity) - (priceOf(b) ?? Infinity) || a.name.localeCompare(b.name),
   );
   const prices = matched.map(priceOf).filter((p): p is number => p != null);
   const pays = matched.map((i) => i.price).filter((p): p is number => p != null).sort((a, b) => a - b);

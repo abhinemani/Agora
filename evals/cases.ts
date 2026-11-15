@@ -23,7 +23,7 @@ import * as A from "../lib/actions";
 import type { AiRecord, Outcome, Task } from "../lib/ai-log";
 import { parseRequest } from "../lib/assistant";
 import { getDb } from "../lib/db";
-import type { DiveItem, DiveState } from "../lib/dive";
+import { diveSearch, type DiveItem, type DiveState } from "../lib/dive";
 import type { ContractAnswer, ContractBrief } from "../lib/docs";
 import type { Paperwork } from "../lib/paperwork";
 import { extractFile, parseContract, UPLOAD_DIR, type ExtractedFile } from "../lib/parser";
@@ -60,7 +60,8 @@ export interface Fixtures {
   /** A playground structure: no published price, so the plan starts with a quote. */
   playground: string;
   chairs: DiveState;
-  trucks: DiveState;
+  /** Cargo vans, whose names carry model codes ("T-250") and makes' model names ("ProMaster"). */
+  vans: DiveState;
   finalists: DiveItem[];
   /** Two priced folding tables from the folding-table shortlist. */
   tableFinalists: DiveItem[];
@@ -84,7 +85,7 @@ export async function fixtures(): Promise<Fixtures> {
     return r.id;
   };
   const chairs = (await A.dive({ need: "office chairs" })).state;
-  const trucks = (await A.dive({ need: "pickup trucks" })).state;
+  const vans = (await A.dive({ need: "cargo vans" })).state;
   const tables = (await A.dive({ need: "folding tables" })).state;
   const quote = sampleQuote();
   const quoteLines = (await checkQuote(getDb(), quote)).lines.map(({ part_number, description, quantity, unit_price }) => ({ part_number, description, quantity, unit_price }));
@@ -104,7 +105,7 @@ export async function fixtures(): Promise<Fixtures> {
     manyTables: await request("60 folding tables for the community center"),
     playground: await request("a playground structure for Cedar Park"),
     chairs,
-    trucks,
+    vans,
     finalists: chairs.items.filter((i) => i.price !== null).slice(0, 2),
     tableFinalists: tables.items.filter((i) => i.price !== null).slice(0, 2),
     tablesQuery: tables.query,
@@ -463,8 +464,16 @@ export const CASES: Case[] = [
     id: "dive-read.live.model-code",
     task: "dive_read",
     title: "Reads a model code and an exclusion from the shortlist's words",
-    run: (fx) => narrow(fx.trucks, "F-250 only, not the Lariat"),
-    expect: [survived, is("f-250 required, lariat excluded", (v) => filters(v).some((f) => f.kind === "word" && f.value === "f-250") && filters(v).some((f) => f.kind === "not_word" && f.value === "lariat"))],
+    run: (fx) => narrow(fx.vans, "T-250 only, not the ProMaster"),
+    expect: [survived, is("t-250 required, promaster excluded", (v) => filters(v).some((f) => f.kind === "word" && f.value === "t-250") && filters(v).some((f) => f.kind === "not_word" && f.value === "promaster"))],
+  },
+  {
+    id: "dive-read.guard.toner-not-ton",
+    task: "dive_read",
+    title: "The shortlist for toner holds toner, and no one-ton truck (the stemmer keeps four letters)",
+    canned: {},
+    run: async () => ({ all: diveSearch(getDb(), "toner", []), tons: diveSearch(getDb(), "toner", [{ kind: "word", value: "ton" }]) }),
+    expect: [is<{ all: DiveState; tons: DiveState }>("toner on the shortlist and nothing sold by the ton", (v) => v.all.items.some((i) => /toner/i.test(i.name)) && v.tons.items.length === 0)],
   },
   {
     id: "dive-read.live.not-on-shortlist",

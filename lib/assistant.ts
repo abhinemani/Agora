@@ -45,7 +45,8 @@ const NO_STEM = new Set(["customer", "customers", "center", "centers", "water", 
 function stem(w: string) {
   if (w.length <= 4 || NO_STEM.has(w)) return w;
   let s = w.replace(/(ments|ment|ings|ing|ions|ion|ers|er|ed)$/, "");
-  if (s.length < 3) s = w;
+  // A stem keeps at least four letters: cut shorter, "toner" is "ton" (a one-ton truck) and "tower" is "tow".
+  if (s.length < 4) return w;
   s = s.replace(/e$/, "");
   if (/([bdgklmnprt])\1$/.test(s)) s = s.slice(0, -1);
   return s;
@@ -83,7 +84,7 @@ function idf<T>(rows: T[], textOf: (r: T) => string): Weights {
 /** Share of a listing's name the request covers, ignoring tier qualifiers in
  * parentheses, so the core product ("Enterprise Jury Manager") outranks its
  * add-ons and fine print. Rounded so near-ties fall through to price. */
-function coverage(itemTokens: string[], title: string) {
+export function coverage(itemTokens: string[], title: string) {
   const t = tokens(title.replace(/\([^)]*\)/g, " "));
   if (!t.length) return 0;
   const hit = t.filter((w) => itemTokens.includes(w)).length;

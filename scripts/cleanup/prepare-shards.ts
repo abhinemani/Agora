@@ -22,9 +22,10 @@ const ROOT = join(dirname(fileURLToPath(import.meta.url)), "../..");
 const OUT = join(ROOT, "seed/cleanup/shards");
 const ONLY = new Set(process.argv.slice(2));
 const wanted = (task: string) => !ONLY.size || ONLY.has(task);
-if (!ONLY.size) rmSync(OUT, { recursive: true, force: true });
+if (!ONLY.size) rmSync(OUT, { recursive: true, force: true }); // every task, product-kind's earlier batches included
 mkdirSync(OUT, { recursive: true });
-for (const f of existsSync(OUT) ? readdirSync(OUT) : []) if (ONLY.size && [...ONLY].some((t) => f.startsWith(`${t}-`))) rmSync(join(OUT, f));
+// product-kind is incremental: its answers are numbered by line within each shard, so earlier shards stay as they are.
+for (const f of existsSync(OUT) ? readdirSync(OUT) : []) if (ONLY.size && [...ONLY].some((t) => t !== "product-kind" && f.startsWith(`${t}-`))) rmSync(join(OUT, f));
 
 const jsonl = (path: string) => readFileSync(path, "utf8").split("\n").filter(Boolean).map((l) => JSON.parse(l));
 const gz = (path: string) => gunzipSync(readFileSync(path)).toString("utf8");
@@ -148,20 +149,38 @@ if (wanted("product-name")) shard(
   400,
 );
 
-// 8. What each served product is: its kind ("pickup truck"), its role (a whole item, a part, a rate), and other names
-// buyers use for it. One item per distinct name; the answer applies to every product of that name. The kind must be
-// made of words the product's own record uses (collect.ts checks), so a reviewer names it, it never invents it.
+// 8. What each product is: its kind ("pickup truck"), its role (a whole item, a part, a rate), and other names buyers
+// use for it. One item per distinct name; the answer applies to every product of that name. The kind must be made of
+// words the product's own record uses (collect.ts checks), so a reviewer names it, it never invents it.
+// Run it on the catalog built with every product (AGORA_INCLUDE_STASHED=1 npm run import:catalog-coops), so stashed
+// products are coded too and the stash can follow their role (scripts/product-stash.ts). It is incremental: names with a
+// high- or medium-confidence answer already are skipped, and new shards are numbered after the existing ones. Left to
+// the rules, not the review: products with no price, Burke's hardware families (part numbers under 200) and lines
+// priced by the hour, day or month.
 if (wanted("product-kind")) {
+  const decided: Record<string, { confidence: string }> = existsSync(join(ROOT, "seed/cleanup/decisions/product-kind.json")) ? JSON.parse(readFileSync(join(ROOT, "seed/cleanup/decisions/product-kind.json"), "utf8")) : {};
+  const RATE_UNIT = /^(hours?|hr|hourly|minutes?|days?|weeks?|months?|monthly|quarter|years?|annual|task|fare|miles?|trip|visit|per person|per page|kwh|btu|therm|acre)\b/i;
   const contractById = new Map<string, Item>(catalog.contracts.map((c: Item) => [c.id, c]));
   const offersByProduct = new Map<string, Item[]>();
   for (const o of catalog.offerings) (offersByProduct.get(o.product) ?? offersByProduct.set(o.product, []).get(o.product)!).push(o);
-  const byName = new Map<string, Item>();
+  const queued = new Set<string>();
+  // Names already sent to a reviewer in an earlier batch, answered or not.
+  for (const f of readdirSync(OUT).filter((f) => /^product-kind-\d+\.jsonl$/.test(f)))
+    for (const l of readFileSync(join(OUT, f), "utf8").split("\n").filter(Boolean)) queued.add(String(JSON.parse(l).id));
+  const fresh = new Map<string, Item>();
   for (const p of catalog.products) {
     const key = productKindKey(p.name);
-    if (byName.has(key)) continue;
-    const o = (offersByProduct.get(p.id) ?? [])[0] ?? {};
+    if (fresh.has(key) || (decided[key] && decided[key].confidence !== "low")) continue;
+    // A low-confidence answer is asked again only when AGORA_REASK_LOW=1, and an unanswered one only with it too.
+    if (decided[key] && process.env.AGORA_REASK_LOW !== "1") continue;
+    const offers = offersByProduct.get(p.id) ?? [];
+    if (!offers.some((o) => o.price != null || o.list != null)) continue;
+    const o = offers[0];
+    if (o.coop === "OMNIA Partners" && Number(String(p.mpn ?? "").split("-")[0]) < 200) continue;
+    if (offers.every((x) => RATE_UNIT.test(x.unit ?? ""))) continue;
+    if (queued.has(key) && !decided[key] && process.env.AGORA_REASK_LOW !== "1") continue;
     const c: Item = contractById.get(o.contract) ?? {};
-    byName.set(key, {
+    fresh.set(key, {
       id: key,
       name: p.name,
       maker: p.maker ?? undefined,
@@ -171,7 +190,13 @@ if (wanted("product-kind")) {
       price: o.price ?? o.list ?? undefined,
     });
   }
-  shard("product-kind", [...byName.values()], 500);
+  // Number new shards after the existing ones.
+  const last = Math.max(0, ...readdirSync(OUT).filter((f) => /^product-kind-\d+\.jsonl$/.test(f)).map((f) => Number(f.match(/\d+/)![0])));
+  const items = [...fresh.values()];
+  const size = 480;
+  for (let i = 0; i * size < items.length; i++)
+    writeFileSync(join(OUT, `product-kind-${String(last + i + 1).padStart(2, "0")}.jsonl`), items.slice(i * size, (i + 1) * size).map((x) => JSON.stringify(x)).join("\n") + "\n");
+  counts["product-kind"] = items.length;
 }
 
 if (!ONLY.size) writeFileSync(join(OUT, "index.json"), JSON.stringify({ categories: CATEGORIES, counts }, null, 1));

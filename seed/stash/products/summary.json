@@ -1,16 +1,16 @@
 {
  "retrieved": "2026-11-13",
  "served": {
-  "products": 7575,
-  "offerings": 9181
+  "products": 6169,
+  "offerings": 7717
  },
  "before": {
   "products": 59362,
   "offerings": 69528,
   "priced_offerings": 32117
  },
- "products": 51787,
- "offerings": 60347,
+ "products": 53193,
+ "offerings": 61811,
  "by_reason": {
   "peppm": {
    "products": 21413,
@@ -40,6 +40,10 @@
    "products": 4042,
    "offerings": 7159
   },
+  "reviewed_parts": {
+   "products": 1406,
+   "offerings": 1464
+  },
   "reviewed_services": {
    "products": 361,
    "offerings": 472
@@ -55,54 +59,55 @@
    "stashed": 21413
   },
   "Sourcewell": {
-   "kept": 573,
-   "stashed": 3022
+   "kept": 565,
+   "stashed": 3030
   },
   "NJSTART": {
-   "kept": 2480,
-   "stashed": 2817
+   "kept": 2097,
+   "stashed": 3200
   },
   "Hawaii SPO": {
-   "kept": 1008,
-   "stashed": 448
+   "kept": 757,
+   "stashed": 699
   },
   "Arkansas OSP": {
    "kept": 85,
    "stashed": 0
   },
   "NYS OGS": {
-   "kept": 228,
-   "stashed": 3474
+   "kept": 206,
+   "stashed": 3496
   },
   "NY Preferred Source": {
-   "kept": 1143,
-   "stashed": 531
+   "kept": 946,
+   "stashed": 728
   },
   "OMNIA Partners": {
-   "kept": 1373,
-   "stashed": 10083
+   "kept": 882,
+   "stashed": 10574
   },
   "NASPO ValuePoint": {
-   "kept": 355,
-   "stashed": 0
+   "kept": 326,
+   "stashed": 29
   },
   "BuyBoard": {
    "kept": 138,
    "stashed": 0
   },
   "OregonBuys": {
-   "kept": 192,
-   "stashed": 388
+   "kept": 167,
+   "stashed": 413
   }
  },
  "reasons": {
   "peppm": "PEPPM items: no price (behind the member login), a sample of each contract, many named only by a category or a part number",
   "hgacbuy": "HGACBuy items: no price (a discount with no list price to apply it to, or by quote)",
   "no_price": "Items with no price of any kind",
-  "burke_parts": "Burke playground components and structure parts (everything but the freestanding items, part numbers 550 to 599)",
-  "crash_parts": "New York's crash-mitigation award: replacement parts for barriers and attenuators",
-  "canon_extras": "Canon software licences, service plans, installation and accessories",
+  "burke_parts": "Burke playground components the review did not code (by part-number family: everything but 550 to 599)",
+  "crash_parts": "Items on New York's crash-mitigation award the review did not code",
+  "canon_extras": "Canon licences, service plans and accessories the review did not code",
   "rates": "Rate lines, not products: hourly and monthly rates, fares, per-minute calls, rentals, fees and multi-year service prices",
-  "reviewed_services": "Rates and services the AI review found among the rest (installation, training, a study), which the patterns above missed"
+  "reviewed_parts": "Parts and accessories, by the AI review: a component or an add-on of something else (a swing hanger, a copier finisher, a vehicle option)",
+  "reviewed_services": "Rates and services, by the AI review: hourly and per-unit rates, installation, training, a study"
  }
 }

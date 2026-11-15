@@ -28,11 +28,12 @@ export const STASH_REASONS = {
   peppm: "PEPPM items: no price (behind the member login), a sample of each contract, many named only by a category or a part number",
   hgacbuy: "HGACBuy items: no price (a discount with no list price to apply it to, or by quote)",
   no_price: "Items with no price of any kind",
-  burke_parts: "Burke playground components and structure parts (everything but the freestanding items, part numbers 550 to 599)",
-  crash_parts: "New York's crash-mitigation award: replacement parts for barriers and attenuators",
-  canon_extras: "Canon software licences, service plans, installation and accessories",
+  burke_parts: "Burke playground components the review did not code (by part-number family: everything but 550 to 599)",
+  crash_parts: "Items on New York's crash-mitigation award the review did not code",
+  canon_extras: "Canon licences, service plans and accessories the review did not code",
   rates: "Rate lines, not products: hourly and monthly rates, fares, per-minute calls, rentals, fees and multi-year service prices",
-  reviewed_services: "Rates and services the AI review found among the rest (installation, training, a study), which the patterns above missed",
+  reviewed_parts: "Parts and accessories, by the AI review: a component or an add-on of something else (a swing hanger, a copier finisher, a vehicle option)",
+  reviewed_services: "Rates and services, by the AI review: hourly and per-unit rates, installation, training, a study",
 } as const;
 export type StashReason = keyof typeof STASH_REASONS;
 
@@ -48,11 +49,21 @@ const SERVICE_AWARD =
 /** Canon's price-file sections that hold machines and what they consume. */
 const CANON_KEEP = /^(Printer|Scanner)\b|Supplies (and|&) Consumables/;
 
-/** Why an offering is stashed, or null when it is served. `contractTitle` is its contract's title. */
+/** Why an offering is stashed, or null when it is served. `contractTitle` is its contract's title.
+ *
+ * Three hard rules come first: no price, a co-op whose items carry none (PEPPM, HGACBuy), and a line priced by time or
+ * a service award. Then the AI review's role decides wherever it gave a confident answer (scripts/product-kind.ts):
+ * whole items and consumables are served, parts, accessories, rates and services are not. The patterns after it
+ * (Burke's part families, the crash-mitigation award, Canon's sections, words in names) only decide for products the
+ * review could not code. */
 export function stashReason(o: StashOffering, p: StashProduct, contractTitle: string): StashReason | null {
   if (o.coop === "PEPPM") return "peppm";
   if (o.coop === "HGACBuy") return "hgacbuy";
   if (o.price == null && o.list == null) return "no_price";
+  if (SERVICE_AWARD.test(contractTitle) || RATE_UNIT.test(o.unit ?? "")) return "rates";
+  if (p.role === "item" || p.role === "consumable") return null;
+  if (p.role === "part" || p.role === "accessory") return "reviewed_parts";
+  if (p.role === "rate" || p.role === "service") return "reviewed_services";
   if (o.coop === "OMNIA Partners" && /burke/i.test(p.maker ?? "")) {
     // Burke numbers its parts by family: under 200 are bolts, posts and panels; 200 to 549 and 600 up are pieces of a
     // play structure; 550 to 599 stand on their own (swings, spinners, benches, tables, bike racks, ball games).
@@ -65,7 +76,6 @@ export function stashReason(o: StashOffering, p: StashProduct, contractTitle: st
     // The few machines the capture filed under no section (imageRUNNER, imageFORCE) carry no category.
     if (!(section === "" || CANON_KEEP.test(section)) || RATE_NAME.test(p.name) || /\b(install|installation|ecarepak|license|licence)\b/i.test(p.name)) return "canon_extras";
   }
-  if (SERVICE_AWARD.test(contractTitle) || RATE_UNIT.test(o.unit ?? "") || RATE_NAME.test(p.name)) return "rates";
-  if (p.role === "rate" || p.role === "service") return "reviewed_services";
+  if (RATE_NAME.test(p.name)) return "rates";
   return null;
 }

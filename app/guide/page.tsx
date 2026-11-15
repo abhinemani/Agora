@@ -84,36 +84,38 @@ export default function GuidePage() {
     [
       "Say what the agency needs",
       <>
-        Type it on the <Link href="/" className={link}>home page</Link> the way it would be said aloud: {EXAMPLES.slice(0, 3).map((e) => `“${e}”`).join(", ")}. For a product, Loci asks a few
-        questions to narrow it down before searching. Software, services and construction go straight to results.
+        Type it on the <Link href="/" className={link}>home page</Link> the way it would be said aloud: {EXAMPLES.slice(0, 3).map((e) => `“${e}”`).join(", ")}. Searching is free and needs
+        no account.
       </>,
     ],
     [
-      "Choose the agency",
+      "Answer a few questions",
       <>
-        Pick it under <strong>Your agency</strong> in the menu, or when the results ask. Loci needs it to check which co-ops the agency is on and what its state allows. Without one, eligibility
-        reads “Not checked”.
+        For a product, Loci asks who is buying, how many, and then what separates the products it found: a price band, a maker, a feature. Each answer narrows the shortlist. Software,
+        services and construction skip this and go straight to results. Naming the agency is optional, but without one Loci shows who each contract is open to and marks eligibility “Not
+        checked”.
       </>,
     ],
     [
       "Read the recommended route",
       <>
-        The results page opens with the request as Loci understood it, then one recommended route: the contract to buy on, the price, whether the agency may use it, and how the purchase is
-        paid for.
+        The results page opens with the request as Loci read it, then one recommended route: the supplier, the contract it is bought under, the price, whether the agency may use it, how
+        it is paid for, and the lead time. A “Not known” line says what the data does not hold.
       </>,
     ],
     [
       "Compare the other options",
       <>
-        Every priced option is in one table below the recommendation, in ranked order. Further down, folded, are contracts that cover the purchase but publish no price, other states&apos;
-        contracts, and co-ops the agency would have to join.
+        Every priced option is in one table below the recommendation, in ranked order. Further down, folded to a row each, are co-op contracts, contracts that cover the purchase but have
+        no prices on file, other states&apos; contracts, and contracts not open to the agency.
       </>,
     ],
     [
       "Buy, or send it on",
       <>
-        Under the agency&apos;s quick-buy limit an order checks out on a P-card. Over it, Loci starts a purchase order for purchasing to approve. A co-op order is placed on the co-op&apos;s
-        own site, and a contract with no price on file starts with a quote request. The purchase file on the results page records what was considered and why.
+        Under the agency&apos;s quick-buy limit an order checks out on a P-card. At or over it, the cart goes to purchasing for approval as a purchase order. A cart can also be handed to
+        someone who is allowed to buy. A co-op contract is ordered on the co-op&apos;s own site, which Loci links to. When nothing fits, Loci offers a quote under a contract the agency
+        can already use, quotes from a few suppliers, or a solicitation, in that order. Placing an order or saving a request needs an account.
       </>,
     ],
   ];
@@ -162,8 +164,10 @@ export default function GuidePage() {
           ))}
         </ol>
         <p className="mt-4 max-w-[72ex] text-ui-xs text-base-dark">
-          There are other ways in. <Link href="/browse" className={link}>Browse</Link> lists products by category, <Link href="/contracts" className={link}>Contracts</Link> is the register of
-          every contract Loci holds, and <Link href="/quote-check" className={link}>Quote check</Link> compares a vendor&apos;s quote with prices on contract.
+          There are other ways in. <Link href="/browse" className={link}>Browse</Link> lists the catalog by category, and <Link href="/contracts" className={link}>Contracts</Link>{" "}
+          searches every contract Loci holds, each with its own page: who can use it, how to buy under it, and what its documents say. Under Shopper,{" "}
+          <Link href="/quote-check" className={link}>Check a quote</Link> compares a vendor&apos;s quote line by line with the prices on file, and{" "}
+          <Link href="/ask" className={link}>Ask a contract</Link> answers a question from a contract&apos;s own documents.
         </p>
       </Section>
 
@@ -185,18 +189,28 @@ export default function GuidePage() {
             [
               "State contract",
               <>
-                A contract a state awarded and opened to its local governments. For buyers in {trxStates}, Loci holds the state&apos;s own contracts and shows them ahead of co-op contracts.
+                A contract a state awarded and opened to its local governments. Loci holds the state contracts of {trxStates}, and shows them first to buyers in those states.
               </>,
             ],
             [
               "Co-op contract",
               "A contract awarded by a purchasing cooperative, such as Sourcewell or NASPO ValuePoint, for its members to share. The co-op ran the competition, so a member can buy without bidding again where its state allows.",
             ],
+            [
+              "TRX",
+              "The label on state contracts in the states above. They are the route Loci prefers: the state has already competed them for its local governments.",
+            ],
+            [
+              "Participating addendum",
+              "The agreement by which a state adopts a NASPO ValuePoint contract. An agency uses a NASPO contract through its state's addendum, so a contract with none for that state reads “Needs a state addendum”.",
+            ],
             ["GSA schedule", "A federal contract. State and local governments may use one only for the categories GSA opens to them."],
-            ["Reseller", "A vendor authorized to sell under a larger master agreement held by someone else."],
-            ["No approval needed", "A purchase small enough that the agency's rules ask for no contract at all."],
+            ["Reseller", "A vendor authorized to sell under a master agreement someone else holds. Reseller options are listed last, after agency, state and co-op routes."],
+            ["No approval needed", "A supplier with no contract, for purchases small enough that the agency's rules ask for none."],
             ["Piggybacking", "Buying on a contract another government awarded. It is allowed only when that contract says so and the buyer's state permits it."],
             ["Solicitation", "A new competition (a bid or an RFP), run when nothing on contract fits. It is the slowest route and is offered last."],
+            ["City marketplace", "Loci set up for one agency's staff, with its own contracts, rules and approvals. Riverbend's is the one shown, and Riverbend is fictional."],
+            ["Storefront", "A supplier's page: its catalog, the contracts it sells through, its certifications and reviews."],
           ]}
         />
         <Terms
@@ -204,23 +218,28 @@ export default function GuidePage() {
           note="These appear in the Eligibility and Requirement columns of the options table."
           terms={[
             ["Eligible", "The agency may use the contract: it is the agency's own, its state's, or a co-op's that the agency is on."],
-            ["Membership required", "The contract belongs to a co-op the agency is not known to be on. Joining most co-ops is free, but it is a step purchasing has to take."],
+            ["Membership required", "The contract belongs to a co-op the agency is not known to be on. Loci can send purchasing a request to join. Elsewhere this reads “Join to use”."],
+            [
+              "Detected membership",
+              "A co-op membership Loci found by matching the agency to a co-op's member list. It counts right away, and purchasing can confirm it, remove it or add one by hand.",
+            ],
             ["Not checked", "No agency is selected, so Loci cannot say who may use the contract."],
-            ["Quick-buy limit", "The amount under which the agency lets staff buy without a purchase order. Each agency sets its own."],
+            ["Quick-buy limit", "The amount under which the agency lets staff buy without a purchase order. Each agency sets its own; where Loci does not know it, a typical one is used."],
             ["P-card", "A purchasing card: the agency's credit card, used for orders under the quick-buy limit."],
             ["Purchase order", "The agency's formal order to a supplier, approved by purchasing. Orders over the quick-buy limit need one."],
-            ["Co-op order", "An order placed on the co-op's own site, not in Loci. Loci links to the contract there."],
+            ["Co-op order", "An order placed on the co-op's own site. Loci does not sell through a co-op's contracts unless the co-op has agreed to it; it links to the contract there."],
             ["By quote", "The contract covers the purchase but publishes no price, so the supplier quotes one under the contract."],
+            ["Purchase file", "The record of a request, kept beside the results: what was asked for, the options considered, the route chosen and why, and what is outstanding. It downloads as a text file."],
           ]}
         />
         <Terms
           title="Prices"
           note="Every price Loci shows was read from a published line, and is labelled with what kind of price it is. Loci never estimates one."
           terms={[
-            ["Awarded bid", "The price a supplier bid and a government accepted. It is what a buyer on that contract pays."],
+            ["Awarded bid", "The price a supplier bid and a government accepted. On vehicles it is a base price: the base model, which options add to."],
             ["Contract price", "A price stated in the contract or its price sheet. A contract net price is the price after the contract's discount, as the document prints it."],
             ["Not-to-exceed rate", "A ceiling. The supplier may charge less, never more."],
-            ["List price", "The supplier's catalog price before any contract discount. It is shown as a list price and never as what a buyer pays."],
+            ["List price", "The supplier's catalog price before the contract's discount. It is a ceiling, shown as a list price and never as what a buyer pays. Loci does not show discount percentages."],
             ["Reference price", "A price shown for comparison on a route that buys by quote. The quote sets the real one."],
             ["Vintage", "When and where a price was published: the price file or contract it was read from, and its date."],
           ]}
@@ -243,9 +262,20 @@ export default function GuidePage() {
               "[mirror], [secondary], [unverified]",
               "Flags on a state rule that say how well it was sourced: read on a third-party site and not the official code; taken from a league, law firm or vendor; or not confirmed in anything read. “Currency unconfirmed” means the text may have been amended since.",
             ],
+            [
+              "Fit score",
+              "How much of the request an option covers, from 0 to 100. Words in its name count most, and rarer words weigh more. Sponsorship never changes it.",
+            ],
+            ["Research lead", "A real contract whose current terms Loci has not confirmed against a source document. It is shown as a lead to follow up, not as a checked record."],
             ["NIGP code", "The commodity code governments use to classify what they buy. Loci uses it to match a request to contracts."],
-            ["Verified", "A supplier whose registration and certifications were checked. In this prototype the demo suppliers' checks are simulated and marked as demo."],
-            ["Sponsored", "A listing its supplier paid to place. It is always labelled."],
+            [
+              "Verified",
+              "A supplier whose checks were all run and passed: SAM.gov registration and exclusions, Section 889, insurance and each certification. Only the fictional demo suppliers carry results, marked as demo. Real companies show every check as not checked yet.",
+            ],
+            [
+              "Sponsored",
+              "A listing its supplier paid to place. It is always labelled. It can move a listing up among contracts of its own kind, and never changes a fit score or who may use a contract. Co-ops cannot buy placement.",
+            ],
           ]}
         />
       </Section>
@@ -341,6 +371,12 @@ export default function GuidePage() {
               agencies, and no order reaches a supplier.
             </p>
           </Question>
+          <Question q="Is an account needed?">
+            <p>
+              Not to search. The home page, the contract pages and the Shopper tools are open to everyone. Anything that keeps a record needs one: the cart, checkout, orders, uploading a
+              contract and the purchasing pages.
+            </p>
+          </Question>
           <Question q="Does “Eligible” mean the agency is cleared to buy?">
             <p>
               It means Loci found no barrier: the contract is open to the agency, and the agency is on the co-op where one is involved. The agency&apos;s own purchasing rules and its
@@ -379,9 +415,10 @@ export default function GuidePage() {
           </Question>
           <Question q="Where does AI come in?">
             <p>
-              A model reads the request into fields, reads scanned contract documents, answers questions about a contract, and reviews data judgments too fuzzy for rules, such as whether a
-              line is a product or a part. It never sets a price or decides eligibility; rules and published data do. Text a model wrote has a thumbs up and down under it, and the{" "}
-              <Link href="/quality" className={link}>AI quality page</Link> counts how often its output is kept.
+              A model reads a request into fields, words the buying plan, answers questions about a purchase or a contract, reads quotes and scanned documents, and reviews data judgments
+              too fuzzy for rules, such as whether a line is a product or a part. Prices, eligibility and the route come from rules and published data, and the model cannot take an action.
+              Each answer is checked before it is shown: one that states a figure the data does not hold, or misquotes a contract, is discarded. Text a model wrote has a thumbs up and
+              down under it, and the <Link href="/quality" className={link}>AI quality page</Link> counts what was kept and what was thrown away.
             </p>
           </Question>
           <Question q="Is the state rule note legal advice?">
@@ -396,9 +433,10 @@ export default function GuidePage() {
               themselves, which keeps the contacts it prints so a buyer can reach the contract manager.
             </p>
           </Question>
-          <Question q="How does Loci make money?">
+          <Question q="What does Loci cost?">
             <p>
-              Through subscriptions, supplier fees and fees on spend. Sponsored listings are labelled. <Link href="/model" className={link}>How Loci earns</Link> sets out each one.
+              Searching is free. An agency pays a subscription for its own city marketplace, and a supplier pays for a fuller storefront or a sponsored placement.{" "}
+              <Link href="/model" className={link}>How Loci earns</Link> sets out each one.
             </p>
           </Question>
         </div>

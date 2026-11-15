@@ -27,6 +27,8 @@ const NOT_PRICES = /summary page|terms and conditions/i;
 export const isPriceSheet = (label: string) => PRICE_LABEL.test(label) && !NOT_PRICES.test(label);
 /** Characters of sheet text per request: enough rows to be worth a call, few enough that the answer fits. */
 const CHUNK = 14_000;
+/** Parts of one sheet sent to the model at once (AGORA_PRICE_PARTS); sheets read at once is AGORA_PRICE_WORKERS. */
+const PARTS_AT_ONCE = Number(process.env.AGORA_PRICE_PARTS ?? 4);
 
 // ------------------------------------------------------------------ the reading and the check (pure where possible)
 
@@ -94,14 +96,16 @@ export function chunks(text: string): string[] {
 }
 
 /** Read one sheet's text into checked rows. Each run is one model call, reported with pieces(). */
-export async function readPriceSheet(text: string, label: string): Promise<{ rows: (PriceRow & { run: number })[]; proposed: number; dropped: Record<string, number>; failed_runs: number }> {
+export async function readPriceSheet(text: string, label: string): Promise<{ rows: (PriceRow & { run: number })[]; proposed: number; dropped: Record<string, number>; examples: { why: string; item: string; price: number; line: string }[]; failed_runs: number }> {
+  const examples: { why: string; item: string; price: number; line: string }[] = [];
   const kept: (PriceRow & { run: number })[] = [];
   const dropped: Record<string, number> = {};
   let proposed = 0;
   let failed = 0;
   const runs = chunks(text).slice(0, 60);
-  for (const [i, run] of runs.entries()) {
-    const out = await structured({
+  // A sheet's parts go to the model a few at a time; the rows are checked and kept in the sheet's order afterwards.
+  const ask = (run: string, i: number) =>
+    structured({
       task: "price_sheet",
       about: `${label}, part ${i + 1} of ${runs.length}`,
       system: SYSTEM,
@@ -112,6 +116,18 @@ export async function readPriceSheet(text: string, label: string): Promise<{ row
       effort: "low",
       model: SCAN_MODEL,
     });
+  const answers: (z.infer<typeof Schema> | null)[] = new Array(runs.length).fill(null);
+  let next = 0;
+  await Promise.all(
+    Array.from({ length: Math.min(PARTS_AT_ONCE, runs.length) }, async () => {
+      while (next < runs.length) {
+        const i = next++;
+        answers[i] = await ask(runs[i], i);
+      }
+    }),
+  );
+  for (const [i, run] of runs.entries()) {
+    const out = answers[i];
     if (!out) {
       failed++;
       continue;
@@ -127,6 +143,7 @@ export async function readPriceSheet(text: string, label: string): Promise<{ row
       seen.add(key);
       if (problem) {
         dropped[problem] = (dropped[problem] ?? 0) + 1;
+        if (examples.filter((x) => x.why === problem).length < 3) examples.push({ why: problem, item: r.item, price: r.price, line: r.line.slice(0, 200) });
         why.push(problem);
         continue;
       }
@@ -135,7 +152,7 @@ export async function readPriceSheet(text: string, label: string): Promise<{ row
     }
     pieces(out, `${good} of ${out.rows.length} rows kept`, good, out.rows.length, [...new Set(why)].join("; "), { declined: !out.rows.length });
   }
-  return { rows: kept, proposed, dropped, failed_runs: failed };
+  return { rows: kept, proposed, dropped, examples, failed_runs: failed };
 }
 
 // ------------------------------------------------------------------ the run on the server
@@ -245,7 +262,7 @@ export async function runPriceSheets(mode: "sample" | "all"): Promise<void> {
       state.done++;
     }
   };
-  await Promise.all(Array.from({ length: Number(process.env.AGORA_PRICE_WORKERS ?? 4) }, worker));
+  await Promise.all(Array.from({ length: Number(process.env.AGORA_PRICE_WORKERS ?? 8) }, worker));
   state.phase = "done";
   console.log(`[prices] done: ${state.rows} rows from ${state.done} sheets`);
 }

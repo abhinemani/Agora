@@ -770,3 +770,19 @@ export function catalogBrowse(category: string, q: string, offset: number, limit
   const matching = words.length ? list.filter((x) => words.every((w) => `${x.name} ${x.maker ?? ""} ${x.mpn ?? ""} ${x.supplier}`.toLowerCase().includes(w))) : list;
   return { total: matching.length, items: matching.slice(offset, offset + limit) };
 }
+
+/** The catalog's size for the home page: current contracts, the companies holding them, products, and programs. */
+export function catalogTotals(): { contracts: number; suppliers: number; products: number; priced: number; programs: number } {
+  const g = globalThis as unknown as { __agoraTotals?: ReturnType<typeof catalogTotals> };
+  if (g.__agoraTotals) return g.__agoraTotals;
+  const idx = load();
+  const current = idx.contracts.filter((c) => !expired(c));
+  const cats = browseIndex().categories;
+  return (g.__agoraTotals = {
+    contracts: current.length,
+    suppliers: new Set(current.map((c) => c.supplier)).size,
+    products: cats.reduce((n, c) => n + c.products, 0),
+    priced: cats.reduce((n, c) => n + c.priced, 0),
+    programs: new Set(current.map((c) => c.coop)).size,
+  });
+}

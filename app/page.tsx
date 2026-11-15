@@ -26,6 +26,17 @@ export default function Home() {
   const [busy, setBusy] = useState(false);
   const [picking, setPicking] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [totals, setTotals] = useState<{ contracts: number; suppliers: number; products: number; programs: number; categories: { name: string; products: number }[] } | null>(null);
+  useEffect(() => {
+    let live = true;
+    fetch("/api/catalog/summary")
+      .then((r) => r.json())
+      .then((j) => live && setTotals(j))
+      .catch(() => undefined);
+    return () => {
+      live = false;
+    };
+  }, []);
   const input = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
@@ -39,9 +50,15 @@ export default function Home() {
     .filter((l): l is Listing => !!l)
     .map((listing) => ({ listing, supplier: db.suppliers.find((s) => s.id === listing.supplier_id)! }))
     .filter((r) => r.supplier);
-  const suppliers = new Set(db.listings.map((l) => l.supplier_id)).size;
-  const products = new Set(db.listings.map((l) => l.family ?? l.id)).size;
+  // Riverbend's own marketplace, plus the co-op and state catalog on the server (/api/catalog/summary).
+  const localSuppliers = new Set(db.listings.map((l) => l.supplier_id)).size;
+  const localProducts = new Set(db.listings.map((l) => l.family ?? l.id)).size;
   const vehicles = [...new Set(db.contracts.map((c) => c.vehicle).filter((v): v is string => !!v && v !== "Reseller"))];
+  const contractCount = db.contracts.length + (totals?.contracts ?? 0);
+  const suppliers = localSuppliers + (totals?.suppliers ?? 0);
+  const products = localProducts + (totals?.products ?? 0);
+  const programs = vehicles.length + (totals?.programs ?? 0);
+  const n = (x: number) => (totals ? x.toLocaleString() : "…");
   const prices = preview.map((r) => r.listing.unit_price).filter((n) => Number.isFinite(n));
   const priceRange = prices.length > 1 ? `${money(Math.min(...prices), false)}–${money(Math.max(...prices), false)} each` : undefined;
 
@@ -65,7 +82,7 @@ export default function Home() {
     <div className="pb-8">
       {/* Hero: one question, one box, drawn as a blueprint. Full bleed, out of main's padding. */}
       <section className="relative -mt-8 mx-[calc(50%-50vw)] overflow-hidden bg-[#0F3D73] px-8 pb-48 pt-16 text-center sm:pt-24 md:px-5 md:pb-32">
-        <BlueprintBackdrop contracts={db.contracts.length} suppliers={suppliers} products={products} vehicles={vehicles.length} priceRange={priceRange} />
+        <BlueprintBackdrop contracts={contractCount} suppliers={suppliers} products={products} vehicles={programs} priceRange={priceRange} />
         <div className="relative mx-auto max-w-3xl">
           <div className="text-ui-2xs font-bold text-[#A8CBF2]">Government buying, simplified</div>
           <h1 className="mx-auto mt-5 max-w-3xl font-heading text-[clamp(2rem,4.4vw,3.4rem)] font-bold leading-[1.12] text-[#fff]">What are you looking to buy?</h1>
@@ -73,7 +90,7 @@ export default function Home() {
             Search state and cooperative contracts in one place. Loci shows which ones your agency can use, what they cost, and how to buy.
           </p>
           <div className="mx-auto mt-14 max-w-3xl">
-            <DimensionFrame working={busy} label={busy ? `FIG. 2 · CHECKING ${db.contracts.length} CONTRACTS` : `FIG. 2 · SEARCH ${db.contracts.length} CONTRACTS`}>
+            <DimensionFrame working={busy} label={busy ? `FIG. 2 · CHECKING ${n(contractCount)} CONTRACTS` : `FIG. 2 · SEARCH ${n(contractCount)} CONTRACTS`}>
               <form
                 className="flex flex-col gap-2 bg-[#fff] p-1.5 focus-within:outline focus-within:outline-4 focus-within:outline-focus sm:flex-row sm:items-center sm:pl-4"
                 onSubmit={(e) => {
@@ -162,14 +179,14 @@ export default function Home() {
           <Annotation fig={3}>One request, every contract</Annotation>
           <h2 className="mt-3 text-[1.9rem] font-bold leading-tight text-ink">Stop checking five portals for the same folding table.</h2>
           <p className="mt-3 text-[15px] leading-relaxed text-slate">
-            Loci reads {db.contracts.length} contracts from {suppliers} suppliers, {products.toLocaleString()} products in all, and lines them up side by side. Tell it your agency
+            Loci reads {n(contractCount)} contracts from {n(suppliers)} suppliers, {n(products)} products in all, and lines them up side by side. Tell it your agency
             and it hides the ones you can't use; leave it blank and it shows who each contract is open to.
           </p>
           <dl className="mt-6 grid grid-cols-3 border border-base-lighter">
             {[
-              [db.contracts.length, "contracts"],
-              [suppliers, "suppliers"],
-              [products.toLocaleString(), "products"],
+              [n(contractCount), "contracts"],
+              [n(suppliers), "suppliers"],
+              [n(products), "products"],
             ].map(([n, label], i) => (
               <div key={label} className={`flex flex-col-reverse px-4 py-3 ${i ? "border-l border-base-lighter" : ""}`}>
                 <dt className="font-mono text-[11px] uppercase tracking-[0.14em] text-base-dark">{label}</dt>
@@ -178,7 +195,7 @@ export default function Home() {
             ))}
           </dl>
         </div>
-        {preview.length > 0 && <HeroPreview rows={preview} contractCount={db.contracts.length} onRun={() => submit("40 folding tables for the rec center")} />}
+        {preview.length > 0 && <HeroPreview rows={preview} contractCount={contractCount} onRun={() => submit("40 folding tables for the rec center")} />}
       </section>
 
       <section className="mt-14">
@@ -192,8 +209,7 @@ export default function Home() {
           </Link>
         </div>
         <div className="mt-4 grid grid-cols-2 border-l border-t border-base-lighter sm:grid-cols-3 lg:grid-cols-6">
-          {CATEGORIES.filter((c) => db.listings.some((l) => l.category === c)).map((c) => {
-            const n = new Set(db.listings.filter((l) => l.category === c).map((l) => l.family ?? l.id)).size;
+          {CATEGORIES.map((c) => ({ c, count: new Set(db.listings.filter((l) => l.category === c).map((l) => l.family ?? l.id)).size + (totals?.categories.find((x) => x.name === c)?.products ?? 0) })).filter((x) => x.count > 0).map(({ c, count }) => {
             return (
               <Link
                 key={c}
@@ -204,7 +220,7 @@ export default function Home() {
                 <span className="min-w-0">
                   <span className="block truncate text-sm font-semibold text-ink group-hover:text-primary">{c}</span>
                   <span className="mt-0.5 block font-mono text-[11px] uppercase tracking-[0.12em] text-base-dark">
-                    {n.toLocaleString()} products
+                    {count.toLocaleString()} products
                   </span>
                 </span>
               </Link>

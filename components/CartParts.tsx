@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useState } from "react";
-import { cartGroups, cartTotal, ORDER_STATUS, PURCHASER, type CartGroup } from "@/lib/orders";
+import { cartGroups, cartTotal, ORDER_STATUS, PURCHASER, type CartGroup, lineHref, lineListing } from "@/lib/orders";
 import type { Cart } from "@/lib/types";
 import { useStore } from "./store";
 import { Badge, Button, Card, ErrorNote, SourcePill, SupplierBadges, money } from "./ui";
@@ -30,11 +30,17 @@ export function SupplierGroup({ g, editable }: { g: CartGroup; editable?: boolea
         {g.lines.map((l) => (
           <li key={l.listing.id} className="flex flex-wrap items-center gap-3 px-4 py-3">
             <div className="min-w-0 flex-1">
-              <Link href={`/product/${l.listing.id}`} className="text-sm font-semibold text-navy hover:text-maroon hover:underline">
+              <Link href={lineHref({ listing_id: l.listing.id, catalog: l.catalog })} className="text-sm font-semibold text-navy hover:text-maroon hover:underline">
                 {l.listing.title}
               </Link>
-              <div className="mt-0.5">
+              <div className="mt-0.5 flex flex-wrap items-center gap-x-2 gap-y-1">
                 <SourcePill source={l.listing.source} contractId={l.listing.contract_id} />
+                {l.catalog && (
+                  <span className="text-ui-3xs text-base-dark">
+                    {l.catalog.program} {l.catalog.contract_number} · {l.catalog.price_note}
+                    {l.catalog.vintage ? ` (${l.catalog.vintage})` : ""}
+                  </span>
+                )}
               </div>
             </div>
             {editable ? (
@@ -54,7 +60,7 @@ export function SupplierGroup({ g, editable }: { g: CartGroup; editable?: boolea
             <span className="w-24 text-right text-xs tabular-nums text-slate">{money(l.unit)} ea</span>
             <span className="w-24 text-right text-sm font-semibold tabular-nums text-navy">{money(l.total)}</span>
             {editable && (
-              <button onClick={() => act("updateCartLine", { listingId: l.listing.id, quantity: 0 })} className="text-xs text-slate hover:text-red-700" aria-label={`Remove ${l.listing.title}`}>
+              <button onClick={() => act("updateCartLine", { listingId: l.listing.id, quantity: 0 })} className="text-xs text-slate hover:text-error-dark" aria-label={`Remove ${l.listing.title}`}>
                 Remove
               </button>
             )}
@@ -113,7 +119,7 @@ export function CartSummary({ cart, onRevised, approver }: { cart: Cart; onRevis
       {cart.status === "approved" ? (
         <ul className="mt-3 divide-y divide-navy/5 text-sm">
           {orders.map((o) => {
-            const l = db.listings.find((x) => x.id === o.listing_id);
+            const l = lineListing(db, o);
             return (
               <li key={o.id} className="flex flex-wrap items-center justify-between gap-2 py-2">
                 <Link href={`/orders/${o.id}`} className="font-semibold text-navy hover:text-maroon hover:underline">

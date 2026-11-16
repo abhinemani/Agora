@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useEffect, useMemo, useRef, useState } from "react";
 import type { ResultOption, Results } from "@/lib/assistant";
+import { goHref } from "@/lib/coops";
 import { buildPlan, clearMatch, defaultSelection, purchaseFileText, shopperAddOns, shopperCandidates, usd, type Plan, type PlanRoute, type ShopperSelection } from "@/lib/shopper";
 import type { ShopperText } from "@/lib/shopper-ai";
 import { Feedback } from "./Feedback";
@@ -105,7 +106,7 @@ export function Shopper({ results, requestId, onChanged, options, children }: { 
   const addOnQty = (id: string) => sel.add_ons.find((a) => a.listing_id === id)?.quantity;
   const toggleAddOn = (id: string) =>
     setSel((s) => ({ ...s, add_ons: s.add_ons.some((a) => a.listing_id === id) ? s.add_ons.filter((a) => a.listing_id !== id) : [...s.add_ons, { listing_id: id, quantity: s.quantity }] }));
-  const pick = (listing_id: string | null) => setSel((s) => ({ ...s, listing_id, add_ons: [] }));
+  const pick = (listing_id: string | null) => setSel((s) => ({ ...s, listing_id, pick: null, add_ons: [] }));
 
   const run = async (fn: () => Promise<unknown>) => {
     setBusy(true);
@@ -445,7 +446,8 @@ function PricedActions({ plan, requestId }: { plan: Plan; requestId: string }) {
     setState("busy");
     setError(null);
     try {
-      for (const l of plan.lines) await act("addToCart", { listingId: l.listing_id, quantity: l.quantity, requestId });
+      for (const l of plan.lines)
+        await (l.offering_id ? act("addCatalogToCart", { offeringId: l.offering_id, quantity: l.quantity, requestId }) : act("addToCart", { listingId: l.listing_id, quantity: l.quantity, requestId }));
       setState("done");
     } catch (e) {
       setError((e as Error).message);
@@ -461,17 +463,22 @@ function PricedActions({ plan, requestId }: { plan: Plan; requestId: string }) {
           </Link>
         ) : (
           <>
-            {plan.lines.length === 1 && (
+            {plan.lines.length === 1 && !first.offering_id && (
               <Link href={`/checkout?listing=${first.listing_id}&qty=${first.quantity}&request=${requestId}`} className={primaryBtn}>
                 {plan.payment === "po" ? "Start purchase order" : "Check out"} · {usd(plan.total ?? 0)}
               </Link>
             )}
-            <button type="button" disabled={state === "busy"} className={plan.lines.length === 1 ? outlineBtn : primaryBtn} onClick={add}>
-              Add to cart{plan.lines.length === 1 ? "" : ` · ${usd(plan.total ?? 0)}`}
+            <button type="button" disabled={state === "busy"} className={plan.lines.length === 1 && !first.offering_id ? outlineBtn : primaryBtn} onClick={add}>
+              Add to cart{plan.lines.length === 1 && !first.offering_id ? "" : ` · ${usd(plan.total ?? 0)}`}
             </button>
           </>
         ))}
-      {plan.payment === "coop_site" && first && (
+      {plan.payment === "coop_site" && first?.offering_id && first.contract_id && (
+        <a href={goHref(first.contract_id, { offering: first.offering_id, request: requestId })} target="_blank" rel="noreferrer" className={primaryBtn}>
+          Order on the contract's site ↗
+        </a>
+      )}
+      {plan.payment === "coop_site" && first && !first.offering_id && (
         <Link href={`/product/${first.listing_id}?qty=${first.quantity}&request=${requestId}`} className={primaryBtn}>
           Product and contract page
         </Link>
@@ -552,6 +559,10 @@ function PurchaseFile({ results, plan, confirmedAt, shown }: { results: Results;
     ["Basis", pending ? "Pending" : plan.file.why],
     ["Outstanding", pending ? "Confirmation of the item" : plan.file.needed],
   ];
+  // The page loads after the browser's own jump to #purchase-file, so the file brings itself into view once it's drawn.
+  useEffect(() => {
+    if (window.location.hash === "#purchase-file") requestAnimationFrame(() => document.getElementById("purchase-file")?.scrollIntoView({ block: "start" }));
+  }, []);
   const download = () => {
     const url = URL.createObjectURL(new Blob([purchaseFileText(results, plan, confirmedAt)], { type: "text/plain" }));
     const a = document.createElement("a");

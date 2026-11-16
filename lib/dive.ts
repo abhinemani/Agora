@@ -196,7 +196,6 @@ function gatherAll(db: Db, query: string, opts: DiveSearchOptions = {}): DiveIte
   for (const h of hits.values()) {
     const usable = (r: (typeof h.routes)[number]) => r.eligible && (!buyer || r.member || r.coop_id === "gsa_mas");
     const r = [...h.routes].sort((a, b) => Number(usable(b)) - Number(usable(a)) || Number(b.price != null) - Number(a.price != null) || (a.price ?? Infinity) - (b.price ?? Infinity))[0];
-    const basis = /award/i.test(r.vintage ?? "") ? "Awarded bid, base model" : /net price/i.test(r.vintage ?? "") ? "Contract net price" : /base vehicle|cost sheet/i.test(r.vintage ?? "") ? "Base price, before options and delivery" : "Published price";
     items.push({
       id: `c:${h.product_id}`,
       name: h.name,
@@ -204,8 +203,7 @@ function gatherAll(db: Db, query: string, opts: DiveSearchOptions = {}): DiveIte
       sku: h.mpn,
       price: r.price,
       list: r.price == null ? r.list : null,
-      price_note:
-        r.price != null ? basis : r.list != null ? "List price, before the contract discount" : r.status === "member_login" ? "Price behind the co-op's member login" : r.status === "published_discount" ? "Discount off list; no price published" : "Price by quote",
+      price_note: priceNote(r),
       vintage: r.vintage,
       unit: r.unit,
       supplier: r.supplier,
@@ -227,6 +225,13 @@ function gatherAll(db: Db, query: string, opts: DiveSearchOptions = {}): DiveIte
     });
   }
   return items;
+}
+
+/** What kind of number an offering's price is, in plain words. */
+export function priceNote(r: { price: number | null; list: number | null; status: string; vintage: string | null }): string {
+  if (r.price != null)
+    return /award/i.test(r.vintage ?? "") ? "Awarded bid, base model" : /net price/i.test(r.vintage ?? "") ? "Contract net price" : /base vehicle|cost sheet/i.test(r.vintage ?? "") ? "Base price, before options and delivery" : "Published price";
+  return r.list != null ? "List price, before the contract discount" : r.status === "member_login" ? "Price behind the co-op's member login" : r.status === "published_discount" ? "Discount off list; no price published" : "Price by quote";
 }
 
 function passes(i: DiveItem, f: DiveFilter): boolean {

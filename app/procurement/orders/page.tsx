@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
 import { useStore } from "@/components/store";
 import { Badge, Button, Card, Loading, PageTitle, money } from "@/components/ui";
-import { nextStep, ORDER_STATUS, STEPS } from "@/lib/orders";
+import { nextStep, ORDER_STATUS, STEPS, lineListing, lineSupplier } from "@/lib/orders";
 import type { Order, OrderStatus } from "@/lib/types";
 
 /** Every order in the agency on one table: who asked, who it's for, where it stands, what's next. */
@@ -21,8 +21,8 @@ export default function OrdersOversight() {
   const rows = useMemo(() => {
     if (!db) return [];
     return db.orders.map((o) => {
-      const listing = db.listings.find((l) => l.id === o.listing_id);
-      const supplier = db.suppliers.find((s) => s.id === listing?.supplier_id);
+      const listing = lineListing(db, o);
+      const supplier = lineSupplier(db, o);
       return { o, listing, supplier };
     });
   }, [db]);

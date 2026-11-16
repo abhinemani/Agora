@@ -24,8 +24,46 @@ function priceLine(r: CatalogRoute): { text: string; tone: string } {
   return { text: "Quote from the supplier", tone: "text-slate" };
 }
 
+/** One contract's offer of a product, into the cart at its contract price, for the request's quantity. The server checks
+ * the contract is open to the agency and that the price is one the buyer would pay. */
+function CartButton({ r, requestId }: { r: CatalogRoute; requestId: string }) {
+  const { db, act } = useStore();
+  const [state, setState] = useState<"idle" | "busy" | "added">("idle");
+  const [error, setError] = useState<string | null>(null);
+  const qty = db?.requests.find((x) => x.id === requestId)?.parsed.quantity ?? 1;
+  if (state === "added")
+    return (
+      <Link href="/cart" className="text-xs font-semibold text-success-darker hover:underline">
+        ✓ In the cart
+      </Link>
+    );
+  return (
+    <span className="inline-flex flex-col items-end">
+      <button
+        type="button"
+        disabled={state === "busy"}
+        onClick={async () => {
+          setState("busy");
+          setError(null);
+          try {
+            await act("addCatalogToCart", { offeringId: r.offering_id, quantity: qty, requestId });
+            setState("added");
+          } catch (e) {
+            setError((e as Error).message);
+            setState("idle");
+          }
+        }}
+        className="border border-primary px-2.5 py-1 text-xs font-bold text-primary hover:bg-primary-lighter disabled:opacity-60"
+      >
+        Add {qty > 1 ? `${qty.toLocaleString()} ` : ""}to cart
+      </button>
+      {error && <span className="mt-1 max-w-[16rem] text-right text-[11px] text-error-dark">{error}</span>}
+    </span>
+  );
+}
+
 /** Products from co-op catalogs that match the request, each with every contract that sells it.
- * Ordering happens on the co-op's site; prices are as published, with their vintage. */
+ * A contract price the agency can use goes in the cart; prices are as published, with their vintage. */
 export function CatalogProducts({ data, requestId }: { data: Results["catalog_products"]; requestId: string }) {
   const [all, setAll] = useState(false);
   if (!data?.hits.length) return null;
@@ -130,6 +168,8 @@ function ProductCard({ h, requestId }: { h: CatalogProductHit; requestId: string
                 </div>
                 <div className={`mt-0.5 ${p.tone}`}>{p.text}</div>
               </div>
+              <span className="flex items-center gap-3">
+              {r.price != null && r.eligible && (!buyer || r.member || r.trx || r.coop_id === "gsa_mas") && <CartButton r={r} requestId={requestId} />}
               <a
                 href={goHref(r.contract_id, { request: requestId, offering: r.offering_id })}
                 target="_blank"
@@ -139,6 +179,7 @@ function ProductCard({ h, requestId }: { h: CatalogProductHit; requestId: string
               >
                 View on {r.coop.split(" ")[0]} ↗
               </a>
+              </span>
             </li>
           );
         })}

@@ -470,6 +470,29 @@ export interface Request {
   owner?: string;
   /** What the requester confirmed with the personal shopper (lib/shopper.ts): the catalog item, or null for "by quote". */
   shopper?: { listing_id: string | null; add_ons: { listing_id: string; quantity: number }[]; confirmed_at: string };
+  /** A co-op or state contract product the buyer chose on the homepage, read from the catalog on the server. It stands
+   * for the item in the purchase file until another item is confirmed. */
+  pick?: CatalogPick;
+}
+
+/** A catalog product chosen for a request. `price` is a price the buyer would pay, never a list price. */
+export interface CatalogPick {
+  offering_id: string;
+  contract_id: string;
+  name: string;
+  sku: string | null;
+  supplier: string;
+  program: string;
+  contract_number: string;
+  price: number | null;
+  /** What kind of number the price is: "Awarded bid, base model", "Published price", "Price by quote". */
+  price_note: string;
+  unit: string | null;
+  vintage: string | null;
+  /** The agency may buy it now, through the cart: the contract is open to it and, for a co-op, it is on the co-op. */
+  usable?: boolean;
+  /** Who may use the contract, or why this agency can't yet. */
+  access?: string;
 }
 
 export type OrderStatus = "placed" | "pending_approval" | "approved" | "shipped" | "delivered" | "invoiced" | "reconciled";
@@ -496,12 +519,37 @@ export interface Order {
   invoice?: { number: string; amount: number };
   /** Where finance codes it, e.g. "100-410-6100". */
   gl_code?: string;
+  /** A catalog product bought under a co-op or state contract; `listing_id` is then "cat:<offering id>". */
+  catalog?: CatalogLine;
 }
 
 export interface CartLine {
+  /** A Loci listing's id, or "cat:<offering id>" for a catalog product (then `catalog` says what it is). */
   listing_id: string;
   quantity: number;
   request_id?: string | null;
+  catalog?: CatalogLine;
+}
+
+/** A co-op or state contract product from the catalog (lib/catalog.ts), bought through the cart. Read from the catalog
+ * on the server when it was added, so the price, contract and supplier come from the data. `unit_price` is a price the
+ * buyer would pay (an awarded bid, a contract net price or a published price), never a list price. */
+export interface CatalogLine {
+  offering_id: string;
+  contract_id: string;
+  supplier_id: string;
+  supplier: string;
+  title: string;
+  sku: string | null;
+  source: "coop_contract" | "state_contract";
+  program: string;
+  contract_number: string;
+  unit_price: number;
+  unit: string;
+  price_note: string;
+  vintage: string | null;
+  /** Who may use the contract, as the catalog says. */
+  access: string;
 }
 
 /** A shopping cart. Built by a requester, optionally handed to someone who can buy,

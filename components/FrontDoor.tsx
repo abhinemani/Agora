@@ -118,7 +118,7 @@ export function FrontDoor({ initial, onNewSearch }: { initial: FrontDoorUrl; onN
       : `${s.matched === s.pool ? `${s.pool}` : `${s.matched} of ${s.pool}`} product${s.pool === 1 ? "" : "s"} on contract for “${s.query}”${s.price_range && s.matched > 1 ? `, from ${usd(s.price_range.min)} to ${usd(s.price_range.max)} each` : ""}.`;
 
   /** Opens the results page for this request: the old homepage path, kept one click away. */
-  const openRequest = async (opts: { hash?: string; to?: (id: string) => string; listingId?: string | null } = {}) => {
+  const openRequest = async (opts: { hash?: string; to?: (id: string) => string; listingId?: string | null; offeringId?: string | null } = {}) => {
     setLeaving(true);
     setError(null);
     try {
@@ -129,6 +129,9 @@ export function FrontDoor({ initial, onNewSearch }: { initial: FrontDoorUrl; onN
         // Loci's own listings can be confirmed, so the results page opens on the buying plan. If the results don't
         // offer this listing for the request, the page opens on the confirm step instead.
         await act("confirmPick", { requestId: request.id, listingId: opts.listingId, quantity: qty ?? request.parsed.quantity }).catch(() => undefined);
+      } else if (opts.offeringId) {
+        // A co-op or state contract product goes into the purchase file as picked, so the page opens on its route.
+        await act("pickOffering", { requestId: request.id, offeringId: opts.offeringId, quantity: qty ?? request.parsed.quantity }).catch(() => undefined);
       }
       router.push(opts.to ? opts.to(request.id) : `/request/${request.id}${needsPreference ? "?ask=1" : ""}${opts.hash ? `#${opts.hash}` : ""}`);
     } catch (e) {
@@ -184,6 +187,13 @@ export function FrontDoor({ initial, onNewSearch }: { initial: FrontDoorUrl; onN
     void (initial.query ? turn({ query: initial.query, filters: initial.filters ?? [], judge: false }) : turn({ need: initial.need, judge: false }));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  // Choosing a product moves to the route step; the buyer usually clicked far down the shortlist, so bring the step into view.
+  useEffect(() => {
+    if (!picked) return;
+    const smooth = !window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    requestAnimationFrame(() => document.getElementById("route-stage")?.scrollIntoView({ behavior: smooth ? "smooth" : "auto", block: "start" }));
+  }, [picked]);
 
   const narrow = (filters: DiveFilter[], mine: string) => state && turn({ query: state.query, filters, judge: false }, mine);
   const send = () => {
@@ -623,7 +633,7 @@ function OffRampPanel({
               {ctx.rule.state} quotes: {ctx.rule.quotes}. Source: {ctx.rule.source}.
             </p>
           )}
-          <button type="button" disabled={busy} onClick={() => onOpen()} className={`mt-auto self-start ${isRec("informal_quotes") ? primaryBtn : outlineBtn}`}>
+          <button type="button" disabled={busy} onClick={() => onOpen({ hash: "purchase-file" })} className={`mt-auto self-start ${isRec("informal_quotes") ? primaryBtn : outlineBtn}`}>
             Start the purchase file
           </button>
         </div>
@@ -665,10 +675,36 @@ function RouteStage({
   limitIsTheirs: boolean;
   busy: boolean;
   onBack: () => void;
-  onPlan: (o?: { hash?: string; listingId?: string | null }) => void;
+  onPlan: (o?: { hash?: string; listingId?: string | null; offeringId?: string | null }) => void;
 }) {
+  const { act } = useStore();
+  const [cart, setCart] = useState<"idle" | "busy" | "added">("idle");
+  const [cartError, setCartError] = useState<string | null>(null);
+  const addToCart = async () => {
+    setCart("busy");
+    setCartError(null);
+    try {
+      await (item.listing_id ? act("addToCart", { listingId: item.listing_id, quantity }) : act("addCatalogToCart", { offeringId: item.offering_id, quantity }));
+      setCart("added");
+    } catch (e) {
+      setCartError((e as Error).message);
+      setCart("idle");
+    }
+  };
   const total = item.price != null ? item.price * quantity : null;
   const route = routeFor(total, limit);
+  // A co-op or state contract product with a contract price this agency can use goes in the cart like any other.
+  const cartable = item.price != null && (Boolean(item.listing_id) || Boolean(item.offering_id && (item.usable || item.state)));
+  const cartButton =
+    cart === "added" ? (
+      <Link href="/cart" className={linkBtn}>
+        Added to the cart. Open the cart →
+      </Link>
+    ) : (
+      <button type="button" disabled={busy || cart === "busy"} onClick={addToCart} className={item.listing_id ? outlineBtn : primaryBtn}>
+        Add {quantity.toLocaleString()} to the cart
+      </button>
+    );
   const limitWords = `${limitIsTheirs ? "the agency's" : "a typical"} ${usd(limit)} quick-buy limit`;
   const why =
     total == null
@@ -679,7 +715,7 @@ function RouteStage({
         ? `${usd(total)} is under ${limitWords}, so a P-card covers it.`
         : `${usd(total)} is ${total === limit ? "at" : `${usd(total - limit)} over`} ${limitWords}, so it needs a purchase order and approval.`;
   return (
-    <section aria-label="Route" className="border border-primary-darker bg-white">
+    <section id="route-stage" aria-label="Route" className="scroll-mt-24 border border-primary-darker bg-white">
       <div className="border-b border-base-lighter px-5 pb-3 pt-4">
         <div className={`${label} text-primary`}>Route</div>
         <h2 className="font-heading text-heading-lg font-bold text-ink">{item.name}</h2>
@@ -715,19 +751,29 @@ function RouteStage({
       <p className="px-5 pt-4 text-sm text-ink">{why}</p>
       <div className="flex flex-wrap items-center gap-3 px-5 pb-5 pt-4">
         {item.listing_id ? (
-          <button type="button" disabled={busy} onClick={() => onPlan({ listingId: item.listing_id })} className={primaryBtn}>
-            Plan this purchase →
-          </button>
+          <>
+            <button type="button" disabled={busy} onClick={() => onPlan({ listingId: item.listing_id })} className={primaryBtn}>
+              Plan this purchase →
+            </button>
+            {/* Loci's own listings can go straight in the cart; it splits by supplier and pays each share the right way. */}
+            {cartable && cartButton}
+          </>
         ) : (
           <>
-            {item.contract_id && item.offering_id && (
+            {cartable && cartButton}
+            {!cartable && item.contract_id && item.offering_id && (
               <a href={goHref(item.contract_id, { offering: item.offering_id })} target="_blank" rel="noreferrer" className={primaryBtn}>
                 Order on {item.program} ↗
               </a>
             )}
-            <button type="button" disabled={busy} onClick={() => onPlan({ hash: "catalog-products-fold" })} className={item.contract_id && item.offering_id ? outlineBtn : primaryBtn}>
+            <button type="button" disabled={busy} onClick={() => onPlan({ hash: "purchase-file", offeringId: item.offering_id })} className={item.contract_id && item.offering_id ? outlineBtn : primaryBtn}>
               Start the purchase file
             </button>
+            {cartable && item.contract_id && item.offering_id && (
+              <a href={goHref(item.contract_id, { offering: item.offering_id })} target="_blank" rel="noreferrer" className={linkBtn}>
+                View on {item.program} ↗
+              </a>
+            )}
           </>
         )}
         {item.contract_id && (
@@ -739,7 +785,12 @@ function RouteStage({
           ← Back to the shortlist
         </button>
       </div>
-      {!item.listing_id && <p className="border-t border-base-lighter px-5 py-2.5 text-ui-3xs text-base-dark">Ordering under a co-op or state contract happens on the program's own site. The purchase file keeps the request, the options and the route for the record.</p>}
+      {cartError && (
+        <div className="px-5 pb-4">
+          <ErrorNote message={cartError} />
+        </div>
+      )}
+      {!item.listing_id && <p className="border-t border-base-lighter px-5 py-2.5 text-ui-3xs text-base-dark">{cartable ? `The cart orders from ${item.supplier} under ${item.program} ${item.contract_number ?? ""}, citing the contract on the PO or card order. The purchase file keeps the request, the options and the route for the record.` : "This one is ordered on the program's own site or by quote. The purchase file keeps the request, the options and the route for the record."}</p>}
     </section>
   );
 }

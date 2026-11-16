@@ -5,7 +5,7 @@ import { useParams } from "next/navigation";
 import { Check } from "@/components/icons";
 import { OrderTimeline } from "@/components/OrderTimeline";
 import { useStore } from "@/components/store";
-import { ORDER_STATUS } from "@/lib/orders";
+import { ORDER_STATUS, lineHref, lineListing, lineSupplier } from "@/lib/orders";
 import { Badge, Button, Card, ErrorNote, IconCircle, LinkButton, Loading, money, sourceLabel } from "@/components/ui";
 
 export default function OrderConfirmation() {
@@ -14,8 +14,8 @@ export default function OrderConfirmation() {
   if (!db) return <Loading />;
   const order = db.orders.find((o) => o.id === id);
   if (!order) return <ErrorNote message="That order isn't in this demo session." />;
-  const listing = db.listings.find((l) => l.id === order.listing_id)!;
-  const supplier = db.suppliers.find((s) => s.id === listing.supplier_id)!;
+  const listing = lineListing(db, order)!;
+  const supplier = lineSupplier(db, order)!;
   const contract = db.contracts.find((c) => c.id === listing.contract_id);
   const events = db.revenue.filter((e) => e.related_id === order.id || (contract && e.related_id === contract.id && e.trigger.includes("first order")));
 
@@ -31,7 +31,7 @@ export default function OrderConfirmation() {
             <h1 className="mt-1 text-3xl font-semibold tracking-tight text-navy">Order {order.id}</h1>
             <p className="mt-1 text-sm text-slate">
               {order.quantity} ×{" "}
-              <Link href={`/product/${listing.id}`} className="text-navy hover:text-maroon hover:underline">
+              <Link href={lineHref(order)} className="text-navy hover:text-maroon hover:underline">
                 {listing.title}
               </Link>{" "}
               from {supplier.name}, {money(order.total)}.
@@ -52,7 +52,7 @@ export default function OrderConfirmation() {
         </div>
         <p className="mt-4 text-xs text-slate">
           This order was placed off {sourceLabel(listing.source).toLowerCase()}
-          {contract ? ` ${contract.contract_number} (${contract.owner})` : ""}.
+          {contract ? ` ${contract.contract_number} (${contract.owner})` : order.catalog ? ` ${order.catalog.program} ${order.catalog.contract_number}, at its ${order.catalog.price_note.toLowerCase()}` : ""}.
         </p>
       </Card>
 

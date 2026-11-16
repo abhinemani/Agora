@@ -245,7 +245,7 @@ export default function RequestResults() {
           </Fold>
         )}
         {results.catalog_products && results.catalog_products.hits.length > 0 && (
-          <Fold id="catalog-products-fold" title="Products in co-op price files" count={results.catalog_products.total} note="Published prices with their vintage, not quotes. Ordering happens on the co-op's site.">
+          <Fold id="catalog-products-fold" title="Products in co-op price files" count={results.catalog_products.total} note="Published prices with their vintage, not quotes. A contract price the agency can use goes in the cart; the rest are ordered on the program's site.">
             <CatalogProducts data={results.catalog_products} requestId={id} />
           </Fold>
         )}

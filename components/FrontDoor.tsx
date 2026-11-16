@@ -677,6 +677,20 @@ function RouteStage({
   onBack: () => void;
   onPlan: (o?: { hash?: string; listingId?: string | null; offeringId?: string | null }) => void;
 }) {
+  const { act } = useStore();
+  const [cart, setCart] = useState<"idle" | "busy" | "added">("idle");
+  const [cartError, setCartError] = useState<string | null>(null);
+  const addToCart = async () => {
+    setCart("busy");
+    setCartError(null);
+    try {
+      await act("addToCart", { listingId: item.listing_id, quantity });
+      setCart("added");
+    } catch (e) {
+      setCartError((e as Error).message);
+      setCart("idle");
+    }
+  };
   const total = item.price != null ? item.price * quantity : null;
   const route = routeFor(total, limit);
   const limitWords = `${limitIsTheirs ? "the agency's" : "a typical"} ${usd(limit)} quick-buy limit`;
@@ -725,9 +739,22 @@ function RouteStage({
       <p className="px-5 pt-4 text-sm text-ink">{why}</p>
       <div className="flex flex-wrap items-center gap-3 px-5 pb-5 pt-4">
         {item.listing_id ? (
-          <button type="button" disabled={busy} onClick={() => onPlan({ listingId: item.listing_id })} className={primaryBtn}>
-            Plan this purchase →
-          </button>
+          <>
+            <button type="button" disabled={busy} onClick={() => onPlan({ listingId: item.listing_id })} className={primaryBtn}>
+              Plan this purchase →
+            </button>
+            {/* Loci's own listings can go straight in the cart; it splits by supplier and pays each share the right way. */}
+            {item.price != null &&
+              (cart === "added" ? (
+                <Link href="/cart" className={linkBtn}>
+                  Added to the cart. Open the cart →
+                </Link>
+              ) : (
+                <button type="button" disabled={busy || cart === "busy"} onClick={addToCart} className={outlineBtn}>
+                  Add {quantity.toLocaleString()} to the cart
+                </button>
+              ))}
+          </>
         ) : (
           <>
             {item.contract_id && item.offering_id && (
@@ -749,6 +776,11 @@ function RouteStage({
           ← Back to the shortlist
         </button>
       </div>
+      {cartError && (
+        <div className="px-5 pb-4">
+          <ErrorNote message={cartError} />
+        </div>
+      )}
       {!item.listing_id && <p className="border-t border-base-lighter px-5 py-2.5 text-ui-3xs text-base-dark">Ordering under a co-op or state contract happens on the program's own site. The purchase file keeps the request, the options and the route for the record.</p>}
     </section>
   );

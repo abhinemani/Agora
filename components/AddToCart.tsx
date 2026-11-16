@@ -30,7 +30,7 @@ export function AddToCart({ listingId, quantity, requestId, size = "sm" }: { lis
       >
         {state === "added" ? "✓ Added" : "Add to cart"}
       </button>
-      {error && <span className="mt-1 max-w-[14rem] text-right text-[11px] text-red-700">{error}</span>}
+      {error && <span className="mt-1 max-w-[14rem] text-right text-[11px] text-error-dark">{error}</span>}
     </span>
   );
 }

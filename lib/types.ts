@@ -101,6 +101,68 @@ export interface Supplier {
   /** Off-contract suppliers pay a listing fee to appear; their listings show only while it's current. */
   listing_fee_through?: string;
   website?: string;
+  /** The services a supplier offers, for buyers searching for a service (lib/service-listing.ts). Free for now; could become part of a paid plan. */
+  services?: SupplierService[];
+  /** Where the supplier works: counties in one state, named as the government directory names them. */
+  service_area?: { state: string; counties: string[] };
+  /** Public work the supplier says it has done, each matched against the government directory. */
+  past_work?: PastWork[];
+  /** Certifications the supplier claims, each with the result of a live check where Loci can run one. */
+  certification_claims?: CertificationClaim[];
+}
+
+export interface SupplierService {
+  id: string;
+  name: string;
+  detail?: string;
+  /** Other words buyers use for it: "window cleaning" for window washing. */
+  aliases?: string[];
+  /** A fixed package price, when the supplier offers one; otherwise the service is priced by quote. */
+  price?: { amount: number; unit: string } | null;
+}
+
+/** A public contract or purchase the supplier lists. Self-reported; `match` says whether the government is in Loci's directory. */
+export interface PastWork {
+  id: string;
+  /** The government as the supplier named it. */
+  agency: string;
+  state: string;
+  what: string;
+  year: number | null;
+  /** Where the award can be read: a council agenda, an award notice, a purchase order. */
+  url?: string | null;
+  /** The directory record it matched, by the supplier's pick or by name within the state; null when none did. */
+  match: { directory_id: string; name: string; county?: string; entity_type: EntityType; how: "picked" | "name" } | null;
+  added_at: string;
+}
+
+export type CertificationKind = "tx_cmbl_small_business" | "tx_vethub" | "other";
+
+/** A certification as the supplier claims it, and what a live check of the issuing registry found. */
+export interface CertificationClaim {
+  id: string;
+  kind: CertificationKind;
+  /** As the supplier names it: "Texas small business (CMBL)", "NCTRCA SBE". */
+  label: string;
+  /** Who issues it. */
+  issuer: string;
+  claimed_at: string;
+  /** The latest live check. Absent until one runs; kinds with no registry Loci can query stay self-reported. */
+  check?: CertificationCheck;
+}
+
+export interface CertificationCheck {
+  /** confirmed: the registry lists the company with the claimed status. not_listed: the registry has the company, without it.
+   * not_found: no company by that name. unreachable: the registry didn't answer. */
+  status: "confirmed" | "not_listed" | "not_found" | "unreachable";
+  checked_at: string;
+  source: string;
+  source_url: string;
+  /** What the registry lists, kept to the company's name, city and status flags (no contacts, no vendor ID). */
+  listed?: { name: string; city: string | null; small_business: boolean | null; cmbl: string | null; vethub: string | null };
+  /** How many companies matched the name, when more than one did. */
+  matches?: number;
+  note?: string;
 }
 
 export interface SupplierProfile {

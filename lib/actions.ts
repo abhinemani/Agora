@@ -20,6 +20,7 @@ import {
 } from "./revenue_rules";
 import { CATEGORIES } from "./types";
 import type { SupplierPlan } from "./types";
+import type { CertificationKind, PastWork, SupplierService } from "./types";
 import type { Buyer, Cart, Category, Contract, Coop, CoopMember, Order, OrderStatus, ContractDocument, ContractHeader, Db, EdgeTier, ExtractedItem, Listing, Request, Role, Solicitation } from "./types";
 import { BUYER_PRESETS, checkEligibility, STATES } from "./vehicles";
 import { FREE_RFP_LIMIT, settingsFor } from "./agency";
@@ -27,7 +28,9 @@ import { parseRegister } from "./register";
 import { cartAgency, cartGroups, cartOwner, draftCart, glCode, needsApproval, nextStep, PURCHASER, REQUESTER } from "./orders";
 import { coopOf, detectCoops, isContractLevelUrl, isMember, linksOut, memberMatches, normalizeDomain } from "./coops";
 import { parseMemberList } from "./members";
-import { findGovernment } from "./directory";
+import { findGovernment, getGovernment, matchGovernment, stateCounties } from "./directory";
+import { CERTIFICATION_KINDS, countyKey, regionIn, serviceFit, servesCounties, splitCounties, type LocalSupplierHit } from "./service-listing";
+import { checkTexasCertification } from "./tx-cmbl";
 import { buildPlan, defaultSelection, shopperAddOns, shopperCandidates, type ShopperSelection } from "./shopper";
 import { answerQuestion, shopperFacts, writeBrief, type ShopperTurn } from "./shopper-ai";
 import { paperworkKinds, paperworkTemplate, type PaperworkKind } from "./paperwork";
@@ -174,6 +177,40 @@ export async function prepareResults(requestId: string) {
   if (docHitCache.size > 500) docHitCache.delete(docHitCache.keys().next().value!);
 }
 
+/** Suppliers whose service listings cover the request, in the place it names ("Metroplex") or else the buyer's county. With
+ * neither, every supplier offering the service is listed with where it works. */
+function localSuppliers(db: Db, request: Request): { hits: LocalSupplierHit[]; place: string | null; source: string | null } {
+  const text = `${request.raw_text} ${request.parsed.item}`;
+  const region = regionIn(text);
+  const buyer = db.session.buyer;
+  const gov = !region && buyer ? findGovernment(buyer) : null;
+  const where = region ? { state: region.state, counties: region.counties, place: region.name, source: region.source } : gov?.county ? { state: gov.state, counties: splitCounties(gov.county), place: `${splitCounties(gov.county).join(" and ")} ${splitCounties(gov.county).length === 1 ? "County" : "counties"}, where ${gov.name} is`, source: "Loci's government directory" } : null;
+  const hits: (LocalSupplierHit & { fit: number })[] = [];
+  for (const s of db.suppliers) {
+    const { fit, service } = serviceFit(s.services, request.parsed.item || request.raw_text);
+    if (!service || fit < 0.6) continue;
+    const covers = where ? servesCounties(s, where.state, where.counties) : false;
+    if (where && !covers) continue;
+    const near = new Set((where?.counties ?? []).map(countyKey));
+    const work = s.past_work ?? [];
+    hits.push({
+      supplier_id: s.id,
+      name: s.name,
+      city: s.city,
+      state: s.state,
+      service: { name: service.name, ...(service.detail ? { detail: service.detail } : {}), price: service.price ?? null },
+      area: s.service_area ? { ...s.service_area, covers } : null,
+      certifications: (s.certification_claims ?? []).map((c) => ({ label: c.label, status: c.check?.status ?? "self_reported", checked_at: c.check?.checked_at ?? null })),
+      past_work: { total: work.length, matched: work.filter((w) => w.match).length, nearby: work.filter((w) => w.match && splitCounties(w.match.county).some((c) => near.has(countyKey(c)))).length },
+      claimed: isClaimed(s),
+      fit,
+    });
+  }
+  // Best fit first, then confirmed certifications, then work Loci could match to a government nearby.
+  hits.sort((a, b) => b.fit - a.fit || b.certifications.filter((c) => c.status === "confirmed").length - a.certifications.filter((c) => c.status === "confirmed").length || b.past_work.nearby - a.past_work.nearby || a.name.localeCompare(b.name));
+  return { hits: hits.slice(0, 8).map(({ fit: _f, ...h }) => h), place: where?.place ?? null, source: where?.source ?? null };
+}
+
 export function getResults(requestId: string) {
   const db = getDb();
   const request = db.requests.find((r) => r.id === requestId) ?? fail("Request not found");
@@ -192,6 +229,8 @@ export function getResults(requestId: string) {
   const { products, pending } = resultProducts(db, request);
   if (products) results.catalog_products = products;
   results.catalog_pending = pending;
+  const local = localSuppliers(db, request);
+  if (local.hits.length) results.local_suppliers = local;
 
   // Option 5: one impression per sponsoring supplier per results page. Keyed on
   // the request so re-renders and refreshes don't bill twice.
@@ -1470,6 +1509,134 @@ export function updateStorefront(args: { supplierId: string; tagline: string; ab
   if (!isClaimed(s) || (s.plan ?? "basic") === "basic") fail("Your own description comes with the Profile plan.");
   s.profile = { ...(s.profile ?? { tagline: "", about: "" }), tagline: args.tagline.trim(), about: args.about.trim() };
   return s.profile;
+}
+
+// ---------------------------------------------------------------- service listings
+
+/** A storefront this account may run: claimed, and claimed by it (or a demo storefront, or an admin). */
+function runnableSupplier(db: Db, supplierId: string) {
+  const s = supplierById(db, supplierId);
+  if (!isClaimed(s)) fail(`Claim ${s.name}'s storefront first.`);
+  const user = currentScope()?.user;
+  if (!mayActAs(s, user, isAdmin(user))) fail(`${s.name}'s storefront was claimed by another account.`);
+  return s;
+}
+const clip = (v: unknown, n: number) => (typeof v === "string" ? v.trim().slice(0, n) : "");
+
+/** Set the services a supplier offers and where it works. Free for every claimed storefront for now. */
+export function updateServiceListing(args: { supplierId: string; services: Partial<SupplierService>[]; service_area: { state: string; counties: string[] } | null }) {
+  const db = getDb();
+  const s = runnableSupplier(db, args.supplierId);
+  const services = (args.services ?? []).slice(0, 20).flatMap((x, i): SupplierService[] => {
+    const name = clip(x.name, 80);
+    if (!name) return [];
+    const amount = Number(x.price?.amount);
+    const unit = clip(x.price?.unit, 30);
+    return [
+      {
+        id: clip(x.id, 40) || `svc_${Date.now().toString(36)}_${i}`,
+        name,
+        ...(clip(x.detail, 300) ? { detail: clip(x.detail, 300) } : {}),
+        ...(Array.isArray(x.aliases) && x.aliases.length ? { aliases: x.aliases.map((a) => clip(a, 40)).filter(Boolean).slice(0, 6) } : {}),
+        price: Number.isFinite(amount) && amount > 0 && unit ? { amount: Math.round(amount * 100) / 100, unit } : null,
+      },
+    ];
+  });
+  let area: { state: string; counties: string[] } | undefined;
+  if (args.service_area?.counties?.length) {
+    const state = STATES.find(([c]) => c === args.service_area!.state)?.[0] ?? fail("Pick the state the supplier works in.");
+    const known = new Map(stateCounties(state).map((c) => [c.toLowerCase(), c]));
+    const counties = [...new Set(args.service_area.counties.map((c) => known.get(String(c).toLowerCase().replace(/\s+county$/, "")) ?? fail(`${c} isn't a county Loci knows in ${state}.`)))];
+    area = { state, counties };
+  }
+  s.services = services;
+  if (area) s.service_area = area;
+  else delete s.service_area;
+  return { services: s.services, service_area: s.service_area ?? null };
+}
+
+/** Add a piece of public work. The government is matched against the directory: the record the supplier picked, or an exact name
+ * within the state; when neither, it's kept as named and shown as not found in the directory. */
+export function addPastWork(args: { supplierId: string; agency: string; directoryId?: string; state: string; what: string; year?: number | null; url?: string | null }) {
+  const db = getDb();
+  const s = runnableSupplier(db, args.supplierId);
+  if ((s.past_work?.length ?? 0) >= 40) fail("A storefront lists up to 40 pieces of past work.");
+  const state = STATES.find(([c]) => c === args.state)?.[0] ?? fail("Pick the government's state.");
+  const what = clip(args.what, 200) || fail("Say what the work was.");
+  const picked = args.directoryId ? getGovernment(args.directoryId) : null;
+  if (picked && picked.state !== state) fail(`${picked.name} is in ${picked.state}, not ${state}.`);
+  const agency = clip(args.agency, 120) || picked?.name || fail("Name the government.");
+  const gov = picked ?? matchGovernment(agency, state);
+  const year = args.year == null || args.year === ("" as unknown) ? null : Number(args.year);
+  if (year !== null && (!Number.isInteger(year) || year < 1980 || year > new Date().getFullYear())) fail("Give the year the work was done.");
+  let url = clip(args.url, 400) || null;
+  if (url && !/^https?:\/\//i.test(url)) url = `https://${url}`;
+  if (url) {
+    try {
+      new URL(url);
+    } catch {
+      fail("That link isn't a web address.");
+    }
+  }
+  const row: PastWork = {
+    id: nextId(db, "past_work", "pw", 4),
+    agency: picked?.name ?? agency,
+    state,
+    what,
+    year,
+    url,
+    match: gov ? { directory_id: gov.id, name: gov.name, ...(gov.county ? { county: gov.county } : {}), entity_type: gov.entity_type, how: picked ? "picked" : "name" } : null,
+    added_at: now(),
+  };
+  s.past_work = [row, ...(s.past_work ?? [])];
+  return row;
+}
+
+export function removePastWork(args: { supplierId: string; id: string }) {
+  const db = getDb();
+  const s = runnableSupplier(db, args.supplierId);
+  s.past_work = (s.past_work ?? []).filter((w) => w.id !== args.id);
+  return { ok: true };
+}
+
+/** Record a certification the supplier claims. Kinds Loci can check are checked at once; the rest stay self-reported. */
+export async function addCertification(args: { supplierId: string; kind: CertificationKind; label?: string; issuer?: string }) {
+  const db = getDb();
+  const s = runnableSupplier(db, args.supplierId);
+  const k = CERTIFICATION_KINDS[args.kind] ?? fail("Pick a certification.");
+  const label = args.kind === "other" ? clip(args.label, 80) || fail("Name the certification.") : k.label;
+  const issuer = args.kind === "other" ? clip(args.issuer, 80) || fail("Say who issues it.") : k.issuer;
+  if ((s.certification_claims ?? []).some((c) => c.kind === args.kind && c.label.toLowerCase() === label.toLowerCase())) fail(`${label} is already listed.`);
+  const claim = { id: nextId(db, "cert", "cert", 4), kind: args.kind, label, issuer, claimed_at: now() };
+  s.certification_claims = [...(s.certification_claims ?? []), claim];
+  // The older list of certification names feeds badges ("…-certified") and ranking, so a claim joins it only once its registry
+  // confirms it (checkCertification); a self-reported one shows on the storefront as self-reported.
+  if (k.checkable) return checkCertification({ supplierId: s.id, id: claim.id });
+  return claim;
+}
+
+export function removeCertification(args: { supplierId: string; id: string }) {
+  const db = getDb();
+  const s = runnableSupplier(db, args.supplierId);
+  const gone = (s.certification_claims ?? []).find((c) => c.id === args.id);
+  s.certification_claims = (s.certification_claims ?? []).filter((c) => c.id !== args.id);
+  if (gone) s.certifications = s.certifications.filter((c) => c !== gone.label);
+  return { ok: true };
+}
+
+/** Check a claim against its registry now. Texas's CMBL and VetHUB are checked live; one lookup per request. */
+export async function checkCertification(args: { supplierId: string; id: string }) {
+  const db = getDb();
+  const s = runnableSupplier(db, args.supplierId);
+  const claim = (s.certification_claims ?? []).find((c) => c.id === args.id) ?? fail("That certification isn't listed.");
+  if (claim.kind === "other") fail("Loci has no live check for this registry, so it stays self-reported.");
+  const last = claim.check ? Date.parse(claim.check.checked_at) : 0;
+  if (Date.now() - last < 60_000) return claim;
+  claim.check = await checkTexasCertification(claim.kind, s.name);
+  // A confirmed claim earns the badge; one the registry doesn't bear out loses it. An unreachable registry changes nothing.
+  if (claim.check.status === "confirmed" && !s.certifications.includes(claim.label)) s.certifications = [...s.certifications, claim.label];
+  if (claim.check.status === "not_listed" || claim.check.status === "not_found") s.certifications = s.certifications.filter((c) => c !== claim.label);
+  return claim;
 }
 
 /** Add a targeted placement: Sponsored on searches in this category, in one state or anywhere. Billed per impression (option 5). */

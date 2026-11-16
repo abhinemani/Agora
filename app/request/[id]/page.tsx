@@ -1,5 +1,6 @@
 "use client";
 
+import { LocalSuppliers } from "@/components/results/LocalSuppliers";
 import Link from "next/link";
 import { useParams, useSearchParams } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
@@ -218,6 +219,8 @@ export default function RequestResults() {
 
       {/* TRX state contracts are the preferred route for their own state's buyers, so they stay open above every co-op. */}
       {buyer && <StateContracts section={coops!} requestId={id} refs={contractRefs} />}
+
+      {results.local_suppliers && <LocalSuppliers data={results.local_suppliers} texas={buyer?.state === "TX" || results.local_suppliers.hits.some((h) => h.area?.state === "TX" && h.area.covers)} />}
 
       <FoldGroup title="Other sources" note="Additional contracts and procurement methods for this request.">
         {cc!.coops > 0 && (

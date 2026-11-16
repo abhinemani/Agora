@@ -4,6 +4,8 @@
 import { SEED_COOPS, coopIdForVehicle } from "./coops";
 import { glCode } from "./orders";
 import { demoChecks } from "./verification";
+import { matchGovernment } from "./directory";
+import { REGIONS } from "./service-listing";
 import type { Category, Coop, Db, Listing, Order, OrderStatus, Source } from "./types";
 import { fireMonthlyLines } from "./revenue_rules";
 import tylerCatalog from "../seed/catalogs/tyler-technologies-2025-03.json";
@@ -566,6 +568,7 @@ export function seed(): Db {
   // The fictional suppliers already run their storefronts in the demo, so they're claimed.
   for (const sup of db.suppliers)
     if (VERIFY[sup.id]) sup.claim = { name: "Storefront owner (demo)", email: `owner@${sup.id.replace("sup_", "")}.example`, at: new Date().toISOString(), status: "verified" };
+  addServiceListingDemo(db);
   // Off-contract suppliers pay a listing fee to appear; MetroMart's is current.
   const feeThrough = new Date(Date.now() + 300 * 86_400_000).toISOString().slice(0, 10);
   for (const sup of db.suppliers)
@@ -1196,4 +1199,59 @@ function seedOrderHistory(db: Db) {
       ["reconciled", 40, "Card charge matched to the receipt and coded to 100-450-6100"],
     ]),
   );
+}
+
+/** A fictional Metroplex window-cleaning company with a service listing: services by quote, a service area, past public work and
+ * a certification it claims. The company is invented; the governments its past work names are real records in Loci's directory,
+ * matched the same way a supplier's own entries are (one names a government that doesn't exist, to show an unmatched entry). Its
+ * certification starts self-reported: a live check finds no such company on the Comptroller's list, as it should. */
+function addServiceListingDemo(db: Db) {
+  const at = new Date().toISOString();
+  const work = (agency: string, what: string, year: number) => {
+    const g = matchGovernment(agency, "TX");
+    return {
+      id: `pw_demo_${agency.toLowerCase().replace(/[^a-z]+/g, "_")}`,
+      agency: g?.name ?? agency,
+      state: "TX",
+      what,
+      year,
+      url: null,
+      match: g ? { directory_id: g.id, name: g.name, ...(g.county ? { county: g.county } : {}), entity_type: g.entity_type, how: "name" as const } : null,
+      added_at: at,
+    };
+  };
+  const metroplex = REGIONS.find((r) => r.state === "TX")!.counties;
+  db.suppliers.push({
+    id: "sup_bluebonnet",
+    name: "Bluebonnet Pane Window Care",
+    city: "Arlington",
+    state: "TX",
+    is_local: false,
+    certifications: [],
+    verified: { insurance: false, bond: false },
+    edge_tier: "discover",
+    rating: 0,
+    review_count: 0,
+    sponsored: false,
+    categories: ["Janitorial", "Facilities and MRO"],
+    claim: { name: "Storefront owner (demo)", email: "owner@bluebonnet.example", at, status: "verified" },
+    profile: {
+      tagline: "Commercial window cleaning across the Metroplex",
+      about: "A fictional demo company: commercial and public-building window cleaning, high-rise rope access and exterior pressure washing for cities, counties and school districts in the Dallas–Fort Worth area.",
+      disclaimer: "Demo supplier. The company is fictional; its past work and certification are illustrations. The governments named are real records in Loci's directory, matched as a supplier's own entries would be.",
+    },
+    services: [
+      { id: "svc_demo_windows", name: "Commercial window cleaning", detail: "Interior and exterior glass for offices, libraries, recreation centers and schools, on a schedule or one visit.", aliases: ["window washing", "glass cleaning"], price: null },
+      { id: "svc_demo_highrise", name: "High-rise window cleaning", detail: "Rope access and lifts for buildings over three stories.", aliases: ["rope access window washing"], price: null },
+      { id: "svc_demo_pressure", name: "Pressure washing", detail: "Building exteriors, sidewalks, plazas and parking structures.", aliases: ["power washing"], price: null },
+    ],
+    service_area: { state: "TX", counties: metroplex.filter((c) => ["Dallas", "Tarrant", "Collin", "Denton", "Johnson", "Ellis"].includes(c)) },
+    past_work: [
+      work("City of Arlington", "Exterior window cleaning, central library and two recreation centers", 2025),
+      work("Tarrant County", "Quarterly window cleaning, county administration building", 2024),
+      work("Grand Prairie ISD", "Summer window cleaning, 14 campuses", 2024),
+      work("Trinity Basin Utility Authority", "Pressure washing, pump station exteriors", 2023),
+    ],
+    certification_claims: [{ id: "cert_demo_cmbl", kind: "tx_cmbl_small_business", label: "Texas small business (CMBL)", issuer: "Texas Comptroller, Centralized Master Bidders List", claimed_at: at }],
+  });
 }

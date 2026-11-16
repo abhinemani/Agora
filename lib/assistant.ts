@@ -1,6 +1,7 @@
 // The "ask, don't browse" layer: parse a plain-language request, match it to
 // listings from every source, rank them, and apply the agency's buying rules.
 
+import type { LocalSupplierHit } from "./service-listing";
 import * as z from "zod/v4";
 import { kept, structured } from "./llm";
 import { CATEGORIES } from "./types";
@@ -437,6 +438,8 @@ export interface ResultGroup {
 
 export interface Results {
   request: Request;
+  /** Suppliers whose service listings cover a service request, where the request or the buyer is (lib/service-listing.ts). */
+  local_suppliers?: { hits: LocalSupplierHit[]; place: string | null; source: string | null };
   groups: ResultGroup[];
   peer: (PeerPurchase & { supplier_name: string }) | null;
   no_match: boolean;

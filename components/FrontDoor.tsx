@@ -118,7 +118,7 @@ export function FrontDoor({ initial, onNewSearch }: { initial: FrontDoorUrl; onN
       : `${s.matched === s.pool ? `${s.pool}` : `${s.matched} of ${s.pool}`} product${s.pool === 1 ? "" : "s"} on contract for “${s.query}”${s.price_range && s.matched > 1 ? `, from ${usd(s.price_range.min)} to ${usd(s.price_range.max)} each` : ""}.`;
 
   /** Opens the results page for this request: the old homepage path, kept one click away. */
-  const openRequest = async (opts: { hash?: string; to?: (id: string) => string; listingId?: string | null } = {}) => {
+  const openRequest = async (opts: { hash?: string; to?: (id: string) => string; listingId?: string | null; offeringId?: string | null } = {}) => {
     setLeaving(true);
     setError(null);
     try {
@@ -129,6 +129,9 @@ export function FrontDoor({ initial, onNewSearch }: { initial: FrontDoorUrl; onN
         // Loci's own listings can be confirmed, so the results page opens on the buying plan. If the results don't
         // offer this listing for the request, the page opens on the confirm step instead.
         await act("confirmPick", { requestId: request.id, listingId: opts.listingId, quantity: qty ?? request.parsed.quantity }).catch(() => undefined);
+      } else if (opts.offeringId) {
+        // A co-op or state contract product goes into the purchase file as picked, so the page opens on its route.
+        await act("pickOffering", { requestId: request.id, offeringId: opts.offeringId, quantity: qty ?? request.parsed.quantity }).catch(() => undefined);
       }
       router.push(opts.to ? opts.to(request.id) : `/request/${request.id}${needsPreference ? "?ask=1" : ""}${opts.hash ? `#${opts.hash}` : ""}`);
     } catch (e) {
@@ -184,6 +187,13 @@ export function FrontDoor({ initial, onNewSearch }: { initial: FrontDoorUrl; onN
     void (initial.query ? turn({ query: initial.query, filters: initial.filters ?? [], judge: false }) : turn({ need: initial.need, judge: false }));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  // Choosing a product moves to the route step; the buyer usually clicked far down the shortlist, so bring the step into view.
+  useEffect(() => {
+    if (!picked) return;
+    const smooth = !window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    requestAnimationFrame(() => document.getElementById("route-stage")?.scrollIntoView({ behavior: smooth ? "smooth" : "auto", block: "start" }));
+  }, [picked]);
 
   const narrow = (filters: DiveFilter[], mine: string) => state && turn({ query: state.query, filters, judge: false }, mine);
   const send = () => {
@@ -623,7 +633,7 @@ function OffRampPanel({
               {ctx.rule.state} quotes: {ctx.rule.quotes}. Source: {ctx.rule.source}.
             </p>
           )}
-          <button type="button" disabled={busy} onClick={() => onOpen()} className={`mt-auto self-start ${isRec("informal_quotes") ? primaryBtn : outlineBtn}`}>
+          <button type="button" disabled={busy} onClick={() => onOpen({ hash: "purchase-file" })} className={`mt-auto self-start ${isRec("informal_quotes") ? primaryBtn : outlineBtn}`}>
             Start the purchase file
           </button>
         </div>
@@ -665,7 +675,7 @@ function RouteStage({
   limitIsTheirs: boolean;
   busy: boolean;
   onBack: () => void;
-  onPlan: (o?: { hash?: string; listingId?: string | null }) => void;
+  onPlan: (o?: { hash?: string; listingId?: string | null; offeringId?: string | null }) => void;
 }) {
   const total = item.price != null ? item.price * quantity : null;
   const route = routeFor(total, limit);
@@ -679,7 +689,7 @@ function RouteStage({
         ? `${usd(total)} is under ${limitWords}, so a P-card covers it.`
         : `${usd(total)} is ${total === limit ? "at" : `${usd(total - limit)} over`} ${limitWords}, so it needs a purchase order and approval.`;
   return (
-    <section aria-label="Route" className="border border-primary-darker bg-white">
+    <section id="route-stage" aria-label="Route" className="scroll-mt-24 border border-primary-darker bg-white">
       <div className="border-b border-base-lighter px-5 pb-3 pt-4">
         <div className={`${label} text-primary`}>Route</div>
         <h2 className="font-heading text-heading-lg font-bold text-ink">{item.name}</h2>
@@ -725,7 +735,7 @@ function RouteStage({
                 Order on {item.program} ↗
               </a>
             )}
-            <button type="button" disabled={busy} onClick={() => onPlan({ hash: "catalog-products-fold" })} className={item.contract_id && item.offering_id ? outlineBtn : primaryBtn}>
+            <button type="button" disabled={busy} onClick={() => onPlan({ hash: "purchase-file", offeringId: item.offering_id })} className={item.contract_id && item.offering_id ? outlineBtn : primaryBtn}>
               Start the purchase file
             </button>
           </>

@@ -470,6 +470,25 @@ export interface Request {
   owner?: string;
   /** What the requester confirmed with the personal shopper (lib/shopper.ts): the catalog item, or null for "by quote". */
   shopper?: { listing_id: string | null; add_ons: { listing_id: string; quantity: number }[]; confirmed_at: string };
+  /** A co-op or state contract product the buyer chose on the homepage, read from the catalog on the server. It stands
+   * for the item in the purchase file until another item is confirmed. */
+  pick?: CatalogPick;
+}
+
+/** A catalog product chosen for a request. `price` is a price the buyer would pay, never a list price. */
+export interface CatalogPick {
+  offering_id: string;
+  contract_id: string;
+  name: string;
+  sku: string | null;
+  supplier: string;
+  program: string;
+  contract_number: string;
+  price: number | null;
+  /** What kind of number the price is: "Awarded bid, base model", "Published price", "Price by quote". */
+  price_note: string;
+  unit: string | null;
+  vintage: string | null;
 }
 
 export type OrderStatus = "placed" | "pending_approval" | "approved" | "shipped" | "delivered" | "invoiced" | "reconciled";

@@ -2,7 +2,7 @@
 // exactly one place per action.
 
 import { buildResults, estimateTotal, finishCoopSection, findSimilarSolicitation, mentionsPreference, parseRequest, ruleFor, type Results } from "./assistant";
-import { catalogContract, catalogCoopHits, catalogKindCandidates, catalogOffering, catalogProducts, catalogRetrieved, catalogStateRetrieved, catalogSupplierById, materializeSupplier, type CatalogProductHit } from "./catalog";
+import { catalogContract, catalogCoopHits, catalogIndex, catalogKindCandidates, catalogOffering, catalogProducts, catalogRetrieved, catalogStateRetrieved, catalogSupplierById, materializeSupplier, type CatalogProductHit } from "./catalog";
 import { stateRuleFor } from "./state-rules";
 import { currentScope, getDb, nextId, resetDb } from "./db";
 import { isAdmin } from "./admin";
@@ -39,7 +39,7 @@ import { tellPurchasing, tellRequester } from "./notify";
 import { askDocument, contractBrief, readableContracts } from "./docs";
 import { searchDocuments, type DocumentHit } from "./doc-store";
 import { hasDatabase } from "./pg";
-import { applyFit, diveItems, diveSearch, diveVerdict, diveWordCounts, offlineDiveFilters, type DiveFilter, type DiveReading, type FitVerdict } from "./dive";
+import { applyFit, diveItems, priceNote, diveSearch, diveVerdict, diveWordCounts, offlineDiveFilters, type DiveFilter, type DiveReading, type FitVerdict } from "./dive";
 import { askNeed, checkNeed, judgeFit, readDiveMessage, writeVerdict, type FitInput } from "./dive-ai";
 import { fitNow, loadFits, loadReading, readingNow, saveFits, saveReading } from "./dive-memo";
 import { isSpecKey } from "./specs";
@@ -288,6 +288,8 @@ export function confirmItems(args: { requestId: string; listingId: string | null
     .map((a) => ({ listing_id: a.listingId, quantity: Math.max(1, Math.floor(Number(a.quantity) || 1)) }));
   request.parsed = { ...request.parsed, quantity, est_total: estimateTotal(db, request.parsed.item, quantity) };
   request.shopper = { listing_id: chosen?.listing.id ?? null, add_ons, confirmed_at: now() };
+  // Confirming here replaces a product picked on the homepage.
+  delete request.pick;
   return request;
 }
 
@@ -300,6 +302,34 @@ export function confirmPick(args: { requestId: string; listingId: string; quanti
     if (e instanceof ActionError) return null;
     throw e;
   }
+}
+
+/** The front door's handoff for a co-op or state contract product: the purchase file records that product, read
+ * from the catalog here so its price and contract come from the data, not the page. */
+export function pickOffering(args: { requestId: string; offeringId: string; quantity: number }) {
+  const db = getDb();
+  const request = db.requests.find((r) => r.id === args.requestId) ?? fail("Request not found");
+  const o = catalogOffering(String(args.offeringId ?? "")) ?? fail("That product isn't in the catalog.");
+  const c = catalogContract(o.contract) ?? fail("That product's contract isn't in the catalog.");
+  const quantity = Math.floor(Number(args.quantity) || request.parsed.quantity || 1);
+  if (quantity < 1 || quantity > 100_000) fail("Enter how many you need.");
+  const product = catalogIndex().productById.get(o.product);
+  request.pick = {
+    offering_id: o.id,
+    contract_id: c.id,
+    name: product?.name ?? o.sku ?? "Catalog product",
+    sku: o.sku ?? product?.mpn ?? null,
+    supplier: catalogSupplierById(o.supplier)?.name ?? catalogSupplierById(c.supplier)?.name ?? "",
+    program: c.coop,
+    contract_number: c.number,
+    price: o.price,
+    price_note: priceNote(o),
+    unit: o.unit,
+    vintage: o.vintage,
+  };
+  request.parsed = { ...request.parsed, quantity, est_total: o.price != null ? Math.round(o.price * quantity * 100) / 100 : request.parsed.est_total };
+  request.shopper = { listing_id: null, add_ons: [], confirmed_at: now() };
+  return request;
 }
 
 /** Reopen the confirm step. */

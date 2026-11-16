@@ -5,7 +5,7 @@
 // prices or routes.
 
 import type { CoopHit, ResultOption, Results } from "./assistant";
-import type { Listing, Request } from "./types";
+import type { CatalogPick, Listing, Request } from "./types";
 import { verificationSummary } from "./verification";
 import { stateLabel, TRX_PROGRAM } from "./trx";
 
@@ -14,6 +14,8 @@ export interface ShopperSelection {
   listing_id: string | null;
   quantity: number;
   add_ons: { listing_id: string; quantity: number }[];
+  /** A co-op or state contract product picked on the homepage, used when no Loci item is chosen. */
+  pick?: CatalogPick | null;
 }
 
 /** A numbered source. The same number is shown on the result it points at. */
@@ -25,7 +27,10 @@ export interface PlanRef {
 }
 
 export interface PlanLine {
+  /** Empty for a catalog product picked on the homepage, which carries `offering_id` instead. */
   listing_id: string;
+  offering_id?: string;
+  contract_id?: string;
   title: string;
   sku: string;
   quantity: number;
@@ -124,7 +129,7 @@ export function shopperAddOns(listings: Listing[], results: Results, chosen: Res
 }
 
 export function defaultSelection(results: Results, request: Request): ShopperSelection {
-  if (request.shopper) return { listing_id: request.shopper.listing_id, quantity: request.parsed.quantity, add_ons: request.shopper.add_ons };
+  if (request.shopper) return { listing_id: request.shopper.listing_id, quantity: request.parsed.quantity, add_ons: request.shopper.add_ons, pick: request.shopper.listing_id ? null : (request.pick ?? null) };
   return { listing_id: shopperCandidates(results)[0]?.listing.id ?? null, quantity: request.parsed.quantity, add_ons: [] };
 }
 
@@ -152,19 +157,25 @@ export function buildPlan(args: { results: Results; listings: Listing[]; limit: 
       lines.push({ listing_id: al.id, title: al.title, sku: al.sku, quantity: q, unit_price: al.unit_price, unit: al.unit, amount: round2(al.unit_price * q) });
     }
   }
-  const total = chosen ? round2(lines.reduce((s, l) => s + l.amount, 0)) : null;
+  // A catalog product picked on the homepage, when no Loci item is chosen. Only a price the buyer would pay makes a line.
+  const picked = chosen ? null : (selection.pick ?? null);
+  if (picked && picked.price != null)
+    lines.push({ listing_id: "", offering_id: picked.offering_id, contract_id: picked.contract_id, title: picked.name, sku: picked.sku ?? "no SKU", quantity: qty, unit_price: picked.price, unit: picked.unit ?? "each", amount: round2(picked.price * qty) });
+  const total = chosen || lines.length ? round2(lines.reduce((s, l) => s + l.amount, 0)) : null;
   const perSet = chosen ? lines.reduce((s, l) => s + l.amount, 0) / qty : 0;
 
   // Same test as ruleFor() in lib/assistant.ts: under the limit is a P-card, at or over it is a PO.
   let payment: PlanPayment = "quote";
-  if (chosen && total !== null) {
+  if (picked && total !== null) payment = "coop_site";
+  else if (chosen && total !== null) {
     if (chosen.link_out) payment = "coop_site";
     else if (total < limit) payment = "pcard";
     else payment = chosen.listing.source === "no_approval" ? "needs_contract" : "po";
   }
   const gap = total === null ? 0 : round2(Math.abs(limit - total));
   const max_units = chosen && perSet > 0 ? Math.max(0, Math.ceil(limit / perSet) - 1) : 0;
-  const supplier = chosen?.supplier.name ?? null;
+  const supplier = chosen?.supplier.name ?? picked?.supplier ?? null;
+  const pickedOn = picked ? `${picked.program} ${picked.contract_number}` : "";
 
   const members = memberHits(results);
   const joins = joinHits(results);
@@ -188,6 +199,12 @@ export function buildPlan(args: { results: Results; listings: Listing[]; limit: 
   } else if (payment === "needs_contract") {
     headline = "This is too large to buy off contract.";
     summary = `${possessive(supplier!)} price isn't on a contract, and **${usd(total!)}** is over ${limit_phrase}. An order this size needs a contract or a solicitation.`;
+  } else if (payment === "coop_site" && picked) {
+    headline = `${picked.price_note}, ordered on ${picked.program}'s site.`;
+    summary = `${supplier} has this on ${pickedOn}: **${usd(total!)} in all** (${picked.price_note.toLowerCase()}${picked.vintage ? `, ${picked.vintage}` : ""}). The order is placed under that contract on ${picked.program}'s site, not in Loci.`;
+  } else if (picked) {
+    headline = "This one starts with a quote.";
+    summary = `${picked.name} is on ${pickedOn} from ${supplier}. ${picked.price_note}, so the price comes by quote under that contract.`;
   } else if (payment === "coop_site") {
     headline = `Published price, ordered on ${chosen!.link_out!.coop}'s site.`;
     summary = `${supplier} lists this at a published price: **${usd(total!)} in all**. The contract belongs to ${chosen!.link_out!.coop}, so the order is placed on its contract page, not in Loci.`;
@@ -219,6 +236,15 @@ export function buildPlan(args: { results: Results; listings: Listing[]; limit: 
             : "Too large for an off-contract purchase.";
     routes.push({ kind: "priced", recommended: payment !== "needs_contract", title, body: `${what}. ${usd(total!)} in all. ${then}`, refs: refNums([`listing:${chosen.listing.id}`]), hits: [] });
   }
+  if (picked)
+    routes.push({
+      kind: "priced",
+      recommended: true,
+      title: total !== null ? `Order on ${picked.program}'s site` : `Get a quote under ${pickedOn}`,
+      body: `${qty} × ${picked.name}. ${total !== null ? `${usd(total)} in all. Loci links to the contract page and records the visit.` : `${picked.price_note}.`}`,
+      refs: [],
+      hits: [],
+    });
   // TRX state contracts lead the member hits for their state's buyers (lib/trx.ts); say what they are.
   const memberIntro = (hs: CoopHit[]) => {
     const state = hs.filter((h) => h.program === "state");
@@ -278,11 +304,18 @@ export function buildPlan(args: { results: Results; listings: Listing[]; limit: 
   if (leads.length) unknowns.push(`Whether ${list(leads.map((h) => `${h.coop} ${h.contract_number}`))} ${leads.length === 1 ? "is" : "are"} current. ${leads.length === 1 ? "It is a research lead" : "They are research leads"}: confirm the term with purchasing before ordering.`);
 
   // ---- the purchase file
-  const items = chosen ? list(lines.map((l) => `${l.quantity} × ${l.title} (${l.sku})`)) : `${qty} × ${results.request.parsed.item}, make and model to be quoted`;
+  const items = chosen
+    ? list(lines.map((l) => `${l.quantity} × ${l.title} (${l.sku})`))
+    : picked
+      ? `${qty} × ${picked.name}${picked.sku && !picked.name.includes(picked.sku) ? ` (${picked.sku})` : ""}, ${pickedOn}`
+      : `${qty} × ${results.request.parsed.item}, make and model to be quoted`;
   const file = {
     items,
-    route:
-      payment === "pcard"
+    route: picked
+      ? total !== null
+        ? `${supplier}, ordered on ${picked.program}'s contract page`
+        : `Quote from ${supplier} under ${pickedOn}`
+      : payment === "pcard"
         ? `${supplier}, on a P-card`
         : payment === "po"
           ? `${supplier}, by purchase order`
@@ -295,13 +328,20 @@ export function buildPlan(args: { results: Results; listings: Listing[]; limit: 
                 : joins.length
                   ? `Ask purchasing about ${coopNames(joins)}`
                   : "Quote under a co-op contract",
-    why:
-      chosen && total !== null
+    why: picked
+      ? total !== null
+        ? `${picked.price_note} of ${usd(picked.price!)} ${picked.unit && picked.unit !== "each" ? `per ${picked.unit}` : "each"} on ${pickedOn}${picked.vintage ? ` (${picked.vintage})` : ""}.`
+        : `${picked.price_note}. The product chosen is on ${pickedOn}.`
+      : chosen && total !== null
         ? `Published price of ${usd(total)}, ${total < limit ? "under" : "at or over"} ${limit_phrase}.`
         : members.length
           ? `No catalog item with a published price was chosen. ${members.length === 1 ? "This contract is" : "These contracts are"} open to ${who}.`
           : "No contract open to the agency has a published price for this.",
-    needed: payment === "pcard" ? "Nothing. Ready to buy." : payment === "po" ? "A PO and approval" : payment === "coop_site" ? "The order, placed on the co-op's site" : payment === "needs_contract" ? "A contract or a solicitation" : members.length ? "Quotes from the suppliers" : "Purchasing's answer",
+    needed: picked
+      ? total !== null
+        ? `The order, placed on ${picked.program}'s site`
+        : "A quote from the supplier"
+      : payment === "pcard" ? "Nothing. Ready to buy." : payment === "po" ? "A PO and approval" : payment === "coop_site" ? "The order, placed on the co-op's site" : payment === "needs_contract" ? "A contract or a solicitation" : members.length ? "Quotes from the suppliers" : "Purchasing's answer",
   };
 
   return { lines, total, limit, limit_phrase, payment, gap, max_units, supplier, headline, summary, routes, unknowns, refs, file };

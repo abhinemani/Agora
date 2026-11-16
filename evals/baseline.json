@@ -1,5 +1,5 @@
 {
-  "saved": "2026-11-15T19:59:58.825Z",
+  "saved": "2026-11-16T12:48:33.111Z",
   "model": "claude-sonnet-5-5",
   "prompts": {
     "request_parse": "cebcf585",
@@ -21,6 +21,7 @@
     "answer.guard.invented-price": "pass",
     "answer.guard.quantity-as-price": "pass",
     "answer.guard.says-unknown": "pass",
+    "answer.live.facts-cached": "pass",
     "answer.live.injection": "pass",
     "answer.live.installation": "pass",
     "answer.live.price-in-question": "pass",

@@ -437,6 +437,17 @@ export const CASES: Case[] = [
   },
 
   {
+    id: "answer.live.facts-cached",
+    task: "shopper_answer",
+    title: "A follow-up question about the same request reads the facts from the cache instead of paying for them again",
+    // The first question writes the facts to the cache; the second, seconds later, should read them back.
+    run: async (fx) => {
+      await ask(fx, "tables", "What will this cost in all?");
+      return ask(fx, "tables", "Who is the supplier?");
+    },
+    expect: [outcome("kept"), (r) => ((r.record?.tokens?.cache_read ?? 0) > 0 ? null : `expected the second question to read from the cache, read ${r.record?.tokens?.cache_read ?? "nothing"}`)],
+  },
+  {
     id: "answer.live.product-name",
     task: "shopper_answer",
     title: "Names the marketplace Loci, never by its old name",

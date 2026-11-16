@@ -30,6 +30,14 @@ export const TASKS = {
 } as const;
 export type Task = keyof typeof TASKS;
 
+/** A call's token usage. Input is the uncached part; cache writes and reads are billed apart from it. */
+export interface Tokens {
+  input: number;
+  output: number;
+  cache_write: number;
+  cache_read: number;
+}
+
 export type Outcome = "kept" | "partial" | "discarded" | "failed";
 export type Vote = "up" | "down";
 
@@ -48,6 +56,8 @@ export interface AiRecord {
   kept?: number;
   of?: number;
   ms: number;
+  /** Tokens the call used, as the API reported them. Missing on calls logged before this was recorded, and on stubbed calls. */
+  tokens?: Tokens;
   /** What was asked, cut short. Never a whole document. */
   input: string;
   /** What the model wrote, cut short. */
@@ -89,7 +99,7 @@ export function loadAiLog(): Promise<void> {
     }));
 }
 
-export function record(entry: Pick<AiRecord, "task" | "prompt" | "outcome" | "ms"> & Partial<Pick<AiRecord, "reason" | "declined" | "kept" | "of" | "input" | "output">>): string {
+export function record(entry: Pick<AiRecord, "task" | "prompt" | "outcome" | "ms"> & Partial<Pick<AiRecord, "reason" | "declined" | "kept" | "of" | "input" | "output" | "tokens">>): string {
   const r: AiRecord = {
     id: `ai_${randomBytes(8).toString("hex")}`,
     at: new Date().toISOString(),
@@ -100,6 +110,7 @@ export function record(entry: Pick<AiRecord, "task" | "prompt" | "outcome" | "ms
     ...(entry.declined ? { declined: true } : {}),
     ...(entry.of !== undefined ? { kept: entry.kept ?? 0, of: entry.of } : {}),
     ms: entry.ms,
+    ...(entry.tokens ? { tokens: entry.tokens } : {}),
     input: short(entry.input ?? "", 300),
     output: short(entry.output ?? "", 1500),
     votes: {},
@@ -153,12 +164,15 @@ interface Tally {
   declined: number;
   up: number;
   down: number;
+  /** Token usage summed over the calls that recorded it. */
+  tokens: Tokens;
 }
 const tally = (rs: AiRecord[]): Tally => {
-  const t: Tally = { calls: rs.length, kept: 0, partial: 0, discarded: 0, failed: 0, declined: 0, up: 0, down: 0 };
+  const t: Tally = { calls: rs.length, kept: 0, partial: 0, discarded: 0, failed: 0, declined: 0, up: 0, down: 0, tokens: { input: 0, output: 0, cache_write: 0, cache_read: 0 } };
   for (const r of rs) {
     t[r.outcome]++;
     if (r.declined) t.declined++;
+    if (r.tokens) for (const k of Object.keys(t.tokens) as (keyof Tokens)[]) t.tokens[k] += r.tokens[k];
     for (const v of Object.values(r.votes)) t[v]++;
   }
   return t;

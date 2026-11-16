@@ -5,11 +5,18 @@
 // (lib/ai-log.ts). A failed call is logged here. For one that returns, the
 // caller runs its own checks and then reports the verdict with kept(),
 // partly() or discarded(), passing back the same object it was given.
+//
+// Prompt caching: the system prompt is always marked for the cache, and so is
+// `shared`, text a caller sends ahead of `user` because it repeats from call to
+// call (the shopper's FACTS across a conversation's questions). A marked prefix
+// shorter than the model's minimum (512 tokens on the current models) simply
+// isn't cached, at no cost. Nothing that changes per call belongs in `system`
+// or `shared`, or every call writes the cache and none reads it.
 
 import Anthropic from "@anthropic-ai/sdk";
 import { zodOutputFormat } from "@anthropic-ai/sdk/helpers/zod";
 import type * as z from "zod/v4";
-import { fingerprint, record, type Outcome, type Task } from "./ai-log";
+import { fingerprint, record, type Outcome, type Task, type Tokens } from "./ai-log";
 import { apiKey } from "./api-key";
 
 export const MODEL = "claude-sonnet-5-5";
@@ -37,6 +44,7 @@ interface Pending {
   prompt: string;
   ms: number;
   input: string;
+  tokens?: Tokens;
 }
 const pending = new WeakMap<object, Pending>();
 /** The system prompt each task last ran with, so the test set can tell when a prompt has changed. */
@@ -45,6 +53,8 @@ export const promptsSeen = new Map<Task, string>();
 export async function structured<T extends z.ZodType>(opts: {
   task: Task;
   system: string;
+  /** Text sent before `user` that repeats across calls, marked for the cache. The model reads `shared` and `user` as one message. */
+  shared?: string;
   user: string;
   schema: T;
   /** What was asked, in a line, for the log. Not the whole document. */
@@ -61,18 +71,19 @@ export async function structured<T extends z.ZodType>(opts: {
   const meta = { task: opts.task, prompt: fingerprint(model, opts.system), input: opts.about ?? "" };
   promptsSeen.set(opts.task, meta.prompt);
   const started = Date.now();
-  const hold = (out: z.infer<T> | null) => {
-    if (out && typeof out === "object") pending.set(out, { ...meta, ms: Date.now() - started });
+  const hold = (out: z.infer<T> | null, tokens?: Tokens) => {
+    if (out && typeof out === "object") pending.set(out, { ...meta, ms: Date.now() - started, ...(tokens ? { tokens } : {}) });
     return out;
   };
-  const fail = (reason: string) => {
-    record({ ...meta, outcome: "failed", reason, ms: Date.now() - started });
+  const fail = (reason: string, tokens?: Tokens) => {
+    record({ ...meta, outcome: "failed", reason, ms: Date.now() - started, ...(tokens ? { tokens } : {}) });
     return null;
   };
+  const cached = { type: "ephemeral" as const };
 
   if (stub === "off") return null;
   if (stub) {
-    const canned = await stub({ task: opts.task, system: opts.system, user: opts.user });
+    const canned = await stub({ task: opts.task, system: opts.system, user: `${opts.shared ?? ""}${opts.user}` });
     return canned == null ? null : hold(opts.schema.parse(canned) as z.infer<T>);
   }
   const c = getClient();
@@ -82,23 +93,27 @@ export async function structured<T extends z.ZodType>(opts: {
       {
         model,
         max_tokens: opts.maxTokens ?? 16000,
-        system: opts.system,
+        system: [{ type: "text", text: opts.system, cache_control: cached }],
         messages: [
           {
             role: "user",
-            content: opts.documents?.length
-              ? [...opts.documents.map((d) => ({ type: "document" as const, source: { type: "base64" as const, media_type: "application/pdf" as const, data: d.data }, ...(d.title ? { title: d.title } : {}) })), { type: "text" as const, text: opts.user }]
-              : opts.user,
+            content: [
+              ...(opts.documents ?? []).map((d) => ({ type: "document" as const, source: { type: "base64" as const, media_type: "application/pdf" as const, data: d.data }, ...(d.title ? { title: d.title } : {}) })),
+              ...(opts.shared ? [{ type: "text" as const, text: opts.shared, cache_control: cached }] : []),
+              { type: "text" as const, text: opts.user },
+            ],
           },
         ],
         output_config: { format: zodOutputFormat(opts.schema), effort: opts.effort ?? "low" },
       },
       { timeout: opts.timeoutMs ?? 30_000 },
     );
-    if (res.stop_reason === "refusal") return fail("The model declined to answer");
-    if (res.stop_reason === "max_tokens") return fail("The answer ran past its length limit");
+    const u = res.usage;
+    const tokens: Tokens = { input: u.input_tokens, output: u.output_tokens, cache_write: u.cache_creation_input_tokens ?? 0, cache_read: u.cache_read_input_tokens ?? 0 };
+    if (res.stop_reason === "refusal") return fail("The model declined to answer", tokens);
+    if (res.stop_reason === "max_tokens") return fail("The answer ran past its length limit", tokens);
     const out = (res.parsed_output as z.infer<T> | null) ?? null;
-    return out ? hold(out) : fail("The answer didn't fit the expected shape");
+    return out ? hold(out, tokens) : fail("The answer didn't fit the expected shape", tokens);
   } catch (err) {
     const message = err instanceof Error ? err.message : String(err);
     console.warn("[llm] falling back to offline parsing:", message);

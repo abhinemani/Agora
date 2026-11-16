@@ -50,6 +50,52 @@ function Row({ t }: { t: TaskQuality }) {
   );
 }
 
+type Tok = TaskQuality["tokens"];
+const addTok = (a: Tok, b: Tok | undefined): Tok => (b ? { input: a.input + b.input, output: a.output + b.output, cache_write: a.cache_write + b.cache_write, cache_read: a.cache_read + b.cache_read } : a);
+const inputAll = (t: Tok) => t.input + t.cache_write + t.cache_read;
+
+/** Where the tokens go, by task, across every prompt the log holds. */
+function TokenSection({ tasks }: { tasks: TaskQuality[] }) {
+  const rows = tasks.map((t) => ({ t, tok: addTok(t.tokens, t.earlier?.tokens) })).filter((r) => inputAll(r.tok) + r.tok.output > 0);
+  if (!rows.length) return null;
+  rows.sort((a, b) => inputAll(b.tok) + b.tok.output - (inputAll(a.tok) + a.tok.output));
+  return (
+    <section className="space-y-3">
+      <h2 className="font-heading text-heading-md font-bold text-ink">Tokens used</h2>
+      <p className="max-w-[72ex] text-body-sm text-base-darker">
+        What each task sent and received, as the API counted it, for the calls that recorded it. Input read from the cache is billed at a small fraction of the normal rate, so a rising cached share means a cheaper task. Writing to the cache costs a little
+        more than plain input, and pays off once the same text is read again.
+      </p>
+      <div className="overflow-x-auto border border-base-light bg-white">
+        <table className="w-full min-w-[640px] text-left text-ui-xs">
+          <thead className={`${label} bg-base-lightest text-base-dark`}>
+            <tr>
+              {["Task", "Input", "Read from cache", "Written to cache", "Output"].map((h, i) => (
+                <th key={h} className={`px-3 py-2 font-normal ${i ? "text-right" : ""}`}>
+                  {h}
+                </th>
+              ))}
+            </tr>
+          </thead>
+          <tbody>
+            {rows.map(({ t, tok }) => (
+              <tr key={t.task} className="border-t border-base-lighter">
+                <td className="px-3 py-3 font-bold text-ink">{t.label}</td>
+                <td className="px-3 py-3 text-right tabular-nums">{n(inputAll(tok))}</td>
+                <td className="px-3 py-3 text-right tabular-nums">
+                  {n(tok.cache_read)} <span className="text-base-dark">({pct(tok.cache_read, inputAll(tok))})</span>
+                </td>
+                <td className="px-3 py-3 text-right tabular-nums">{n(tok.cache_write)}</td>
+                <td className="px-3 py-3 text-right tabular-nums">{n(tok.output)}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </section>
+  );
+}
+
 export default function QualityPage() {
   const { user } = useStore();
   const [q, setQ] = useState<(Quality & { llm: boolean }) | null>(null);
@@ -127,6 +173,8 @@ export default function QualityPage() {
               while the AI connection is off aren't counted.
             </p>
           </section>
+
+          <TokenSection tasks={q.tasks} />
 
           <section className="space-y-3">
             <h2 className="font-heading text-heading-md font-bold text-ink">Worth a look</h2>

@@ -5,6 +5,7 @@
 // a reference number that doesn't exist, throws the answer away. Same
 // discipline as the contract reader (lib/parser.ts).
 
+import { createHash } from "node:crypto";
 import * as z from "zod/v4";
 import type { Results } from "./assistant";
 import { coopOf } from "./coops";
@@ -177,14 +178,24 @@ export function ungrounded(text: string, refs: number[], facts: unknown, validRe
 
 const clean = (ps: string[]) => ps.map((p) => p.trim()).filter(Boolean).slice(0, 3);
 
+const BRIEF_SYSTEM = `${RULES}\n\nTask: write the buying plan for the order in the facts. Lead with the route the facts recommend and why, then the one trade-off worth knowing (for example a cheaper-looking route that needs a quote, or a better-fitting contract the agency isn't on). Don't repeat the list of routes; the page shows them.`;
+
+/** Plans already written and checked, by the facts and prompt they came from, so a reload or a second visitor gets the same plan without another call. */
+const BRIEFS_KEPT = 500;
+const briefMemo = ((globalThis as unknown as { __agoraShopperBriefs?: Map<string, ShopperText> }).__agoraShopperBriefs ??= new Map<string, ShopperText>());
+
 /** The plan in the model's words, or null to keep the rule-based wording. */
 export async function writeBrief(db: Db, results: Results, plan: Plan): Promise<ShopperText | null> {
   const facts = shopperFacts(db, results, plan);
+  const factsText = `FACTS\n${JSON.stringify(facts)}`;
+  const key = createHash("sha256").update(`${BRIEF_SYSTEM}\n${factsText}`).digest("hex");
+  const memo = briefMemo.get(key);
+  if (memo) return memo;
   const out = await structured({
     task: "shopper_brief",
     about: results.request.raw_text,
-    system: `${RULES}\n\nTask: write the buying plan for the order in the facts. Lead with the route the facts recommend and why, then the one trade-off worth knowing (for example a cheaper-looking route that needs a quote, or a better-fitting contract the agency isn't on). Don't repeat the list of routes; the page shows them.`,
-    user: `FACTS\n${JSON.stringify(facts)}`,
+    system: BRIEF_SYSTEM,
+    user: factsText,
     schema: BriefSchema,
     maxTokens: 1500,
     timeoutMs: 25_000,
@@ -198,7 +209,10 @@ export async function writeBrief(db: Db, results: Results, plan: Plan): Promise<
     discarded(out, why ?? "The answer was empty", text);
     return null;
   }
-  return { headline: out.headline.trim(), paragraphs, refs: [...new Set(out.refs)].sort((a, b) => a - b), log_id: kept(out, text) };
+  const brief = { headline: out.headline.trim(), paragraphs, refs: [...new Set(out.refs)].sort((a, b) => a - b), log_id: kept(out, text) };
+  briefMemo.set(key, brief);
+  if (briefMemo.size > BRIEFS_KEPT) briefMemo.delete(briefMemo.keys().next().value!);
+  return brief;
 }
 
 export interface ShopperTurn {

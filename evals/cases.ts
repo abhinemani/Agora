@@ -37,6 +37,7 @@ import { extractFile, parseContract, UPLOAD_DIR, type ExtractedFile } from "../l
 import { checkQuote, sampleQuote, type QuoteLine, type QuoteReport } from "../lib/quote-check";
 import { readScan, type ScanReading } from "../lib/doc-ocr";
 import { readPriceSheet } from "../lib/price-sheets";
+import { stubModel } from "../lib/llm";
 import type { ShopperText } from "../lib/shopper-ai";
 
 // ------------------------------------------------------------------ fixtures
@@ -320,6 +321,20 @@ export const CASES: Case[] = [
     canned: { headline: "Buy these today on a P-card.", paragraphs: ["Riverside Office Supply lists the tables at a published price: **$5,280 in all**, under the $10,000 quick-buy limit."], refs: [1] },
     run: (fx) => brief(fx, "tables"),
     expect: [outcome("kept"), says(/\$5,280/), is<ShopperText>("a log id for the thumbs", (v) => Boolean(v?.log_id))],
+  },
+  {
+    id: "brief.guard.written-once",
+    task: "shopper_brief",
+    title: "Opening the same request again shows the plan already written, without asking the model a second time",
+    canned: { headline: "Buy these today on a P-card.", paragraphs: ["Riverside Office Supply lists the tables at a published price: **$5,280 in all**, under the $10,000 quick-buy limit."], refs: [1] },
+    run: async (fx) => {
+      let calls = 0;
+      stubModel((call) => (call.task === "shopper_brief" ? (calls++, { headline: "Buy these today on a P-card.", paragraphs: ["Riverside Office Supply lists the tables at a published price: **$5,280 in all**, under the $10,000 quick-buy limit."], refs: [1] }) : null));
+      const first = await brief(fx, "tables");
+      const again = await brief(fx, "tables");
+      return { calls, same: Boolean(first) && first === again };
+    },
+    expect: [outcome("kept"), is<{ calls: number; same: boolean }>("one model call and the same plan both times", (v) => v.calls === 1 && v.same)],
   },
   {
     id: "brief.guard.invented-price",

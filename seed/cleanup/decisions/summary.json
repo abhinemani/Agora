@@ -36,16 +36,16 @@
   "low_picked": 1
  },
  "category": {
-  "items": 2909,
-  "answered": 2909,
-  "kept": 2909,
+  "items": 3830,
+  "answered": 3830,
+  "kept": 3830,
   "invalid": 0,
   "missing": 0,
-  "high": 1434,
-  "medium": 1171,
-  "low": 304,
-  "picked": 2909,
-  "low_picked": 304
+  "high": 1925,
+  "medium": 1563,
+  "low": 342,
+  "picked": 3830,
+  "low_picked": 342
  },
  "canon-rows": {
   "items": 230,

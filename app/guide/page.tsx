@@ -19,19 +19,22 @@ const n = (x: number) => x.toLocaleString("en-US");
 const date = (d: string) => new Date(`${d}T12:00:00Z`).toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" });
 const list = (xs: string[]) => (xs.length <= 2 ? xs.join(" and ") : `${xs.slice(0, -1).join(", ")} and ${xs[xs.length - 1]}`);
 
-/** The state programs, in the order their states were loaded. `anchor` is the section of /data that describes each. */
+/** The state programs, in the order their states were loaded. */
 const ci = catalogInsights;
 const STATE_PROGRAMS = [
-  { name: "NJSTART", who: "New Jersey's state contracts", anchor: "njstart", d: ci.njstart },
-  { name: "Hawaii SPO", who: "Hawaii State Procurement Office price and vendor lists", anchor: "hawaii", d: ci.hawaii },
-  { name: "Arkansas OSP", who: "Arkansas Office of State Procurement statewide contracts", anchor: "arkansas", d: ci.arkansas },
-  { name: "NYS OGS", who: "New York Office of General Services centralized contracts", anchor: "new-york", d: ci.new_york },
-  { name: "Empire Procure Connect", who: "New York counties' cooperative", anchor: "empire-procure-connect", d: ci.epc },
-  { name: "OregonBuys", who: "Oregon DAS statewide price agreements", anchor: "oregon", d: ci.oregon },
+  { name: "NJSTART", who: "New Jersey's state contracts", d: ci.njstart },
+  { name: "Hawaii SPO", who: "Hawaii State Procurement Office price and vendor lists", d: ci.hawaii },
+  { name: "Arkansas OSP", who: "Arkansas Office of State Procurement statewide contracts", d: ci.arkansas },
+  { name: "NYS OGS", who: "New York Office of General Services centralized contracts", d: ci.new_york },
+  { name: "Empire Procure Connect", who: "New York counties' cooperative", d: ci.epc },
+  { name: "OregonBuys", who: "Oregon DAS statewide price agreements", d: ci.oregon },
 ];
 const STATE_NAMES = new Set([...STATE_PROGRAMS.map((p) => p.name), "NY Preferred Source"]);
 const coops = ci.per_coop.filter((p) => !STATE_NAMES.has(p.coop) && p.contracts > 0).sort((a, b) => b.contracts - a.contracts);
 const coopContracts = coops.reduce((s, p) => s + p.contracts, 0);
+const programCount = ci.per_coop.filter((p) => p.contracts > 0).length;
+/** A program's page. The catalog id settles on the page's own slug. */
+const programHref = (name: string) => `/programs/${ci.per_coop.find((p) => p.coop === name)?.coop_id ?? ""}`;
 const stateContracts = ci.per_coop.filter((p) => STATE_NAMES.has(p.coop)).reduce((s, p) => s + p.contracts, 0);
 
 function Section({ id, title, intro, children }: { id: string; title: string; intro: React.ReactNode; children?: React.ReactNode }) {
@@ -91,31 +94,40 @@ export default function GuidePage() {
     [
       "Answer a few questions",
       <>
-        For a product, Loci asks who is buying, how many, and then what separates the products it found: a price band, a maker, a feature. Each answer narrows the shortlist. Software,
-        services and construction skip this and go straight to results. Naming the agency is optional, but without one Loci shows who each contract is open to and marks eligibility “Not
-        checked”.
+        For a product, Loci asks who is buying, how many, and then what separates the products it found: a price band, a maker, a spec such as “Which cab?”. Each answer narrows the
+        shortlist, and what the request already says is read into filters that can be removed: “{EXAMPLES.find((e) => /\bno\b/i.test(e)) ?? "crew cab pickups, no diesel"}” rules diesel
+        out. Software, services and construction skip this and go straight to results. Naming the agency is optional, but without one Loci shows who each contract is open to and marks
+        eligibility “Not checked”.
+      </>,
+    ],
+    [
+      "Check how Loci read it",
+      <>
+        A “Read as” line says what Loci took the request to mean. A few seconds after the shortlist appears, each of the leading products is marked Fits, Partly fits or Doesn&apos;t fit,
+        with a short reason, and the ones that don&apos;t fit are set aside under a line that opens to show why. What the agency can buy today comes first, then the product that is the
+        thing asked for, then the agency&apos;s own state contract ahead of a co-op&apos;s.
       </>,
     ],
     [
       "Read the recommended route",
       <>
-        The results page opens with the request as Loci read it, then one recommended route: the supplier, the contract it is bought under, the price, whether the agency may use it, how
-        it is paid for, and the lead time. A “Not known” line says what the data does not hold.
+        The results page opens with the request as fields, then one recommended route: the supplier, the contract it is bought under, the price, whether the agency may use it, how it is
+        paid for, and the lead time. A “Not known” line says what the data does not hold.
       </>,
     ],
     [
       "Compare the other options",
       <>
         Every priced option is in one table below the recommendation, in ranked order. Further down, folded to a row each, are co-op contracts, contracts that cover the purchase but have
-        no prices on file, other states&apos; contracts, and contracts not open to the agency.
+        no prices on file, other states&apos; contracts, and contracts not open to the agency. A request for a service also lists the suppliers that say they offer it where the agency is.
       </>,
     ],
     [
       "Buy, or send it on",
       <>
-        Under the agency&apos;s quick-buy limit an order checks out on a P-card. At or over it, the cart goes to purchasing for approval as a purchase order. A cart can also be handed to
+        Anyone can fill a cart. Under the agency&apos;s quick-buy limit an order checks out on a P-card. At or over it, the cart goes to purchasing for approval as a purchase order. A cart can also be handed to
         someone who is allowed to buy. A co-op contract is ordered on the co-op&apos;s own site, which Loci links to. When nothing fits, Loci offers a quote under a contract the agency
-        can already use, quotes from a few suppliers, or a solicitation, in that order. Placing an order or saving a request needs an account.
+        can already use, quotes from a few suppliers, or a solicitation, in that order. Checking out asks for an account, and the cart carries over to it.
       </>,
     ],
   ];
@@ -150,7 +162,7 @@ export default function GuidePage() {
       <Section
         id="how"
         title="How to use Loci"
-        intro={<p>A purchase takes five steps, and most of the work is in the first. The clearer the request, the fewer options there are to weigh.</p>}
+        intro={<p>A purchase takes six steps, and most of the work is in the first. The clearer the request, the fewer options there are to weigh.</p>}
       >
         <ol className="border border-base-light bg-white">
           {steps.map(([title, body], i) => (
@@ -164,8 +176,9 @@ export default function GuidePage() {
           ))}
         </ol>
         <p className="mt-4 max-w-[72ex] text-ui-xs text-base-dark">
-          There are other ways in. <Link href="/browse" className={link}>Browse</Link> lists the catalog by category, and <Link href="/contracts" className={link}>Contracts</Link>{" "}
-          searches every contract Loci holds, each with its own page: who can use it, how to buy under it, and what its documents say. Under Shopper,{" "}
+          There are other ways in. <Link href="/browse" className={link}>Browse</Link> lists the catalog by category. <Link href="/programs" className={link}>Programs</Link> has a page
+          for each of the {programCount} purchasing programs Loci holds, state programs first. <Link href="/contracts" className={link}>Contracts</Link> searches every contract, each with
+          its own page: who can use it, how to buy under it, and what its documents say. <Link href="/storefronts" className={link}>Storefronts</Link> lists every supplier. Under Shopper,{" "}
           <Link href="/quote-check" className={link}>Check a quote</Link> compares a vendor&apos;s quote line by line with the prices on file, and{" "}
           <Link href="/ask" className={link}>Ask a contract</Link> answers a question from a contract&apos;s own documents.
         </p>
@@ -209,8 +222,22 @@ export default function GuidePage() {
             ["No approval needed", "A supplier with no contract, for purchases small enough that the agency's rules ask for none."],
             ["Piggybacking", "Buying on a contract another government awarded. It is allowed only when that contract says so and the buyer's state permits it."],
             ["Solicitation", "A new competition (a bid or an RFP), run when nothing on contract fits. It is the slowest route and is offered last."],
+            [
+              "Program",
+              <>
+                Whoever awarded a shared contract: a state&apos;s purchasing office or a co-op. Each of the {programCount} in Loci has a <Link href="/programs" className={link}>page</Link>{" "}
+                built from its contracts. Nobody claims or pays for one.
+              </>,
+            ],
             ["City marketplace", "Loci set up for one agency's staff, with its own contracts, rules and approvals. Riverbend's is the one shown, and Riverbend is fictional."],
-            ["Storefront", "A supplier's page: its catalog, the contracts it sells through, its certifications and reviews."],
+            [
+              "Storefront",
+              "A supplier's page: its catalog, the contracts it sells through, its certifications and reviews. Loci builds one from public contracts, and the supplier can claim it with a work email on the company's own domain; any other email waits for review.",
+            ],
+            [
+              "Service listing",
+              "What a supplier adds to a claimed storefront so it can be found without a catalog or a co-op contract: the services it offers, the counties it works in, the public work it has done and the certifications it claims. It is free for now.",
+            ],
           ]}
         />
         <Terms
@@ -263,14 +290,34 @@ export default function GuidePage() {
               "Flags on a state rule that say how well it was sourced: read on a third-party site and not the official code; taken from a league, law firm or vendor; or not confirmed in anything read. “Currency unconfirmed” means the text may have been amended since.",
             ],
             [
+              "Read as",
+              "Loci's one-line reading of a request, in the catalog's own terms. It lets a request find products that share no word with it: “something for kids to climb on at the park” finds climbers.",
+            ],
+            [
+              "Fits, Partly fits, Doesn't fit",
+              "A model's judgment of whether a product is the thing asked for, with a reason. It is made from the product's name, kind, maker, unit and specs, never its price. Products that don't fit are set aside, one click away, not removed.",
+            ],
+            [
+              "Specs",
+              "A product's attributes as its own record prints them: fuel, cab, seats, size, capacity, material and so on. A fuel or drivetrain worked out from an engine or model name is marked “from the model name”. Many products print none.",
+            ],
+            [
               "Fit score",
-              "How much of the request an option covers, from 0 to 100. Words in its name count most, and rarer words weigh more. Sponsorship never changes it.",
+              "How much of the request an option covers, from 0 to 100. Words in its name count most, and rarer words weigh more. A priced option has to share a word for the thing asked for, not only for the kind of work. Sponsorship never changes it.",
             ],
             ["Research lead", "A real contract whose current terms Loci has not confirmed against a source document. It is shown as a lead to follow up, not as a checked record."],
             ["NIGP code", "The commodity code governments use to classify what they buy. Loci uses it to match a request to contracts."],
             [
               "Verified",
               "A supplier whose checks were all run and passed: SAM.gov registration and exclusions, Section 889, insurance and each certification. Only the fictional demo suppliers carry results, marked as demo. Real companies show every check as not checked yet.",
+            ],
+            [
+              "Self-reported, Confirmed",
+              "On a supplier's certification. Every one starts as the supplier's own claim. Texas's small business flag and VetHUB certification can be checked against the Comptroller's directory, and read Confirmed, Not on the registry, Company not found or Registry not reached, with the date. Only a confirmed one counts toward badges and ranking.",
+            ],
+            [
+              "Past public work",
+              "Work a supplier says it did for a government. Loci matches the government's name to its directory, which shows the government exists, not that the work happened. One it cannot match reads “Not found in Loci's directory”.",
             ],
             [
               "Sponsored",
@@ -296,7 +343,8 @@ export default function GuidePage() {
         <h3 className="text-ui-md font-bold text-ink">State contracts</h3>
         <p className="mt-1 max-w-[72ex] text-ui-xs text-base-darker">
           {n(stateContracts)} contracts from the programs below, read from each state&apos;s own site. They carry {n(STATE_PROGRAMS.reduce((s, p) => s + p.d.priced_lines, 0))} priced lines
-          and link to {n(ci.documents.total)} contract documents.
+          and link to {n(ci.documents.total)} contract documents. Each program has its own page, linked below: how a local government buys through it, what is on contract, and
+          every contract, searchable.
         </p>
         <div className="mt-3 overflow-x-auto border border-base-light bg-white">
           <table className="w-full min-w-[560px] text-left text-ui-xs">
@@ -312,7 +360,7 @@ export default function GuidePage() {
               {STATE_PROGRAMS.map((p) => (
                 <tr key={p.name} className="border-t border-base-lighter align-top">
                   <td className="px-3 py-2">
-                    <Link href={`/data#${p.anchor}`} className={link}>
+                    <Link href={programHref(p.name)} className={link}>
                       {p.name}
                     </Link>
                     <div className="text-ui-3xs text-base-dark">{p.who}</div>
@@ -328,15 +376,31 @@ export default function GuidePage() {
 
         <h3 className="mt-8 text-ui-md font-bold text-ink">Co-op contracts</h3>
         <p className="mt-1 max-w-[72ex] text-ui-xs text-base-darker">
-          {n(coopContracts)} contracts from {coops.length} co-ops, read from the contract lists each publishes: {list(coops.map((c) => `${c.coop} (${n(c.contracts)})`))}. Where a co-op&apos;s
-          site bars automated readers, its files come in only when a person downloads them.
+          {n(coopContracts)} contracts from {coops.length} co-ops, read from the contract lists each publishes:{" "}
+          {coops.map((c, i) => (
+            <span key={c.coop}>
+              {i > 0 && (i === coops.length - 1 ? " and " : ", ")}
+              <Link href={programHref(c.coop)} className={link}>
+                {c.coop}
+              </Link>{" "}
+              ({n(c.contracts)})
+            </span>
+          ))}
+          . Where a co-op&apos;s site bars automated readers, its files come in only when a person downloads them.
         </p>
 
         <h3 className="mt-8 text-ui-md font-bold text-ink">Products and prices</h3>
         <p className="mt-1 max-w-[72ex] text-ui-xs text-base-darker">
           Loci read {n(ci.stash.before.products)} products from those contracts&apos; price files and line items, and serves {n(ci.products.products)} of them. A product is served when it
           has a price, a name that says what it is, and is bought by the unit. The other {n(ci.stash.products)} are held back: items with no published price, parts and accessories, and
-          hourly or monthly rates.
+          hourly or monthly rates. A service sold as a fixed package counts as a product. Served products were also read for what kind of thing each is and for their specs, with a value
+          kept only when the product&apos;s own record prints it.
+        </p>
+
+        <h3 className="mt-8 text-ui-md font-bold text-ink">Suppliers</h3>
+        <p className="mt-1 max-w-[72ex] text-ui-xs text-base-darker">
+          A supplier's storefront is built from the public contracts it holds. What a supplier adds after claiming it, a description, a service listing, its
+          certifications, is the supplier&apos;s own statement unless a registry confirms it.
         </p>
 
         <h3 className="mt-8 text-ui-md font-bold text-ink">Who is on which co-op</h3>
@@ -354,8 +418,8 @@ export default function GuidePage() {
 
         <h3 className="mt-8 text-ui-md font-bold text-ink">What is not real</h3>
         <p className="mt-1 max-w-[72ex] text-ui-xs text-base-darker">
-          Riverbend, Cedar Bend and Harmon Lake are fictional agencies, with fictional contracts, suppliers, orders and spending, so the buying steps can be shown end to end. They are
-          labelled as demo wherever they appear.
+          Riverbend, Cedar Bend and Harmon Lake are fictional agencies, with fictional contracts, suppliers, orders and spending, so the buying steps can be shown end to end. So is
+          Bluebonnet Pane Window Care, the supplier that shows a service listing. They are labelled as demo wherever they appear.
         </p>
       </Section>
 
@@ -373,8 +437,9 @@ export default function GuidePage() {
           </Question>
           <Question q="Is an account needed?">
             <p>
-              Not to search. The home page, the contract pages and the Shopper tools are open to everyone. Anything that keeps a record needs one: the cart, checkout, orders, uploading a
-              contract and the purchasing pages.
+              Not to search, set an agency, use the Shopper tools, draft paperwork or fill a cart. The cart is kept in the browser until checkout, which asks for an account and moves the
+              cart to it. An account is needed for anything that keeps a record for a person or an agency: orders, quote requests, asking purchasing about a co-op, solicitations, uploads,
+              and the purchasing and supplier pages.
             </p>
           </Question>
           <Question q="Does “Eligible” mean the agency is cleared to buy?">
@@ -413,10 +478,25 @@ export default function GuidePage() {
               governments, and using one takes the fewest steps. Every other option is still in the table.
             </p>
           </Question>
+          <Question q="Why is a product marked “Doesn’t fit”, or set aside?">
+            <p>
+              Matching by words alone brings in near misses: a sedan when a police SUV was asked for. A model reads the leading products against the request and says
+              which are the thing asked for, with a reason. It does not see prices, so a verdict is never about cost. Products it sets aside stay one click away, and each verdict has a
+              thumbs up and down for when it is wrong.
+            </p>
+          </Question>
+          <Question q="How does a small supplier get found?">
+            <p>
+              By claiming its storefront and adding a service listing: the services it offers, the counties it works in, its past public work and its certifications. A request for that
+              service from an agency in those counties, or one that names the region, then lists the supplier on the results page. Suppliers with registry-confirmed certifications and
+              matched past work nearby come first. The listing is free for now.
+            </p>
+          </Question>
           <Question q="Where does AI come in?">
             <p>
-              A model reads a request into fields, words the buying plan, answers questions about a purchase or a contract, reads quotes and scanned documents, and reviews data judgments
-              too fuzzy for rules, such as whether a line is a product or a part. Prices, eligibility and the route come from rules and published data, and the model cannot take an action.
+              A model reads a request into fields and into the catalog&apos;s terms, judges whether each leading product fits, words the buying plan, answers questions about a purchase or
+              a contract, reads quotes and scanned documents, and reviews data judgments too fuzzy for rules, such as whether a line is a product or a part. Prices, eligibility and the
+              route come from rules and published data, and the model cannot take an action.
               Each answer is checked before it is shown: one that states a figure the data does not hold, or misquotes a contract, is discarded. Text a model wrote has a thumbs up and
               down under it, and the <Link href="/quality" className={link}>AI quality page</Link> counts what was kept and what was thrown away.
             </p>

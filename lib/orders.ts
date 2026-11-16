@@ -4,7 +4,7 @@
 // (three-way match of PO, receipt and invoice, then paid and closed).
 
 import { linksOut } from "./coops";
-import type { Cart, Db, Listing, Order, OrderStatus, Supplier } from "./types";
+import type { Cart, CartLine, CatalogLine, Db, Listing, Order, OrderStatus, Supplier } from "./types";
 import { checkEligibility } from "./vehicles";
 
 export const ORDER_STATUS: Record<OrderStatus, { label: string; tone: "green" | "amber" | "navy" | "neutral" }> = {
@@ -46,9 +46,65 @@ export function glCode(db: Pick<Db, "agency">, department: string): string {
   return `100-${410 + i * 10}-6100`;
 }
 
+/** The cart and order key for a catalog product. */
+export const catalogLineId = (offeringId: string) => `cat:${offeringId}`;
+
+/** A catalog product shaped as a listing, so carts, orders and spend read it like any other line. Never stored in `db.listings`. */
+export function catalogAsListing(id: string, c: CatalogLine): Listing {
+  return {
+    id,
+    contract_id: c.contract_id,
+    supplier_id: c.supplier_id,
+    source: c.source,
+    sku: c.sku ?? "",
+    title: c.title,
+    category: "Other",
+    unit_price: c.unit_price,
+    unit: c.unit,
+    lead_time_days: 0,
+    extracted_item_id: null,
+    marketplace_ids: [],
+  };
+}
+
+/** What a cart line or order is for: the Loci listing, or the catalog product it carries. */
+export function lineListing(db: Pick<Db, "listings">, line: Pick<CartLine, "listing_id" | "catalog">): Listing | undefined {
+  return line.catalog ? catalogAsListing(line.listing_id, line.catalog) : db.listings.find((l) => l.id === line.listing_id);
+}
+
+/** Who supplies a cart line or order: the Loci supplier, or the catalog product's supplier. */
+export function lineSupplier(db: Pick<Db, "listings" | "suppliers">, line: Pick<CartLine, "listing_id" | "catalog">): Supplier | undefined {
+  if (line.catalog) return catalogSupplier(db, line.catalog);
+  const l = db.listings.find((x) => x.id === line.listing_id);
+  return db.suppliers.find((s) => s.id === l?.supplier_id);
+}
+
+/** Where a line's product is described: a Loci listing's product page, or a catalog product's contract. */
+export const lineHref = (line: Pick<CartLine, "listing_id" | "catalog">) => (line.catalog ? `/contracts/${line.catalog.contract_id}` : `/product/${line.listing_id}`);
+
+/** The supplier behind a catalog line, when it has no storefront record in Loci. */
+function catalogSupplier(db: Pick<Db, "suppliers">, c: CatalogLine): Supplier {
+  return (
+    db.suppliers.find((s) => s.id === c.supplier_id) ?? {
+      id: c.supplier_id,
+      name: c.supplier,
+      city: "",
+      state: "",
+      is_local: false,
+      certifications: [],
+      verified: { insurance: false, bond: false },
+      edge_tier: "discover",
+      rating: 0,
+      review_count: 0,
+      sponsored: false,
+      categories: ["Other"],
+    }
+  );
+}
+
 export interface CartGroup {
   supplier: Supplier;
-  lines: { listing: Listing; quantity: number; unit: number; total: number; request_id?: string | null }[];
+  lines: { listing: Listing; quantity: number; unit: number; total: number; request_id?: string | null; catalog?: CatalogLine }[];
   total: number;
   payment: "pcard" | "po";
   /** Why a line can't be bought from the cart, if any. */
@@ -61,6 +117,18 @@ export function cartGroups(db: Db, cart: Pick<Cart, "lines">): CartGroup[] {
   const limit = db.agency.quick_buy_threshold;
   const bySupplier = new Map<string, CartGroup>();
   for (const line of cart.lines) {
+    if (line.catalog) {
+      // A catalog product: its contract price, read from the catalog when it was added. Eligibility was checked then,
+      // and is checked again on the server at checkout (lib/actions.ts).
+      const c = line.catalog;
+      const supplier = catalogSupplier(db, c);
+      const total = Math.round(c.unit_price * line.quantity * 100) / 100;
+      const g = bySupplier.get(supplier.id) ?? { supplier, lines: [], total: 0, payment: "pcard" as const, blocked: null };
+      g.lines.push({ listing: catalogAsListing(line.listing_id, c), quantity: line.quantity, unit: c.unit_price, total, request_id: line.request_id, catalog: c });
+      g.total = Math.round((g.total + total) * 100) / 100;
+      bySupplier.set(supplier.id, g);
+      continue;
+    }
     const listing = db.listings.find((l) => l.id === line.listing_id);
     if (!listing) continue;
     const supplier = db.suppliers.find((s) => s.id === listing.supplier_id);

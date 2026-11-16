@@ -446,7 +446,8 @@ function PricedActions({ plan, requestId }: { plan: Plan; requestId: string }) {
     setState("busy");
     setError(null);
     try {
-      for (const l of plan.lines) await act("addToCart", { listingId: l.listing_id, quantity: l.quantity, requestId });
+      for (const l of plan.lines)
+        await (l.offering_id ? act("addCatalogToCart", { offeringId: l.offering_id, quantity: l.quantity, requestId }) : act("addToCart", { listingId: l.listing_id, quantity: l.quantity, requestId }));
       setState("done");
     } catch (e) {
       setError((e as Error).message);
@@ -462,13 +463,13 @@ function PricedActions({ plan, requestId }: { plan: Plan; requestId: string }) {
           </Link>
         ) : (
           <>
-            {plan.lines.length === 1 && (
+            {plan.lines.length === 1 && !first.offering_id && (
               <Link href={`/checkout?listing=${first.listing_id}&qty=${first.quantity}&request=${requestId}`} className={primaryBtn}>
                 {plan.payment === "po" ? "Start purchase order" : "Check out"} · {usd(plan.total ?? 0)}
               </Link>
             )}
-            <button type="button" disabled={state === "busy"} className={plan.lines.length === 1 ? outlineBtn : primaryBtn} onClick={add}>
-              Add to cart{plan.lines.length === 1 ? "" : ` · ${usd(plan.total ?? 0)}`}
+            <button type="button" disabled={state === "busy"} className={plan.lines.length === 1 && !first.offering_id ? outlineBtn : primaryBtn} onClick={add}>
+              Add to cart{plan.lines.length === 1 && !first.offering_id ? "" : ` · ${usd(plan.total ?? 0)}`}
             </button>
           </>
         ))}

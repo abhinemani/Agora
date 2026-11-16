@@ -684,7 +684,7 @@ function RouteStage({
     setCart("busy");
     setCartError(null);
     try {
-      await act("addToCart", { listingId: item.listing_id, quantity });
+      await (item.listing_id ? act("addToCart", { listingId: item.listing_id, quantity }) : act("addCatalogToCart", { offeringId: item.offering_id, quantity }));
       setCart("added");
     } catch (e) {
       setCartError((e as Error).message);
@@ -693,6 +693,18 @@ function RouteStage({
   };
   const total = item.price != null ? item.price * quantity : null;
   const route = routeFor(total, limit);
+  // A co-op or state contract product with a contract price this agency can use goes in the cart like any other.
+  const cartable = item.price != null && (Boolean(item.listing_id) || Boolean(item.offering_id && (item.usable || item.state)));
+  const cartButton =
+    cart === "added" ? (
+      <Link href="/cart" className={linkBtn}>
+        Added to the cart. Open the cart →
+      </Link>
+    ) : (
+      <button type="button" disabled={busy || cart === "busy"} onClick={addToCart} className={item.listing_id ? outlineBtn : primaryBtn}>
+        Add {quantity.toLocaleString()} to the cart
+      </button>
+    );
   const limitWords = `${limitIsTheirs ? "the agency's" : "a typical"} ${usd(limit)} quick-buy limit`;
   const why =
     total == null
@@ -744,20 +756,12 @@ function RouteStage({
               Plan this purchase →
             </button>
             {/* Loci's own listings can go straight in the cart; it splits by supplier and pays each share the right way. */}
-            {item.price != null &&
-              (cart === "added" ? (
-                <Link href="/cart" className={linkBtn}>
-                  Added to the cart. Open the cart →
-                </Link>
-              ) : (
-                <button type="button" disabled={busy || cart === "busy"} onClick={addToCart} className={outlineBtn}>
-                  Add {quantity.toLocaleString()} to the cart
-                </button>
-              ))}
+            {cartable && cartButton}
           </>
         ) : (
           <>
-            {item.contract_id && item.offering_id && (
+            {cartable && cartButton}
+            {!cartable && item.contract_id && item.offering_id && (
               <a href={goHref(item.contract_id, { offering: item.offering_id })} target="_blank" rel="noreferrer" className={primaryBtn}>
                 Order on {item.program} ↗
               </a>
@@ -765,6 +769,11 @@ function RouteStage({
             <button type="button" disabled={busy} onClick={() => onPlan({ hash: "purchase-file", offeringId: item.offering_id })} className={item.contract_id && item.offering_id ? outlineBtn : primaryBtn}>
               Start the purchase file
             </button>
+            {cartable && item.contract_id && item.offering_id && (
+              <a href={goHref(item.contract_id, { offering: item.offering_id })} target="_blank" rel="noreferrer" className={linkBtn}>
+                View on {item.program} ↗
+              </a>
+            )}
           </>
         )}
         {item.contract_id && (
@@ -781,7 +790,7 @@ function RouteStage({
           <ErrorNote message={cartError} />
         </div>
       )}
-      {!item.listing_id && <p className="border-t border-base-lighter px-5 py-2.5 text-ui-3xs text-base-dark">Ordering under a co-op or state contract happens on the program's own site. The purchase file keeps the request, the options and the route for the record.</p>}
+      {!item.listing_id && <p className="border-t border-base-lighter px-5 py-2.5 text-ui-3xs text-base-dark">{cartable ? `The cart orders from ${item.supplier} under ${item.program} ${item.contract_number ?? ""}, citing the contract on the PO or card order. The purchase file keeps the request, the options and the route for the record.` : "This one is ordered on the program's own site or by quote. The purchase file keeps the request, the options and the route for the record."}</p>}
     </section>
   );
 }

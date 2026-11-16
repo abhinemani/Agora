@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useStore } from "@/components/store";
-import { ORDER_STATUS } from "@/lib/orders";
+import { ORDER_STATUS, lineListing } from "@/lib/orders";
 import { Badge, Card, Loading, PageTitle, money } from "@/components/ui";
 
 const STATUS = ORDER_STATUS;
@@ -20,7 +20,7 @@ export default function MyRequests() {
           <h2 className="mb-2 text-sm font-semibold text-slate">Orders</h2>
           <Card className="divide-y divide-navy/5">
             {db.orders.map((o) => {
-              const l = db.listings.find((x) => x.id === o.listing_id);
+              const l = lineListing(db, o);
               return (
                 <Link key={o.id} href={`/orders/${o.id}`} className="flex items-center justify-between gap-3 p-4 hover:bg-tint/50">
                   <div>

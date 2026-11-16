@@ -1,5 +1,6 @@
 "use client";
 
+import { lineListing, lineSupplier } from "@/lib/orders";
 import Link from "next/link";
 import { Upload } from "@/components/icons";
 import { useEffect } from "react";
@@ -103,8 +104,8 @@ export default function ProcurementHome() {
         <h2 className="mb-2 text-sm font-semibold text-slate">Pending approvals ({pending.length})</h2>
         <Card className="divide-y divide-navy/5">
           {pending.map((o) => {
-            const l = db.listings.find((x) => x.id === o.listing_id)!;
-            const s = db.suppliers.find((x) => x.id === l.supplier_id)!;
+            const l = lineListing(db, o)!;
+            const s = lineSupplier(db, o)!;
             const req = db.requests.find((r) => r.id === o.request_id);
             return (
               <div key={o.id} className="flex flex-wrap items-center justify-between gap-4 p-5">
@@ -153,7 +154,7 @@ export default function ProcurementHome() {
           <h2 className="mb-2 text-sm font-semibold text-slate">Recent orders</h2>
           <Card className="divide-y divide-navy/5">
             {recent.map((o) => {
-              const l = db.listings.find((x) => x.id === o.listing_id)!;
+              const l = lineListing(db, o)!;
               return (
                 <div key={o.id} className="flex items-center justify-between gap-3 p-4 text-sm">
                   <span className="text-navy">

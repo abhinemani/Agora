@@ -1,5 +1,6 @@
 "use client";
 
+import { lineListing } from "@/lib/orders";
 import { useStore } from "@/components/store";
 import { Badge, Button, Card, Loading, PageTitle, compact, money } from "@/components/ui";
 import { NO_CONTRACT_CATEGORIES, OFF_CONTRACT_TOTAL, PEER_PRICES, PRICE_CHECKS, SPEND_BY_SOURCE } from "@/lib/spend";
@@ -8,7 +9,7 @@ export default function Spend() {
   const { db, act } = useStore();
   if (!db) return <Loading />;
 
-  const live = (key: string) => db.orders.filter((o) => db.listings.find((l) => l.id === o.listing_id)?.source === key).reduce((n, o) => n + o.total, 0);
+  const live = (key: string) => db.orders.filter((o) => lineListing(db, o)?.source === key).reduce((n, o) => n + o.total, 0);
   const rows = SPEND_BY_SOURCE.map((r) => ({ ...r, amount: r.amount + live(r.key) }));
   const max = Math.max(...rows.map((r) => r.amount));
   const total = rows.reduce((n, r) => n + r.amount, 0);
@@ -111,7 +112,7 @@ export default function Spend() {
         <h2 className="text-sm font-semibold text-navy">Pending approvals ({pending.length})</h2>
         <div className="mt-3 divide-y divide-navy/5">
           {pending.map((o) => {
-            const l = db.listings.find((x) => x.id === o.listing_id)!;
+            const l = lineListing(db, o)!;
             return (
               <div key={o.id} className="flex items-center justify-between gap-3 py-2 text-sm">
                 <span>

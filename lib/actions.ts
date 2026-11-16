@@ -2,7 +2,7 @@
 // exactly one place per action.
 
 import { buildResults, estimateTotal, finishCoopSection, findSimilarSolicitation, mentionsPreference, parseRequest, ruleFor, type Results } from "./assistant";
-import { catalogContract, catalogCoopHits, catalogIndex, catalogKindCandidates, catalogOffering, catalogProducts, catalogRetrieved, catalogStateRetrieved, catalogSupplierById, materializeSupplier, type CatalogProductHit } from "./catalog";
+import { catalogAccess, catalogContract, catalogCoopHits, catalogIndex, catalogKindCandidates, catalogOffering, catalogProducts, catalogRetrieved, catalogStateRetrieved, catalogSupplierById, materializeSupplier, type CatalogProductHit } from "./catalog";
 import { stateRuleFor } from "./state-rules";
 import { currentScope, getDb, nextId, resetDb } from "./db";
 import { isAdmin } from "./admin";
@@ -21,11 +21,11 @@ import {
 import { CATEGORIES } from "./types";
 import type { SupplierPlan } from "./types";
 import type { CertificationKind, PastWork, SupplierService } from "./types";
-import type { Buyer, Cart, Category, Contract, Coop, CoopMember, Order, OrderStatus, ContractDocument, ContractHeader, Db, EdgeTier, ExtractedItem, Listing, Request, Role, Solicitation } from "./types";
+import type { Buyer, Cart, CatalogLine, Category, Contract, Coop, CoopMember, Order, OrderStatus, ContractDocument, ContractHeader, Db, EdgeTier, ExtractedItem, Listing, Request, Role, Solicitation } from "./types";
 import { BUYER_PRESETS, checkEligibility, STATES } from "./vehicles";
 import { FREE_RFP_LIMIT, settingsFor } from "./agency";
 import { parseRegister } from "./register";
-import { cartAgency, cartGroups, cartOwner, draftCart, glCode, needsApproval, nextStep, PURCHASER, REQUESTER } from "./orders";
+import { cartAgency, cartGroups, cartOwner, catalogLineId, draftCart, glCode, lineListing, needsApproval, nextStep, PURCHASER, REQUESTER } from "./orders";
 import { coopOf, detectCoops, isContractLevelUrl, isMember, linksOut, memberMatches, normalizeDomain } from "./coops";
 import { parseMemberList } from "./members";
 import { findGovernment, getGovernment, matchGovernment, stateCounties } from "./directory";
@@ -314,6 +314,9 @@ export function pickOffering(args: { requestId: string; offeringId: string; quan
   const quantity = Math.floor(Number(args.quantity) || request.parsed.quantity || 1);
   if (quantity < 1 || quantity > 100_000) fail("Enter how many you need.");
   const product = catalogIndex().productById.get(o.product);
+  const buyer = db.session.buyer;
+  const access = catalogAccess(db, buyer, c);
+  const notOnCoop = Boolean(buyer && !access.member && !c.state_contract && c.coop_id !== "gsa_mas");
   request.pick = {
     offering_id: o.id,
     contract_id: c.id,
@@ -326,6 +329,8 @@ export function pickOffering(args: { requestId: string; offeringId: string; quan
     price_note: priceNote(o),
     unit: o.unit,
     vintage: o.vintage,
+    usable: access.eligible && !notOnCoop,
+    access: !access.eligible ? `Not open to ${buyer?.name ?? "this agency"}: ${access.reason}` : notOnCoop ? `${buyer!.name} isn't on ${c.coop} yet` : access.reason,
   };
   request.parsed = { ...request.parsed, quantity, est_total: o.price != null ? Math.round(o.price * quantity * 100) / 100 : request.parsed.est_total };
   request.shopper = { listing_id: null, add_ons: [], confirmed_at: now() };
@@ -641,15 +646,20 @@ function unitPrice(db: Db, listing: Listing, qty: number) {
 /** Every order, from checkout or a cart, goes through here: same checks, same revenue events. */
 function createOrder(
   db: Db,
-  args: { listing: Listing; quantity: number; requestId: string | null; department: string; payment: "pcard" | "po"; preApproved: boolean; cartId?: string; requester?: string; note?: string },
+  args: { listing: Listing; quantity: number; requestId: string | null; department: string; payment: "pcard" | "po"; preApproved: boolean; cartId?: string; requester?: string; note?: string; catalog?: CatalogLine },
 ) {
   const { listing } = args;
-  const contractFor = db.contracts.find((c) => c.id === listing.contract_id);
-  const access = checkEligibility(contractFor, db.session.buyer);
-  if (!access.eligible) fail(`This contract isn't open to ${db.session.buyer?.name}: ${access.reason}.`);
-  if (linksOut(db, contractFor)) fail(`${contractFor?.vehicle} ${contractFor?.contract_number} is bought on ${coopOf(db, contractFor)?.name}'s own contract page, not in Loci.`);
+  // A catalog product is checked again against the catalog: the agency may have changed since it went in the cart.
+  const catalog = args.catalog ? { ...catalogLine(db, args.catalog.offering_id), unit_price: args.catalog.unit_price } : undefined;
+  if (catalog && catalog.contract_id !== args.catalog!.contract_id) fail(`${catalog.title} has moved to another contract. Remove it and add it again.`);
+  if (!catalog) {
+    const contractFor = db.contracts.find((c) => c.id === listing.contract_id);
+    const access = checkEligibility(contractFor, db.session.buyer);
+    if (!access.eligible) fail(`This contract isn't open to ${db.session.buyer?.name}: ${access.reason}.`);
+    if (linksOut(db, contractFor)) fail(`${contractFor?.vehicle} ${contractFor?.contract_number} is bought on ${coopOf(db, contractFor)?.name}'s own contract page, not in Loci.`);
+  }
   const qty = args.quantity;
-  const total = Math.round(unitPrice(db, listing, qty) * qty * 100) / 100;
+  const total = Math.round((catalog ? catalog.unit_price : unitPrice(db, listing, qty)) * qty * 100) / 100;
   if (listing.source === "no_approval" && total >= db.agency.quick_buy_threshold) fail("Off-contract purchases must stay under the quick-buy limit.");
 
   const n = (db.counters.order = (db.counters.order ?? 0) + 1);
@@ -669,6 +679,7 @@ function createOrder(
     agency: db.session.buyer?.name,
     cart_id: args.cartId ?? null,
     gl_code: glCode(db, args.department),
+    ...(catalog ? { catalog } : {}),
     events: [
       { status: args.payment === "po" ? "pending_approval" : "placed", at: now(), note: args.payment === "po" ? "PO created and sent for approval" : "Ordered on the P-card; charged when it ships" },
       ...(status === "approved" ? [{ status: "approved" as const, at: now(), note: args.note ?? `PO approved by ${PURCHASER}, Purchasing` }] : []),
@@ -686,14 +697,15 @@ function createOrder(
   const req = db.requests.find((r) => r.id === args.requestId);
   if (req) req.outcome = "ordered";
 
-  const supplier = db.suppliers.find((s) => s.id === listing.supplier_id)!;
+  const supplierName = catalog?.supplier ?? db.suppliers.find((s) => s.id === listing.supplier_id)?.name ?? "Supplier";
   const events = onOrderPlaced(db, {
     orderId: order.id,
     total,
     source: listing.source,
     payment: order.payment,
-    supplierName: supplier.name,
-    contractId: listing.contract_id,
+    supplierName,
+    // A catalog contract isn't one of Loci's onboarded contracts, so it bills no onboarding.
+    contractId: catalog ? null : listing.contract_id,
   });
   return { order, events };
 }
@@ -713,8 +725,8 @@ export function advanceOrder(orderId: string) {
   const db = getDb();
   const o = db.orders.find((o) => o.id === orderId) ?? fail("Order not found");
   const next = nextStep(o) ?? fail(o.status === "pending_approval" ? `${o.id} needs approval first.` : `${o.id} is already reconciled.`);
-  const listing = db.listings.find((l) => l.id === o.listing_id);
-  const supplier = db.suppliers.find((s) => s.id === listing?.supplier_id);
+  const listing = lineListing(db, o);
+  const supplier = o.catalog ? { name: o.catalog.supplier } : db.suppliers.find((s) => s.id === listing?.supplier_id);
   const seq = o.id.replace(/\D/g, "");
   let note = "";
   if (next.status === "shipped") note = `${supplier?.name ?? "Supplier"} shipped it; tracking 1Z${seq.padStart(6, "0")}4410`;
@@ -814,6 +826,53 @@ export function addToCart(args: { listingId: string; quantity: number; requestId
   return cart;
 }
 
+/** A co-op or state contract product, read from the catalog: what it is, its contract price and whether this agency may
+ * buy it now. Fails when it has no price the buyer would pay, or the agency can't use the contract yet. */
+function catalogLine(db: Db, offeringId: string): CatalogLine {
+  const o = catalogOffering(String(offeringId ?? "")) ?? fail("That product isn't in the catalog.");
+  const c = catalogContract(o.contract) ?? fail("That product's contract isn't in the catalog.");
+  const product = catalogIndex().productById.get(o.product);
+  const title = product?.name ?? o.sku ?? "Catalog product";
+  if (o.price == null) fail(`${title} has no contract price on file${o.list != null ? ", only a list price before the discount" : ""}, so it needs a quote under ${c.coop} ${c.number}.`);
+  const buyer = db.session.buyer;
+  const access = catalogAccess(db, buyer, c);
+  if (!access.eligible) fail(`${c.coop} ${c.number} isn't open to ${buyer?.name ?? "this agency"}: ${access.reason}.`);
+  // A co-op contract needs the agency on the co-op; state contracts and GSA's cooperative SINs don't.
+  if (buyer && !access.member && !c.state_contract && c.coop_id !== "gsa_mas") fail(`${buyer.name} isn't on ${c.coop} yet, so ${c.coop} ${c.number} can't be used until it joins. Ask purchasing about joining.`);
+  return {
+    offering_id: o.id,
+    contract_id: c.id,
+    supplier_id: o.supplier,
+    supplier: catalogSupplierById(o.supplier)?.name ?? catalogSupplierById(c.supplier)?.name ?? "Supplier",
+    title,
+    sku: o.sku ?? product?.mpn ?? null,
+    source: c.state_contract ? "state_contract" : "coop_contract",
+    program: c.coop,
+    contract_number: c.number,
+    unit_price: o.price,
+    unit: o.unit ?? "each",
+    price_note: priceNote(o),
+    vintage: o.vintage,
+    access: access.reason,
+  };
+}
+
+/** Put a co-op or state contract product in the cart, at its contract price. The order goes to the supplier under that contract. */
+export function addCatalogToCart(args: { offeringId: string; quantity: number; requestId?: string | null }) {
+  const db = getDb();
+  const item = catalogLine(db, args.offeringId);
+  const cart = activeCart(db);
+  const qty = Math.max(1, Math.min(100_000, Math.floor(Number(args.quantity) || 1)));
+  const id = catalogLineId(item.offering_id);
+  const line = cart.lines.find((l) => l.listing_id === id);
+  if (line) {
+    line.quantity += qty;
+    line.catalog = item;
+  } else cart.lines.push({ listing_id: id, quantity: qty, request_id: args.requestId ?? null, catalog: item });
+  cart.updated_at = now();
+  return cart;
+}
+
 export function updateCartLine(args: { listingId: string; quantity: number }) {
   const db = getDb();
   const cart = myDraft(db) ?? fail("There's no open cart.");
@@ -876,6 +935,7 @@ function placeCart(db: Db, cart: Cart, approved: boolean) {
         cartId: cart.id,
         requester: cart.created_by,
         note: `PO approved by ${PURCHASER} with cart ${cart.id}`,
+        catalog: line.catalog,
       });
       cart.order_ids.push(order.id);
     }

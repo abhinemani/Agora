@@ -166,7 +166,8 @@ export function buildPlan(args: { results: Results; listings: Listing[]; limit: 
 
   // Same test as ruleFor() in lib/assistant.ts: under the limit is a P-card, at or over it is a PO.
   let payment: PlanPayment = "quote";
-  if (picked && total !== null) payment = "coop_site";
+  // A picked catalog product the agency may use goes through the cart like any priced item: P-card under the limit, PO at or over.
+  if (picked && total !== null) payment = picked.usable === false ? "coop_site" : total < limit ? "pcard" : "po";
   else if (chosen && total !== null) {
     if (chosen.link_out) payment = "coop_site";
     else if (total < limit) payment = "pcard";
@@ -188,7 +189,12 @@ export function buildPlan(args: { results: Results; listings: Listing[]; limit: 
   let headline: string;
   let summary: string;
   const orderIs = lines.length > 1 ? "everything on your order" : "this";
-  if (payment === "pcard") {
+  if (picked && (payment === "pcard" || payment === "po")) {
+    headline = payment === "pcard" ? "This can be bought today on a P-card." : "This order needs a purchase order.";
+    summary =
+      `${supplier} has this on ${pickedOn} at its ${picked.price_note.toLowerCase()}: **${usd(total!)} in all**. That is ${gap === 0 ? "right at" : `${usd(gap)} ${payment === "pcard" ? "under" : "over"}`} ${limit_phrase}, so ${payment === "pcard" ? "a P-card covers it" : "it needs a PO and approval"}. ` +
+      `The order goes to ${supplier} under that contract, from Loci's cart.`;
+  } else if (payment === "pcard") {
     headline = "You can buy this today on a P-card.";
     summary = `${supplier} lists ${orderIs} at a published price: **${usd(total!)} in all**. That is ${usd(gap)} under ${limit_phrase}, so no purchase order is needed.`;
   } else if (payment === "po") {
@@ -200,8 +206,8 @@ export function buildPlan(args: { results: Results; listings: Listing[]; limit: 
     headline = "This is too large to buy off contract.";
     summary = `${possessive(supplier!)} price isn't on a contract, and **${usd(total!)}** is over ${limit_phrase}. An order this size needs a contract or a solicitation.`;
   } else if (payment === "coop_site" && picked) {
-    headline = `${picked.price_note}, ordered on ${picked.program}'s site.`;
-    summary = `${supplier} has this on ${pickedOn}: **${usd(total!)} in all** (${picked.price_note.toLowerCase()}${picked.vintage ? `, ${picked.vintage}` : ""}). The order is placed under that contract on ${picked.program}'s site, not in Loci.`;
+    headline = `${picked.price_note}, but not open to this agency yet.`;
+    summary = `${supplier} has this on ${pickedOn}: **${usd(total!)} in all** (${picked.price_note.toLowerCase()}${picked.vintage ? `, ${picked.vintage}` : ""}). ${picked.access ?? "The contract isn't open to this agency yet"}, so it can't go in the cart. Purchasing can say whether the agency can join.`;
   } else if (picked) {
     headline = "This one starts with a quote.";
     summary = `${picked.name} is on ${pickedOn} from ${supplier}. ${picked.price_note}, so the price comes by quote under that contract.`;
@@ -240,8 +246,16 @@ export function buildPlan(args: { results: Results; listings: Listing[]; limit: 
     routes.push({
       kind: "priced",
       recommended: true,
-      title: total !== null ? `Order on ${picked.program}'s site` : `Get a quote under ${pickedOn}`,
-      body: `${qty} × ${picked.name}. ${total !== null ? `${usd(total)} in all. Loci links to the contract page and records the visit.` : `${picked.price_note}.`}`,
+      title: payment === "pcard" ? "Buy today on a P-card" : payment === "po" ? `Buy from ${supplier} with a PO` : total !== null ? `See it on ${picked.program}'s site` : `Get a quote under ${pickedOn}`,
+      body: `${qty} × ${picked.name}. ${
+        payment === "pcard"
+          ? `${usd(total!)} in all. Under the quick-buy limit, so it can go in the cart now.`
+          : payment === "po"
+            ? `${usd(total!)} in all. Over the quick-buy limit, so the cart will route it for approval.`
+            : total !== null
+              ? `${usd(total)} in all. ${picked.access ?? ""}.`
+              : `${picked.price_note}.`
+      }`,
       refs: [],
       hits: [],
     });
@@ -312,9 +326,13 @@ export function buildPlan(args: { results: Results; listings: Listing[]; limit: 
   const file = {
     items,
     route: picked
-      ? total !== null
-        ? `${supplier}, ordered on ${picked.program}'s contract page`
-        : `Quote from ${supplier} under ${pickedOn}`
+      ? payment === "pcard"
+        ? `${supplier}, on a P-card, under ${pickedOn}`
+        : payment === "po"
+          ? `${supplier}, by purchase order, under ${pickedOn}`
+          : total !== null
+            ? `None yet: ${picked.access ?? "the contract isn't open to this agency"}`
+            : `Quote from ${supplier} under ${pickedOn}`
       : payment === "pcard"
         ? `${supplier}, on a P-card`
         : payment === "po"
@@ -338,9 +356,13 @@ export function buildPlan(args: { results: Results; listings: Listing[]; limit: 
           ? `No catalog item with a published price was chosen. ${members.length === 1 ? "This contract is" : "These contracts are"} open to ${who}.`
           : "No contract open to the agency has a published price for this.",
     needed: picked
-      ? total !== null
-        ? `The order, placed on ${picked.program}'s site`
-        : "A quote from the supplier"
+      ? payment === "pcard"
+        ? "Nothing. Ready to buy."
+        : payment === "po"
+          ? "A PO and approval"
+          : total !== null
+            ? "Purchasing's answer on joining"
+            : "A quote from the supplier"
       : payment === "pcard" ? "Nothing. Ready to buy." : payment === "po" ? "A PO and approval" : payment === "coop_site" ? "The order, placed on the co-op's site" : payment === "needs_contract" ? "A contract or a solicitation" : members.length ? "Quotes from the suppliers" : "Purchasing's answer",
   };
 

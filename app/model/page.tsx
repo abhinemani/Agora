@@ -1,5 +1,6 @@
 "use client";
 
+import { lineListing } from "@/lib/orders";
 import Link from "next/link";
 import { useStore } from "@/components/store";
 import { Arrow } from "@/components/icons";
@@ -91,8 +92,8 @@ export default function Model() {
   const total = db.revenue.reduce((n, e) => n + e.amount, 0);
   const firedCount = Object.keys(REVENUE_OPTIONS).filter((o) => fired(Number(o))).length;
 
-  const contractOrders = db.orders.filter((o) => db.listings.find((l) => l.id === o.listing_id)?.source !== "no_approval");
-  const smallOrders = db.orders.filter((o) => db.listings.find((l) => l.id === o.listing_id)?.source === "no_approval");
+  const contractOrders = db.orders.filter((o) => lineListing(db, o)?.source !== "no_approval");
+  const smallOrders = db.orders.filter((o) => lineListing(db, o)?.source === "no_approval");
   const newSols = db.solicitations.filter((s) => s.published_at);
   const credits = -db.revenue.filter((e) => e.option === 1 && e.amount < 0).reduce((n, e) => n + e.amount, 0);
   const activeMarketplaces = new Set(db.contracts.flatMap((c) => c.marketplace_ids)).size;

@@ -61,6 +61,8 @@ const authFailure = (reason: string) => /\b(401|403)\b|authentication_error|perm
 async function runOnce(c: Case, fx: Awaited<ReturnType<typeof fixtures>>): Promise<{ problems: string[]; outcome: string | null; output: string | null; unrun?: string }> {
   // A contract brief is cached per contract; each case needs its own reading.
   (globalThis as unknown as { __agoraBriefs?: Map<string, unknown> }).__agoraBriefs?.clear();
+  // So is the shopper's buying plan, by the facts it was written from.
+  (globalThis as unknown as { __agoraShopperBriefs?: Map<string, unknown> }).__agoraShopperBriefs?.clear();
   // The dive keeps what the model read and judged between turns; each case starts without it.
   delete (globalThis as unknown as { __agoraDiveAI?: unknown }).__agoraDiveAI;
   const before = aiRecords().length;

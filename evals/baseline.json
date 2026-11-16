@@ -1,5 +1,5 @@
 {
-  "saved": "2026-11-16T12:48:33.111Z",
+  "saved": "2026-11-16T13:00:27.016Z",
   "model": "claude-sonnet-5-5",
   "prompts": {
     "request_parse": "cebcf585",
@@ -33,6 +33,7 @@
     "brief.guard.grounded": "pass",
     "brief.guard.invented-discount": "pass",
     "brief.guard.invented-price": "pass",
+    "brief.guard.written-once": "pass",
     "brief.live.over-limit": "pass",
     "brief.live.pcard": "pass",
     "brief.live.quote": "pass",

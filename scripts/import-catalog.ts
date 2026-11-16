@@ -582,10 +582,12 @@ const nigpStats = { published: 0, reviewed: 0, none: 0 };
 }
 
 // Categories: each distinct title was classified once; GSA contracts take their first described SIN's.
+// A state contract keeps the category its program's own records settle (NJSTART's commodity group);
+// one without takes the reviewed pick for its title.
 let categorized = 0;
 for (const c of contracts) {
   const pick = c.coop === "GSA MAS" ? (c.sins.map((x) => categoryPicks[`sin:${x}`]?.pick).find((x) => x && x !== "Other") ?? categoryPicks[`sin:${c.sins[0]}`]?.pick) : categoryPicks[`title:${c.title.trim().toLowerCase()}`]?.pick;
-  if (pick && !c.state_contract) (c.category = pick), categorized++;
+  if (pick && !(c.state_contract && c.category)) (c.category = pick), categorized++;
 }
 const contractById = new Map(contracts.map((c) => [c.id, c]));
 

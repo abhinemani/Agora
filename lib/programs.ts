@@ -13,31 +13,31 @@ export type ProgramKind = "state" | "coop";
 
 /** How each program describes itself, in a line, with its site. Everything else on the page is counted from the catalog. */
 const ABOUT: Record<string, { tagline: string; website: string }> = {
-  state_nj: { tagline: "New Jersey's eProcurement system, where the Division of Purchase and Property posts the state's contracts.", website: "https://www.njstart.gov" },
-  state_ny: { tagline: "Centralized contracts let by New York's Office of General Services for state agencies and, where the award allows, local governments.", website: "https://ogs.ny.gov/procurement" },
+  state_nj: { tagline: "New Jersey's eProcurement system, where the state's active contracts are posted.", website: "https://www.njstart.gov" },
+  state_ny: { tagline: "Centralized contracts that New York's Office of General Services manages for state agencies, local governments, school districts, colleges and other authorized users.", website: "https://ogs.ny.gov/procurement" },
   state_ny_ps: {
-    tagline: "New York's preferred sources: Corcraft, NYSID and NIBNY, whose approved items public buyers take before any contract.",
-    website: "https://ogs.ny.gov/procurement/preferred-source-program",
+    tagline: "New York's preferred sources: Corcraft, NYSID (New York State Industries for the Disabled) and NIBNY (National Industries for the Blind New York). Public buyers must buy from them first when an offering meets the need in form, function and utility.",
+    website: "https://ogs.ny.gov/procurement/preferred-sources",
   },
-  trx_epc: { tagline: "A county cooperative in New York, run with the Empire State Cooperative Procurement Alliance, where counties share the contracts they let.", website: "https://empireprocureconnect.info/empire-procure-connect-home" },
-  state_or: { tagline: "Oregon's eProcurement system, where DAS Procurement Services posts the state's statewide price agreements.", website: "https://oregonbuys.gov" },
-  state_hi: { tagline: "The Hawaii State Procurement Office's price & vendor list contracts, each naming the jurisdictions that take part.", website: "https://spo.hawaii.gov" },
-  state_ar: { tagline: "Statewide contracts from Arkansas's Office of State Procurement, many of them the state's addenda to national co-op awards.", website: "https://sas.arkansas.gov/procurement/state-contracts/" },
+  trx_epc: { tagline: "The marketplace of the Empire State Cooperative Procurement Alliance, where New York counties let cooperative contracts other governments may use.", website: "https://empireprocureconnect.info/empire-procure-connect-home" },
+  state_or: { tagline: "Oregon's eProcurement system, where the state's open bids and its active price agreements, called blankets, are posted.", website: "https://oregonbuys.gov" },
+  state_hi: { tagline: "The Hawaii State Procurement Office's price & vendor list contracts, for executive agencies and the jurisdictions that commit to take part.", website: "https://spo.hawaii.gov" },
+  state_ar: { tagline: "Statewide contracts listed by Arkansas's Department of Shared Administrative Services, many of them adopted from national co-op awards.", website: "https://sas.arkansas.gov/procurement/state-contracts/" },
   coop_sourcewell: { tagline: "A Minnesota service cooperative that bids national contracts for public agencies.", website: "https://www.sourcewell-mn.gov" },
   coop_tips: { tagline: "The Interlocal Purchasing System, a purchasing cooperative run by Region 8 Education Service Center in Texas.", website: "https://www.tips-usa.com" },
   coop_buyboard: { tagline: "The Local Government Purchasing Cooperative, administered by the Texas Association of School Boards.", website: "https://www.buyboard.com" },
   coop_hgacbuy: { tagline: "The cooperative purchasing program of the Houston-Galveston Area Council, a Texas regional council of governments.", website: "https://www.hgacbuy.org" },
   coop_choice: { tagline: "The purchasing cooperative of the Harris County Department of Education in Texas.", website: "https://www.choicepartners.org" },
   coop_omnia: { tagline: "A national cooperative purchasing organization for public agencies.", website: "https://www.omniapartners.com" },
-  coop_peppm: { tagline: "A national technology contract program, bid by a Pennsylvania intermediate unit.", website: "https://www.peppm.org" },
-  coop_1gpa: { tagline: "One Government Procurement Alliance, a cooperative based in Arizona.", website: "https://1gpa.org" },
+  coop_peppm: { tagline: "A national technology purchasing program run by the Central Susquehanna Intermediate Unit, a Pennsylvania education service agency.", website: "https://www.peppm.org" },
+  coop_1gpa: { tagline: "1 Governmental Procurement Alliance, a nonprofit cooperative based in Phoenix, Arizona, whose contracts are let by lead public agencies.", website: "https://1gpa.org" },
   coop_naspo: {
     tagline: "The cooperative arm of the National Association of State Procurement Officials: a lead state bids each contract, and other states join by signing a participating addendum.",
     website: "https://www.naspovaluepoint.org",
   },
-  coop_equalis: { tagline: "A national cooperative purchasing organization for public agencies.", website: "https://equalisgroup.org" },
-  coop_eandi: { tagline: "E&I Cooperative Services, a member-owned purchasing cooperative for education, mostly colleges and universities.", website: "https://www.eandi.org" },
-  coop_nppgov: { tagline: "National Purchasing Partners Government, a cooperative for public agencies and public safety.", website: "https://nppgov.com" },
+  coop_equalis: { tagline: "A national purchasing cooperative for schools, local governments and other public agencies, with Region 10 Education Service Center in Texas among its lead agencies.", website: "https://equalisgroup.org" },
+  coop_eandi: { tagline: "A member-owned, nonprofit purchasing cooperative that serves only education: colleges, universities and K-12 schools.", website: "https://www.eandi.org" },
+  coop_nppgov: { tagline: "The government division of National Purchasing Partners: a free cooperative for public agencies, with programs for fire and law enforcement.", website: "https://nppgov.com" },
 };
 
 export interface ProgramSummary {

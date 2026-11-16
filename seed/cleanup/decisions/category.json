@@ -14543,5 +14543,4610 @@
   "pick": "Other",
   "confidence": "high",
   "reason": "lodging travel"
+ },
+ "title:02-20-25-19dpa mercury analyzer": {
+  "pick": "Facilities and MRO",
+  "confidence": "high",
+  "reason": "Title and program headings"
+ },
+ "title:mmis - provider services module": {
+  "pick": "Software and services",
+  "confidence": "high",
+  "reason": "Title and program headings"
+ },
+ "title:enhanced digital drivers license (eddl) and central issuance": {
+  "pick": "Software and services",
+  "confidence": "medium",
+  "reason": "Title and program headings"
+ },
+ "title:solar system installation nj dot": {
+  "pick": "Facilities and MRO",
+  "confidence": "medium",
+  "reason": "Title and program headings"
+ },
+ "title:number 2 heating fuel oil - statewide": {
+  "pick": "Fleet and parts",
+  "confidence": "medium",
+  "reason": "Title and program headings"
+ },
+ "title:airport operator svs greenwood lake airport dot": {
+  "pick": "Professional services",
+  "confidence": "low",
+  "reason": "Title and program headings"
+ },
+ "title:radio communication equipment and accessories": {
+  "pick": "IT hardware",
+  "confidence": "high",
+  "reason": "Title and program headings"
+ },
+ "title:internet-based patient safety adverse event reporting system": {
+  "pick": "Software and services",
+  "confidence": "high",
+  "reason": "Title and program headings"
+ },
+ "title:various foods: condiments, dressings, gravies, rice, potatoes, flour and sugar for dss": {
+  "pick": "Other",
+  "confidence": "high",
+  "reason": "Title and program headings"
+ },
+ "title:customer queuing system for new jersey motor vehicle commission": {
+  "pick": "Software and services",
+  "confidence": "medium",
+  "reason": "Title and program headings"
+ },
+ "title:armed and unarmed security guard services for nj - statewide": {
+  "pick": "Professional services",
+  "confidence": "high",
+  "reason": "Title and program headings"
+ },
+ "title:portion controlled food items for dss - partial reprocurement": {
+  "pick": "Other",
+  "confidence": "high",
+  "reason": "Title and program headings"
+ },
+ "title:#12-30-24-18dpa positive youth development training": {
+  "pick": "Professional services",
+  "confidence": "high",
+  "reason": "Title and program headings"
+ },
+ "title:frozen vegetables for distribution and support services (dss)": {
+  "pick": "Other",
+  "confidence": "high",
+  "reason": "Title and program headings"
+ },
+ "title:new jersey one-call damage prevention system": {
+  "pick": "Professional services",
+  "confidence": "medium",
+  "reason": "Title and program headings"
+ },
+ "title:firefighter protective gear, equipment and supplies - statewide": {
+  "pick": "Safety and uniforms",
+  "confidence": "high",
+  "reason": "Title and program headings"
+ },
+ "title:#11-26-24-16dpa cobot for proof of concept study": {
+  "pick": "IT hardware",
+  "confidence": "medium",
+  "reason": "Title and program headings"
+ },
+ "title:medical supplies and pharmaceuticals-statewide": {
+  "pick": "Safety and uniforms",
+  "confidence": "high",
+  "reason": "Title and program headings"
+ },
+ "title:custom orders - medical supplies and pharmaceuticals - statewide": {
+  "pick": "Safety and uniforms",
+  "confidence": "high",
+  "reason": "Title and program headings"
+ },
+ "title:custom orders - medical supplies and pharmaceuticals-statewide": {
+  "pick": "Safety and uniforms",
+  "confidence": "high",
+  "reason": "Title and program headings"
+ },
+ "title:breakaway u-post sign supports - statewide": {
+  "pick": "Public works materials",
+  "confidence": "high",
+  "reason": "Title and program headings"
+ },
+ "title:park and playground equipment - statewide": {
+  "pick": "Public works materials",
+  "confidence": "high",
+  "reason": "Title and program headings"
+ },
+ "title:scrap metal collection and recycling/disposal - statewide": {
+  "pick": "Professional services",
+  "confidence": "medium",
+  "reason": "Title and program headings"
+ },
+ "title:water damage restoration services - statewide": {
+  "pick": "Facilities and MRO",
+  "confidence": "medium",
+  "reason": "Title and program headings"
+ },
+ "title:wireless devices and services": {
+  "pick": "Software and services",
+  "confidence": "high",
+  "reason": "Title and program headings"
+ },
+ "title:wireless voice, data, and accessories": {
+  "pick": "Software and services",
+  "confidence": "medium",
+  "reason": "Title and program headings"
+ },
+ "title:geographic information systems services": {
+  "pick": "Software and services",
+  "confidence": "high",
+  "reason": "Title and program headings"
+ },
+ "title:data communications network services": {
+  "pick": "Software and services",
+  "confidence": "high",
+  "reason": "Title and program headings"
+ },
+ "title:for pay only: m2075 copiers and managed print services - statewide": {
+  "pick": "IT hardware",
+  "confidence": "high",
+  "reason": "Title and program headings"
+ },
+ "title:maintenance and repair services for heavy duty vehicles (class 5 or higher, over 15,000 lb.": {
+  "pick": "Fleet and parts",
+  "confidence": "high",
+  "reason": "Title and program headings"
+ },
+ "title:voice communications network services": {
+  "pick": "Software and services",
+  "confidence": "high",
+  "reason": "Title and program headings"
+ },
+ "title:catch basin castings, inlets & manholes - statewide": {
+  "pick": "Public works materials",
+  "confidence": "high",
+  "reason": "Title and program headings"
+ },
+ "title:traffic signal controllers and camera image detection systems - statewide": {
+  "pick": "Public works materials",
+  "confidence": "high",
+  "reason": "Title and program headings"
+ },
+ "title:soft drinks/soda, various flavors, for distribution and support services": {
+  "pick": "Other",
+  "confidence": "high",
+  "reason": "Title and program headings"
+ },
+ "title:child safety seats: naspo valuepoint master agreement": {
+  "pick": "Fleet and parts",
+  "confidence": "medium",
+  "reason": "Title and program headings"
+ },
+ "title:fleet management technologies": {
+  "pick": "Software and services",
+  "confidence": "medium",
+  "reason": "Title and program headings"
+ },
+ "title:uniforms, apparel, footwear and accessories - new jersey state police": {
+  "pick": "Safety and uniforms",
+  "confidence": "high",
+  "reason": "Title and program headings"
+ },
+ "title:sporting goods - statewide - re-bid": {
+  "pick": "Other",
+  "confidence": "medium",
+  "reason": "Title and program headings"
+ },
+ "title:fabricated & prefabricated structures: portable sanitation units": {
+  "pick": "Public works materials",
+  "confidence": "medium",
+  "reason": "Title and program headings"
+ },
+ "title:next generation 911 services": {
+  "pick": "Software and services",
+  "confidence": "high",
+  "reason": "Title and program headings"
+ },
+ "title:vehicle towing and roadside services.": {
+  "pick": "Fleet and parts",
+  "confidence": "high",
+  "reason": "Title and program headings"
+ },
+ "title:video teleconferencing equipment & services": {
+  "pick": "IT hardware",
+  "confidence": "medium",
+  "reason": "Title and program headings"
+ },
+ "title:it research and advisory services": {
+  "pick": "Software and services",
+  "confidence": "high",
+  "reason": "Title and program headings"
+ },
+ "title:wildlands fire fighting aircraft service (supplemental)": {
+  "pick": "Professional services",
+  "confidence": "medium",
+  "reason": "Title and program headings"
+ },
+ "title:printing & mailing services: taxation & various state agencies": {
+  "pick": "Professional services",
+  "confidence": "high",
+  "reason": "Title and program headings"
+ },
+ "title:drug screening services samhsa controlled substance guidelines": {
+  "pick": "Professional services",
+  "confidence": "high",
+  "reason": "Title and program headings"
+ },
+ "title:energy tracking and bill management system": {
+  "pick": "Software and services",
+  "confidence": "high",
+  "reason": "Title and program headings"
+ },
+ "title:foods: perishable, eggs, fresh-, medium, white, usda grade a, for dss": {
+  "pick": "Other",
+  "confidence": "high",
+  "reason": "Title and program headings"
+ },
+ "title:publishing of the new jersey register and code - office of admin law": {
+  "pick": "Professional services",
+  "confidence": "low",
+  "reason": "Title and program headings"
+ },
+ "title:blueprint/architect print reproduction services - dot and dpmc": {
+  "pick": "Professional services",
+  "confidence": "medium",
+  "reason": "Title and program headings"
+ },
+ "title:snow plowing services by area- njdot": {
+  "pick": "Professional services",
+  "confidence": "medium",
+  "reason": "Title and program headings"
+ },
+ "title:lawn maintenance services: capital complex, glen gardner, paramus, and west trenton": {
+  "pick": "Facilities and MRO",
+  "confidence": "medium",
+  "reason": "Title and program headings"
+ },
+ "title:snow plowing and spreading services - njdot": {
+  "pick": "Professional services",
+  "confidence": "medium",
+  "reason": "Title and program headings"
+ },
+ "title:gases: medical, specialty & industrial, cylinders & equip. - statewide": {
+  "pick": "Facilities and MRO",
+  "confidence": "medium",
+  "reason": "Title and program headings"
+ },
+ "title:meats- cured, fresh, chilled and frozen for dss - partial re-bid": {
+  "pick": "Other",
+  "confidence": "high",
+  "reason": "Title and program headings"
+ },
+ "title:puddings and gelatins, various flavors for dss": {
+  "pick": "Other",
+  "confidence": "high",
+  "reason": "Title and program headings"
+ },
+ "title:custom orders - facilities, maintenance and repair & operations (mro) and industrial supplies": {
+  "pick": "Facilities and MRO",
+  "confidence": "high",
+  "reason": "Title and program headings"
+ },
+ "title:facilities, maintenance and repair & operations (mro) and industrial supplies": {
+  "pick": "Facilities and MRO",
+  "confidence": "high",
+  "reason": "Title and program headings"
+ },
+ "title:testing, inspection, monitoring, and maintenance of fire suppression systems": {
+  "pick": "Facilities and MRO",
+  "confidence": "high",
+  "reason": "Title and program headings"
+ },
+ "title:wastewater treatment plant operator - greystone park psychiatric hospital": {
+  "pick": "Professional services",
+  "confidence": "medium",
+  "reason": "Title and program headings"
+ },
+ "title:bottled spring water for distribution and support services": {
+  "pick": "Other",
+  "confidence": "medium",
+  "reason": "Title and program headings"
+ },
+ "title:g4024 - pdf remediation and document accessibility": {
+  "pick": "Professional services",
+  "confidence": "medium",
+  "reason": "Title and program headings"
+ },
+ "title:removal, handling, and transport of human remains - chief state medical examiner's office re": {
+  "pick": "Professional services",
+  "confidence": "medium",
+  "reason": "Title and program headings"
+ },
+ "title:tree trimming, pruning, and removal services - statewide": {
+  "pick": "Facilities and MRO",
+  "confidence": "medium",
+  "reason": "Title and program headings"
+ },
+ "title:printing: certified copies of vital records forms (doh)": {
+  "pick": "Professional services",
+  "confidence": "medium",
+  "reason": "Title and program headings"
+ },
+ "title:traffic signals, poles, controls, elec. equip. and signal indications - statewide - rebid": {
+  "pick": "Public works materials",
+  "confidence": "high",
+  "reason": "Title and program headings"
+ },
+ "title:tower maintenance": {
+  "pick": "Facilities and MRO",
+  "confidence": "medium",
+  "reason": "Title and program headings"
+ },
+ "title:sporting goods - statewide": {
+  "pick": "Other",
+  "confidence": "medium",
+  "reason": "Title and program headings"
+ },
+ "title:auctioneering services: internet auctions to sell surplus property": {
+  "pick": "Professional services",
+  "confidence": "medium",
+  "reason": "Title and program headings"
+ },
+ "title:grounds maintenance services - capital and west trenton complexes": {
+  "pick": "Facilities and MRO",
+  "confidence": "medium",
+  "reason": "Title and program headings"
+ },
+ "title:asphaltic oil and aggregate surface treatment": {
+  "pick": "Public works materials",
+  "confidence": "medium",
+  "reason": "Title and program headings"
+ },
+ "title:frozen juices for distribution and support services": {
+  "pick": "Other",
+  "confidence": "high",
+  "reason": "Title and program headings"
+ },
+ "title:state disbursement unit child support payment/receipt processing": {
+  "pick": "Software and services",
+  "confidence": "medium",
+  "reason": "Title and program headings"
+ },
+ "title:hvac, refrigeration and boiler services - statewide": {
+  "pick": "Facilities and MRO",
+  "confidence": "high",
+  "reason": "Title and program headings"
+ },
+ "title:cigarette tax decal/stamps for division of revenue": {
+  "pick": "Other",
+  "confidence": "medium",
+  "reason": "Title and program headings"
+ },
+ "title:foods: meats and poultry for nj department of corrections agri industries": {
+  "pick": "Other",
+  "confidence": "high",
+  "reason": "Title and program headings"
+ },
+ "title:infant formulas, nutritional formulas, feeding pumps and related supplies - statewide": {
+  "pick": "Safety and uniforms",
+  "confidence": "medium",
+  "reason": "Title and program headings"
+ },
+ "title:bottled spring water and cooler rental - statewide": {
+  "pick": "Other",
+  "confidence": "medium",
+  "reason": "Title and program headings"
+ },
+ "title:foods: various foods items - statewide": {
+  "pick": "Other",
+  "confidence": "high",
+  "reason": "Title and program headings"
+ },
+ "title:wildlands fire fighting aircraft services": {
+  "pick": "Professional services",
+  "confidence": "medium",
+  "reason": "Title and program headings"
+ },
+ "title:frozen liquid eggs - whole eggs, scrambled egg mix and egg white omelets - for dss": {
+  "pick": "Other",
+  "confidence": "high",
+  "reason": "Title and program headings"
+ },
+ "title:scientific equipment accessories supplies and maintenance statewide": {
+  "pick": "Facilities and MRO",
+  "confidence": "high",
+  "reason": "Title and program headings"
+ },
+ "title:canteen commissary for the department of corrections through distribution and support services": {
+  "pick": "Other",
+  "confidence": "high",
+  "reason": "Title and program headings"
+ },
+ "title:canteen commissary for the department of corrections through dss - rebid": {
+  "pick": "Other",
+  "confidence": "high",
+  "reason": "Title and program headings"
+ },
+ "title:canteen commissary for the department of corrections through dss": {
+  "pick": "Other",
+  "confidence": "high",
+  "reason": "Title and program headings"
+ },
+ "title:integrated electronic licensing system": {
+  "pick": "Software and services",
+  "confidence": "high",
+  "reason": "Title and program headings"
+ },
+ "title:food/non-food - bulk food items for distribution and support services on behalf of swsp": {
+  "pick": "Other",
+  "confidence": "high",
+  "reason": "Title and program headings"
+ },
+ "title:recycled, paper- napkins, towels, toilet tissue for distribution and support services": {
+  "pick": "Janitorial",
+  "confidence": "high",
+  "reason": "Title and program headings"
+ },
+ "title:foods: seafood, frozen, for distribution and support services": {
+  "pick": "Other",
+  "confidence": "high",
+  "reason": "Title and program headings"
+ },
+ "title:new jersey state police salting and snow removal- division hq and roic": {
+  "pick": "Professional services",
+  "confidence": "medium",
+  "reason": "Title and program headings"
+ },
+ "title:clothing: business/formal attire, casual wear, coats, undergarments, and sleepwear - statewide": {
+  "pick": "Safety and uniforms",
+  "confidence": "high",
+  "reason": "Title and program headings"
+ },
+ "title:traffic signals - statewide": {
+  "pick": "Public works materials",
+  "confidence": "high",
+  "reason": "Title and program headings"
+ },
+ "title:printing: production print services (njoit)": {
+  "pick": "Professional services",
+  "confidence": "medium",
+  "reason": "Title and program headings"
+ },
+ "title:enhanced motor vehicle inspection/ maintenance system": {
+  "pick": "Software and services",
+  "confidence": "low",
+  "reason": "Title and program headings"
+ },
+ "title:laundry rental services dhs dmava": {
+  "pick": "Professional services",
+  "confidence": "medium",
+  "reason": "Title and program headings"
+ },
+ "title:food service items: disposable, paper and plastic for distribution and support services": {
+  "pick": "Janitorial",
+  "confidence": "medium",
+  "reason": "Title and program headings"
+ },
+ "title:warehousing and emergency ops: services and logistics": {
+  "pick": "Professional services",
+  "confidence": "medium",
+  "reason": "Title and program headings"
+ },
+ "title:moving services for dpmc and cooperative purchasing participants": {
+  "pick": "Professional services",
+  "confidence": "high",
+  "reason": "Title and program headings"
+ },
+ "title:solid waste disposal/recycling - njdot maintenance facilities": {
+  "pick": "Professional services",
+  "confidence": "medium",
+  "reason": "Title and program headings"
+ },
+ "title:unleaded automotive gasoline": {
+  "pick": "Fleet and parts",
+  "confidence": "high",
+  "reason": "Title and program headings"
+ },
+ "title:logos program, freeway & interstate highway interchanges": {
+  "pick": "Professional services",
+  "confidence": "medium",
+  "reason": "Title and program headings"
+ },
+ "title:fuel credit services statewide": {
+  "pick": "Fleet and parts",
+  "confidence": "high",
+  "reason": "Title and program headings"
+ },
+ "title:communications/ telecommunications cable, wire, and associated products": {
+  "pick": "IT hardware",
+  "confidence": "medium",
+  "reason": "Title and program headings"
+ },
+ "title:communications/ telecommunications cable, wire, and associated products- supplemental": {
+  "pick": "IT hardware",
+  "confidence": "medium",
+  "reason": "Title and program headings"
+ },
+ "title:plumbing and heating, ventilation and air conditioning (hvac) supplies/equipment - statewide": {
+  "pick": "Facilities and MRO",
+  "confidence": "high",
+  "reason": "Title and program headings"
+ },
+ "title:electrical equipment and supplies, statewide": {
+  "pick": "Facilities and MRO",
+  "confidence": "high",
+  "reason": "Title and program headings"
+ },
+ "title:maintenance/repair and replacement services - portable commercial mobile generator": {
+  "pick": "Facilities and MRO",
+  "confidence": "high",
+  "reason": "Title and program headings"
+ },
+ "title:emergency winter season towing services - njdot": {
+  "pick": "Fleet and parts",
+  "confidence": "medium",
+  "reason": "Title and program headings"
+ },
+ "title:snow removal and salting services- statewide": {
+  "pick": "Professional services",
+  "confidence": "medium",
+  "reason": "Title and program headings"
+ },
+ "title:hospital based paternity acknowledgement program and database": {
+  "pick": "Software and services",
+  "confidence": "medium",
+  "reason": "Title and program headings"
+ },
+ "title:printing envelopes": {
+  "pick": "Office supplies",
+  "confidence": "medium",
+  "reason": "Title and program headings"
+ },
+ "title:courier delivery services - judiciary, dol, dhs & oal": {
+  "pick": "Professional services",
+  "confidence": "high",
+  "reason": "Title and program headings"
+ },
+ "title:environmental testing instruments, equipment and supplies for air and water quality": {
+  "pick": "Facilities and MRO",
+  "confidence": "high",
+  "reason": "Title and program headings"
+ },
+ "title:aircraft rental services - njdep": {
+  "pick": "Fleet and parts",
+  "confidence": "medium",
+  "reason": "Title and program headings"
+ },
+ "title:food/non-food: bulk food items, including cook/chill casing bags - doc": {
+  "pick": "Other",
+  "confidence": "high",
+  "reason": "Title and program headings"
+ },
+ "title:library & school supplies": {
+  "pick": "Office supplies",
+  "confidence": "medium",
+  "reason": "Title and program headings"
+ },
+ "title:aboveground fuel tanks, assoc. equip., installation, tank removal, & sys. svcs.": {
+  "pick": "Facilities and MRO",
+  "confidence": "medium",
+  "reason": "Title and program headings"
+ },
+ "title:temporary staffing services": {
+  "pick": "Professional services",
+  "confidence": "high",
+  "reason": "Title and program headings"
+ },
+ "title:printing: universal title forms - njmvc": {
+  "pick": "Professional services",
+  "confidence": "medium",
+  "reason": "Title and program headings"
+ },
+ "title:foods: cheeses and oleomargarine for distribution and support services": {
+  "pick": "Other",
+  "confidence": "high",
+  "reason": "Title and program headings"
+ },
+ "title:electronic visit verification management system (evvms) - department of human services": {
+  "pick": "Software and services",
+  "confidence": "high",
+  "reason": "Title and program headings"
+ },
+ "title:dairy products: milk, creamer, whipped cream, butter, sour cream, cheeses and yogurts": {
+  "pick": "Other",
+  "confidence": "high",
+  "reason": "Title and program headings"
+ },
+ "title:passenger vehicle and box truck rentals": {
+  "pick": "Fleet and parts",
+  "confidence": "high",
+  "reason": "Title and program headings"
+ },
+ "title:charter services; trawl survey - njdep": {
+  "pick": "Professional services",
+  "confidence": "medium",
+  "reason": "Title and program headings"
+ },
+ "title:vapor recovery systems on gasoline tanks: testing & repairs": {
+  "pick": "Facilities and MRO",
+  "confidence": "medium",
+  "reason": "Title and program headings"
+ },
+ "title:printing and mailing of assorted tax documents (division of taxation)": {
+  "pick": "Professional services",
+  "confidence": "high",
+  "reason": "Title and program headings"
+ },
+ "title:foods: canned fruits, juices & vegetables for distribution and support services": {
+  "pick": "Other",
+  "confidence": "high",
+  "reason": "Title and program headings"
+ },
+ "title:cosmetology and hairstyling license examinations, l&ps": {
+  "pick": "Professional services",
+  "confidence": "medium",
+  "reason": "Title and program headings"
+ },
+ "title:professional auctioneer services for vehicles & heavy equipment - dss": {
+  "pick": "Professional services",
+  "confidence": "medium",
+  "reason": "Title and program headings"
+ },
+ "title:locking hardware - statewide": {
+  "pick": "Facilities and MRO",
+  "confidence": "high",
+  "reason": "Title and program headings"
+ },
+ "title:furniture unassembled unfinished including components for deptcor": {
+  "pick": "Furniture",
+  "confidence": "high",
+  "reason": "Title and program headings"
+ },
+ "title:electrical equipment, supplies, light poles, and luminaries with associated lamps": {
+  "pick": "Facilities and MRO",
+  "confidence": "high",
+  "reason": "Title and program headings"
+ },
+ "title:communications wiring services": {
+  "pick": "Facilities and MRO",
+  "confidence": "medium",
+  "reason": "Title and program headings"
+ },
+ "title:copiers and managed print services - statewide": {
+  "pick": "IT hardware",
+  "confidence": "high",
+  "reason": "Title and program headings"
+ },
+ "title:laboratory courier services- doh": {
+  "pick": "Professional services",
+  "confidence": "high",
+  "reason": "Title and program headings"
+ },
+ "title:surveillance and access control security systems": {
+  "pick": "IT hardware",
+  "confidence": "medium",
+  "reason": "Title and program headings"
+ },
+ "title:recycled trash bags & liners for distribution and support services": {
+  "pick": "Janitorial",
+  "confidence": "high",
+  "reason": "Title and program headings"
+ },
+ "title:food storage facilities (northern region)": {
+  "pick": "Other",
+  "confidence": "medium",
+  "reason": "Title and program headings"
+ },
+ "title:aggregated purchase of electric supply (commodity) statewide": {
+  "pick": "Other",
+  "confidence": "medium",
+  "reason": "Title and program headings"
+ },
+ "title:aggregated purchase of natural gas supply (commodity) - statewide": {
+  "pick": "Other",
+  "confidence": "medium",
+  "reason": "Title and program headings"
+ },
+ "title:facilities management services asbury park and freehold": {
+  "pick": "Facilities and MRO",
+  "confidence": "high",
+  "reason": "Title and program headings"
+ },
+ "title:various men & women's clothing for use in doc canteen/commissary locations": {
+  "pick": "Safety and uniforms",
+  "confidence": "medium",
+  "reason": "Title and program headings"
+ },
+ "title:food service for the nj national guard training center, sea girt": {
+  "pick": "Professional services",
+  "confidence": "medium",
+  "reason": "Title and program headings"
+ },
+ "title:tire removal & disposal/recycling - njdot maintenance facilities": {
+  "pick": "Professional services",
+  "confidence": "medium",
+  "reason": "Title and program headings"
+ },
+ "title:pump station/collection system & water treatment plant operator - ancora psych": {
+  "pick": "Professional services",
+  "confidence": "medium",
+  "reason": "Title and program headings"
+ },
+ "title:g2005 carpet and floor covering, supplies and installation- statewide": {
+  "pick": "Facilities and MRO",
+  "confidence": "medium",
+  "reason": "Title and program headings"
+ },
+ "title:record storage and retrieval (darm)": {
+  "pick": "Professional services",
+  "confidence": "high",
+  "reason": "Title and program headings"
+ },
+ "title:janitorial services statewide": {
+  "pick": "Janitorial",
+  "confidence": "high",
+  "reason": "Title and program headings"
+ },
+ "title:fence: chain link, rock fall, wooden, vinyl and ornamental (install & replace)": {
+  "pick": "Public works materials",
+  "confidence": "medium",
+  "reason": "Title and program headings"
+ },
+ "title:commodities council dept. of human services": {
+  "pick": "Other",
+  "confidence": "low",
+  "reason": "Title and program headings"
+ },
+ "title:services council dept. of human services": {
+  "pick": "Professional services",
+  "confidence": "low",
+  "reason": "Title and program headings"
+ },
+ "title:removal, handling, and transport of human remains - chief state medical examiner's office": {
+  "pick": "Professional services",
+  "confidence": "medium",
+  "reason": "Title and program headings"
+ },
+ "title:njdot parts warehouse management": {
+  "pick": "Fleet and parts",
+  "confidence": "medium",
+  "reason": "Title and program headings"
+ },
+ "title:propane gas": {
+  "pick": "Fleet and parts",
+  "confidence": "medium",
+  "reason": "Title and program headings"
+ },
+ "title:preventive maintenance and testing of generators": {
+  "pick": "Facilities and MRO",
+  "confidence": "high",
+  "reason": "Title and program headings"
+ },
+ "title:maintenance and repair services - dmava war memorials": {
+  "pick": "Facilities and MRO",
+  "confidence": "high",
+  "reason": "Title and program headings"
+ },
+ "title:wastewater & water treatment plant operators for the njdoc": {
+  "pick": "Professional services",
+  "confidence": "medium",
+  "reason": "Title and program headings"
+ },
+ "title:online legal research": {
+  "pick": "Software and services",
+  "confidence": "medium",
+  "reason": "Title and program headings"
+ },
+ "title:legal research services": {
+  "pick": "Software and services",
+  "confidence": "medium",
+  "reason": "Title and program headings"
+ },
+ "title:state trauma medical director consultant for the new jersey department of health": {
+  "pick": "Professional services",
+  "confidence": "high",
+  "reason": "Title and program headings"
+ },
+ "title:poultry, various, perishable, for distribution and support services": {
+  "pick": "Other",
+  "confidence": "high",
+  "reason": "Title and program headings"
+ },
+ "title:law enforcement firearms equipment and supplies": {
+  "pick": "Safety and uniforms",
+  "confidence": "high",
+  "reason": "Title and program headings"
+ },
+ "title:fingerprint services: live scan noncriminal various state agencies": {
+  "pick": "Professional services",
+  "confidence": "medium",
+  "reason": "Title and program headings"
+ },
+ "title:chemicals and insecticides for mosquito and tick control": {
+  "pick": "Public works materials",
+  "confidence": "high",
+  "reason": "Title and program headings"
+ },
+ "title:pest control service - non-residential statewide": {
+  "pick": "Facilities and MRO",
+  "confidence": "medium",
+  "reason": "Title and program headings"
+ },
+ "title:transmission facility management for nj public broadcasting authority (njpba)": {
+  "pick": "Facilities and MRO",
+  "confidence": "medium",
+  "reason": "Title and program headings"
+ },
+ "title:certified court reporters/ certified real time court reporters- statewide": {
+  "pick": "Professional services",
+  "confidence": "high",
+  "reason": "Title and program headings"
+ },
+ "title:online probation risk assessment": {
+  "pick": "Software and services",
+  "confidence": "high",
+  "reason": "Title and program headings"
+ },
+ "title:foods: entrees, frozen, kosher, halal, ovo-lacto vegetarian for nj department of corrections": {
+  "pick": "Other",
+  "confidence": "high",
+  "reason": "Title and program headings"
+ },
+ "title:overhead/rolling doors & operators, repair/replace, dot & other agencies": {
+  "pick": "Facilities and MRO",
+  "confidence": "high",
+  "reason": "Title and program headings"
+ },
+ "title:administrative management soutions": {
+  "pick": "Professional services",
+  "confidence": "medium",
+  "reason": "Title and program headings"
+ },
+ "title:facility management services joseph kohn training center": {
+  "pick": "Facilities and MRO",
+  "confidence": "high",
+  "reason": "Title and program headings"
+ },
+ "title:fresh fruits and vegetables - statewide": {
+  "pick": "Other",
+  "confidence": "high",
+  "reason": "Title and program headings"
+ },
+ "title:mailroom equipment and maintenance various state agencies": {
+  "pick": "IT hardware",
+  "confidence": "medium",
+  "reason": "Title and program headings"
+ },
+ "title:foods: tuna, chunk light, canned, for distribution and support services": {
+  "pick": "Other",
+  "confidence": "high",
+  "reason": "Title and program headings"
+ },
+ "title:foods: fresh baked or frozen bread and related products per county - statewide": {
+  "pick": "Other",
+  "confidence": "high",
+  "reason": "Title and program headings"
+ },
+ "title:forestry mowing/mulching service njdep": {
+  "pick": "Professional services",
+  "confidence": "medium",
+  "reason": "Title and program headings"
+ },
+ "title:led signal indications and warning devices, new jersey department of transportation (njdot)": {
+  "pick": "Public works materials",
+  "confidence": "high",
+  "reason": "Title and program headings"
+ },
+ "title:ultra-low sulfur diesel and biodiesel fuel": {
+  "pick": "Fleet and parts",
+  "confidence": "high",
+  "reason": "Title and program headings"
+ },
+ "title:g4016-in-person interpretation and document translation transcription services": {
+  "pick": "Professional services",
+  "confidence": "high",
+  "reason": "Title and program headings"
+ },
+ "title:water treatment & maintenance services (heating & cooling) - statewide": {
+  "pick": "Facilities and MRO",
+  "confidence": "medium",
+  "reason": "Title and program headings"
+ },
+ "title:food storage facilities for the department of agriculture": {
+  "pick": "Other",
+  "confidence": "medium",
+  "reason": "Title and program headings"
+ },
+ "title:the emergency food assistance program: food storage and delivery": {
+  "pick": "Other",
+  "confidence": "medium",
+  "reason": "Title and program headings"
+ },
+ "title:feed: fish food, trout grower for njdep - fish & wildlife - rebid": {
+  "pick": "Other",
+  "confidence": "medium",
+  "reason": "Title and program headings"
+ },
+ "title:foods: meat- cured, fresh, chilled and frozen, for distribution and support services": {
+  "pick": "Other",
+  "confidence": "high",
+  "reason": "Title and program headings"
+ },
+ "title:good neighbor planting program for the nj department of transportation (njdot)": {
+  "pick": "Facilities and MRO",
+  "confidence": "medium",
+  "reason": "best fit from title and headings"
+ },
+ "title:custom farm services for field operations - dep": {
+  "pick": "Other",
+  "confidence": "medium",
+  "reason": "best fit from title and headings"
+ },
+ "title:custom farm services for field operations - dep (supplemental)": {
+  "pick": "Other",
+  "confidence": "medium",
+  "reason": "best fit from title and headings"
+ },
+ "title:road weather information systems for njdot": {
+  "pick": "Public works materials",
+  "confidence": "medium",
+  "reason": "best fit from title and headings"
+ },
+ "title:web design services": {
+  "pick": "Software and services",
+  "confidence": "high",
+  "reason": "best fit from title and headings"
+ },
+ "title:recycled paper: toilet tissue for distribution and support services- rebid": {
+  "pick": "Janitorial",
+  "confidence": "high",
+  "reason": "best fit from title and headings"
+ },
+ "title:credit card payment processing": {
+  "pick": "Professional services",
+  "confidence": "medium",
+  "reason": "best fit from title and headings"
+ },
+ "title:regulated medical waste, dea pharmaceutical, & rcra hazardous waste disposal- statewide": {
+  "pick": "Facilities and MRO",
+  "confidence": "medium",
+  "reason": "best fit from title and headings"
+ },
+ "title:elevator maintenance, repair, testing, and inspection services": {
+  "pick": "Facilities and MRO",
+  "confidence": "high",
+  "reason": "best fit from title and headings"
+ },
+ "title:game birds - pheasants & quail for njdep/div. of fish and wildlife": {
+  "pick": "Other",
+  "confidence": "high",
+  "reason": "best fit from title and headings"
+ },
+ "title:wic infant formula rebate: doh": {
+  "pick": "Other",
+  "confidence": "medium",
+  "reason": "best fit from title and headings"
+ },
+ "title:aircraft maintenance parts and service": {
+  "pick": "Fleet and parts",
+  "confidence": "medium",
+  "reason": "best fit from title and headings"
+ },
+ "title:drug & alcohol test kits": {
+  "pick": "Safety and uniforms",
+  "confidence": "medium",
+  "reason": "best fit from title and headings"
+ },
+ "title:maintenance of aircraft parts and service": {
+  "pick": "Fleet and parts",
+  "confidence": "medium",
+  "reason": "best fit from title and headings"
+ },
+ "title:pilot and technician training for rotary and fixed wing aircraft": {
+  "pick": "Professional services",
+  "confidence": "medium",
+  "reason": "best fit from title and headings"
+ },
+ "title:evidential breath testing equipment and services": {
+  "pick": "Safety and uniforms",
+  "confidence": "medium",
+  "reason": "best fit from title and headings"
+ },
+ "title:printing: inspection stickers, inserts, and registration emblems": {
+  "pick": "Professional services",
+  "confidence": "medium",
+  "reason": "best fit from title and headings"
+ },
+ "title:marine craft and related products and services": {
+  "pick": "Fleet and parts",
+  "confidence": "medium",
+  "reason": "best fit from title and headings"
+ },
+ "title:coffee and tea, regular and decaf for distribution and support services": {
+  "pick": "Other",
+  "confidence": "high",
+  "reason": "best fit from title and headings"
+ },
+ "title:frozen entrees for distribution and support services": {
+  "pick": "Other",
+  "confidence": "high",
+  "reason": "best fit from title and headings"
+ },
+ "title:battery charges, industrial lifts, and pallet trucks maintenance and repair - statewide": {
+  "pick": "Facilities and MRO",
+  "confidence": "medium",
+  "reason": "best fit from title and headings"
+ },
+ "title:telecommunications equipment & services": {
+  "pick": "IT hardware",
+  "confidence": "medium",
+  "reason": "best fit from title and headings"
+ },
+ "title:facilities mgt. services-trenton office complex,bank st.garage,w.trenton complex": {
+  "pick": "Facilities and MRO",
+  "confidence": "high",
+  "reason": "best fit from title and headings"
+ },
+ "title:food service items, disposable, recyclable, for dss- supplemental": {
+  "pick": "Janitorial",
+  "confidence": "medium",
+  "reason": "best fit from title and headings"
+ },
+ "title:portion controlled food items for distribution and support services": {
+  "pick": "Other",
+  "confidence": "high",
+  "reason": "best fit from title and headings"
+ },
+ "title:locksmith services and associated parts": {
+  "pick": "Facilities and MRO",
+  "confidence": "high",
+  "reason": "best fit from title and headings"
+ },
+ "title:solid waste collection - statewide": {
+  "pick": "Facilities and MRO",
+  "confidence": "medium",
+  "reason": "best fit from title and headings"
+ },
+ "title:pest control services - residential (statewide) 17dpp00047": {
+  "pick": "Facilities and MRO",
+  "confidence": "high",
+  "reason": "best fit from title and headings"
+ },
+ "title:microsurf. & slurry seal pavemt. system, njdot": {
+  "pick": "Public works materials",
+  "confidence": "high",
+  "reason": "best fit from title and headings"
+ },
+ "title:trades employment services: statewide": {
+  "pick": "Professional services",
+  "confidence": "high",
+  "reason": "best fit from title and headings"
+ },
+ "title:municipal detention facility inspections": {
+  "pick": "Professional services",
+  "confidence": "medium",
+  "reason": "best fit from title and headings"
+ },
+ "title:operation & maintenance of wastewater and potable water treatment plants - nldc": {
+  "pick": "Facilities and MRO",
+  "confidence": "medium",
+  "reason": "best fit from title and headings"
+ },
+ "title:front end mail receipt & pre-processing services - dores": {
+  "pick": "Professional services",
+  "confidence": "high",
+  "reason": "best fit from title and headings"
+ },
+ "title:tourism oriented directional signing new jersey department of transportation": {
+  "pick": "Public works materials",
+  "confidence": "medium",
+  "reason": "best fit from title and headings"
+ },
+ "title:facility management & operation of pheal": {
+  "pick": "Facilities and MRO",
+  "confidence": "high",
+  "reason": "best fit from title and headings"
+ },
+ "title:medical claims reviewer and data management services": {
+  "pick": "Professional services",
+  "confidence": "medium",
+  "reason": "best fit from title and headings"
+ },
+ "title:foods: cereal, hot and cold, for distribution and support services, rebid": {
+  "pick": "Other",
+  "confidence": "high",
+  "reason": "best fit from title and headings"
+ },
+ "title:central issuance of license plates: statewide": {
+  "pick": "Professional services",
+  "confidence": "low",
+  "reason": "best fit from title and headings"
+ },
+ "title:g4010 - statewide equipment and space rental": {
+  "pick": "Facilities and MRO",
+  "confidence": "low",
+  "reason": "best fit from title and headings"
+ },
+ "title:njdep grounds maintenance term contract": {
+  "pick": "Facilities and MRO",
+  "confidence": "high",
+  "reason": "best fit from title and headings"
+ },
+ "title:oral fluids and urine drug screening - judiciary and statewide": {
+  "pick": "Professional services",
+  "confidence": "medium",
+  "reason": "best fit from title and headings"
+ },
+ "title:appraisal services for nj department of environmental protection": {
+  "pick": "Professional services",
+  "confidence": "high",
+  "reason": "best fit from title and headings"
+ },
+ "title:express courier, overnight, ground delivery logistics": {
+  "pick": "Professional services",
+  "confidence": "medium",
+  "reason": "best fit from title and headings"
+ },
+ "title:foods: frozen vegetables for distribution & support services (dss)": {
+  "pick": "Other",
+  "confidence": "high",
+  "reason": "best fit from title and headings"
+ },
+ "title:products and services furnished by qualified community rehabilitation programs": {
+  "pick": "Other",
+  "confidence": "low",
+  "reason": "best fit from title and headings"
+ },
+ "title:internet portal manager and services provider": {
+  "pick": "Software and services",
+  "confidence": "high",
+  "reason": "best fit from title and headings"
+ },
+ "title:centrex telephone and telephone cabling services – statewide": {
+  "pick": "Software and services",
+  "confidence": "medium",
+  "reason": "best fit from title and headings"
+ },
+ "title:naspo valuepoint data communications products & services": {
+  "pick": "IT hardware",
+  "confidence": "medium",
+  "reason": "best fit from title and headings"
+ },
+ "title:naspo valuepoint wireless voice, data & accessories": {
+  "pick": "Software and services",
+  "confidence": "medium",
+  "reason": "best fit from title and headings"
+ },
+ "title:naspo valuepoint public safety communication products, services and solutions": {
+  "pick": "IT hardware",
+  "confidence": "medium",
+  "reason": "best fit from title and headings"
+ },
+ "title:fleet credit card services": {
+  "pick": "Fleet and parts",
+  "confidence": "medium",
+  "reason": "best fit from title and headings"
+ },
+ "title:armored car services on oahu": {
+  "pick": "Professional services",
+  "confidence": "high",
+  "reason": "best fit from title and headings"
+ },
+ "title:naspo valuepoint small package delivery services": {
+  "pick": "Professional services",
+  "confidence": "medium",
+  "reason": "best fit from title and headings"
+ },
+ "title:network and telecommunications services – statewide": {
+  "pick": "Software and services",
+  "confidence": "high",
+  "reason": "best fit from title and headings"
+ },
+ "title:disposable polyethylene bags - statewide": {
+  "pick": "Janitorial",
+  "confidence": "medium",
+  "reason": "best fit from title and headings"
+ },
+ "title:naspo valuepoint walk-in building supplies": {
+  "pick": "Facilities and MRO",
+  "confidence": "medium",
+  "reason": "best fit from title and headings"
+ },
+ "title:naspo valuepoint citizen engagement platform": {
+  "pick": "Software and services",
+  "confidence": "high",
+  "reason": "best fit from title and headings"
+ },
+ "title:naspo valuepoint software value-added reseller (var)": {
+  "pick": "Software and services",
+  "confidence": "high",
+  "reason": "best fit from title and headings"
+ },
+ "title:interisland airline price agreement": {
+  "pick": "Other",
+  "confidence": "high",
+  "reason": "best fit from title and headings"
+ },
+ "title:naspo valuepoint temporary employment services": {
+  "pick": "Professional services",
+  "confidence": "high",
+  "reason": "best fit from title and headings"
+ },
+ "title:naspo valuepoint mailing equipment, supplies, and maintenance": {
+  "pick": "IT hardware",
+  "confidence": "medium",
+  "reason": "best fit from title and headings"
+ },
+ "title:naspo valuepoint inmate communications": {
+  "pick": "Software and services",
+  "confidence": "medium",
+  "reason": "best fit from title and headings"
+ },
+ "title:naspo valuepoint office furniture and related services": {
+  "pick": "Furniture",
+  "confidence": "high",
+  "reason": "best fit from title and headings"
+ },
+ "title:naspo valuepoint parks & recreation and playground equipment, installations and related goods & services": {
+  "pick": "Public works materials",
+  "confidence": "high",
+  "reason": "best fit from title and headings"
+ },
+ "title:naspo valuepoint security and fire protection services": {
+  "pick": "Professional services",
+  "confidence": "medium",
+  "reason": "best fit from title and headings"
+ },
+ "title:state of hawaii inventory decals": {
+  "pick": "Office supplies",
+  "confidence": "low",
+  "reason": "best fit from title and headings"
+ },
+ "title:naspo valuepoint computer equipment (desktops, laptops, tablets, servers, storage, including related peripherals & services)": {
+  "pick": "IT hardware",
+  "confidence": "high",
+  "reason": "best fit from title and headings"
+ },
+ "title:sourcewell unified communication and contact center solutions": {
+  "pick": "Software and services",
+  "confidence": "medium",
+  "reason": "best fit from title and headings"
+ },
+ "title:naspo valuepoint heavy construction & industrial equipment": {
+  "pick": "Fleet and parts",
+  "confidence": "high",
+  "reason": "best fit from title and headings"
+ },
+ "title:mmcap infuse medical products program": {
+  "pick": "Safety and uniforms",
+  "confidence": "medium",
+  "reason": "best fit from title and headings"
+ },
+ "title:naspo valuepoint laboratory equipment and supplies": {
+  "pick": "Facilities and MRO",
+  "confidence": "high",
+  "reason": "best fit from title and headings"
+ },
+ "title:naspo valuepoint information technology managed service providers": {
+  "pick": "Software and services",
+  "confidence": "high",
+  "reason": "best fit from title and headings"
+ },
+ "title:naspo valuepoint multi-function devices and related software, services and cloud solutions": {
+  "pick": "IT hardware",
+  "confidence": "high",
+  "reason": "best fit from title and headings"
+ },
+ "title:naspo valuepoint professional grade tools and diagnostic equipment": {
+  "pick": "Facilities and MRO",
+  "confidence": "high",
+  "reason": "best fit from title and headings"
+ },
+ "title:long distance telephone services - statewide": {
+  "pick": "Software and services",
+  "confidence": "high",
+  "reason": "best fit from title and headings"
+ },
+ "title:naspo valuepoint public safety video systems": {
+  "pick": "Safety and uniforms",
+  "confidence": "medium",
+  "reason": "best fit from title and headings"
+ },
+ "title:naspo valuepoint tires, tubes and services": {
+  "pick": "Fleet and parts",
+  "confidence": "high",
+  "reason": "best fit from title and headings"
+ },
+ "title:printing and delivering window envelopes": {
+  "pick": "Office supplies",
+  "confidence": "medium",
+  "reason": "best fit from title and headings"
+ },
+ "title:intrastate commercial car rental - statewide": {
+  "pick": "Fleet and parts",
+  "confidence": "high",
+  "reason": "best fit from title and headings"
+ },
+ "title:naspo valuepoint electric vehicle charging station equipment and services": {
+  "pick": "Facilities and MRO",
+  "confidence": "medium",
+  "reason": "best fit from title and headings"
+ },
+ "title:sourcewell unmanned and remotely operated vehicle systems with related technology and services": {
+  "pick": "IT hardware",
+  "confidence": "low",
+  "reason": "best fit from title and headings"
+ },
+ "title:sourcewell self-contained breathing apparatus (scba) and breathing air systems with related equipment": {
+  "pick": "Safety and uniforms",
+  "confidence": "high",
+  "reason": "best fit from title and headings"
+ },
+ "title:publication of public notices – oahu, hawaii, maui, kauai, molokai and lanai": {
+  "pick": "Professional services",
+  "confidence": "medium",
+  "reason": "best fit from title and headings"
+ },
+ "title:naspo valuepoint police radar lidar speed enforcement & accident scene reconstruction": {
+  "pick": "Safety and uniforms",
+  "confidence": "high",
+  "reason": "best fit from title and headings"
+ },
+ "title:naspo valuepoint facilities mro and industrial supplies": {
+  "pick": "Facilities and MRO",
+  "confidence": "high",
+  "reason": "best fit from title and headings"
+ },
+ "title:office supplies and printer cartridges - statewide": {
+  "pick": "Office supplies",
+  "confidence": "high",
+  "reason": "best fit from title and headings"
+ },
+ "title:naspo valuepoint automatic external defibrillator (aed) & accessories": {
+  "pick": "Safety and uniforms",
+  "confidence": "high",
+  "reason": "best fit from title and headings"
+ },
+ "title:coarse paper products": {
+  "pick": "Janitorial",
+  "confidence": "medium",
+  "reason": "best fit from title and headings"
+ },
+ "title:naspo valuepoint ground maintenance equipment": {
+  "pick": "Fleet and parts",
+  "confidence": "medium",
+  "reason": "best fit from title and headings"
+ },
+ "title:cdl and non-cdl drug and breath alcohol testing and medical review services for the state employees drug and alcohol testing program": {
+  "pick": "Professional services",
+  "confidence": "medium",
+  "reason": "best fit from title and headings"
+ },
+ "title:sourcewell pre-engineered buildings with related materials and service": {
+  "pick": "Facilities and MRO",
+  "confidence": "medium",
+  "reason": "best fit from title and headings"
+ },
+ "title:naspo valuepoint products and supplies for correctional facilities and incarcerated individuals": {
+  "pick": "Other",
+  "confidence": "low",
+  "reason": "best fit from title and headings"
+ },
+ "title:mmcap pharmaceutical wholesale distribution services contract": {
+  "pick": "Safety and uniforms",
+  "confidence": "medium",
+  "reason": "best fit from title and headings"
+ },
+ "title:delivery of bulk fuel": {
+  "pick": "Fleet and parts",
+  "confidence": "high",
+  "reason": "best fit from title and headings"
+ },
+ "title:sourcewell fabric structures with related materials and services": {
+  "pick": "Facilities and MRO",
+  "confidence": "medium",
+  "reason": "best fit from title and headings"
+ },
+ "title:naspo valuepoint debris removal and monitoring services": {
+  "pick": "Facilities and MRO",
+  "confidence": "medium",
+  "reason": "best fit from title and headings"
+ },
+ "title:naspo valuepoint body armor and ballistic resistant products": {
+  "pick": "Safety and uniforms",
+  "confidence": "high",
+  "reason": "best fit from title and headings"
+ },
+ "title:naspo valuepoint cybersecurity and information security services": {
+  "pick": "Software and services",
+  "confidence": "high",
+  "reason": "best fit from title and headings"
+ },
+ "title:naspo valuepoint procurement assistance support and it research, advisory, and consulting services": {
+  "pick": "Professional services",
+  "confidence": "high",
+  "reason": "best fit from title and headings"
+ },
+ "title:naspo valuepoint cloud and software solutions": {
+  "pick": "Software and services",
+  "confidence": "high",
+  "reason": "best fit from title and headings"
+ },
+ "title:naspo valuepoint av equipment and services": {
+  "pick": "IT hardware",
+  "confidence": "high",
+  "reason": "best fit from title and headings"
+ },
+ "title:sourcewell public safety software": {
+  "pick": "Software and services",
+  "confidence": "high",
+  "reason": "best fit from title and headings"
+ },
+ "title:sourcewell skatepark, bike park, pump track, bmx track solutions with related equipment, accessories, and services": {
+  "pick": "Public works materials",
+  "confidence": "high",
+  "reason": "best fit from title and headings"
+ },
+ "title:mmcap institutional pharmacy services program": {
+  "pick": "Professional services",
+  "confidence": "low",
+  "reason": "best fit from title and headings"
+ },
+ "title:on-demand interpretation and translation services - statewide": {
+  "pick": "Professional services",
+  "confidence": "high",
+  "reason": "best fit from title and headings"
+ },
+ "title:sourcewell firefighting equipment and rescue tools with related supplies and accessories": {
+  "pick": "Safety and uniforms",
+  "confidence": "high",
+  "reason": "best fit from title and headings"
+ },
+ "title:accounting professional services": {
+  "pick": "Professional services",
+  "confidence": "high",
+  "reason": "best fit from title and headings"
+ },
+ "title:naspo valuepoint public safety vehicle lights, sirens, & accessories": {
+  "pick": "Safety and uniforms",
+  "confidence": "medium",
+  "reason": "best fit from title and headings"
+ },
+ "title:sourcewell firefighting personal protective equipment with related equipment cleaning": {
+  "pick": "Safety and uniforms",
+  "confidence": "high",
+  "reason": "best fit from title and headings"
+ },
+ "title:rfxpremier data communications": {
+  "pick": "IT hardware",
+  "confidence": "medium",
+  "reason": "best fit from title and headings"
+ },
+ "title:naspo valuepoint electronic monitoring": {
+  "pick": "Safety and uniforms",
+  "confidence": "medium",
+  "reason": "best fit from title and headings"
+ },
+ "title:sourcewell lab services and testing with related products and supplies": {
+  "pick": "Facilities and MRO",
+  "confidence": "low",
+  "reason": "best fit from title and headings"
+ },
+ "title:naspo valuepoint rescue and public protection": {
+  "pick": "Safety and uniforms",
+  "confidence": "medium",
+  "reason": "best fit from title and headings"
+ },
+ "title:disposable food service products - oahu": {
+  "pick": "Janitorial",
+  "confidence": "medium",
+  "reason": "best fit from title and headings"
+ },
+ "title:disposable food service products - hawaii": {
+  "pick": "Janitorial",
+  "confidence": "medium",
+  "reason": "best fit from title and headings"
+ },
+ "title:disposable food service products - maui": {
+  "pick": "Janitorial",
+  "confidence": "medium",
+  "reason": "best fit from title and headings"
+ },
+ "title:disposable food service products - kauai": {
+  "pick": "Janitorial",
+  "confidence": "medium",
+  "reason": "best fit from title and headings"
+ },
+ "title:disposable food service products - molokai": {
+  "pick": "Janitorial",
+  "confidence": "medium",
+  "reason": "best fit from title and headings"
+ },
+ "title:disposable food service products - lanai": {
+  "pick": "Janitorial",
+  "confidence": "medium",
+  "reason": "best fit from title and headings"
+ },
+ "title:equipment rental": {
+  "pick": "Facilities and MRO",
+  "confidence": "low",
+  "reason": "best fit from title and headings"
+ },
+ "title:apc network infrastructure solutions": {
+  "pick": "IT hardware",
+  "confidence": "medium",
+  "reason": "best fit from title and headings"
+ },
+ "title:ar correctional industries catalog": {
+  "pick": "Other",
+  "confidence": "low",
+  "reason": "best fit from title and headings"
+ },
+ "title:scoreboards, electronic signs, installation, products and services": {
+  "pick": "Other",
+  "confidence": "low",
+  "reason": "best fit from title and headings"
+ },
+ "title:wireless data, voice, & accessories": {
+  "pick": "Software and services",
+  "confidence": "medium",
+  "reason": "best fit from title and headings"
+ },
+ "title:utility vehicles, golf vehicles": {
+  "pick": "Fleet and parts",
+  "confidence": "high",
+  "reason": "best fit from title and headings"
+ },
+ "title:motor and aviation fuels": {
+  "pick": "Fleet and parts",
+  "confidence": "high",
+  "reason": "best fit from title and headings"
+ },
+ "title:electronic monitoring equipment and services": {
+  "pick": "Safety and uniforms",
+  "confidence": "medium",
+  "reason": "best fit from title and headings"
+ },
+ "title:data communications": {
+  "pick": "IT hardware",
+  "confidence": "medium",
+  "reason": "best fit from title and headings"
+ },
+ "title:drug testing products and services - mmcap": {
+  "pick": "Safety and uniforms",
+  "confidence": "medium",
+  "reason": "best fit from title and headings"
+ },
+ "title:playground equipment, installation, and job ordering contract services": {
+  "pick": "Public works materials",
+  "confidence": "high",
+  "reason": "best fit from title and headings"
+ },
+ "title:fresh bread and related products": {
+  "pick": "Other",
+  "confidence": "high",
+  "reason": "best fit from title and headings"
+ },
+ "title:furniture, furnishings, installation, & services": {
+  "pick": "Furniture",
+  "confidence": "high",
+  "reason": "best fit from title and headings"
+ },
+ "title:tires, tubes and related services": {
+  "pick": "Fleet and parts",
+  "confidence": "high",
+  "reason": "best fit from title and headings"
+ },
+ "title:body armor and ballistic resistant products": {
+  "pick": "Safety and uniforms",
+  "confidence": "high",
+  "reason": "best fit from title and headings"
+ },
+ "title:mmcap medical products program: henry schein": {
+  "pick": "Safety and uniforms",
+  "confidence": "high",
+  "reason": "best fit from title and headings"
+ },
+ "title:emergency property damage mitigation services": {
+  "pick": "Professional services",
+  "confidence": "medium",
+  "reason": "best fit from title and headings"
+ },
+ "title:process server services": {
+  "pick": "Professional services",
+  "confidence": "high",
+  "reason": "best fit from title and headings"
+ },
+ "title:small package delivery": {
+  "pick": "Professional services",
+  "confidence": "medium",
+  "reason": "best fit from title and headings"
+ },
+ "title:groceries s000000068": {
+  "pick": "Other",
+  "confidence": "high",
+  "reason": "best fit from title and headings"
+ },
+ "title:ammunition": {
+  "pick": "Safety and uniforms",
+  "confidence": "high",
+  "reason": "best fit from title and headings"
+ },
+ "title:public safety communications products, services, and solutions": {
+  "pick": "IT hardware",
+  "confidence": "medium",
+  "reason": "best fit from title and headings"
+ },
+ "title:managed it staff augmentation and sow services": {
+  "pick": "Software and services",
+  "confidence": "medium",
+  "reason": "best fit from title and headings"
+ },
+ "title:print shop and copy paper": {
+  "pick": "Office supplies",
+  "confidence": "medium",
+  "reason": "best fit from title and headings"
+ },
+ "title:shredding services": {
+  "pick": "Professional services",
+  "confidence": "high",
+  "reason": "best fit from title and headings"
+ },
+ "title:automatic external defibrillator (aed) & accessories": {
+  "pick": "Safety and uniforms",
+  "confidence": "high",
+  "reason": "best fit from title and headings"
+ },
+ "title:products and supplies for correctional facilities and incarcerated individuals": {
+  "pick": "Other",
+  "confidence": "low",
+  "reason": "best fit from title and headings"
+ },
+ "title:qvl – k-12 emergency alert mobile application system": {
+  "pick": "Software and services",
+  "confidence": "high",
+  "reason": "best fit from title and headings"
+ },
+ "title:foodservice distribution for k-12": {
+  "pick": "Other",
+  "confidence": "high",
+  "reason": "best fit from title and headings"
+ },
+ "title:bathroom tissue and paper towels": {
+  "pick": "Janitorial",
+  "confidence": "high",
+  "reason": "best fit from title and headings"
+ },
+ "title:mailing equipment, services, and maintenance": {
+  "pick": "IT hardware",
+  "confidence": "medium",
+  "reason": "best fit from title and headings"
+ },
+ "title:influenza vaccines - mmcap": {
+  "pick": "Safety and uniforms",
+  "confidence": "medium",
+  "reason": "best fit from title and headings"
+ },
+ "title:flooring products and installation services": {
+  "pick": "Facilities and MRO",
+  "confidence": "medium",
+  "reason": "best fit from title and headings"
+ },
+ "title:cleaning supplies, equipment and custodial related services and solutions": {
+  "pick": "Janitorial",
+  "confidence": "high",
+  "reason": "best fit from title and headings"
+ },
+ "title:foodservice distribution for government and higher education": {
+  "pick": "Other",
+  "confidence": "high",
+  "reason": "best fit from title and headings"
+ },
+ "title:electrical lighting, data communications, and security products, services, and solutions": {
+  "pick": "Facilities and MRO",
+  "confidence": "medium",
+  "reason": "best fit from title and headings"
+ },
+ "title:mmcap pharmaceuticals #2401062: cardinal health": {
+  "pick": "Safety and uniforms",
+  "confidence": "medium",
+  "reason": "best fit from title and headings"
+ },
+ "title:hvac equipment, installation, services & products": {
+  "pick": "Facilities and MRO",
+  "confidence": "high",
+  "reason": "best fit from title and headings"
+ },
+ "title:mmcap medical products 2200736: mckesson medical": {
+  "pick": "Safety and uniforms",
+  "confidence": "high",
+  "reason": "best fit from title and headings"
+ },
+ "title:parks and recreation equipment and installation": {
+  "pick": "Public works materials",
+  "confidence": "high",
+  "reason": "best fit from title and headings"
+ },
+ "title:mmcap medical products 2200731: concordance healthcare solutions": {
+  "pick": "Safety and uniforms",
+  "confidence": "high",
+  "reason": "best fit from title and headings"
+ },
+ "title:mmcap medical products 22007333: medline industries, lp": {
+  "pick": "Safety and uniforms",
+  "confidence": "high",
+  "reason": "best fit from title and headings"
+ },
+ "title:mmcap medical products 2200732: medical solutions": {
+  "pick": "Safety and uniforms",
+  "confidence": "high",
+  "reason": "best fit from title and headings"
+ },
+ "title:software value added reseller (var)": {
+  "pick": "Software and services",
+  "confidence": "high",
+  "reason": "best fit from title and headings"
+ },
+ "title:computer equipment": {
+  "pick": "IT hardware",
+  "confidence": "high",
+  "reason": "best fit from title and headings"
+ },
+ "title:groundskeeping materials – fertilizer, pesticide, herbicide, grass seed, related items & services": {
+  "pick": "Public works materials",
+  "confidence": "medium",
+  "reason": "best fit from title and headings"
+ },
+ "title:ag tractors": {
+  "pick": "Fleet and parts",
+  "confidence": "high",
+  "reason": "best fit from title and headings"
+ },
+ "title:legal database - westlaw": {
+  "pick": "Software and services",
+  "confidence": "medium",
+  "reason": "best fit from title and headings"
+ },
+ "title:maintenance, repair and operating supplies | home depot": {
+  "pick": "Facilities and MRO",
+  "confidence": "high",
+  "reason": "best fit from title and headings"
+ },
+ "title:laboratory equipment and supplies": {
+  "pick": "Facilities and MRO",
+  "confidence": "high",
+  "reason": "best fit from title and headings"
+ },
+ "title:copiers, multi-function devices, and related software, services, and cloud solutions": {
+  "pick": "IT hardware",
+  "confidence": "high",
+  "reason": "best fit from title and headings"
+ },
+ "title:police radar/lidar speed enforcement & accident reconstruction": {
+  "pick": "Safety and uniforms",
+  "confidence": "high",
+  "reason": "best fit from title and headings"
+ },
+ "title:ambulance, emergency, fire apparatus, and specialty vehicles & related equipment": {
+  "pick": "Fleet and parts",
+  "confidence": "high",
+  "reason": "best fit from title and headings"
+ },
+ "title:hvac job order contracting": {
+  "pick": "Facilities and MRO",
+  "confidence": "high",
+  "reason": "best fit from title and headings"
+ },
+ "title:eprocurement solution and services": {
+  "pick": "Software and services",
+  "confidence": "high",
+  "reason": "best fit from title and headings"
+ },
+ "title:esignature software": {
+  "pick": "Software and services",
+  "confidence": "high",
+  "reason": "best fit from title and headings"
+ },
+ "title:janitorial and sanitation supplies, equipment, and related services - network distribution": {
+  "pick": "Janitorial",
+  "confidence": "high",
+  "reason": "best fit from title and headings"
+ },
+ "title:vaccines - mmcap": {
+  "pick": "Safety and uniforms",
+  "confidence": "medium",
+  "reason": "best fit from title and headings"
+ },
+ "title:dental products - mmcap": {
+  "pick": "Safety and uniforms",
+  "confidence": "medium",
+  "reason": "best fit from title and headings"
+ },
+ "title:remote interpreting and translating services": {
+  "pick": "Professional services",
+  "confidence": "high",
+  "reason": "best fit from title and headings"
+ },
+ "title:security and fire protection services": {
+  "pick": "Professional services",
+  "confidence": "medium",
+  "reason": "best fit from title and headings"
+ },
+ "title:procurement support services": {
+  "pick": "Professional services",
+  "confidence": "high",
+  "reason": "best fit from title and headings"
+ },
+ "title:actuarial services": {
+  "pick": "Professional services",
+  "confidence": "high",
+  "reason": "best fit from title and headings"
+ },
+ "title:newspaper legal advertising": {
+  "pick": "Professional services",
+  "confidence": "medium",
+  "reason": "best fit from title and headings"
+ },
+ "title:human resource systems and related products and services": {
+  "pick": "Software and services",
+  "confidence": "medium",
+  "reason": "best fit from title and headings"
+ },
+ "title:fleet management solutions": {
+  "pick": "Software and services",
+  "confidence": "medium",
+  "reason": "best fit from title and headings"
+ },
+ "title:temporary employment services for priority populations": {
+  "pick": "Professional services",
+  "confidence": "medium",
+  "reason": "title and headings"
+ },
+ "title:paint, roof coatings, flooring, paint supplies & equipment": {
+  "pick": "Public works materials",
+  "confidence": "low",
+  "reason": "title and headings"
+ },
+ "title:cloud solutions govgrant": {
+  "pick": "Software and services",
+  "confidence": "high",
+  "reason": "title and headings"
+ },
+ "title:debris removal and monitoring services": {
+  "pick": "Professional services",
+  "confidence": "medium",
+  "reason": "title and headings"
+ },
+ "title:golf carts, utility vehicles & mowers": {
+  "pick": "Fleet and parts",
+  "confidence": "medium",
+  "reason": "title and headings"
+ },
+ "title:statewide vehicles – fy2027": {
+  "pick": "Fleet and parts",
+  "confidence": "high",
+  "reason": "title and headings"
+ },
+ "title:milk, fluid (statewide)": {
+  "pick": "Other",
+  "confidence": "high",
+  "reason": "title and headings"
+ },
+ "title:road salt and treated salt – types 1 & 2 (statewide)": {
+  "pick": "Public works materials",
+  "confidence": "high",
+  "reason": "title and headings"
+ },
+ "title:food (commercial and retail) (statewide)": {
+  "pick": "Other",
+  "confidence": "high",
+  "reason": "title and headings"
+ },
+ "title:fresh bread (statewide)": {
+  "pick": "Other",
+  "confidence": "high",
+  "reason": "title and headings"
+ },
+ "title:fuel oil, heating": {
+  "pick": "Fleet and parts",
+  "confidence": "medium",
+  "reason": "title and headings"
+ },
+ "title:gasoline and e-85 (statewide)": {
+  "pick": "Fleet and parts",
+  "confidence": "high",
+  "reason": "title and headings"
+ },
+ "title:ultra-low sulfur diesel & biodiesel fuel (renewable diesel) - on-road use only (statewide)": {
+  "pick": "Fleet and parts",
+  "confidence": "high",
+  "reason": "title and headings"
+ },
+ "title:motor oil, hydraulic oil, and diesel exhaust fluid (statewide)": {
+  "pick": "Fleet and parts",
+  "confidence": "high",
+  "reason": "title and headings"
+ },
+ "title:liquefied petroleum gas (lpg) - propane (statewide)": {
+  "pick": "Facilities and MRO",
+  "confidence": "medium",
+  "reason": "title and headings"
+ },
+ "title:liquefied petroleum gas (lpg) propanecertain counties": {
+  "pick": "Facilities and MRO",
+  "confidence": "medium",
+  "reason": "title and headings"
+ },
+ "title:pharmaceutical wholesaler distribution services (statewide)": {
+  "pick": "Safety and uniforms",
+  "confidence": "medium",
+  "reason": "title and headings"
+ },
+ "title:distribution of vaccines including influenza vaccines (statewide)": {
+  "pick": "Safety and uniforms",
+  "confidence": "medium",
+  "reason": "title and headings"
+ },
+ "title:pharmaceuticals (individual prescriptions) statewide & regional": {
+  "pick": "Safety and uniforms",
+  "confidence": "medium",
+  "reason": "title and headings"
+ },
+ "title:books, serials, databases, and library resource management products": {
+  "pick": "Other",
+  "confidence": "medium",
+  "reason": "title and headings"
+ },
+ "title:floor coverings and related services(statewide piggyback)": {
+  "pick": "Facilities and MRO",
+  "confidence": "medium",
+  "reason": "title and headings"
+ },
+ "title:furniture, all types (except hospital room and patient handling) (statewide)": {
+  "pick": "Furniture",
+  "confidence": "high",
+  "reason": "title and headings"
+ },
+ "title:voting systems and related services and accessories (statewide)": {
+  "pick": "Facilities and MRO",
+  "confidence": "low",
+  "reason": "title and headings"
+ },
+ "title:miscellaneous office supplies (statewide)": {
+  "pick": "Office supplies",
+  "confidence": "high",
+  "reason": "title and headings"
+ },
+ "title:school & art supplies (statewide)": {
+  "pick": "Office supplies",
+  "confidence": "medium",
+  "reason": "title and headings"
+ },
+ "title:stem / steam -science laboratory educational supplies and equipment (statewide)": {
+  "pick": "Facilities and MRO",
+  "confidence": "medium",
+  "reason": "title and headings"
+ },
+ "title:athletic equipment (statewide)": {
+  "pick": "Other",
+  "confidence": "medium",
+  "reason": "title and headings"
+ },
+ "title:vehicle and equipment parts and related product (statewide)": {
+  "pick": "Fleet and parts",
+  "confidence": "high",
+  "reason": "title and headings"
+ },
+ "title:tires, tubes, and services (statewide)": {
+  "pick": "Fleet and parts",
+  "confidence": "high",
+  "reason": "title and headings"
+ },
+ "title:comprehensive bituminous concrete (asphalt mix and cold patch) (statewide)": {
+  "pick": "Public works materials",
+  "confidence": "high",
+  "reason": "title and headings"
+ },
+ "title:bituminous concrete asphalt mixtures": {
+  "pick": "Public works materials",
+  "confidence": "high",
+  "reason": "title and headings"
+ },
+ "title:comprehensive liquid bituminous materials (statewide)": {
+  "pick": "Public works materials",
+  "confidence": "high",
+  "reason": "title and headings"
+ },
+ "title:liquid bituminous materials - 2026 vpp": {
+  "pick": "Public works materials",
+  "confidence": "high",
+  "reason": "title and headings"
+ },
+ "title:snow & ice control agents (statewide)": {
+  "pick": "Public works materials",
+  "confidence": "high",
+  "reason": "title and headings"
+ },
+ "title:vehicle lifts and associated garage equipment (statewide)": {
+  "pick": "Facilities and MRO",
+  "confidence": "medium",
+  "reason": "title and headings"
+ },
+ "title:firearms, ammunition, and less lethal products (statewide)": {
+  "pick": "Safety and uniforms",
+  "confidence": "high",
+  "reason": "title and headings"
+ },
+ "title:body armor, law enforcement (soft body armor or hard body armor) (statewide)": {
+  "pick": "Safety and uniforms",
+  "confidence": "high",
+  "reason": "title and headings"
+ },
+ "title:culvert and underdrain pipe & tubing (statewide)": {
+  "pick": "Public works materials",
+  "confidence": "high",
+  "reason": "title and headings"
+ },
+ "title:hazardous incident response equipment (hire) (statewide)": {
+  "pick": "Safety and uniforms",
+  "confidence": "high",
+  "reason": "title and headings"
+ },
+ "title:electronic monitoring products and services (naspo valuepoint) (statewide)": {
+  "pick": "Professional services",
+  "confidence": "medium",
+  "reason": "title and headings"
+ },
+ "title:traffic paint (waterborne – lead–free) & glass spheres for reflectorized pavement marking (various types) (statewide)": {
+  "pick": "Public works materials",
+  "confidence": "high",
+  "reason": "title and headings"
+ },
+ "title:safety equipment products - comprehensive crash mitigation (statewide)": {
+  "pick": "Public works materials",
+  "confidence": "medium",
+  "reason": "title and headings"
+ },
+ "title:advanced scientific equipment and instruments (statewide)": {
+  "pick": "Facilities and MRO",
+  "confidence": "high",
+  "reason": "title and headings"
+ },
+ "title:in-breath alcohol testing equipment and accessories (statewide)": {
+  "pick": "Safety and uniforms",
+  "confidence": "medium",
+  "reason": "title and headings"
+ },
+ "title:environmentally preferable cleaning products, programs, equipment and supplies (statewide)": {
+  "pick": "Janitorial",
+  "confidence": "high",
+  "reason": "title and headings"
+ },
+ "title:industrial & commercial supplies and equipment": {
+  "pick": "Facilities and MRO",
+  "confidence": "medium",
+  "reason": "title and headings"
+ },
+ "title:protective outerwearfirefighting, emergency/rescue, and safety (statewide)": {
+  "pick": "Safety and uniforms",
+  "confidence": "high",
+  "reason": "title and headings"
+ },
+ "title:electric vehicle supply equipment and network services (statewide)": {
+  "pick": "Facilities and MRO",
+  "confidence": "medium",
+  "reason": "title and headings"
+ },
+ "title:vehicles, class 1 – 8 (statewide)": {
+  "pick": "Fleet and parts",
+  "confidence": "high",
+  "reason": "title and headings"
+ },
+ "title:buses, transit - adult passenger (statewide)": {
+  "pick": "Fleet and parts",
+  "confidence": "high",
+  "reason": "title and headings"
+ },
+ "title:school buses (statewide)": {
+  "pick": "Fleet and parts",
+  "confidence": "high",
+  "reason": "title and headings"
+ },
+ "title:heavy equipment sourcewell piggyback (statewide)": {
+  "pick": "Fleet and parts",
+  "confidence": "high",
+  "reason": "title and headings"
+ },
+ "title:legislative printing for the executive": {
+  "pick": "Professional services",
+  "confidence": "medium",
+  "reason": "title and headings"
+ },
+ "title:wove & kraft envelopes": {
+  "pick": "Office supplies",
+  "confidence": "high",
+  "reason": "title and headings"
+ },
+ "title:paper roll stock for offset and digital printing (albany area agencies)": {
+  "pick": "Office supplies",
+  "confidence": "high",
+  "reason": "title and headings"
+ },
+ "title:recycled copy paper (statewide)": {
+  "pick": "Office supplies",
+  "confidence": "high",
+  "reason": "title and headings"
+ },
+ "title:cybersecurity legal services": {
+  "pick": "Professional services",
+  "confidence": "high",
+  "reason": "title and headings"
+ },
+ "title:elevator, escalator & miscellaneous lift equipment maintenance services (statewide)": {
+  "pick": "Facilities and MRO",
+  "confidence": "high",
+  "reason": "title and headings"
+ },
+ "title:security guard services (statewide) and fire safety and emergency action plan directors (region 1 – nyc only)": {
+  "pick": "Professional services",
+  "confidence": "high",
+  "reason": "title and headings"
+ },
+ "title:business consulting services (statewide)": {
+  "pick": "Professional services",
+  "confidence": "high",
+  "reason": "title and headings"
+ },
+ "title:passenger vehicle and box truck rentals (statewide)": {
+  "pick": "Fleet and parts",
+  "confidence": "high",
+  "reason": "title and headings"
+ },
+ "title:sheltering and wrap-around services (statewide)": {
+  "pick": "Professional services",
+  "confidence": "medium",
+  "reason": "title and headings"
+ },
+ "title:heavy equipment rental (statewide)": {
+  "pick": "Fleet and parts",
+  "confidence": "medium",
+  "reason": "title and headings"
+ },
+ "title:administrative servicestemporary personnel (statewide)": {
+  "pick": "Professional services",
+  "confidence": "high",
+  "reason": "title and headings"
+ },
+ "title:language services - temporary personnel (statewide)": {
+  "pick": "Professional services",
+  "confidence": "high",
+  "reason": "title and headings"
+ },
+ "title:hourly-based information technology services (statewide) (hbits)": {
+  "pick": "Software and services",
+  "confidence": "high",
+  "reason": "title and headings"
+ },
+ "title:information technology umbrella contract – manufacturer based (statewide)": {
+  "pick": "Software and services",
+  "confidence": "medium",
+  "reason": "title and headings"
+ },
+ "title:information technology umbrella contract – distributor based": {
+  "pick": "Software and services",
+  "confidence": "medium",
+  "reason": "title and headings"
+ },
+ "title:project based information technology consulting services - pbits (statewide)": {
+  "pick": "Software and services",
+  "confidence": "high",
+  "reason": "title and headings"
+ },
+ "title:assistive technology for persons with disabilities (statewide)": {
+  "pick": "IT hardware",
+  "confidence": "medium",
+  "reason": "title and headings"
+ },
+ "title:electronic poll book (e-poll book) systems and services": {
+  "pick": "Software and services",
+  "confidence": "medium",
+  "reason": "title and headings"
+ },
+ "title:telecommunication connectivity services (tcs) (statewide)": {
+  "pick": "Software and services",
+  "confidence": "high",
+  "reason": "title and headings"
+ },
+ "title:public safety communications equipment and services (two-way radios and satellite phones) (statewide)": {
+  "pick": "IT hardware",
+  "confidence": "medium",
+  "reason": "title and headings"
+ },
+ "title:intelligent facility & security systems and solutions (statewide)": {
+  "pick": "Facilities and MRO",
+  "confidence": "medium",
+  "reason": "title and headings"
+ },
+ "title:equipment maintenance program (emp) (statewide)": {
+  "pick": "Facilities and MRO",
+  "confidence": "medium",
+  "reason": "title and headings"
+ },
+ "title:moving services (statewide)": {
+  "pick": "Professional services",
+  "confidence": "high",
+  "reason": "title and headings"
+ },
+ "title:travel management services (statewide)": {
+  "pick": "Other",
+  "confidence": "high",
+  "reason": "title and headings"
+ },
+ "title:air travel services (statewide)": {
+  "pick": "Other",
+  "confidence": "high",
+  "reason": "title and headings"
+ },
+ "title:payment processing services (statewide)": {
+  "pick": "Professional services",
+  "confidence": "medium",
+  "reason": "title and headings"
+ },
+ "title:purchasing, travel and net card services (statewide)": {
+  "pick": "Professional services",
+  "confidence": "medium",
+  "reason": "title and headings"
+ },
+ "title:american express ® card acceptance (statewide)": {
+  "pick": "Professional services",
+  "confidence": "medium",
+  "reason": "title and headings"
+ },
+ "title:fuel card services - wex bank inc (statewide)": {
+  "pick": "Professional services",
+  "confidence": "medium",
+  "reason": "title and headings"
+ },
+ "title:small package delivery (statewide)": {
+  "pick": "Professional services",
+  "confidence": "medium",
+  "reason": "title and headings"
+ },
+ "title:online reverse auction services (statewide)": {
+  "pick": "Professional services",
+  "confidence": "medium",
+  "reason": "title and headings"
+ },
+ "title:laundry and linen services (statewide)": {
+  "pick": "Professional services",
+  "confidence": "medium",
+  "reason": "title and headings"
+ },
+ "title:media buying services (statewide)": {
+  "pick": "Professional services",
+  "confidence": "medium",
+  "reason": "title and headings"
+ },
+ "title:new york state technology enterprise corporation (nystec)": {
+  "pick": "Software and services",
+  "confidence": "medium",
+  "reason": "title and headings"
+ },
+ "title:boats: preferred source, approved statewide": {
+  "pick": "Fleet and parts",
+  "confidence": "medium",
+  "reason": "title and headings"
+ },
+ "title:classroom and educational furnishings: preferred source, approved statewide": {
+  "pick": "Furniture",
+  "confidence": "high",
+  "reason": "title and headings"
+ },
+ "title:custom ordered products: preferred source, approved statewide": {
+  "pick": "Other",
+  "confidence": "low",
+  "reason": "title and headings"
+ },
+ "title:film, still film (unexposed) and cameras: preferred source, approved statewide": {
+  "pick": "Other",
+  "confidence": "low",
+  "reason": "title and headings"
+ },
+ "title:flags: preferred source, approved statewide": {
+  "pick": "Other",
+  "confidence": "medium",
+  "reason": "title and headings"
+ },
+ "title:food and beverages: preferred source, approved statewide": {
+  "pick": "Other",
+  "confidence": "high",
+  "reason": "title and headings"
+ },
+ "title:institutional furniture: preferred source, approved statewide": {
+  "pick": "Furniture",
+  "confidence": "high",
+  "reason": "title and headings"
+ },
+ "title:janitorial and housekeeping supplies: preferred source, approved statewide": {
+  "pick": "Janitorial",
+  "confidence": "high",
+  "reason": "title and headings"
+ },
+ "title:medical and institutional care items: preferred source, approved statewide": {
+  "pick": "Safety and uniforms",
+  "confidence": "medium",
+  "reason": "title and headings"
+ },
+ "title:miscellaneous: preferred source, approved statewide": {
+  "pick": "Other",
+  "confidence": "low",
+  "reason": "title and headings"
+ },
+ "title:office furniture: preferred source, approved statewide": {
+  "pick": "Furniture",
+  "confidence": "high",
+  "reason": "title and headings"
+ },
+ "title:office and school supplies: preferred source, approved statewide": {
+  "pick": "Office supplies",
+  "confidence": "high",
+  "reason": "title and headings"
+ },
+ "title:personal care products: preferred source, approved statewide": {
+  "pick": "Other",
+  "confidence": "medium",
+  "reason": "title and headings"
+ },
+ "title:safety supplies and equipment: preferred source, approved statewide": {
+  "pick": "Safety and uniforms",
+  "confidence": "high",
+  "reason": "title and headings"
+ },
+ "title:signage: preferred source, approved statewide": {
+  "pick": "Public works materials",
+  "confidence": "high",
+  "reason": "title and headings"
+ },
+ "title:tables: preferred source, approved statewide": {
+  "pick": "Furniture",
+  "confidence": "high",
+  "reason": "title and headings"
+ },
+ "title:textiles and apparel: preferred source, approved statewide": {
+  "pick": "Safety and uniforms",
+  "confidence": "medium",
+  "reason": "title and headings"
+ },
+ "title:: preferred source, approved for a specific agency; optional for others": {
+  "pick": "Other",
+  "confidence": "low",
+  "reason": "title and headings"
+ },
+ "title:: preferred source, not approved as a preferred-source item; optional": {
+  "pick": "Other",
+  "confidence": "low",
+  "reason": "title and headings"
+ },
+ "title:: preferred source, approved preferred-source service": {
+  "pick": "Professional services",
+  "confidence": "medium",
+  "reason": "title and headings"
+ },
+ "title:: preferred source, not approved as a preferred-source service; optional": {
+  "pick": "Professional services",
+  "confidence": "low",
+  "reason": "title and headings"
+ },
+ "title:corcraft catalog items not on the preferred-source list": {
+  "pick": "Furniture",
+  "confidence": "medium",
+  "reason": "title and headings"
+ },
+ "title:preferred source products & services nysid": {
+  "pick": "Other",
+  "confidence": "low",
+  "reason": "title and headings"
+ },
+ "title:online marketplace on behalf of gvmvmt purchasing cooperative and other government agencies": {
+  "pick": "Office supplies",
+  "confidence": "low",
+  "reason": "title and headings"
+ },
+ "title:county wide vending machine concessions": {
+  "pick": "Other",
+  "confidence": "medium",
+  "reason": "title and headings"
+ },
+ "title:abstract work for county foreclosure": {
+  "pick": "Professional services",
+  "confidence": "medium",
+  "reason": "title and headings"
+ },
+ "title:temporary assistance applicant diversion & pathways to employment program ccdss": {
+  "pick": "Professional services",
+  "confidence": "high",
+  "reason": "title and headings"
+ },
+ "title:elevator-maintenance and repairs": {
+  "pick": "Facilities and MRO",
+  "confidence": "high",
+  "reason": "title and headings"
+ },
+ "title:nys contract 23166 pc 68920 group 40440 vehicle class-1-8": {
+  "pick": "Fleet and parts",
+  "confidence": "high",
+  "reason": "title and headings"
+ },
+ "title:industrial and commercial supplies": {
+  "pick": "Facilities and MRO",
+  "confidence": "medium",
+  "reason": "title and headings"
+ },
+ "title:rfp#24101-rfp-dst public safety emergency preparedness equipment & related products & services": {
+  "pick": "Safety and uniforms",
+  "confidence": "medium",
+  "reason": "title and headings"
+ },
+ "title:chemung county nursing facility staffing": {
+  "pick": "Professional services",
+  "confidence": "high",
+  "reason": "title and headings"
+ },
+ "title:chemung county nursing facility": {
+  "pick": "Professional services",
+  "confidence": "low",
+  "reason": "title and headings"
+ },
+ "title:lease, 60 month of radio communication system for rockland county correctional": {
+  "pick": "IT hardware",
+  "confidence": "medium",
+  "reason": "title and headings"
+ },
+ "title:network hardware and software by manufacturer": {
+  "pick": "IT hardware",
+  "confidence": "medium",
+  "reason": "title and headings"
+ },
+ "title:network and software by manufacturer": {
+  "pick": "IT hardware",
+  "confidence": "medium",
+  "reason": "title and headings"
+ },
+ "title:print law books pc67676 westlaw": {
+  "pick": "Other",
+  "confidence": "medium",
+  "reason": "title and headings"
+ },
+ "title:xerox sales agreement -legislature": {
+  "pick": "IT hardware",
+  "confidence": "medium",
+  "reason": "title and headings"
+ },
+ "title:xerox printer c8170h-it dept": {
+  "pick": "IT hardware",
+  "confidence": "high",
+  "reason": "title and headings"
+ },
+ "title:janitorial supplies 20": {
+  "pick": "Janitorial",
+  "confidence": "high",
+  "reason": "title and headings"
+ },
+ "title:chemung county jail clothing and bedding": {
+  "pick": "Safety and uniforms",
+  "confidence": "medium",
+  "reason": "title and headings"
+ },
+ "title:janitorial supplies unipak": {
+  "pick": "Janitorial",
+  "confidence": "high",
+  "reason": "title and headings"
+ },
+ "title:furniture,all types": {
+  "pick": "Furniture",
+  "confidence": "high",
+  "reason": "title and headings"
+ },
+ "title:vehicle upfit services": {
+  "pick": "Fleet and parts",
+  "confidence": "medium",
+  "reason": "title and headings"
+ },
+ "title:annual audit of financial statements and certification of medicaid cost report-mmbc": {
+  "pick": "Professional services",
+  "confidence": "high",
+  "reason": "title and headings"
+ },
+ "title:wildlife hazard management": {
+  "pick": "Professional services",
+  "confidence": "medium",
+  "reason": "title and headings"
+ },
+ "title:r rebid runway 6-24 rehabilitation": {
+  "pick": "Facilities and MRO",
+  "confidence": "low",
+  "reason": "title and headings"
+ },
+ "title:tyler software configuration & customization services": {
+  "pick": "Software and services",
+  "confidence": "high",
+  "reason": "title and headings"
+ },
+ "title:c tyler software configuration & customization services": {
+  "pick": "Software and services",
+  "confidence": "high",
+  "reason": "title and headings"
+ },
+ "title:suffolk county #22/0277 gas meter parts": {
+  "pick": "Facilities and MRO",
+  "confidence": "medium",
+  "reason": "title and headings"
+ },
+ "title:ecra parking lot concession": {
+  "pick": "Other",
+  "confidence": "low",
+  "reason": "title and headings"
+ },
+ "title:trucks (heavy duty class 8)": {
+  "pick": "Fleet and parts",
+  "confidence": "high",
+  "reason": "title and headings"
+ },
+ "title:trucks (heavy duty class 8) beam mack": {
+  "pick": "Fleet and parts",
+  "confidence": "high",
+  "reason": "title and headings"
+ },
+ "title:trucks (heavy duty class 8) navistar inc": {
+  "pick": "Fleet and parts",
+  "confidence": "high",
+  "reason": "title and headings"
+ },
+ "title:trucks (heavy duty class 8) utica general truck": {
+  "pick": "Fleet and parts",
+  "confidence": "high",
+  "reason": "title and headings"
+ },
+ "title:furnish and deliver glycerin-based supplemental carbon source": {
+  "pick": "Public works materials",
+  "confidence": "medium",
+  "reason": "title and headings"
+ },
+ "title:promotional items- discounts": {
+  "pick": "Other",
+  "confidence": "medium",
+  "reason": "title and headings"
+ },
+ "title:traffic marking lines and symbols": {
+  "pick": "Public works materials",
+  "confidence": "high",
+  "reason": "title and headings"
+ },
+ "title:furnish and install galvanized railing": {
+  "pick": "Public works materials",
+  "confidence": "medium",
+  "reason": "title and headings"
+ },
+ "title:highway fuel": {
+  "pick": "Fleet and parts",
+  "confidence": "high",
+  "reason": "title and headings"
+ },
+ "title:sidewalks and curbs": {
+  "pick": "Public works materials",
+  "confidence": "medium",
+  "reason": "title and headings"
+ },
+ "title:crack sealing": {
+  "pick": "Public works materials",
+  "confidence": "medium",
+  "reason": "title and headings"
+ },
+ "title:cold milling": {
+  "pick": "Public works materials",
+  "confidence": "medium",
+  "reason": "title and headings"
+ },
+ "title:polypropylene manhole risers-seavring": {
+  "pick": "Public works materials",
+  "confidence": "high",
+  "reason": "title and headings"
+ },
+ "title:polypropylene manhole risers": {
+  "pick": "Public works materials",
+  "confidence": "high",
+  "reason": "title and headings"
+ },
+ "title:pavement reclamation(fdr)": {
+  "pick": "Public works materials",
+  "confidence": "medium",
+  "reason": "title and headings"
+ },
+ "title:cold mix pavement": {
+  "pick": "Public works materials",
+  "confidence": "high",
+  "reason": "title and headings"
+ },
+ "title:liquid bituminous materials": {
+  "pick": "Public works materials",
+  "confidence": "high",
+  "reason": "title and headings"
+ },
+ "title:quick set slurry": {
+  "pick": "Public works materials",
+  "confidence": "high",
+  "reason": "title and headings"
+ },
+ "title:geosynthetics": {
+  "pick": "Public works materials",
+  "confidence": "high",
+  "reason": "title and headings"
+ },
+ "title:precast drainage units and frames,grates,and covers": {
+  "pick": "Public works materials",
+  "confidence": "high",
+  "reason": "title and headings"
+ },
+ "title:deicing anti-skid stone & deicing sand": {
+  "pick": "Public works materials",
+  "confidence": "high",
+  "reason": "title and headings"
+ },
+ "title:deicing anti-skid stone": {
+  "pick": "Public works materials",
+  "confidence": "high",
+  "reason": "title and headings"
+ },
+ "title:deicing anti-skid stone & deicing sand-austin": {
+  "pick": "Public works materials",
+  "confidence": "high",
+  "reason": "title and headings"
+ },
+ "title:cold in-place recycling": {
+  "pick": "Public works materials",
+  "confidence": "medium",
+  "reason": "title and headings"
+ },
+ "title:hot mix asphalt": {
+  "pick": "Public works materials",
+  "confidence": "high",
+  "reason": "title and headings"
+ },
+ "title:concrete pre-stressed beams": {
+  "pick": "Public works materials",
+  "confidence": "high",
+  "reason": "title and headings"
+ },
+ "title:chip seal stone": {
+  "pick": "Public works materials",
+  "confidence": "high",
+  "reason": "title and headings"
+ },
+ "title:concrete box culverts": {
+  "pick": "Public works materials",
+  "confidence": "high",
+  "reason": "title and headings"
+ },
+ "title:automotive and heavy truck repairs, parts, and towing": {
+  "pick": "Fleet and parts",
+  "confidence": "high",
+  "reason": "title and headings"
+ },
+ "title:riprap & stone filling": {
+  "pick": "Public works materials",
+  "confidence": "high",
+  "reason": "title and headings"
+ },
+ "title:fine and coarse aggregates": {
+  "pick": "Public works materials",
+  "confidence": "high",
+  "reason": "title and headings"
+ },
+ "title:fine and coarse aggregated": {
+  "pick": "Public works materials",
+  "confidence": "high",
+  "reason": "title and headings"
+ },
+ "title:tree and stump removal": {
+  "pick": "Facilities and MRO",
+  "confidence": "medium",
+  "reason": "title and headings"
+ },
+ "title:iron castings": {
+  "pick": "Public works materials",
+  "confidence": "medium",
+  "reason": "title and headings"
+ },
+ "title:commonwealth of va. ifb 6447 buses": {
+  "pick": "Fleet and parts",
+  "confidence": "high",
+  "reason": "title and headings"
+ },
+ "title:457 deferred compensation plan": {
+  "pick": "Professional services",
+  "confidence": "high",
+  "reason": "title and headings"
+ },
+ "title:toshiba print management services onondaga county bid": {
+  "pick": "Professional services",
+  "confidence": "medium",
+  "reason": "title and headings"
+ },
+ "title:insurance commercial, property, liability,& equipment": {
+  "pick": "Professional services",
+  "confidence": "high",
+  "reason": "title and headings"
+ },
+ "title:insurance for chemung county nursing facility": {
+  "pick": "Professional services",
+  "confidence": "high",
+  "reason": "title and headings"
+ },
+ "title:r refuse and recyclable materials colletion and disposal": {
+  "pick": "Professional services",
+  "confidence": "medium",
+  "reason": "title and headings"
+ },
+ "title:congregate meal program meals on wheels": {
+  "pick": "Professional services",
+  "confidence": "medium",
+  "reason": "title and headings"
+ },
+ "title:water jugs and monthly rentals water dispensers-wbmason": {
+  "pick": "Other",
+  "confidence": "medium",
+  "reason": "title and headings"
+ },
+ "title:for the development of a chemung countywide resiliency plan": {
+  "pick": "Professional services",
+  "confidence": "high",
+  "reason": "title and headings"
+ },
+ "title:audio, video": {
+  "pick": "IT hardware",
+  "confidence": "high",
+  "reason": "title and headings"
+ },
+ "title:industrial & commercial supplies": {
+  "pick": "Facilities and MRO",
+  "confidence": "medium",
+  "reason": "title and headings"
+ },
+ "title:term contract bid to provide industrial and commercial supplies": {
+  "pick": "Facilities and MRO",
+  "confidence": "medium",
+  "reason": "title and headings"
+ },
+ "title:r air service development": {
+  "pick": "Professional services",
+  "confidence": "medium",
+  "reason": "title and headings"
+ },
+ "title:hvac design and project management services for 150 lake street phase 2 of 5": {
+  "pick": "Facilities and MRO",
+  "confidence": "high",
+  "reason": "HVAC design and project management"
+ },
+ "title:dss conference room presentation and vieo conferencing technoloy upgrade": {
+  "pick": "IT hardware",
+  "confidence": "medium",
+  "reason": "AV conference room technology upgrade"
+ },
+ "title:one new and unused current production model forklift chemung co sewer dept.": {
+  "pick": "Fleet and parts",
+  "confidence": "high",
+  "reason": "forklift equipment"
+ },
+ "title:purchase of one new/unused de-icer trailer for ecra": {
+  "pick": "Fleet and parts",
+  "confidence": "medium",
+  "reason": "de-icer trailer equipment"
+ },
+ "title:defibrillators (aed’s) and related accessories": {
+  "pick": "Safety and uniforms",
+  "confidence": "high",
+  "reason": "AEDs medical equipment"
+ },
+ "title:automotive replacement parts for medium & heavy duty trucks": {
+  "pick": "Fleet and parts",
+  "confidence": "high",
+  "reason": "truck replacement parts"
+ },
+ "title:automotive replacement parts for medium and heavy-duty trucks": {
+  "pick": "Fleet and parts",
+  "confidence": "high",
+  "reason": "truck replacement parts"
+ },
+ "title:sre building roof replacement": {
+  "pick": "Facilities and MRO",
+  "confidence": "high",
+  "reason": "roof replacement"
+ },
+ "title:terminal building roof replacement and beacon replacement design 18965.04": {
+  "pick": "Facilities and MRO",
+  "confidence": "medium",
+  "reason": "roof replacement and design"
+ },
+ "title:installation of new passenger boarding bridge": {
+  "pick": "Facilities and MRO",
+  "confidence": "medium",
+  "reason": "boarding bridge installation"
+ },
+ "title:replacement of benjamin road bridge over bulkley creek": {
+  "pick": "Public works materials",
+  "confidence": "medium",
+  "reason": "bridge replacement construction"
+ },
+ "title:rehabilitation of big flats road (cr 64) bridge over singsing creek bin 3331450": {
+  "pick": "Public works materials",
+  "confidence": "medium",
+  "reason": "bridge rehabilitation"
+ },
+ "title:time & materials general construction services-swa": {
+  "pick": "Facilities and MRO",
+  "confidence": "medium",
+  "reason": "general construction services"
+ },
+ "title:engineering environmental planning": {
+  "pick": "Professional services",
+  "confidence": "high",
+  "reason": "engineering environmental planning"
+ },
+ "title:installation of lighting and accessories for emergency vehicles": {
+  "pick": "Fleet and parts",
+  "confidence": "medium",
+  "reason": "emergency vehicle lighting install"
+ },
+ "title:product for extraction of phosphourous": {
+  "pick": "Public works materials",
+  "confidence": "medium",
+  "reason": "phosphorus extraction product, water treatment"
+ },
+ "title:chemung county hot mix pavement": {
+  "pick": "Public works materials",
+  "confidence": "high",
+  "reason": "hot mix pavement"
+ },
+ "title:med-heavy duty": {
+  "pick": "Fleet and parts",
+  "confidence": "high",
+  "reason": "medium/heavy duty repairs"
+ },
+ "title:medium & heavy": {
+  "pick": "Fleet and parts",
+  "confidence": "high",
+  "reason": "medium/heavy duty repairs"
+ },
+ "title:stone filling and rip rap": {
+  "pick": "Public works materials",
+  "confidence": "high",
+  "reason": "stone fill and rip rap"
+ },
+ "title:vendor placed pavement": {
+  "pick": "Public works materials",
+  "confidence": "high",
+  "reason": "pavement"
+ },
+ "title:steel shapes": {
+  "pick": "Public works materials",
+  "confidence": "medium",
+  "reason": "steel shapes"
+ },
+ "title:pvc in-line drainage basins": {
+  "pick": "Public works materials",
+  "confidence": "high",
+  "reason": "PVC drainage basins"
+ },
+ "title:ready mix concrete": {
+  "pick": "Public works materials",
+  "confidence": "high",
+  "reason": "ready mix concrete"
+ },
+ "title:topsoil": {
+  "pick": "Public works materials",
+  "confidence": "high",
+  "reason": "topsoil"
+ },
+ "title:tme & materials general construction services": {
+  "pick": "Facilities and MRO",
+  "confidence": "medium",
+  "reason": "general construction services"
+ },
+ "title:stone filling and riprap": {
+  "pick": "Public works materials",
+  "confidence": "high",
+  "reason": "stone fill and riprap"
+ },
+ "title:time and material general construction services": {
+  "pick": "Facilities and MRO",
+  "confidence": "medium",
+  "reason": "general construction services"
+ },
+ "title:supply tires and related services": {
+  "pick": "Fleet and parts",
+  "confidence": "high",
+  "reason": "tires and related services"
+ },
+ "title:highway signs & thermoplastic pavement markings": {
+  "pick": "Public works materials",
+  "confidence": "high",
+  "reason": "highway signs and markings"
+ },
+ "title:vehicle warning lights": {
+  "pick": "Fleet and parts",
+  "confidence": "medium",
+  "reason": "vehicle warning lights"
+ },
+ "title:sustainable janitorial supplies": {
+  "pick": "Janitorial",
+  "confidence": "high",
+  "reason": "janitorial supplies"
+ },
+ "title:chip seal stone and native stone": {
+  "pick": "Public works materials",
+  "confidence": "high",
+  "reason": "chip seal stone"
+ },
+ "title:chip seal and native stone": {
+  "pick": "Public works materials",
+  "confidence": "high",
+  "reason": "chip seal stone"
+ },
+ "title:supply tires and related service": {
+  "pick": "Fleet and parts",
+  "confidence": "high",
+  "reason": "tires and related services"
+ },
+ "title:apparel with customization": {
+  "pick": "Safety and uniforms",
+  "confidence": "high",
+  "reason": "apparel"
+ },
+ "title:electrical installation for security system upgrade-chemung co. jail": {
+  "pick": "Facilities and MRO",
+  "confidence": "high",
+  "reason": "electrical installation"
+ },
+ "title:med & heavy repairs": {
+  "pick": "Fleet and parts",
+  "confidence": "high",
+  "reason": "medium/heavy repairs"
+ },
+ "title:med. & heavy": {
+  "pick": "Fleet and parts",
+  "confidence": "high",
+  "reason": "medium/heavy repairs"
+ },
+ "title:furnish and deliver to the chemung county sewer district": {
+  "pick": "Other",
+  "confidence": "low",
+  "reason": "vague furnish and deliver"
+ },
+ "title:r -rebid sheriff fleet vehicle maintenance and repair": {
+  "pick": "Fleet and parts",
+  "confidence": "high",
+  "reason": "fleet vehicle maintenance"
+ },
+ "title:m r & i of radios": {
+  "pick": "IT hardware",
+  "confidence": "medium",
+  "reason": "radio maintenance and repair"
+ },
+ "title:kenwood portable radios, accessories & trunking services": {
+  "pick": "IT hardware",
+  "confidence": "medium",
+  "reason": "portable radios"
+ },
+ "title:medicaid conversion services for ccnf": {
+  "pick": "Professional services",
+  "confidence": "medium",
+  "reason": "Medicaid conversion services"
+ },
+ "title:bid for the supply of natural gas": {
+  "pick": "Other",
+  "confidence": "medium",
+  "reason": "natural gas supply"
+ },
+ "title:trustee for cop & lottery revenue bonds": {
+  "pick": "Professional services",
+  "confidence": "high",
+  "reason": "trustee banking services"
+ },
+ "title:security services / dpi security": {
+  "pick": "Professional services",
+  "confidence": "high",
+  "reason": "security guard services"
+ },
+ "title:oce print & mail services": {
+  "pick": "Professional services",
+  "confidence": "medium",
+  "reason": "print and mail services"
+ },
+ "title:sans training vouchers": {
+  "pick": "Professional services",
+  "confidence": "high",
+  "reason": "training vouchers"
+ },
+ "title:engraving products name plates, awards, badges and signs / witco": {
+  "pick": "Office supplies",
+  "confidence": "medium",
+  "reason": "engraved name plates and badges"
+ },
+ "title:ntt data resilient site initiative it consulting services": {
+  "pick": "Software and services",
+  "confidence": "high",
+  "reason": "IT consulting services"
+ },
+ "title:prescription eyeglasses / laurel hill sweep": {
+  "pick": "Safety and uniforms",
+  "confidence": "medium",
+  "reason": "prescription eyeglasses"
+ },
+ "title:textile manufacturing / sheets, pillowcases, and wool blankets / rockwest training": {
+  "pick": "Other",
+  "confidence": "medium",
+  "reason": "linens and blankets textiles"
+ },
+ "title:fuelforce - card reader fueling systems hardware and software maintenance and support": {
+  "pick": "IT hardware",
+  "confidence": "low",
+  "reason": "fueling card reader hardware/software"
+ },
+ "title:commercial leasing real estate brokerage services": {
+  "pick": "Professional services",
+  "confidence": "medium",
+  "reason": "real estate brokerage"
+ },
+ "title:oregonbuys maintenance and operations": {
+  "pick": "Software and services",
+  "confidence": "high",
+  "reason": "software maintenance and support"
+ },
+ "title:dark fiber replacement for capitol mall ring, city of salem network #sr5004989": {
+  "pick": "Software and services",
+  "confidence": "medium",
+  "reason": "dark fiber telecom services"
+ },
+ "title:complete mail services: presort,barcode,metering,handwork": {
+  "pick": "Professional services",
+  "confidence": "high",
+  "reason": "mail services"
+ },
+ "title:confidential records destruction service": {
+  "pick": "Professional services",
+  "confidence": "high",
+  "reason": "records destruction service"
+ },
+ "title:aluminum boarding docks": {
+  "pick": "Public works materials",
+  "confidence": "medium",
+  "reason": "docks and boat ramps"
+ },
+ "title:food service products: sales, services and delivery for grocery, broadline, and truckload purchases": {
+  "pick": "Other",
+  "confidence": "high",
+  "reason": "food products"
+ },
+ "title:food service products: sales, services and delivery for grocery": {
+  "pick": "Other",
+  "confidence": "high",
+  "reason": "food products"
+ },
+ "title:das p&d bluecrest inserter lease": {
+  "pick": "IT hardware",
+  "confidence": "medium",
+  "reason": "mailing inserter equipment lease"
+ },
+ "title:seismic isolation platform goods and services": {
+  "pick": "Facilities and MRO",
+  "confidence": "medium",
+  "reason": "seismic isolation platform"
+ },
+ "title:professional services price agreements, multiple categories": {
+  "pick": "Professional services",
+  "confidence": "high",
+  "reason": "A&E professional services"
+ },
+ "title:professional services price agreements, environmental services category": {
+  "pick": "Professional services",
+  "confidence": "high",
+  "reason": "environmental A&E services"
+ },
+ "title:professional services price agreements, project management category": {
+  "pick": "Professional services",
+  "confidence": "high",
+  "reason": "project management services"
+ },
+ "title:a&e related services price agreement, civil engineering focus & environmental services": {
+  "pick": "Professional services",
+  "confidence": "high",
+  "reason": "civil engineering services"
+ },
+ "title:a&e related services price agreement, ankrom moisan architects": {
+  "pick": "Professional services",
+  "confidence": "high",
+  "reason": "architect services"
+ },
+ "title:a&e services, architectural focus": {
+  "pick": "Professional services",
+  "confidence": "high",
+  "reason": "architectural services"
+ },
+ "title:a&e related svcs price agreement, architectural focus": {
+  "pick": "Professional services",
+  "confidence": "high",
+  "reason": "architectural services"
+ },
+ "title:a&e related svcs price agreements, cas services category": {
+  "pick": "Professional services",
+  "confidence": "high",
+  "reason": "CAD A&E services"
+ },
+ "title:a&e related svcs price agreement, project management services": {
+  "pick": "Professional services",
+  "confidence": "high",
+  "reason": "project management services"
+ },
+ "title:a&e services, civil engineering focus": {
+  "pick": "Professional services",
+  "confidence": "high",
+  "reason": "civil engineering"
+ },
+ "title:ttec contact center as a service (ccaas) solutions": {
+  "pick": "Software and services",
+  "confidence": "high",
+  "reason": "contact center as a service"
+ },
+ "title:deloitte contact center as a service (ccaas) solutions": {
+  "pick": "Software and services",
+  "confidence": "high",
+  "reason": "contact center as a service"
+ },
+ "title:presidio contact center as a service (ccaas) solutions": {
+  "pick": "Software and services",
+  "confidence": "high",
+  "reason": "contact center as a service"
+ },
+ "title:a&e related services price agreement, commissioning services": {
+  "pick": "Professional services",
+  "confidence": "high",
+  "reason": "commissioning engineering services"
+ },
+ "title:a&e related services price agreement - archaeological services": {
+  "pick": "Professional services",
+  "confidence": "high",
+  "reason": "archaeological consulting"
+ },
+ "title:a&e related services price agreement, archaeological services": {
+  "pick": "Professional services",
+  "confidence": "high",
+  "reason": "archaeological consulting"
+ },
+ "title:deicer chemical for use on oregon highways": {
+  "pick": "Public works materials",
+  "confidence": "high",
+  "reason": "deicer chemical"
+ },
+ "title:mmcap mms2501112 drug and alcohol testing supplies and services - cordant health solutions": {
+  "pick": "Professional services",
+  "confidence": "medium",
+  "reason": "drug and alcohol testing services"
+ },
+ "title:mmcap mms2501108 drug and alcohol testing supplies and services - premier biotech": {
+  "pick": "Professional services",
+  "confidence": "medium",
+  "reason": "drug and alcohol testing services"
+ },
+ "title:mmcap mms2501110 drug and alcohol testing supplies and services - redwood toxicology lab": {
+  "pick": "Professional services",
+  "confidence": "medium",
+  "reason": "drug and alcohol testing services"
+ },
+ "title:auction services firearms included": {
+  "pick": "Professional services",
+  "confidence": "medium",
+  "reason": "auction services"
+ },
+ "title:unite us referral for social needs platform and services": {
+  "pick": "Software and services",
+  "confidence": "high",
+  "reason": "social needs referral platform"
+ },
+ "title:*naspo master agreement enterprise (ean) passenger vehicle and box truck rental": {
+  "pick": "Fleet and parts",
+  "confidence": "high",
+  "reason": "vehicle rental"
+ },
+ "title:*oregon particiapting addendum- rental vehicles and box trucks enterprise": {
+  "pick": "Fleet and parts",
+  "confidence": "high",
+  "reason": "vehicle and truck rental"
+ },
+ "title:co-location agreement eugene campus service point of presence and carrier co-location agreement": {
+  "pick": "Software and services",
+  "confidence": "medium",
+  "reason": "co-location and carrier services"
+ },
+ "title:6755 kyndryl, inc. (formerly ibm) telephony hosted services": {
+  "pick": "Software and services",
+  "confidence": "high",
+  "reason": "hosted telephony services"
+ },
+ "title:mmcap mms2501111 drug and alcohol testing supplies and services - cdt": {
+  "pick": "Professional services",
+  "confidence": "medium",
+  "reason": "drug and alcohol testing services"
+ },
+ "title:supply of bulk propane fuel, tanks, related goods and servicesrelated products and services": {
+  "pick": "Fleet and parts",
+  "confidence": "medium",
+  "reason": "propane fuel"
+ },
+ "title:mmcap distribution of vaccines and vaccine-related products": {
+  "pick": "Safety and uniforms",
+  "confidence": "medium",
+  "reason": "vaccines medical products"
+ },
+ "title:right systems cybersecurity awareness training services and materials": {
+  "pick": "Professional services",
+  "confidence": "medium",
+  "reason": "cybersecurity awareness training"
+ },
+ "title:vending machines and related options, add-on products, and services": {
+  "pick": "Facilities and MRO",
+  "confidence": "medium",
+  "reason": "vending machines"
+ },
+ "title:mmcap infuse notice pharmaceutical wholesaler distribution srvs": {
+  "pick": "Safety and uniforms",
+  "confidence": "medium",
+  "reason": "pharmaceutical wholesaler"
+ },
+ "title:temporary staffing services / galt": {
+  "pick": "Professional services",
+  "confidence": "high",
+  "reason": "temporary staffing"
+ },
+ "title:it support staffing services / galt": {
+  "pick": "Professional services",
+  "confidence": "high",
+  "reason": "IT staffing"
+ },
+ "title:wic formula rebates for wic programs in the naspo alliance": {
+  "pick": "Other",
+  "confidence": "medium",
+  "reason": "WIC formula rebates"
+ },
+ "title:blue mountain network broadband services pa 9445 formerly gorge network": {
+  "pick": "Software and services",
+  "confidence": "high",
+  "reason": "broadband services"
+ },
+ "title:naspo products and supplies for correctional facilities": {
+  "pick": "Safety and uniforms",
+  "confidence": "high",
+  "reason": "inmate clothing and footwear"
+ },
+ "title:mmcap infuse mms2401077 dental products, equipment and services - henry schein dental": {
+  "pick": "Safety and uniforms",
+  "confidence": "medium",
+  "reason": "dental products"
+ },
+ "title:install, reconfigure,inventory mgmt, office furniture layout": {
+  "pick": "Professional services",
+  "confidence": "medium",
+  "reason": "furniture installation services"
+ },
+ "title:office furniture installation, reconfigure,inventory mgmt": {
+  "pick": "Professional services",
+  "confidence": "medium",
+  "reason": "furniture installation services"
+ },
+ "title:translation services": {
+  "pick": "Professional services",
+  "confidence": "high",
+  "reason": "translation services"
+ },
+ "title:certified ada compliant transit vehicles": {
+  "pick": "Fleet and parts",
+  "confidence": "high",
+  "reason": "transit vehicles"
+ },
+ "title:mmcap infuse mms2401075 dental products, equipment and services - patterson dental supply": {
+  "pick": "Safety and uniforms",
+  "confidence": "medium",
+  "reason": "dental products"
+ },
+ "title:mmcap infuse mms2401075 dental products, equipment and services - dental health products, inc.": {
+  "pick": "Safety and uniforms",
+  "confidence": "medium",
+  "reason": "dental products"
+ },
+ "title:statewide analytical lab services - apex laboratories": {
+  "pick": "Professional services",
+  "confidence": "medium",
+  "reason": "lab testing services"
+ },
+ "title:statewide analytical lab services - neilson research corporation": {
+  "pick": "Professional services",
+  "confidence": "medium",
+  "reason": "lab testing services"
+ },
+ "title:statewide analytical lab services - eurofins": {
+  "pick": "Professional services",
+  "confidence": "medium",
+  "reason": "lab testing services"
+ },
+ "title:psob restack a&e services": {
+  "pick": "Professional services",
+  "confidence": "high",
+  "reason": "architectural engineering services"
+ },
+ "title:wireless cell phone accessories (naspo)": {
+  "pick": "IT hardware",
+  "confidence": "medium",
+  "reason": "cell phone accessories"
+ },
+ "title:bulk fuel storage tank site maintenance": {
+  "pick": "Facilities and MRO",
+  "confidence": "medium",
+  "reason": "fuel tank site maintenance"
+ },
+ "title:naspo_orpa_sharp managed print services copiers and scanners": {
+  "pick": "IT hardware",
+  "confidence": "high",
+  "reason": "managed print copiers"
+ },
+ "title:naspo_orpa_canon managed print services copiers and scanners": {
+  "pick": "IT hardware",
+  "confidence": "high",
+  "reason": "managed print copiers"
+ },
+ "title:statewide pa toshiba": {
+  "pick": "IT hardware",
+  "confidence": "medium",
+  "reason": "Toshiba printers"
+ },
+ "title:naspo master agreement passenger vehicle rental": {
+  "pick": "Fleet and parts",
+  "confidence": "high",
+  "reason": "passenger vehicle rental"
+ },
+ "title:*oregon particiapting addendum- rental vehicles and box trucks": {
+  "pick": "Fleet and parts",
+  "confidence": "high",
+  "reason": "vehicle rental"
+ },
+ "title:info tech woc for das eis under contract 8347 sso promo": {
+  "pick": "Professional services",
+  "confidence": "medium",
+  "reason": "IT consulting"
+ },
+ "title:online auction services - pa8366": {
+  "pick": "Professional services",
+  "confidence": "medium",
+  "reason": "auction services"
+ },
+ "title:statewide iga - psu cps professional services": {
+  "pick": "Professional services",
+  "confidence": "medium",
+  "reason": "professional services IGA"
+ },
+ "title:satellite phones, services and additional software and equipment": {
+  "pick": "IT hardware",
+  "confidence": "medium",
+  "reason": "satellite phones and equipment"
+ },
+ "title:assetworks fleet focus additional modules": {
+  "pick": "Software and services",
+  "confidence": "high",
+  "reason": "fleet software modules"
+ },
+ "title:herbicide chemicals (liquid & dry)": {
+  "pick": "Public works materials",
+  "confidence": "medium",
+  "reason": "herbicide chemicals"
+ },
+ "title:electrical vehicle charging stations": {
+  "pick": "Fleet and parts",
+  "confidence": "medium",
+  "reason": "EV charging stations"
+ },
+ "title:naspo master agreement-travel management services": {
+  "pick": "Other",
+  "confidence": "high",
+  "reason": "travel management"
+ },
+ "title:*oregon participating addendum* travel mangement, airfare, travel, car rental, train, booking": {
+  "pick": "Other",
+  "confidence": "high",
+  "reason": "travel management"
+ },
+ "title:lumen broadband services pa 9447(aka centurylink)": {
+  "pick": "Software and services",
+  "confidence": "high",
+  "reason": "broadband services"
+ },
+ "title:naspo - laboratory equipment and supplies": {
+  "pick": "Facilities and MRO",
+  "confidence": "high",
+  "reason": "laboratory equipment"
+ },
+ "title:managed maintenance security services": {
+  "pick": "Software and services",
+  "confidence": "medium",
+  "reason": "network security services"
+ },
+ "title:*naspo or pa- pass_procurement assistance & it support services": {
+  "pick": "Professional services",
+  "confidence": "medium",
+  "reason": "procurement assistance and IT support"
+ },
+ "title:broadband services 9450 charter communications": {
+  "pick": "Software and services",
+  "confidence": "high",
+  "reason": "broadband services"
+ },
+ "title:microsoft master services agreement(premier and unified)": {
+  "pick": "Software and services",
+  "confidence": "high",
+  "reason": "Microsoft software services"
+ },
+ "title:naspo valuepoint public safety communications equipment": {
+  "pick": "IT hardware",
+  "confidence": "medium",
+  "reason": "public safety radio equipment"
+ },
+ "title:interior plant maintenance at mahonia hall (governor's residence)": {
+  "pick": "Facilities and MRO",
+  "confidence": "medium",
+  "reason": "interior plant maintenance"
+ },
+ "title:naspo_oregon participating addendum- inmate communication*only for odoc use*": {
+  "pick": "Software and services",
+  "confidence": "medium",
+  "reason": "inmate communication services"
+ },
+ "title:grant development and grant application consultant services": {
+  "pick": "Professional services",
+  "confidence": "high",
+  "reason": "grant consulting"
+ },
+ "title:das eam / relay resources / crime lab/ grounds maintenance": {
+  "pick": "Facilities and MRO",
+  "confidence": "medium",
+  "reason": "grounds maintenance"
+ },
+ "title:dasps-3399-20-medical staffing services": {
+  "pick": "Professional services",
+  "confidence": "high",
+  "reason": "medical staffing"
+ },
+ "title:medical staffing services": {
+  "pick": "Professional services",
+  "confidence": "high",
+  "reason": "medical staffing"
+ },
+ "title:it hardware value added reseller (it hvar)": {
+  "pick": "IT hardware",
+  "confidence": "high",
+  "reason": "IT hardware reseller"
+ },
+ "title:northwest fiber dba ziply broadband services pa9448 (formerly frontier)": {
+  "pick": "Software and services",
+  "confidence": "high",
+  "reason": "broadband services"
+ },
+ "title:state radio project; equipment & installation": {
+  "pick": "IT hardware",
+  "confidence": "medium",
+  "reason": "radio equipment and install"
+ },
+ "title:certified flagger services": {
+  "pick": "Professional services",
+  "confidence": "medium",
+  "reason": "flagger staffing"
+ },
+ "title:lightspeed networks, inc. dba ls network broadband services pa": {
+  "pick": "Software and services",
+  "confidence": "high",
+  "reason": "broadband services"
+ },
+ "title:statewide debt collection services harris & harris ltd": {
+  "pick": "Professional services",
+  "confidence": "high",
+  "reason": "debt collection"
+ },
+ "title:statewide debt collection services professional credit": {
+  "pick": "Professional services",
+  "confidence": "high",
+  "reason": "debt collection"
+ },
+ "title:statewide debt collection services lgbs": {
+  "pick": "Professional services",
+  "confidence": "high",
+  "reason": "debt collection"
+ },
+ "title:statewide debt collection services coast professional": {
+  "pick": "Professional services",
+  "confidence": "high",
+  "reason": "debt collection"
+ },
+ "title:statewide debt collection services allianceone": {
+  "pick": "Professional services",
+  "confidence": "high",
+  "reason": "debt collection"
+ },
+ "title:statewide debt collection services the cbe group": {
+  "pick": "Professional services",
+  "confidence": "high",
+  "reason": "debt collection"
+ },
+ "title:statewide debt collection services reliant capital solutions": {
+  "pick": "Professional services",
+  "confidence": "high",
+  "reason": "debt collection"
+ },
+ "title:statewide debt collection services cedars business services llc": {
+  "pick": "Professional services",
+  "confidence": "high",
+  "reason": "debt collection"
+ },
+ "title:statewide debt collection services pioneer credit recovery inc": {
+  "pick": "Professional services",
+  "confidence": "high",
+  "reason": "debt collection"
+ },
+ "title:statewide debt collection services transworld systems inc.": {
+  "pick": "Professional services",
+  "confidence": "high",
+  "reason": "debt collection"
+ },
+ "title:douglas fastnet broadband services pa 9446": {
+  "pick": "Software and services",
+  "confidence": "high",
+  "reason": "broadband services"
+ },
+ "title:oregon e-government (e-gov) services": {
+  "pick": "Software and services",
+  "confidence": "medium",
+  "reason": "e-government services"
+ },
+ "title:deq vehicle inspection program - payment processing services": {
+  "pick": "Software and services",
+  "confidence": "medium",
+  "reason": "payment processing services"
+ },
+ "title:egov woc / odf - tyler oregon": {
+  "pick": "Software and services",
+  "confidence": "high",
+  "reason": "ecommerce software development"
+ },
+ "title:egov woc / doc - tyler oregon": {
+  "pick": "Software and services",
+  "confidence": "high",
+  "reason": "ecommerce software development"
+ },
+ "title:mmcap infuse mms2200734 medical products program": {
+  "pick": "Safety and uniforms",
+  "confidence": "medium",
+  "reason": "medical products"
+ },
+ "title:adv and structure removal/disposition": {
+  "pick": "Professional services",
+  "confidence": "low",
+  "reason": "vessel removal services"
+ },
+ "title:information technology research and advisory services (itras)": {
+  "pick": "Professional services",
+  "confidence": "high",
+  "reason": "IT research and advisory"
+ },
+ "title:softrax / blulogix dcs billing replacement": {
+  "pick": "Software and services",
+  "confidence": "high",
+  "reason": "billing software"
+ },
+ "title:armored transport services": {
+  "pick": "Professional services",
+  "confidence": "high",
+  "reason": "armored car services"
+ },
+ "title:community referral services": {
+  "pick": "Software and services",
+  "confidence": "low",
+  "reason": "referral services"
+ },
+ "title:rfp - cut sheet and roll stock paper": {
+  "pick": "Office supplies",
+  "confidence": "high",
+  "reason": "copy paper"
+ },
+ "title:multi-threat hazmat/cbrn suits": {
+  "pick": "Safety and uniforms",
+  "confidence": "high",
+  "reason": "hazmat suits"
+ },
+ "title:corrections enterprises office furniture": {
+  "pick": "Furniture",
+  "confidence": "high",
+  "reason": "office furniture"
+ },
+ "title:*oregon participating addendum- mro maintenance, repair, operations and industrial supply": {
+  "pick": "Facilities and MRO",
+  "confidence": "high",
+  "reason": "MRO supplies"
+ },
+ "title:oregon participating addendum- mro maintenance, repair, operations and industrial supply": {
+  "pick": "Facilities and MRO",
+  "confidence": "high",
+  "reason": "MRO supplies"
+ },
+ "title:naspo oregon participating addendum- mro maintenance, repair, operations and industrial supply": {
+  "pick": "Facilities and MRO",
+  "confidence": "high",
+  "reason": "MRO supplies"
+ },
+ "title:public policy & general facilitation & mediation": {
+  "pick": "Professional services",
+  "confidence": "high",
+  "reason": "mediation facilitation"
+ },
+ "title:universal kitchen & restaurant equipment": {
+  "pick": "Facilities and MRO",
+  "confidence": "high",
+  "reason": "kitchen equipment"
+ },
+ "title:trade services price agreements, multiple locations": {
+  "pick": "Facilities and MRO",
+  "confidence": "medium",
+  "reason": "trade construction services"
+ },
+ "title:mmcap infuse mms2200733 medical products program - medline ind. lp": {
+  "pick": "Safety and uniforms",
+  "confidence": "medium",
+  "reason": "medical products"
+ },
+ "title:rental and repair goods and services": {
+  "pick": "Facilities and MRO",
+  "confidence": "medium",
+  "reason": "equipment rental and repair"
+ },
+ "title:orfwd / floor care": {
+  "pick": "Janitorial",
+  "confidence": "high",
+  "reason": "floor care janitorial services"
+ },
+ "title:tree and shrub maintenance services": {
+  "pick": "Facilities and MRO",
+  "confidence": "medium",
+  "reason": "tree and shrub maintenance"
+ },
+ "title:naspo - security & fire protection services": {
+  "pick": "Safety and uniforms",
+  "confidence": "medium",
+  "reason": "fire protection equipment"
+ },
+ "title:industrial hygiene services": {
+  "pick": "Professional services",
+  "confidence": "medium",
+  "reason": "industrial hygiene services"
+ },
+ "title:information security services": {
+  "pick": "Professional services",
+  "confidence": "medium",
+  "reason": "information security consulting"
+ },
+ "title:pet waste products / step forward": {
+  "pick": "Janitorial",
+  "confidence": "medium",
+  "reason": "pet waste bags"
+ },
+ "title:trash can liner highway refuse products /step forward": {
+  "pick": "Janitorial",
+  "confidence": "medium",
+  "reason": "trash can liners"
+ },
+ "title:das p&d bluecrest sorter lease": {
+  "pick": "Office supplies",
+  "confidence": "medium",
+  "reason": "Based on title and program headings"
+ },
+ "title:professional services": {
+  "pick": "Professional services",
+  "confidence": "high",
+  "reason": "Based on title and program headings"
+ },
+ "title:4720 - electronic fingerprint capture and transmission services": {
+  "pick": "Professional services",
+  "confidence": "medium",
+  "reason": "Based on title and program headings"
+ },
+ "title:pest control and integrated pest management (ipm) services": {
+  "pick": "Facilities and MRO",
+  "confidence": "medium",
+  "reason": "Based on title and program headings"
+ },
+ "title:statewide - secondary fueling system key": {
+  "pick": "Fleet and parts",
+  "confidence": "medium",
+  "reason": "Based on title and program headings"
+ },
+ "title:mmcap infuse mms2200720 - global protection corp - condoms program": {
+  "pick": "Safety and uniforms",
+  "confidence": "medium",
+  "reason": "Based on title and program headings"
+ },
+ "title:public safety": {
+  "pick": "Safety and uniforms",
+  "confidence": "high",
+  "reason": "Based on title and program headings"
+ },
+ "title:mmcap infuse mms2200721 - sxwell - condoms program": {
+  "pick": "Safety and uniforms",
+  "confidence": "medium",
+  "reason": "Based on title and program headings"
+ },
+ "title:ca broadcom mainframe monitoring and management software": {
+  "pick": "Software and services",
+  "confidence": "high",
+  "reason": "Based on title and program headings"
+ },
+ "title:mmcap infuse mms2300885 pharmalink": {
+  "pick": "Safety and uniforms",
+  "confidence": "medium",
+  "reason": "Based on title and program headings"
+ },
+ "title:paints and related products used for public-use roads and highways.": {
+  "pick": "Public works materials",
+  "confidence": "high",
+  "reason": "Based on title and program headings"
+ },
+ "title:102-1557-14_technology systems hardware and incidental services": {
+  "pick": "IT hardware",
+  "confidence": "high",
+  "reason": "Based on title and program headings"
+ },
+ "title:102-1556-14 hitachi technology systems hardware and incidental services": {
+  "pick": "IT hardware",
+  "confidence": "high",
+  "reason": "Based on title and program headings"
+ },
+ "title:102-1555-14_ presidio technology systems hardware and incidental services": {
+  "pick": "IT hardware",
+  "confidence": "high",
+  "reason": "Based on title and program headings"
+ },
+ "title:102-1552-14_dell_technology systems hardware and incidental services": {
+  "pick": "IT hardware",
+  "confidence": "high",
+  "reason": "Based on title and program headings"
+ },
+ "title:deicing chemical for use on highways and public roads": {
+  "pick": "Public works materials",
+  "confidence": "high",
+  "reason": "Based on title and program headings"
+ },
+ "title:emergency response & time critical removal services of oil & hazardous materials": {
+  "pick": "Facilities and MRO",
+  "confidence": "medium",
+  "reason": "Based on title and program headings"
+ },
+ "title:bark dusting services for or bldgs. in the salem, eugene, portland, wilsonville, & surrounding areas": {
+  "pick": "Facilities and MRO",
+  "confidence": "medium",
+  "reason": "Based on title and program headings"
+ },
+ "title:employee engagement & 360-performance reviews": {
+  "pick": "Professional services",
+  "confidence": "high",
+  "reason": "Based on title and program headings"
+ },
+ "title:embroidery & screen-printing products / rockwest": {
+  "pick": "Safety and uniforms",
+  "confidence": "medium",
+  "reason": "Based on title and program headings"
+ },
+ "title:tires and related supplies and services": {
+  "pick": "Fleet and parts",
+  "confidence": "high",
+  "reason": "Based on title and program headings"
+ },
+ "title:astound (wave) broadband services pa 9452": {
+  "pick": "Software and services",
+  "confidence": "medium",
+  "reason": "Based on title and program headings"
+ },
+ "title:hunter communications broadband services pa": {
+  "pick": "Software and services",
+  "confidence": "medium",
+  "reason": "Based on title and program headings"
+ },
+ "title:first aid products / first aid supplies and aed's / rockwest training": {
+  "pick": "Safety and uniforms",
+  "confidence": "high",
+  "reason": "Based on title and program headings"
+ },
+ "title:mmcap infuse mms2200738 medical products program - lochness medical supply": {
+  "pick": "Safety and uniforms",
+  "confidence": "medium",
+  "reason": "Based on title and program headings"
+ },
+ "title:vehicle lifts and garage-associated equipment": {
+  "pick": "Facilities and MRO",
+  "confidence": "high",
+  "reason": "Based on title and program headings"
+ },
+ "title:mmcap infuse mms2200732 medical products program - medical supply inc. (msi)": {
+  "pick": "Safety and uniforms",
+  "confidence": "medium",
+  "reason": "Based on title and program headings"
+ },
+ "title:medical laboratory & pathology services (convenience)": {
+  "pick": "Professional services",
+  "confidence": "medium",
+  "reason": "Based on title and program headings"
+ },
+ "title:mmcap infuse mms2200736 medical products program - mckesson medical-surgical gov solutions": {
+  "pick": "Safety and uniforms",
+  "confidence": "medium",
+  "reason": "Based on title and program headings"
+ },
+ "title:e-waste services (electronic recycling services)": {
+  "pick": "Facilities and MRO",
+  "confidence": "medium",
+  "reason": "Based on title and program headings"
+ },
+ "title:transcription services": {
+  "pick": "Professional services",
+  "confidence": "high",
+  "reason": "Based on title and program headings"
+ },
+ "title:statewide security services, armed & unarmed": {
+  "pick": "Professional services",
+  "confidence": "high",
+  "reason": "Based on title and program headings"
+ },
+ "title:mmcap infuse mms2200731 medical products program - concordance healthcare solutions": {
+  "pick": "Safety and uniforms",
+  "confidence": "medium",
+  "reason": "Based on title and program headings"
+ },
+ "title:cleaning & maid service at mahonia hall": {
+  "pick": "Janitorial",
+  "confidence": "medium",
+  "reason": "Based on title and program headings"
+ },
+ "title:catch basin cleaning at various state owned structures": {
+  "pick": "Facilities and MRO",
+  "confidence": "medium",
+  "reason": "Based on title and program headings"
+ },
+ "title:window washing services": {
+  "pick": "Janitorial",
+  "confidence": "medium",
+  "reason": "Based on title and program headings"
+ },
+ "title:duty boots & tactical footwear": {
+  "pick": "Safety and uniforms",
+  "confidence": "high",
+  "reason": "Based on title and program headings"
+ },
+ "title:a&e professional services contract for agriculture building tenant improvement project 113.015": {
+  "pick": "Professional services",
+  "confidence": "high",
+  "reason": "Based on title and program headings"
+ },
+ "title:motor oil and miscellaneous petroleum products": {
+  "pick": "Fleet and parts",
+  "confidence": "high",
+  "reason": "Based on title and program headings"
+ },
+ "title:tririga training - eam": {
+  "pick": "Professional services",
+  "confidence": "medium",
+  "reason": "Based on title and program headings"
+ },
+ "title:office furniture and related install services/naspo valuepoint": {
+  "pick": "Furniture",
+  "confidence": "high",
+  "reason": "Based on title and program headings"
+ },
+ "title:woc#17 to pa #107-1400-08 for wetland monitoring & mtn services": {
+  "pick": "Professional services",
+  "confidence": "medium",
+  "reason": "Based on title and program headings"
+ },
+ "title:supply and delivery of various bulk fuel types": {
+  "pick": "Fleet and parts",
+  "confidence": "high",
+  "reason": "Based on title and program headings"
+ },
+ "title:supply and delivery of bulk fuel and related products": {
+  "pick": "Fleet and parts",
+  "confidence": "high",
+  "reason": "Based on title and program headings"
+ },
+ "title:naspo_or pa_commercial card services not to include fleet card": {
+  "pick": "Professional services",
+  "confidence": "medium",
+  "reason": "Based on title and program headings"
+ },
+ "title:fixed wing and rotary wing aircraft air charter services": {
+  "pick": "Other",
+  "confidence": "medium",
+  "reason": "Based on title and program headings"
+ },
+ "title:information technology professional business services": {
+  "pick": "Software and services",
+  "confidence": "medium",
+  "reason": "Based on title and program headings"
+ },
+ "title:independent quality management services for it initiatives": {
+  "pick": "Software and services",
+  "confidence": "medium",
+  "reason": "Based on title and program headings"
+ },
+ "title:pa 6204 fixed wing and rotary wing aircraft air charter services": {
+  "pick": "Other",
+  "confidence": "medium",
+  "reason": "Based on title and program headings"
+ },
+ "title:pa 1620 fleet fuel card services, gas, ev charging, charge card for fuel": {
+  "pick": "Fleet and parts",
+  "confidence": "high",
+  "reason": "Based on title and program headings"
+ },
+ "title:naspo master agreement parks & recreation and playground equipment, installations and related g & s": {
+  "pick": "Public works materials",
+  "confidence": "high",
+  "reason": "Based on title and program headings"
+ },
+ "title:public health laboratory biosafety level 2 & level 3 lab renovations": {
+  "pick": "Facilities and MRO",
+  "confidence": "medium",
+  "reason": "Based on title and program headings"
+ },
+ "title:naspo master agreement-po-10700-00015859 original po number- parks and recreation": {
+  "pick": "Public works materials",
+  "confidence": "high",
+  "reason": "Based on title and program headings"
+ },
+ "title:naspo master agreement ***original po number po-10700-00015857 parks and recreation": {
+  "pick": "Public works materials",
+  "confidence": "high",
+  "reason": "Based on title and program headings"
+ },
+ "title:*oregon participating addendum*parks & recreation and playground equipment, installations": {
+  "pick": "Public works materials",
+  "confidence": "high",
+  "reason": "Based on title and program headings"
+ },
+ "title:**oregon participating addendum***parks & recreation and playground equipment, installations": {
+  "pick": "Public works materials",
+  "confidence": "high",
+  "reason": "Based on title and program headings"
+ },
+ "title:**oregon participating addendum- parks, recreation, playground, gym, indoor & outdoor, water, trash": {
+  "pick": "Public works materials",
+  "confidence": "high",
+  "reason": "Based on title and program headings"
+ },
+ "title:facilities condition assessment services": {
+  "pick": "Professional services",
+  "confidence": "medium",
+  "reason": "Based on title and program headings"
+ },
+ "title:naspo master agreement - office supplies": {
+  "pick": "Office supplies",
+  "confidence": "high",
+  "reason": "Based on title and program headings"
+ },
+ "title:office supplies (naspo valuepoint)": {
+  "pick": "Office supplies",
+  "confidence": "high",
+  "reason": "Based on title and program headings"
+ },
+ "title:naspo oregon participating addendum - office supplies": {
+  "pick": "Office supplies",
+  "confidence": "high",
+  "reason": "Based on title and program headings"
+ },
+ "title:mmcap infuse mms2200727 flu vaccine dist. - sanofi pasteur": {
+  "pick": "Safety and uniforms",
+  "confidence": "medium",
+  "reason": "Based on title and program headings"
+ },
+ "title:fire extinguisher service - das owned buildings - salem area": {
+  "pick": "Facilities and MRO",
+  "confidence": "medium",
+  "reason": "Based on title and program headings"
+ },
+ "title:office seating": {
+  "pick": "Furniture",
+  "confidence": "high",
+  "reason": "Based on title and program headings"
+ },
+ "title:deq ocvrp prequalification application": {
+  "pick": "Software and services",
+  "confidence": "low",
+  "reason": "Based on title and program headings"
+ },
+ "title:oem auto parts, aftermarket auto parts, rebuilt auto parts, used": {
+  "pick": "Fleet and parts",
+  "confidence": "high",
+  "reason": "Based on title and program headings"
+ },
+ "title:contract #4219 billtracker legislative tracking system": {
+  "pick": "Software and services",
+  "confidence": "high",
+  "reason": "Based on title and program headings"
+ },
+ "title:naspo or pa professional grade tools and diagnostic equipt.": {
+  "pick": "Facilities and MRO",
+  "confidence": "high",
+  "reason": "Based on title and program headings"
+ },
+ "title:naspo_or pa_ cat. 4 notification and credit monitoring services": {
+  "pick": "Professional services",
+  "confidence": "medium",
+  "reason": "Based on title and program headings"
+ },
+ "title:maintenance for hi-fog water mist fire protection system": {
+  "pick": "Facilities and MRO",
+  "confidence": "medium",
+  "reason": "Based on title and program headings"
+ },
+ "title:new direct a&e related svc feasibility study ups project 110.040 iaa funded": {
+  "pick": "Professional services",
+  "confidence": "high",
+  "reason": "Based on title and program headings"
+ },
+ "title:wireless management services": {
+  "pick": "Software and services",
+  "confidence": "medium",
+  "reason": "Based on title and program headings"
+ },
+ "title:statewide iga - psu fellowship program": {
+  "pick": "Professional services",
+  "confidence": "medium",
+  "reason": "Based on title and program headings"
+ },
+ "title:dataprise wireless management services (formerly wireless watchdog 0573)": {
+  "pick": "Software and services",
+  "confidence": "medium",
+  "reason": "Based on title and program headings"
+ },
+ "title:risk management claims services allied universal": {
+  "pick": "Professional services",
+  "confidence": "high",
+  "reason": "Based on title and program headings"
+ },
+ "title:risk management claims services sedgwick": {
+  "pick": "Professional services",
+  "confidence": "high",
+  "reason": "Based on title and program headings"
+ },
+ "title:risk management claims services crawford & co.": {
+  "pick": "Professional services",
+  "confidence": "high",
+  "reason": "Based on title and program headings"
+ },
+ "title:risk management claims services frontiier adjusteres inc": {
+  "pick": "Professional services",
+  "confidence": "high",
+  "reason": "Based on title and program headings"
+ },
+ "title:sas institute analytics software": {
+  "pick": "Software and services",
+  "confidence": "high",
+  "reason": "Based on title and program headings"
+ },
+ "title:ada compliant remanufactured and heavy duty vehicles": {
+  "pick": "Fleet and parts",
+  "confidence": "high",
+  "reason": "Based on title and program headings"
+ },
+ "title:firearm ammunition": {
+  "pick": "Safety and uniforms",
+  "confidence": "high",
+  "reason": "Based on title and program headings"
+ },
+ "title:esri enterprise license agreement": {
+  "pick": "Software and services",
+  "confidence": "high",
+  "reason": "Based on title and program headings"
+ },
+ "title:interskill learning for dcs": {
+  "pick": "Software and services",
+  "confidence": "high",
+  "reason": "Based on title and program headings"
+ },
+ "title:mms2200739 - correct rx, pharmacy services - institutional pharmaceutical": {
+  "pick": "Safety and uniforms",
+  "confidence": "medium",
+  "reason": "Based on title and program headings"
+ },
+ "title:naspo_orpa_ricoh managed print services copiers and scanners": {
+  "pick": "IT hardware",
+  "confidence": "high",
+  "reason": "Based on title and program headings"
+ },
+ "title:naspo_orpa_xerox managed print services copiers and scanners": {
+  "pick": "IT hardware",
+  "confidence": "high",
+  "reason": "Based on title and program headings"
+ },
+ "title:telephony gap resources and materials and related services": {
+  "pick": "Software and services",
+  "confidence": "medium",
+  "reason": "Based on title and program headings"
+ },
+ "title:lumen telephony gap resources and materials and related services": {
+  "pick": "Software and services",
+  "confidence": "medium",
+  "reason": "Based on title and program headings"
+ },
+ "title:naspo- or pa-walk in building supplies, tools, emergency, construction supplys, yard tools, supplies": {
+  "pick": "Facilities and MRO",
+  "confidence": "medium",
+  "reason": "Based on title and program headings"
+ },
+ "title:naspo oregon participating addendum-debris removal": {
+  "pick": "Facilities and MRO",
+  "confidence": "low",
+  "reason": "Based on title and program headings"
+ },
+ "title:naspo oregon participating addendum-debris monitoring": {
+  "pick": "Professional services",
+  "confidence": "low",
+  "reason": "Based on title and program headings"
+ },
+ "title:moving and storage services - statewide": {
+  "pick": "Professional services",
+  "confidence": "high",
+  "reason": "Based on title and program headings"
+ },
+ "title:lead-free, primerless and permanent, preformed thermoplastic": {
+  "pick": "Public works materials",
+  "confidence": "high",
+  "reason": "Based on title and program headings"
+ },
+ "title:heavy construction and industrial equipment": {
+  "pick": "Fleet and parts",
+  "confidence": "high",
+  "reason": "Based on title and program headings"
+ },
+ "title:glass beads (spheres) for use with roadway markings and paint": {
+  "pick": "Public works materials",
+  "confidence": "high",
+  "reason": "Based on title and program headings"
+ },
+ "title:lead-free, primer-less thermoplastic: profile-extruded or spray": {
+  "pick": "Public works materials",
+  "confidence": "high",
+  "reason": "Based on title and program headings"
+ },
+ "title:information technology software management (itsm)": {
+  "pick": "Software and services",
+  "confidence": "high",
+  "reason": "Based on title and program headings"
+ },
+ "title:digital subscription management services": {
+  "pick": "Software and services",
+  "confidence": "medium",
+  "reason": "Based on title and program headings"
+ },
+ "title:elevator maintenance and repair services - statewide": {
+  "pick": "Facilities and MRO",
+  "confidence": "high",
+  "reason": "Based on title and program headings"
+ },
+ "title:a&e architectural and structural services for overhead door replacement at various bldgs project": {
+  "pick": "Professional services",
+  "confidence": "high",
+  "reason": "Based on title and program headings"
+ },
+ "title:fire and security alarm monitoring services for state of oregon das owned buildings": {
+  "pick": "Facilities and MRO",
+  "confidence": "medium",
+  "reason": "Based on title and program headings"
+ },
+ "title:naspo master agreement-electronic monitoring services & products": {
+  "pick": "Safety and uniforms",
+  "confidence": "medium",
+  "reason": "Based on title and program headings"
+ },
+ "title:painting services- das-owned and maintained buildings": {
+  "pick": "Facilities and MRO",
+  "confidence": "high",
+  "reason": "Based on title and program headings"
+ },
+ "title:workday subscription and services": {
+  "pick": "Software and services",
+  "confidence": "high",
+  "reason": "Based on title and program headings"
+ },
+ "title:naspo valuepoint rfp for tires, tubes and services": {
+  "pick": "Fleet and parts",
+  "confidence": "high",
+  "reason": "Based on title and program headings"
+ },
+ "title:vectra network detection and response (ndr) agreement": {
+  "pick": "Software and services",
+  "confidence": "high",
+  "reason": "Based on title and program headings"
+ },
+ "title:body armor and ballistic-resistant products": {
+  "pick": "Safety and uniforms",
+  "confidence": "high",
+  "reason": "Based on title and program headings"
+ },
+ "title:lease management & reporting system": {
+  "pick": "Software and services",
+  "confidence": "medium",
+  "reason": "Based on title and program headings"
+ },
+ "title:statewide recruitment services": {
+  "pick": "Professional services",
+  "confidence": "high",
+  "reason": "Based on title and program headings"
+ },
+ "title:cbiz": {
+  "pick": "Professional services",
+  "confidence": "low",
+  "reason": "Based on title and program headings"
+ },
+ "title:lawn & grounds-maintenance equipment": {
+  "pick": "Facilities and MRO",
+  "confidence": "medium",
+  "reason": "Based on title and program headings"
+ },
+ "title:comcast broadband communication transport services": {
+  "pick": "Software and services",
+  "confidence": "medium",
+  "reason": "Based on title and program headings"
+ },
+ "title:xmission services (salt lake internet exchange) broadband colocation services": {
+  "pick": "Software and services",
+  "confidence": "medium",
+  "reason": "Based on title and program headings"
+ },
+ "title:broadband communication transport services": {
+  "pick": "Software and services",
+  "confidence": "medium",
+  "reason": "Based on title and program headings"
+ },
+ "title:fatbeam llc broadband communication transport services": {
+  "pick": "Software and services",
+  "confidence": "medium",
+  "reason": "Based on title and program headings"
+ },
+ "title:ultisat, inc broadband communication transport services": {
+  "pick": "Software and services",
+  "confidence": "medium",
+  "reason": "Based on title and program headings"
+ },
+ "title:tds (dba bend broadband) broadband communication transport services": {
+  "pick": "Software and services",
+  "confidence": "medium",
+  "reason": "Based on title and program headings"
+ },
+ "title:fire alarm testing, inspection and maintenance - salem/portland": {
+  "pick": "Facilities and MRO",
+  "confidence": "high",
+  "reason": "Based on title and program headings"
+ },
+ "title:meyers & stauffer audit services": {
+  "pick": "Professional services",
+  "confidence": "high",
+  "reason": "Based on title and program headings"
+ },
+ "title:parking lots and structures striping and related services for das-owned lots and parking structures": {
+  "pick": "Public works materials",
+  "confidence": "medium",
+  "reason": "Based on title and program headings"
+ },
+ "title:organizational improvement services": {
+  "pick": "Professional services",
+  "confidence": "high",
+  "reason": "Based on title and program headings"
+ },
+ "title:multi bldg support rooms addition project 2000.103": {
+  "pick": "Facilities and MRO",
+  "confidence": "medium",
+  "reason": "Based on title and program headings"
+ },
+ "title:baker tilly audit services": {
+  "pick": "Professional services",
+  "confidence": "high",
+  "reason": "Based on title and program headings"
+ },
+ "title:mailing equipment, supplies and maintenance": {
+  "pick": "Office supplies",
+  "confidence": "medium",
+  "reason": "Based on title and program headings"
+ },
+ "title:das general services building tenant improvement": {
+  "pick": "Facilities and MRO",
+  "confidence": "medium",
+  "reason": "Based on title and program headings"
+ },
+ "title:preformed, thermoplastic, roadway markings": {
+  "pick": "Public works materials",
+  "confidence": "high",
+  "reason": "Based on title and program headings"
+ },
+ "title:diversity, equity, inclusion & belonging services": {
+  "pick": "Professional services",
+  "confidence": "high",
+  "reason": "Based on title and program headings"
+ },
+ "title:angel armor - body armor and ballistic-resistant products (naspo)": {
+  "pick": "Safety and uniforms",
+  "confidence": "high",
+  "reason": "Based on title and program headings"
+ },
+ "title:armor express - body armor and ballistic resistant products (naspo)": {
+  "pick": "Safety and uniforms",
+  "confidence": "high",
+  "reason": "Based on title and program headings"
+ },
+ "title:ro/di water purification system maintenance": {
+  "pick": "Facilities and MRO",
+  "confidence": "medium",
+  "reason": "Based on title and program headings"
+ },
+ "title:orpin & optis software maintenance": {
+  "pick": "Software and services",
+  "confidence": "high",
+  "reason": "Based on title and program headings"
+ },
+ "title:oregon city pairs airfares": {
+  "pick": "Other",
+  "confidence": "high",
+  "reason": "Based on title and program headings"
+ },
+ "title:naspo orpa-electronic monitoring services & products": {
+  "pick": "Safety and uniforms",
+  "confidence": "medium",
+  "reason": "Based on title and program headings"
+ },
+ "title:landscaping services - das-owned properties": {
+  "pick": "Facilities and MRO",
+  "confidence": "medium",
+  "reason": "Based on title and program headings"
+ },
+ "title:fire sprinkler testing, maintenance, and repair services (price agreement)": {
+  "pick": "Facilities and MRO",
+  "confidence": "high",
+  "reason": "Based on title and program headings"
+ },
+ "title:sjoberg evanshenk audit services": {
+  "pick": "Professional services",
+  "confidence": "high",
+  "reason": "Based on title and program headings"
+ },
+ "title:merina + co audit services": {
+  "pick": "Professional services",
+  "confidence": "high",
+  "reason": "Based on title and program headings"
+ },
+ "title:kernutt stokes audit services": {
+  "pick": "Professional services",
+  "confidence": "high",
+  "reason": "Based on title and program headings"
+ },
+ "title:shi - naspo svar general and microsoft only categories": {
+  "pick": "Software and services",
+  "confidence": "high",
+  "reason": "Based on title and program headings"
+ },
+ "title:trade services price agreement - ordinary construction": {
+  "pick": "Facilities and MRO",
+  "confidence": "medium",
+  "reason": "Based on title and program headings"
+ },
+ "title:parking meters - duncan civic smart": {
+  "pick": "Public works materials",
+  "confidence": "medium",
+  "reason": "Based on title and program headings"
+ },
+ "title:charitable fund drive managing organization services": {
+  "pick": "Professional services",
+  "confidence": "medium",
+  "reason": "Based on title and program headings"
+ },
+ "title:appraisal services for the mahonia hall": {
+  "pick": "Professional services",
+  "confidence": "high",
+  "reason": "Based on title and program headings"
+ },
+ "title:statewide coaching services": {
+  "pick": "Professional services",
+  "confidence": "high",
+  "reason": "Based on title and program headings"
+ },
+ "title:yellow parking lot upgrades project": {
+  "pick": "Facilities and MRO",
+  "confidence": "medium",
+  "reason": "Based on title and program headings"
+ },
+ "title:structured (gigamon) hardware, software, training formerly dasps-1727-19": {
+  "pick": "IT hardware",
+  "confidence": "medium",
+  "reason": "Based on title and program headings"
+ },
+ "title:olcc warehouse/distribution facility": {
+  "pick": "Facilities and MRO",
+  "confidence": "medium",
+  "reason": "Based on title and program headings"
+ },
+ "title:facility electrical repair & maintenance services-service area 2": {
+  "pick": "Facilities and MRO",
+  "confidence": "high",
+  "reason": "Based on title and program headings"
+ },
+ "title:facility electrical repair & maintenance services-service area 1": {
+  "pick": "Facilities and MRO",
+  "confidence": "high",
+  "reason": "Based on title and program headings"
+ },
+ "title:naspo public safety vehicle lights, sirens & accessories": {
+  "pick": "Safety and uniforms",
+  "confidence": "medium",
+  "reason": "Based on title and program headings"
+ },
+ "title:motor pool hvac upgrade & re-roof project 306.015": {
+  "pick": "Facilities and MRO",
+  "confidence": "high",
+  "reason": "Based on title and program headings"
+ },
+ "title:human resources information system implementation services": {
+  "pick": "Software and services",
+  "confidence": "high",
+  "reason": "Based on title and program headings"
+ },
+ "title:interpreting services": {
+  "pick": "Professional services",
+  "confidence": "high",
+  "reason": "Based on title and program headings"
+ },
+ "title:rush direct appt surveying services ag bldge ti project 113.015": {
+  "pick": "Professional services",
+  "confidence": "high",
+  "reason": "Based on title and program headings"
+ },
+ "title:low voltage structured wiring, outside plant, coordination servi": {
+  "pick": "IT hardware",
+  "confidence": "medium",
+  "reason": "Based on title and program headings"
+ },
+ "title:data communications products": {
+  "pick": "IT hardware",
+  "confidence": "high",
+  "reason": "Based on title and program headings"
+ },
+ "title:1607 - data communications products": {
+  "pick": "IT hardware",
+  "confidence": "high",
+  "reason": "Based on title and program headings"
+ },
+ "title:1624 - data communications products": {
+  "pick": "IT hardware",
+  "confidence": "high",
+  "reason": "Based on title and program headings"
+ },
+ "title:information technology software management - service integration": {
+  "pick": "Software and services",
+  "confidence": "medium",
+  "reason": "Based on title and program headings"
+ },
+ "title:r16612 _ec council all pass club training": {
+  "pick": "Professional services",
+  "confidence": "high",
+  "reason": "Based on title and program headings"
+ },
+ "title:water treatment services - hot and cold systems": {
+  "pick": "Facilities and MRO",
+  "confidence": "medium",
+  "reason": "Based on title and program headings"
+ },
+ "title:cloud services": {
+  "pick": "Software and services",
+  "confidence": "high",
+  "reason": "Based on title and program headings"
+ },
+ "title:statewide food service products-type 1 grocery-produce and dairy (mandatory)": {
+  "pick": "Other",
+  "confidence": "high",
+  "reason": "Based on title and program headings"
+ },
+ "title:laboratory testing services": {
+  "pick": "Professional services",
+  "confidence": "medium",
+  "reason": "Based on title and program headings"
+ },
+ "title:it vendor managed service providers": {
+  "pick": "Software and services",
+  "confidence": "medium",
+  "reason": "Based on title and program headings"
+ },
+ "title:a&e direct award fountain renovation capital complex": {
+  "pick": "Professional services",
+  "confidence": "high",
+  "reason": "Based on title and program headings"
+ },
+ "title:public health lab upgrade - ane services": {
+  "pick": "Professional services",
+  "confidence": "high",
+  "reason": "Based on title and program headings"
+ },
+ "title:capitol mall parking structure - fountain(s) renovations project": {
+  "pick": "Facilities and MRO",
+  "confidence": "medium",
+  "reason": "Based on title and program headings"
+ },
+ "title:special inspection services for overhead doors upgrades": {
+  "pick": "Professional services",
+  "confidence": "medium",
+  "reason": "Based on title and program headings"
+ },
+ "title:orfwd/qrf janitorial / eam / deq phl / relay resources": {
+  "pick": "Janitorial",
+  "confidence": "high",
+  "reason": "Based on title and program headings"
+ },
+ "title:taser electronic control devices": {
+  "pick": "Safety and uniforms",
+  "confidence": "high",
+  "reason": "Based on title and program headings"
+ },
+ "title:custodial maintenance services pendleton state office buildings": {
+  "pick": "Janitorial",
+  "confidence": "high",
+  "reason": "Based on title and program headings"
+ },
+ "title:teksystems services for axios product": {
+  "pick": "Software and services",
+  "confidence": "medium",
+  "reason": "Based on title and program headings"
+ },
+ "title:naspo fire apparatus": {
+  "pick": "Fleet and parts",
+  "confidence": "high",
+  "reason": "Based on title and program headings"
+ },
+ "title:print plant building conference rooms hvac upgrades": {
+  "pick": "Facilities and MRO",
+  "confidence": "high",
+  "reason": "Based on title and program headings"
+ },
+ "title:archaeological services at the executive building - project 115.041": {
+  "pick": "Professional services",
+  "confidence": "high",
+  "reason": "Based on title and program headings"
+ },
+ "title:statewide seafood and meat products (mandatory)": {
+  "pick": "Other",
+  "confidence": "high",
+  "reason": "Based on title and program headings"
+ },
+ "title:statewide msa hazardous waste management services": {
+  "pick": "Facilities and MRO",
+  "confidence": "medium",
+  "reason": "Based on title and program headings"
+ },
+ "title:food service products:broadline-all categories (mandatory)": {
+  "pick": "Other",
+  "confidence": "high",
+  "reason": "Based on title and program headings"
+ },
+ "title:statewide food service products type 1 - bakery-fresh and frozen (mandatory)": {
+  "pick": "Other",
+  "confidence": "high",
+  "reason": "Based on title and program headings"
+ },
+ "title:small package delivery services, shipping, overnight, package": {
+  "pick": "Professional services",
+  "confidence": "medium",
+  "reason": "Based on title and program headings"
  }
 }

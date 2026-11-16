@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Suspense, useEffect, useState } from "react";
 import { SupplierPlans } from "@/components/SupplierPlans";
+import { ServiceListingEditor } from "@/components/ServiceListingEditor";
 import { useStore } from "@/components/store";
 import { Arrow, BadgeCheck, Globe, Lock, Search, Star } from "@/components/icons";
 import { Badge, Button, Card, ErrorNote, Eyebrow, IconCircle, LinkButton, Loading, RevenueTags, SourcePill, Stars, money } from "@/components/ui";
@@ -12,6 +13,7 @@ import { mayActAs } from "@/lib/suppliers";
 
 const TABS = [
   { id: "contracts", label: "Contracts" },
+  { id: "listing", label: "Service listing" },
   { id: "marketplaces", label: "City marketplaces" },
   { id: "insights", label: "Insights" },
   { id: "apps", label: "Apps" },
@@ -130,12 +132,12 @@ function Supplier() {
       {showEarn && <Journey tier={s.edge_tier} />}
       {showEarn && <Payoff />}
 
-      <div className="flex gap-1 border-b border-navy/10">
+      <div className="flex gap-1 overflow-x-auto border-b border-navy/10">
         {TABS.map((t) => (
           <button
             key={t.id}
             onClick={() => router.replace(`/supplier?tab=${t.id}`)}
-            className={`-mb-px border-b-2 px-4 py-2 text-sm font-semibold ${tab === t.id ? "border-maroon text-navy" : "border-transparent text-slate hover:text-navy"}`}
+            className={`-mb-px shrink-0 border-b-2 px-4 py-2 text-sm font-semibold ${tab === t.id ? "border-maroon text-navy" : "border-transparent text-slate hover:text-navy"}`}
           >
             {t.label}
             {t.id === "insights" && s.edge_tier !== "position" && <Lock className="ml-1 inline h-3.5 w-3.5 align-[-2px]" />}
@@ -144,6 +146,7 @@ function Supplier() {
       </div>
 
       {tab === "contracts" && <ContractsTab run={run} />}
+      {tab === "listing" && <ServiceListingEditor s={s} />}
       {tab === "marketplaces" && <MarketplacesTab run={run} />}
       {tab === "insights" && <InsightsTab run={run} />}
       {tab === "apps" && <AppsTab run={run} />}

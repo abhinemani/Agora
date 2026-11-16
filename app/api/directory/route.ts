@@ -1,13 +1,16 @@
 // The co-op directory, a few records at a time: ?q=plano&state=TX for the agency
-// typeahead, ?id=gov_tx_plano for one government. The full directory stays on the server.
+// typeahead, ?id=gov_tx_plano for one government, ?counties=TX for a state's counties. The full directory stays on the server.
 
 import { NextResponse } from "next/server";
-import { getGovernment, searchDirectory } from "@/lib/directory";
+import { getGovernment, searchDirectory, stateCounties } from "@/lib/directory";
 
 export const dynamic = "force-dynamic";
 
 export function GET(req: Request) {
   const url = new URL(req.url);
+  // ?counties=TX: a state's counties as the directory names them, for a supplier's service area.
+  const counties = url.searchParams.get("counties")?.toUpperCase();
+  if (counties) return NextResponse.json({ counties: /^[A-Z]{2}$/.test(counties) ? stateCounties(counties) : [] });
   const id = url.searchParams.get("id");
   if (id) {
     const government = getGovernment(id);

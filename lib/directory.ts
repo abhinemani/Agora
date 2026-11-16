@@ -145,3 +145,22 @@ export function searchDirectory(q: string, opts: { state?: string; limit?: numbe
     .slice(0, opts.limit ?? 8)
     .map((s) => toGovernment(s.r));
 }
+
+/** A state's counties, as the directory names them in its county field ("Tarrant", not "Tarrant County"), from its county governments. */
+export function stateCounties(state: string): string[] {
+  const g2 = globalThis as unknown as { __agoraCounties?: Map<string, string[]> };
+  const cache = (g2.__agoraCounties ??= new Map());
+  if (cache.has(state)) return cache.get(state)!;
+  const out = new Set<string>();
+  for (const r of load().rows) if (r.s === state && r.t === "county" && r.k && !r.k.includes("/")) out.add(r.k);
+  const list = [...out].sort();
+  cache.set(state, list);
+  return list;
+}
+
+/** The directory record a supplier means by a government's name, within a state: an exact name or alias match only, so a
+ * near miss is reported as unmatched rather than guessed. */
+export function matchGovernment(name: string, state: string): DirectoryGovernment | null {
+  const r = load().byKey.get(`${state}|${entityKey(name)}`);
+  return r ? toGovernment(r) : null;
+}

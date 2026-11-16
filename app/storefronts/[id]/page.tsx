@@ -7,6 +7,7 @@ import { CategoryIcon } from "@/components/CategoryIcon";
 import { Check, File, Globe, Lock, Search } from "@/components/icons";
 import { useStore } from "@/components/store";
 import { ClaimStorefront } from "@/components/ClaimStorefront";
+import { ServiceListingView } from "@/components/ServiceListing";
 import { CatalogStorefrontPage, CoopRoutes } from "@/components/CoopRoutes";
 import { VerificationList } from "@/components/Verification";
 import { verificationSummary } from "@/lib/verification";
@@ -85,7 +86,7 @@ export default function SupplierStorefront() {
               </span>
               <div className="mt-3 flex items-center gap-2 text-[11px] font-extrabold uppercase text-maroon/80">
                 Storefront
-                {profile && <span className="rounded bg-success-lighter px-1.5 py-0.5 text-[10px] tracking-normal text-success-darker normal-case">Featured</span>}
+                {profile && (s.edge_tier === "position" || (s.plan ?? "basic") !== "basic") && <span className="rounded bg-success-lighter px-1.5 py-0.5 text-[10px] tracking-normal text-success-darker normal-case">Featured</span>}
               </div>
               <h1 className="mt-1 text-[2.1rem] font-extrabold leading-tight text-navy">{s.name}</h1>
               {profile && <p className="mt-1 text-[15px] text-slate">{profile.tagline}</p>}
@@ -106,7 +107,7 @@ export default function SupplierStorefront() {
             </div>
             <dl className="grid grid-cols-3 gap-6 text-center">
               {[
-                [products.length.toLocaleString(), "products"],
+                !products.length && s.services?.length ? [s.services.length, s.services.length === 1 ? "service" : "services"] : [products.length.toLocaleString(), "products"],
                 [contracts.length, contracts.length === 1 ? "contract" : "contracts"],
                 open === null ? [lines.length, lines.length === 1 ? "product line" : "product lines"] : [open, `open to ${buyer!.name.replace(/^(City|Town|Township) of /, "")}`],
               ].map(([n, label]) => (
@@ -124,15 +125,15 @@ export default function SupplierStorefront() {
       </div>
 
       {profile && (
-        <section className="grid gap-8 lg:grid-cols-[1fr_1.4fr]">
+        <section className={lines.length ? "grid gap-8 lg:grid-cols-[1fr_1.4fr]" : "max-w-2xl"}>
           <div>
             <h2 className="text-xl font-extrabold tracking-tight text-navy">About</h2>
             <p className="mt-2 text-[15px] leading-relaxed text-slate">{profile.about}</p>
-            <a href="#ways-to-buy" className="mt-4 inline-flex rounded-lg bg-maroon px-4 py-2.5 text-sm font-bold text-white hover:bg-maroon-600">
-              See ways to buy
+            <a href={!lines.length && s.services?.length ? "#services" : "#ways-to-buy"} className="mt-4 inline-flex rounded-lg bg-maroon px-4 py-2.5 text-sm font-bold text-white hover:bg-maroon-600">
+              {!lines.length && s.services?.length ? "See services" : "See ways to buy"}
             </a>
           </div>
-          <div>
+          <div className={lines.length ? "" : "hidden"}>
             <h2 className="text-xl font-extrabold tracking-tight text-navy">Product lines</h2>
             <div className="mt-3 grid grid-cols-2 gap-2 sm:grid-cols-3">
               {lines.map((n) => {
@@ -159,6 +160,8 @@ export default function SupplierStorefront() {
           </div>
         </section>
       )}
+
+      <ServiceListingView s={s} />
 
       {featured.length > 0 && (
         <section>

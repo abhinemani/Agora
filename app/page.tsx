@@ -125,7 +125,12 @@ export default function Home() {
         <BlueprintBackdrop contracts={contractCount} suppliers={suppliers} products={products} vehicles={programs} priceRange={priceRange} />
         <div className="relative mx-auto max-w-3xl">
           <div className="text-ui-2xs font-bold text-[#A8CBF2]">Government buying, simplified</div>
-          <h1 className="mx-auto mt-5 max-w-3xl font-heading text-[clamp(2rem,4.4vw,3.4rem)] font-bold leading-[1.12] text-[#fff]">What are you looking to buy?</h1>
+          <h1 className="mx-auto mt-5 max-w-3xl font-heading text-[clamp(2rem,4.4vw,3.4rem)] font-bold leading-[1.12] text-[#fff]">
+            Procure faster
+            <span className="mt-3 block text-[clamp(1.25rem,2.4vw,1.85rem)] font-normal leading-snug text-[#D3E3F6]">
+              <em className="text-[#fff]">Pre-approved</em> contracts and products, <em className="text-[#fff]">verified for your jurisdiction</em>
+            </span>
+          </h1>
           <p className="mx-auto mt-4 max-w-xl text-base leading-relaxed text-[#D3E3F6]">
             Describe it in your own words. Agora asks a few questions, then shows what your agency can buy on state and cooperative contracts, and how to buy it.
           </p>

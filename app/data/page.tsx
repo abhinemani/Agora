@@ -1,4 +1,4 @@
-// Co-op data: what the public cooperative purchasing workbook holds, how Loci
+// Co-op data: what the public cooperative purchasing workbook holds, how Agora
 // uses it, what to be careful about and what's still missing. Every number here
 // comes from seed/coops/insights.json, written by scripts/import-coop-data.ts.
 
@@ -17,8 +17,8 @@ import catalogReconcile from "@/seed/catalog/reconcile.json";
 import reviewSummary from "@/seed/cleanup/decisions/summary.json";
 
 export const metadata: Metadata = {
-  title: "Co-op data · Loci",
-  description: "How Loci uses published co-op rosters, agency procurement pages, Texas DIR sales and the .gov registry to tell every agency which co-ops it's on.",
+  title: "Co-op data · Agora",
+  description: "How Agora uses published co-op rosters, agency procurement pages, Texas DIR sales and the .gov registry to tell every agency which co-ops it's on.",
 };
 
 const n = (x: number) => x.toLocaleString("en-US");
@@ -109,7 +109,7 @@ const NEEDS = [
   },
   {
     title: "The missing rosters",
-    body: "TIPS, OMNIA Partners, Equalis, Choice Partners, NPPGov and Keystone don't publish full member lists. TIPS and OMNIA are the big gaps, especially in Texas. This is the first ask of each co-op partnership: share the member list, with websites, and Loci shows you the traffic it sends.",
+    body: "TIPS, OMNIA Partners, Equalis, Choice Partners, NPPGov and Keystone don't publish full member lists. TIPS and OMNIA are the big gaps, especially in Texas. This is the first ask of each co-op partnership: share the member list, with websites, and Agora shows you the traffic it sends.",
     status: "Partnerships",
   },
   {
@@ -129,7 +129,7 @@ const NEEDS = [
   },
   {
     title: "A refresh schedule",
-    body: `Everything here is a ${date(insights.retrieved)} snapshot, and rosters change. Loci shows each roster's retrieval date. A monthly re-pull through this importer would keep it honest.`,
+    body: `Everything here is a ${date(insights.retrieved)} snapshot, and rosters change. Agora shows each roster's retrieval date. A monthly re-pull through this importer would keep it honest.`,
     status: "Process",
   },
 ];
@@ -181,12 +181,12 @@ export default function CoopDataPage() {
         <h1 className="font-heading text-heading-xl font-bold text-ink">Co-op data</h1>
         <div className="mt-3 max-w-[68ex] space-y-3 text-body-md text-base-darker">
           <p>
-            The promise behind Loci&apos;s co-op section is simple: when someone in Crested Butte looks for a laptop, they should see the co-ops their town is on and the ones it
+            The promise behind Agora&apos;s co-op section is simple: when someone in Crested Butte looks for a laptop, they should see the co-ops their town is on and the ones it
             isn&apos;t. Keeping that promise takes knowing every agency&apos;s memberships without asking its staff.
           </p>
           <p>
             This page explains the data that makes that work. It covers a workbook of {n(insights.workbook.roster_rows)} published co-op membership listings collected on{" "}
-            {date(insights.retrieved)}, how Loci joins them to the Census of Governments and the federal school and college registries to build a directory of {n(d.governments)}{" "}
+            {date(insights.retrieved)}, how Agora joins them to the Census of Governments and the federal school and college registries to build a directory of {n(d.governments)}{" "}
             governments with permanent IDs, what that unlocks in the product, where to be careful and what we still need.
           </p>
         </div>
@@ -194,7 +194,7 @@ export default function CoopDataPage() {
           {[
             ["#what", "What we have"],
             ["#ids", "Permanent IDs"],
-            ["#uses", "How Loci uses it"],
+            ["#uses", "How Agora uses it"],
             ["#lookup", "Look up an agency"],
             ["#evidence", "How we know"],
             ["#catalog", "Co-op catalog"],
@@ -238,7 +238,7 @@ export default function CoopDataPage() {
             </p>
             <p>
               Its best quality is discipline. Every tab keeps &quot;listed on a roster&quot; apart from &quot;says it uses a co-op&quot; and &quot;actually bought something.&quot;
-              Loci keeps those apart too. One spot check held up:{" "}
+              Agora keeps those apart too. One spot check held up:{" "}
               {idCheck ? (
                 <>
                   {idCheck.agency}, {idCheck.state} publishes Sourcewell member ID {idCheck.published}, and the roster lists the same ID.
@@ -268,7 +268,7 @@ export default function CoopDataPage() {
           <>
             <p>
               Names are a weak way to join data. &quot;Plano ISD&quot; and &quot;Plano Independent School District&quot; are one district, while New York&apos;s Town of
-              DeRuyter and Village of DeRuyter are two governments. So Loci now joins every record to three federal registries that give each government a permanent ID. The
+              DeRuyter and Village of DeRuyter are two governments. So Agora now joins every record to three federal registries that give each government a permanent ID. The
               Census Bureau&apos;s Government Units List covers counties, municipalities, townships, special districts and school districts. NCES numbers every public school
               district, and IPEDS every college.
             </p>
@@ -351,10 +351,10 @@ export default function CoopDataPage() {
 
       <Section
         id="uses"
-        title="How Loci uses it"
+        title="How Agora uses it"
         intro={
           <p>
-            The data now powers five things in the prototype. The first two are what an agency feels: it doesn&apos;t have to tell Loci its co-ops. The rest are for Sovra:
+            The data now powers five things in the prototype. The first two are what an agency feels: it doesn&apos;t have to tell Agora its co-ops. The rest are for Sovra:
             truer eligibility, and a sharper view of who to sell to.
           </p>
         }
@@ -367,7 +367,7 @@ export default function CoopDataPage() {
                 <>
                   Setting an agency looks it up in the directory and brings in every co-op it&apos;s on, so results split into &quot;Co-ops you&apos;re on&quot; and &quot;Co-ops you
                   could join&quot; from day one. The Town of Crested Butte now shows Sourcewell from Sourcewell&apos;s own roster, with its real member number, instead of a demo
-                  list. Loci tracks {SEED_COOPS.length - 1} co-ops in all, up from three.
+                  list. Agora tracks {SEED_COOPS.length - 1} co-ops in all, up from three.
                 </>
               ),
               href: "/",
@@ -400,7 +400,7 @@ export default function CoopDataPage() {
               title: "Truer NASPO eligibility",
               body: (
                 <>
-                  {n(insights.naspo.parks_awards)} NASPO ValuePoint Parks and Recreation awards are now in Loci as quote-only contracts, with their {n(insights.naspo.parks_states)}{" "}
+                  {n(insights.naspo.parks_awards)} NASPO ValuePoint Parks and Recreation awards are now in Agora as quote-only contracts, with their {n(insights.naspo.parks_states)}{" "}
                   participating states and a link to each addendum. Local governments that signed their own addendum (
                   {insights.naspo.adopters.map((a) => `${a.name}, ${a.state}`).join("; ")}) can now use those awards even where their state hasn&apos;t signed.
                 </>
@@ -455,7 +455,7 @@ export default function CoopDataPage() {
         intro={
           <>
             <p>
-              A membership is only as good as its source. Loci ranks the evidence behind each one from weakest to strongest and shows the strongest it has. When purchasing
+              A membership is only as good as its source. Agora ranks the evidence behind each one from weakest to strongest and shows the strongest it has. When purchasing
               confirms a membership by hand, that overrides all three.
             </p>
             <p>
@@ -520,14 +520,14 @@ export default function CoopDataPage() {
               {n(catalogInsights.source_counts.documents)} links to price documents.
             </p>
             <p>
-              Loci uses it in four places. Search adds the best-fitting catalog contracts to the co-op section, split by the agency&apos;s memberships. GSA&apos;s{" "}
+              Agora uses it in four places. Search adds the best-fitting catalog contracts to the co-op section, split by the agency&apos;s memberships. GSA&apos;s{" "}
               {n(catalogInsights.cleanup.gsa_stashed)} schedule contracts are stashed, not served: they brought no products and crowded search, and they can be brought back
               (seed/stash/gsa/ explains how).
               Product search shows catalog items with every contract that sells them. Every supplier on a co-op contract gets a storefront ready to claim. And the price-list
-              queue sends the linked documents through Loci&apos;s contract reader. Nothing in the catalog is buyable in Loci: orders happen on the co-op&apos;s site.
+              queue sends the linked documents through Agora&apos;s contract reader. Nothing in the catalog is buyable in Agora: orders happen on the co-op&apos;s site.
             </p>
             <p>
-              The capture listed suppliers by exact name, so &quot;CDW-G&quot; and &quot;CDWG&quot; were two companies. Loci merges records whose names match once legal
+              The capture listed suppliers by exact name, so &quot;CDW-G&quot; and &quot;CDWG&quot; were two companies. Agora merges records whose names match once legal
               suffixes are dropped, or that share a website: {n(catalogInsights.suppliers.records)} records (NJSTART&apos;s vendors included) became {n(catalogInsights.suppliers.companies)} companies, and{" "}
               {n(catalogInsights.suppliers.on_two_or_more_coops)} of them hold contracts on two or more co-ops.
             </p>
@@ -552,16 +552,16 @@ export default function CoopDataPage() {
         />
         <p className="mt-2 text-ui-xs text-base-dark">
           &quot;Own page&quot; is the share of contracts with a link to that contract on the co-op&apos;s site. TIPS, BuyBoard and 1GPA link every contract to one directory
-          page, so Loci sends buyers there with the contract number to look up. Contracts without an end date can&apos;t be hidden when they expire, so their cards say the
+          page, so Agora sends buyers there with the contract number to look up. Contracts without an end date can&apos;t be hidden when they expire, so their cards say the
           date isn&apos;t published.
         </p>
 
-        <h3 className="mt-8 text-ui-md font-bold text-ink">What the catalog corrected in Loci</h3>
+        <h3 className="mt-8 text-ui-md font-bold text-ink">What the catalog corrected in Agora</h3>
         <p className="mt-1 max-w-[72ex] text-body-sm text-base-darker">
-          {n(catalogInsights.reconcile.confirmed)} of Loci&apos;s seeded co-op contracts turned up in the catalog. Where the co-op&apos;s own directory filled a gap, Loci
+          {n(catalogInsights.reconcile.confirmed)} of Agora&apos;s seeded co-op contracts turned up in the catalog. Where the co-op&apos;s own directory filled a gap, Agora
           applied it: {n(catalogInsights.reconcile.applied)} fixes, including end dates for the Sourcewell technology contracts, NASPO&apos;s participating states for the
-          computer awards, and Dell&apos;s NASPO number, which is 23004 in NASPO&apos;s index, not the 23026 on Dell&apos;s posted document. Where the two disagree and Loci
-          read NASPO directly, Loci keeps its own and flags the difference ({n(catalogInsights.reconcile.flagged)}).
+          computer awards, and Dell&apos;s NASPO number, which is 23004 in NASPO&apos;s index, not the 23026 on Dell&apos;s posted document. Where the two disagree and Agora
+          read NASPO directly, Agora keeps its own and flags the difference ({n(catalogInsights.reconcile.flagged)}).
         </p>
         <div className="mt-3">
           <Table
@@ -580,10 +580,10 @@ export default function CoopDataPage() {
 
         <h3 className="mt-8 text-ui-md font-bold text-ink">Products and prices</h3>
         <p className="mt-1 max-w-[72ex] text-body-sm text-base-darker">
-          Loci serves {n(catalogInsights.products.products)} products in {n(catalogInsights.products.offerings)} offerings, each with a price or a labelled list price.
-          Another {n(catalogInsights.stash.products)} are stashed, not served, because they could not show what Loci is for: they have no price, they are a rate
+          Agora serves {n(catalogInsights.products.products)} products in {n(catalogInsights.products.offerings)} offerings, each with a price or a labelled list price.
+          Another {n(catalogInsights.stash.products)} are stashed, not served, because they could not show what Agora is for: they have no price, they are a rate
           and not a product, or they are a component of something else. Their rows stay in the source files (seed/stash/products/ explains the rule and how to bring
-          them back), and their contracts still appear in search. {n(catalogInsights.products.multi_route)} products are sold on two or more contracts. Loci shows a
+          them back), and their contracts still appear in search. {n(catalogInsights.products.multi_route)} products are sold on two or more contracts. Agora shows a
           list price as a list price and a blank price as unknown, never as a price.
         </p>
         <ul className="mt-3 max-w-[72ex] list-disc pl-5 text-body-sm text-base-darker">
@@ -610,12 +610,12 @@ export default function CoopDataPage() {
             <p>
               NJSTART is New Jersey&apos;s purchasing system, and its state contracts are the TRX program Sovra supports. A New Jersey town, county or school district can buy
               on any state contract the state opens to its Cooperative Purchasing Program. The state has already bid it, so the local unit doesn&apos;t advertise for bids of
-              its own, and it carries the lowest fee of any shared contract. That makes it the route Loci prefers: for a New Jersey buyer, matching NJSTART contracts sit
+              its own, and it carries the lowest fee of any shared contract. That makes it the route Agora prefers: for a New Jersey buyer, matching NJSTART contracts sit
               above every co-op in results, and NJSTART prices come first on each product.
             </p>
             <p>
-              Loci holds all {n(nj.contracts)} active NJSTART contracts, read from the state&apos;s public list on {date(nj.retrieved)}. The state flags{" "}
-              {n(nj.open_to_locals)} of them &quot;NJ Cooperative Purchasing&quot;, open to local governments; the other {n(nj.state_only)} are for state agencies, so Loci
+              Agora holds all {n(nj.contracts)} active NJSTART contracts, read from the state&apos;s public list on {date(nj.retrieved)}. The state flags{" "}
+              {n(nj.open_to_locals)} of them &quot;NJ Cooperative Purchasing&quot;, open to local governments; the other {n(nj.state_only)} are for state agencies, so Agora
               shows them only to a state agency. They come from {n(nj.suppliers)} vendors, {n(nj.suppliers_shared_with_coops)} of whom also hold co-op contracts and now
               show both on one storefront. NJSTART reports {usd(nj.spent_to_date)} spent on them to date.
             </p>
@@ -642,7 +642,7 @@ export default function CoopDataPage() {
         <p className="mt-2 max-w-[72ex] text-ui-xs text-base-dark">
           How the preference works: an NJSTART contract leads when it fits within {TRX_MARGIN} points of the best co-op contract, so a far closer co-op fit still wins. Line
           items are those on each contract&apos;s first summary page; contracts with more pages say so on their own page. The {n(nj.documents)} attached documents (price
-          sheets, terms, methods of operation) are being read into Loci&apos;s document store on the server, so search and contract questions reach their text, and each contract&apos;s summary page is held as text. Hawaii, Arkansas, New York and Oregon are loaded too (below).
+          sheets, terms, methods of operation) are being read into Agora&apos;s document store on the server, so search and contract questions reach their text, and each contract&apos;s summary page is held as text. Hawaii, Arkansas, New York and Oregon are loaded too (below).
         </p>
         <p className="mt-2 max-w-[72ex] text-ui-xs text-base-dark">
           Item prices from price sheets: Claude read {n(catalogInsights.cleanup.doc_price_rows)} rows from NJSTART&apos;s and OregonBuys&apos; price sheets, each
@@ -664,7 +664,7 @@ export default function CoopDataPage() {
             <p>
               Hawaii is a TRX state too. Its State Procurement Office publishes {n(hi.directory_entries)} price & vendor list documents: the state&apos;s own awards (paper,
               office supplies, envelopes, fuel, car rental, security guards) and its participating addenda to NASPO ValuePoint, Sourcewell and MMCAP contracts. Each list names
-              its participating jurisdictions, and a county may buy on it only if it is named. Loci holds {n(hi.contracts)} supplier contracts from {n(hi.families)} lists,
+              its participating jurisdictions, and a county may buy on it only if it is named. Agora holds {n(hi.contracts)} supplier contracts from {n(hi.families)} lists,
               read {date(hi.retrieved)}; {n(hi.open_to_counties)} name at least one county, and {n(hi.state_only)} are for state bodies only. For a Hawaii buyer they lead
               results, as NJSTART does in New Jersey.
             </p>
@@ -710,7 +710,7 @@ export default function CoopDataPage() {
             <p>
               New York is the fourth TRX state loaded. OGS&apos;s monthly master report (dated {date(ny.master_report_date)}) lists {n(ny.contracts)} statewide supplier
               contracts under {n(ny.awards)} awards, from {n(ny.suppliers)} suppliers, {n(ny.suppliers_shared_with_coops)} of whom also hold co-op contracts. Each award&apos;s
-              page says who may use it, and Loci quotes that wording on every contract: {n(ny.open_to_locals)} contracts are on awards open to political subdivisions or
+              page says who may use it, and Agora quotes that wording on every contract: {n(ny.open_to_locals)} contracts are on awards open to political subdivisions or
               non-state agencies, and {n(ny.state_only)} are on awards for state agencies only (envelopes, legislative printing, two DOT projects, Albany-area agencies).{" "}
               {n(ny.use_unstated)} contracts sit on awards whose page doesn&apos;t say, and are treated as open, as OGS contracts generally are to authorized users.
             </p>
@@ -723,7 +723,7 @@ export default function CoopDataPage() {
             </p>
             <p>
               New York&apos;s preferred sources come before any contract. Under State Finance Law § 162, public buyers take the items the OGS list approves from Corcraft,
-              NYSID or NIBNY first, when an item meets the need. The September 2026 list&apos;s {n(ny.preferred.offerings)} offering-and-provider pairs are in Loci as{" "}
+              NYSID or NIBNY first, when an item meets the need. The September 2026 list&apos;s {n(ny.preferred.offerings)} offering-and-provider pairs are in Agora as{" "}
               {n(ny.preferred.contracts)} preferred-source records, with each approval category kept: approved items lead New York results, items approved for one agency
               are marked optional for others, and the 12 the list marks not approved never lead. The list publishes no prices, but Corcraft&apos;s Price &amp;
               Specification Guide does: {n(ny.preferred.corcraft_prices)} dock-delivered prices, read by review agents and each checked on its printed line, of which{" "}
@@ -741,7 +741,7 @@ export default function CoopDataPage() {
           <>
             <p>
               Empire Procure Connect is a TRX program that isn&apos;t a state. New York counties (today Chemung, Rockland and Ulster) bid contracts on its portal, run with
-              the Empire State Cooperative Procurement Alliance, and mark each one open to other governments or kept for their own use. Loci holds all {n(epc.contracts)}{" "}
+              the Empire State Cooperative Procurement Alliance, and mark each one open to other governments or kept for their own use. Agora holds all {n(epc.contracts)}{" "}
               active portal records, read {date(epc.retrieved)}, from {n(epc.suppliers)} suppliers ({n(epc.suppliers_shared_with_coops)} also hold co-op contracts):{" "}
               {n(epc.open)} are open to cooperative purchasing and {n(epc.county_only)} are a county&apos;s own, shown only to that county. {n(epc.on_list)} are on EPC&apos;s
               published marketplace list for {epc.list_period}, which gives each one&apos;s available regions; {n(epc.region_limited)} are limited to named regions, and their
@@ -764,7 +764,7 @@ export default function CoopDataPage() {
           <>
             <p>
               Oregon is the fifth TRX state loaded. The Department of Administrative Services&apos; Procurement Services runs statewide price agreements on OregonBuys, and
-              members of OrCPP, the Oregon Cooperative Procurement Program, may buy from the ones whose page allows cooperative purchasing. Loci read all {n(or.listed)} of
+              members of OrCPP, the Oregon Cooperative Procurement Program, may buy from the ones whose page allows cooperative purchasing. Agora read all {n(or.listed)} of
               Procurement Services&apos; active blankets on {date(or.retrieved)}, one public page each. {n(or.intergovernmental)} are agreements under ORS chapter 190 (among them{" "}
               {n(or.orcpp_membership_agreements)} OrCPP membership agreements) and are left out, since nobody buys from them. That leaves {n(or.contracts)} price agreements
               from {n(or.suppliers)} suppliers, {n(or.suppliers_shared_with_coops)} of whom also hold co-op contracts: {n(or.open_to_locals)} are open to OrCPP members and{" "}
@@ -772,7 +772,7 @@ export default function CoopDataPage() {
               which Oregon leads, so they also appear under NASPO ValuePoint for other states; {n(or.mmcap)} come from MMCAP and {n(or.oregon_forward)} from Oregon Forward.
             </p>
             <p>
-              DAS publishes its OrCPP member list ({n(or.orcpp_members)} public bodies), and Loci checks an Oregon buyer against it by name. A buyer the list doesn&apos;t
+              DAS publishes its OrCPP member list ({n(or.orcpp_members)} public bodies), and Agora checks an Oregon buyer against it by name. A buyer the list doesn&apos;t
               name is told joining is free rather than turned away, since names don&apos;t always match. Every agreement prints NIGP codes, kept as published. OregonBuys
               pages list $0 placeholder items, so no prices come from them; prices are in the {n(or.attachments)} attached price sheets, amendments and agreements, which
               the document store reads.
@@ -787,7 +787,7 @@ export default function CoopDataPage() {
         intro={
           <>
             <p>
-              Purchasing offices file what they buy under NIGP commodity codes, so Loci tags contracts with them too. {n(catalogInsights.nigp.published + catalogInsights.nigp.reviewed)} of{" "}
+              Purchasing offices file what they buy under NIGP commodity codes, so Agora tags contracts with them too. {n(catalogInsights.nigp.published + catalogInsights.nigp.reviewed)} of{" "}
               {n(catalogInsights.nigp.contracts)} contracts carry at least one. NJSTART prints codes on its line items, so its {n(catalogInsights.nigp.published)} coded contracts
               and {n(catalogInsights.nigp.priced_offerings_coded)} prices carry the state&apos;s own codes. No co-op publishes codes, so the other{" "}
               {n(catalogInsights.nigp.reviewed)} took classes from the AI review: each co-op contract title was offered the {n(nj.nigp_classes)} classes NJSTART&apos;s
@@ -795,7 +795,7 @@ export default function CoopDataPage() {
               which codes were printed and which were reviewed.
             </p>
             <p>
-              Loci holds no licensed NIGP codebook, so it can name only the {n(nj.nigp_codes)} codes those public records use. Contracts whose goods fall outside those
+              Agora holds no licensed NIGP codebook, so it can name only the {n(nj.nigp_codes)} codes those public records use. Contracts whose goods fall outside those
               classes stay uncoded rather than forced into a near miss. Search the contract explorer by a code or class, such as{" "}
               <Link href="/contracts?q=765" className="text-primary">
                 765
@@ -853,7 +853,7 @@ export default function CoopDataPage() {
         intro={
           <>
             <p>
-              Whether a city or school district may buy off a national co-op contract is a question of state law, and no two states answer it on the same terms. Loci&apos;s
+              Whether a city or school district may buy off a national co-op contract is a question of state law, and no two states answer it on the same terms. Agora&apos;s
               50-state research (November 13, 2026) records, for each state, the authority for local governments and for school districts, any state-approved list, the
               conditions (board action, what the lead contract must be), what&apos;s excluded, and the purchasing thresholds.
             </p>
@@ -900,13 +900,13 @@ export default function CoopDataPage() {
       <Section
         id="cautions"
         title="Cautions"
-        intro={<p>The data is strong, but it&apos;s public-source data, and a few limits shape how Loci talks about it.</p>}
+        intro={<p>The data is strong, but it&apos;s public-source data, and a few limits shape how Agora talks about it.</p>}
       >
         <div className="space-y-4">
           {[
             {
               title: "Membership isn't eligibility, and a missing row isn't proof",
-              body: "A roster listing means an agency registered, not that every contract is open to it or that it buys. An agency missing from these sources may still be a member, especially of co-ops that don't publish rosters. So Loci says \"none found on the rosters Loci holds,\" never \"you're not a member.\"",
+              body: "A roster listing means an agency registered, not that every contract is open to it or that it buys. An agency missing from these sources may still be a member, especially of co-ops that don't publish rosters. So Agora says \"none found on the rosters Agora holds,\" never \"you're not a member.\"",
             },
             {
               title: "Some public status is inferred",
@@ -923,11 +923,11 @@ export default function CoopDataPage() {
             },
             {
               title: "NASPO addendum lists disagree",
-              body: `For ${n(insights.naspo.citizen_addendum_diffs.length)} Citizen Engagement awards, Loci's seed (read straight from naspovaluepoint.org on November 9) lists states the workbook doesn't. Loci keeps NASPO's own data and flags the gap here: ${insights.naspo.citizen_addendum_diffs.map((x) => `${x.master_agreement} ${x.only_in_agora.join(", ")}`).join("; ")}.`,
+              body: `For ${n(insights.naspo.citizen_addendum_diffs.length)} Citizen Engagement awards, Agora's seed (read straight from naspovaluepoint.org on November 9) lists states the workbook doesn't. Agora keeps NASPO's own data and flags the gap here: ${insights.naspo.citizen_addendum_diffs.map((x) => `${x.master_agreement} ${x.only_in_agora.join(", ")}`).join("; ")}.`,
             },
             {
               title: "Check terms before showing rosters publicly",
-              body: "The rosters are published, but each co-op has its own terms of use. Loci uses them to detect an agency's own memberships rather than republishing lists, and the partnership conversation is the place to agree on more.",
+              body: "The rosters are published, but each co-op has its own terms of use. Agora uses them to detect an agency's own memberships rather than republishing lists, and the partnership conversation is the place to agree on more.",
             },
           ].map((c) => (
             <Card key={c.title} className="p-5">
@@ -985,7 +985,7 @@ export default function CoopDataPage() {
               for a few records at a time.
             </p>
             <p>
-              The .gov registry matched {n(d.dotgov_matched)} governments already on a roster and added {n(d.dotgov_added)} more that aren&apos;t on any. Those are agencies Loci
+              The .gov registry matched {n(d.dotgov_matched)} governments already on a roster and added {n(d.dotgov_added)} more that aren&apos;t on any. Those are agencies Agora
               can now recognize and show &quot;Co-ops you could join.&quot; The workbook&apos;s own coverage notes follow.
             </p>
           </>

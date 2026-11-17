@@ -1,6 +1,6 @@
 // A co-op's member list: one government per row, uploaded by Sovra ops as CSV
 // or XLSX. Columns are found by their usual names. A website, or failing that
-// an email address, gives the domain Loci matches on; a state lets a row
+// an email address, gives the domain Agora matches on; a state lets a row
 // without either still match by name.
 
 import { normalizeDomain } from "./coops";

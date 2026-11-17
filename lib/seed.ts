@@ -1,4 +1,4 @@
-// Seed data for Loci and the City of Riverbend's city marketplace. IDs are stable so the demo
+// Seed data for Agora and the City of Riverbend's city marketplace. IDs are stable so the demo
 // script in section 8 of the spec is repeatable after every reset.
 
 import { SEED_COOPS, coopIdForVehicle } from "./coops";
@@ -609,10 +609,10 @@ function addTylerCatalog(db: Db) {
     profile: {
       tagline: "Software for courts, public safety, payments, records and open data",
       about:
-        "Tyler Technologies sells software and services to state and local governments. Its Loci storefront carries the 100 products a city, county or school district is most likely to buy from its NASPO ValuePoint price list, from resident engagement and online payments to dispatch, jury management, permitting and open data.",
+        "Tyler Technologies sells software and services to state and local governments. Its Agora storefront carries the 100 products a city, county or school district is most likely to buy from its NASPO ValuePoint price list, from resident engagement and online payments to dispatch, jury management, permitting and open data.",
       featured_families: [],
       disclaimer:
-        "Example storefront. Built by Loci from Tyler's public NASPO ValuePoint and NJSTART price files; not written or endorsed by Tyler Technologies.",
+        "Example storefront. Built by Agora from Tyler's public NASPO ValuePoint and NJSTART price files; not written or endorsed by Tyler Technologies.",
     },
   });
   const ar3764 = naspoCitizenEngagement.awards.find((a) => a.master_agreement === "AR3764")!;
@@ -938,7 +938,7 @@ function addNaspoCitizenEngagement(db: Db) {
       covers_supplier_catalog: true,
       source_url: a.naspo_url,
       relation_note: a.documents.price_files.length
-        ? "NASPO ValuePoint publishes a price file for this award; it isn't loaded into Loci yet, so the supplier quotes."
+        ? "NASPO ValuePoint publishes a price file for this award; it isn't loaded into Agora yet, so the supplier quotes."
         : "No price file is posted for this award; the supplier quotes.",
       eligibility: {
         states: a.pa_states,
@@ -982,7 +982,7 @@ function applyCatalogCorrections(db: Db) {
     } else if (fix.field === "contract_number") {
       const was = c.contract_number;
       c.contract_number = fix.catalog;
-      c.relation_note = `${fix.note} Loci had ${was}, from the supplier's own posted document.${c.relation_note ? ` ${c.relation_note}` : ""}`;
+      c.relation_note = `${fix.note} Agora had ${was}, from the supplier's own posted document.${c.relation_note ? ` ${c.relation_note}` : ""}`;
     }
   }
 }
@@ -1202,7 +1202,7 @@ function seedOrderHistory(db: Db) {
 }
 
 /** A fictional Metroplex window-cleaning company with a service listing: services by quote, a service area, past public work and
- * a certification it claims. The company is invented; the governments its past work names are real records in Loci's directory,
+ * a certification it claims. The company is invented; the governments its past work names are real records in Agora's directory,
  * matched the same way a supplier's own entries are (one names a government that doesn't exist, to show an unmatched entry). Its
  * certification starts self-reported: a live check finds no such company on the Comptroller's list, as it should. */
 function addServiceListingDemo(db: Db) {
@@ -1238,7 +1238,7 @@ function addServiceListingDemo(db: Db) {
     profile: {
       tagline: "Commercial window cleaning across the Metroplex",
       about: "A fictional demo company: commercial and public-building window cleaning, high-rise rope access and exterior pressure washing for cities, counties and school districts in the Dallas–Fort Worth area.",
-      disclaimer: "Demo supplier. The company is fictional; its past work and certification are illustrations. The governments named are real records in Loci's directory, matched as a supplier's own entries would be.",
+      disclaimer: "Demo supplier. The company is fictional; its past work and certification are illustrations. The governments named are real records in Agora's directory, matched as a supplier's own entries would be.",
     },
     services: [
       { id: "svc_demo_windows", name: "Commercial window cleaning", detail: "Interior and exterior glass for offices, libraries, recreation centers and schools, on a schedule or one visit.", aliases: ["window washing", "glass cleaning"], price: null },

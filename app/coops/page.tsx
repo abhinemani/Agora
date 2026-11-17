@@ -23,7 +23,7 @@ const STATUS = { none: "No member list yet", partial: "Partial member list", ful
 const SOURCE = { "co-op": "uploaded from the co-op", scraped: "scraped from public pages", demo: "demo list for illustration", published: "known from public sources" } as const;
 const FIELD = { name: "Government", domain: "Website", email: "Email", state: "State" } as Record<string, string>;
 
-/** Sovra ops: upload each co-op's list of member governments, so Loci can tell every agency which co-ops it's on. */
+/** Sovra ops: upload each co-op's list of member governments, so Agora can tell every agency which co-ops it's on. */
 export default function CoopMemberLists() {
   const { db, act } = useStore();
   const [adding, setAdding] = useState(false);
@@ -34,7 +34,7 @@ export default function CoopMemberLists() {
   return (
     <div className="mx-auto max-w-4xl space-y-6">
       <PageTitle title="Co-op member lists">
-        Upload the list of governments that belong to each co-op. Loci matches them to agencies by website (or the domain of a contact email), and by name and state when a row
+        Upload the list of governments that belong to each co-op. Agora matches them to agencies by website (or the domain of a contact email), and by name and state when a row
         has neither. Matched agencies see the co-op under “Co-ops you're on” in their results.
       </PageTitle>
 
@@ -72,7 +72,7 @@ export default function CoopMemberLists() {
           </form>
         ) : (
           <button onClick={() => setAdding(true)} className="text-sm font-semibold text-maroon hover:underline">
-            Add a co-op Loci doesn't track yet
+            Add a co-op Agora doesn't track yet
           </button>
         )}
         <ErrorNote message={error} />
@@ -130,11 +130,11 @@ function CoopCard({ coop }: { coop: Coop }) {
                 co-op directory
               </a>
               {coop.roster_retrieved ? `, retrieved ${new Date(`${coop.roster_retrieved}T12:00:00Z`).toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" })}` : ""}
-              {members.length ? ` · ${members.length} more on the list below` : ""} · {agencies.length} matched to agencies in Loci
+              {members.length ? ` · ${members.length} more on the list below` : ""} · {agencies.length} matched to agencies in Agora
             </div>
           ) : (
             <div className="mt-1 text-sm text-navy">
-              {members.length} government{members.length === 1 ? "" : "s"} on the list, {agencies.length} matched to agencies in Loci
+              {members.length} government{members.length === 1 ? "" : "s"} on the list, {agencies.length} matched to agencies in Agora
             </div>
           )}
           {coop.member_list_source === "published" && <div className="mt-1 max-w-lg text-xs text-slate">{coop.note}</div>}
@@ -207,7 +207,7 @@ function CoopCard({ coop }: { coop: Coop }) {
             ))}
           </div>
           <p className="mt-2 text-xs text-emerald-800">
-            {report.matched.length ? `Matched in Loci: ${report.matched.join(", ")}.` : "No agency in Loci matched this list yet."}
+            {report.matched.length ? `Matched in Agora: ${report.matched.join(", ")}.` : "No agency in Agora matched this list yet."}
           </p>
           {report.name_only > 0 && <p className="mt-1 text-xs text-amber-800">{report.name_only} rows have no website or email, so they match by name and state only.</p>}
           {report.issues.length > 0 && (

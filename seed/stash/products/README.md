@@ -1,6 +1,6 @@
 # Products, stashed
 
-Loci serves 8,141 catalog products and keeps 51,195 out. The catalog had 59,336, and most could not show what Loci is for, which is search and fit analysis: 37,411 of its 69,502 offerings had no price, and thousands more were rate lines or component parts that crowded every search.
+Agora serves 8,141 catalog products and keeps 51,195 out. The catalog had 59,336, and most could not show what Agora is for, which is search and fit analysis: 37,411 of its 69,502 offerings had no price, and thousands more were rate lines or component parts that crowded every search.
 
 A product stays live when it has a price a buyer could act on (or a labelled list price), a name that says what it is, and is something bought by the unit. The rule is `scripts/product-stash.ts`; the catalog importer applies it and writes `summary.json` here on every run. The numbers below are from that file as of the last run.
 

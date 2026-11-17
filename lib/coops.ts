@@ -1,7 +1,7 @@
-// Co-op routing. Loci doesn't sell through a co-op's contracts: it sends the
+// Co-op routing. Agora doesn't sell through a co-op's contracts: it sends the
 // buyer to the exact contract page through a tracked redirect, so the co-op
 // sees the traffic Sovra drives. A co-op that has agreed can switch on buying
-// inside Loci (Coop.buy_in_agora). Pure functions, safe on client and server.
+// inside Agora (Coop.buy_in_agora). Pure functions, safe on client and server.
 
 import type { Buyer, Contract, Coop, CoopMember, CoopMembership, Db, Listing } from "./types";
 
@@ -10,7 +10,7 @@ export function coopOf(db: Pick<Db, "coops">, contract: Contract | undefined | n
   return db.coops.find((c) => c.id === contract.coop_id) ?? null;
 }
 
-/** True when buyers should leave Loci for the co-op's own contract page. */
+/** True when buyers should leave Agora for the co-op's own contract page. */
 export function linksOut(db: Pick<Db, "coops">, contract: Contract | undefined | null): boolean {
   const coop = coopOf(db, contract);
   return Boolean(coop && !coop.buy_in_agora);
@@ -132,7 +132,7 @@ export function coopIdForVehicle(vehicle: string | undefined): string | undefine
   return undefined;
 }
 
-/** A co-op Loci knows from published rosters or agencies' own procurement pages. No relationship yet. */
+/** A co-op Agora knows from published rosters or agencies' own procurement pages. No relationship yet. */
 const published = (id: string, name: string, website: string, note: string): Coop => ({
   id,
   name,
@@ -200,7 +200,7 @@ export const SEED_COOPS: Coop[] = [
       { name: "Harper County", domain: "harpercounty-or.example", state: "OR" },
     ],
     buy_in_agora: true,
-    note: "Demo co-op that shares its member list and has agreed to in-Loci buying.",
+    note: "Demo co-op that shares its member list and has agreed to in-Agora buying.",
   },
   ...PUBLISHED_COOPS,
 ];

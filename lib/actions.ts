@@ -109,7 +109,7 @@ export function setBuyer(buyer: Buyer) {
     if (!existing) db.memberships.push({ agency: set.name, coop_id: c.coop_id, source: "detected", evidence: c.evidence, member_id: c.member_id, source_url: c.source_url, confirmed: false });
     else if (existing.source === "detected" && rankEvidence(c.evidence) > rankEvidence(existing.evidence)) Object.assign(existing, { evidence: c.evidence, member_id: c.member_id ?? existing.member_id, source_url: c.source_url ?? existing.source_url });
   }
-  // Member lists uploaded to Loci (and the demo lists), matched on website, then name and state.
+  // Member lists uploaded to Agora (and the demo lists), matched on website, then name and state.
   for (const coop of detectCoops(db, set))
     if (!isMember(db, set.name, coop.id)) db.memberships.push({ agency: set.name, coop_id: coop.id, source: "detected", evidence: "list", confirmed: false });
   return db.session.buyer;
@@ -184,7 +184,7 @@ function localSuppliers(db: Db, request: Request): { hits: LocalSupplierHit[]; p
   const region = regionIn(text);
   const buyer = db.session.buyer;
   const gov = !region && buyer ? findGovernment(buyer) : null;
-  const where = region ? { state: region.state, counties: region.counties, place: region.name, source: region.source } : gov?.county ? { state: gov.state, counties: splitCounties(gov.county), place: `${splitCounties(gov.county).join(" and ")} ${splitCounties(gov.county).length === 1 ? "County" : "counties"}, where ${gov.name} is`, source: "Loci's government directory" } : null;
+  const where = region ? { state: region.state, counties: region.counties, place: region.name, source: region.source } : gov?.county ? { state: gov.state, counties: splitCounties(gov.county), place: `${splitCounties(gov.county).join(" and ")} ${splitCounties(gov.county).length === 1 ? "County" : "counties"}, where ${gov.name} is`, source: "Agora's government directory" } : null;
   const hits: (LocalSupplierHit & { fit: number })[] = [];
   for (const s of db.suppliers) {
     const { fit, service } = serviceFit(s.services, request.parsed.item || request.raw_text);
@@ -206,7 +206,7 @@ function localSuppliers(db: Db, request: Request): { hits: LocalSupplierHit[]; p
       fit,
     });
   }
-  // Best fit first, then confirmed certifications, then work Loci could match to a government nearby.
+  // Best fit first, then confirmed certifications, then work Agora could match to a government nearby.
   hits.sort((a, b) => b.fit - a.fit || b.certifications.filter((c) => c.status === "confirmed").length - a.certifications.filter((c) => c.status === "confirmed").length || b.past_work.nearby - a.past_work.nearby || a.name.localeCompare(b.name));
   return { hits: hits.slice(0, 8).map(({ fit: _f, ...h }) => h), place: where?.place ?? null, source: where?.source ?? null };
 }
@@ -215,7 +215,7 @@ export function getResults(requestId: string) {
   const db = getDb();
   const request = db.requests.find((r) => r.id === requestId) ?? fail("Request not found");
   const results = buildResults(db, request);
-  // The co-op catalog: every co-op's public contract directory, beyond the contracts Loci seeds, plus contracts
+  // The co-op catalog: every co-op's public contract directory, beyond the contracts Agora seeds, plus contracts
   // whose documents mention the item.
   const docHits = docHitCache.get(docHitKey(request.parsed.item))?.hits;
   const cat = catalogCoopHits(db, request.parsed.item, db.session.buyer, { category: request.parsed.category, docHits });
@@ -388,7 +388,7 @@ export function rateAnswer(args: { id: string; vote: "up" | "down" | null; note?
 
 // ---------------------------------------------------------------- ask a contract
 
-/** Contracts whose source documents Loci can read. */
+/** Contracts whose source documents Agora can read. */
 export function contractsToAsk() {
   return readableContracts(getDb());
 }
@@ -439,7 +439,7 @@ function buyingContext(db: ReturnType<typeof getDb>, need: string) {
   const rule = stateRuleFor(buyer, need);
   return {
     limit: db.agency.quick_buy_threshold,
-    // The limit Loci holds is the home agency's; for anyone else it stands in as a typical one.
+    // The limit Agora holds is the home agency's; for anyone else it stands in as a typical one.
     limit_is_theirs: Boolean(buyer && buyer.name === db.agency.name),
     rule: rule ? { state: rule.code, quotes: rule.quotes, formal_bid: rule.formal_bid, source: rule.threshold_source, researched: rule.researched } : null,
   };
@@ -656,7 +656,7 @@ function createOrder(
     const contractFor = db.contracts.find((c) => c.id === listing.contract_id);
     const access = checkEligibility(contractFor, db.session.buyer);
     if (!access.eligible) fail(`This contract isn't open to ${db.session.buyer?.name}: ${access.reason}.`);
-    if (linksOut(db, contractFor)) fail(`${contractFor?.vehicle} ${contractFor?.contract_number} is bought on ${coopOf(db, contractFor)?.name}'s own contract page, not in Loci.`);
+    if (linksOut(db, contractFor)) fail(`${contractFor?.vehicle} ${contractFor?.contract_number} is bought on ${coopOf(db, contractFor)?.name}'s own contract page, not in Agora.`);
   }
   const qty = args.quantity;
   const total = Math.round((catalog ? catalog.unit_price : unitPrice(db, listing, qty)) * qty * 100) / 100;
@@ -704,7 +704,7 @@ function createOrder(
     source: listing.source,
     payment: order.payment,
     supplierName,
-    // A catalog contract isn't one of Loci's onboarded contracts, so it bills no onboarding.
+    // A catalog contract isn't one of Agora's onboarded contracts, so it bills no onboarding.
     contractId: catalog ? null : listing.contract_id,
   });
   return { order, events };
@@ -1398,7 +1398,7 @@ export function respondToReview(reviewId: string, text: string) {
  * rows that can't be mapped come back in the report. Re-importing updates rows by contract number. */
 export function importRegister(table: unknown[][], filename: string) {
   const db = getDb();
-  const buyer = db.session.buyer ?? fail("Set your agency first, so Loci knows whose contracts these are.");
+  const buyer = db.session.buyer ?? fail("Set your agency first, so Agora knows whose contracts these are.");
   const parsed = parseRegister(table);
   let added = 0;
   let updated = 0;
@@ -1527,7 +1527,7 @@ function supplierById(db: Db, id: string) {
 }
 
 /** Claim a storefront. A work email on the company's own domain verifies at once; anything else waits for Sovra review. */
-/** Bring a co-op catalog supplier into Loci, so its storefront can be claimed and managed. */
+/** Bring a co-op catalog supplier into Agora, so its storefront can be claimed and managed. */
 export function adoptCatalogSupplier(id: string) {
   const db = getDb();
   return materializeSupplier(db, id) ?? fail("That supplier isn't in the co-op catalog.");
@@ -1636,7 +1636,7 @@ export function updateServiceListing(args: { supplierId: string; services: Parti
   if (args.service_area?.counties?.length) {
     const state = STATES.find(([c]) => c === args.service_area!.state)?.[0] ?? fail("Pick the state the supplier works in.");
     const known = new Map(stateCounties(state).map((c) => [c.toLowerCase(), c]));
-    const counties = [...new Set(args.service_area.counties.map((c) => known.get(String(c).toLowerCase().replace(/\s+county$/, "")) ?? fail(`${c} isn't a county Loci knows in ${state}.`)))];
+    const counties = [...new Set(args.service_area.counties.map((c) => known.get(String(c).toLowerCase().replace(/\s+county$/, "")) ?? fail(`${c} isn't a county Agora knows in ${state}.`)))];
     area = { state, counties };
   }
   s.services = services;
@@ -1689,7 +1689,7 @@ export function removePastWork(args: { supplierId: string; id: string }) {
   return { ok: true };
 }
 
-/** Record a certification the supplier claims. Kinds Loci can check are checked at once; the rest stay self-reported. */
+/** Record a certification the supplier claims. Kinds Agora can check are checked at once; the rest stay self-reported. */
 export async function addCertification(args: { supplierId: string; kind: CertificationKind; label?: string; issuer?: string }) {
   const db = getDb();
   const s = runnableSupplier(db, args.supplierId);
@@ -1719,7 +1719,7 @@ export async function checkCertification(args: { supplierId: string; id: string 
   const db = getDb();
   const s = runnableSupplier(db, args.supplierId);
   const claim = (s.certification_claims ?? []).find((c) => c.id === args.id) ?? fail("That certification isn't listed.");
-  if (claim.kind === "other") fail("Loci has no live check for this registry, so it stays self-reported.");
+  if (claim.kind === "other") fail("Agora has no live check for this registry, so it stays self-reported.");
   const last = claim.check ? Date.parse(claim.check.checked_at) : 0;
   if (Date.now() - last < 60_000) return claim;
   claim.check = await checkTexasCertification(claim.kind, s.name);
@@ -1761,7 +1761,7 @@ export function payListingFee(supplierId: string) {
 
 // ---------------------------------------------------------------- co-ops
 
-/** Sovra ops: whether a co-op's members may buy inside Loci (only once the co-op agrees). */
+/** Sovra ops: whether a co-op's members may buy inside Agora (only once the co-op agrees). */
 export function setCoopBuyInAgora(coopId: string, on: boolean) {
   const db = getDb();
   const coop = db.coops.find((c) => c.id === coopId) ?? fail("Co-op not found");
@@ -1815,7 +1815,7 @@ export function askToJoin(args: { contractId: string; requestId?: string | null;
 }
 
 /** Sovra ops uploads a co-op's member list. "replace" swaps the list; "merge" adds to it.
- * Memberships are then re-detected for every agency Loci knows. */
+ * Memberships are then re-detected for every agency Agora knows. */
 export function importMembers(args: { coopId: string; table: unknown[][]; mode: "replace" | "merge"; filename: string }) {
   const db = getDb();
   const coop = db.coops.find((c) => c.id === args.coopId) ?? fail("Co-op not found");
@@ -1862,12 +1862,12 @@ export function importMembers(args: { coopId: string; table: unknown[][]; mode: 
   };
 }
 
-/** Sovra ops adds a co-op Loci doesn't track yet, so its member list can be uploaded. */
+/** Sovra ops adds a co-op Agora doesn't track yet, so its member list can be uploaded. */
 export function addCoop(args: { name: string; website?: string; access?: "membership" | "state_addendum" }) {
   const db = getDb();
   const name = args.name?.trim() ?? "";
   if (!name) fail("Name the co-op.");
-  if (db.coops.some((c) => c.name.toLowerCase() === name.toLowerCase())) fail(`${name} is already in Loci.`);
+  if (db.coops.some((c) => c.name.toLowerCase() === name.toLowerCase())) fail(`${name} is already in Agora.`);
   const coop: Coop = {
     id: `coop_${name.toLowerCase().replace(/[^a-z0-9]+/g, "_").replace(/^_|_$/g, "")}`,
     name,

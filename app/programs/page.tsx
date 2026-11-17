@@ -6,7 +6,7 @@ import { ProgramKindTag, ProgramMark } from "@/components/ProgramBits";
 import { ErrorNote, Loading } from "@/components/ui";
 import type { ProgramSummary } from "@/lib/programs";
 
-/** Every purchasing program in the catalog: the state programs Loci prefers, then the co-ops. */
+/** Every purchasing program in the catalog: the state programs Agora prefers, then the co-ops. */
 export default function Programs() {
   const [programs, setPrograms] = useState<ProgramSummary[] | null | undefined>(undefined);
   useEffect(() => {
@@ -27,7 +27,7 @@ export default function Programs() {
         <div className="text-[11px] font-extrabold uppercase text-maroon/80">Programs</div>
         <h1 className="mt-3 text-[clamp(2rem,4vw,2.8rem)] font-extrabold leading-[1.1] text-navy">Every program, and what it has under contract.</h1>
         <p className="mt-3 text-base leading-relaxed text-slate">
-          A program is where a contract comes from: a state's purchasing office or a cooperative. Loci holds {total.toLocaleString()} current contracts from {programs.length} of them. Each page
+          A program is where a contract comes from: a state's purchasing office or a cooperative. Agora holds {total.toLocaleString()} current contracts from {programs.length} of them. Each page
           shows what the program covers, who holds its contracts, the prices on file and how a local government buys through it.
         </p>
       </div>

@@ -87,7 +87,7 @@ function Browse() {
 
   return (
     <div>
-      <PageTitle eyebrow="Browse by category" title="Everything in Loci">
+      <PageTitle eyebrow="Browse by category" title="Everything in Agora">
         Asking is usually faster, but here&apos;s the full shelf, labeled by source.
       </PageTitle>
       <div className="grid gap-6 md:grid-cols-4">
@@ -121,7 +121,7 @@ function Browse() {
 
           {local.length > 0 && (
             <section className="space-y-2">
-              <h2 className="text-sm font-bold text-ink">Buy in Loci: Riverbend&apos;s marketplace</h2>
+              <h2 className="text-sm font-bold text-ink">Buy in Agora: Riverbend&apos;s marketplace</h2>
               <Card className="divide-y divide-navy/5">
                 {local.map((l) => {
                   const s = db.suppliers.find((x) => x.id === l.supplier_id)!;

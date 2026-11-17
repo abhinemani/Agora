@@ -152,7 +152,7 @@ function gatherAll(db: Db, query: string, opts: DiveSearchOptions = {}): DiveIte
   const items: DiveItem[] = [];
   const asked = requestTokens(query);
 
-  // Loci's own listings, through the same matching and eligibility rules as search results.
+  // Agora's own listings, through the same matching and eligibility rules as search results.
   const request: Request = { id: "dive", raw_text: query, parsed: { item: query, quantity: 1, category: null, deadline: null, department: "", est_total: 0 }, parse_mode: "offline", preference_answer: null, created_at: "", outcome: null };
   for (const o of buildResults(db, request).groups.flatMap((g) => g.options)) {
     if (o.quote_route) continue;

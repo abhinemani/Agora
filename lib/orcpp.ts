@@ -47,7 +47,7 @@ export function orcppMember(buyer: Pick<Buyer, "name" | "state">): string | null
   return near.length === 1 ? store.byKey.get(near[0])!.name : null;
 }
 
-/** How many members DAS lists, and when Loci read the list. */
+/** How many members DAS lists, and when Agora read the list. */
 export function orcppInfo(): { members: number; retrieved: string | null } {
   load();
   return { members: store.count, retrieved: store.retrieved };

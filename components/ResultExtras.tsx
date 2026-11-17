@@ -109,7 +109,7 @@ export function NextSteps({ requestId }: { requestId: string }) {
       <div className="flex flex-col justify-between rounded-xl border border-line p-3">
         <div>
           <div className="text-sm font-semibold text-navy">RFP Lite</div>
-          <div className="text-xs text-slate">Free. Loci drafts it from your request and the closest past solicitation.</div>
+          <div className="text-xs text-slate">Free. Agora drafts it from your request and the closest past solicitation.</div>
           <div className={`mt-1 text-[11px] font-semibold ${left === 0 ? "text-maroon" : "text-slate"}`}>
             {left === null ? "Unlimited on your plan" : left === 0 ? `All ${FREE_RFP_LIMIT} free RFPs used this year` : `${left} of ${FREE_RFP_LIMIT} free RFPs left this year`}
           </div>
@@ -130,7 +130,7 @@ export function NextSteps({ requestId }: { requestId: string }) {
       <div className="flex flex-col justify-between rounded-xl border border-line p-3">
         <div>
           <div className="text-sm font-semibold text-navy">Your own RFP tool</div>
-          <div className="text-xs text-slate">Keep the tool you use. Loci hands off the request.</div>
+          <div className="text-xs text-slate">Keep the tool you use. Agora hands off the request.</div>
           <select value={tool} onChange={(e) => setTool(e.target.value as typeof tool)} className="mt-2 w-full !py-1 text-xs">
             {TOOLS.map((t) => (
               <option key={t.id} value={t.id}>
@@ -165,7 +165,7 @@ export function InviteAdminBanner({ requestId }: { requestId: string }) {
   const invited = db.invites.find((i) => i.agency === buyer.name);
   const gaps = [
     !status.steps.contracts && { what: "its own contracts", effect: "you won't see contracts it already holds" },
-    !status.steps.coops && { what: "its co-op memberships", effect: "Loci can't tell which co-ops you're on" },
+    !status.steps.coops && { what: "its co-op memberships", effect: "Agora can't tell which co-ops you're on" },
   ].filter((g): g is { what: string; effect: string } => Boolean(g));
   const missing = gaps.map((g) => g.what).join(" and ");
   const effect = gaps.map((g) => g.effect).join(", and ");

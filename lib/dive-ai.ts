@@ -17,11 +17,11 @@ const UNDERSTAND_SYSTEM =
       `- search_terms: up to 3 words or short phrases a product's name in this catalog would use for what they want, when they aren't in the buyer's words: the "also called" names in KINDS show how the catalog words things, so prefer those. A buyer's own synonym the catalog doesn't use finds nothing. Empty if none.\n` +
       `- must_have: single words a product's name would contain to meet a requirement the buyer stated ("crew cab" gives "crew", "electric" gives "electric"). Only requirements they stated, and never the kind of thing itself.\n` +
       `- must_not: single words for things they ruled out ("not diesel" gives "diesel").\n` +
-      `- read_as: one short sentence in the third person saying what Loci is looking for, like "Police pursuit vehicles and SUVs, diesel ruled out." No prices unless the buyer gave one.`;
+      `- read_as: one short sentence in the third person saying what Agora is looking for, like "Police pursuit vehicles and SUVs, diesel ruled out." No prices unless the buyer gave one.`;
 
 /** The fit judge's instructions (task dive_fit). */
 const FIT_SYSTEM =
-  `You check how well each product on a shortlist fits what a government buyer asked for. You know each product's name, kind, maker and unit, and nothing else: judge from those, never from price or availability, which Loci handles elsewhere.\n` +
+  `You check how well each product on a shortlist fits what a government buyer asked for. You know each product's name, kind, maker and unit, and nothing else: judge from those, never from price or availability, which Agora handles elsewhere.\n` +
       `For every product give:\n` +
       `- fit: "fits" if it is the thing asked for and meets every requirement the buyer stated; "partly" if it is the right kind of thing but a stated requirement isn't met or can't be told from its name, or it is closely related (an add-on, a different size class) a buyer might still want; "no" if it isn't what was asked for.\n` +
       `- reason: at most 10 words, in the third person, naming what in the product decides it, like "A pursuit-rated Tahoe, as asked", "A swing hanger, not a swing" or "Crew cab, but diesel was ruled out". No prices, no percentages, and no figures that aren't in the product's name or the request.`;
@@ -106,7 +106,7 @@ export async function writeVerdict(need: string, items: DiveItem[], verdict: Div
     task: "dive_verdict",
     about: `${need}: ${items.map((i) => i.name).join(" / ")}`,
     system:
-      `You are "your personal shopper" in Loci, a procurement marketplace for local governments. A government employee is comparing products. Work only from the FACTS.\n` +
+      `You are "your personal shopper" in Agora, a procurement marketplace for local governments. A government employee is comparing products. Work only from the FACTS.\n` +
       `- Never recommend a product the agency can't buy today over one it can, and never decide eligibility yourself: it is in the facts.\n` +
       `- Never state a price that isn't in the facts and never do arithmetic to make a new one. A list price is not what the agency pays; say so if you mention one.\n` +
       `- When the prices are different kinds (awarded bid, net price, list price), say they can't be compared directly.\n` +
@@ -135,7 +135,7 @@ const UnderstandSchema = z.object({
   search_terms: z.array(z.string()).describe("Up to 3 other words or short phrases a catalog might use for it, not already in the request."),
   must_have: z.array(z.string()).describe("Single words a product's name must contain to meet a requirement the buyer stated."),
   must_not: z.array(z.string()).describe("Single words for things the buyer ruled out."),
-  read_as: z.string().describe("One short sentence, third person, saying what Loci is looking for."),
+  read_as: z.string().describe("One short sentence, third person, saying what Agora is looking for."),
 });
 type UnderstandOut = z.infer<typeof UnderstandSchema>;
 

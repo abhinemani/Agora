@@ -34,8 +34,8 @@ export default function Vehicles() {
 
   return (
     <div className="space-y-8">
-      <PageTitle eyebrow="Contract vehicles" title="Contracts loaded in Loci">
-        The contracts Loci holds itself: who may use each one, how prices are set, and how far each has been verified. For every co-op and federal contract as well,{" "}
+      <PageTitle eyebrow="Contract vehicles" title="Contracts loaded in Agora">
+        The contracts Agora holds itself: who may use each one, how prices are set, and how far each has been verified. For every co-op and federal contract as well,{" "}
         <Link href="/contracts" className="font-semibold text-primary">
           search all contracts
         </Link>

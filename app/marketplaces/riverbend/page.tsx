@@ -77,10 +77,10 @@ export default function RiverbendMarketplace() {
         </Link>
         <div className="mt-4 flex flex-wrap items-end justify-between gap-6 rounded-2xl border border-line bg-white p-8">
           <div className="max-w-xl">
-            <div className="text-sm font-semibold text-maroon">City marketplace · powered by Loci</div>
+            <div className="text-sm font-semibold text-maroon">City marketplace · powered by Agora</div>
             <h1 className="mt-1 text-[2.2rem] font-extrabold leading-tight text-navy">City of Riverbend</h1>
             <p className="mt-2 text-[15px] leading-relaxed text-slate">
-              Riverbend's own marketplace, built on Loci: the {contracts.size} contracts its staff can buy from, renewals coming due, and one-click reorders, all under the city's own rules
+              Riverbend's own marketplace, built on Agora: the {contracts.size} contracts its staff can buy from, renewals coming due, and one-click reorders, all under the city's own rules
               and $10K quick-buy limit.
             </p>
           </div>

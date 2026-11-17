@@ -203,7 +203,7 @@ export default function SupplierStorefront() {
         <h2 className="text-xl font-extrabold tracking-tight text-navy">What's been checked</h2>
         <p className="mt-1 text-sm text-slate">
           {verificationSummary(s).unchecked
-            ? `Loci hasn't run checks on ${s.name} yet. These are the checks it runs before a supplier shows as verified.`
+            ? `Agora hasn't run checks on ${s.name} yet. These are the checks it runs before a supplier shows as verified.`
             : "Each check, its source and when it was last run."}
         </p>
         <Card className="mt-4 px-5 py-2">
@@ -315,7 +315,7 @@ export default function SupplierStorefront() {
       )}
 
       <p className="text-xs text-slate">
-        Storefronts are supplier pages. Looking for a city's own version of Loci?{" "}
+        Storefronts are supplier pages. Looking for a city's own version of Agora?{" "}
         <Link href="/marketplaces" className="font-semibold text-maroon hover:underline">
           See city marketplaces
         </Link>

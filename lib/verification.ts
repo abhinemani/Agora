@@ -1,5 +1,5 @@
 // The checks behind a supplier's "Verified" badge. Demo suppliers carry demo
-// results; every other supplier shows each check as not run yet, because Loci
+// results; every other supplier shows each check as not run yet, because Agora
 // doesn't hold real SAM.gov or insurance results for real companies.
 
 import type { Supplier, VerificationCheck } from "./types";

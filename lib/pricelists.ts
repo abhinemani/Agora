@@ -1,5 +1,5 @@
 // The price-list queue: co-op catalog and price-list documents (lib/catalog.ts) fetched
-// on the server and handed to Loci's contract reader (lib/parser.ts). Only documents
+// on the server and handed to Agora's contract reader (lib/parser.ts). Only documents
 // in the catalog can be fetched, so the reader can't be pointed at an arbitrary address.
 
 import { catalogContract, catalogDocument, catalogSupplierById } from "./catalog";
@@ -24,7 +24,7 @@ export async function fetchCatalogDocument(id: string): Promise<{ file: InputFil
   const controller = new AbortController();
   const timer = setTimeout(() => controller.abort(), 25_000);
   try {
-    const res = await fetch(doc.url, { signal: controller.signal, redirect: "follow", headers: { "user-agent": "Loci price-list reader" } });
+    const res = await fetch(doc.url, { signal: controller.signal, redirect: "follow", headers: { "user-agent": "Agora price-list reader" } });
     if (!res.ok) throw new ParseError(`The co-op's site answered ${res.status} for this document.`);
     const declared = Number(res.headers.get("content-length") ?? 0);
     if (declared > MAX_BYTES) throw new ParseError("This document is over 15 MB, too large for the reader.");

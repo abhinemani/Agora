@@ -926,7 +926,7 @@ const awarded: Record<string, [string, number][]> = {};
 }
 
 // ------------------------------------------------------------------ the product stash
-// Products that can't show what Loci is for are stashed, not served (scripts/product-stash.ts has the rule and the
+// Products that can't show what Agora is for are stashed, not served (scripts/product-stash.ts has the rule and the
 // reasons): no price, a rate line, a component part. An offering goes by its own reason; a product goes when none of
 // its offerings is left. Their rows stay in the source files, and AGORA_INCLUDE_STASHED=1 brings them back.
 const INCLUDE_STASHED = process.env.AGORA_INCLUDE_STASHED === "1";

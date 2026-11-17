@@ -1,9 +1,9 @@
 // A live check of a Texas certification against the Comptroller's CMBL/VetHUB directory
-// (mycpa.cpa.state.tx.us/tpasscmblsearch). The host publishes no robots.txt; Loci asks one
+// (mycpa.cpa.state.tx.us/tpasscmblsearch). The host publishes no robots.txt; Agora asks one
 // question at a time, only when a supplier or an admin asks for a check, as a plain request
 // that names itself. Server only.
 //
-// The directory answers with contacts and a vendor ID; Loci keeps only the company's name, city
+// The directory answers with contacts and a vendor ID; Agora keeps only the company's name, city
 // and status flags. A Texas vendor ID can be built from a sole proprietor's Social Security
 // number, so it is never stored or shown.
 
@@ -11,7 +11,7 @@ import { CMBL_SEARCH_URL } from "./service-listing";
 import type { CertificationCheck, CertificationKind } from "./types";
 
 const BASE = "https://mycpa.cpa.state.tx.us/tpasscmblsearch";
-const AGENT = "Loci certification check (agora.ethoslabs.us)";
+const AGENT = "Agora certification check (agora.ethoslabs.us)";
 const SOURCE = "Texas Comptroller, CMBL/VetHUB directory";
 
 interface Row {

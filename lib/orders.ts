@@ -67,22 +67,22 @@ export function catalogAsListing(id: string, c: CatalogLine): Listing {
   };
 }
 
-/** What a cart line or order is for: the Loci listing, or the catalog product it carries. */
+/** What a cart line or order is for: the Agora listing, or the catalog product it carries. */
 export function lineListing(db: Pick<Db, "listings">, line: Pick<CartLine, "listing_id" | "catalog">): Listing | undefined {
   return line.catalog ? catalogAsListing(line.listing_id, line.catalog) : db.listings.find((l) => l.id === line.listing_id);
 }
 
-/** Who supplies a cart line or order: the Loci supplier, or the catalog product's supplier. */
+/** Who supplies a cart line or order: the Agora supplier, or the catalog product's supplier. */
 export function lineSupplier(db: Pick<Db, "listings" | "suppliers">, line: Pick<CartLine, "listing_id" | "catalog">): Supplier | undefined {
   if (line.catalog) return catalogSupplier(db, line.catalog);
   const l = db.listings.find((x) => x.id === line.listing_id);
   return db.suppliers.find((s) => s.id === l?.supplier_id);
 }
 
-/** Where a line's product is described: a Loci listing's product page, or a catalog product's contract. */
+/** Where a line's product is described: an Agora listing's product page, or a catalog product's contract. */
 export const lineHref = (line: Pick<CartLine, "listing_id" | "catalog">) => (line.catalog ? `/contracts/${line.catalog.contract_id}` : `/product/${line.listing_id}`);
 
-/** The supplier behind a catalog line, when it has no storefront record in Loci. */
+/** The supplier behind a catalog line, when it has no storefront record in Agora. */
 function catalogSupplier(db: Pick<Db, "suppliers">, c: CatalogLine): Supplier {
   return (
     db.suppliers.find((s) => s.id === c.supplier_id) ?? {

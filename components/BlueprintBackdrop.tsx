@@ -171,7 +171,7 @@ export function BlueprintBackdrop({
           <rect x="1050" y="520" width="350" height="78" />
           <path d="M1050 546 H1400 M1050 572 H1400 M1222 520 V598" />
           <g fill={LINE} stroke="none">
-            <text x="1062" y="538">LOCI</text>
+            <text x="1062" y="538">AGORA</text>
             <text x="1234" y="538">SHEET A-01</text>
             <text x="1062" y="564">{contracts.toLocaleString()} CONTRACTS</text>
             <text x="1234" y="564">{suppliers.toLocaleString()} SUPPLIERS</text>

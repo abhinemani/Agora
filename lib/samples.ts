@@ -34,7 +34,7 @@ export const TEST_FILES = [
     file: "techsource-it-peripherals.docx",
     format: "DOCX",
     title: "IT peripherals reseller addendum",
-    tests: "A Word table, a reseller source, and a SKU already in Loci at a new price.",
+    tests: "A Word table, a reseller source, and a SKU already in Agora at a new price.",
   },
   {
     file: "evergreen-public-works-materials.pdf",

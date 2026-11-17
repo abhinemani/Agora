@@ -19,7 +19,7 @@ export default function Verify() {
       .then(async (res) => {
         const json = await res.json();
         if (!res.ok) throw new Error(json.error ?? "That link didn't work.");
-        setState({ status: "done", text: `${json.result.user.email} is confirmed. Loci will send approval notices there, and can help you back in if you forget your password.` });
+        setState({ status: "done", text: `${json.result.user.email} is confirmed. Agora will send approval notices there, and can help you back in if you forget your password.` });
         await refresh();
       })
       .catch((e) => setState({ status: "failed", text: (e as Error).message }));

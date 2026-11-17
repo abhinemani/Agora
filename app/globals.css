@@ -124,3 +124,46 @@ button:focus-visible {
   --mark-inner: rgb(157 194 232);
   --mark-core: rgb(217 232 246);
 }
+
+/* Nesting lines for how contracts fit together (components/contracts/Nest.tsx): each child hangs off
+   its parent's rule by an elbow, and the path to the contract on the page is drawn in primary. */
+.nest {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.nest > li {
+  position: relative;
+  padding-left: 1.75rem;
+}
+.nest > li::before {
+  content: "";
+  position: absolute;
+  left: 0.5rem;
+  top: 0;
+  bottom: 0;
+  border-left: 1px solid rgb(var(--us-base-light));
+}
+.nest > li:last-child::before {
+  bottom: auto;
+  height: 1rem;
+}
+.nest > li::after {
+  content: "";
+  position: absolute;
+  left: 0.5rem;
+  top: 1rem;
+  width: 0.9rem;
+  border-top: 1px solid rgb(var(--us-base-light));
+}
+.nest > li.nest-path::after {
+  border-top: 2px solid rgb(var(--us-primary));
+  top: calc(1rem - 0.5px);
+}
+.nest-root > li {
+  padding-left: 0;
+}
+.nest-root > li::before,
+.nest-root > li::after {
+  display: none;
+}

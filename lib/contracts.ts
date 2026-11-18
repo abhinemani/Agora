@@ -11,6 +11,7 @@
 import { fitScoreSets, requestTokens, SAME_AS, tokens } from "./assistant";
 import { catalogAccess, catalogIndex, isTrxContract, type CatalogContract, type CatalogOffering } from "./catalog";
 import type { DocumentHit } from "./doc-store";
+import { addendaOf, awardByKey, awardOf, groupDocuments, masterOf, type DocGroup } from "./contract-family";
 import { coopOf, goHref, isContractLevelUrl, onCoopContract } from "./coops";
 import { readableCatalogDocument, readableDocuments } from "./docs";
 import { stateRuleFor, type BuyerStateRule } from "./state-rules";
@@ -59,7 +60,32 @@ export interface ContractRow {
   nigp_source: "published" | "reviewed" | null;
   /** Its documents mention the query: where, with a few words around it (lib/doc-store.ts). */
   found_in?: { label: string; page: number; snippet: string };
+  /** The award it shares with other suppliers (lib/contract-family.ts). */
+  award?: { key: string; label: string; size: number };
 }
+
+/** Contracts on one award that match, shown as one entry with its suppliers nested under it. */
+export interface AwardGroup {
+  group: true;
+  key: string;
+  label: string;
+  title: string;
+  program: string;
+  kind: ContractKind;
+  trx: boolean;
+  lead: string | null;
+  /** Current contracts on the award, and how many of them match the search and filters. */
+  size: number;
+  matched: number;
+  /** The best of what the matching members offer the buyer. */
+  access: AccessStatus;
+  priced: number;
+  readable: boolean;
+  end: string | null;
+  /** The first matching members, best first. */
+  rows: ContractRow[];
+}
+export type ExploreEntry = ContractRow | AwardGroup;
 
 const today = () => new Date().toISOString().slice(0, 10);
 const ACCESS_RANK: Record<AccessStatus, number> = { open: 0, check: 1, unknown: 2, join: 3, closed: 4 };
@@ -109,10 +135,17 @@ export interface ExploreOptions {
   limit?: number;
   /** Contracts whose stored documents contain the query (lib/doc-store.ts), found by the caller. */
   docHits?: Map<string, DocumentHit>;
+  /** Only the contracts on this award (lib/contract-family.ts), listed one by one. */
+  award?: string;
 }
 export interface ExploreResult {
+  /** Entries: a contract, or an award with its matching contracts nested. */
   total: number;
-  rows: ContractRow[];
+  /** Contracts behind those entries. */
+  contracts: number;
+  entries: ExploreEntry[];
+  /** The award being listed, when the explorer is opened on one. */
+  award: { key: string; label: string; title: string; program: string; lead: string | null; size: number } | null;
   programs: { id: string; name: string; count: number }[];
   categories: { name: string; count: number }[];
   kinds: { id: ContractKind; count: number }[];
@@ -195,6 +228,7 @@ function scan(db: Db, buyer: Buyer | null, q: string, docHits: Map<string, Docum
       in_agora: false,
       fit,
       ...(docHits.has(c.id) ? { found_in: { label: docHits.get(c.id)!.label, page: docHits.get(c.id)!.page, snippet: docHits.get(c.id)!.snippet } } : {}),
+      ...awardTag(c.id),
     });
   }
 
@@ -240,6 +274,11 @@ function scan(db: Db, buyer: Buyer | null, q: string, docHits: Map<string, Docum
   return { rows, universe: idx.contracts.length + db.contracts.filter((c) => !c.catalog_id).length };
 }
 
+const awardTag = (id: string): { award?: ContractRow["award"] } => {
+  const a = awardOf(id);
+  return a ? { award: { key: a.key, label: a.label, size: a.members.length } } : {};
+};
+
 const KIND_RANK: Record<ContractKind, number> = { agency: 0, state: 1, coop: 2, reseller: 3, federal: 4 };
 
 /** Search and filter every contract. The agency's own contracts come first, then state, then co-op, as a buyer would check them. */
@@ -255,7 +294,8 @@ export function exploreContracts(db: Db, opts: ExploreOptions = {}): ExploreResu
   const categories = [...count(byKind.filter((r) => (!opts.coop || r.program_id === opts.coop) && r.category), (r) => r.category!)].map(([name, n]) => ({ name, count: n })).sort((a, b) => b.count - a.count);
   const kinds = [...count(toggled, (r) => r.kind)].map(([id, n]) => ({ id: id as ContractKind, count: n })).sort((a, b) => KIND_RANK[a.id] - KIND_RANK[b.id]);
 
-  const matched = byKind.filter((r) => (!opts.coop || r.program_id === opts.coop) && (!opts.category || r.category === opts.category));
+  const award = opts.award ? awardByKey(opts.award) : null;
+  const matched = byKind.filter((r) => (!opts.coop || r.program_id === opts.coop) && (!opts.category || r.category === opts.category) && (!opts.award || r.award?.key === opts.award));
   // With a query, the closest scope first; either way, what the agency can use, then what has prices and documents.
   // Without an agency nothing is known to be usable, so only contracts closed to local governments drop down.
   const rank = (r: ContractRow) => (buyer ? ACCESS_RANK[r.access] : r.access === "closed" ? 1 : 0);
@@ -271,9 +311,14 @@ export function exploreContracts(db: Db, opts: ExploreOptions = {}): ExploreResu
       a.supplier.localeCompare(b.supplier),
   );
   const offset = Math.max(0, opts.offset ?? 0);
+  const plain: ContractRow[] = matched.map(({ program_id: _p, ...r }) => r);
+  // An award's contracts are listed one by one; otherwise contracts on one award become one entry.
+  const entries: ExploreEntry[] = opts.award ? plain : groupByAward(plain);
   return {
-    total: matched.length,
-    rows: matched.slice(offset, offset + Math.min(50, opts.limit ?? 25)).map(({ program_id: _p, ...r }) => r),
+    total: entries.length,
+    contracts: matched.length,
+    entries: entries.slice(offset, offset + Math.min(opts.award ? 200 : 50, opts.limit ?? 25)),
+    award: award ? { key: award.key, label: award.label, title: award.title, program: award.program, lead: award.lead, size: award.members.length } : null,
     programs,
     categories,
     kinds,
@@ -281,6 +326,44 @@ export function exploreContracts(db: Db, opts: ExploreOptions = {}): ExploreResu
     retrieved: catalogIndex().retrieved,
     buyer: buyer?.name ?? null,
   };
+}
+
+/** Contracts on one award become one entry, where the best of them ranks; an award with one match stays a row. */
+function groupByAward(rows: ContractRow[]): ExploreEntry[] {
+  const members = new Map<string, ContractRow[]>();
+  for (const r of rows) if (r.award) (members.get(r.award.key) ?? members.set(r.award.key, []).get(r.award.key)!).push(r);
+  const out: ExploreEntry[] = [];
+  const done = new Set<string>();
+  for (const r of rows) {
+    const k = r.award?.key;
+    const list = k ? members.get(k)! : null;
+    if (!k || !list || list.length < 2) {
+      out.push(r);
+      continue;
+    }
+    if (done.has(k)) continue;
+    done.add(k);
+    const a = awardByKey(k)!;
+    const ends = list.map((x) => x.end).filter((x): x is string => Boolean(x)).sort();
+    out.push({
+      group: true,
+      key: k,
+      label: a.label,
+      title: a.title,
+      program: r.program,
+      kind: r.kind,
+      trx: r.trx,
+      lead: a.lead,
+      size: a.members.length,
+      matched: list.length,
+      access: list.reduce((best, x) => (ACCESS_RANK[x.access] < ACCESS_RANK[best] ? x.access : best), list[0].access),
+      priced: list.reduce((n, x) => n + x.priced, 0),
+      readable: list.some((x) => x.readable),
+      end: ends.length ? ends[ends.length - 1] : null,
+      rows: list.slice(0, 6),
+    });
+  }
+  return out;
 }
 
 // ------------------------------------------------------------------ one contract
@@ -334,6 +417,10 @@ export interface ContractDetail {
   items: ContractItem[];
   items_total: number;
   documents: { label: string; url: string; host: string; readable: boolean }[];
+  /** The same documents by role, in reading order (lib/contract-family.ts). */
+  document_groups: DocGroup[];
+  /** Where it sits: the award it shares, the master it adopts, the addenda that adopt it. */
+  family: ContractFamily;
   /** Documents Agora can read for the brief and for questions. */
   readable: { label: string; held: boolean }[];
   /** The contract on its owner's site (tracked), or the directory to look it up in. */
@@ -345,6 +432,47 @@ export interface ContractDetail {
   /** The same contract with prices loaded in Agora, when this is the catalog's copy. */
   agora_copy: string | null;
   buyer: string | null;
+}
+
+export interface ContractFamily {
+  award: { key: string; label: string; title: string; lead: string | null; size: number; others: { id: string; supplier: string; number: string }[] } | null;
+  master: { program: string; number: string | null; id: string | null; title: string | null; supplier: string | null; basis: "named" | "matched" | "program_only" | "text" } | null;
+  addenda: { id: string; program: string; number: string; title: string }[];
+  /** NASPO ValuePoint: the states that have signed a participating addendum. */
+  states: string[] | null;
+}
+
+/** A catalog contract's family, for its page and for Agora's own copy of it. */
+function familyOf(catId: string | null | undefined): ContractFamily {
+  const empty: ContractFamily = { award: null, master: null, addenda: [], states: null };
+  const idx = catalogIndex();
+  const c = catId ? idx.contractById.get(catId) : undefined;
+  if (!c) return empty;
+  const name = (supplierId: string) => idx.supplierById.get(supplierId)?.name ?? "";
+  const a = awardOf(c.id);
+  const m = masterOf(c.id);
+  const mc = m?.id ? idx.contractById.get(m.id) : undefined;
+  return {
+    award: a
+      ? {
+          key: a.key,
+          label: a.label,
+          title: a.title,
+          lead: a.lead,
+          size: a.members.length,
+          others: a.members
+            .filter((id) => id !== c.id)
+            .slice(0, 8)
+            .map((id) => idx.contractById.get(id)!)
+            .map((x) => ({ id: x.id, supplier: name(x.supplier), number: x.number })),
+        }
+      : null,
+    master: m ? { program: m.program, number: mc?.number ?? m.number, id: m.id, title: mc?.title ?? null, supplier: mc ? name(mc.supplier) : null, basis: m.basis } : null,
+    addenda: addendaOf(c.id)
+      .map((id) => idx.contractById.get(id)!)
+      .map((x) => ({ id: x.id, program: x.coop, number: x.number, title: x.title })),
+    states: c.coop_id === "coop_naspo" && Array.isArray(c.states) && c.states.length ? c.states : null,
+  };
 }
 
 const host = (url: string) => {
@@ -492,6 +620,8 @@ function catalogDetail(db: Db, c: CatalogContract, itemQuery: string): ContractD
     items,
     items_total: matching.length,
     documents: docs.map((d) => ({ label: d.label, url: d.url, host: host(d.url), readable: readableCatalogDocument(d) })),
+    document_groups: groupDocuments(docs.map((d) => ({ label: d.label, url: d.url, host: host(d.url), readable: readableCatalogDocument(d) }))),
+    family: familyOf(c.id),
     readable: readableDocuments(db, c.id),
     link: c.url ? { href: goHref(c.id), label: `Open on ${program}`, tracked: true } : c.directory ? { href: c.directory, label: `Find ${c.number} in ${possessive(program)} directory`, tracked: false } : null,
     steps: steps({ program, number: c.number, supplier, kind, access, priced: priced.length, in_agora: false, hasLink, state: c.state_contract ? { code: c.state_contract.state, name: program, coop_program: TRX_PROGRAM[c.state_contract.state]?.coop_program ?? "state's cooperative purchasing program", solicitation: c.state_contract.solicitation, locals: c.state_contract.locals, preferred: c.state_contract.preferred } : undefined }),
@@ -568,6 +698,8 @@ function agoraDetail(db: Db, c: Contract, itemQuery: string): ContractDetail {
     items: matching.slice(0, 25).map((l) => ({ id: l.id, name: l.title, maker: null, sku: l.sku, price: l.unit_price, list: null, note: "Published contract price", unit: l.unit, href: `/product/${l.id}`, external: false })),
     items_total: matching.length,
     documents: (c.documents ?? []).map((d) => ({ label: d.label, url: d.url, host: host(d.url), readable: false })),
+    document_groups: groupDocuments((c.documents ?? []).map((d) => ({ label: d.label, url: d.url, host: host(d.url), readable: false }))),
+    family: ((f) => (c.master_agreement && !f.master ? { ...f, master: { program: c.vehicle ?? c.owner, number: null, id: null, title: c.master_agreement, supplier: null, basis: "text" as const } } : f))(familyOf(c.catalog_id)),
     readable: readableDocuments(db, c.id),
     link: c.source_url ? { href: goHref(c.id), label: hasLink ? `Open on ${program}` : `Open ${possessive(program)} site`, tracked: true } : null,
     steps: steps({ program, number: c.contract_number, supplier, kind, access: s.access, priced: listings.length, in_agora: inAgora, hasLink }),

@@ -7,6 +7,8 @@ import { useEffect, useState } from "react";
 import { BuyerPicker } from "@/components/BuyerPicker";
 import { AccessTag, shortDate } from "@/components/ContractBits";
 import { Mark } from "@/components/blueprint";
+import { ContractMap } from "@/components/contracts/ContractMap";
+import { splitTitle } from "@/components/contracts/Nest";
 import { StateRuleNote } from "@/components/StateRuleNote";
 import { post, useStore } from "@/components/store";
 import { Alert, Badge, ErrorNote, Loading, money } from "@/components/ui";
@@ -29,6 +31,8 @@ export default function ContractPage() {
   const { db } = useStore();
   const [c, setC] = useState<ContractDetail | null | undefined>(undefined);
   const [changing, setChanging] = useState(false);
+  // A question sent from a key section to the ask box below.
+  const [asking, setAsking] = useState<{ q: string; n: number } | null>(null);
   const buyer = db?.session.buyer ?? null;
   const buyerKey = buyer ? `${buyer.name}|${buyer.state}|${buyer.entity_type}` : "";
   const memberships = db?.memberships.length ?? 0;
@@ -47,6 +51,7 @@ export default function ContractPage() {
   if (c === undefined) return <Loading label="Opening the contract" />;
   if (!c) return <ErrorNote message="That contract isn't in Agora. It may have been removed from its program's directory." />;
   const a = ACCESS_LINE[c.access](c);
+  const t = splitTitle(c.title);
 
   return (
     <div className="space-y-8 pb-8">
@@ -72,7 +77,10 @@ export default function ContractPage() {
           {c.solicitation && <span>· awarded under {c.solicitation}</span>}
           {c.expired && <Badge tone="amber">Expired</Badge>}
         </div>
-        <h1 className="mt-1.5 max-w-[40ch] font-heading text-heading-xl font-bold leading-tight text-ink">{c.title}</h1>
+        <h1 className="mt-1.5 max-w-[40ch] font-heading text-heading-xl font-bold leading-tight text-ink" title={t.rest.length ? c.title : undefined}>
+          {t.head}
+        </h1>
+        {t.rest.length > 0 && <p className="mt-1 line-clamp-2 max-w-[75ch] text-ui-xs text-base-darker">Also: {t.rest.join(" · ")}</p>}
         <p className="mt-2 text-body-sm text-base-darker">
           Held by{" "}
           <Link href={`/storefronts/${c.supplier_id}`} className="font-semibold text-primary">
@@ -100,6 +108,7 @@ export default function ContractPage() {
 
       <div className="grid items-start gap-10 lg:grid-cols-[minmax(0,1fr)_320px]">
         <div className="min-w-0 space-y-10">
+          <ContractMap c={c} onAsk={(q) => setAsking((x) => ({ q, n: (x?.n ?? 0) + 1 }))} />
           <section aria-labelledby="how-to-buy">
             <h2 id="how-to-buy" className="font-heading text-heading-md font-bold text-ink">
               How to buy under it
@@ -136,7 +145,7 @@ export default function ContractPage() {
 
           <Covers c={c} />
           <Items c={c} />
-          <Documents c={c} />
+          <Documents c={c} asking={asking} />
         </div>
 
         <aside className="space-y-6">
@@ -373,7 +382,7 @@ function Field({ f }: { f: BriefField }) {
 
 const SUGGESTED = ["Does this cover installation?", "Is there a minimum order?", "What are the payment terms?"];
 
-function Documents({ c }: { c: ContractDetail }) {
+function Documents({ c, asking }: { c: ContractDetail; asking: { q: string; n: number } | null }) {
   const { llm } = useStore();
   const [brief, setBrief] = useState<ContractBrief | null>(null);
   const [busy, setBusy] = useState<"brief" | "ask" | null>(null);
@@ -407,6 +416,13 @@ function Documents({ c }: { c: ContractDetail }) {
     setTurns((t) => [...t, { question: q, result, error: err }]);
     setBusy(null);
   };
+  // A key section's "Ask about it" asks here.
+  useEffect(() => {
+    if (!asking || !canRead) return;
+    document.getElementById("documents")?.scrollIntoView({ behavior: "smooth", block: "start" });
+    void ask(asking.q);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [asking?.n]);
 
   return (
     <section aria-labelledby="documents">
@@ -421,16 +437,13 @@ function Documents({ c }: { c: ContractDetail }) {
         </p>
       )}
       {c.documents.length > 0 && (
-        <ul className="mt-3 space-y-1 text-ui-xs">
-          {c.documents.map((d) => (
-            <li key={d.url}>
-              <a href={d.url} target="_blank" rel="noreferrer" className="font-semibold text-primary">
-                {d.label} ↗
-              </a>
-              <span className="text-base-dark"> · {d.host}</span>
-            </li>
-          ))}
-        </ul>
+        <p className="mt-2 text-ui-2xs text-base-dark">
+          {c.documents.length === 1 ? "Its document is" : `Its ${c.documents.length.toLocaleString()} documents are`} listed by role under{" "}
+          <a href="#fits-together" className="font-semibold text-primary">
+            How it fits together
+          </a>
+          .
+        </p>
       )}
 
       {canRead && (

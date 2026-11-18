@@ -1,7 +1,7 @@
 // TRX: the state transaction program Sovra supports. Only state contracts in
 // these states carry it; state contracts elsewhere are ordinary state contracts.
 //
-// TRX contracts are the route Loci prefers. A buyer in a TRX state sees its state's
+// TRX contracts are the route Agora prefers. A buyer in a TRX state sees its state's
 // contracts ahead of co-op contracts: they are open to local governments through the
 // state's cooperative purchasing program, with the lowest fee of any shared contract.
 // Loaded so far: New Jersey from NJSTART (scripts/import-njstart.ts), Hawaii from the State

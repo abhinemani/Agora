@@ -1,7 +1,7 @@
 "use client";
 
 // The supplier's own editor for its service listing: services, where it works, past public work (each
-// government matched against Loci's directory) and certifications (checked live where Loci can).
+// government matched against Agora's directory) and certifications (checked live where Agora can).
 
 import Link from "next/link";
 import { useEffect, useState } from "react";
@@ -218,7 +218,7 @@ function PastWorkEditor({ s, busy, run }: Props) {
     <Card className="p-5">
       <h3 className="text-lg font-bold text-navy">Past public work</h3>
       <p className="mt-1 text-sm text-slate">
-        Contracts and purchases for governments. Choose the government from Loci's directory so the match is exact; one typed by hand is matched by name, and shows as not found when it isn't
+        Contracts and purchases for governments. Choose the government from Agora's directory so the match is exact; one typed by hand is matched by name, and shows as not found when it isn't
         in the directory. A link to the award (an agenda item, an award notice) helps an agency confirm it.
       </p>
       <div className="mt-4 grid gap-2 sm:grid-cols-[6rem_1fr]">
@@ -319,7 +319,7 @@ function CertificationsEditor({ s, busy, run }: Props) {
     <Card className="p-5">
       <h3 className="text-lg font-bold text-navy">Certifications</h3>
       <p className="mt-1 text-sm text-slate">
-        Loci checks Texas's CMBL small business flag and VetHUB certification live against the Comptroller's directory, under the storefront's company name ({s.name}). Other
+        Agora checks Texas's CMBL small business flag and VetHUB certification live against the Comptroller's directory, under the storefront's company name ({s.name}). Other
         certifications are listed as self-reported.
       </p>
       <div className="mt-4 flex flex-wrap items-end gap-2">

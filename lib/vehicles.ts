@@ -76,7 +76,7 @@ export function familyOf(db: Db, l: Listing): Listing[] {
   return db.listings.filter((x) => x.family === l.family && x.contract_id === l.contract_id);
 }
 
-/** Research leads on Sourcewell discounts, from the Loci research seed. They
+/** Research leads on Sourcewell discounts, from the Agora research seed. They
  * are shown only as unverified notes, never as prices. */
 export const SOURCEWELL_TYLER_NOTES: { match: RegExp; product: string; percent: number }[] = [
   { match: /\bmunis\b|enterprise erp/i, product: "Enterprise ERP (Munis)", percent: 10 },
@@ -149,7 +149,7 @@ export function routesFor(db: Db, listing: Listing, buyer: Buyer | null): Route[
       action: "quote",
     });
   }
-  // The master agreement itself, when Loci doesn't hold it as a contract.
+  // The master agreement itself, when Agora doesn't hold it as a contract.
   const masterNumber = own?.master_agreement?.split(" ").pop();
   if (own?.master_agreement && !db.contracts.some((c) => c.supplier_id === own.supplier_id && c.contract_number === masterNumber)) {
     routes.push({

@@ -1,6 +1,6 @@
 // Co-op catalog suppliers, a few at a time: ?q=tyler to search, ?id=cat_… for one
 // supplier's storefront data, ?for=sup_… for the catalog record behind one of
-// Loci's own suppliers. The catalog itself stays on the server (lib/catalog.ts).
+// Agora's own suppliers. The catalog itself stays on the server (lib/catalog.ts).
 
 import { NextResponse } from "next/server";
 import { withSession } from "@/lib/session";

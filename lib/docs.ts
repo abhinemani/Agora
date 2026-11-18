@@ -1,4 +1,4 @@
-// "Ask a contract": answers from a contract's own documents. Loci reads the
+// "Ask a contract": answers from a contract's own documents. Agora reads the
 // price files it holds on disk and, when a person asks, the master agreements
 // and price files a contract links to on a short list of document hosts. It
 // finds the passages that bear on the question; with an API key the model
@@ -19,7 +19,7 @@ import { ungrounded } from "./shopper-ai";
 import type { Db } from "./types";
 
 /** Hosts that publish contract documents as plain files. Sites with bot walls or robots rules against fetching stay off this list.
- * The state programs' hosts were checked November 14, 2026: Arkansas allows all (crawl delay 10 s, and Loci fetches one
+ * The state programs' hosts were checked November 14, 2026: Arkansas allows all (crawl delay 10 s, and Agora fetches one
  * document when asked); OGS bars only admin, login and search paths; Corcraft publishes no robots.txt; NJSTART and Empire
  * Procure Connect redirect theirs to their vendor's, which bars only /craft; so does OregonBuys. */
 const DOCUMENT_HOSTS = new Set([
@@ -59,7 +59,7 @@ const heldTextReady = () => existsSync(DOCTEXT);
 interface Doc {
   id: string;
   label: string;
-  /** A file Loci holds, or a document fetched from its publisher when asked. */
+  /** A file Agora holds, or a document fetched from its publisher when asked. */
   path?: string;
   url?: string;
   /** Its text is held (seed/catalog/doctext), so it's read without fetching. */
@@ -96,7 +96,7 @@ export interface ContractAnswer {
 const isFile = (url: string) => /\.(pdf|xlsx|xls|docx|csv)(\?|$)/i.test(url);
 /** May the server fetch this document? A file or download action on one of DOCUMENT_HOSTS. */
 export const fetchable = (url: string) => allowed(url);
-/** Text Loci holds in the repository for this URL (seed/catalog/doctext). */
+/** Text Agora holds in the repository for this URL (seed/catalog/doctext). */
 export const heldPages = (url: string): Page[] | null => (heldTextReady() ? (textFor(url)?.pages ?? null) : null);
 const allowed = (url: string) => {
   try {
@@ -107,7 +107,7 @@ const allowed = (url: string) => {
   }
 };
 
-/** A co-op catalog document Loci may fetch: GSA's contract terms (robots.txt bars only /advantage/rs/) and price files published as PDFs on a document host. */
+/** A co-op catalog document Agora may fetch: GSA's contract terms (robots.txt bars only /advantage/rs/) and price files published as PDFs on a document host. */
 export function readableCatalogDocument(d: Pick<CatalogDocument, "url" | "kind">): boolean {
   try {
     const u = new URL(d.url);
@@ -145,14 +145,14 @@ function heldFiles(): HeldFile[] {
 }
 const heldDoc = (f: HeldFile): Doc => ({ id: `file:${f.file}`, label: `Price file: ${f.vintage}`, path: join(PRICE_FILES, f.file) });
 
-/** The documents Loci can read for one contract: by its id in Loci, in the co-op catalog, or as a held price file. */
+/** The documents Agora can read for one contract: by its id in Agora, in the co-op catalog, or as a held price file. */
 function entryFor(db: Db, id: string): Entry | null {
   const listed = entries(db).find((e) => e.id === id);
   const cat = catalogContract(id) ?? catalogContract(db.contracts.find((c) => c.id === id)?.catalog_id);
   if (!cat) return listed ?? null;
   const docs: Doc[] = [...(listed?.docs ?? [])];
   for (const f of heldFiles()) if (f.coop === cat.coop && f.number === cat.number && !docs.some((d) => d.id === `file:${f.file}`)) docs.push(heldDoc(f));
-  // Held text first (no fetch), then documents Loci may fetch.
+  // Held text first (no fetch), then documents Agora may fetch.
   const catDocs = catalogDocumentsFor(cat.id).filter((d) => readableCatalogDocument(d));
   catDocs.sort((a, b) => Number(Boolean(textFor(b.url))) - Number(Boolean(textFor(a.url))));
   for (const d of catDocs) if (!docs.some((x) => x.url === d.url)) docs.push({ id: d.id, label: cat.coop_id === "gsa_mas" ? "GSA contract terms and price list" : d.label, url: d.url, held: Boolean(textFor(d.url)) });
@@ -167,7 +167,7 @@ function entryFor(db: Db, id: string): Entry | null {
   };
 }
 
-/** What Loci could read for a contract, without reading it. */
+/** What Agora could read for a contract, without reading it. */
 export function readableDocuments(db: Db, id: string): { label: string; held: boolean }[] {
   return entryFor(db, id)?.documents ?? [];
 }
@@ -269,7 +269,7 @@ const flat = (s: string) => s.toLowerCase().replace(/[\sÂ ]+/g, " ").replace(/[â
 /** Answer a question from one contract's documents. */
 export async function askDocument(db: Db, contractId: string, question: string): Promise<ContractAnswer> {
   const entry = entryFor(db, contractId);
-  if (!entry) throw new Error("Loci doesn't hold a readable document for that contract.");
+  if (!entry) throw new Error("Agora doesn't hold a readable document for that contract.");
   const read: ContractAnswer["read"] = [];
   const unread: string[] = [];
   const all: Passage[] = [];
@@ -332,7 +332,7 @@ export async function askDocument(db: Db, contractId: string, question: string):
     return { ...base, answer: null, passages: shown, note: "I couldn't verify an answer against the document's own words, so here are the passages that bear on your question." };
   }
   const log_id = pieces(out, text, quotes.length, out.quotes.length, "A quote didn't match the document word for word", { declined: !out.can_answer });
-  return { ...base, ...(log_id ? { log_id } : {}), answer: { paragraphs, quotes }, passages: shown, note: out.can_answer ? "" : "The documents Loci can read don't settle this. Purchasing, the co-op or the supplier would know." };
+  return { ...base, ...(log_id ? { log_id } : {}), answer: { paragraphs, quotes }, passages: shown, note: out.can_answer ? "" : "The documents Agora can read don't settle this. Purchasing, the co-op or the supplier would know." };
 }
 
 // ------------------------------------------------------------------ the contract brief
@@ -379,7 +379,7 @@ const BriefSchema = z.object({
   ),
 });
 
-/** Officials' and sales reps' contact details stay out of what Loci shows: a line with an email address or phone number is dropped whole, since it usually carries a name too. */
+/** Officials' and sales reps' contact details stay out of what Agora shows: a line with an email address or phone number is dropped whole, since it usually carries a name too. */
 const CONTACT = /[\w.+-]+@[\w-]+(\.[\w-]+)+|(\+?1[\s.-]?)?\(?\b\d{3}\)?[\s.-]\d{3}[\s.-]\d{4}\b/;
 const mask = (t: string) =>
   t
@@ -404,7 +404,7 @@ const briefs = ((globalThis as unknown as { __agoraBriefs?: Map<string, Contract
 /** Read a contract's documents into the six brief fields. Each summary rests on a quote checked against the page. */
 export async function contractBrief(db: Db, contractId: string): Promise<ContractBrief> {
   const entry = entryFor(db, contractId);
-  if (!entry) throw new Error("Loci doesn't hold a readable document for that contract.");
+  if (!entry) throw new Error("Agora doesn't hold a readable document for that contract.");
   const key = `${contractId}|${modelOn() ? "ai" : "off"}`;
   const have = briefs.get(key);
   if (have) return have;

@@ -160,8 +160,8 @@ require('fs').mkdirSync(OUT, { recursive: true });
   });
   await step(13, 'Member list sample, Harmon Lake matched', async () => {
     await p.goto(B + '/coops'); await p.waitForTimeout(1000);
-    await p.locator('button:has-text("Try the sample")').click(); await p.waitForSelector('text=/Matched in Loci/');
-    const m = await p.locator('text=/Matched in Loci/').innerText();
+    await p.locator('button:has-text("Try the sample")').click(); await p.waitForSelector('text=/Matched in Agora/');
+    const m = await p.locator('text=/Matched in Agora/').innerText();
     await role('Buyer'); await agency('Harmon Lake Township'); await search('laptops');
     await openFold('coops'); const coops = await p.locator('#coops').innerText().catch(() => '');
     return `${m} · Harmon Lake sees Sourcewell as its co-op: ${/Harmon Lake Township's co-ops:[\s\S]*Sourcewell/.test(coops)}`;

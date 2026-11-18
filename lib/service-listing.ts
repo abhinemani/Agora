@@ -69,7 +69,7 @@ export const countyKey = (c: string) => c.toLowerCase().replace(/\s+county$/, ""
 
 export const splitCounties = (field: string | undefined | null) => (field ? field.split("/").map((c) => c.trim()).filter(Boolean) : []);
 
-/** The certifications Loci knows how to check, and the ones it can only record. */
+/** The certifications Agora knows how to check, and the ones it can only record. */
 export const CERTIFICATION_KINDS: Record<CertificationKind, { label: string; issuer: string; checkable: boolean; note: string }> = {
   tx_cmbl_small_business: {
     label: "Texas small business (CMBL)",
@@ -87,7 +87,7 @@ export const CERTIFICATION_KINDS: Record<CertificationKind, { label: string; iss
     label: "Other certification",
     issuer: "",
     checkable: false,
-    note: "Loci has no live check for this registry, so it stays self-reported.",
+    note: "Agora has no live check for this registry, so it stays self-reported.",
   },
 };
 
@@ -96,7 +96,7 @@ export const CMBL_SEARCH_URL = "https://mycpa.cpa.state.tx.us/tpasscmblsearch/in
 /** Whether a claim stands confirmed by its registry. */
 export const certConfirmed = (c: { check?: { status: string } }) => c.check?.status === "confirmed";
 
-/** A supplier on the results page for a service request: who offers it, where, and what Loci has checked. */
+/** A supplier on the results page for a service request: who offers it, where, and what Agora has checked. */
 export interface LocalSupplierHit {
   supplier_id: string;
   name: string;

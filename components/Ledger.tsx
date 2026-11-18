@@ -151,7 +151,7 @@ export function Ledger() {
           <div className="space-y-1 text-xs text-slate">
             <label className="flex cursor-pointer items-center gap-2">
               <input type="checkbox" className="!p-0" checked={showEarn} onChange={(e) => setShowEarn(e.target.checked)} />
-              Show revenue badges across Loci
+              Show revenue badges across Agora
             </label>
             <div>
               Placeholder pricing. {llm ? "Requests and contracts are read by Claude." : "Offline parsing: no API key is set."}
@@ -180,7 +180,7 @@ export function Ledger() {
 
 const LIST_STATUS = { none: "No member list", partial: "Partial member list", full: "Member list shared" } as const;
 
-/** Sovra ops: outbound clicks per co-op, and whether each co-op's members may buy in Loci. */
+/** Sovra ops: outbound clicks per co-op, and whether each co-op's members may buy in Agora. */
 function CoopTraffic() {
   const { db, ops, act } = useStore();
   const [busy, setBusy] = useState<string | null>(null);
@@ -189,7 +189,7 @@ function CoopTraffic() {
   return (
     <div className="space-y-6 px-5 py-4">
       <p className="text-xs text-slate">
-        <span className="font-semibold text-navy">{db.requests.length} search{db.requests.length === 1 ? "" : "es"}</span> this session. Co-op results send buyers to the co-op's own contract page through a tracked link, so each co-op can see the traffic Sovra sends it. Buying inside Loci stays off until a co-op agrees.
+        <span className="font-semibold text-navy">{db.requests.length} search{db.requests.length === 1 ? "" : "es"}</span> this session. Co-op results send buyers to the co-op's own contract page through a tracked link, so each co-op can see the traffic Sovra sends it. Buying inside Agora stays off until a co-op agrees.
       </p>
       <section className="space-y-3">
         {db.coops.map((coop) => {
@@ -235,7 +235,7 @@ function CoopTraffic() {
                     await act("setCoopBuyInAgora", { coopId: coop.id, on });
                     setBusy(null);
                   }}
-                  label="Members may buy inside Loci (the co-op has agreed)"
+                  label="Members may buy inside Agora (the co-op has agreed)"
                 />
               </div>
             </div>

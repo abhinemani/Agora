@@ -29,7 +29,7 @@ export async function downloadDocument(url: string, maxBytes = READER_MAX_BYTES)
   const controller = new AbortController();
   const timer = setTimeout(() => controller.abort(), maxBytes > READER_MAX_BYTES ? 120_000 : 45_000);
   try {
-    const res = await fetch(url, { signal: controller.signal, headers: { "user-agent": "Loci contract reader" } });
+    const res = await fetch(url, { signal: controller.signal, headers: { "user-agent": "Agora contract reader" } });
     if (!res.ok) throw new Error(`its publisher answered ${res.status}`);
     if (Number(res.headers.get("content-length") ?? 0) > maxBytes) throw docError(`it is over ${mb(maxBytes)}`, "too_large");
     buffer = Buffer.from(await res.arrayBuffer());
@@ -39,8 +39,8 @@ export async function downloadDocument(url: string, maxBytes = READER_MAX_BYTES)
     const hop = buffer.length < 4000 ? buffer.toString("utf8").match(/http-equiv=["']?refresh["']?[^>]*url=([^"'>\s]+)/i) : null;
     if (hop) {
       const next = new URL(hop[1], from);
-      if (next.host !== from.host || !next.pathname.startsWith("/ref_text/")) throw new Error("it points somewhere Loci doesn't read");
-      const res2 = await fetch(next, { signal: controller.signal, headers: { "user-agent": "Loci contract reader" } });
+      if (next.host !== from.host || !next.pathname.startsWith("/ref_text/")) throw new Error("it points somewhere Agora doesn't read");
+      const res2 = await fetch(next, { signal: controller.signal, headers: { "user-agent": "Agora contract reader" } });
       if (!res2.ok) throw new Error(`its publisher answered ${res2.status}`);
       if (Number(res2.headers.get("content-length") ?? 0) > maxBytes) throw docError(`it is over ${mb(maxBytes)}`, "too_large");
       buffer = Buffer.from(await res2.arrayBuffer());
@@ -119,7 +119,7 @@ export async function readBuffer(buffer: Buffer, filename: string): Promise<Page
   if (/\.(xlsx|xlsm|xlsb|xls|csv)$/i.test(filename) && buffer.length > SHEET_MAX_BYTES) throw docError(`it is a spreadsheet over ${mb(SHEET_MAX_BYTES)}`, "too_large");
   // Macro-enabled and binary workbooks read like any workbook.
   if (/\.(xlsm|xlsb)$/i.test(filename)) filename = filename.replace(/\.xls[mb]$/i, ".xlsx");
-  if (!/\.(xlsx|xls|csv|docx|htm|html)$/i.test(filename)) throw docError(`Loci doesn't read ${filename.split(".").pop()?.toUpperCase() || "this kind of"} files`, "unsupported");
+  if (!/\.(xlsx|xls|csv|docx|htm|html)$/i.test(filename)) throw docError(`Agora doesn't read ${filename.split(".").pop()?.toUpperCase() || "this kind of"} files`, "unsupported");
   try {
     const file = await extractFile({ filename, buffer, keep: false });
     return file.rows?.length ? [{ num: 1, text: file.rows.map((r) => r.map((c) => String(c ?? "")).join("  ")).join("\n") }] : file.pages;
@@ -194,7 +194,7 @@ async function slides(buffer: Buffer): Promise<Page[]> {
 const decodeXml = (s: string) => s.replace(/&lt;/g, "<").replace(/&gt;/g, ">").replace(/&quot;/g, '"').replace(/&apos;/g, "'").replace(/&amp;/g, "&");
 
 /** The readable files inside a zip, each read as it would be on its own, as one run of pages headed by the file's name.
- * Scans and files Loci can't read inside are passed over; zips inside zips aren't opened. */
+ * Scans and files Agora can't read inside are passed over; zips inside zips aren't opened. */
 async function zipped(buffer: Buffer): Promise<Page[]> {
   const { default: JSZip } = await import("jszip");
   const zip = await JSZip.loadAsync(buffer);
@@ -211,6 +211,6 @@ async function zipped(buffer: Buffer): Promise<Page[]> {
       passedOver++;
     }
   }
-  if (!pages.length) throw docError(passedOver ? `none of the ${passedOver} files inside could be read` : "the zip holds no file Loci reads", "unsupported");
+  if (!pages.length) throw docError(passedOver ? `none of the ${passedOver} files inside could be read` : "the zip holds no file Agora reads", "unsupported");
   return pages;
 }

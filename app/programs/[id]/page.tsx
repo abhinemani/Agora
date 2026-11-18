@@ -44,7 +44,7 @@ export default function ProgramPageView() {
   }, [id, buyerKey, memberships]);
 
   if (p === undefined) return <Loading />;
-  if (!p) return <ErrorNote message="Loci doesn't hold a program by that name." />;
+  if (!p) return <ErrorNote message="Agora doesn't hold a program by that name." />;
   const color = programColor(p);
   const pick = (c: string | null) => {
     setCategory(c);
@@ -104,7 +104,7 @@ export default function ProgramPageView() {
             <>
               {" "}
               <Link href={`/data#${p.data_anchor}`} className="font-semibold text-maroon hover:underline">
-                How Loci reads it
+                How Agora reads it
               </Link>
               .
             </>
@@ -128,14 +128,14 @@ export default function ProgramPageView() {
           <BuyerStanding p={p} />
           {p.roster && (
             <p className="mt-3 text-xs text-slate">
-              Loci places {n(p.roster.count, "government")} on {p.name}. {p.roster.note}
+              Agora places {n(p.roster.count, "government")} on {p.name}. {p.roster.note}
             </p>
           )}
         </div>
         <div>
           <h2 className="text-xl font-extrabold tracking-tight text-navy">What's on contract</h2>
           <p className="mt-1 text-sm text-slate">
-            {p.group_by === "category" ? "By Loci's categories." : `By ${p.name}'s own headings, where several contracts share one.`} Choose one to see its contracts.
+            {p.group_by === "category" ? "By Agora's categories." : `By ${p.name}'s own headings, where several contracts share one.`} Choose one to see its contracts.
           </p>
           {p.categories.length ? (
             <div className="mt-3 grid grid-cols-2 gap-2 sm:grid-cols-3">
@@ -148,7 +148,7 @@ export default function ProgramPageView() {
               ))}
             </div>
           ) : (
-            <p className="mt-3 text-sm text-slate">Its contracts don't share headings Loci can group by. Search them below.</p>
+            <p className="mt-3 text-sm text-slate">Its contracts don't share headings Agora can group by. Search them below.</p>
           )}
         </div>
       </section>

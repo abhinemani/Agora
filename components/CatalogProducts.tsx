@@ -154,7 +154,7 @@ function ProductCard({ h, requestId }: { h: CatalogProductHit; requestId: string
                     {r.contract_number}
                   </Link>{" "}
                   {r.trx && (
-                    <span title="A state contract on the TRX program, which Sovra supports. Loci lists it first for that state's buyers.">
+                    <span title="A state contract on the TRX program, which Sovra supports. Agora lists it first for that state's buyers.">
                       <Badge tone="green">TRX</Badge>
                     </span>
                   )}{" "}

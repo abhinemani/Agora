@@ -115,7 +115,7 @@ export async function signIn(args: { email: unknown; password: unknown }): Promi
     throw new AuthError("That email and password don't match an account.");
   }
   failures.delete(email);
-  if (user.disabled) throw new AuthError("This account has been suspended. Write to the Loci team if you think that's a mistake.");
+  if (user.disabled) throw new AuthError("This account has been suspended. Write to the Agora team if you think that's a mistake.");
   return publicUser(user);
 }
 
@@ -372,7 +372,7 @@ export interface AccountChange {
 
 /** Change an account from the admin pages. Suspending it also signs it out everywhere. */
 export async function changeAccount(id: string, change: AccountChange): Promise<User> {
-  if (change.role !== undefined && !ROLES.includes(change.role)) throw new AuthError("That isn't a role Loci knows.");
+  if (change.role !== undefined && !ROLES.includes(change.role)) throw new AuthError("That isn't a role Agora knows.");
   const p = pool();
   if (!p) {
     const u = mem.users.get(id);

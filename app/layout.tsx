@@ -7,8 +7,8 @@ import { StoreProvider } from "@/components/store";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Loci: find what your agency needs",
-  description: "Loci: one marketplace where any city, county, or district can search state and cooperative contracts, see which it may use, and buy.",
+  title: "Agora: find what your agency needs",
+  description: "Agora: one marketplace where any city, county, or district can search state and cooperative contracts, see which it may use, and buy.",
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

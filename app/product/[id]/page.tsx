@@ -42,7 +42,7 @@ function Product() {
   if (!db) return <Loading />;
 
   const start = db.listings.find((l) => l.id === id);
-  if (!start) return <ErrorNote message="That product isn't in Loci." />;
+  if (!start) return <ErrorNote message="That product isn't in Agora." />;
   const variants = familyOf(db, start);
   const l = variants.find((v) => v.id === chosen) ?? start;
   const supplier = db.suppliers.find((s) => s.id === l.supplier_id)!;

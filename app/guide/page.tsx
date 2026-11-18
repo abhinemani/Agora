@@ -1,4 +1,4 @@
-// Guide: how to use Loci, what its terms mean, where its data comes from, and the
+// Guide: how to use Agora, what its terms mean, where its data comes from, and the
 // questions people ask first. Written for a buyer, not a researcher: /data has the
 // full account. Every count is read from the data files, never typed in.
 
@@ -11,8 +11,8 @@ import insights from "@/seed/coops/insights.json";
 import catalogInsights from "@/seed/catalog/insights.json";
 
 export const metadata: Metadata = {
-  title: "Guide · Loci",
-  description: "How to use Loci, what its terms mean, where its contracts and prices come from, and answers to common questions.",
+  title: "Guide · Agora",
+  description: "How to use Agora, what its terms mean, where its contracts and prices come from, and answers to common questions.",
 };
 
 const n = (x: number) => x.toLocaleString("en-US");
@@ -94,16 +94,16 @@ export default function GuidePage() {
     [
       "Answer a few questions",
       <>
-        For a product, Loci asks who is buying, how many, and then what separates the products it found: a price band, a maker, a spec such as “Which cab?”. Each answer narrows the
+        For a product, Agora asks who is buying, how many, and then what separates the products it found: a price band, a maker, a spec such as “Which cab?”. Each answer narrows the
         shortlist, and what the request already says is read into filters that can be removed: “{EXAMPLES.find((e) => /\bno\b/i.test(e)) ?? "crew cab pickups, no diesel"}” rules diesel
-        out. Software, services and construction skip this and go straight to results. Naming the agency is optional, but without one Loci shows who each contract is open to and marks
+        out. Software, services and construction skip this and go straight to results. Naming the agency is optional, but without one Agora shows who each contract is open to and marks
         eligibility “Not checked”.
       </>,
     ],
     [
-      "Check how Loci read it",
+      "Check how Agora read it",
       <>
-        A “Read as” line says what Loci took the request to mean. A few seconds after the shortlist appears, each of the leading products is marked Fits, Partly fits or Doesn&apos;t fit,
+        A “Read as” line says what Agora took the request to mean. A few seconds after the shortlist appears, each of the leading products is marked Fits, Partly fits or Doesn&apos;t fit,
         with a short reason, and the ones that don&apos;t fit are set aside under a line that opens to show why. What the agency can buy today comes first, then the product that is the
         thing asked for, then the agency&apos;s own state contract ahead of a co-op&apos;s.
       </>,
@@ -126,7 +126,7 @@ export default function GuidePage() {
       "Buy, or send it on",
       <>
         Anyone can fill a cart. Under the agency&apos;s quick-buy limit an order checks out on a P-card. At or over it, the cart goes to purchasing for approval as a purchase order. A cart can also be handed to
-        someone who is allowed to buy. A co-op contract is ordered on the co-op&apos;s own site, which Loci links to. When nothing fits, Loci offers a quote under a contract the agency
+        someone who is allowed to buy. A co-op contract is ordered on the co-op&apos;s own site, which Agora links to. When nothing fits, Agora offers a quote under a contract the agency
         can already use, quotes from a few suppliers, or a solicitation, in that order. Checking out asks for an account, and the cart carries over to it.
       </>,
     ],
@@ -138,16 +138,16 @@ export default function GuidePage() {
         <h1 className="font-heading text-heading-xl font-bold text-ink">Guide</h1>
         <div className="mt-3 max-w-[68ex] space-y-3 text-body-md text-base-darker">
           <p>
-            Loci answers one question for a local government: what is the easiest lawful way to buy this? It searches the agency&apos;s own contracts, its state&apos;s contracts and the
+            Agora answers one question for a local government: what is the easiest lawful way to buy this? It searches the agency&apos;s own contracts, its state&apos;s contracts and the
             national co-ops together, and says which of them the agency may use.
           </p>
           <p>
-            This page explains how to use it, what its words mean, where its contracts and prices come from, and what it does not know. Loci is a prototype, so the last part matters.
+            This page explains how to use it, what its words mean, where its contracts and prices come from, and what it does not know. Agora is a prototype, so the last part matters.
           </p>
         </div>
         <nav className="mt-5 flex flex-wrap gap-x-4 gap-y-1 text-ui-xs" aria-label="On this page">
           {[
-            ["#how", "How to use Loci"],
+            ["#how", "How to use Agora"],
             ["#terms", "What the terms mean"],
             ["#sources", "Where the data comes from"],
             ["#questions", "Questions"],
@@ -161,7 +161,7 @@ export default function GuidePage() {
 
       <Section
         id="how"
-        title="How to use Loci"
+        title="How to use Agora"
         intro={<p>A purchase takes six steps, and most of the work is in the first. The clearer the request, the fewer options there are to weigh.</p>}
       >
         <ol className="border border-base-light bg-white">
@@ -177,7 +177,7 @@ export default function GuidePage() {
         </ol>
         <p className="mt-4 max-w-[72ex] text-ui-xs text-base-dark">
           There are other ways in. <Link href="/browse" className={link}>Browse</Link> lists the catalog by category. <Link href="/programs" className={link}>Programs</Link> has a page
-          for each of the {programCount} purchasing programs Loci holds, state programs first. <Link href="/contracts" className={link}>Contracts</Link> searches every contract, each with
+          for each of the {programCount} purchasing programs Agora holds, state programs first. <Link href="/contracts" className={link}>Contracts</Link> searches every contract, each with
           its own page: who can use it, how to buy under it, and what its documents say. <Link href="/storefronts" className={link}>Storefronts</Link> lists every supplier. Under Shopper,{" "}
           <Link href="/quote-check" className={link}>Check a quote</Link> compares a vendor&apos;s quote line by line with the prices on file, and{" "}
           <Link href="/ask" className={link}>Ask a contract</Link> answers a question from a contract&apos;s own documents.
@@ -189,8 +189,8 @@ export default function GuidePage() {
         title="What the terms mean"
         intro={
           <p>
-            Public purchasing has its own vocabulary, and Loci adds a little of its own. The terms are grouped by where they appear: the routes a purchase can take, whether an agency may use
-            one, what a price is, and how sure Loci is of what it says.
+            Public purchasing has its own vocabulary, and Agora adds a little of its own. The terms are grouped by where they appear: the routes a purchase can take, whether an agency may use
+            one, what a price is, and how sure Agora is of what it says.
           </p>
         }
       >
@@ -202,7 +202,7 @@ export default function GuidePage() {
             [
               "State contract",
               <>
-                A contract a state awarded and opened to its local governments. Loci holds the state contracts of {trxStates}, and shows them first to buyers in those states.
+                A contract a state awarded and opened to its local governments. Agora holds the state contracts of {trxStates}, and shows them first to buyers in those states.
               </>,
             ],
             [
@@ -211,7 +211,7 @@ export default function GuidePage() {
             ],
             [
               "TRX",
-              "The label on state contracts in the states above. They are the route Loci prefers: the state has already competed them for its local governments.",
+              "The label on state contracts in the states above. They are the route Agora prefers: the state has already competed them for its local governments.",
             ],
             [
               "Participating addendum",
@@ -225,14 +225,14 @@ export default function GuidePage() {
             [
               "Program",
               <>
-                Whoever awarded a shared contract: a state&apos;s purchasing office or a co-op. Each of the {programCount} in Loci has a <Link href="/programs" className={link}>page</Link>{" "}
+                Whoever awarded a shared contract: a state&apos;s purchasing office or a co-op. Each of the {programCount} in Agora has a <Link href="/programs" className={link}>page</Link>{" "}
                 built from its contracts. Nobody claims or pays for one.
               </>,
             ],
-            ["City marketplace", "Loci set up for one agency's staff, with its own contracts, rules and approvals. Riverbend's is the one shown, and Riverbend is fictional."],
+            ["City marketplace", "Agora set up for one agency's staff, with its own contracts, rules and approvals. Riverbend's is the one shown, and Riverbend is fictional."],
             [
               "Storefront",
-              "A supplier's page: its catalog, the contracts it sells through, its certifications and reviews. Loci builds one from public contracts, and the supplier can claim it with a work email on the company's own domain; any other email waits for review.",
+              "A supplier's page: its catalog, the contracts it sells through, its certifications and reviews. Agora builds one from public contracts, and the supplier can claim it with a work email on the company's own domain; any other email waits for review.",
             ],
             [
               "Service listing",
@@ -245,35 +245,35 @@ export default function GuidePage() {
           note="These appear in the Eligibility and Requirement columns of the options table."
           terms={[
             ["Eligible", "The agency may use the contract: it is the agency's own, its state's, or a co-op's that the agency is on."],
-            ["Membership required", "The contract belongs to a co-op the agency is not known to be on. Loci can send purchasing a request to join. Elsewhere this reads “Join to use”."],
+            ["Membership required", "The contract belongs to a co-op the agency is not known to be on. Agora can send purchasing a request to join. Elsewhere this reads “Join to use”."],
             [
               "Detected membership",
-              "A co-op membership Loci found by matching the agency to a co-op's member list. It counts right away, and purchasing can confirm it, remove it or add one by hand.",
+              "A co-op membership Agora found by matching the agency to a co-op's member list. It counts right away, and purchasing can confirm it, remove it or add one by hand.",
             ],
-            ["Not checked", "No agency is selected, so Loci cannot say who may use the contract."],
-            ["Quick-buy limit", "The amount under which the agency lets staff buy without a purchase order. Each agency sets its own; where Loci does not know it, a typical one is used."],
+            ["Not checked", "No agency is selected, so Agora cannot say who may use the contract."],
+            ["Quick-buy limit", "The amount under which the agency lets staff buy without a purchase order. Each agency sets its own; where Agora does not know it, a typical one is used."],
             ["P-card", "A purchasing card: the agency's credit card, used for orders under the quick-buy limit."],
             ["Purchase order", "The agency's formal order to a supplier, approved by purchasing. Orders over the quick-buy limit need one."],
-            ["Co-op order", "An order placed on the co-op's own site. Loci does not sell through a co-op's contracts unless the co-op has agreed to it; it links to the contract there."],
+            ["Co-op order", "An order placed on the co-op's own site. Agora does not sell through a co-op's contracts unless the co-op has agreed to it; it links to the contract there."],
             ["By quote", "The contract covers the purchase but publishes no price, so the supplier quotes one under the contract."],
             ["Purchase file", "The record of a request, kept beside the results: what was asked for, the options considered, the route chosen and why, and what is outstanding. It downloads as a text file."],
           ]}
         />
         <Terms
           title="Prices"
-          note="Every price Loci shows was read from a published line, and is labelled with what kind of price it is. Loci never estimates one."
+          note="Every price Agora shows was read from a published line, and is labelled with what kind of price it is. Agora never estimates one."
           terms={[
             ["Awarded bid", "The price a supplier bid and a government accepted. On vehicles it is a base price: the base model, which options add to."],
             ["Contract price", "A price stated in the contract or its price sheet. A contract net price is the price after the contract's discount, as the document prints it."],
             ["Not-to-exceed rate", "A ceiling. The supplier may charge less, never more."],
-            ["List price", "The supplier's catalog price before the contract's discount. It is a ceiling, shown as a list price and never as what a buyer pays. Loci does not show discount percentages."],
+            ["List price", "The supplier's catalog price before the contract's discount. It is a ceiling, shown as a list price and never as what a buyer pays. Agora does not show discount percentages."],
             ["Reference price", "A price shown for comparison on a route that buys by quote. The quote sets the real one."],
             ["Vintage", "When and where a price was published: the price file or contract it was read from, and its date."],
           ]}
         />
         <Terms
-          title="How sure Loci is"
-          note="Loci labels what it knows by how it knows it."
+          title="How sure Agora is"
+          note="Agora labels what it knows by how it knows it."
           terms={[
             [
               "Membership evidence",
@@ -291,7 +291,7 @@ export default function GuidePage() {
             ],
             [
               "Read as",
-              "Loci's one-line reading of a request, in the catalog's own terms. It lets a request find products that share no word with it: “something for kids to climb on at the park” finds climbers.",
+              "Agora's one-line reading of a request, in the catalog's own terms. It lets a request find products that share no word with it: “something for kids to climb on at the park” finds climbers.",
             ],
             [
               "Fits, Partly fits, Doesn't fit",
@@ -305,8 +305,8 @@ export default function GuidePage() {
               "Fit score",
               "How much of the request an option covers, from 0 to 100. Words in its name count most, and rarer words weigh more. A priced option has to share a word for the thing asked for, not only for the kind of work. Sponsorship never changes it.",
             ],
-            ["Research lead", "A real contract whose current terms Loci has not confirmed against a source document. It is shown as a lead to follow up, not as a checked record."],
-            ["NIGP code", "The commodity code governments use to classify what they buy. Loci uses it to match a request to contracts."],
+            ["Research lead", "A real contract whose current terms Agora has not confirmed against a source document. It is shown as a lead to follow up, not as a checked record."],
+            ["NIGP code", "The commodity code governments use to classify what they buy. Agora uses it to match a request to contracts."],
             [
               "Verified",
               "A supplier whose checks were all run and passed: SAM.gov registration and exclusions, Section 889, insurance and each certification. Only the fictional demo suppliers carry results, marked as demo. Real companies show every check as not checked yet.",
@@ -317,7 +317,7 @@ export default function GuidePage() {
             ],
             [
               "Past public work",
-              "Work a supplier says it did for a government. Loci matches the government's name to its directory, which shows the government exists, not that the work happened. One it cannot match reads “Not found in Loci's directory”.",
+              "Work a supplier says it did for a government. Agora matches the government's name to its directory, which shows the government exists, not that the work happened. One it cannot match reads “Not found in Agora's directory”.",
             ],
             [
               "Sponsored",
@@ -333,7 +333,7 @@ export default function GuidePage() {
         intro={
           <>
             <p>
-              Everything real in Loci was published by a government or a co-op, and was collected between {date(insights.retrieved)} and {date(ci.oregon.retrieved)}. There are four bodies
+              Everything real in Agora was published by a government or a co-op, and was collected between {date(insights.retrieved)} and {date(ci.oregon.retrieved)}. There are four bodies
               of it: state contracts, co-op contracts, co-op member lists, and state law. The <Link href="/data" className={link}>co-op data page</Link> gives the full account of each, with
               its gaps.
             </p>
@@ -391,7 +391,7 @@ export default function GuidePage() {
 
         <h3 className="mt-8 text-ui-md font-bold text-ink">Products and prices</h3>
         <p className="mt-1 max-w-[72ex] text-ui-xs text-base-darker">
-          Loci read {n(ci.stash.before.products)} products from those contracts&apos; price files and line items, and serves {n(ci.products.products)} of them. A product is served when it
+          Agora read {n(ci.stash.before.products)} products from those contracts&apos; price files and line items, and serves {n(ci.products.products)} of them. A product is served when it
           has a price, a name that says what it is, and is bought by the unit. The other {n(ci.stash.products)} are held back: items with no published price, parts and accessories, and
           hourly or monthly rates. A service sold as a fixed package counts as a product. Served products were also read for what kind of thing each is and for their specs, with a value
           kept only when the product&apos;s own record prints it.
@@ -406,7 +406,7 @@ export default function GuidePage() {
         <h3 className="mt-8 text-ui-md font-bold text-ink">Who is on which co-op</h3>
         <p className="mt-1 max-w-[72ex] text-ui-xs text-base-darker">
           {n(insights.workbook.roster_rows)} membership listings from the co-ops&apos; published rosters, joined to the Census of Governments and the federal school and college registries.
-          The result is a directory of {n(insights.directory.governments)} governments, {n(insights.directory.on_a_roster)} of them on at least one roster. This is how Loci knows an
+          The result is a directory of {n(insights.directory.governments)} governments, {n(insights.directory.on_a_roster)} of them on at least one roster. This is how Agora knows an
           agency&apos;s co-ops without asking.
         </p>
 
@@ -426,12 +426,12 @@ export default function GuidePage() {
       <Section
         id="questions"
         title="Questions"
-        intro={<p>The ones that come up first. Most have the same answer underneath: Loci shows what was published and says so when nothing was.</p>}
+        intro={<p>The ones that come up first. Most have the same answer underneath: Agora shows what was published and says so when nothing was.</p>}
       >
         <div className="border border-base-light bg-white">
           <Question q="Can orders really be placed here?">
             <p>
-              Not yet. Loci is a prototype. The contracts, prices, member lists and state rules are real public records, but the cart, checkout and approvals run against fictional demo
+              Not yet. Agora is a prototype. The contracts, prices, member lists and state rules are real public records, but the cart, checkout and approvals run against fictional demo
               agencies, and no order reaches a supplier.
             </p>
           </Question>
@@ -444,11 +444,11 @@ export default function GuidePage() {
           </Question>
           <Question q="Does “Eligible” mean the agency is cleared to buy?">
             <p>
-              It means Loci found no barrier: the contract is open to the agency, and the agency is on the co-op where one is involved. The agency&apos;s own purchasing rules and its
+              It means Agora found no barrier: the contract is open to the agency, and the agency is on the co-op where one is involved. The agency&apos;s own purchasing rules and its
               state&apos;s law still apply, and the state rule note on the results page says what that law asks. Purchasing has the final word.
             </p>
           </Question>
-          <Question q="How does Loci know which co-ops an agency is on?">
+          <Question q="How does Agora know which co-ops an agency is on?">
             <p>
               From the rosters co-ops publish, agencies&apos; own procurement pages, and published purchases. Each membership shows the strongest evidence behind it. A roster listing shows
               the agency registered, not that it buys that way, and a co-op with no public roster cannot be detected at all. Purchasing can confirm or correct memberships.
@@ -456,7 +456,7 @@ export default function GuidePage() {
           </Question>
           <Question q="Why does a contract show no price?">
             <p>
-              Because none was published. Many co-op and state contracts print a discount, a placeholder or nothing, and keep prices in a quote. Loci never fills the gap with an estimate. It
+              Because none was published. Many co-op and state contracts print a discount, a placeholder or nothing, and keep prices in a quote. Agora never fills the gap with an estimate. It
               lists the contract as covering the purchase and offers a quote request.
             </p>
           </Question>
@@ -468,7 +468,7 @@ export default function GuidePage() {
           </Question>
           <Question q="Why are some co-ops thin, or missing?">
             <p>
-              Loci follows each site&apos;s rules for automated readers. Some co-ops bar them or sit behind a challenge page, so their files are added only when a person downloads them.
+              Agora follows each site&apos;s rules for automated readers. Some co-ops bar them or sit behind a challenge page, so their files are added only when a person downloads them.
               Others publish contract lists but keep prices behind a member login. GSA&apos;s schedule contracts are held but not served.
             </p>
           </Question>
@@ -507,16 +507,16 @@ export default function GuidePage() {
               or purchasing officer should confirm anything a purchase depends on.
             </p>
           </Question>
-          <Question q="Does Loci publish people's contact details?">
+          <Question q="Does Agora publish people's contact details?">
             <p>
               Officials&apos; names, phone numbers, emails and addresses are removed from the member lists and contract records. The one exception is the text of contract documents
               themselves, which keeps the contacts it prints so a buyer can reach the contract manager.
             </p>
           </Question>
-          <Question q="What does Loci cost?">
+          <Question q="What does Agora cost?">
             <p>
               Searching is free. An agency pays a subscription for its own city marketplace, and a supplier pays for a fuller storefront or a sponsored placement.{" "}
-              <Link href="/model" className={link}>How Loci earns</Link> sets out each one.
+              <Link href="/model" className={link}>How Agora earns</Link> sets out each one.
             </p>
           </Question>
         </div>

@@ -1,7 +1,7 @@
-// Contracts as records in their own right. Most of what Loci can surface for a
+// Contracts as records in their own right. Most of what Agora can surface for a
 // request is a contract a buyer may use, not a priced item, so every contract
 // gets a page (contractDetail) and all of them can be searched (exploreContracts):
-// the co-op catalog's contracts plus the ones Loci holds itself (state contracts,
+// the co-op catalog's contracts plus the ones Agora holds itself (state contracts,
 // agency registers, demo contracts). Server only: it reads the co-op catalog.
 //
 // Nothing here invents a term. What a contract covers, who may use it and how it
@@ -46,13 +46,13 @@ export interface ContractRow {
   /** Items listed under the contract, and how many carry a price the buyer would pay. */
   items: number;
   priced: number;
-  /** Documents on file, and whether Loci can read at least one. */
+  /** Documents on file, and whether Agora can read at least one. */
   documents: number;
   readable: boolean;
-  /** Prices are loaded and buyable in Loci, rather than on the co-op's site. */
+  /** Prices are loaded and buyable in Agora, rather than on the co-op's site. */
   in_agora: boolean;
   fit: number | null;
-  /** A state contract in a TRX state (lib/trx.ts), the route Loci prefers for that state's buyers. */
+  /** A state contract in a TRX state (lib/trx.ts), the route Agora prefers for that state's buyers. */
   trx: boolean;
   /** NIGP commodity classes, and whether the source printed them or the review chose them. */
   nigp: string[];
@@ -103,7 +103,7 @@ export interface ExploreOptions {
   usable?: boolean;
   /** Only contracts with item prices loaded. */
   priced?: boolean;
-  /** Only contracts with a document Loci can read. */
+  /** Only contracts with a document Agora can read. */
   readable?: boolean;
   offset?: number;
   limit?: number;
@@ -178,7 +178,7 @@ function scan(db: Db, buyer: Buyer | null, q: string, docHits: Map<string, Docum
       nigp: c.nigp?.classes ?? [],
       nigp_source: c.nigp?.source ?? null,
       program: db.coops.find((x) => x.id === c.coop_id)?.name ?? c.coop,
-      // A state program is keyed by its name, so the catalog's NJSTART and Loci's own NJSTART contracts are one program.
+      // A state program is keyed by its name, so the catalog's NJSTART and Agora's own NJSTART contracts are one program.
       program_id: c.state_contract ? c.coop : c.coop_id || c.coop,
       number: c.number,
       title: c.title,
@@ -198,7 +198,7 @@ function scan(db: Db, buyer: Buyer | null, q: string, docHits: Map<string, Docum
     });
   }
 
-  // Contracts Loci holds itself. A register contract is visible only to its own agency.
+  // Contracts Agora holds itself. A register contract is visible only to its own agency.
   const texts = db.contracts.map((c) => `${c.title} ${c.scope ?? ""} ${c.vehicle ?? ""} ${c.owner} ${db.suppliers.find((s) => s.id === c.supplier_id)?.name ?? ""}`);
   db.contracts.forEach((c, i) => {
     if ((c.register_of && c.register_of !== buyer?.name) || (c.end && c.end < now)) return;
@@ -296,7 +296,7 @@ export interface ContractItem {
   list: number | null;
   note: string;
   unit: string | null;
-  /** Where the item can be opened: a product page in Loci, or the co-op's page through the tracked link. */
+  /** Where the item can be opened: a product page in Agora, or the co-op's page through the tracked link. */
   href: string;
   external: boolean;
 }
@@ -312,7 +312,7 @@ export interface ContractDetail {
   nigp: { source: "published" | "reviewed"; classes: { code: string; label: string | null }[]; codes: { code: string; label: string | null }[] } | null;
   kind_label: string;
   program: string;
-  /** The program's page in Loci (/programs/…), when the catalog holds the program. */
+  /** The program's page in Agora (/programs/…), when the catalog holds the program. */
   program_href: string | null;
   number: string;
   title: string;
@@ -320,7 +320,7 @@ export interface ContractDetail {
   supplier_id: string;
   category: string | null;
   expired: boolean;
-  /** Scope lines beyond the title: the co-op's categories, GSA's SIN descriptions, Loci's scope note. */
+  /** Scope lines beyond the title: the co-op's categories, GSA's SIN descriptions, Agora's scope note. */
   covers: string[];
   sins: { code: string; title: string; open: boolean }[];
   term: { start: string | null; end: string | null; renewal: string | null };
@@ -334,7 +334,7 @@ export interface ContractDetail {
   items: ContractItem[];
   items_total: number;
   documents: { label: string; url: string; host: string; readable: boolean }[];
-  /** Documents Loci can read for the brief and for questions. */
+  /** Documents Agora can read for the brief and for questions. */
   readable: { label: string; held: boolean }[];
   /** The contract on its owner's site (tracked), or the directory to look it up in. */
   link: { href: string; label: string; tracked: boolean } | null;
@@ -342,7 +342,7 @@ export interface ContractDetail {
   provenance: string;
   /** Other current contracts the same supplier holds. */
   related: { id: string; program: string; number: string; title: string }[];
-  /** The same contract with prices loaded in Loci, when this is the catalog's copy. */
+  /** The same contract with prices loaded in Agora, when this is the catalog's copy. */
   agora_copy: string | null;
   buyer: string | null;
 }
@@ -384,9 +384,9 @@ function steps(c: { program: string; number: string; supplier: string; kind: Con
   if (c.access === "join") out.push(`Get on ${c.program} first. Ask purchasing: most co-ops take a short membership form, and some states want a board resolution or an interlocal agreement before the first order.`);
   if (c.access === "check") out.push(`Confirm your state has a participating addendum to ${c.number}. Without one, your state's purchasing office decides whether you may use it.`);
   if (c.kind === "federal") out.push("Order only under the SINs marked open to state and local governments. The rest of the schedule is for federal buyers.");
-  if (c.in_agora) out.push("Prices are loaded in Loci: add the items below to a cart and check out under this contract.");
+  if (c.in_agora) out.push("Prices are loaded in Agora: add the items below to a cart and check out under this contract.");
   else out.push(`Ask ${c.supplier || "the supplier"} for a quote that cites ${c.program} ${c.number}, so the contract's pricing and terms apply.`);
-  if (!c.in_agora) out.push(c.priced > 0 ? "Check the quote against the prices on file with Loci's quote check before you order." : "No item prices are on file for this contract, so compare the quote with the contract's own price list or discount schedule.");
+  if (!c.in_agora) out.push(c.priced > 0 ? "Check the quote against the prices on file with Agora's quote check before you order." : "No item prices are on file for this contract, so compare the quote with the contract's own price list or discount schedule.");
   if (!c.in_agora) out.push(c.hasLink ? `Place the order the way ${c.program} sets out on the contract's page, and keep the contract number on the purchase order.` : `Place the order the way ${c.program} sets out, and keep the contract number on the purchase order.`);
   return out;
 }
@@ -413,7 +413,7 @@ function catalogDetail(db: Db, c: CatalogContract, itemQuery: string): ContractD
     detail = `${supplier || "The provider"}'s own published prices (for Corcraft, the Price & Specification Guide, dock delivered), not a bid award. Confirm the current price with ${supplier || "the provider"} before you order.`;
   } else if (priced.length && c.state_contract) {
     headline = `${n(priced.length, "awarded price")} on file`;
-    detail = `The state's awarded line items for this contract, read from ${program}${c.start && c.end ? ` (contract term ${longDate(c.start)} to ${longDate(c.end)})` : ""}. Confirm the current price and any annual adjustment with the supplier.${c.state_contract.more_items ? ` ${program} lists more items than Loci has loaded; the rest are on the contract's page.` : ""}`;
+    detail = `The state's awarded line items for this contract, read from ${program}${c.start && c.end ? ` (contract term ${longDate(c.start)} to ${longDate(c.end)})` : ""}. Confirm the current price and any annual adjustment with the supplier.${c.state_contract.more_items ? ` ${program} lists more items than Agora has loaded; the rest are on the contract's page.` : ""}`;
   } else if (priced.length) {
     headline = `${n(priced.length, "item")} with a price on file`;
     detail = `${notes.join("; ")}. These are prices as published${vintages.length ? ` in ${vintages.join("; ")}` : ""}, not a quote: confirm the current price, options and freight with the supplier.`;
@@ -554,7 +554,7 @@ function agoraDetail(db: Db, c: Contract, itemQuery: string): ContractDetail {
     requires: c.eligibility?.requires ?? null,
     state_rule: kind === "coop" ? stateRuleFor(buyer, c.title) : null,
     pricing: {
-      headline: listings.length ? `${n} price${listings.length === 1 ? "" : "s"} loaded in Loci` : basis === "discount_from_list" ? "Priced as a discount off list" : "No item prices on file",
+      headline: listings.length ? `${n} price${listings.length === 1 ? "" : "s"} loaded in Agora` : basis === "discount_from_list" ? "Priced as a discount off list" : "No item prices on file",
       detail: listings.length
         ? "Published contract prices, read from the contract's price file."
         : basis === "discount_from_list"
@@ -581,7 +581,7 @@ function agoraDetail(db: Db, c: Contract, itemQuery: string): ContractDetail {
   };
 }
 
-/** Everything Loci knows about one contract, for its page. `items` narrows the item list by a word. */
+/** Everything Agora knows about one contract, for its page. `items` narrows the item list by a word. */
 export function contractDetail(db: Db, id: string, items = ""): ContractDetail | null {
   const own = db.contracts.find((c) => c.id === id);
   if (own) return own.register_of && own.register_of !== db.session.buyer?.name ? null : agoraDetail(db, own, items.slice(0, 80));

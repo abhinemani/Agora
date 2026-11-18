@@ -55,7 +55,7 @@ export default function QuoteCheck() {
         active="quote"
         title="Check a quote"
         working={busy}
-        lead="Paste a vendor's quote or upload it. Your shopper compares each line with the price Loci holds for the same part number, and shows the line of the price file it's checking against."
+        lead="Paste a vendor's quote or upload it. Your shopper compares each line with the price Agora holds for the same part number, and shows the line of the price file it's checking against."
       />
 
       <div className="grid items-start gap-6 lg:grid-cols-[minmax(0,380px)_minmax(0,1fr)]">
@@ -98,7 +98,7 @@ export default function QuoteCheck() {
             Try a sample quote for playground parts →
           </button>
           <p className="text-ui-3xs leading-relaxed text-base-dark">
-            Loci matches by part number against the price files it holds: Burke's 2027 OMNIA list, BuyBoard's vehicle awards, SitOnIt's list and Loci's own listings. {llm ? "Claude reads the quote's lines; a line is kept only if its part number and price are printed in the quote." : "The AI connection is off, so lines are read by simple rules: a part number Loci knows, then a price."}
+            Agora matches by part number against the price files it holds: Burke's 2027 OMNIA list, BuyBoard's vehicle awards, SitOnIt's list and Agora's own listings. {llm ? "Claude reads the quote's lines; a line is kept only if its part number and price are printed in the quote." : "The AI connection is off, so lines are read by simple rules: a part number Agora knows, then a price."}
           </p>
         </section>
 

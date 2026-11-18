@@ -54,7 +54,7 @@ export default function RequestResults() {
 
   const request = db?.requests.find((r) => r.id === id);
   const buyer = db?.session.buyer ?? null;
-  // Loci searches every contract by default; the agency is optional.
+  // Agora searches every contract by default; the agency is optional.
   const needsBuyer = false;
   // Riverbend's preference policy is the only one on file, so only its buyers are asked.
   const isHome = buyer?.name === db?.agency.name;
@@ -131,7 +131,7 @@ export default function RequestResults() {
               Purchasing options
             </h2>
             <p className="text-ui-xs text-base-dark">
-              {counts}. {buyer ? `Only contracts open to ${buyer.name}, ${buyer.state} are listed` : "Every contract in Loci is listed; select an agency to limit them to the ones it can use"}.
+              {counts}. {buyer ? `Only contracts open to ${buyer.name}, ${buyer.state} are listed` : "Every contract in Agora is listed; select an agency to limit them to the ones it can use"}.
             </p>
           </div>
           <OptionsTable
@@ -186,7 +186,7 @@ export default function RequestResults() {
             <div>
               <h2 className="font-heading text-heading-lg font-bold text-ink">
                 {results.own_contracts.length
-                  ? "Nothing else in Loci covers this, but the agency's own contract does."
+                  ? "Nothing else in Agora covers this, but the agency's own contract does."
                   : results.contract_leads.some((c) => c.eligible) || results.coops.hits.some((h) => h.eligible)
                     ? "No published prices for this yet. Contracts that cover it are listed below."
                     : results.unavailable.length
@@ -195,13 +195,13 @@ export default function RequestResults() {
               </h2>
               {results.contract_leads.some((c) => c.eligible) && (
                 <p className="mt-2 text-sm text-navy">
-                  The contracts listed below cover this kind of purchase, but Loci doesn't hold their prices yet. Open one for its terms and how to buy under it, and ask the
+                  The contracts listed below cover this kind of purchase, but Agora doesn't hold their prices yet. Open one for its terms and how to buy under it, and ask the
                   supplier for a quote under the contract before running a solicitation.
                 </p>
               )}
               <p className="mt-2 text-sm text-slate">
                 Most requests resolve to something already on contract or under a quick-buy limit. {results.buyer?.name ?? "The agency"} can run a solicitation, and once it's
-                awarded the contract joins Loci for the next agency that needs the same thing.
+                awarded the contract joins Agora for the next agency that needs the same thing.
               </p>
               {results.similar_solicitation && (
                 <p className="mt-3 text-sm text-navy">
@@ -334,7 +334,7 @@ export default function RequestResults() {
       )}
 
       <ErrorNote message={error} />
-      {!needsBuyer && !needsAnswer && !results && !error && <Loading label={buyer ? `Checking every contract ${buyer.name} can use` : "Checking every contract in Loci"} />}
+      {!needsBuyer && !needsAnswer && !results && !error && <Loading label={buyer ? `Checking every contract ${buyer.name} can use` : "Checking every contract in Agora"} />}
 
       {results &&
         (shopperApplies(results) ? (
@@ -416,7 +416,7 @@ function ContractLeadsCard({ leads }: { leads: ContractLead[] }) {
   return (
     <Card className="rounded-2xl p-5">
       <div className="text-sm font-semibold text-navy">Also on contract, by quote</div>
-      <p className="mt-0.5 text-[11px] text-slate">These contracts cover this, but their prices aren't loaded into Loci.</p>
+      <p className="mt-0.5 text-[11px] text-slate">These contracts cover this, but their prices aren't loaded into Agora.</p>
       <ul className="mt-3 space-y-3">
         {leads.slice(0, 5).map((c) => (
           <li key={c.contract_id} className="text-xs">

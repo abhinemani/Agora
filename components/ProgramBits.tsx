@@ -34,7 +34,7 @@ export function ProgramMark({ p, size = "md" }: { p: Pick<ProgramSummary, "name"
 export function ProgramKindTag({ p }: { p: Pick<ProgramSummary, "kind" | "trx"> }) {
   if (p.trx)
     return (
-      <span className="rounded bg-success-lighter px-1.5 py-0.5 text-[10px] font-bold text-success-darker" title="A state program on TRX, which Sovra supports. Loci lists it ahead of co-op contracts for that state's buyers.">
+      <span className="rounded bg-success-lighter px-1.5 py-0.5 text-[10px] font-bold text-success-darker" title="A state program on TRX, which Sovra supports. Agora lists it ahead of co-op contracts for that state's buyers.">
         State program · TRX
       </span>
     );

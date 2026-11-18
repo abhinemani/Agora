@@ -1,9 +1,9 @@
-/** Shared pieces of Loci's blueprint system: the mark, the best-fit badge, a corner-tick
+/** Shared pieces of Agora's blueprint system: the mark, the best-fit badge, a corner-tick
  * frame, and the mono annotation label. Colors come from theme tokens, so dark mode works. */
 
-/** Loci's mark: two sets of corner ticks closing in on one solid square. Every contract
+/** Agora's mark: two sets of corner ticks closing in on one solid square. Every contract
  * on the outside, the one that fits in the middle. `working` animates the inner ticks
- * closing in, the one motion Loci uses while it searches. */
+ * closing in, the one motion Agora uses while it searches. */
 export function Mark({ className = "h-9 w-9", working = false, onDark = false }: { className?: string; working?: boolean; onDark?: boolean }) {
   return (
     <svg viewBox="0 0 32 32" className={`shrink-0 ${className}`} aria-hidden>

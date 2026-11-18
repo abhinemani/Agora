@@ -46,7 +46,7 @@ export interface ProgramSummary {
   coop_id: string;
   name: string;
   kind: ProgramKind;
-  /** A state program in a TRX state: the route Loci prefers for that state's buyers. */
+  /** A state program in a TRX state: the route Agora prefers for that state's buyers. */
   trx: boolean;
   state: string | null;
   tagline: string;
@@ -68,9 +68,9 @@ export interface ProgramPage extends ProgramSummary {
   steps: string[];
   /** Where the visitor's agency stands, when one is set. */
   buyer: { name: string; status: "member" | "open" | "join" | "closed"; text: string; open: number } | null;
-  /** Governments Loci places on the co-op, with how it knows (a published roster, or agencies' own pages). */
+  /** Governments Agora places on the co-op, with how it knows (a published roster, or agencies' own pages). */
   roster: { count: number; note: string } | null;
-  /** What's on contract, by Loci's categories or, where the program's contracts lack them, by the program's own headings. */
+  /** What's on contract, by Agora's categories or, where the program's contracts lack them, by the program's own headings. */
   categories: { name: string; count: number }[];
   group_by: "category" | "heading";
   uncategorized: number;
@@ -153,7 +153,7 @@ export function programSlug(idOrName: string): string | null {
   return null;
 }
 
-/** Group a program's contracts by Loci's category when most carry one, else by the first heading the program prints. */
+/** Group a program's contracts by Agora's category when most carry one, else by the first heading the program prints. */
 const groupMode = (contracts: CatalogContract[]): "category" | "heading" => (contracts.filter((c) => c.category).length >= contracts.length * 0.3 ? "category" : "heading");
 const groupOf = (c: CatalogContract, mode: "category" | "heading"): string | null => {
   if (mode === "category") return c.category ?? null;
@@ -186,7 +186,7 @@ function stepsFor(s: ProgramSummary): string[] {
     ];
   return [
     `Check that your agency is a member of ${s.name}, or register with it. Most cooperatives let any public agency join; the co-op's site has the terms.`,
-    `Confirm that your state's law allows the purchase (Loci shows a State law note beside co-op contracts), read the contract's documents, then order from the supplier under the ${s.name} contract number.`,
+    `Confirm that your state's law allows the purchase (Agora shows a State law note beside co-op contracts), read the contract's documents, then order from the supplier under the ${s.name} contract number.`,
   ];
 }
 
@@ -269,7 +269,7 @@ export function programPage(db: Db, slug: string): ProgramPage | null {
       text = `${who} is on ${summary.name}'s published roster. ${plural(open, "contract")} here serve ${stateName(buyer.state)}.`;
     } else {
       status = open ? "join" : "closed";
-      text = open ? `Loci hasn't found ${who} on ${summary.name}'s roster. Joining would open ${plural(open, "contract")} that serve ${stateName(buyer.state)}.` : `No contract here serves ${stateName(buyer.state)}.`;
+      text = open ? `Agora hasn't found ${who} on ${summary.name}'s roster. Joining would open ${plural(open, "contract")} that serve ${stateName(buyer.state)}.` : `No contract here serves ${stateName(buyer.state)}.`;
     }
     buyerInfo = { name: who, status, text, open };
   }

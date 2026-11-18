@@ -1,6 +1,6 @@
 // NIGP commodity codes, as NJSTART's public contract pages print them (scripts/import-njstart.ts
 // writes seed/catalog/source/njstart/nigp.json), plus the codes OregonBuys prints that NJSTART's
-// don't (scripts/import-oregon.ts writes seed/catalog/source/oregon/nigp.json). Loci holds no
+// don't (scripts/import-oregon.ts writes seed/catalog/source/oregon/nigp.json). Agora holds no
 // licensed NIGP codebook, so it can name only the codes those records use. Server only.
 //
 // Contracts carry their codes in CatalogContract.nigp: "published" when the contract's own records

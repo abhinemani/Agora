@@ -4,12 +4,13 @@ import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { AccessTag, contractHref, shortDate } from "@/components/ContractBits";
+import { letBy, Nest, splitTitle, Twig } from "@/components/contracts/Nest";
 import { Check, Globe, Lock, Search } from "@/components/icons";
 import { ProgramKindTag, ProgramMark, programColor } from "@/components/ProgramBits";
 import { useStore } from "@/components/store";
 import { Card, Checkbox, ErrorNote, Loading, money } from "@/components/ui";
 import type { AccessStatus } from "@/lib/contracts";
-import type { ProgramContractRow, ProgramPage } from "@/lib/programs";
+import type { ProgramAwardGroup, ProgramContractRow, ProgramEntry, ProgramPage } from "@/lib/programs";
 
 const longDate = (d: string) => new Date(`${d}T12:00:00Z`).toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" });
 const n = (x: number, one: string, many = `${one}s`) => `${x.toLocaleString()} ${x === 1 ? one : many}`;
@@ -223,14 +224,73 @@ function BuyerStanding({ p }: { p: ProgramPage }) {
   );
 }
 
-const accessOf = (r: ProgramContractRow, hasBuyer: boolean): AccessStatus => (!hasBuyer ? "unknown" : !r.eligible ? "closed" : r.member ? "open" : "join");
+const accessOf = (r: Pick<ProgramContractRow, "eligible" | "member">, hasBuyer: boolean): AccessStatus => (!hasBuyer ? "unknown" : !r.eligible ? "closed" : r.member ? "open" : "join");
+const isGroup = (e: ProgramEntry): e is ProgramAwardGroup => "group" in e;
+const awardHref = (key: string) => `/contracts?award=${encodeURIComponent(key)}`;
+
+/** An award with its matching supplier contracts nested under it. */
+function AwardEntry({ g, hasBuyer }: { g: ProgramAwardGroup; hasBuyer: boolean }) {
+  const [open, setOpen] = useState(false);
+  const rows = open ? g.rows : g.rows.slice(0, 3);
+  const t = splitTitle(g.title);
+  return (
+    <div className="px-4 py-3">
+      <div className="flex flex-wrap items-start justify-between gap-x-4 gap-y-1">
+        <span className="min-w-0 flex-1">
+          <Link href={awardHref(g.key)} className="line-clamp-2 text-sm font-semibold text-navy no-underline hover:underline" title={g.title}>
+            {t.head}
+            {t.rest.length > 0 && <span className="font-normal text-slate"> · and {t.rest.length} more areas</span>}
+          </Link>
+          <span className="mt-0.5 block text-xs text-slate">
+            <span className="font-mono">{g.label}</span> · {n(g.size, "supplier contract")}
+            {g.matched < g.size ? `, ${g.matched.toLocaleString()} matching` : ""}
+            {g.lead ? ` · ${letBy(g.lead)}` : ""}
+            {g.end ? ` · the latest through ${shortDate(g.end)}` : ""}
+            {g.priced ? ` · ${n(g.priced, "price")}` : ""}
+          </span>
+        </span>
+        <AccessTag access={accessOf(g, hasBuyer)} />
+      </div>
+      <Nest className="mt-1" label={`Supplier contracts on ${g.label}`}>
+        {rows.map((r) => (
+          <Twig key={r.id}>
+            <Link href={contractHref(r.id)} className="group flex min-h-[2rem] flex-wrap items-center gap-x-3 gap-y-0.5 rounded-sm py-1 pr-1 no-underline hover:bg-base-lightest">
+              <span className="text-sm font-semibold text-navy group-hover:underline">{r.supplier || "Unnamed supplier"}</span>
+              <span className="font-mono text-xs text-slate">{r.number}</span>
+              {r.title !== g.title && <span className="min-w-0 truncate text-xs text-slate">{splitTitle(r.title).head}</span>}
+              <span className="ml-auto flex items-center gap-2">
+                {r.priced > 0 && <span className="hidden text-xs text-slate md:inline">{n(r.priced, "price")}</span>}
+                <span title={r.reason}>
+                  <AccessTag access={accessOf(r, hasBuyer)} />
+                </span>
+              </span>
+            </Link>
+          </Twig>
+        ))}
+        <Twig>
+          <div className="flex min-h-[2rem] flex-wrap items-center gap-x-4 text-xs">
+            {g.rows.length > rows.length && (
+              <button onClick={() => setOpen(true)} className="font-semibold text-maroon hover:underline">
+                {g.rows.length - rows.length} more here
+              </button>
+            )}
+            <Link href={awardHref(g.key)} className="font-semibold text-maroon hover:underline">
+              {g.matched < g.size ? `All ${g.size.toLocaleString()} on this award →` : `See all ${g.size.toLocaleString()} →`}
+            </Link>
+          </div>
+        </Twig>
+      </Nest>
+    </div>
+  );
+}
 
 function Contracts({ p, category, setCategory, buyerKey, memberships }: { p: ProgramPage; category: string | null; setCategory: (c: string | null) => void; buyerKey: string; memberships: number }) {
   const [typed, setTyped] = useState("");
   const [q, setQ] = useState("");
   const [usable, setUsable] = useState(false);
-  const [rows, setRows] = useState<ProgramContractRow[]>([]);
+  const [rows, setRows] = useState<ProgramEntry[]>([]);
   const [total, setTotal] = useState<number | null>(null);
+  const [contracts, setContracts] = useState<number | null>(null);
   const [busy, setBusy] = useState(false);
 
   useEffect(() => {
@@ -252,7 +312,8 @@ function Contracts({ p, category, setCategory, buyerKey, memberships }: { p: Pro
       .then((r) => r.json())
       .then((j) => {
         setTotal(j.total ?? 0);
-        setRows((prev) => (offset ? [...prev, ...(j.rows ?? [])] : (j.rows ?? [])));
+        setContracts(j.contracts ?? 0);
+        setRows((prev) => (offset ? [...prev, ...(j.entries ?? [])] : (j.entries ?? [])));
       })
       .catch(() => setTotal(0))
       .finally(() => setBusy(false));
@@ -270,7 +331,9 @@ function Contracts({ p, category, setCategory, buyerKey, memberships }: { p: Pro
         <div>
           <h2 className="text-xl font-extrabold tracking-tight text-navy">Contracts</h2>
           <p className="mt-1 text-sm text-slate">
-            {total === null ? "Loading…" : `${n(total, "contract")}${category ? ` under ${category}` : ""}${q ? ` matching “${q}”` : ""}${p.buyer ? `, those open to ${shortName(p.buyer.name)} first` : ""}.`}
+            {total === null || contracts === null
+              ? "Loading…"
+              : `${n(contracts, "contract")}${category ? ` under ${category}` : ""}${q ? ` matching “${q}”` : ""}${p.buyer ? `, those open to ${shortName(p.buyer.name)} first` : ""}.${total < contracts ? ` Contracts let under one award are listed once, with each supplier nested under it: ${n(total, "entry", "entries")} in all.` : ""}`}
           </p>
         </div>
         <label className="flex w-full max-w-xs items-center gap-2 rounded-xl border border-line bg-white px-3 focus-within:border-maroon/50">
@@ -307,10 +370,16 @@ function Contracts({ p, category, setCategory, buyerKey, memberships }: { p: Pro
         )}
       </div>
       <Card className="mt-4 divide-y divide-base-lighter">
-        {rows.map((r) => (
+        {rows.map((r) =>
+          isGroup(r) ? (
+            <AwardEntry key={r.key} g={r} hasBuyer={!!p.buyer} />
+          ) : (
           <Link key={r.id} href={contractHref(r.id)} className="flex flex-wrap items-start justify-between gap-x-4 gap-y-1 px-4 py-3 no-underline hover:bg-base-lightest">
             <span className="min-w-0 flex-1">
-              <span className="block text-sm font-semibold text-navy">{r.title}</span>
+              <span className="line-clamp-2 block text-sm font-semibold text-navy" title={r.title}>
+                {splitTitle(r.title).head}
+                {splitTitle(r.title).rest.length > 0 && <span className="font-normal text-slate"> · and {splitTitle(r.title).rest.length} more areas</span>}
+              </span>
               <span className="mt-0.5 block text-xs text-slate">
                 {r.supplier} · <span className="font-mono">{r.number}</span>
                 {r.end ? ` · through ${shortDate(r.end)}` : ""}
@@ -321,13 +390,14 @@ function Contracts({ p, category, setCategory, buyerKey, memberships }: { p: Pro
               <AccessTag access={accessOf(r, !!p.buyer)} />
             </span>
           </Link>
-        ))}
+          ),
+        )}
         {total === 0 && <p className="px-4 py-6 text-sm text-slate">No {p.name} contract matches that.</p>}
       </Card>
       <div className="mt-3 flex flex-wrap items-center justify-between gap-3">
         {total !== null && rows.length < total ? (
           <button onClick={() => load(rows.length)} disabled={busy} className="rounded-xl border border-dashed border-navy/20 px-4 py-2.5 text-sm font-semibold text-navy hover:bg-white disabled:opacity-60">
-            {busy ? "Loading…" : `Show more (${(total - rows.length).toLocaleString()} left)`}
+            {busy ? "Loading…" : `Show more (${(total - rows.length).toLocaleString()} ${total - rows.length === 1 ? "entry" : "entries"} left)`}
           </button>
         ) : (
           <span />

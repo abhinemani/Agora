@@ -3,6 +3,7 @@
 // program's own contracts, suppliers and prices. Server-only: it reads lib/catalog.ts.
 
 import { catalogAccess, catalogIndex, catalogStateRetrieved, catalogRetrieved, type CatalogContract } from "./catalog";
+import { awardOf, awardByKey } from "./contract-family";
 import { isMember } from "./coops";
 import { offeringNote } from "./contracts";
 import { NY_PREFERRED_STEPS, TRX_PROGRAM, TRX_PROGRAM_BY_NAME, isTrxState, stateLabel } from "./trx";
@@ -92,7 +93,29 @@ export interface ProgramContractRow {
   eligible: boolean;
   member: boolean;
   reason: string;
+  /** The award it shares with other suppliers (lib/contract-family.ts). */
+  award?: { key: string; label: string; size: number };
 }
+
+/** Contracts on one award that match, listed once with the suppliers nested under it. */
+export interface ProgramAwardGroup {
+  group: true;
+  key: string;
+  label: string;
+  title: string;
+  lead: string | null;
+  /** Current contracts on the award, and how many match the search and filters. */
+  size: number;
+  matched: number;
+  /** Whether any matching member is open to the buyer, and whether it needs no membership. */
+  eligible: boolean;
+  member: boolean;
+  priced: number;
+  end: string | null;
+  /** The first matching members, best first. */
+  rows: ProgramContractRow[];
+}
+export type ProgramEntry = ProgramContractRow | ProgramAwardGroup;
 
 const slugify = (name: string) =>
   name
@@ -296,7 +319,7 @@ export function programPage(db: Db, slug: string): ProgramPage | null {
 }
 
 /** A program's contracts, a page at a time, filtered by words and category; the buyer's open ones first. */
-export function programContracts(db: Db, slug: string, opts: { q?: string; category?: string; usable?: boolean; offset?: number; limit?: number }): { total: number; rows: ProgramContractRow[] } | null {
+export function programContracts(db: Db, slug: string, opts: { q?: string; category?: string; usable?: boolean; offset?: number; limit?: number }): { total: number; contracts: number; entries: ProgramEntry[] } | null {
   const found = find(slug);
   if (!found) return null;
   const idx = catalogIndex();
@@ -314,9 +337,46 @@ export function programContracts(db: Db, slug: string, opts: { q?: string; categ
     const a = catalogAccess(db, buyer, c);
     if (opts.usable && !a.eligible) continue;
     const priced = (idx.offeringsByContract.get(c.id) ?? []).filter((o) => o.price != null || o.list != null).length;
-    rows.push({ id: c.id, number: c.number, title: c.title, supplier, supplier_id: c.supplier, category: groupOf(c, mode), end: c.end, priced, ...a });
+    const aw = awardOf(c.id);
+    rows.push({ id: c.id, number: c.number, title: c.title, supplier, supplier_id: c.supplier, category: groupOf(c, mode), end: c.end, priced, ...a, ...(aw ? { award: { key: aw.key, label: aw.label, size: aw.members.length } } : {}) });
   }
   rows.sort((a, b) => Number(b.eligible) - Number(a.eligible) || Number(b.priced > 0) - Number(a.priced > 0) || b.priced - a.priced || a.title.localeCompare(b.title));
   const offset = opts.offset ?? 0;
-  return { total: rows.length, rows: rows.slice(offset, offset + (opts.limit ?? 25)) };
+  const entries = groupByAward(rows);
+  return { total: entries.length, contracts: rows.length, entries: entries.slice(offset, offset + (opts.limit ?? 25)) };
+}
+
+/** Contracts on one award become one entry where the best of them ranks; an award with one match stays a row. */
+function groupByAward(rows: ProgramContractRow[]): ProgramEntry[] {
+  const members = new Map<string, ProgramContractRow[]>();
+  for (const r of rows) if (r.award) (members.get(r.award.key) ?? members.set(r.award.key, []).get(r.award.key)!).push(r);
+  const out: ProgramEntry[] = [];
+  const done = new Set<string>();
+  for (const r of rows) {
+    const k = r.award?.key;
+    const list = k ? members.get(k)! : null;
+    if (!k || !list || list.length < 2) {
+      out.push(r);
+      continue;
+    }
+    if (done.has(k)) continue;
+    done.add(k);
+    const a = awardByKey(k)!;
+    const ends = list.map((x) => x.end).filter((x): x is string => Boolean(x)).sort();
+    out.push({
+      group: true,
+      key: k,
+      label: a.label,
+      title: a.title,
+      lead: a.lead,
+      size: a.members.length,
+      matched: list.length,
+      eligible: list.some((x) => x.eligible),
+      member: list.some((x) => x.eligible && x.member),
+      priced: list.reduce((n, x) => n + x.priced, 0),
+      end: ends.length ? ends[ends.length - 1] : null,
+      rows: list.slice(0, 6),
+    });
+  }
+  return out;
 }

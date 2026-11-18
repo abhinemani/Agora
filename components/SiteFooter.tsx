@@ -23,7 +23,7 @@ export function SiteFooter() {
           <div className="col-span-2 flex items-center gap-3 border-b border-base-light p-4 sm:col-span-1 sm:border-b-0">
             <Mark className="h-8 w-8" />
             <div className="min-w-0">
-              <div className="font-logo text-[1.15rem] font-semibold leading-tight tracking-[-0.015em] text-ink">Loci</div>
+              <div className="font-logo text-[1.15rem] font-semibold leading-tight tracking-[-0.015em] text-ink">Agora</div>
               <div className="font-mono text-[11px] uppercase tracking-[0.14em] text-base-dark">Sheet A-01 · Cooperative purchasing concept</div>
             </div>
           </div>
@@ -41,13 +41,13 @@ export function SiteFooter() {
           <Link href="/guide" className="font-bold text-primary">
             Guide
           </Link>
-          : how to use Loci, what its terms mean and where its data comes from.
+          : how to use Agora, what its terms mean and where its data comes from.
         </p>
         <p className="mt-2 text-ui-3xs text-base-dark">
           <Link href="/admin" className="font-bold text-primary">
             Site admin
           </Link>
-          : accounts, supplier claims and the demo, for Loci&apos;s admins.
+          : accounts, supplier claims and the demo, for Agora&apos;s admins.
         </p>
       </div>
     </footer>

@@ -157,7 +157,7 @@ function Explorer() {
       <div className="mt-4 flex flex-wrap items-center gap-x-5 gap-y-2">
         <Checkbox checked={usable} onChange={setUsable} label={buyer ? "My agency can use it today" : "Open without a membership"} />
         <Checkbox checked={priced} onChange={setPriced} label="Has item prices" />
-        <Checkbox checked={readable} onChange={setReadable} label="Has a document Loci can read" />
+        <Checkbox checked={readable} onChange={setReadable} label="Has a document Agora can read" />
       </div>
       {data && !award && data.kinds.length > 1 && (
         <div className="mt-4 flex flex-wrap gap-2" role="group" aria-label="Kind of contract">
@@ -215,7 +215,7 @@ function Explorer() {
               </button>
             )}
             <p className="mt-6 max-w-[75ch] text-ui-3xs leading-relaxed text-base-dark">
-              Co-op and federal contracts come from 13 programs' public directories, retrieved {shortDate(data.retrieved)}; their terms and eligibility aren't independently verified. Contracts with prices loaded in Loci
+              Co-op and federal contracts come from 13 programs' public directories, retrieved {shortDate(data.retrieved)}; their terms and eligibility aren't independently verified. Contracts with prices loaded in Agora
               are also listed on the{" "}
               <Link href="/vehicles" className="underline">
                 loaded contracts
@@ -260,8 +260,8 @@ function Facet({ title, items, value, onChange }: { title: string; items: { id: 
 
 function onFileLine(r: Pick<ContractRow, "in_agora" | "priced" | "items" | "readable" | "documents">) {
   return [
-    r.in_agora ? `${r.priced.toLocaleString()} prices, buyable in Loci` : r.priced > 0 ? `${r.priced.toLocaleString()} item prices` : r.items > 0 ? `${r.items.toLocaleString()} items listed, no prices` : "No item prices",
-    r.readable ? "document Loci can read" : r.documents > 0 ? "documents linked" : null,
+    r.in_agora ? `${r.priced.toLocaleString()} prices, buyable in Agora` : r.priced > 0 ? `${r.priced.toLocaleString()} item prices` : r.items > 0 ? `${r.items.toLocaleString()} items listed, no prices` : "No item prices",
+    r.readable ? "document Agora can read" : r.documents > 0 ? "documents linked" : null,
   ]
     .filter(Boolean)
     .join(" · ");
@@ -352,7 +352,7 @@ function Group({ g }: { g: AwardGroup }) {
         </div>
         <div className="flex flex-wrap items-center gap-2 sm:flex-col sm:items-end sm:justify-center">
           <AccessTag access={g.access} />
-          <span className="text-ui-3xs text-base-dark">{[g.priced ? `${g.priced.toLocaleString()} item prices` : "No item prices", g.readable ? "documents Loci can read" : null].filter(Boolean).join(" · ")}</span>
+          <span className="text-ui-3xs text-base-dark">{[g.priced ? `${g.priced.toLocaleString()} item prices` : "No item prices", g.readable ? "documents Agora can read" : null].filter(Boolean).join(" · ")}</span>
         </div>
       </div>
       <Nest className="mt-1.5" label={`Supplier contracts on ${g.label}`}>
@@ -401,7 +401,7 @@ function Row({ r, inAward }: { r: ContractRow; inAward?: boolean }) {
             <span className="font-mono">{r.number}</span>
             {r.category && <span>· {r.category}</span>}
             {r.nigp.length > 0 && (
-              <span className="font-mono" title={r.nigp_source === "published" ? "NIGP classes printed on the contract" : "NIGP classes from Loci's AI review"}>
+              <span className="font-mono" title={r.nigp_source === "published" ? "NIGP classes printed on the contract" : "NIGP classes from Agora's AI review"}>
                 · NIGP {r.nigp.slice(0, 3).join(", ")}
                 {r.nigp_source === "reviewed" ? "*" : ""}
               </span>

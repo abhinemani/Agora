@@ -28,7 +28,7 @@ function Checkout() {
   if (!db) return <Loading />;
 
   const listing = db.listings.find((l) => l.id === params.get("listing"));
-  if (!listing) return <ErrorNote message="That listing isn't in Loci." />;
+  if (!listing) return <ErrorNote message="That listing isn't in Agora." />;
   const request = db.requests.find((r) => r.id === params.get("request"));
   const supplier = db.suppliers.find((s) => s.id === listing.supplier_id)!;
   const contract = db.contracts.find((c) => c.id === listing.contract_id);
@@ -38,7 +38,7 @@ function Checkout() {
       <Card className="mx-auto max-w-xl space-y-3 p-6">
         <h1 className="text-xl font-semibold text-navy">Buy this on {coop.name}</h1>
         <p className="text-sm text-slate">
-          {listing.title} is on {contract!.vehicle} {contract!.contract_number}. Loci sends you to the contract on {coop.name}'s site to order, so the purchase stays between your agency, the supplier and the co-op.
+          {listing.title} is on {contract!.vehicle} {contract!.contract_number}. Agora sends you to the contract on {coop.name}'s site to order, so the purchase stays between your agency, the supplier and the co-op.
         </p>
         <CoopLink contractId={contract!.id} coop={coop.name} hasLink={isContractLevelUrl(contract!.source_url)} listingId={listing.id} requestId={request?.id} size="md" />
       </Card>

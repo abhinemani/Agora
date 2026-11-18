@@ -1,5 +1,5 @@
 // "Check this quote": compare a vendor's quote, line by line, with the prices
-// Loci holds for the same part numbers. Matching is by part number only, and
+// Agora holds for the same part numbers. Matching is by part number only, and
 // every comparison cites the line of the price file it came from. The model
 // may help read the quote's lines, but a line is kept only if its part number
 // and price both appear in the quote's own text. Server-only.
@@ -38,7 +38,7 @@ export type QuoteStatus = "over" | "under" | "match" | "over_list" | "under_list
 
 export interface CheckedLine extends QuoteLine {
   status: QuoteStatus;
-  /** The price Loci holds, and what kind of price it is. */
+  /** The price Agora holds, and what kind of price it is. */
   reference: number | null;
   reference_kind: string | null;
   product: string | null;
@@ -86,14 +86,14 @@ function fileRows(): Map<string, PriceRow[]> {
   return index;
 }
 
-/** Every price Loci holds for a part number: price-file rows, then Loci's own listings. */
+/** Every price Agora holds for a part number: price-file rows, then Agora's own listings. */
 function pricesFor(db: Db, part: string): PriceRow[] {
   const k = norm(part);
   const out = [...(fileRows().get(k) ?? [])];
   for (const l of db.listings) {
     if (norm(l.sku) !== k) continue;
     const c = db.contracts.find((x) => x.id === l.contract_id);
-    out.push({ coop: c?.vehicle ?? c?.owner ?? "No contract", number: c?.contract_number ?? "", supplier: db.suppliers.find((s) => s.id === l.supplier_id)?.name ?? "", product: l.title, price: l.unit_price, sku: l.sku, unit: l.unit, basis: "published_price", vintage: "Listing in Loci", file: "" });
+    out.push({ coop: c?.vehicle ?? c?.owner ?? "No contract", number: c?.contract_number ?? "", supplier: db.suppliers.find((s) => s.id === l.supplier_id)?.name ?? "", product: l.title, price: l.unit_price, sku: l.sku, unit: l.unit, basis: "published_price", vintage: "Listing in Agora", file: "" });
   }
   return out;
 }
@@ -102,7 +102,7 @@ const known = (db: Db, token: string) => norm(token).length >= 3 && pricesFor(db
 const MONEY = /\$?\s?(\d{1,3}(?:,\d{3})+(?:\.\d{1,2})?|\d+\.\d{2})(?![\d%])/g;
 const amounts = (line: string) => [...line.matchAll(MONEY)].map((m) => Number(m[1].replace(/,/g, "")));
 
-/** Read a quote's lines without the model: a line counts when it carries a part number Loci knows and a price. */
+/** Read a quote's lines without the model: a line counts when it carries a part number Agora knows and a price. */
 function readByRules(db: Db, text: string): { lines: QuoteLine[]; dropped: string[] } {
   const lines: QuoteLine[] = [];
   const dropped: string[] = [];
@@ -112,7 +112,7 @@ function readByRules(db: Db, text: string): { lines: QuoteLine[]; dropped: strin
     const money = amounts(line);
     if (!money.length) continue;
     const tokens = line.split(/[\s,;]+/).filter(Boolean);
-    // A part number Loci knows, else the first token shaped like one, so the line can be reported as not found.
+    // A part number Agora knows, else the first token shaped like one, so the line can be reported as not found.
     const part = tokens.find((t) => known(db, t)) ?? tokens.find((t) => t.length >= 5 && /\d/.test(t) && /[A-Za-z-]/.test(t) && !/[$.]/.test(t)) ?? null;
     const unit_price = money[0];
     const ints = tokens.filter((t) => /^\d{1,5}$/.test(t)).map(Number);
@@ -173,9 +173,9 @@ const KIND: Record<PriceRow["basis"], string> = {
 
 function check(db: Db, l: QuoteLine): CheckedLine {
   const base = { ...l, reference: null, reference_kind: null, product: null, diff: null, pct: null, line_diff: null, source: null };
-  if (!l.part_number) return { ...base, status: "not_found", note: "No part number on this line, so it can't be matched. Loci matches by part number only." };
+  if (!l.part_number) return { ...base, status: "not_found", note: "No part number on this line, so it can't be matched. Agora matches by part number only." };
   const rows = pricesFor(db, l.part_number);
-  if (!rows.length) return { ...base, status: "not_found", note: "This part number isn't in any price file Loci holds." };
+  if (!rows.length) return { ...base, status: "not_found", note: "This part number isn't in any price file Agora holds." };
   const r = rows[0];
   const diff = round2(l.unit_price - r.price);
   const pct = r.price ? Math.round((diff / r.price) * 1000) / 10 : 0;
@@ -185,7 +185,7 @@ function check(db: Db, l: QuoteLine): CheckedLine {
   if (r.basis === "list_price")
     return diff > 0.005
       ? { ...common, status: "over_list", note: `Quoted above list price. The contract gives a discount off list, so this should be lower than ${usd(r.price)}.` }
-      : { ...common, status: "under_list", note: "At or below list. The contract's discount isn't loaded, so Loci can't confirm this is the full contract price." };
+      : { ...common, status: "under_list", note: "At or below list. The contract's discount isn't loaded, so Agora can't confirm this is the full contract price." };
   if (Math.abs(diff) <= Math.max(0.01, r.price * 0.001)) return { ...common, status: "match", note: "Matches the price on file." };
   if (diff > 0)
     return {
@@ -196,7 +196,7 @@ function check(db: Db, l: QuoteLine): CheckedLine {
   return { ...common, status: "under", note: `${usd(-diff)} below the price on file, each.` };
 }
 
-/** Read a quote's text and compare every line Loci can match. */
+/** Read a quote's text and compare every line Agora can match. */
 export async function checkQuote(db: Db, text: string): Promise<QuoteReport> {
   const clean = text.replace(/ /g, " ").slice(0, 200_000);
   const model = await readByModel(clean);
@@ -210,13 +210,13 @@ export async function checkQuote(db: Db, text: string): Promise<QuoteReport> {
   const headline = !checked.length
     ? "I couldn't find any priced lines in this quote."
     : !matched.length
-      ? "None of these part numbers is in a price file Loci holds."
+      ? "None of these part numbers is in a price file Agora holds."
       : over.length
-        ? `${over.length} of ${matched.length} checked line${matched.length === 1 ? "" : "s"} ${over.length === 1 ? "is" : "are"} priced above what Loci has on file.`
+        ? `${over.length} of ${matched.length} checked line${matched.length === 1 ? "" : "s"} ${over.length === 1 ? "is" : "are"} priced above what Agora has on file.`
         : `All ${matched.length} checked line${matched.length === 1 ? "" : "s"} ${matched.length === 1 ? "is" : "are"} at or below the price on file.`;
   const summary = [
     over.length ? `Across those lines the quote is **${usd(over_amount)} higher** than the prices on file.` : "",
-    not_found ? `${not_found} line${not_found === 1 ? "" : "s"} couldn't be checked: Loci matches by part number, and ${not_found === 1 ? "it isn't" : "they aren't"} in a loaded price file.` : "",
+    not_found ? `${not_found} line${not_found === 1 ? "" : "s"} couldn't be checked: Agora matches by part number, and ${not_found === 1 ? "it isn't" : "they aren't"} in a loaded price file.` : "",
     matched.length ? "Check each price file's date before raising it with the vendor; a newer list may be in effect." : "",
   ]
     .filter(Boolean)
@@ -224,7 +224,7 @@ export async function checkQuote(db: Db, text: string): Promise<QuoteReport> {
   return { read_by: model ? "llm" : "rules", ...(model?.log_id ? { log_id: model.log_id } : {}), lines: checked, dropped, quoted_total, checked: matched.length, over: over.length, over_amount, not_found, headline, summary };
 }
 
-/** A sample quote built from real rows of a loaded price file, with one line marked up and one part Loci doesn't hold. */
+/** A sample quote built from real rows of a loaded price file, with one line marked up and one part Agora doesn't hold. */
 export function sampleQuote(): string {
   const rows = [...fileRows().values()].map((r) => r[0]).filter((r) => r.basis === "net_price" && r.price > 40 && r.price < 4000 && r.sku);
   if (rows.length < 6) return "";

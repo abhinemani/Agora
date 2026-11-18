@@ -70,7 +70,7 @@ export default function AgencySetup() {
               ? `${status.confirmed_coops} confirmed${status.detected_coops ? `, ${status.detected_coops} detected and waiting for you` : ""}.`
               : status.detected_coops
                 ? `${status.detected_coops} detected from co-op member lists. Confirm them below.`
-                : "None found on the member lists Loci holds. Add the co-ops you belong to."
+                : "None found on the member lists Agora holds. Add the co-ops you belong to."
           }
         >
           <div className="mt-2">

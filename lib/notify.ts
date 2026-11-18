@@ -1,4 +1,4 @@
-// The emails Loci sends: confirming an address, resetting a password, and
+// The emails Agora sends: confirming an address, resetting a password, and
 // the notices that move an approval along. Notices go only to people who have
 // confirmed their address, and never hold up the action that triggered them.
 // Server-only.
@@ -12,8 +12,8 @@ export async function sendVerification(user: User, req?: Request): Promise<boole
   const token = await issueToken(user.id, "verify");
   return sendEmail({
     to: user.email,
-    subject: "Confirm your email for Loci",
-    lines: [`Hello ${user.name},`, "Thanks for creating a Loci account. Confirm this is your email address, so we can send you approval notices and help you back in if you forget your password.", "The link works once and lasts three days."],
+    subject: "Confirm your email for Agora",
+    lines: [`Hello ${user.name},`, "Thanks for creating an Agora account. Confirm this is your email address, so we can send you approval notices and help you back in if you forget your password.", "The link works once and lasts three days."],
     action: { label: "Confirm my email", url: `${appUrl(req)}/verify?token=${token}` },
   });
 }
@@ -24,8 +24,8 @@ export async function sendReset(user: User | null, req?: Request): Promise<void>
   const token = await issueToken(user.id, "reset");
   await sendEmail({
     to: user.email,
-    subject: "Reset your Loci password",
-    lines: [`Hello ${user.name},`, "Someone asked to reset the password for this Loci account. If it was you, choose a new password with the link below.", "The link works once and lasts one hour. If you didn't ask for this, you can ignore this message and your password stays as it is."],
+    subject: "Reset your Agora password",
+    lines: [`Hello ${user.name},`, "Someone asked to reset the password for this Agora account. If it was you, choose a new password with the link below.", "The link works once and lasts one hour. If you didn't ask for this, you can ignore this message and your password stays as it is."],
     action: { label: "Choose a new password", url: `${appUrl(req)}/reset?token=${token}` },
   });
 }

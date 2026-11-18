@@ -85,7 +85,7 @@ export default function AskContract() {
             </label>
             <input id="find-contract" type="search" value={find} onChange={(e) => setFind(e.target.value)} placeholder="Search by supplier, co-op or number" className="mt-2 w-full text-sm" />
             <p className="mt-2 text-ui-3xs leading-relaxed text-base-dark">
-              {contracts ? `${contracts.length} contracts have a document Loci can read: price files it holds, and master agreements published as files.` : "Loading the contracts Loci can read."}
+              {contracts ? `${contracts.length} contracts have a document Agora can read: price files it holds, and master agreements published as files.` : "Loading the contracts Agora can read."}
             </p>
           </div>
           <ul className="max-h-[520px] overflow-y-auto">
@@ -108,7 +108,7 @@ export default function AskContract() {
                     <span className="text-ui-2xs text-base-darker">
                       {c.supplier} · {c.title}
                     </span>
-                    <span className="text-ui-3xs text-base-dark">{c.documents.map((d) => `${d.label}${d.held ? " (held by Loci)" : ""}`).join(" · ")}</span>
+                    <span className="text-ui-3xs text-base-dark">{c.documents.map((d) => `${d.label}${d.held ? " (held by Agora)" : ""}`).join(" · ")}</span>
                   </button>
                 </li>
               );

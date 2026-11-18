@@ -34,7 +34,7 @@ function NewSolicitation() {
       .catch((e) => setError(e.message));
   }, [act, requestId]);
 
-  if (!requestId) return <ErrorNote message="Solicitations start from a request that nothing in Loci covers." />;
+  if (!requestId) return <ErrorNote message="Solicitations start from a request that nothing in Agora covers." />;
   if (error && !draft) return <ErrorNote message={error} />;
   if (!draft) return <Loading label="Drafting from your request and the solicitation library" />;
   const set = (patch: Partial<Solicitation>) => setDraft({ ...draft, ...patch });
@@ -78,7 +78,7 @@ function NewSolicitation() {
           <input type="checkbox" checked={draft.piggybackable} onChange={(e) => set({ piggybackable: e.target.checked })} className="mt-1 !p-0" />
           <span className="text-sm">
             <span className="font-semibold text-navy">Piggybackable</span>
-            <span className="block text-slate">When awarded, this contract will be listed in Riverbend's marketplace and in Loci for other agencies.</span>
+            <span className="block text-slate">When awarded, this contract will be listed in Riverbend's marketplace and in Agora for other agencies.</span>
           </span>
         </label>
         {settings && left !== null && (

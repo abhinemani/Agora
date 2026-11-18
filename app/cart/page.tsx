@@ -29,7 +29,7 @@ export default function CartPage() {
   return (
     <div className="space-y-6">
       <PageTitle title={user ? `${agency}'s carts` : "Your cart"}>
-        Collect everything for a purchase in one cart. Loci splits it by supplier and pays each share the right way: P-card under the{" "}
+        Collect everything for a purchase in one cart. Agora splits it by supplier and pays each share the right way: P-card under the{" "}
         {money(db.agency.quick_buy_threshold, false)} quick-buy limit, a PO at or over it.
       </PageTitle>
 
@@ -73,7 +73,7 @@ function EmptyCart() {
       <div className="text-lg font-semibold text-navy">Your cart is empty</div>
       <p className="mx-auto mt-1 max-w-md text-sm text-slate">Search for what you need and choose Add to cart on any result. Items from different suppliers can share one cart.</p>
       <LinkButton href="/" className="mt-4">
-        Search Loci
+        Search Agora
       </LinkButton>
     </Card>
   );

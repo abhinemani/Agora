@@ -104,7 +104,7 @@ export default function Model() {
       {/* Hero */}
       <section className="pt-4">
         <div>
-          <h1 className="text-[2.1rem] font-semibold tracking-tight text-navy">How Loci earns</h1>
+          <h1 className="text-[2.1rem] font-semibold tracking-tight text-navy">How Agora earns</h1>
           <p className="mt-2 max-w-2xl text-[17px] text-slate">
             One marketplace any agency can search, two products sold on top of it (city marketplaces for agencies, storefronts for suppliers), and ten ways to earn beyond SaaS. Every diagram below reflects what has happened in this demo session.
           </p>

@@ -23,7 +23,7 @@ export const dynamic = "force-dynamic";
 
 const ROLE_LABEL: Record<AccountRole, string> = { buyer: "Buyer", procurement: "Purchasing", supplier: "Supplier" };
 
-const forbidden = () => NextResponse.json({ error: "Only a Loci admin can open this page." }, { status: 403 });
+const forbidden = () => NextResponse.json({ error: "Only an Agora admin can open this page." }, { status: 403 });
 const me = () => currentScope()?.user ?? null;
 
 async function overview() {
@@ -104,7 +104,7 @@ export const POST = withSession(async (req: Request) => {
     switch (op) {
       case "setRole": {
         const u = await target(b.id, op);
-        if (!(b.role in ROLE_LABEL)) refuse("That isn't a role Loci knows.");
+        if (!(b.role in ROLE_LABEL)) refuse("That isn't a role Agora knows.");
         await changeAccount(u.id, { role: b.role });
         await logAdmin(actor, "Changed a role", u.email, `${ROLE_LABEL[u.role]} → ${ROLE_LABEL[b.role as AccountRole]}`);
         break;

@@ -53,7 +53,7 @@ export async function readJson(res: Response): Promise<{ result?: unknown; error
   try {
     return await res.json();
   } catch {
-    throw new Error(res.status === 502 || res.status === 503 || res.status === 504 ? "Loci took too long to answer. Wait a moment and try again." : `Loci couldn't complete that (error ${res.status}). Try again.`);
+    throw new Error(res.status === 502 || res.status === 503 || res.status === 504 ? "Agora took too long to answer. Wait a moment and try again." : `Agora couldn't complete that (error ${res.status}). Try again.`);
   }
 }
 

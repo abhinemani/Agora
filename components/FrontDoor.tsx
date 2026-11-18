@@ -1,6 +1,6 @@
 "use client";
 
-// The homepage's guided search. A request opens here instead of jumping to a results page: Loci asks who is
+// The homepage's guided search. A request opens here instead of jumping to a results page: Agora asks who is
 // buying and how many, then narrows a shortlist of real products with the product dive's questions. Each card
 // shows how an order of that size would be bought, and a way out (a quote under a contract, informal quotes or a
 // solicitation) stays in view. Picking a product opens its route in place; the results page is one click away.
@@ -45,7 +45,7 @@ interface DiveResponse {
   fit_pending?: boolean;
 }
 interface Turn {
-  who: "you" | "loci";
+  who: "you" | "agora";
   text: string;
 }
 
@@ -126,7 +126,7 @@ export function FrontDoor({ initial, onNewSearch }: { initial: FrontDoorUrl; onN
       const words = qty && qty > 1 && !qtyStated ? `${qty} ${need}` : need;
       const { request, needsPreference } = await act<{ request: Request; needsPreference: boolean }>("createRequest", { text: words });
       if (opts.listingId) {
-        // Loci's own listings can be confirmed, so the results page opens on the buying plan. If the results don't
+        // Agora's own listings can be confirmed, so the results page opens on the buying plan. If the results don't
         // offer this listing for the request, the page opens on the confirm step instead.
         await act("confirmPick", { requestId: request.id, listingId: opts.listingId, quantity: qty ?? request.parsed.quantity }).catch(() => undefined);
       } else if (opts.offeringId) {
@@ -160,7 +160,7 @@ export function FrontDoor({ initial, onNewSearch }: { initial: FrontDoorUrl; onN
         setQtyStated(true);
       }
       remember(res.state, n);
-      say("loci", [res.said, summary(res.state)].filter(Boolean).join(" "));
+      say("agora", [res.said, summary(res.state)].filter(Boolean).join(" "));
       // The shortlist shows at once; the model's fit judgment follows and reorders it, unless the buyer has moved on.
       if (res.fit_pending) {
         const asked = JSON.stringify([res.state.query, res.state.filters]);
@@ -342,7 +342,7 @@ export function FrontDoor({ initial, onNewSearch }: { initial: FrontDoorUrl; onN
               <div key={i} className="flex items-start gap-3.5">
                 <span aria-hidden className={`relative mt-1 h-[9px] w-[9px] shrink-0 shadow-[0_0_0_5px_rgb(var(--us-white))] ${t.who === "you" ? "border-[1.5px] border-primary-light bg-white" : "bg-[#162E51]"}`} />
                 <div className="min-w-0 flex-1">
-                  <div className={`${label} ${t.who === "you" ? "text-base-dark" : "text-primary"}`}>{t.who === "you" ? (i === 0 ? "Request" : "Answer") : "Loci"}</div>
+                  <div className={`${label} ${t.who === "you" ? "text-base-dark" : "text-primary"}`}>{t.who === "you" ? (i === 0 ? "Request" : "Answer") : "Agora"}</div>
                   <p className={`mt-1 text-sm leading-relaxed text-ink ${t.who === "you" ? "font-semibold" : ""}`}>{t.text}</p>
                 </div>
               </div>
@@ -382,7 +382,7 @@ export function FrontDoor({ initial, onNewSearch }: { initial: FrontDoorUrl; onN
                 </button>
               </form>
               <p className="mt-2 text-ui-3xs leading-relaxed text-base-dark">
-                Products, prices and who can buy them come from Loci's catalog and contract records.{" "}
+                Products, prices and who can buy them come from Agora's catalog and contract records.{" "}
                 {llm ? "Typed messages are read by the AI and checked against the shortlist." : "Typed messages are read by simple rules: a budget, or a word from a product's name."}
               </p>
             </div>
@@ -516,7 +516,7 @@ export function FrontDoor({ initial, onNewSearch }: { initial: FrontDoorUrl; onN
                       {ramp.total
                         ? `At ${n.toLocaleString()} ${n === 1 ? "unit" : "units"} this is a ${usd(ramp.total.min)}${ramp.total.max > ramp.total.min ? ` to ${usd(ramp.total.max)}` : ""} purchase.`
                         : "Nothing here has a price on file."}{" "}
-                      Loci can start a quote request or a solicitation.
+                      Agora can start a quote request or a solicitation.
                     </span>
                     <button type="button" onClick={() => setRampOpen(true)} className={linkBtn}>
                       See the options ↓
@@ -640,7 +640,7 @@ function OffRampPanel({
         <div className={path("solicitation")}>
           {isRec("solicitation") && <span className={`${label} text-primary`}>Recommended</span>}
           <h3 className="text-body-sm font-bold text-ink">Draft a solicitation</h3>
-          <p className="text-ui-2xs text-base-darker">Starts from the closest past award in Loci. Once awarded, the contract joins Loci for the next agency that needs it.</p>
+          <p className="text-ui-2xs text-base-darker">Starts from the closest past award in Agora. Once awarded, the contract joins Agora for the next agency that needs it.</p>
           {ctx?.rule && (
             <p className="text-ui-3xs text-base-dark">
               {ctx.rule.state} formal bids: {ctx.rule.formal_bid}. Source: {ctx.rule.source}.
@@ -755,7 +755,7 @@ function RouteStage({
             <button type="button" disabled={busy} onClick={() => onPlan({ listingId: item.listing_id })} className={primaryBtn}>
               Plan this purchase →
             </button>
-            {/* Loci's own listings can go straight in the cart; it splits by supplier and pays each share the right way. */}
+            {/* Agora's own listings can go straight in the cart; it splits by supplier and pays each share the right way. */}
             {cartable && cartButton}
           </>
         ) : (

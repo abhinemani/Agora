@@ -1,4 +1,4 @@
-// Data model for the Loci prototype. Mirrors section 5 of the build spec.
+// Data model for the Agora prototype. Mirrors section 5 of the build spec.
 
 export type Source =
   | "own_contract"
@@ -25,7 +25,7 @@ export interface Buyer {
   population: number | null;
   /** Website domain, matched against co-op member lists to detect memberships. */
   domain?: string;
-  /** The government's id in Loci's co-op directory (lib/directory.ts), when picked from it. */
+  /** The government's id in Agora's co-op directory (lib/directory.ts), when picked from it. */
   directory_id?: string;
 }
 
@@ -107,7 +107,7 @@ export interface Supplier {
   service_area?: { state: string; counties: string[] };
   /** Public work the supplier says it has done, each matched against the government directory. */
   past_work?: PastWork[];
-  /** Certifications the supplier claims, each with the result of a live check where Loci can run one. */
+  /** Certifications the supplier claims, each with the result of a live check where Agora can run one. */
   certification_claims?: CertificationClaim[];
 }
 
@@ -121,7 +121,7 @@ export interface SupplierService {
   price?: { amount: number; unit: string } | null;
 }
 
-/** A public contract or purchase the supplier lists. Self-reported; `match` says whether the government is in Loci's directory. */
+/** A public contract or purchase the supplier lists. Self-reported; `match` says whether the government is in Agora's directory. */
 export interface PastWork {
   id: string;
   /** The government as the supplier named it. */
@@ -147,7 +147,7 @@ export interface CertificationClaim {
   /** Who issues it. */
   issuer: string;
   claimed_at: string;
-  /** The latest live check. Absent until one runs; kinds with no registry Loci can query stay self-reported. */
+  /** The latest live check. Absent until one runs; kinds with no registry Agora can query stay self-reported. */
   check?: CertificationCheck;
 }
 
@@ -213,7 +213,7 @@ export interface Contract {
   master_agreement?: string;
   /** Route covers every product the supplier sells (e.g. a discount-off-list co-op award). */
   covers_supplier_catalog?: boolean;
-  /** A state's participating addendum to another contract in Loci, at that contract's published prices. */
+  /** A state's participating addendum to another contract in Agora, at that contract's published prices. */
   adopts?: string;
   /** Plain-language note on how this contract relates to others, shown on product pages. */
   relation_note?: string;
@@ -231,9 +231,9 @@ export interface Contract {
   ceiling?: number;
 }
 
-/** A purchasing cooperative. Loci sends buyers to its contract pages rather
+/** A purchasing cooperative. Agora sends buyers to its contract pages rather
  * than selling through it, so the co-op sees the traffic, unless the co-op has
- * agreed to let its members buy inside Loci. */
+ * agreed to let its members buy inside Agora. */
 export interface Coop {
   id: string;
   name: string;
@@ -250,7 +250,7 @@ export interface Coop {
   member_list_updated_at?: string;
   /** How agencies get on it: a membership, or their state signing a participating addendum (NASPO ValuePoint). */
   access?: "membership" | "state_addendum";
-  /** Members may check out or request quotes in Loci. Off unless the co-op has agreed. */
+  /** Members may check out or request quotes in Agora. Off unless the co-op has agreed. */
   buy_in_agora: boolean;
   /** Plain-language status shown to Sovra ops. */
   note: string;
@@ -263,7 +263,7 @@ export interface CoopMember {
   state?: string;
 }
 
-/** How Loci knows about a membership, weakest to strongest. A roster listing says the
+/** How Agora knows about a membership, weakest to strongest. A roster listing says the
  * agency registered; the agency's own pages say it uses the co-op; a purchase shows it bought. */
 export type MembershipEvidence = "list" | "roster" | "agency" | "purchase";
 
@@ -272,7 +272,7 @@ export interface CoopMembership {
   agency: string;
   coop_id: string;
   source: "detected" | "manual";
-  /** What the detection rests on. "list" is a member list uploaded to Loci (or a demo list). */
+  /** What the detection rests on. "list" is a member list uploaded to Agora (or a demo list). */
   evidence?: MembershipEvidence;
   /** The member ID the co-op or the agency published, when there is one. */
   member_id?: string;
@@ -391,7 +391,7 @@ export interface ExtractedItem {
   listing_id: string | null;
   /** Parser notes shown to the reviewer, e.g. why confidence is low. */
   flags: string[];
-  /** Existing Loci listing this row appears to duplicate. */
+  /** Existing Agora listing this row appears to duplicate. */
   duplicate_of_listing_id?: string | null;
   /** Earlier row in the same upload this row duplicates. */
   duplicate_of_row?: number | null;
@@ -524,7 +524,7 @@ export interface Order {
 }
 
 export interface CartLine {
-  /** A Loci listing's id, or "cat:<offering id>" for a catalog product (then `catalog` says what it is). */
+  /** An Agora listing's id, or "cat:<offering id>" for a catalog product (then `catalog` says what it is). */
   listing_id: string;
   quantity: number;
   request_id?: string | null;
@@ -750,7 +750,7 @@ export interface Db {
   counters: Record<string, number>;
 }
 
-/** One government in Loci's co-op directory (lib/directory.ts), as the browser sees it. */
+/** One government in Agora's co-op directory (lib/directory.ts), as the browser sees it. */
 export interface DirectoryGovernment {
   id: string;
   name: string;

@@ -28,7 +28,7 @@ interface PublishResult {
   contract: { id: string; contract_number: string };
 }
 
-const STEPS = ["Reading files", "Extracting text and tables", "Finding contract terms", "Structuring priced line items", "Checking against Loci"];
+const STEPS = ["Reading files", "Extracting text and tables", "Finding contract terms", "Structuring priced line items", "Checking against Agora"];
 
 export default function UploadPage() {
   return (

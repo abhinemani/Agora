@@ -1,7 +1,7 @@
 "use client";
 
 // A storefront's service listing: services, where the supplier works, the public work it reports (each
-// government matched against Loci's directory) and the certifications it claims (checked live where Loci can).
+// government matched against Agora's directory) and the certifications it claims (checked live where Agora can).
 
 import { Badge, Card, money } from "@/components/ui";
 import { CERTIFICATION_KINDS, CMBL_SEARCH_URL } from "@/lib/service-listing";
@@ -56,7 +56,7 @@ export function ServiceListingView({ s }: { s: Supplier }) {
         <div>
           <h2 className="text-xl font-extrabold tracking-tight text-navy">Past public work</h2>
           <p className="mt-1 max-w-3xl text-sm text-slate">
-            As {s.name} reports it. Loci matched {matched} of {work.length} government{work.length === 1 ? "" : "s"} named to a record in its government directory; a match confirms
+            As {s.name} reports it. Agora matched {matched} of {work.length} government{work.length === 1 ? "" : "s"} named to a record in its government directory; a match confirms
             the government exists, not the work itself.
           </p>
           <Card className="mt-3 divide-y divide-base-lighter">
@@ -85,7 +85,7 @@ export function ServiceListingView({ s }: { s: Supplier }) {
                     </Badge>
                   </span>
                 ) : (
-                  <Badge tone="amber">Not found in Loci's directory</Badge>
+                  <Badge tone="amber">Not found in Agora's directory</Badge>
                 )}
               </div>
             ))}
@@ -96,7 +96,7 @@ export function ServiceListingView({ s }: { s: Supplier }) {
       {(s.certification_claims?.length ?? 0) > 0 && (
         <div>
           <h2 className="text-xl font-extrabold tracking-tight text-navy">Certifications</h2>
-          <p className="mt-1 max-w-3xl text-sm text-slate">Each as {s.name} claims it, with what the issuing registry showed when Loci last checked.</p>
+          <p className="mt-1 max-w-3xl text-sm text-slate">Each as {s.name} claims it, with what the issuing registry showed when Agora last checked.</p>
           <ul className="mt-3 grid gap-2 md:grid-cols-2">
             {s.certification_claims!.map((c) => (
               <li key={c.id} className="rounded-xl border border-line bg-white p-4">

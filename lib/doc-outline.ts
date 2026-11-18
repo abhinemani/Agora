@@ -1,6 +1,6 @@
 // A contract's key sections: the outline of its main document, read from the table of
 // contents it prints ("SECTION 2: HOW TO USE THE CONTRACT ....... 8") or, without one,
-// from its numbered headings. Rule-based and quick: it reads only text Loci already
+// from its numbered headings. Rule-based and quick: it reads only text Agora already
 // holds (seed/catalog/doctext) or has stored (lib/doc-store.ts), never the publisher.
 // The headings are the document's own words; nothing here is summarized.
 
@@ -138,7 +138,7 @@ export function outlineOf(pages: Page[]): { from: Outline["from"]; sections: Out
 
 const ORDER: DocRole[] = ["agreement", "addendum", "guidance", "amendment", "solicitation", "other", "exhibit"];
 
-/** The outline of a contract's main document, from text Loci already holds or has stored. Null when there's none. */
+/** The outline of a contract's main document, from text Agora already holds or has stored. Null when there's none. */
 export async function contractOutline(db: Db, id: string): Promise<Outline | null> {
   const own = db.contracts.find((c) => c.id === id);
   const catId = own?.catalog_id ?? (catalogIndex().contractById.has(id) ? id : null);

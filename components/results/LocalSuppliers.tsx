@@ -26,7 +26,7 @@ export function LocalSuppliers({ data, texas }: { data: { hits: LocalSupplierHit
       </h2>
       <p className="mt-1 max-w-3xl text-sm text-slate">
         From the suppliers' own service listings, priced by quote unless a package price is shown.
-        {data.source ? ` The area is ${data.source}.` : " No place was named and no agency is selected, so each supplier's own area is shown."} Past work is as each supplier reports it; Loci
+        {data.source ? ` The area is ${data.source}.` : " No place was named and no agency is selected, so each supplier's own area is shown."} Past work is as each supplier reports it; Agora
         matches each government named against its directory, and checks certifications against the issuing registry where it can.
       </p>
       {texas && (
@@ -67,7 +67,7 @@ export function LocalSuppliers({ data, texas }: { data: { hits: LocalSupplierHit
             </div>
             {h.past_work.total > 0 && (
               <div className="mt-2 text-xs text-slate">
-                {h.past_work.total} public job{h.past_work.total === 1 ? "" : "s"} listed; {h.past_work.matched} matched to a government in Loci's directory
+                {h.past_work.total} public job{h.past_work.total === 1 ? "" : "s"} listed; {h.past_work.matched} matched to a government in Agora's directory
                 {data.place && h.past_work.nearby ? `, ${h.past_work.nearby} in this area` : ""}.
               </div>
             )}

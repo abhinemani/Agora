@@ -14,7 +14,7 @@ export interface ShopperSelection {
   listing_id: string | null;
   quantity: number;
   add_ons: { listing_id: string; quantity: number }[];
-  /** A co-op or state contract product picked on the homepage, used when no Loci item is chosen. */
+  /** A co-op or state contract product picked on the homepage, used when no Agora item is chosen. */
   pick?: CatalogPick | null;
 }
 
@@ -133,7 +133,7 @@ export function defaultSelection(results: Results, request: Request): ShopperSel
   return { listing_id: shopperCandidates(results)[0]?.listing.id ?? null, quantity: request.parsed.quantity, add_ons: [] };
 }
 
-/** The plan for one order. `agencyName` is the agency whose quick-buy limit Loci holds. */
+/** The plan for one order. `agencyName` is the agency whose quick-buy limit Agora holds. */
 export function buildPlan(args: { results: Results; listings: Listing[]; limit: number; agencyName: string; selection: ShopperSelection }): Plan {
   const { results, listings, limit, selection } = args;
   const refs = shopperRefs(results);
@@ -157,7 +157,7 @@ export function buildPlan(args: { results: Results; listings: Listing[]; limit: 
       lines.push({ listing_id: al.id, title: al.title, sku: al.sku, quantity: q, unit_price: al.unit_price, unit: al.unit, amount: round2(al.unit_price * q) });
     }
   }
-  // A catalog product picked on the homepage, when no Loci item is chosen. Only a price the buyer would pay makes a line.
+  // A catalog product picked on the homepage, when no Agora item is chosen. Only a price the buyer would pay makes a line.
   const picked = chosen ? null : (selection.pick ?? null);
   if (picked && picked.price != null)
     lines.push({ listing_id: "", offering_id: picked.offering_id, contract_id: picked.contract_id, title: picked.name, sku: picked.sku ?? "no SKU", quantity: qty, unit_price: picked.price, unit: picked.unit ?? "each", amount: round2(picked.price * qty) });
@@ -193,7 +193,7 @@ export function buildPlan(args: { results: Results; listings: Listing[]; limit: 
     headline = payment === "pcard" ? "This can be bought today on a P-card." : "This order needs a purchase order.";
     summary =
       `${supplier} has this on ${pickedOn} at its ${picked.price_note.toLowerCase()}: **${usd(total!)} in all**. That is ${gap === 0 ? "right at" : `${usd(gap)} ${payment === "pcard" ? "under" : "over"}`} ${limit_phrase}, so ${payment === "pcard" ? "a P-card covers it" : "it needs a PO and approval"}. ` +
-      `The order goes to ${supplier} under that contract, from Loci's cart.`;
+      `The order goes to ${supplier} under that contract, from Agora's cart.`;
   } else if (payment === "pcard") {
     headline = "You can buy this today on a P-card.";
     summary = `${supplier} lists ${orderIs} at a published price: **${usd(total!)} in all**. That is ${usd(gap)} under ${limit_phrase}, so no purchase order is needed.`;
@@ -213,7 +213,7 @@ export function buildPlan(args: { results: Results; listings: Listing[]; limit: 
     summary = `${picked.name} is on ${pickedOn} from ${supplier}. ${picked.price_note}, so the price comes by quote under that contract.`;
   } else if (payment === "coop_site") {
     headline = `Published price, ordered on ${chosen!.link_out!.coop}'s site.`;
-    summary = `${supplier} lists this at a published price: **${usd(total!)} in all**. The contract belongs to ${chosen!.link_out!.coop}, so the order is placed on its contract page, not in Loci.`;
+    summary = `${supplier} lists this at a published price: **${usd(total!)} in all**. The contract belongs to ${chosen!.link_out!.coop}, so the order is placed on its contract page, not in Agora.`;
   } else if (members.length) {
     headline = "This one starts with a quote.";
     const kindWord = members.every((h) => h.program === "state") ? "state contract" : members.some((h) => h.program === "state") ? "contract" : "co-op contract";
@@ -238,7 +238,7 @@ export function buildPlan(args: { results: Results; listings: Listing[]; limit: 
         : payment === "po"
           ? "Over the quick-buy limit, so the cart will route it for approval."
           : payment === "coop_site"
-            ? "Loci links to the contract page and records the visit."
+            ? "Agora links to the contract page and records the visit."
             : "Too large for an off-contract purchase.";
     routes.push({ kind: "priced", recommended: payment !== "needs_contract", title, body: `${what}. ${usd(total!)} in all. ${then}`, refs: refNums([`listing:${chosen.listing.id}`]), hits: [] });
   }
@@ -275,7 +275,7 @@ export function buildPlan(args: { results: Results; listings: Listing[]; limit: 
       kind: "member",
       recommended: !routes.some((r) => r.recommended),
       title: `Get a quote through ${coopNames(members)}`,
-      body: `${memberIntro(members)} ${noPrices(members) ? "Loci holds no prices for " + (members.length === 1 ? "it" : "them") + ", so the price comes by quote." : "Some of their products are priced in the results below."}`,
+      body: `${memberIntro(members)} ${noPrices(members) ? "Agora holds no prices for " + (members.length === 1 ? "it" : "them") + ", so the price comes by quote." : "Some of their products are priced in the results below."}`,
       refs: refNums(members.map((h) => `contract:${h.contract_id}`)),
       hits: members,
     });
@@ -295,7 +295,7 @@ export function buildPlan(args: { results: Results; listings: Listing[]; limit: 
       kind: "coops",
       recommended: !routes.some((r) => r.recommended),
       title: "Co-op contracts that cover this",
-      body: `${hitNames(open)}. Set your agency and Loci will show which of these you're already on.`,
+      body: `${hitNames(open)}. Set your agency and Agora will show which of these you're already on.`,
       refs: refNums(open.map((h) => `contract:${h.contract_id}`)),
       hits: open,
     });
@@ -374,7 +374,7 @@ export function purchaseFileText(results: Results, plan: Plan, confirmedAt: stri
   const r = results.request;
   const out = [
     "PURCHASE FILE",
-    `Prepared in Loci on ${new Date().toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" })}`,
+    `Prepared in Agora on ${new Date().toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" })}`,
     "",
     `Agency: ${results.buyer ? `${results.buyer.name}, ${results.buyer.state}` : "Not set"}`,
     `Request: "${r.raw_text}"`,
@@ -395,7 +395,7 @@ export function purchaseFileText(results: Results, plan: Plan, confirmedAt: stri
     "Sources:",
     ...plan.refs.map((x) => `  Ref ${x.n}: ${x.label}`),
     "",
-    "Eligibility and prices come from Loci's contract records. This file is a record of the search, not legal advice.",
+    "Eligibility and prices come from Agora's contract records. This file is a record of the search, not legal advice.",
   ];
   return out.join("\n");
 }

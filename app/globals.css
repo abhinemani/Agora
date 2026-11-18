@@ -56,7 +56,7 @@ button:focus-visible {
   .cart-bump { animation: none; }
 }
 
-/* Loci's one motion: the mark's inner ticks close in on the center while a search runs. */
+/* Agora's one motion: the mark's inner ticks close in on the center while a search runs. */
 @keyframes mark-close {
   0%, 100% { transform: scale(1.32); opacity: 0.45; }
   55% { transform: scale(1); opacity: 1; }

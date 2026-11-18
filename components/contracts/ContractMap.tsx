@@ -29,7 +29,7 @@ const TOPIC: Record<Topic, string> = {
 const BASIS: Record<NonNullable<ContractDetail["family"]["master"]>["basis"], string> = {
   named: "The addendum names this master agreement.",
   matched: "Matched by supplier and title. Confirm the master's number in the addendum before relying on it.",
-  program_only: "The addendum names the program but not which master agreement; it isn't in Loci's catalog by number.",
+  program_only: "The addendum names the program but not which master agreement; it isn't in Agora's catalog by number.",
   text: "As the contract record names it.",
 };
 
@@ -211,7 +211,7 @@ function Here({ c, outline, onAsk }: { c: ContractDetail; outline: Outline | nul
               <Node tag="Adopted by">
                 <span className="text-ui-xs text-ink">
                   {f.addenda.length} state addend
-                  {f.addenda.length === 1 ? "um" : "a"} in Loci
+                  {f.addenda.length === 1 ? "um" : "a"} in Agora
                 </span>
               </Node>
               <ul className="mb-2 space-y-0.5 text-ui-2xs">

@@ -59,7 +59,7 @@ export interface Master {
   number: string | null;
   /** The master contract's page, when the catalog holds it. */
   id: string | null;
-  /** How Loci knows: the addendum names it, or Loci matched it by supplier. */
+  /** How Agora knows: the addendum names it, or Agora matched it by supplier. */
   basis: "named" | "matched" | "program_only";
 }
 

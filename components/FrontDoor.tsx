@@ -78,7 +78,7 @@ function Stages({ at }: { at: 1 | 2 }) {
 
 export function FrontDoor({ initial, onNewSearch }: { initial: FrontDoorUrl; onNewSearch: (need: string | null) => void }) {
   const router = useRouter();
-  const { db, act, llm } = useStore();
+  const { db, act } = useStore();
   const buyer = db?.session.buyer ?? null;
   const [need, setNeed] = useState(initial.need);
   const [draft, setDraft] = useState(initial.need);
@@ -226,9 +226,9 @@ export function FrontDoor({ initial, onNewSearch }: { initial: FrontDoorUrl; onN
     const title = ask.kind === "agency" ? "Who's buying?" : ask.kind === "quantity" ? "How many do you need?" : ask.q.text;
     const why =
       ask.kind === "agency"
-        ? "The agency decides which contracts are open to it: its state's law and the co-ops it belongs to."
+        ? "It decides which contracts are open."
         : ask.kind === "quantity"
-          ? `The total decides how it's bought: a P-card under ${usd(limit)}, a purchase order at or over it.`
+          ? `P-card under ${usd(limit)}, purchase order above.`
           : ask.q.why;
     const optBtn = sheet
       ? "flex min-h-[44px] shrink-0 items-center gap-2 border border-base-light bg-white px-3 text-left text-sm font-semibold text-ink hover:border-primary-darker"
@@ -381,10 +381,6 @@ export function FrontDoor({ initial, onNewSearch }: { initial: FrontDoorUrl; onN
                   Narrow →
                 </button>
               </form>
-              <p className="mt-2 text-ui-3xs leading-relaxed text-base-dark">
-                Products, prices and who can buy them come from Agora's catalog and contract records.{" "}
-                {llm ? "Typed messages are read by the AI and checked against the shortlist." : "Typed messages are read by simple rules: a budget, or a word from a product's name."}
-              </p>
             </div>
           )}
         </section>
@@ -501,7 +497,7 @@ export function FrontDoor({ initial, onNewSearch }: { initial: FrontDoorUrl; onN
               <SetAside items={state.set_aside ?? []} />
               {state.fit_log && (
                 <p className="flex flex-wrap items-center gap-x-3 gap-y-1 text-ui-3xs text-base-dark">
-                  <span>Fit is judged by AI from each product's name and kind. Prices and who can buy come from the contracts.</span>
+                  <span>Fit judged by AI. Prices from the contracts.</span>
                   <Feedback id={state.fit_log} />
                 </p>
               )}

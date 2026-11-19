@@ -22,7 +22,7 @@ require('fs').mkdirSync(OUT, { recursive: true });
   const agency = async (name) => { await menu(); await p.getByRole('menuitem', { name: /Your agency/ }).click(); await p.locator(`button:has-text("${name}")`).first().click(); await p.waitForTimeout(800); };
   // The homepage narrows product requests in place (the front door); contract-shaped ones go straight to results.
   // Either way this lands on the results page: from the front door, by "See full results".
-  const search = async (q) => { await p.goto(B + '/'); await p.locator('input[placeholder^="Describe"]').fill(q); await p.keyboard.press('Enter'); await p.waitForFunction(() => location.pathname.startsWith('/request/') || location.search.startsWith('?q='), null, { timeout: 60000 }); if (!new URL(p.url()).pathname.startsWith('/request/')) { await p.locator('button:has-text("See full results")').click(); } await p.waitForURL(/\/request\//, { timeout: 60000 }); await p.waitForTimeout(1500); const yes = p.locator('button:has-text("Yes")'); if (await yes.count()) { await yes.first().click(); } await p.waitForTimeout(1500); };
+  const search = async (q) => { await p.goto(B + '/'); await p.locator('input[aria-label="What are you looking to buy?"]').fill(q); await p.keyboard.press('Enter'); await p.waitForFunction(() => location.pathname.startsWith('/request/') || location.search.startsWith('?q='), null, { timeout: 60000 }); if (!new URL(p.url()).pathname.startsWith('/request/')) { await p.locator('button:has-text("See full results")').click(); } await p.waitForURL(/\/request\//, { timeout: 60000 }); await p.waitForTimeout(1500); const yes = p.locator('button:has-text("Yes")'); if (await yes.count()) { await yes.first().click(); } await p.waitForTimeout(1500); };
   // The other sources on a results page are folded; open one before reading it.
   const openFold = async (id) => { const b = p.locator(`#${id} > h3 > button[aria-expanded="false"]`); if (await b.count()) { await b.click(); await p.waitForTimeout(400); } };
   const ledgerOpts = async () => p.evaluate(() => fetch('/api/state').then(r => r.json()).then(j => [...new Set(j.db.revenue.map(e => e.option))].sort((a,b)=>a-b)));
@@ -196,7 +196,7 @@ require('fs').mkdirSync(OUT, { recursive: true });
   });
   await step(17, 'Front door: folding tables asked, narrowed, routed, with a way out', async () => {
     await p.goto(B + '/'); await p.waitForTimeout(800);
-    await p.locator('input[placeholder^="Describe"]').fill('40 folding tables for the rec center'); await p.keyboard.press('Enter');
+    await p.locator('input[aria-label="What are you looking to buy?"]').fill('40 folding tables for the rec center'); await p.keyboard.press('Enter');
     await p.waitForSelector('text=/\\d+ OF \\d+ MATCH/i', { timeout: 60000 });
     if (new URL(p.url()).pathname !== '/') throw new Error('a product request left the homepage: ' + p.url());
     const chips = await p.locator('section[aria-label=Shortlist]').innerText();

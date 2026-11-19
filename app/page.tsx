@@ -17,8 +17,6 @@ import type { Listing, Request } from "@/lib/types";
 import { CATEGORIES } from "@/lib/types";
 import { EXAMPLES, fromSearch, requestKind, toSearch, type FrontDoorUrl } from "@/lib/front-door";
 
-const KIND_TAG = { product: "Product", contract: "Contract" } as const;
-const STEPS = ["Who's buying", "How many", "Which one", "How to buy it"];
 /** The worked example: one request, three contracts. */
 const PREVIEW = ["lst_001", "lst_014", "lst_021"];
 
@@ -124,17 +122,13 @@ export default function Home() {
       <section className="relative -mt-8 mx-[calc(50%-50vw)] overflow-hidden bg-[#0F3D73] px-8 pb-48 pt-16 text-center sm:pt-24 md:px-5 md:pb-32">
         <BlueprintBackdrop contracts={contractCount} suppliers={suppliers} products={products} vehicles={programs} priceRange={priceRange} />
         <div className="relative mx-auto max-w-3xl">
-          <div className="text-ui-2xs font-bold text-[#A8CBF2]">Government buying, simplified</div>
-          <h1 className="mx-auto mt-5 max-w-3xl font-heading text-[clamp(2rem,4.4vw,3.4rem)] font-bold leading-[1.12] text-[#fff]">
+          <h1 className="mx-auto max-w-3xl font-heading text-[clamp(2rem,4.4vw,3.4rem)] font-bold leading-[1.12] text-[#fff]">
             Procure faster
             <span className="mt-3 block text-[clamp(1.25rem,2.4vw,1.85rem)] font-normal leading-snug text-[#D3E3F6]">
-              <em className="text-[#fff]">Pre-approved</em> contracts and products, <em className="text-[#fff]">verified for your jurisdiction</em>
+              Contracts your agency can <em className="text-[#fff]">already use</em>
             </span>
           </h1>
-          <p className="mx-auto mt-4 max-w-xl text-base leading-relaxed text-[#D3E3F6]">
-            Describe it in your own words. Agora asks a few questions, then shows what your agency can buy on state and cooperative contracts, and how to buy it.
-          </p>
-          <div className="mx-auto mt-14 max-w-3xl">
+          <div className="mx-auto mt-12 max-w-3xl">
             <DimensionFrame working={busy} label={busy ? `FIG. 2 · CHECKING ${n(contractCount)} CONTRACTS` : `FIG. 2 · SEARCH ${n(contractCount)} CONTRACTS`}>
               <form
                 className="flex flex-col gap-2 bg-[#fff] p-1.5 focus-within:outline focus-within:outline-4 focus-within:outline-focus sm:flex-row sm:items-center sm:pl-4"
@@ -149,7 +143,7 @@ export default function Home() {
                     ref={input}
                     value={text}
                     onChange={(e) => setText(e.target.value)}
-                    placeholder="Describe what you need, like “permitting software for a mid-size city”"
+                    placeholder="What do you need to buy?"
                     className="min-w-0 flex-1 !border-0 !bg-[#fff] !px-1 !py-3.5 !text-body-sm !text-[#1B1B1B] !shadow-none !outline-none !ring-0 placeholder:!text-[#71767A]"
                     aria-label="What are you looking to buy?"
                   />
@@ -164,15 +158,6 @@ export default function Home() {
               </form>
             </DimensionFrame>
           </div>
-          {/* What happens after Start, in the same words as the steps on the next screen. */}
-          <ol aria-label="What happens next" className="mx-auto mt-5 flex max-w-3xl flex-wrap justify-center gap-x-5 gap-y-2 text-[13px] text-[#D3E3F6]">
-            {STEPS.map((s, i) => (
-              <li key={s} className="flex items-center gap-2">
-                <span className="border border-[rgba(255,255,255,0.5)] px-1.5 py-1 font-mono text-[10.5px] font-bold leading-none text-[#fff]">{i + 1}</span>
-                {s}
-              </li>
-            ))}
-          </ol>
           <div className="mx-auto mt-7 flex max-w-3xl flex-wrap justify-center gap-2.5">
             {EXAMPLES.map((e) => (
               <button
@@ -182,18 +167,15 @@ export default function Home() {
                 className="inline-flex items-center gap-2 rounded-full border border-[rgba(255,255,255,0.4)] bg-[rgba(255,255,255,0.05)] px-3.5 py-1.5 text-ui-2xs text-[#fff] transition hover:border-[rgba(255,255,255,0.8)] hover:bg-[rgba(255,255,255,0.15)] disabled:opacity-60"
               >
                 {e}
-                <span className="font-mono text-[9.5px] uppercase tracking-[0.1em] text-[#A8CBF2]">{KIND_TAG[requestKind(e)]}</span>
               </button>
             ))}
           </div>
           {/* Who's buying: optional, kept in this browser, and it decides which contracts show as usable. */}
           <div className="mx-auto mt-7 flex max-w-3xl flex-wrap items-center justify-center gap-x-3 gap-y-2 text-[13px] text-[#D3E3F6]">
-            {db.session.buyer ? (
+            {db.session.buyer && (
               <span>
-                Showing what <strong className="font-bold text-[#fff]">{db.session.buyer.name}, {db.session.buyer.state}</strong> can buy.
+                Buying for <strong className="font-bold text-[#fff]">{db.session.buyer.name}, {db.session.buyer.state}</strong>
               </span>
-            ) : (
-              <span>Searching every contract. Select your agency to see only what you can buy.</span>
             )}
             <button
               type="button"
@@ -209,33 +191,20 @@ export default function Home() {
               <BuyerPicker compact onDone={() => setPicking(false)} onClose={() => setPicking(false)} />
             </div>
           )}
-          <p className="mt-4 text-[13px] text-[#BFD5EE]">No sign-in or contract number required. Your agency is remembered in this browser.</p>
           <div className="mx-auto mt-3 max-w-xl">
             <ErrorNote message={error} />
           </div>
         </div>
       </section>
 
-      {/* The drawing's legend: what Agora searches. */}
-      <section className="mx-[calc(50%-50vw)] mb-12 border-b border-line bg-white px-5 py-6">
-        <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-center gap-x-7 gap-y-2">
-          <span className="text-sm font-semibold text-ink">Searching {db.contracts.length} contracts from</span>
-          {vehicles.map((v) => (
-            <Link key={v} href="/vehicles" className="text-sm tracking-tight text-slate hover:text-navy">
-              {v}
-            </Link>
-          ))}
-        </div>
-      </section>
 
       {/* How it works, shown rather than told. */}
-      <section className="grid grid-cols-1 items-center gap-10 border border-base-lighter bg-white p-6 sm:p-10 md:grid-cols-[minmax(0,1fr)_minmax(0,1.05fr)]">
+      <section className="mt-12 grid grid-cols-1 items-center gap-10 border border-base-lighter bg-white p-6 sm:p-10 md:grid-cols-[minmax(0,1fr)_minmax(0,1.05fr)]">
         <div>
           <Annotation fig={3}>One request, every contract</Annotation>
           <h2 className="mt-3 text-[1.9rem] font-bold leading-tight text-ink">Stop checking five portals for the same folding table.</h2>
           <p className="mt-3 text-[15px] leading-relaxed text-slate">
-            Agora reads {n(contractCount)} contracts from {n(suppliers)} suppliers, {n(products)} products in all, and lines them up side by side. Tell it your agency
-            and it hides the ones you can't use; leave it blank and it shows who each contract is open to.
+            One search, every contract side by side, minus the ones your agency can't use.
           </p>
           <dl className="mt-6 grid grid-cols-3 border border-base-lighter">
             {[
@@ -291,10 +260,7 @@ export default function Home() {
             Built on Agora
           </Annotation>
           <h2 className="mt-3 text-[1.8rem] font-bold leading-tight">A marketplace for your city. A storefront for your company.</h2>
-          <p className="mt-3 text-[15px] leading-relaxed text-[#D3E3F6]">
-            Searching Agora is free. A city can run its own marketplace on it, with its contracts and rules; a supplier can run a storefront in it, with its catalog and
-            reviews. Riverbend's marketplace is live as an example.
-          </p>
+          <p className="mt-3 text-[15px] leading-relaxed text-[#D3E3F6]">Searching is free.</p>
         </div>
         <div className="mt-6">
           <TwoProducts dark />

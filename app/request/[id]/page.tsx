@@ -131,7 +131,7 @@ export default function RequestResults() {
               Purchasing options
             </h2>
             <p className="text-ui-xs text-base-dark">
-              {counts}. {buyer ? `Only contracts open to ${buyer.name}, ${buyer.state} are listed` : "Every contract in Agora is listed; select an agency to limit them to the ones it can use"}.
+              {counts}
             </p>
           </div>
           <OptionsTable
@@ -143,7 +143,7 @@ export default function RequestResults() {
             buyer={buyer}
             footer={
               <div className="flex flex-wrap items-center gap-x-5 gap-y-2">
-                <p className="min-w-0 flex-[1_1_320px] text-ui-2xs text-base-dark">Prices are published prices from each supplier's listing. Sponsored suppliers are marked and are not ranked higher for it.</p>
+                <p className="min-w-0 flex-[1_1_320px] text-ui-2xs text-base-dark">Published prices. Sponsored suppliers aren't ranked higher.</p>
                 <Checkbox checked={verifiedOnly} onChange={setVerifiedOnly} label="Verified suppliers only" />
                 <button type="button" onClick={() => setWhy(!why)} aria-expanded={why} className="inline-flex min-h-[44px] items-center text-ui-xs font-bold text-primary hover:text-primary-dark">
                   {why ? "Hide ranking" : "How these are ranked"}
@@ -222,35 +222,35 @@ export default function RequestResults() {
 
       {results.local_suppliers && <LocalSuppliers data={results.local_suppliers} texas={buyer?.state === "TX" || results.local_suppliers.hits.some((h) => h.area?.state === "TX" && h.area.covers)} />}
 
-      <FoldGroup title="Other sources" note="Additional contracts and procurement methods for this request.">
+      <FoldGroup title="Other sources">
         {cc!.coops > 0 && (
           <Fold
             id="coops"
             title="Cooperative contracts"
             count={cc!.coops}
-            note={buyer ? `Split by the co-ops ${buyer.name} belongs to and the ones it could join.` : "Open to members, or to agencies in states that have signed on. Depends on the agency."}
+            note={buyer ? `Co-ops ${buyer.name} is on, and ones it could join.` : "Open to members."}
             defaultOpen={!all.length}
           >
             <CoopContracts section={coops!} requestId={id} onMembershipChange={() => setResults(null)} refs={contractRefs} query={p.item} />
           </Fold>
         )}
         {!buyer && cc!.state > 0 && (
-          <Fold id="other-state-contracts" title="State contracts" count={cc!.state} note={`${cc!.stateNames.join(", ")}. Open to local governments in ${cc!.stateNames.length === 1 ? "that state" : "those states"} only.`}>
+          <Fold id="other-state-contracts" title="State contracts" count={cc!.state} note={`${cc!.stateNames.join(", ")} buyers only.`}>
             <StateContracts section={coops!} requestId={id} refs={contractRefs} />
           </Fold>
         )}
         {cc!.gsa > 0 && (
-          <Fold id="gsa" title="Federal schedule (GSA)" count={cc!.gsa} note="Open to state and local governments only for the categories GSA allows.">
+          <Fold id="gsa" title="Federal schedule (GSA)" count={cc!.gsa} note="Some categories only.">
             <GsaContracts section={coops!} requestId={id} refs={contractRefs} />
           </Fold>
         )}
         {results.catalog_products && results.catalog_products.hits.length > 0 && (
-          <Fold id="catalog-products-fold" title="Products in co-op price files" count={results.catalog_products.total} note="Published prices with their vintage, not quotes. A contract price the agency can use goes in the cart; the rest are ordered on the program's site.">
+          <Fold id="catalog-products-fold" title="Products in co-op price files" count={results.catalog_products.total} note="Published prices, not quotes.">
             <CatalogProducts data={results.catalog_products} requestId={id} />
           </Fold>
         )}
         {results.contract_leads.length > 0 && (
-          <Fold id="by-quote" title="Contracts with no prices on file" count={results.contract_leads.length} note="They cover this purchase; the price comes by quote.">
+          <Fold id="by-quote" title="Contracts with no prices on file" count={results.contract_leads.length} note="Priced by quote.">
             <ContractLeadsCard leads={results.contract_leads} />
           </Fold>
         )}
@@ -266,7 +266,7 @@ export default function RequestResults() {
           </Fold>
         )}
         {results.unavailable.length > 0 && (
-          <Fold id="not-open" title={`Contracts not open to ${who}`} count={results.unavailable.length} note="Matches on contracts this agency can't use, with the reason.">
+          <Fold id="not-open" title={`Contracts not open to ${who}`} count={results.unavailable.length} note="With the reason.">
             <UnavailableCard items={results.unavailable} buyerName={who} />
           </Fold>
         )}
@@ -274,7 +274,7 @@ export default function RequestResults() {
           <span className="w-12 shrink-0" aria-hidden />
           <span className="min-w-0 flex-1">
             <span className="block text-body-sm font-bold">Issue a solicitation</span>
-            <span className="block text-ui-2xs text-base-dark">A draft is generated from this request and the closest past award.</span>
+            <span className="block text-ui-2xs text-base-dark">Drafted from the closest past award.</span>
           </span>
           <span className="shrink-0 whitespace-nowrap text-ui-xs font-bold text-primary">Start a draft</span>
         </Link>
@@ -292,23 +292,11 @@ export default function RequestResults() {
 
       {changing && <BuyerPicker onDone={() => setChanging(false)} onClose={() => setChanging(false)} />}
 
-      {!buyer && !changing && (
-        <div className="flex flex-wrap items-center gap-x-6 gap-y-3 border border-warning bg-warning-lighter px-5 py-4">
-          <div className="min-w-0 flex-[1_1_360px]">
-            <h2 className="text-body-md font-bold text-ink">No agency selected</h2>
-            <p className="text-ui-xs text-base-darker">
-              Eligibility depends on state law and the agency's cooperative memberships. Until an agency is selected, every contract is listed and none is checked against them.
-            </p>
-          </div>
-          <Button onClick={() => setChanging(true)}>Select agency</Button>
-        </div>
-      )}
 
       {needsAnswer && !changing && (
         <Card accent="maroon" className="flex flex-wrap items-center gap-4 p-5">
           <div className="min-w-0 flex-1">
             <div className="font-semibold text-navy">Riverbend has a local-vendor preference. Favor local and MBE-certified suppliers for this request?</div>
-            <div className="text-xs text-slate">The answer is kept for the rest of this session.</div>
           </div>
           <div className="flex gap-2">
             {(

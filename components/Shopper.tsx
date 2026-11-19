@@ -319,7 +319,7 @@ export function Shopper({ results, requestId, onChanged, options, children }: { 
                 <button type="button" disabled={busy} onClick={confirm} className={primaryBtn}>
                   Confirm item
                 </button>
-                <span className="min-w-0 flex-[1_1_260px] text-ui-2xs text-base-dark">Items, SKUs and prices come from the price lists in Agora. None of them are generated.</span>
+                <span className="min-w-0 flex-[1_1_260px] text-ui-2xs text-base-dark">Prices from the contracts' price lists.</span>
               </div>
             </div>
 
@@ -327,7 +327,7 @@ export function Shopper({ results, requestId, onChanged, options, children }: { 
               <span aria-hidden className="h-2.5 w-2.5 shrink-0 border-[1.5px] border-primary-light bg-white" />
               <div>
                 <div className={`${label} text-base-dark`}>Step 2 of 2</div>
-                <div className="text-sm text-base-darker">Recommended route: the routes open {results.buyer ? `to ${results.buyer.name}` : "to this request"} for the confirmed item, and what each requires.</div>
+                <div className="text-sm text-base-darker">Recommended route</div>
               </div>
             </div>
           </>
@@ -706,9 +706,9 @@ function AskBox({ plan, requestId, enabled, supplier }: { plan: Plan; requestId:
           </div>
         </>
       ) : (
-        <p className="mt-2 px-5 text-sm text-base-darker">Questions are answered by Claude and need the AI connection, which is off. The route and the purchase file are rule-based and work without it.</p>
+        <p className="mt-2 px-5 text-sm text-base-darker">Questions need the AI connection, which is off.</p>
       )}
-      <p className="px-5 pb-4 pt-1 text-ui-3xs leading-relaxed text-base-dark">Answers draw only on Agora's contract data and cite their sources. Prices are never estimated, and eligibility is decided by the contract rules, not by the answer.</p>
+      <p className="px-5 pb-4 pt-1 text-ui-3xs leading-relaxed text-base-dark">Answers cite Agora's contract data. Prices are never estimated.</p>
     </div>
   );
 }

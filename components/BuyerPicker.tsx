@@ -52,10 +52,7 @@ export function BuyerPicker({ onDone, onClose, compact = false }: { onDone?: (b:
               </button>
             )}
           </div>
-          <p className="mt-1 text-sm text-slate">
-            Agora searches every contract by default. Contracts are open to different buyers (NJSTART to New Jersey public entities, Sourcewell to members nationwide), so
-            setting your agency shows only the ways you can actually buy.
-          </p>
+          <p className="mt-1 text-sm text-slate">Shows only the contracts it can use.</p>
 
           <div className="mt-4 grid gap-2 sm:grid-cols-3 lg:grid-cols-6">
             <button
@@ -70,9 +67,8 @@ export function BuyerPicker({ onDone, onClose, compact = false }: { onDone?: (b:
             >
               <div className="text-sm font-semibold text-navy">Any agency</div>
               <div className="text-[11px] text-slate">Every contract in Agora</div>
-              <div className="mt-1 text-xs text-slate">Shows who each contract is open to</div>
             </button>
-            {BUYER_PRESETS.map(({ buyer, blurb }) => {
+            {BUYER_PRESETS.map(({ buyer }) => {
               const active = current?.name === buyer.name && current?.state === buyer.state;
               return (
                 <button
@@ -88,7 +84,6 @@ export function BuyerPicker({ onDone, onClose, compact = false }: { onDone?: (b:
                     {ENTITY_LABEL[buyer.entity_type]}
                     {buyer.population ? ` · pop. ${buyer.population.toLocaleString()}` : ""}
                   </div>
-                  <div className="mt-1 text-xs text-slate">{blurb}</div>
                 </button>
               );
             })}
@@ -101,7 +96,6 @@ export function BuyerPicker({ onDone, onClose, compact = false }: { onDone?: (b:
                 choose({ name: g.name, state: g.state, entity_type: g.entity_type, population: null, domain: g.domain, directory_id: g.id })
               }
             />
-            <p className="mt-1 text-[11px] text-slate">Picking your agency brings in the co-ops it's on, from published rosters and its own procurement pages.</p>
           </div>
 
           {!custom ? (

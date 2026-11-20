@@ -19,7 +19,7 @@ import { FitLine, SetAside, SpecLine } from "./FitLine";
 import { specText } from "@/lib/specs";
 import { goHref } from "@/lib/coops";
 import type { DiveFilter, DiveItem, DiveQuestion, DiveState } from "@/lib/dive";
-import { offRamp, routeFor, ROUTE_LABEL, toSearch, type FrontDoorUrl, type OffRampPath, type Route } from "@/lib/front-door";
+import { foldVariants, offRamp, routeFor, ROUTE_LABEL, toSearch, type FrontDoorUrl, type OffRampPath, type Route, type VariantGroup } from "@/lib/front-door";
 import type { Request } from "@/lib/types";
 
 const label = "font-mono text-[11px] uppercase tracking-[0.14em]";
@@ -229,6 +229,9 @@ export function FrontDoor({ initial, onNewSearch }: { initial: FrontDoorUrl; onN
     [...(state?.items ?? [])]
       .filter((i) => i.price != null && i.fit_verdict !== "no" && i.fit >= topFit - 10)
       .sort((x, y) => verdictRank(x) - verdictRank(y) || openRank(x) - openRank(y) || x.price! - y.price!)[0] ?? null;
+  // Size variants of one product show as one card with a size switch; the recommended product's sizes go with it.
+  const groups = foldVariants(state?.items ?? []);
+  const recGroup = rec ? groups.find((g) => g.items.includes(rec)) : undefined;
 
   const question = (where: "panel" | "sheet") => {
     if (!ask || busy) return null;
@@ -443,13 +446,15 @@ export function FrontDoor({ initial, onNewSearch }: { initial: FrontDoorUrl; onN
 
               {rec && (
                 <Recommended
+                  key={rec.id}
                   item={rec}
+                  group={recGroup}
                   quantity={n}
                   quantityKnown={qty != null}
                   limit={limit}
                   buyer={buyer ? `${buyer.name}` : null}
                   busy={working}
-                  onChoose={() => setPicked(rec)}
+                  onChoose={setPicked}
                   onSetAgency={() => setPicking(true)}
                 />
               )}
@@ -462,56 +467,13 @@ export function FrontDoor({ initial, onNewSearch }: { initial: FrontDoorUrl; onN
                   <Feedback id={state.reading.log_id} className="ml-auto" />
                 </div>
               )}
-              {rec && state.items.length > 1 && <h2 className={`${label} pt-2 text-base-dark`}>Other options</h2>}
+              {rec && groups.length > 1 && <h2 className={`${label} pt-2 text-base-dark`}>Other options</h2>}
 
-              {state.items.filter((i) => i !== rec).map((i) => {
-                const total = i.price != null ? i.price * n : null;
-                const route = routeFor(total, limit);
-                return (
-                  <article key={i.id} className={`grid grid-cols-[minmax(0,1fr)_auto] gap-x-4 gap-y-2 border border-base-lighter px-4 py-3.5 ${i.fit_verdict === "no" ? "bg-base-lightest" : "bg-white"}`}>
-                    <div className="flex min-w-0 flex-col gap-1.5">
-                      <span className="flex flex-wrap items-center gap-2">
-                        <span className="text-body-md font-bold text-ink">{i.name}</span>
-                      </span>
-                      <span className="flex flex-wrap items-center gap-x-2.5 gap-y-1 text-ui-2xs text-base-darker">
-                        {i.sku && <span className="border border-base-light bg-white px-1.5 py-px font-mono text-[11px] tracking-[0.1em]">{i.sku}</span>}
-                        <span>{i.supplier}</span>
-                        <span>
-                          {i.program} {i.contract_number}
-                        </span>
-                        {i.routes > 1 && <span>{i.routes} contracts sell it</span>}
-                      </span>
-                      <SpecLine specs={i.specs} />
-                      <span className={`text-ui-2xs ${i.usable ? "text-success-darker" : "text-base-dark"}`}>{i.access}</span>
-                      {i.fit_verdict && <FitLine verdict={i.fit_verdict} reason={i.fit_reason} />}
-                    </div>
-                    <div className="text-right text-ui-2xs text-base-dark">
-                      <div className="text-lg font-bold tabular-nums text-ink">
-                        {i.price != null ? usd(i.price) : i.list != null ? `List ${usd(i.list)}` : "No price"}
-                        {(i.price ?? i.list) != null && i.unit && <span className="text-ui-3xs font-normal text-base-dark"> / {i.unit}</span>}
-                      </div>
-                      <div className="max-w-[16rem]">{i.price_note}</div>
-                    </div>
-                    <div className="col-span-2 flex flex-wrap items-center gap-x-3 gap-y-1 border-t border-dashed border-base-lighter pt-2 text-ui-2xs text-base-darker">
-                      <RoutePill route={route} />
-                      <span>
-                        {total != null ? (
-                          <>
-                            {n > 1 && `${n.toLocaleString()} × ${usd(i.price!)} = `}
-                            <strong className="tabular-nums text-ink">{usd(total)}</strong>
-                            {route === "pcard" ? `, under the ${usd(limit)} quick-buy limit` : `, ${total === limit ? "at" : `${usd(total - limit)} over`} the ${usd(limit)} quick-buy limit`}
-                          </>
-                        ) : (
-                          "The total comes from the supplier's quote."
-                        )}
-                      </span>
-                      <button type="button" disabled={working} onClick={() => setPicked(i)} className={`${linkBtn} ml-auto`}>
-                        Choose this one →
-                      </button>
-                    </div>
-                  </article>
-                );
-              })}
+              {groups
+                .filter((g) => g !== recGroup)
+                .map((g) => (
+                  <OptionCard key={g.items.map((i) => i.id).join(" ")} group={g} quantity={n} limit={limit} busy={working} onChoose={setPicked} />
+                ))}
               {state.matched > state.items.length && <p className="text-ui-2xs text-base-dark">Showing the top {state.items.length}. Answer another question to narrow the other {state.matched - state.items.length}.</p>}
               <SetAside items={state.set_aside ?? []} />
               {state.fit_log && (
@@ -553,9 +515,84 @@ export function FrontDoor({ initial, onNewSearch }: { initial: FrontDoorUrl; onN
   );
 }
 
+/** The sizes of one product, each with its price; picking one switches the card to it. */
+function SizeSwitch({ group, at, onPick }: { group: VariantGroup<DiveItem>; at: number; onPick: (i: number) => void }) {
+  return (
+    <span role="group" aria-label="Size" className="flex flex-wrap gap-1.5">
+      {group.items.map((v, k) => (
+        <button
+          key={v.id}
+          type="button"
+          aria-pressed={k === at}
+          onClick={() => onPick(k)}
+          className={`inline-flex min-h-[36px] items-center gap-2 border px-2.5 text-ui-2xs font-bold ${k === at ? "border-[#162E51] bg-[#162E51] text-white" : "border-base-light bg-white text-ink hover:border-primary-darker"}`}
+        >
+          {group.sizes[k]}
+          <span className={`font-normal tabular-nums ${k === at ? "text-[#D3E3F6]" : "text-base-dark"}`}>{v.price != null ? usd(v.price) : v.list != null ? `List ${usd(v.list)}` : "No price"}</span>
+        </button>
+      ))}
+    </span>
+  );
+}
+
+/** One product on the shortlist, or one product in several sizes. */
+function OptionCard({ group, quantity, limit, busy, onChoose }: { group: VariantGroup<DiveItem>; quantity: number; limit: number; busy: boolean; onChoose: (i: DiveItem) => void }) {
+  const [at, setAt] = useState(0);
+  const i = group.items[at];
+  const sized = group.items.length > 1;
+  const total = i.price != null ? i.price * quantity : null;
+  const route = routeFor(total, limit);
+  return (
+    <article className={`grid grid-cols-[minmax(0,1fr)_auto] gap-x-4 gap-y-2 border border-base-lighter px-4 py-3.5 ${i.fit_verdict === "no" ? "bg-base-lightest" : "bg-white"}`}>
+      <div className="flex min-w-0 flex-col gap-1.5">
+        <span className="flex flex-wrap items-center gap-2">
+          <span className="text-body-md font-bold text-ink">{sized ? group.base : i.name}</span>
+        </span>
+        {sized && <SizeSwitch group={group} at={at} onPick={setAt} />}
+        <span className="flex flex-wrap items-center gap-x-2.5 gap-y-1 text-ui-2xs text-base-darker">
+          {i.sku && <span className="border border-base-light bg-white px-1.5 py-px font-mono text-[11px] tracking-[0.1em]">{i.sku}</span>}
+          <span>{i.supplier}</span>
+          <span>
+            {i.program} {i.contract_number}
+          </span>
+          {i.routes > 1 && <span>{i.routes} contracts sell it</span>}
+        </span>
+        <SpecLine specs={i.specs} />
+        <span className={`text-ui-2xs ${i.usable ? "text-success-darker" : "text-base-dark"}`}>{i.access}</span>
+        {i.fit_verdict && <FitLine verdict={i.fit_verdict} reason={i.fit_reason} />}
+      </div>
+      <div className="text-right text-ui-2xs text-base-dark">
+        <div className="text-lg font-bold tabular-nums text-ink">
+          {i.price != null ? usd(i.price) : i.list != null ? `List ${usd(i.list)}` : "No price"}
+          {(i.price ?? i.list) != null && i.unit && <span className="text-ui-3xs font-normal text-base-dark"> / {i.unit}</span>}
+        </div>
+        <div className="max-w-[16rem]">{i.price_note}</div>
+      </div>
+      <div className="col-span-2 flex flex-wrap items-center gap-x-3 gap-y-1 border-t border-dashed border-base-lighter pt-2 text-ui-2xs text-base-darker">
+        <RoutePill route={route} />
+        <span>
+          {total != null ? (
+            <>
+              {quantity > 1 && `${quantity.toLocaleString()} × ${usd(i.price!)} = `}
+              <strong className="tabular-nums text-ink">{usd(total)}</strong>
+              {route === "pcard" ? `, under the ${usd(limit)} quick-buy limit` : `, ${total === limit ? "at" : `${usd(total - limit)} over`} the ${usd(limit)} quick-buy limit`}
+            </>
+          ) : (
+            "The total comes from the supplier's quote."
+          )}
+        </span>
+        <button type="button" disabled={busy} onClick={() => onChoose(i)} className={`${linkBtn} ml-auto`}>
+          Choose this one →
+        </button>
+      </div>
+    </article>
+  );
+}
+
 /** The answer, before any question: one product, its total, and how it would be bought, in a sentence. */
 function Recommended({
-  item,
+  item: first,
+  group,
   quantity,
   quantityKnown,
   limit,
@@ -565,21 +602,27 @@ function Recommended({
   onSetAgency,
 }: {
   item: DiveItem;
+  group?: VariantGroup<DiveItem>;
   quantity: number;
   quantityKnown: boolean;
   limit: number;
   buyer: string | null;
   busy: boolean;
-  onChoose: () => void;
+  onChoose: (i: DiveItem) => void;
   onSetAgency: () => void;
 }) {
-  const price = item.price!;
-  const total = price * quantity;
+  const sized = Boolean(group && group.items.length > 1);
+  const [at, setAt] = useState(group ? Math.max(0, group.items.indexOf(first)) : 0);
+  const item = sized ? group!.items[at] : first;
+  const price = item.price;
+  const total = price != null ? price * quantity : null;
   const route = routeFor(total, limit);
   const how =
     route === "pcard"
       ? `Under the ${usd(limit)} quick-buy limit, so a P-card covers it.`
-      : `Over the ${usd(limit)} quick-buy limit, so it needs a purchase order.`;
+      : route === "po"
+        ? `Over the ${usd(limit)} quick-buy limit, so it needs a purchase order.`
+        : "No price on file for this size; the total comes from a quote under the contract.";
   return (
     <article aria-label="Recommended" className="border-2 border-[#162E51] bg-white">
       <div className="flex flex-wrap items-center justify-between gap-2 bg-[#162E51] px-4 py-2">
@@ -590,20 +633,27 @@ function Recommended({
       </div>
       <div className="grid grid-cols-[minmax(0,1fr)_auto] gap-x-4 gap-y-2 px-4 py-4">
         <div className="min-w-0">
-          <div className="font-heading text-heading-md font-bold leading-snug text-ink">{item.name}</div>
+          <div className="font-heading text-heading-md font-bold leading-snug text-ink">{sized ? group!.base : item.name}</div>
           <div className="mt-1 text-ui-2xs text-base-darker">
             {item.supplier} · {item.program} {item.contract_number}
           </div>
         </div>
         <div className="text-right">
-          <div className="text-2xl font-bold tabular-nums text-ink">{usd(quantityKnown ? total : price)}</div>
-          <div className="text-ui-3xs text-base-dark">{quantityKnown && quantity > 1 ? "total" : item.unit ? `per ${item.unit}` : "each"}</div>
+          <div className="text-2xl font-bold tabular-nums text-ink">{price == null ? "By quote" : usd(quantityKnown ? total! : price)}</div>
+          {price != null && <div className="text-ui-3xs text-base-dark">{quantityKnown && quantity > 1 ? "total" : item.unit ? `per ${item.unit}` : "each"}</div>}
         </div>
+        {sized && (
+          <div className="col-span-2">
+            <SizeSwitch group={group!} at={at} onPick={setAt} />
+          </div>
+        )}
         <p className="col-span-2 text-body-sm leading-relaxed text-ink">
-          {quantityKnown ? (
+          {price == null ? (
+            how
+          ) : quantityKnown ? (
             <>
               <span className="tabular-nums">
-                {quantity.toLocaleString()} × {usd(price)} = {usd(total)}
+                {quantity.toLocaleString()} × {usd(price)} = {usd(total!)}
               </span>
               . {how}
             </>
@@ -613,7 +663,7 @@ function Recommended({
           <span className={item.usable ? "text-success-darker" : "text-base-darker"}>{item.access}</span>
         </p>
         <div className="col-span-2 flex flex-wrap items-center gap-x-5 gap-y-1">
-          <button type="button" disabled={busy} onClick={onChoose} className={primaryBtn}>
+          <button type="button" disabled={busy} onClick={() => onChoose(item)} className={primaryBtn}>
             Choose this one →
           </button>
           {!buyer && (

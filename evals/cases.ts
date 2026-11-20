@@ -30,7 +30,7 @@ import { catalogAwardedPrices, catalogCoopHits } from "../lib/catalog";
 import { offColumn } from "../lib/price-check";
 import { fitKey } from "../lib/dive-memo";
 import { gunzipSync } from "node:zlib";
-import { EXAMPLES, requestKind } from "../lib/front-door";
+import { EXAMPLES, foldVariants, requestKind, sizeOf } from "../lib/front-door";
 import type { ContractAnswer, ContractBrief } from "../lib/docs";
 import type { Paperwork } from "../lib/paperwork";
 import { extractFile, parseContract, UPLOAD_DIR, type ExtractedFile } from "../lib/parser";
@@ -593,6 +593,34 @@ export const CASES: Case[] = [
       return empty;
     },
     expect: [is<string[]>("no example that comes up empty", (v) => v.length === 0)],
+  },
+  {
+    id: "front-door.guard.size-variants",
+    task: "dive_read",
+    title: "Size variants of one product fold into one card, and nothing else does",
+    canned: {},
+    run: async () => {
+      const it = (name: string, supplier = "Corcraft", contract_number: string | null = "1100162226") => ({ name, supplier, contract_number });
+      const fold = (xs: ReturnType<typeof it>[]) => foldVariants(xs).map((g) => `${g.base} [${g.sizes.join(" | ")}]`);
+      return {
+        tables: fold([it("Folding table, 72W x 18D x 30H (F031854D00)"), it("Round folding table, 42 in diameter (F031854G00)"), it("Folding table, 60W x 30D x 30H (F031854B00)"), it("Round folding table, 48 in diameter (F031854J00)")]),
+        picnic: fold([it("Burke Picnic Table 6ft", "Burke", "R220201"), it("Burke Picnic Table 8ft", "Burke", "R220201"), it("Burke Picnic Table Hd 6ft", "Burke", "R220201")]),
+        suppliers: fold([it("Folding table, 6 ft, commercial", "National Furniture Co.", "WSPC-FN-0923"), it("Folding table, 8 ft, commercial", "Cascade", "PA-5120-FN")]),
+        same_size: fold([it("Copy paper, 8.5 x 11", "A", "1"), it("Copy paper, 8.5 x 11", "A", "1")]),
+        paper: sizeOf('Recycled copy paper, 20 lb, 8 1/2" x 11"'),
+        watts: sizeOf("LED troffer 2x4 40W"),
+        no_size: sizeOf("Ford Explorer Police Interceptor 4WD"),
+      };
+    },
+    expect: [
+      is<{ tables: string[] }>("rectangular and round tables fold apart, in rank order", (v) => v.tables.join(" / ") === "Folding table [72W x 18D x 30H | 60W x 30D x 30H] / Round folding table [42 in diameter | 48 in diameter]"),
+      is<{ picnic: string[] }>("6 ft and 8 ft fold; the heavy-duty one stays its own", (v) => v.picnic.join(" / ") === "Burke Picnic Table [6ft | 8ft] / Burke Picnic Table Hd 6ft []"),
+      is<{ suppliers: string[] }>("two suppliers never fold", (v) => v.suppliers.length === 2),
+      is<{ same_size: string[] }>("two of the same size aren't variants", (v) => v.same_size.length === 2),
+      is<{ paper: { base: string; size: string } }>("a mixed number is one size", (v) => v.paper.size === '8 1/2" x 11"' && v.paper.base === "Recycled copy paper, 20 lb"),
+      is<{ watts: { base: string; size: string } }>("watts are not a size", (v) => v.watts.size === "2x4" && v.watts.base === "LED troffer 40W"),
+      is<{ no_size: { base: string; size: string } }>("a name with no size is left alone", (v) => v.no_size.size === ""),
+    ],
   },
   {
     id: "dive-read.guard.toner-not-ton",

@@ -114,3 +114,75 @@ export function fromSearch(search: string): FrontDoorUrl | null {
   const n = Number(p.get("n"));
   return { need: need.slice(0, 300), query: p.get("item")?.slice(0, 200) || undefined, filters, quantity: Number.isFinite(n) && n >= 1 ? Math.floor(n) : undefined };
 }
+
+// Size variants: the same product from the same supplier on the same contract, in different sizes
+// ("Folding table, 60W x 30D x 30H" and "Folding table, 72W x 18D x 30H"). The guided search shows them as one card
+// with a size switch. Only sizes are folded: a name that differs in anything else is its own product.
+// A number, a fraction or a mixed number: "72", "8.5", "1/2", "8 1/2".
+const NUM = String.raw`\d+(?:\s+\d+\s*\/\s*\d+|\s*\/\s*\d+|\.\d+)?`;
+const LENGTH = String.raw`(?:"|''|in\.?(?![a-z])|inch(?:es)?(?![a-z])|ft\.?(?![a-z])|foot(?![a-z])|feet(?![a-z])|'|cm(?![a-z])|mm(?![a-z]))`;
+// W, D, H and L count only inside a dimension ("72W x 18D"): on their own, "40W" is watts.
+const UNIT = String.raw`(?:${LENGTH}|[WDHL](?![a-z]))`;
+const SIZE = new RegExp(
+  String.raw`(?<![\w.])(?:${NUM}\s*${UNIT}?(?:\s*[x×]\s*${NUM}\s*${UNIT}?)+|${NUM}\s*-?\s*${LENGTH}(?:\s+(?:diameter|dia\.?|round|long|wide|deep|high|tall)(?![a-z]))?)`,
+  "gi",
+);
+/** A part or model code in brackets at the end of a name: "(F031854D00)". */
+const CODE = /\s*\((?=[^)]*\d)[A-Z0-9][A-Z0-9 ./-]{3,}\)\s*$/i;
+
+/** A name without its sizes and its bracketed code, and the sizes it named. */
+export function sizeOf(name: string): { base: string; size: string } {
+  const plain = name.replace(CODE, "");
+  const sizes = plain.match(SIZE) ?? [];
+  const base = plain
+    .replace(SIZE, " ")
+    .replace(/\s+/g, " ")
+    .replace(/\s*,(\s*,)+/g, ",")
+    .replace(/\s+,/g, ",")
+    .replace(/^[\s,;:-]+|[\s,;:-]+$/g, "")
+    .trim();
+  // A name can print its size twice ("30" × 60" T-Leg model: 30" x 60" tabletop"): name it once.
+  const seen = new Set<string>();
+  const size = sizes
+    .map((s) => s.trim())
+    .filter((s) => {
+      const k = s.toLowerCase().replace(/[×]/g, "x").replace(/\s+/g, "");
+      return !seen.has(k) && seen.add(k);
+    })
+    .join(", ");
+  return { base, size };
+}
+
+export interface VariantGroup<T> {
+  /** The name every variant shares, without its size. */
+  base: string;
+  /** In the order they came, which is rank order: the first is the one shown first. */
+  items: T[];
+  /** Each item's size, in the same order. Empty for a group of one. */
+  sizes: string[];
+}
+
+/** Folds size variants together, keeping rank order: a group sits where its best-ranked member did. */
+export function foldVariants<T extends { name: string; supplier: string; contract_number: string | null; unit?: string | null }>(items: T[]): VariantGroup<T>[] {
+  const groups = new Map<string, { base: string; items: T[]; sizes: string[] }>();
+  const order: string[] = [];
+  items.forEach((item, i) => {
+    const { base, size } = sizeOf(item.name);
+    // A name with no size, or no name left once the size is gone, stays on its own.
+    const key = size && base ? [item.supplier, item.contract_number ?? "", item.unit ?? "", base.toLowerCase()].join("|") : `#${i}`;
+    const g = groups.get(key);
+    // Two items of the same size aren't variants of each other: keep the second as its own product.
+    if (g && !g.sizes.includes(size)) {
+      g.items.push(item);
+      g.sizes.push(size);
+      return;
+    }
+    const k = g ? `#${i}` : key;
+    groups.set(k, { base, items: [item], sizes: [size] });
+    order.push(k);
+  });
+  return order.map((k) => {
+    const g = groups.get(k)!;
+    return g.items.length > 1 ? g : { base: g.items[0].name, items: g.items, sizes: [] };
+  });
+}

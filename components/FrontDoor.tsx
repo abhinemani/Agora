@@ -1,9 +1,10 @@
 "use client";
 
-// The homepage's guided search. A request opens here instead of jumping to a results page: Agora asks who is
-// buying and how many, then narrows a shortlist of real products with the product dive's questions. Each card
-// shows how an order of that size would be bought, and a way out (a quote under a contract, informal quotes or a
-// solicitation) stays in view. Picking a product opens its route in place; the results page is one click away.
+// The homepage's guided search. A request opens here instead of jumping to a results page, and answers first: the
+// best product the buyer can use leads, with its total and how it's bought in one sentence, and the other options
+// follow. The agency is a chip, not a gate; how many and the product dive's questions refine the list beside it.
+// A way out (a quote under a contract, informal quotes or a solicitation) stays in view. Picking a product opens
+// its route in place; the results page is one click away.
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -89,7 +90,7 @@ export function FrontDoor({ initial, onNewSearch }: { initial: FrontDoorUrl; onN
   const [qtyStated, setQtyStated] = useState(Boolean(initial.quantity));
   const [qtyDraft, setQtyDraft] = useState("");
   const [skipped, setSkipped] = useState<string[]>([]);
-  const [agencySkipped, setAgencySkipped] = useState(false);
+  const [picking, setPicking] = useState(false);
   const [picked, setPicked] = useState<DiveItem | null>(null);
   const [rampOpen, setRampOpen] = useState(false);
   const [text, setText] = useState("");
@@ -208,28 +209,32 @@ export function FrontDoor({ initial, onNewSearch }: { initial: FrontDoorUrl; onN
     if (state) remember(state, n);
   };
 
-  // The current question: who is buying, then how many, then the product dive's own questions.
-  type Ask = { kind: "agency" } | { kind: "quantity" } | { kind: "dive"; q: DiveQuestion };
+  // The current question: how many, then the product dive's own questions. The agency is a chip above the list, not a question.
+  type Ask = { kind: "quantity" } | { kind: "dive"; q: DiveQuestion };
   const diveQ = state?.questions.find((q) => !skipped.includes(q.id));
-  const ask: Ask | null = !state || picked ? null : !buyer && !agencySkipped ? { kind: "agency" } : qty == null ? { kind: "quantity" } : diveQ ? { kind: "dive", q: diveQ } : null;
+  const ask: Ask | null = !state || picked ? null : qty == null ? { kind: "quantity" } : diveQ ? { kind: "dive", q: diveQ } : null;
 
   const n = qty ?? 1;
   const limit = ctx?.limit ?? db?.agency.quick_buy_threshold ?? 10_000;
   const ramp = state ? offRamp(state, n, limit) : null;
   const topFit = Math.max(0, ...(state?.items ?? []).map((i) => i.fit));
-  const bestId = [...(state?.items ?? [])].filter((i) => i.usable && i.price != null && i.fit >= topFit - 10).sort((x, y) => x.price! - y.price!)[0]?.id;
   const rampLoud = Boolean(ramp?.loud);
+  // The answer first: the lowest-priced close fit the agency can use, else the best fit, as long as it has a price
+  // and the model didn't judge it wrong for the request.
+  // Among close fits with a price: one the model judged a full fit, then one the agency can use (with no agency,
+  // one not limited to a single state's buyers), then the lowest price.
+  const verdictRank = (i: DiveItem) => (i.fit_verdict === "fits" ? 0 : i.fit_verdict ? 2 : 1);
+  const openRank = (i: DiveItem) => (buyer ? (i.usable ? 0 : 1) : i.state ? 1 : 0);
+  const rec =
+    [...(state?.items ?? [])]
+      .filter((i) => i.price != null && i.fit_verdict !== "no" && i.fit >= topFit - 10)
+      .sort((x, y) => verdictRank(x) - verdictRank(y) || openRank(x) - openRank(y) || x.price! - y.price!)[0] ?? null;
 
   const question = (where: "panel" | "sheet") => {
     if (!ask || busy) return null;
     const sheet = where === "sheet";
-    const title = ask.kind === "agency" ? "Who's buying?" : ask.kind === "quantity" ? "How many do you need?" : ask.q.text;
-    const why =
-      ask.kind === "agency"
-        ? "It decides which contracts are open."
-        : ask.kind === "quantity"
-          ? `P-card under ${usd(limit)}, purchase order above.`
-          : ask.q.why;
+    const title = ask.kind === "quantity" ? "How many do you need?" : ask.q.text;
+    const why = ask.kind === "quantity" ? `P-card under ${usd(limit)}, purchase order above.` : ask.q.why;
     const optBtn = sheet
       ? "flex min-h-[44px] shrink-0 items-center gap-2 border border-base-light bg-white px-3 text-left text-sm font-semibold text-ink hover:border-primary-darker"
       : "-mt-px flex min-h-[44px] items-center justify-between gap-3 border border-base-light bg-white px-3.5 text-left text-sm font-semibold text-ink hover:border-primary-darker hover:bg-primary-lighter/40";
@@ -237,11 +242,7 @@ export function FrontDoor({ initial, onNewSearch }: { initial: FrontDoorUrl; onN
       <div className={sheet ? "" : "border-t border-base-lighter px-5 py-4"}>
         <div className="text-body-md font-bold text-ink">{title}</div>
         <p className="mt-0.5 text-ui-2xs text-base-dark">{why}</p>
-        {ask.kind === "agency" ? (
-          <div className="mt-3">
-            <p className="text-ui-2xs text-base-darker">{sheet ? "Choose the agency above the shortlist, or skip." : "Choose the agency beside this panel, above the shortlist."}</p>
-          </div>
-        ) : (
+        {
           <div className={sheet ? "-mx-1 mt-2 flex gap-1.5 overflow-x-auto px-1 pb-1" : "mt-3 flex flex-col"}>
             {ask.kind === "quantity"
               ? QUANTITIES.map((q) => (
@@ -257,7 +258,7 @@ export function FrontDoor({ initial, onNewSearch }: { initial: FrontDoorUrl; onN
                   </button>
                 ))}
           </div>
-        )}
+        }
         {ask.kind === "quantity" && !sheet && (
           <form
             className="mt-2 flex gap-2"
@@ -279,10 +280,10 @@ export function FrontDoor({ initial, onNewSearch }: { initial: FrontDoorUrl; onN
         <div className="mt-1 flex flex-wrap gap-x-5">
           <button
             type="button"
-            onClick={() => (ask.kind === "agency" ? setAgencySkipped(true) : ask.kind === "quantity" ? setQuantity(1) : setSkipped((s) => [...s, ask.q.id]))}
+            onClick={() => (ask.kind === "quantity" ? setQuantity(1) : setSkipped((s) => [...s, ask.q.id]))}
             className={linkBtn}
           >
-            {ask.kind === "agency" ? "Skip: show every contract" : ask.kind === "quantity" ? "Just one" : "Skip this question"} →
+            {ask.kind === "quantity" ? "Just one" : "Skip this question"} →
           </button>
           {sheet && (
             <a href="#none-fit" onClick={() => setRampOpen(true)} className={linkBtn}>
@@ -298,7 +299,7 @@ export function FrontDoor({ initial, onNewSearch }: { initial: FrontDoorUrl; onN
   const ref = (path: OffRampPath) => ramp?.recommended === path;
 
   return (
-    <div className={`pb-8 ${ask && ask.kind !== "agency" ? "max-lg:pb-56" : ""}`}>
+    <div className="pb-8">
       {/* The hero, folded into the request: the words stay editable, and the steps say where the buyer is. */}
       <section className="relative -mt-8 mx-[calc(50%-50vw)] bg-[#0F3D73] px-5 py-5 [background-image:linear-gradient(rgba(255,255,255,0.06)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.06)_1px,transparent_1px)] [background-size:16px_16px]">
         <div className="mx-auto flex max-w-6xl flex-wrap items-center gap-x-5 gap-y-3">
@@ -389,42 +390,25 @@ export function FrontDoor({ initial, onNewSearch }: { initial: FrontDoorUrl; onN
           {!state && working && <div className="border border-dashed border-base-light bg-white px-5 py-8 text-sm text-base-darker">Reading the request and checking the catalog.</div>}
 
           {/* The agency picker needs the wide column: it lists the agencies as cards. */}
-          {ask?.kind === "agency" && !busy && (
-            <div className="border border-primary-darker bg-white p-4">
-              <div className="text-body-md font-bold text-ink">Who's buying?</div>
-              <div className="mt-3">
-                <BuyerPicker compact onDone={(b) => b && state && void turn({ query: state.query, filters: state.filters, judge: false }, `Buying for ${b.name}, ${b.state}`)} />
-              </div>
-              <button type="button" onClick={() => setAgencySkipped(true)} className={`${linkBtn} lg:hidden`}>
-                Skip: show every contract →
-              </button>
-            </div>
-          )}
-
           {state && picked && <RouteStage item={picked} quantity={n} limit={limit} limitIsTheirs={Boolean(ctx?.limit_is_theirs)} busy={working} onBack={() => setPicked(null)} onPlan={openRequest} />}
 
           {state && !picked && (
             <>
               {rampLoud && ramp && <OffRampPanel id="none-fit" ramp={ramp} state={state} quantity={n} limit={limit} ctx={ctx} busy={working} onOpen={openRequest} isRec={ref} />}
 
-              {state.reading?.read_as && (
-                <div className="flex flex-wrap items-center gap-x-3 gap-y-1 border-l-4 border-primary bg-white px-3 py-2 text-ui-2xs text-base-darker">
-                  <span>
-                    <span className="font-bold text-ink">Read as:</span> {state.reading.read_as}
-                  </span>
-                  <Feedback id={state.reading.log_id} className="ml-auto" />
-                </div>
-              )}
               <div className="flex flex-wrap items-center gap-2">
                 <span className={`${label} text-base-dark`}>
                   {state.matched} of {state.pool} match
                 </span>
                 {judging && <span className="text-ui-3xs text-base-dark">Checking how each one fits…</span>}
-                {buyer && (
-                  <span className="inline-flex min-h-[32px] items-center bg-primary-lighter px-2 text-ui-2xs font-bold text-primary-darker" title="Change the agency from the account menu">
-                    {buyer.name}, {buyer.state}
-                  </span>
-                )}
+                <button
+                  type="button"
+                  onClick={() => setPicking(!picking)}
+                  aria-expanded={picking}
+                  className={`inline-flex min-h-[32px] items-center gap-1.5 px-2 text-ui-2xs font-bold ${buyer ? "bg-primary-lighter text-primary-darker" : "border border-dashed border-primary-light bg-white text-primary-darker"}`}
+                >
+                  {buyer ? `${buyer.name}, ${buyer.state}` : "Any agency"} <span className="font-normal text-base-dark">· {picking ? "Close" : buyer ? "Change" : "Set yours"}</span>
+                </button>
                 {qty != null && (
                   <button type="button" onClick={() => (setQty(null), setQtyStated(false))} className="inline-flex min-h-[32px] items-center gap-1.5 border border-dashed border-primary-light bg-white px-2 text-ui-2xs font-bold text-primary-darker" aria-label={`Change the quantity, ${qty}`}>
                     {qty.toLocaleString()} {qtyStated && turns.length < 3 ? "· from the request" : ""} <span aria-hidden>×</span>
@@ -444,7 +428,43 @@ export function FrontDoor({ initial, onNewSearch }: { initial: FrontDoorUrl; onN
                 ))}
               </div>
 
-              {state.items.map((i) => {
+              {picking && (
+                <div className="border border-primary-darker bg-white p-4">
+                  <BuyerPicker
+                    compact
+                    onClose={() => setPicking(false)}
+                    onDone={(b) => {
+                      setPicking(false);
+                      void turn({ query: state.query, filters: state.filters, judge: false }, b ? `Buying for ${b.name}, ${b.state}` : "Any agency");
+                    }}
+                  />
+                </div>
+              )}
+
+              {rec && (
+                <Recommended
+                  item={rec}
+                  quantity={n}
+                  quantityKnown={qty != null}
+                  limit={limit}
+                  buyer={buyer ? `${buyer.name}` : null}
+                  busy={working}
+                  onChoose={() => setPicked(rec)}
+                  onSetAgency={() => setPicking(true)}
+                />
+              )}
+              {ask && !busy && <div className="border border-base-light bg-white p-4 lg:hidden">{question("sheet")}</div>}
+              {state.reading?.read_as && (
+                <div className="flex flex-wrap items-center gap-x-3 gap-y-1 border-l-4 border-primary bg-white px-3 py-2 text-ui-2xs text-base-darker">
+                  <span>
+                    <span className="font-bold text-ink">Read as:</span> {state.reading.read_as}
+                  </span>
+                  <Feedback id={state.reading.log_id} className="ml-auto" />
+                </div>
+              )}
+              {rec && state.items.length > 1 && <h2 className={`${label} pt-2 text-base-dark`}>Other options</h2>}
+
+              {state.items.filter((i) => i !== rec).map((i) => {
                 const total = i.price != null ? i.price * n : null;
                 const route = routeFor(total, limit);
                 return (
@@ -452,7 +472,6 @@ export function FrontDoor({ initial, onNewSearch }: { initial: FrontDoorUrl; onN
                     <div className="flex min-w-0 flex-col gap-1.5">
                       <span className="flex flex-wrap items-center gap-2">
                         <span className="text-body-md font-bold text-ink">{i.name}</span>
-                        {i.id === bestId && state.matched > 1 && <span className="bg-primary-lighter px-1.5 py-0.5 text-ui-3xs font-bold text-primary-darker">{buyer ? "Lowest price this agency can buy" : "Lowest price on the shortlist"}</span>}
                       </span>
                       <span className="flex flex-wrap items-center gap-x-2.5 gap-y-1 text-ui-2xs text-base-darker">
                         {i.sku && <span className="border border-base-light bg-white px-1.5 py-px font-mono text-[11px] tracking-[0.1em]">{i.sku}</span>}
@@ -530,13 +549,81 @@ export function FrontDoor({ initial, onNewSearch }: { initial: FrontDoorUrl; onN
         </section>
       </div>
 
-      {/* The question at the thumb, on a phone. */}
-      {ask && ask.kind !== "agency" && !busy && (
-        <div className="fixed inset-x-0 bottom-0 z-30 max-h-[45vh] overflow-y-auto border-t-2 border-[#162E51] bg-white px-4 pb-[max(12px,env(safe-area-inset-bottom))] pt-3 shadow-[0_-4px_16px_rgba(0,0,0,0.12)] lg:hidden">
-          {question("sheet")}
-        </div>
-      )}
     </div>
+  );
+}
+
+/** The answer, before any question: one product, its total, and how it would be bought, in a sentence. */
+function Recommended({
+  item,
+  quantity,
+  quantityKnown,
+  limit,
+  buyer,
+  busy,
+  onChoose,
+  onSetAgency,
+}: {
+  item: DiveItem;
+  quantity: number;
+  quantityKnown: boolean;
+  limit: number;
+  buyer: string | null;
+  busy: boolean;
+  onChoose: () => void;
+  onSetAgency: () => void;
+}) {
+  const price = item.price!;
+  const total = price * quantity;
+  const route = routeFor(total, limit);
+  const how =
+    route === "pcard"
+      ? `Under the ${usd(limit)} quick-buy limit, so a P-card covers it.`
+      : `Over the ${usd(limit)} quick-buy limit, so it needs a purchase order.`;
+  return (
+    <article aria-label="Recommended" className="border-2 border-[#162E51] bg-white">
+      <div className="flex flex-wrap items-center justify-between gap-2 bg-[#162E51] px-4 py-2">
+        <span className={`${label} text-white`}>Recommended</span>
+        <span className="bg-white">
+          <RoutePill route={route} />
+        </span>
+      </div>
+      <div className="grid grid-cols-[minmax(0,1fr)_auto] gap-x-4 gap-y-2 px-4 py-4">
+        <div className="min-w-0">
+          <div className="font-heading text-heading-md font-bold leading-snug text-ink">{item.name}</div>
+          <div className="mt-1 text-ui-2xs text-base-darker">
+            {item.supplier} · {item.program} {item.contract_number}
+          </div>
+        </div>
+        <div className="text-right">
+          <div className="text-2xl font-bold tabular-nums text-ink">{usd(quantityKnown ? total : price)}</div>
+          <div className="text-ui-3xs text-base-dark">{quantityKnown && quantity > 1 ? "total" : item.unit ? `per ${item.unit}` : "each"}</div>
+        </div>
+        <p className="col-span-2 text-body-sm leading-relaxed text-ink">
+          {quantityKnown ? (
+            <>
+              <span className="tabular-nums">
+                {quantity.toLocaleString()} × {usd(price)} = {usd(total)}
+              </span>
+              . {how}
+            </>
+          ) : (
+            `${usd(price)} ${item.unit ? `per ${item.unit}` : "each"}. Say how many to see how it's bought.`
+          )}{" "}
+          <span className={item.usable ? "text-success-darker" : "text-base-darker"}>{item.access}</span>
+        </p>
+        <div className="col-span-2 flex flex-wrap items-center gap-x-5 gap-y-1">
+          <button type="button" disabled={busy} onClick={onChoose} className={primaryBtn}>
+            Choose this one →
+          </button>
+          {!buyer && (
+            <button type="button" onClick={onSetAgency} className={linkBtn}>
+              Check it for your agency
+            </button>
+          )}
+        </div>
+      </div>
+    </article>
   );
 }
 
